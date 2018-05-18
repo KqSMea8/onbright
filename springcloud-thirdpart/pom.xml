@@ -1,0 +1,46 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.bright.apollo</groupId>
+		<artifactId>springcloud-multi</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>springcloud-thirdpart</artifactId>
+	<dependencies>
+		<dependency>
+			<groupId>com.bright.apollo</groupId>
+			<artifactId>springcloud-common</artifactId>
+			<version>${common-version}</version>
+			<exclusions>
+				<!--<exclusion>
+					<groupId>com.fasterxml.jackson.core</groupId>
+					<artifactId>jackson-annotations</artifactId>
+				</exclusion>-->
+				<!--<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-web</artifactId>
+				</exclusion>-->
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.sun</groupId>
+			<artifactId>jersey</artifactId>
+			<version>${jersey-version}</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/jersey-bundle-1.19.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.bright.apollo</groupId>
+			<artifactId>springcloud-tool</artifactId>
+			<version>${tool-version}</version>
+		</dependency>
+
+
+	</dependencies>
+</project>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="springcloud-ali2" />
+        <module name="springcloud-common" />
+        <module name="springcloud-config-server" />
+        <module name="springcloud-data" />
+        <module name="springcloud-eureka-server" />
+        <module name="springcloud-hystrix-turbine-dashboard" />
+        <module name="springcloud-oauth2" />
+        <module name="springcloud-provider-deivce" />
+        <module name="springcloud-provider-obox" />
+        <module name="springcloud-provider-scene" />
+        <module name="springcloud-redis" />
+        <module name="springcloud-service-impl" />
+        <module name="springcloud-thirdpart" />
+        <module name="springcloud-tool" />
+        <module name="springcloud-zipkin-server" />
+        <module name="springcloud-zuul" />
+        <module name="srpingcloud-provider-user" />
+      </profile>
+    </annotationProcessing>
+  </component>
+</project>

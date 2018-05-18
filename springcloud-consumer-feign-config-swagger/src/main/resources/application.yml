@@ -1,0 +1,3 @@
+server:
+  max-threads: 2000
+  max-connections: 2000

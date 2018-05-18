@@ -1,0 +1,24 @@
+server:
+  port: 8899
+spring:
+  application:
+    name: springcloud-ali2
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://root:booszy@localhost:8761/eureka
+  instance:
+    prefer-ip-address: true
+    instanceId: ${spring.application.name}:${spring.application.instance_id:${server.port}}
+management:
+  security:
+    enabled: false
+endpoints:
+  health:
+    sensitive: false
+    enabled: true
+mybatis:
+type-aliases-package: com.bright.apollo.dao.*
+
+

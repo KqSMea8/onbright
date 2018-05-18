@@ -1,0 +1,56 @@
+package com.bright.apollo.dao.user.mapper;
+
+import com.bright.apollo.common.entity.TUser;
+import com.bright.apollo.common.entity.TUserDevice;
+import com.bright.apollo.common.entity.TUserDeviceExample;
+import com.bright.apollo.dao.mapper.base.BaseMapper;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+
+@Mapper
+@Component
+public interface TUserDeviceMapper extends BaseMapper<TUserDevice, TUserDeviceExample, Integer> {
+
+	/**  
+	 * @param wxUserId
+	 * @param mobileUserId
+	 * @return  
+	 * @Description:  
+	 */
+	List<TUserDevice> getListOfUserDevice(Integer wxUserId, Integer mobileUserId);
+
+	/**  
+	 * @param tUserDevices
+	 * @return  
+	 * @Description:  
+	 */
+	int insertBatch(List<TUserDevice> tUserDevices);
+
+	/**  
+	 * @param wxUserId
+	 * @param mobileUserId
+	 * @return  
+	 * @Description:  
+	 */
+	List<TUserDevice> getListOverPrivilegeOfUserDevice(Integer wxUserId, Integer mobileUserId);
+
+	/**  
+	 * @param list
+	 * @return  
+	 * @Description:  
+	 */
+	int updateBatch(List<TUserDevice> list);
+
+	@Delete("delete from t_user_device where device_serial_id=#{id}")
+	void deleteTUserDevice(String id);
+
+	@Select(" select * from t_user tuser " +
+			" inner join t_user_device tud on tuser.id = tud.user_id " +
+			" where id=#{configDeviceId} ")
+	List<TUser> getUsersByDeviceId(int configDeviceId);
+
+}

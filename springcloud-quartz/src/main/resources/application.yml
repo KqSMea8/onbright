@@ -1,0 +1,8 @@
+server:
+  port: 7902
+spring:
+  datasource:
+    driverClass: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.200.200:3306/quartz?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: admin
+    password: im123456

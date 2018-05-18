@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud-ali2" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud-common" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud-config-server" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud-data" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud-eureka-server" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud-hystrix-turbine-dashboard" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud-oauth2" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud-provider-deivce" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud-provider-obox" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud-provider-scene" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud-redis" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud-service-impl" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud-thirdpart" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud-tool" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud-zipkin-server" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud-zuul" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/srpingcloud-provider-user" charset="UTF-8" />
+    <file url="PROJECT" charset="UTF-8" />
+  </component>
+</project>
