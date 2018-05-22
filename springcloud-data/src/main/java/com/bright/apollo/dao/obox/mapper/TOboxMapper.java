@@ -13,6 +13,7 @@ import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Component;
 
 @Mapper
+@Component
 public interface TOboxMapper extends BaseMapper<TObox, TOboxExample, Integer> {
 
 	/**  
