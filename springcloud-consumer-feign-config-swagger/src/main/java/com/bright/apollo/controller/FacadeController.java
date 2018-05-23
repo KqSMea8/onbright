@@ -2,7 +2,6 @@ package com.bright.apollo.controller;
 
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -124,7 +123,7 @@ public class FacadeController {
 		ResponseObject<List<TObox>> res = new ResponseObject<List<TObox>>();
 		try {
 			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			if (StringUtils.isEmpty(principal.getUsername())) {
+			if (principal.getUsername()!=null&&!principal.getUsername().equals("")) {
 				res.setCode(ResponseEnum.RequestParamError.getCode());
 				res.setMsg(ResponseEnum.RequestParamError.getMsg());
 			}
@@ -158,7 +157,7 @@ public class FacadeController {
 		ResponseObject<List<TOboxDeviceConfig>> res = new ResponseObject<List<TOboxDeviceConfig>>();
 		try {
 			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			if (StringUtils.isEmpty(principal.getUsername())) {
+			if (principal.getUsername()!=null&&!principal.getUsername().equals("")) {
 				res.setCode(ResponseEnum.RequestParamError.getCode());
 				res.setMsg(ResponseEnum.RequestParamError.getMsg());
 			}
@@ -191,7 +190,7 @@ public class FacadeController {
 		ResponseObject<List<SceneInfo>> res = new ResponseObject<List<SceneInfo>>();
 		try {
 			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			if (StringUtils.isEmpty(principal.getUsername())) {
+			if (principal.getUsername()!=null&&!principal.getUsername().equals("")) {
 				res.setCode(ResponseEnum.RequestParamError.getCode());
 				res.setMsg(ResponseEnum.RequestParamError.getMsg());
 			}

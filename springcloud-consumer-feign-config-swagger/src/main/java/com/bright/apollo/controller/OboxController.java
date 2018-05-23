@@ -35,6 +35,7 @@ public class OboxController {
 	@RequestMapping(value = "/{serialId}", method = RequestMethod.GET)
 	public ResponseObject<TObox> getObox(@PathVariable(required = true) String serialId) {
 		ResponseObject<TObox> res = null;
+
 		try {
 			return feignOboxClient.getObox(serialId);
 		} catch (Exception e) {
@@ -43,6 +44,7 @@ public class OboxController {
 			res.setCode(ResponseEnum.Error.getCode());
 			res.setMsg(ResponseEnum.Error.getMsg());
 		}
+
 		return res;
 	}
 

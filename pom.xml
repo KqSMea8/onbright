@@ -24,7 +24,7 @@
 	<modules>
 		<module>springcloud-eureka-server</module>
 		<module>springcloud-zipkin-server</module>
-		<!--<module>springcloud-consumer-feign-config-swagger</module>-->
+		<module>springcloud-consumer-feign-config-swagger</module>
 		<module>springcloud-zuul</module>
 		<module>springcloud-config-server</module>
 		<module>springcloud-hystrix-turbine-dashboard</module>

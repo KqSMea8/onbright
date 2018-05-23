@@ -9,6 +9,7 @@
         <module name="springcloud-ali2" />
         <module name="springcloud-common" />
         <module name="springcloud-config-server" />
+        <module name="springcloud-consumer-feign-config-swagger" />
         <module name="springcloud-data" />
         <module name="springcloud-eureka-server" />
         <module name="springcloud-hystrix-turbine-dashboard" />
