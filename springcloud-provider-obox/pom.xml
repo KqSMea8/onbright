@@ -42,12 +42,7 @@
 			<groupId>com.bright.apollo</groupId>
 			<artifactId>springcloud-data</artifactId>
 			<version>${data-version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.mybatis.spring.boot</groupId>
-					<artifactId>mybatis-spring-boot-starter</artifactId>
-				</exclusion>
-			</exclusions>
+
 		</dependency>
 		<dependency>
 			<groupId>com.bright.apollo</groupId>
@@ -64,7 +59,7 @@
 			<groupId>com.bright.apollo</groupId>
 			<artifactId>springcloud-service-impl</artifactId>
 			<version>${service-impl-version}</version>
-			<!--<exclusions>
+			 <!-- <exclusions>
 				<exclusion>
 					<groupId>com.bright.apollo</groupId>
 					<artifactId>springcloud-common</artifactId>
@@ -73,15 +68,15 @@
 					<groupId>com.bright.apollo</groupId>
 					<artifactId>springcloud-data</artifactId>
 				</exclusion>
-			</exclusions>-->
+			</exclusions>  -->
 		</dependency>
-		<dependency>
+	<!--   	<dependency>
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis-spring</artifactId>
 			<version>RELEASE</version>
 			<scope>compile</scope>
-		</dependency>
-
+		</dependency>   
+ -->
 
 	</dependencies>
 	<build>

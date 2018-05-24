@@ -15,6 +15,8 @@ import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.service.OboxService;
 
+
+
 /**
  * @Title:
  * @Description:
@@ -51,28 +53,7 @@ public class OboxController {
 		}
 		return res;
 	}
-
-	@RequestMapping(value = "/{serialId}", method = RequestMethod.GET)
-	public ResponseObject<TObox> getOboxByPage(@PathVariable(value = "serialId") String serialId) {
-		ResponseObject<TObox> res = new ResponseObject<TObox>();
-		try {
-			TObox obox = oboxService.queryOboxBySerialId(serialId);
-			if (obox == null) {
-				res.setCode(ResponseEnum.RequestObjectNotExist.getCode());
-				res.setMsg(ResponseEnum.RequestObjectNotExist.getMsg());
-			} else {
-				res.setCode(ResponseEnum.Success.getCode());
-				res.setMsg(ResponseEnum.Success.getMsg());
-				res.setData(obox);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			logger.error("===getScene error msg:" + e.getMessage());
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
-		}
-		return res;
-	}
+ 
 
 	// update obox
 	@SuppressWarnings("rawtypes")

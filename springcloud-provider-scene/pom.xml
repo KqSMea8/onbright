@@ -32,15 +32,17 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid-spring-boot-starter</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+
+
+		<dependency>
 			<groupId>com.bright.apollo</groupId>
 			<artifactId>springcloud-data</artifactId>
 			<version>${data-version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.mybatis.spring.boot</groupId>
-					<artifactId>mybatis-spring-boot-starter</artifactId>
-				</exclusion>
-			</exclusions>
+
 		</dependency>
 		<dependency>
 			<groupId>com.bright.apollo</groupId>
@@ -55,14 +57,9 @@
 		</dependency>
 		<dependency>
 			<groupId>com.bright.apollo</groupId>
-			<artifactId>springcloud-tool</artifactId>
-			<version>${tool-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.bright.apollo</groupId>
 			<artifactId>springcloud-service-impl</artifactId>
 			<version>${service-impl-version}</version>
-			<!--<exclusions>
+			 <!-- <exclusions>
 				<exclusion>
 					<groupId>com.bright.apollo</groupId>
 					<artifactId>springcloud-common</artifactId>
@@ -71,14 +68,16 @@
 					<groupId>com.bright.apollo</groupId>
 					<artifactId>springcloud-data</artifactId>
 				</exclusion>
-			</exclusions>-->
+			</exclusions>  -->
 		</dependency>
-		<dependency>
+	<!--   	<dependency>
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis-spring</artifactId>
 			<version>RELEASE</version>
 			<scope>compile</scope>
-		</dependency>
+		</dependency>   
+ -->
+
 	</dependencies>
 	<build>
 		<plugins>
