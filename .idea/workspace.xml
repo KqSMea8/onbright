@@ -44,18 +44,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="FeignAliClient.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/feign/FeignAliClient.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="462">
-              <caret line="20" column="64" selection-start-line="20" selection-start-column="64" selection-end-line="20" selection-end-column="64" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="HystrixFeignAli2Fallback.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/hrstrix/HystrixFeignAli2Fallback.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -121,11 +109,20 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="application.yml" pinned="false" current-in-tab="true">
+      <file leaf-file-name="application.yml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/springcloud-data/src/main/resources/application.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="81">
-              <caret line="3" column="22" selection-start-line="3" selection-start-column="22" selection-end-line="3" selection-end-column="22" />
+            <state relative-caret-position="108">
+              <caret line="4" column="65" lean-forward="true" selection-start-line="4" selection-start-column="25" selection-end-line="4" selection-end-column="65" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/springcloud-data/pom.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="351">
+              <caret line="46" column="27" selection-start-line="46" selection-start-column="27" selection-end-line="46" selection-end-column="27" />
             </state>
           </provider>
         </entry>
@@ -206,7 +203,6 @@
         <option value="$PROJECT_DIR$/springcloud-common/pom.xml" />
         <option value="$PROJECT_DIR$/springcloud-ali2/pom.xml" />
         <option value="$PROJECT_DIR$/springcloud-service-impl/pom.xml" />
-        <option value="$PROJECT_DIR$/springcloud-data/pom.xml" />
         <option value="$PROJECT_DIR$/springcloud-data/src/main/java/com/bright/apollo/dao/obox/mapper/TOboxMapper.java" />
         <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/feign/FeignConfig.java" />
         <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/feign/FeignConfigAli.java" />
@@ -246,6 +242,7 @@
         <option value="$PROJECT_DIR$/springcloud-common/src/main/java/com/bright/apollo/enums/ALIDevTypeEnum.java" />
         <option value="$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/socket/MNService.java" />
         <option value="$PROJECT_DIR$/springcloud-data/src/main/resources/application.yml" />
+        <option value="$PROJECT_DIR$/springcloud-data/pom.xml" />
       </list>
     </option>
   </component>
@@ -669,12 +666,12 @@
       <updated>1526548792120</updated>
       <workItem from="1526548806665" duration="3417000" />
       <workItem from="1526626857981" duration="2321000" />
-      <workItem from="1526635072817" duration="38153000" />
+      <workItem from="1526635072817" duration="41838000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="43891000" />
+    <option name="totallyTimeSpent" value="47576000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -738,13 +735,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/springcloud-provider-scene/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="354">
-          <caret line="90" column="12" selection-start-line="82" selection-start-column="4" selection-end-line="90" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/srpingcloud-provider-user/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2349">
@@ -1173,8 +1163,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-data/src/main/resources/application.yml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="81">
-          <caret line="3" column="22" selection-start-line="3" selection-start-column="22" selection-end-line="3" selection-end-column="22" />
+        <state relative-caret-position="108">
+          <caret line="4" column="65" lean-forward="true" selection-start-line="4" selection-start-column="25" selection-end-line="4" selection-end-column="65" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-data/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="351">
+          <caret line="46" column="27" selection-start-line="46" selection-start-column="27" selection-end-line="46" selection-end-column="27" />
         </state>
       </provider>
     </entry>
