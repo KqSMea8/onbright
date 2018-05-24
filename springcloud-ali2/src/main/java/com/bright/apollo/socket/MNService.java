@@ -39,7 +39,7 @@ public class MNService {
     private static final String AmericaqueueStr = "aliyun-iot-queue";
 
     private static MNSClient client;
-    private static MNSClient usclient;
+    //private static MNSClient usclient;
     private static Gson gson ;
 
     @Autowired
@@ -59,13 +59,15 @@ public class MNService {
 
     public MNService(AliRegionEnum eAliRegionEnum) {
         // TODO Auto-generated constructor stub
-        if (eAliRegionEnum.equals(AliRegionEnum.SOURTHCHINA)) {
-            CloudAccount account = new CloudAccount(accessKeyId, accessKeySecret, endPoint);
-            client = account.getMNSClient();
-        }else {
-            CloudAccount account = new CloudAccount(accessKeyId, accessKeySecret, AmericaEndPoint);
-            usclient = account.getMNSClient();
-        }
+        CloudAccount account = new CloudAccount(accessKeyId, accessKeySecret, endPoint);
+        client = account.getMNSClient();
+//        if (eAliRegionEnum.equals(AliRegionEnum.SOURTHCHINA)) {
+//            CloudAccount account = new CloudAccount(accessKeyId, accessKeySecret, endPoint);
+//            client = account.getMNSClient();
+//        }else {
+//            CloudAccount account = new CloudAccount(accessKeyId, accessKeySecret, AmericaEndPoint);
+//            usclient = account.getMNSClient();
+//        }
 
         gson = new Gson();
     }
@@ -101,11 +103,12 @@ public class MNService {
     {
         MsgReceiver receiver = new MsgReceiver(workerId, client, "aliyun-iot-"+qStr);
         System.out.println("MNService.WorkerFunc() + " + "aliyun-iot-"+qStr);
-        if (eAliRegionEnum.equals(AliRegionEnum.SOURTHCHINA)) {
-            receiver = new MsgReceiver(workerId, client, "aliyun-iot-"+qStr);
-        }else{
-            receiver = new MsgReceiver(workerId, usclient, "aliyun-iot-"+qStr);
-        }
+        receiver = new MsgReceiver(workerId, client, "aliyun-iot-"+qStr);
+//        if (eAliRegionEnum.equals(AliRegionEnum.SOURTHCHINA)) {
+//            receiver = new MsgReceiver(workerId, client, "aliyun-iot-"+qStr);
+//        }else{
+//            receiver = new MsgReceiver(workerId, usclient, "aliyun-iot-"+qStr);
+//        }
         while (true) {
             Message message = receiver.receiveMessage();
             System.out.println("Thread" + workerId + " GOT ONE MESSAGE! " + message.getMessageId());
@@ -246,11 +249,12 @@ public class MNService {
                 }
 
             }
-            if (eAliRegionEnum.equals(AliRegionEnum.SOURTHCHINA)) {
-                client.getQueueRef("aliyun-iot-"+qStr).deleteMessage(message.getReceiptHandle());
-            }else{
-                usclient.getQueueRef("aliyun-iot-"+qStr).deleteMessage(message.getReceiptHandle());
-            }
+            client.getQueueRef("aliyun-iot-"+qStr).deleteMessage(message.getReceiptHandle());
+//            if (eAliRegionEnum.equals(AliRegionEnum.SOURTHCHINA)) {
+//                client.getQueueRef("aliyun-iot-"+qStr).deleteMessage(message.getReceiptHandle());
+//            }else{
+//                usclient.getQueueRef("aliyun-iot-"+qStr).deleteMessage(message.getReceiptHandle());
+//            }
 
         }
     }
@@ -259,21 +263,29 @@ public class MNService {
     public void getMNS(AliRegionEnum eAliRegionEnum){
         //CloudQueue queue = client.getQueueRef(queueStr);
 
-        int theradId = 1;
+//        int theradId = 1;
         List<Thread> list = new ArrayList<Thread>();
-        for (ALIDevTypeEnum typeEnum : ALIDevTypeEnum.values()) {
-            for (int i = 1; i < 4; i++) {
-                Thread thread;
-                if (eAliRegionEnum.equals(AliRegionEnum.AMERICA)) {
-                    thread = new Thread(new workAction(theradId, eAliRegionEnum, typeEnum.getAmericaName()));
-                }else {
-                    thread = new Thread(new workAction(theradId, eAliRegionEnum, typeEnum.getSouthChinaName()));
-                }
-                thread.start();
-                list.add(thread);
-            }
-            theradId ++;
+        for (int i = 1; i < 4; i++) {
+            Thread thread = new Thread(new workAction(i, AliRegionEnum.SOURTHCHINA, ALIDevTypeEnum.OBOX.getSouthChinaName()));
+
+            thread.start();
+            list.add(thread);
         }
+//        theradId ++;
+
+//        for (ALIDevTypeEnum typeEnum : ALIDevTypeEnum.values()) {
+//            for (int i = 1; i < 4; i++) {
+//                Thread thread;
+//                if (eAliRegionEnum.equals(AliRegionEnum.AMERICA)) {
+//                    thread = new Thread(new workAction(theradId, eAliRegionEnum, typeEnum.getAmericaName()));
+//                }else {
+//                    thread = new Thread(new workAction(theradId, eAliRegionEnum, typeEnum.getSouthChinaName()));
+//                }
+//                thread.start();
+//                list.add(thread);
+//            }
+//            theradId ++;
+//        }
 
         for (Thread thread : list) {
             try {
