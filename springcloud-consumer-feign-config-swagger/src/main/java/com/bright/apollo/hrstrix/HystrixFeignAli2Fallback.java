@@ -2,6 +2,7 @@ package com.bright.apollo.hrstrix;
 
 import java.util.List;
 
+import com.bright.apollo.enums.CMDEnum;
 import com.bright.apollo.feign.FeignAliClient;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
@@ -20,4 +21,10 @@ import com.bright.apollo.response.ResponseObject;
 @Component
 public class  HystrixFeignAli2Fallback extends BasicHystrixFeignFallback implements FeignAliClient {
     private Logger logger = Logger.getLogger(getClass());
+
+    @Override
+    public String toAliService(CMDEnum cmd, String inMsg, String deviceSerial) {
+        logger.warn("===device server is break===");
+        return "error";
+    }
 }

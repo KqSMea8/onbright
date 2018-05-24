@@ -1,5 +1,6 @@
 package com.bright.apollo.service;
 
+import com.bright.apollo.handler.CMDHandlerManager;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -42,6 +43,9 @@ public class TopicServer {
 
     @Autowired
     private AliDeviceService aliDeviceService;
+
+    @Autowired
+    private CMDHandlerManager cmdHandlerManager;
 
     private String setCache(TAliDevice device,String deviceSerial){
         logger.info(" ====== setCache start ====== ");
@@ -210,8 +214,7 @@ public class TopicServer {
 
     public OboxResp request(CMDEnum cmd, byte [] data, String deviceSerial) throws Exception{
         logger.info(" ====== request start ====== ");
-//        String mString = com.bright.apollo.tool.StringUtils.bytes2String(cmd, data,packageLength,head);
-        String mString = "";
+        String mString = com.bright.apollo.tool.StringUtils.bytes2String(cmd, data,packageLength,head);
         logger.info(" request mStr: " + mString);
         RRpcRequest rrpcRequest = new RRpcRequest();
         //设备所属产品的Key
@@ -221,6 +224,8 @@ public class TopicServer {
         if (StringUtils.isEmpty(productKey)) {
             TAliDevice device = aliDeviceService.getAliDeviceBySerializeId(deviceSerial);
             setCache(device,deviceSerial);
+            productKey = device.getProductKey();
+            deviceName = device.getDeviceName();
         }
         rrpcRequest.setProductKey(productKey);
         rrpcRequest.setDeviceName(deviceName); //设备名称
@@ -238,7 +243,7 @@ public class TopicServer {
             if (rrpcResponse.getRrpcCode().equals("SUCCESS")) {
                 byte[] contentBytes = Base64.decodeBase64(rrpcResponse.getPayloadBase64Byte());
                 String aString = new String(contentBytes, "utf-8");
-//                    CMDHandlerManager.processTopic(productKey,deviceSerial,aString);
+                cmdHandlerManager.processTopic(productKey,deviceSerial,aString);
                 return new OboxResp(OboxResp.Type.success, aString.substring(22));
             }else if (rrpcResponse.getRrpcCode().equals("UNKNOW")){
                 return new OboxResp(OboxResp.Type.socket_write_error);

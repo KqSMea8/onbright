@@ -100,4 +100,6 @@ public interface SceneService extends BasicService{
 	void deleteSceneByOboxSerialIdAndSceneNum(String oboxSerialId,int oboxSceneNumber);
 
 	TScene getSceneBySceneNumber(int sceneNumber);
+
+	List<TScene> getALlScene();
 }

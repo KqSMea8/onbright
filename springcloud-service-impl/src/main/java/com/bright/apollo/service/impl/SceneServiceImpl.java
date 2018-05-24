@@ -312,5 +312,10 @@ public class SceneServiceImpl implements SceneService {
 		return sceneMapper.getSceneBySceneNumber(sceneNumber);
 	}
 
+	@Override
+	public List<TScene> getALlScene() {
+		return sceneMapper.getALlScene();
+	}
+
 
 }

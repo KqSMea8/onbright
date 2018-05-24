@@ -18,10 +18,12 @@ import com.bright.apollo.tool.EncDecHelper;
 import com.zz.common.util.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
 public class CMDHandlerManager {
     private Logger logger = Logger.getLogger(CMDHandlerManager.class);
 

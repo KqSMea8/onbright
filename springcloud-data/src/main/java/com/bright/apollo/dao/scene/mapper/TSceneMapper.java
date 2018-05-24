@@ -78,4 +78,7 @@ public interface TSceneMapper extends BaseMapper<TScene, TSceneExample, Integer>
 
 	@Select("select * from t_scene where obox_scene_number = #{sceneNumber}")
 	TScene getSceneBySceneNumber(int sceneNumber);
+
+	@Select("select * from t_scene")
+	List<TScene> getALlScene();
 }

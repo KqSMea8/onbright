@@ -4,10 +4,12 @@ import com.bright.apollo.common.entity.TAliDevTimer;
 import com.bright.apollo.common.entity.TAliDevice;
 import com.bright.apollo.common.entity.TAliDeviceUS;
 import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
+@Mapper
 @Repository
 public interface AliDeviceMapper {
 
