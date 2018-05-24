@@ -11,7 +11,7 @@ public class OboxResp {
         socket_write_error,
 
         obox_process_failure,
-
+        
         not_online;
     }
 

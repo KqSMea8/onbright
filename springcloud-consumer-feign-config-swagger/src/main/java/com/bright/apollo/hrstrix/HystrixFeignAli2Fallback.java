@@ -1,14 +1,11 @@
 package com.bright.apollo.hrstrix;
 
-import java.util.List;
-
-import com.bright.apollo.enums.CMDEnum;
-import com.bright.apollo.feign.FeignAliClient;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
-import com.bright.apollo.common.entity.TOboxDeviceConfig;
-import com.bright.apollo.feign.FeignDeviceClient;
+import com.bright.apollo.common.dto.OboxResp;
+import com.bright.apollo.enums.CMDEnum;
+import com.bright.apollo.feign.FeignAliClient;
 import com.bright.apollo.response.ResponseObject;
 
 /**
@@ -23,8 +20,8 @@ public class  HystrixFeignAli2Fallback extends BasicHystrixFeignFallback impleme
     private Logger logger = Logger.getLogger(getClass());
 
     @Override
-    public String toAliService(CMDEnum cmd, String inMsg, String deviceSerial) {
+    public ResponseObject<OboxResp> toAliService(CMDEnum cmd, String inMsg, String deviceSerial) {
         logger.warn("===device server is break===");
-        return "error";
+        return serverError();
     }
 }

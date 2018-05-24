@@ -1,5 +1,6 @@
 package com.bright.apollo.feign;
 
+import com.bright.apollo.common.dto.OboxResp;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.enums.CMDEnum;
 import com.bright.apollo.hrstrix.HystrixFeignAli2Fallback;
@@ -21,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public interface FeignAliClient {
 
     @RequestMapping(value = "/aliService/toAli", method = RequestMethod.GET)
-    String toAliService(@PathVariable CMDEnum cmd, @PathVariable String inMsg, @PathVariable String deviceSerial);
+    ResponseObject<OboxResp> toAliService(@PathVariable CMDEnum cmd, @PathVariable String inMsg, @PathVariable String deviceSerial);
 
 
 }
