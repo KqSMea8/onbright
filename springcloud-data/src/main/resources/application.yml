@@ -1,6 +1,6 @@
 spring:
   datasource:
-    username: admin
-    password: im123456
-    url: jdbc:mysql://192.168.200.200:3306/bright_apollo_user?useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: Iltwao!1
+    url: rm-bp16t7i071284ljuo.mysql.rds.aliyuncs.com:3306/bright_apollo?useUnicode=true&amp;characterEncoding=utf8
     driver-class-name: com.mysql.jdbc.Driver
