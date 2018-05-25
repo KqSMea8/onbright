@@ -20,6 +20,10 @@ public class IotClient {
     private final static String accessKeyID="LTAImm6aizjagsfp";
     private final static String accessKeySecret="zNdZ9RuwSU7RG2Lkoon9i2hbVx3gsm";
 
+    public IotClient(){
+        System.out.println("------ IotClient ------ ");
+    }
+
     public DefaultAcsClient getClient(String regionId){
         DefaultAcsClient client = null;
         System.out.println("--------=============");

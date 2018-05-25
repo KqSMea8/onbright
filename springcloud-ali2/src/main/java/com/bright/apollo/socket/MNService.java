@@ -15,6 +15,8 @@ import com.bright.apollo.service.AliDeviceService;
 import com.bright.apollo.service.MsgReceiver;
 import com.bright.apollo.service.OboxService;
 import com.bright.apollo.service.TopicServer;
+import com.bright.apollo.service.impl.AliDeviceServiceImpl;
+import com.bright.apollo.service.impl.OboxServiceImpl;
 import com.bright.apollo.tool.ByteHelper;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
@@ -33,8 +35,8 @@ public class MNService {
     Logger logger = Logger.getLogger(MNService.class);
     public static MNService instance;
 
-    private static final String accessKeyId ="LTAImm6aizjagsfp";
-    private static final String accessKeySecret ="zNdZ9RuwSU7RG2Lkoon9i2hbVx3gsm";
+    private static final String accessKeyId ="LTAIuiXKc3QK3aww";
+    private static final String accessKeySecret ="CoHqdRkWVZ6z1xiuZiGPyGzvOteCag";
     private static final String endPoint ="http://1558412029548413.mns.cn-shanghai.aliyuncs.com/";
     private static final String queueStr = "aliyun-iot-"+ ALIDevTypeEnum.OBOX.getSouthChinaName();
 
@@ -45,24 +47,9 @@ public class MNService {
     //private static MNSClient usclient;
     private static Gson gson ;
 
-    @Autowired
-    private AliDeviceService aliDeviceService;
-
-    @Autowired
-    private OboxService oboxService;
-
-    @Autowired
-    private TopicServer topicService;
-
-    @Autowired
-    private CMDHandlerManager cmdHandlerManager;
-
-    @Autowired
-    private CommandHandler commandHandler;
 
     public MNService(AliRegionEnum eAliRegionEnum) {
         // TODO Auto-generated constructor stub
-        try{
             System.out.println("------ MNService init ------");
             System.out.println("accessKeyId------ "+accessKeyId);
             System.out.println("accessKeySecret ------ "+accessKeySecret);
@@ -70,11 +57,10 @@ public class MNService {
 
             CloudAccount account = new CloudAccount(accessKeyId, accessKeySecret, endPoint);
             System.out.println("------ account ------ "+account);
+
             client = account.getMNSClient();
             System.out.println("------ client ------ "+client);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+
 
 //        if (eAliRegionEnum.equals(AliRegionEnum.SOURTHCHINA)) {
 //            CloudAccount account = new CloudAccount(accessKeyId, accessKeySecret, endPoint);
@@ -87,7 +73,7 @@ public class MNService {
         gson = new Gson();
     }
 
-    public static MNService getInstance(AliRegionEnum eAliRegionEnum) {
+    public static MNService getInstance(AliRegionEnum eAliRegionEnum){
         System.out.println("instance ------ "+instance);
         if (instance == null){
             instance = new MNService(eAliRegionEnum);
@@ -128,17 +114,24 @@ public class MNService {
 //        }else{
 //            receiver = new MsgReceiver(workerId, usclient, "aliyun-iot-"+qStr);
 //        }
+        AliDeviceService aliDeviceService = new AliDeviceServiceImpl();
+        OboxService oboxService = new OboxServiceImpl();
+        TopicServer topicService = new TopicServer();
+        CMDHandlerManager cmdHandlerManager = new CMDHandlerManager();
+        CommandHandler commandHandler = new CommandHandler();
         while (true) {
             Message message = receiver.receiveMessage();
             System.out.println("Thread" + workerId + " GOT ONE MESSAGE! " + message.getMessageId());
             if (message != null) {
                 try {
                     String body = message.getMessageBody();
+                    System.out.println("body ------ "+body);
                     LinkedTreeMap map = gson.fromJson(body, LinkedTreeMap.class);
                     String messageType = (String)map.get("messagetype");
 
                     String payload = (String)map.get("payload");
                     byte[] contentBytes = Base64.decodeBase64(payload);
+                    System.out.println("");
                     String aString = new String(contentBytes, "utf-8");
                     if (messageType.equals("status")) {
                         //update device status
@@ -147,6 +140,8 @@ public class MNService {
 //        	    		String obox_serial_id = object.getString("deviceName");
                         if (object.getString("status").equals("offline")) {
                             if(ALIDevTypeEnum.getTypebyValue(object.getString("productKey")).equals(ALIDevTypeEnum.OBOX)){
+                                System.out.println("aliDeviceService ---- "+aliDeviceService);
+
                                 TAliDevice tAliDevice =  aliDeviceService.getAliDeviceByProductKeyAndDeviceName(object.getString("productKey"),object.getString("deviceName"));
 //                                TAliDevice tAliDevice = AliDevBusiness.queryAliDevByName(object.getString("productKey"),object.getString("deviceName"));
                                 if (tAliDevice != null) {

@@ -2,13 +2,16 @@ package com.bright.apollo.listener;
 
 import com.bright.apollo.common.entity.TScene;
 import com.bright.apollo.enums.AliRegionEnum;
+import com.bright.apollo.service.MsgReceiver;
 import com.bright.apollo.service.SceneService;
 import com.bright.apollo.socket.MNServer;
+import com.bright.apollo.socket.MNService;
 import com.zz.common.log.LogService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationStartingEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.stereotype.Component;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.ServletContextEvent;
@@ -41,6 +44,7 @@ public class ContextListener implements ApplicationListener<ApplicationStartingE
 //
 //    @Autowired
 //    private SceneService sceneService;
+
 
 
 
@@ -88,6 +92,8 @@ public class ContextListener implements ApplicationListener<ApplicationStartingE
             //executor.submit(pushThread);
             executor.submit(new Thread(mnserver));
 //            executor.submit(new Thread(mnserver2));
+//            MNService mnService = MNService.getInstance(AliRegionEnum.SOURTHCHINA);
+//            System.out.println("------mnService ------"+mnService);
 
             logger.info("OBOX server starting ");
 //            LogService.info("OBOX server starting ");

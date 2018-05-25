@@ -22,6 +22,7 @@ public class MNServer implements Runnable {
         System.out.println("----MNServer Thread start-----");
         System.out.println("this.enum1 ------"+this.enum1);
         MNService mnService = MNService.getInstance(this.enum1);
+        System.out.println("mnService ------ "+mnService);
         mnService.getMNS(enum1);
 
     }

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @EnableDiscoveryClient
 @RestController
 @ComponentScan(basePackages = {"com.bright.apollo.*"})
-//@ServletComponentScan(basePackages = {"com.bright.apollo.listener.*"})
+@ServletComponentScan
 public class SpringcloudAli2Application {
 
     public static void main(String[] args) {
