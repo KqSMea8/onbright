@@ -1,5 +1,6 @@
 package com.bright.apollo.springcloudali2;
 
+import com.bright.apollo.listener.ContextListener;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
@@ -11,10 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 @EnableDiscoveryClient
 @RestController
 @ComponentScan(basePackages = {"com.bright.apollo.*"})
-@ServletComponentScan
+//@ServletComponentScan(basePackages = {"com.bright.apollo.listener.*"})
 public class SpringcloudAli2Application {
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringcloudAli2Application.class, args);
+        SpringApplication app = new SpringApplication(SpringcloudAli2Application.class);
+        app.addListeners(new ContextListener());
+        app.run(args);
+//        SpringApplication.run(SpringcloudAli2Application.class, args);
     }
 }

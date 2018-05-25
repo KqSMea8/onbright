@@ -12,6 +12,10 @@ import java.util.List;
 
 @Service
 public class OboxDeviceConfigServiceImpl  implements OboxDeviceConfigService {
+
+    public OboxDeviceConfigServiceImpl(){
+        System.out.println("=============OboxDeviceConfigServiceImpl=============");
+    }
     @Autowired
     private TOboxDeviceConfigMapper odcMapper;
 

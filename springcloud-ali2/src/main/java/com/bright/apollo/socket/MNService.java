@@ -19,6 +19,7 @@ import com.bright.apollo.tool.ByteHelper;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -28,6 +29,8 @@ import java.util.List;
 import java.util.TimeZone;
 
 public class MNService {
+
+    Logger logger = Logger.getLogger(MNService.class);
     public static MNService instance;
 
     private static final String accessKeyId ="LTAImm6aizjagsfp";
@@ -59,8 +62,20 @@ public class MNService {
 
     public MNService(AliRegionEnum eAliRegionEnum) {
         // TODO Auto-generated constructor stub
-        CloudAccount account = new CloudAccount(accessKeyId, accessKeySecret, endPoint);
-        client = account.getMNSClient();
+        try{
+            System.out.println("------ MNService init ------");
+            System.out.println("accessKeyId------ "+accessKeyId);
+            System.out.println("accessKeySecret ------ "+accessKeySecret);
+            System.out.println("endPoint ------"+endPoint);
+
+            CloudAccount account = new CloudAccount(accessKeyId, accessKeySecret, endPoint);
+            System.out.println("------ account ------ "+account);
+            client = account.getMNSClient();
+            System.out.println("------ client ------ "+client);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
 //        if (eAliRegionEnum.equals(AliRegionEnum.SOURTHCHINA)) {
 //            CloudAccount account = new CloudAccount(accessKeyId, accessKeySecret, endPoint);
 //            client = account.getMNSClient();
@@ -73,7 +88,7 @@ public class MNService {
     }
 
     public static MNService getInstance(AliRegionEnum eAliRegionEnum) {
-
+        System.out.println("instance ------ "+instance);
         if (instance == null){
             instance = new MNService(eAliRegionEnum);
         }
@@ -87,6 +102,8 @@ public class MNService {
         private String qStr;
 
         public workAction(int workerId,AliRegionEnum eAliRegionEnum,String qStr){
+            logger.info("------ workAction init ------");
+            System.out.println("------ workAction init ------");
             this.workerId = workerId;
             this.eAliRegionEnum =eAliRegionEnum;
             this.qStr = qStr;
@@ -95,6 +112,8 @@ public class MNService {
         @Override
         public void run() {
             // TODO Auto-generated method stub
+            logger.info("------ workAction thread run  ------");
+            System.out.println("------ workAction thread run  ------");
             WorkerFunc(workerId, eAliRegionEnum, qStr);
         }
     }
@@ -264,6 +283,8 @@ public class MNService {
         //CloudQueue queue = client.getQueueRef(queueStr);
 
 //        int theradId = 1;
+        logger.info("------ getMNS method  ------");
+        System.out.println("------ getMNS method  ------");
         List<Thread> list = new ArrayList<Thread>();
         for (int i = 1; i < 4; i++) {
             Thread thread = new Thread(new workAction(i, AliRegionEnum.SOURTHCHINA, ALIDevTypeEnum.OBOX.getSouthChinaName()));

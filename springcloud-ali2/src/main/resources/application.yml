@@ -20,5 +20,8 @@ endpoints:
     enabled: true
 mybatis:
 type-aliases-package: com.bright.apollo.dao.*
+logging:
+  level: info
+
 
 
