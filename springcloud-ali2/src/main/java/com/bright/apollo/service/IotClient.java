@@ -4,6 +4,7 @@ import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
   
 /**  
@@ -17,16 +18,19 @@ import org.springframework.stereotype.Component;
 @Component
 public class IotClient {
 
+    Logger logger = Logger.getLogger(IotClient.class);
+
     private final static String accessKeyID="LTAImm6aizjagsfp";
     private final static String accessKeySecret="zNdZ9RuwSU7RG2Lkoon9i2hbVx3gsm";
+    DefaultAcsClient client = null;
 
     public IotClient(){
-        System.out.println("------ IotClient ------ ");
+        logger.info("------ IotClient ------ ");
     }
 
     public DefaultAcsClient getClient(String regionId){
-        DefaultAcsClient client = null;
-        System.out.println("--------=============");
+
+        logger.info(" ====== IotClient.getClient method ====== ");
         try {
             IClientProfile profile = DefaultProfile.getProfile(regionId, accessKeyID, accessKeySecret);
             DefaultProfile.addEndpoint(regionId, regionId, "Iot", "iot."+regionId+".aliyuncs.com");

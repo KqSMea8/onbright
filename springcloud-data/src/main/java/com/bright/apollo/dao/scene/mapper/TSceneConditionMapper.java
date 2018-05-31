@@ -3,10 +3,7 @@ package com.bright.apollo.dao.scene.mapper;
 import com.bright.apollo.common.entity.TSceneCondition;
 import com.bright.apollo.common.entity.TSceneConditionExample;
 import com.bright.apollo.dao.mapper.base.BaseMapper;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -28,13 +25,13 @@ public interface TSceneConditionMapper extends BaseMapper<TSceneCondition, TScen
 	void batchUpdate(List<TSceneCondition> list);
 
 	@Select("select * from t_scene_condition where scene_number = #{sceneNumber}")
-	List<TSceneCondition> getSceneConditionBySceneNum(int sceneNumber);
+	List<TSceneCondition> getSceneConditionBySceneNum(@Param("sceneNumber") int sceneNumber);
 
 	@Delete("delete from t_scene_condition where scene_number = #{sceneNumber}")
-	void deleteSceneConditionBySceneNum(int sceneNumber);
+	void deleteSceneConditionBySceneNum(@Param("sceneNumber") int sceneNumber);
 
 	@Delete("delete from t_scene_condition where scene_number = #{sceneNumber} and condition_group = #{conditionGroup}")
-	void deleteSceneConditionBySceneNumberAndGroup(int sceneNumber,int conditionGroup);
+	void deleteSceneConditionBySceneNumberAndGroup(@Param("sceneNumber") int sceneNumber,@Param("conditionGroup") int conditionGroup);
 
 	@Insert("insert into t_scene_condition (scene_number,\n" +
 			"serialId,\n" +
@@ -45,9 +42,9 @@ public interface TSceneConditionMapper extends BaseMapper<TSceneCondition, TScen
 	void addSceneCondition(TSceneCondition sceneCondition);
 
 	@Select("select * from t_scene_condition where serialId = #{serialId}")
-	List<TSceneCondition> getSceneConditionBySerialId(String serialId);
+	List<TSceneCondition> getSceneConditionBySerialId(@Param("serialId") String serialId);
 
 	@Select("select * from t_scene_condition where scene_number = #{sceneNumber} and condition_group = #{conditionGroup}")
-	List<TSceneCondition> getSceneConditionBySceneNumberAndGroup(int sceneNumber, int conditionGroup);
+	List<TSceneCondition> getSceneConditionBySceneNumberAndGroup(@Param("sceneNumber") int sceneNumber,@Param("conditionGroup") int conditionGroup);
 
 }

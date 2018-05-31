@@ -27,7 +27,7 @@ public interface TOboxDeviceConfigMapper extends BaseMapper<TOboxDeviceConfig, T
 	 * @return  
 	 * @Description:  
 	 */
-	List<TOboxDeviceConfig> queryDeviceByUserId(Integer userId, int pageStart, int pageEnd);
+	List<TOboxDeviceConfig> queryDeviceByUserId(@Param("userId") Integer userId,@Param("pageStart") int pageStart,@Param("pageEnd") int pageEnd);
 
 	/**  
 	 * @param userId
@@ -37,7 +37,7 @@ public interface TOboxDeviceConfigMapper extends BaseMapper<TOboxDeviceConfig, T
 	int queryCountDeviceByUserId(Integer userId);
 
 	@Select("select id from t_obox_device_config where obox_id = #{oboxId} and device_rf_addr = #{address}")
-	TOboxDeviceConfig queryOboxConfigByAddr(int oboxId,String address);
+	TOboxDeviceConfig queryOboxConfigByAddr(@Param("oboxId") int oboxId,@Param("address") String address);
 
 	@Update("update t_obox_device_config set obox_id= #{oboxId }" +
 			",device_id= #{deviceId }" +
@@ -55,10 +55,10 @@ public interface TOboxDeviceConfigMapper extends BaseMapper<TOboxDeviceConfig, T
 
 
 	@Select("select id,device_serial_id,device_rf_addr,group_addr from t_obox_device_config where device_serial_id = #{deviceSerialId}  ")
-	TOboxDeviceConfig queryDeviceConfigBySerialID(String deviceSerialId);
+	TOboxDeviceConfig queryDeviceConfigBySerialID(@Param("deviceSerialId") String deviceSerialId);
 
 	@Delete("delete from t_obox_device_config where id = #{id}")
-	void deleteTOboxDeviceConfig(int id);
+	void deleteTOboxDeviceConfig(@Param("id") int id);
 
 	@Insert("insert into t_obox_device_config(obox_id,\n" +
 			"device_id,\n" +
@@ -77,16 +77,16 @@ public interface TOboxDeviceConfigMapper extends BaseMapper<TOboxDeviceConfig, T
 	int addTOboxDeviceConfig(TOboxDeviceConfig tOboxDeviceConfig);
 
 	@Select("select * from t_obox_device_config where obox_id = #{oboxId}")
-	List<TOboxDeviceConfig> getOboxDeviceConfigByOboxId(int oboxId);
+	List<TOboxDeviceConfig> getOboxDeviceConfigByOboxId(@Param("oboxId") int oboxId);
 
 	@Delete("delete from t_obox_device_config where obox_id = #{oboxId}")
-	void deleteTOboxDeviceConfigByOboxId(int oboxId);
+	void deleteTOboxDeviceConfigByOboxId(@Param("oboxId") int oboxId);
 
 	@Delete("delete from t_obox_device_config where obox_id = #{oboxId} and device_rf_addr = #{nodeAddress}")
-	void deleteTOboxDeviceConfigByOboxIdAndNodeAddress(int oboxId,String nodeAddress);
+	void deleteTOboxDeviceConfigByOboxIdAndNodeAddress(@Param("oboxId") int oboxId,@Param("nodeAddress") String nodeAddress);
 
 	@Select("select * from t_obox_device_config where obox_serial_id = #{oboxSerialId} and group_addr = #{groupAddress}")
-	List<TOboxDeviceConfig> getTOboxDeviceConfigByOboxSerialIdAndGroupAddress(String oboxSerialId,String groupAddress);
+	List<TOboxDeviceConfig> getTOboxDeviceConfigByOboxSerialIdAndGroupAddress(@Param("oboxSerialId") String oboxSerialId,@Param("groupAddress") String groupAddress);
 
 	@Update("update t_obox_device_config set obox_id= #{oboxId }" +
 			",device_id= #{deviceId }" +
@@ -103,14 +103,14 @@ public interface TOboxDeviceConfigMapper extends BaseMapper<TOboxDeviceConfig, T
 	void updateTOboxDeviceConfigStatus(TOboxDeviceConfig tOboxDeviceConfig);
 
 	@Select("select * from t_obox_device_config where device_serial_id= #{deviceSerialId}")
-	TOboxDeviceConfig getTOboxDeviceConfigByDeviceSerialId(String deviceSerialId);
+	TOboxDeviceConfig getTOboxDeviceConfigByDeviceSerialId(@Param("deviceSerialId") String deviceSerialId);
 
 	@Select("select * from t_obox_device_config where device_serial_id= #{deviceSerialId} and device_rf_addr=#{address}")
-	TOboxDeviceConfig getTOboxDeviceConfigByDeviceSerialIdAndAddress(String deviceSerialId,String address);
+	TOboxDeviceConfig getTOboxDeviceConfigByDeviceSerialIdAndAddress(@Param("deviceSerialId") String deviceSerialId,@Param("address") String address);
 
 	@SelectProvider(type = OboxDeviceConfigSqlProvider.class, method = "getAllOboxDeviceConfig")
-	List<TOboxDeviceConfig> getAllOboxDeviceConfig(String deviceType);
+	List<TOboxDeviceConfig> getAllOboxDeviceConfig(@Param("deviceType") String deviceType);
 
 	@Select("select * from t_obox_device_config where id = #{id}")
-	TOboxDeviceConfig getOboxDeviceConfigById(int id);
+	TOboxDeviceConfig getOboxDeviceConfigById(@Param("id") int id);
 }

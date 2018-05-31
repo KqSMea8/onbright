@@ -23,21 +23,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 @Configuration
 @EnableAutoConfiguration
-public class RedisCacheConfig extends CachingConfigurerSupport {
+public class RedisCacheConfig {
     
-    @Value("${spring.redis.host}")
+    @Value("${redis.host}")
     private String host;
     
-    @Value("${spring.redis.port}")
+    @Value("${redis.port}")
     private int port;
-    
-    @Value("${spring.redis.timeout}")
+
+    @Value("${redis.timeout}")
     private int timeout;
-    
-    @Value("${spring.redis.database}")
+
+    @Value("${redis.database}")
     private int database;
-    
-    @Value("${spring.redis.password}")
+
     private String password;
 
     /**

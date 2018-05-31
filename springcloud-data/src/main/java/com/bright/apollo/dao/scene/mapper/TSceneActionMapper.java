@@ -25,13 +25,13 @@ public interface TSceneActionMapper extends BaseMapper<TSceneAction, TSceneActio
 	void batchUpdate(List<TSceneAction> list);
 
 	@Delete("delete from t_scene_action where scene_number = #{sceneNumber}")
-	void deleteSceneActionBySceneNumber(int sceneNumber);
+	void deleteSceneActionBySceneNumber(@Param("sceneNumber") int sceneNumber);
 
 	@Select("select * from t_scene_action where scene_number = #{sceneNumber}")
-	List<TSceneAction> getSceneActionBySceneNumber(int sceneNumber);
+	List<TSceneAction> getSceneActionBySceneNumber(@Param("sceneNumber") int sceneNumber);
 
 	@Delete("delete t_scene_action where scene_number=#{sceneNumber} and actionId = #{actionID}")
-	void deleteSceneActionByBySceneNumberAndActionId(int sceneNumber,String actionId);
+	void deleteSceneActionByBySceneNumberAndActionId(@Param("sceneNumber") int sceneNumber,@Param("actionId") String actionId);
 
 	@Insert("insert into t_scene_action (actionID,\n" +
 			"action,\n" +
@@ -43,7 +43,7 @@ public interface TSceneActionMapper extends BaseMapper<TSceneAction, TSceneActio
 	void addSceneAction(TSceneAction sceneAction);
 
 	@Select("select * from t_scene_action where scene_number = #{sceneNumber} and actionID = #{actionId}")
-	TSceneAction getSceneActionBySceneNumberAndActionId(int sceneNumber,String actionId);
+	TSceneAction getSceneActionBySceneNumberAndActionId(@Param("sceneNumber") int sceneNumber,@Param("actionId") String actionId);
 
 	@Update("update t_scene_action set scene_number = #{sceneNumber},\n" +
 			"actionID = #{actionid},\n" +

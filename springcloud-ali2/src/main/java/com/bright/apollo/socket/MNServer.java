@@ -2,28 +2,28 @@ package com.bright.apollo.socket;
 
 import com.bright.apollo.enums.AliRegionEnum;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class MNServer implements Runnable {
-    private AliRegionEnum enum1;
+
+    @Autowired
+    private MNService mnService;
 
     Logger logger = Logger.getLogger(MNServer.class);
 
-    public MNServer(AliRegionEnum enum1) {
+    public MNServer() {
         // TODO Auto-generated constructor stub
         logger.info("------ MNServer init ------");
-        System.out.println("----sys out MNServer init-----");
-        this.enum1 = enum1;
     }
 
     @Override
     public void run() {
         // TODO Auto-generated method stub
         logger.info("------ MNServer Thread start ------");
-        System.out.println("----MNServer Thread start-----");
-        System.out.println("this.enum1 ------"+this.enum1);
-        MNService mnService = MNService.getInstance(this.enum1);
-        System.out.println("mnService ------ "+mnService);
-        mnService.getMNS(enum1);
+//        MNService mnService = MNService.getInstance(this.enum1);
+        mnService.getMNS();
 
     }
 }

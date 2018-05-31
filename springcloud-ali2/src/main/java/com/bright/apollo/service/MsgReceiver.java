@@ -3,6 +3,8 @@ package com.bright.apollo.service;
 import com.aliyun.mns.client.CloudQueue;
 import com.aliyun.mns.client.MNSClient;
 import com.aliyun.mns.model.Message;
+import com.aliyun.mns.model.QueueMeta;
+import org.apache.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,6 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class MsgReceiver {
     public static final int WAIT_SECONDS = 1;
 
+    Logger logger = Logger.getLogger(MsgReceiver.class);
     // if there are too many queues, a clear method could be involved after deleting the queue
     protected static final Map<String, Object> sLockObjMap = new HashMap<String, Object>();
     protected static Map<String, Boolean> sPollingMap = new ConcurrentHashMap<String, Boolean>();
@@ -21,6 +24,7 @@ public class MsgReceiver {
     protected int workerId;
 
     public MsgReceiver(int id, MNSClient mnsClient, String queue) {
+        logger.info(" === MsgReceiver init === ");
         cloudQueue = mnsClient.getQueueRef(queue);
         queueName = queue;
         workerId = id;
@@ -51,7 +55,7 @@ public class MsgReceiver {
         synchronized (lockObj) {
             sPollingMap.put(queueName, false);
             lockObj.notifyAll();
-            System.out.println("Everyone WakeUp and Work!");
+            logger.info("Everyone WakeUp and Work!");
         }
     }
 
@@ -63,11 +67,11 @@ public class MsgReceiver {
                 Boolean p = sPollingMap.get(queueName);
                 if (p != null && p) {
                     try {
-                        System.out.println("Thread" + workerId + " Have a nice sleep!");
+                        logger.info("Thread" + workerId + " Have a nice sleep!");
                         polling = false;
                         lockObj.wait();
                     } catch (InterruptedException e) {
-                        System.out.println("MessageReceiver Interrupted! QueueName is " + queueName);
+                        logger.info("MessageReceiver Interrupted! QueueName is " + queueName);
                         return null;
                     }
                 }
@@ -76,14 +80,16 @@ public class MsgReceiver {
             try {
                 Message message = null;
                 if (!polling) {
+
                     message = cloudQueue.popMessage();
+
                     if (message == null) {
                         polling = true;
                         continue;
                     }
                 } else {
                     if (setPolling()) {
-                        System.out.println("Thread" + workerId + " Polling!");
+                        logger.info("Thread" + workerId + " Polling!");
                     } else {
                         continue;
                     }
@@ -92,7 +98,7 @@ public class MsgReceiver {
                             message = cloudQueue.popMessage(WAIT_SECONDS);
                         } catch(Exception e)
                         {
-                            System.out.println("Exception Happened when polling popMessage: " + e);
+                            logger.info("Exception Happened when polling popMessage: " + e);
                         }
                     } while (message == null);
                     clearPolling();
@@ -100,7 +106,7 @@ public class MsgReceiver {
                 return message;
             } catch (Exception e) {
                 // it could be network exception
-                System.out.println("Exception Happened when popMessage: " + e);
+//                System.out.println("Exception Happened when popMessage: " + e);
             }
         }
     }

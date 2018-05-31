@@ -2,14 +2,11 @@ package com.bright.apollo.dao.obox.mapper;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.*;
 
 import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.common.entity.TOboxExample;
 import com.bright.apollo.dao.mapper.base.BaseMapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Component;
 
 @Mapper
@@ -23,7 +20,7 @@ public interface TOboxMapper extends BaseMapper<TObox, TOboxExample, Integer> {
 	 * @return  
 	 * @Description:  
 	 */
-	List<TObox> queryOboxByUserId(Integer userId, int pageStart, int pageEnd);
+	List<TObox> queryOboxByUserId(@Param("userId") Integer userId,@Param("pageStart") int pageStart,@Param("pageEnd") int pageEnd);
 
 	/**  
 	 * @param userId
@@ -33,7 +30,7 @@ public interface TOboxMapper extends BaseMapper<TObox, TOboxExample, Integer> {
 	int queryCountOboxByUserId(Integer userId);
 
 	@Select("select * from t_obox where obox_serial_id = #{oboxSerialId} ")
-	TObox queryOboxsByOboxSerialId(String oboxSerialId) throws Exception;
+	TObox queryOboxsByOboxSerialId(@Param("oboxSerialId") String oboxSerialId) throws Exception;
 
 	@Update("update t_obox set obox_name = #{oboxName},\n" +
 			"obox_serial_id = #{oboxSerialId },\n" +
@@ -48,18 +45,18 @@ public interface TOboxMapper extends BaseMapper<TObox, TOboxExample, Integer> {
 			"where tdc.device_id=#{deviceId}\n" +
 			"order by signal_intensity desc\n" +
 			"limit 1,1 ")
-	TObox queryOboxsByDeviceChannelId(int deviceId) throws Exception;
+	TObox queryOboxsByDeviceChannelId(@Param("deviceId") int deviceId) throws Exception;
 
 	@Delete("delete from t_obox where id = #{id} ")
 	void deleteOboxById(TObox obox);
 
 	@Select("select * from t_obox where id = #{id}")
-	TObox queryOboxsById(int id);
+	TObox queryOboxsById(@Param("id") int id);
 
 	@Select("select * from t_obox tob\n" +
 			"inner join t_obox_device_config todc on tob.id=todc.obox_id\n" +
 			"inner join t_device_channel tdc on tdc.device_id=todc.id\n" +
 			"where todc.id =#{oboxDeviceId} and tob.id = #{oboxId} ")
-	List<TObox> getOboxsByDeviceChannel(int oboxDeviceId,int oboxId);
+	List<TObox> getOboxsByDeviceChannel(@Param("oboxDeviceId") int oboxDeviceId,@Param("oboxId") int oboxId);
 
 }

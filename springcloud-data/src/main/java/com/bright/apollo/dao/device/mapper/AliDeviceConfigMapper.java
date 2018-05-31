@@ -2,6 +2,7 @@ package com.bright.apollo.dao.device.mapper;
 
 import com.bright.apollo.common.entity.TAliDeviceConfig;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Repository;
 public interface AliDeviceConfigMapper {
 
     @Select("select * from t_ali_device_config where device_serial_id = #{deviceSerialId}")
-    TAliDeviceConfig getAliDeviceConfigByDeviceSerialId(String deviceSerialId);
+    TAliDeviceConfig getAliDeviceConfigByDeviceSerialId(@Param("deviceSerialId") String deviceSerialId);
 
     @Update(" update t_ali_device_config SET " +
             "    device_serial_id=#{deviceSerialId},\n" +

@@ -20,23 +20,27 @@ import com.bright.apollo.service.impl.OboxServiceImpl;
 import com.bright.apollo.tool.ByteHelper;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
+import com.netflix.discovery.converters.Auto;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import sun.rmi.runtime.Log;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 
+@Component
 public class MNService {
 
     Logger logger = Logger.getLogger(MNService.class);
     public static MNService instance;
 
-    private static final String accessKeyId ="LTAIuiXKc3QK3aww";
-    private static final String accessKeySecret ="CoHqdRkWVZ6z1xiuZiGPyGzvOteCag";
+    private static final String accessKeyId ="LTAImm6aizjagsfp";
+    private static final String accessKeySecret ="zNdZ9RuwSU7RG2Lkoon9i2hbVx3gsm";
     private static final String endPoint ="http://1558412029548413.mns.cn-shanghai.aliyuncs.com/";
     private static final String queueStr = "aliyun-iot-"+ ALIDevTypeEnum.OBOX.getSouthChinaName();
 
@@ -47,20 +51,23 @@ public class MNService {
     //private static MNSClient usclient;
     private static Gson gson ;
 
+    @Autowired
+    private AliDeviceService aliDeviceService;
+    @Autowired
+    private OboxService oboxService;
+    @Autowired
+    private TopicServer topicService;
+    @Autowired
+    private CMDHandlerManager cmdHandlerManager;
+    @Autowired
+    private CommandHandler commandHandler;
 
-    public MNService(AliRegionEnum eAliRegionEnum) {
+
+    public MNService() {
         // TODO Auto-generated constructor stub
-            System.out.println("------ MNService init ------");
-            System.out.println("accessKeyId------ "+accessKeyId);
-            System.out.println("accessKeySecret ------ "+accessKeySecret);
-            System.out.println("endPoint ------"+endPoint);
-
+            logger.info("------ MNService init ------");
             CloudAccount account = new CloudAccount(accessKeyId, accessKeySecret, endPoint);
-            System.out.println("------ account ------ "+account);
-
             client = account.getMNSClient();
-            System.out.println("------ client ------ "+client);
-
 
 //        if (eAliRegionEnum.equals(AliRegionEnum.SOURTHCHINA)) {
 //            CloudAccount account = new CloudAccount(accessKeyId, accessKeySecret, endPoint);
@@ -74,9 +81,8 @@ public class MNService {
     }
 
     public static MNService getInstance(AliRegionEnum eAliRegionEnum){
-        System.out.println("instance ------ "+instance);
         if (instance == null){
-            instance = new MNService(eAliRegionEnum);
+//            instance = new MNService(eAliRegionEnum);
         }
         return instance;
     }
@@ -89,7 +95,6 @@ public class MNService {
 
         public workAction(int workerId,AliRegionEnum eAliRegionEnum,String qStr){
             logger.info("------ workAction init ------");
-            System.out.println("------ workAction init ------");
             this.workerId = workerId;
             this.eAliRegionEnum =eAliRegionEnum;
             this.qStr = qStr;
@@ -99,7 +104,6 @@ public class MNService {
         public void run() {
             // TODO Auto-generated method stub
             logger.info("------ workAction thread run  ------");
-            System.out.println("------ workAction thread run  ------");
             WorkerFunc(workerId, eAliRegionEnum, qStr);
         }
     }
@@ -107,41 +111,38 @@ public class MNService {
     public void WorkerFunc(int workerId,AliRegionEnum eAliRegionEnum,String qStr)
     {
         MsgReceiver receiver = new MsgReceiver(workerId, client, "aliyun-iot-"+qStr);
-        System.out.println("MNService.WorkerFunc() + " + "aliyun-iot-"+qStr);
-        receiver = new MsgReceiver(workerId, client, "aliyun-iot-"+qStr);
+        logger.info("MNService.WorkerFunc() + " + "aliyun-iot-"+qStr);
 //        if (eAliRegionEnum.equals(AliRegionEnum.SOURTHCHINA)) {
 //            receiver = new MsgReceiver(workerId, client, "aliyun-iot-"+qStr);
 //        }else{
 //            receiver = new MsgReceiver(workerId, usclient, "aliyun-iot-"+qStr);
 //        }
-        AliDeviceService aliDeviceService = new AliDeviceServiceImpl();
-        OboxService oboxService = new OboxServiceImpl();
-        TopicServer topicService = new TopicServer();
-        CMDHandlerManager cmdHandlerManager = new CMDHandlerManager();
-        CommandHandler commandHandler = new CommandHandler();
+//        AliDeviceService aliDeviceService = new AliDeviceServiceImpl();
+//        OboxService oboxService = new OboxServiceImpl();
+//        TopicServer topicService = new TopicServer();
+//        CMDHandlerManager cmdHandlerManager = new CMDHandlerManager();
+//        CommandHandler commandHandler = new CommandHandler();
         while (true) {
             Message message = receiver.receiveMessage();
-            System.out.println("Thread" + workerId + " GOT ONE MESSAGE! " + message.getMessageId());
+            logger.info("Thread" + workerId + " GOT ONE MESSAGE! " + message.getMessageId());
             if (message != null) {
                 try {
                     String body = message.getMessageBody();
-                    System.out.println("body ------ "+body);
                     LinkedTreeMap map = gson.fromJson(body, LinkedTreeMap.class);
                     String messageType = (String)map.get("messagetype");
-
                     String payload = (String)map.get("payload");
                     byte[] contentBytes = Base64.decodeBase64(payload);
-                    System.out.println("");
                     String aString = new String(contentBytes, "utf-8");
+
                     if (messageType.equals("status")) {
                         //update device status
 
                         JSONObject object = new JSONObject(aString);
+                        System.out.println(" productKey ------ "+object.get("productKey"));
+                        System.out.println(" deviceName ------ "+object.get("deviceName"));
 //        	    		String obox_serial_id = object.getString("deviceName");
                         if (object.getString("status").equals("offline")) {
                             if(ALIDevTypeEnum.getTypebyValue(object.getString("productKey")).equals(ALIDevTypeEnum.OBOX)){
-                                System.out.println("aliDeviceService ---- "+aliDeviceService);
-
                                 TAliDevice tAliDevice =  aliDeviceService.getAliDeviceByProductKeyAndDeviceName(object.getString("productKey"),object.getString("deviceName"));
 //                                TAliDevice tAliDevice = AliDevBusiness.queryAliDevByName(object.getString("productKey"),object.getString("deviceName"));
                                 if (tAliDevice != null) {
@@ -181,10 +182,10 @@ public class MNService {
 //    								AliDevBusiness.addAliDev(tAliDevice);
 //    							}
                             }else{
+
                                 TAliDeviceUS tAliDeviceUS = aliDeviceService.getAliUSDeviceByProductKeyAndDeviceName(object.getString("productKey"),object.getString("deviceName"));
 //                                TAliDeviceUS tAliDeviceUS = AliDevBusiness.queryAliDevUSByName(object.getString("productKey"),object.getString("deviceName"));
                                 if(tAliDeviceUS != null){
-
                                     tAliDeviceUS.setOffline(1);
                                     aliDeviceService.updateAliUSDevice(tAliDeviceUS);
                                 }else {
@@ -242,15 +243,12 @@ public class MNService {
 
                         }
 
-                        System.out.println("status PopMessage Body: "
-                                + aString); //获取原始消息
+                        logger.info("status PopMessage Body: "+ aString); //获取原始消息
                     }else if (messageType.equals("upload")) {
                         //upload topic
                         String topic = (String)map.get("topic");
                         String [] topicArray = topic.split("/");
-                        System.out.println("topic:"+topic + " PopMessage Body: "
-                                + aString); //获取原始消息
-
+                        logger.info("topic:"+topic + " PopMessage Body: " + aString); //获取原始消息
                         if(ALIDevTypeEnum.getTypebyValue(topicArray[1]).equals(ALIDevTypeEnum.OBOX)){
                             cmdHandlerManager.processTopic(topicArray[1],topicArray[2],aString);
                         }else {
@@ -259,7 +257,7 @@ public class MNService {
                     }
                 } catch (Exception e) {
                     // TODO: handle exception
-                    e.printStackTrace();
+                    logger.info("------ MNService WorkerFunc Exception ------"+e.getMessage());
                 }
 
             }
@@ -274,16 +272,13 @@ public class MNService {
     }
 
 
-    public void getMNS(AliRegionEnum eAliRegionEnum){
+    public void getMNS(){
         //CloudQueue queue = client.getQueueRef(queueStr);
-
 //        int theradId = 1;
-        logger.info("------ getMNS method  ------");
-        System.out.println("------ getMNS method  ------");
+        logger.info("------ MNService getMNS method  ------");
         List<Thread> list = new ArrayList<Thread>();
         for (int i = 1; i < 4; i++) {
             Thread thread = new Thread(new workAction(i, AliRegionEnum.SOURTHCHINA, ALIDevTypeEnum.OBOX.getSouthChinaName()));
-
             thread.start();
             list.add(thread);
         }

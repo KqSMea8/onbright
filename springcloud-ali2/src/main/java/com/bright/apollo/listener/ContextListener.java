@@ -1,31 +1,21 @@
 package com.bright.apollo.listener;
 
-import com.bright.apollo.common.entity.TScene;
-import com.bright.apollo.enums.AliRegionEnum;
-import com.bright.apollo.service.MsgReceiver;
-import com.bright.apollo.service.SceneService;
+
+import com.bright.apollo.configure.AliExecutor;
 import com.bright.apollo.socket.MNServer;
-import com.bright.apollo.socket.MNService;
-import com.zz.common.log.LogService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.event.ApplicationStartingEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import javax.servlet.annotation.WebListener;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-public class ContextListener implements ApplicationListener<ApplicationStartingEvent> {
+@Component
+public class ContextListener implements ApplicationListener<ContextRefreshedEvent> {
 
     Logger  logger = Logger.getLogger(ContextListener.class);
 
-    private static ExecutorService executor;
+
 //
 //    //private static Thread nettyThread;
 //
@@ -38,7 +28,8 @@ public class ContextListener implements ApplicationListener<ApplicationStartingE
 //
 ////    private static KeyCodePushServer keyCodePush;
 //
-    private static MNServer mnserver;
+    @Autowired
+    private MNServer mnserver;
 //
 //    private static Thread mnsThread;
 //
@@ -49,12 +40,12 @@ public class ContextListener implements ApplicationListener<ApplicationStartingE
 
 
     @Override
-    public void onApplicationEvent(ApplicationStartingEvent applicationEvent) {
+    @Async("myExecutor")
+    public void onApplicationEvent(ContextRefreshedEvent applicationEvent) {
 
 //        WebApplicationContextUtils.getRequiredWebApplicationContext(event.getServletContext())
 //                .getAutowireCapableBeanFactory().autowireBean(this);
-        logger.info("1231231231231231313123");
-        System.out.println("=-=-=-=-=-=-=-=-=-=-=-=");
+        logger.info(" ====== ContextListener ====== ");
 
         try {
 //            //加载离线消息
@@ -65,8 +56,8 @@ public class ContextListener implements ApplicationListener<ApplicationStartingE
 ////                SceneBusiness.updateScene(tScene);
 //            }
 
-            executor = Executors
-                    .newFixedThreadPool(9);
+//            executor = Executors
+//                    .newFixedThreadPool(9);
 
             //nettyServer = new Server();
 //            nettyPush=new PushServer();
@@ -81,7 +72,7 @@ public class ContextListener implements ApplicationListener<ApplicationStartingE
 //            keyCodeThread = new Thread(keyCodePush);
 //            keyCodeThread.start();
 
-            mnserver = new MNServer(AliRegionEnum.SOURTHCHINA);
+//            mnserver = new MNServer(AliRegionEnum.SOURTHCHINA);
 //        	mnsThread = new Thread(mnserver);
 //        	mnsThread.start();
 
@@ -90,7 +81,7 @@ public class ContextListener implements ApplicationListener<ApplicationStartingE
 
             //executor.submit(nettyThread);
             //executor.submit(pushThread);
-            executor.submit(new Thread(mnserver));
+            new Thread(mnserver).start();
 //            executor.submit(new Thread(mnserver2));
 //            MNService mnService = MNService.getInstance(AliRegionEnum.SOURTHCHINA);
 //            System.out.println("------mnService ------"+mnService);

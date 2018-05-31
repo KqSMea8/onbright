@@ -4,6 +4,8 @@ import java.util.Date;
 
 public class TAliDevice {
 
+    public TAliDevice(){}
+
     private Integer Id;
 
     private String productKey;

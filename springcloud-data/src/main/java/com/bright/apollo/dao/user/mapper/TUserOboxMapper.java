@@ -3,10 +3,7 @@ package com.bright.apollo.dao.user.mapper;
 import com.bright.apollo.common.entity.TUserObox;
 import com.bright.apollo.common.entity.TUserOboxExample;
 import com.bright.apollo.dao.mapper.base.BaseMapper;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -36,7 +33,7 @@ public interface TUserOboxMapper extends BaseMapper<TUserObox, TUserOboxExample,
 	List<TUserObox> getListOverPrivilegeOfUserObox(Integer wxUserId, Integer mobileUserId);
 
 	@Select("select * from t_user_obox where obox_serial_id = #{oboxSerialId}")
-	List<TUserObox> getUserOboxBySerialId(String oboxSerialId);
+	List<TUserObox> getUserOboxBySerialId(@Param("oboxSerialId") String oboxSerialId);
 
 	@Insert("insert into t_user_obox(obox_serial_id,\n" +
 			"user_id,\n" +
@@ -45,5 +42,5 @@ public interface TUserOboxMapper extends BaseMapper<TUserObox, TUserOboxExample,
 	void addUserObox(TUserObox userObox);
 
 	@Delete("delete from t_user_obox where obox_serial_id = #{oboxSerialId}")
-	void delectUserOboxByOboxSerialId(String oboxSerialId);
+	void delectUserOboxByOboxSerialId(@Param("oboxSerialId") String oboxSerialId);
 }

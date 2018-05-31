@@ -30,19 +30,19 @@ public interface TSceneMapper extends BaseMapper<TScene, TSceneExample, Integer>
 	int queryCountSceneByUserId(Integer userId);
 
 	@Select("select * from t_scene where obox_serial_id=#{oboxSerialId}")
-	List<TScene> getSceneByOboxSerialId(String oboxSerialId);
+	List<TScene> getSceneByOboxSerialId(@Param("oboxSerialId") String oboxSerialId);
 
 	@Delete("delete from t_scene where scene_number = #{sceneNumber}")
-	void deleteSceneBySceneNum(int sceneNumber);
+	void deleteSceneBySceneNum(@Param("sceneNumber") int sceneNumber);
 
 	@Delete("delete from t_scene where obox_serial_id = #{oboxSerialId}")
-	void deleteSceneByOboxSerialId(String oboxSerialId);
+	void deleteSceneByOboxSerialId(@Param("oboxSerialId") String oboxSerialId);
 
 	@Select("select * from t_scene where obox_serial_id = #{oboxSerialId} and scene_number = #{sceneNumber} ")
-	TScene getTSceneByOboxSerialIdAndSceneNumber(String oboxSerialId,int sceneNumber);
+	TScene getTSceneByOboxSerialIdAndSceneNumber(@Param("oboxSerialId") String oboxSerialId,@Param("sceneNumber") int sceneNumber);
 
 	@Delete("delete from t_scene where obox_serial_id = #{oboxSerialId} and obox_scene_number = #{oboxSceneNumber}")
-	void deleteSceneByOboxSerialIdAndSceneNum(String oboxSerialId,int oboxSceneNumber);
+	void deleteSceneByOboxSerialIdAndSceneNum(@Param("oboxSerialId") String oboxSerialId,@Param("oboxSceneNumber") int oboxSceneNumber);
 
 	@Insert("insert into t_scene (scene_name,\n" +
 			"obox_serial_id,\n" +
@@ -77,7 +77,7 @@ public interface TSceneMapper extends BaseMapper<TScene, TSceneExample, Integer>
 	int updateScene(TScene scene);
 
 	@Select("select * from t_scene where obox_scene_number = #{sceneNumber}")
-	TScene getSceneBySceneNumber(int sceneNumber);
+	TScene getSceneBySceneNumber(@Param("sceneNumber") int sceneNumber);
 
 	@Select("select * from t_scene")
 	List<TScene> getALlScene();

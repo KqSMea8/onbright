@@ -76,14 +76,17 @@ public class TopicServer {
         logger.info(" ====== sendRequest start ====== ");
         try {
             if (region.equals(AliRegionEnum.AMERICA)) {
-                response =  iotClient.getClient(AliRegionEnum.AMERICA.name()).getAcsResponse(request);
+                response =  iotClient.getClient(AliRegionEnum.AMERICA.getValue()).getAcsResponse(request);
             }else {
-                response =  iotClient.getClient(AliRegionEnum.SOURTHCHINA.name()).getAcsResponse(request);
+                response =  iotClient.getClient(AliRegionEnum.SOURTHCHINA.getValue()).getAcsResponse(request);
             }
         } catch (ClientException e) {
-            e.printStackTrace();
+            logger.info("====== sendRequest exception ======"+e.getMessage());
         }finally {
+            logger.info(" rep success topic: "+ response.getSuccess());
             logger.info(" ====== sendRequest end ====== ");
+//            System.out.println("rep success topic:" + response.getSuccess());
+//            System.out.println("rep fail topic:" + response.getErrorMessage());
         }
     }
 
@@ -95,7 +98,9 @@ public class TopicServer {
             }else {
                 response =  iotClient.getClient(AliRegionEnum.SOURTHCHINA.name()).getAcsResponse(request);
             }
+
         } catch (ClientException e) {
+
             e.printStackTrace();
         }finally {
             logger.info(" ====== sendRPCRequest end ====== ");
@@ -150,8 +155,7 @@ public class TopicServer {
 
     public void pubTopic(CMDEnum cmd, byte [] data,String productKey,String deviceName,AliRegionEnum eAliRegionEnum) throws Exception{
         logger.info(" ====== pubTopic start ====== ");
-//        String mString = com.bright.apollo.tool.StringUtils.bytes2String(cmd, data,packageLength,head);
-        String mString = "";
+        String mString = com.bright.apollo.tool.StringUtils.bytes2String(cmd, data,packageLength,head);
         logger.info(" pub mStr: " + mString);
         PubRequest request = new PubRequest();
         request.setProductKey(productKey);
@@ -165,8 +169,7 @@ public class TopicServer {
             response =  iotClient.getClient(AliRegionEnum.SOURTHCHINA.name()).getAcsResponse(request);
         }*/
         sendRequest(request,eAliRegionEnum.getValue(),response);
-        System.out.println("rep success topic:" + response.getSuccess());
-        System.out.println("rep fail topic:" + response.getErrorMessage());
+
 
     }
 

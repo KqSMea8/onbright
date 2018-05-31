@@ -19,9 +19,33 @@ endpoints:
     sensitive: false
     enabled: true
 mybatis:
-type-aliases-package: com.bright.apollo.dao.*
+type-aliases-package: com.bright.apollo.common.entity.*
 logging:
-  level: info
+  level:
+    com.bright.apollo.dao : debug
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file: /usr/local/onbrightLog/aliProject.log
+redis:
+    database: 0
+    host: 120.27.212.190
+    port: 6379
+    timeout: 3000
+    pool:
+      # 连接池最大连接数（使用负值表示没有限制）
+      max-active: 8
+      # 连接池最大阻塞等待时间（使用负值表示没有限制）
+      max-wait: -1
+      # 连接池中的最大空闲连接
+      max-idle: 8
+      # 连接池中的最小空闲连接
+      min-idle: 0
+
+
+
+
+
 
 
 
