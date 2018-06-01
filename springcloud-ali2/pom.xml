@@ -119,6 +119,20 @@
 			<artifactId>druid</artifactId>
 			<version>1.0.31</version>
 		</dependency>
+		<dependency>
+			<groupId>com.zz</groupId>
+			<artifactId>basic-common</artifactId>
+			<version>1.0.5-RELEASE</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/lib/basic-common-1.0.5-RELEASE.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>jna</groupId>
+			<artifactId>jna</artifactId>
+			<version>4.1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/lib/jna-4.1.0.jar</systemPath>
+		</dependency>
 
 	</dependencies>
 	<build>
