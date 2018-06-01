@@ -67,7 +67,7 @@
         <entry file="file://$PROJECT_DIR$/springcloud-tool/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="378">
-              <caret line="38" column="22" lean-forward="true" selection-start-line="25" selection-start-column="8" selection-end-line="38" selection-end-column="22" />
+              <caret line="38" column="22" selection-start-line="25" selection-start-column="8" selection-end-line="38" selection-end-column="22" />
             </state>
           </provider>
         </entry>
@@ -91,8 +91,8 @@
       <file leaf-file-name="pom.xml" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/springcloud-ali2/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="134" column="21" selection-start-line="134" selection-start-column="21" selection-end-line="134" selection-end-column="21" />
+            <state relative-caret-position="501">
+              <caret line="144" column="32" selection-start-line="144" selection-start-column="32" selection-end-line="144" selection-end-column="32" />
             </state>
           </provider>
         </entry>
@@ -277,7 +277,57 @@
             <path>
               <item name="springcloud-multi" type="b2602c69:ProjectViewProjectNode" />
               <item name="springcloud-multi" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-ali2" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-multi" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-multi" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-ali2" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-multi" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-multi" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-ali2" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-multi" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-multi" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-ali2" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-multi" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-multi" type="462c0819:PsiDirectoryNode" />
               <item name="springcloud-tool" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-multi" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-multi" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-tool" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-multi" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-multi" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-tool" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-multi" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-multi" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-tool" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -312,6 +362,7 @@
       <recent name="com.bright.apollo.feign" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\springcloud-multi\springcloud-ali2\src\main" />
       <recent name="E:\springcloud-multi\springcloud-ali2\src\main\resources" />
       <recent name="E:\springcloud-multi\springcloud-consumer-feign-config-swagger\src\main\java\com\bright\apollo\feign" />
     </key>
@@ -592,12 +643,12 @@
       <workItem from="1526626857981" duration="2321000" />
       <workItem from="1526635072817" duration="98648000" />
       <workItem from="1527565700096" duration="36436000" />
-      <workItem from="1527673276631" duration="27447000" />
+      <workItem from="1527673276631" duration="28744000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="168269000" />
+    <option name="totallyTimeSpent" value="169566000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -610,7 +661,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1296" height="1000" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="Event Log" order="13" sideWeight="0.5008091" side_tool="true" weight="0.32560834" />
@@ -630,10 +680,10 @@
       <window_info anchor="bottom" id="Java Enterprise" order="9" />
       <window_info anchor="right" id="Capture Analysis" order="4" />
       <window_info anchor="bottom" id="Version Control" order="11" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49919093" visible="true" weight="0.43337196" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49919093" weight="0.43337196" />
       <window_info anchor="bottom" id="Spring" order="7" weight="0.32908458" />
       <window_info anchor="bottom" id="Terminal" order="8" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.30744338" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.30744338" />
       <window_info anchor="right" id="Bean Validation" order="8" />
       <window_info id="Web" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32908458" />
@@ -1079,14 +1129,14 @@
     <entry file="file://$PROJECT_DIR$/springcloud-tool/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="378">
-          <caret line="38" column="22" lean-forward="true" selection-start-line="25" selection-start-column="8" selection-end-line="38" selection-end-column="22" />
+          <caret line="38" column="22" selection-start-line="25" selection-start-column="8" selection-end-line="38" selection-end-column="22" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-ali2/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="134" column="21" selection-start-line="134" selection-start-column="21" selection-end-line="134" selection-end-column="21" />
+        <state relative-caret-position="501">
+          <caret line="144" column="32" selection-start-line="144" selection-start-column="32" selection-end-line="144" selection-end-column="32" />
         </state>
       </provider>
     </entry>
