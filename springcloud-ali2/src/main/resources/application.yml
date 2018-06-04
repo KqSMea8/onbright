@@ -26,7 +26,7 @@ logging:
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} - [%thread] %-5level %logger{36} - %msg%n"
     file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
-  file: /usr/local/onbrightLog/aliProject.log
+  file: /usr/local/onbrightLog/aliProject%d{yyyy-MM-dd  HH:mm:ss}.log
 redis:
     database: 0
     host: 120.27.212.190

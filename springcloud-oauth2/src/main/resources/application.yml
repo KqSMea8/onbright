@@ -3,23 +3,6 @@ server:
 spring:
   application:
     name: springcloud-oauth2
-  jpa:
-    show-sql: true
-  datasource:
-    url: jdbc:mysql://192.168.200.200:3306/bright_apollo_user
-    username: admin
-    password: im123456
-    driver-class-name: com.mysql.jdbc.Driver
-mybatis:
-  type-aliases-package: com.bright.apollo.domain.model
-  mapper-locations: classpath*:/mybaits/*Mapper.xml
-  configuration:
-    cache-enabled: true
-pagehelper:
-  helperDialect: mysql
-  reasonable: true
-  supportMethodsArguments: true
-  params: count=countSql
 eureka:
   client:
     serviceUrl:
@@ -37,3 +20,17 @@ endpoints:
   health:
     sensitive: false
     enabled: true
+redis:
+    database: 0
+    host: 120.27.212.190
+    port: 6379
+    timeout: 3000
+    pool:
+      # 连接池最大连接数（使用负值表示没有限制）
+      max-active: 8
+      # 连接池最大阻塞等待时间（使用负值表示没有限制）
+      max-wait: -1
+      # 连接池中的最大空闲连接
+      max-idle: 8
+      # 连接池中的最小空闲连接
+      min-idle: 0

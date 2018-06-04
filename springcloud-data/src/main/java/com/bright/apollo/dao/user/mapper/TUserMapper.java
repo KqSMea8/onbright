@@ -22,4 +22,10 @@ public interface TUserMapper extends BaseMapper<TUser, TUserExample, Integer> {
             " inner join t_user_scene tus on tu.id=tus.user_id " +
             " where scene_number = #{sceneNumber} ")
     List<TUser> getUsersBySceneNumber(@Param("sceneNumber") int sceneNumber);
+
+    @Select("select * from t_user where user_name=#{userName}")
+    TUser getUserByUserName(@Param("userName") String userName);
+
+    @Select("select * from t_user where open_id=#{openId}")
+    TUser getUserByOpenId(@Param("openId") String openId);
 }

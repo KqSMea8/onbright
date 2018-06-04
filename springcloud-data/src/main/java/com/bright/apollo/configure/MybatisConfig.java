@@ -21,7 +21,7 @@ public class MybatisConfig {
     public SqlSessionFactory sqlSessionFactory() throws  Exception{
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         DruidDataSource dataSource = dataSource();
-        dataSource.setUrl("jdbc:mysql://rm-bp16t7i071284ljuono.mysql.rds.aliyuncs.com:3306/bright_apollo?useUnicode=true&amp;characterEncoding=utf8");
+        dataSource.setUrl("jdbc:mysql://rm-bp16t7i071284ljuono.mysql.rds.aliyuncs.com:3306/onbright_ali_new?useUnicode=true&amp;characterEncoding=utf8");
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
         dataSource.setUsername("root");
         dataSource.setPassword("Iltwao!1");

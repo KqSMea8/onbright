@@ -81,5 +81,21 @@
 			<artifactId>springcloud-redis</artifactId>
 			<version>${redis-version}</version>
 		</dependency>
+	    <dependency>
+		    <groupId>com.bright.apollo</groupId>
+		    <artifactId>springcloud-redis</artifactId>
+		    <version>${redis-version}</version>
+		</dependency>
   </dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<includeSystemScope>true</includeSystemScope>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

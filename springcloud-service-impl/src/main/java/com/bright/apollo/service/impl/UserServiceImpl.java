@@ -83,9 +83,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public TUser queryUserByName(String name) {
-		TUserExample example = new TUserExample();
-		example.or().andUserNameEqualTo(name);
-		return handlerExample(example);
+		return	userMapper.getUserByUserName(name);
 	}
 
 	/*
@@ -96,9 +94,7 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	public TUser queryUserByOpenId(String openId) {
-		TUserExample example = new TUserExample();
-		example.or().andOpenIdEqualTo(openId);
-		return handlerExample(example);
+		return userMapper.getUserByOpenId(openId);
 	}
 
 	/*
