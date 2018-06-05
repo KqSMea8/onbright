@@ -167,4 +167,25 @@ public class UserController {
 		}
 		return res;
 	}
+
+	@RequestMapping(value = "/getUserById/{id}", method = RequestMethod.GET)
+	public ResponseObject<TUser> getUserById(@PathVariable(required = true) Integer id) {
+		ResponseObject<TUser> res = new ResponseObject<TUser>();
+		try {
+			TUser tuser = userService.getUserByUserId(id);
+			if (tuser == null) {
+				res.setCode(ResponseEnum.UnKonwUser.getCode());
+				res.setMsg(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+			res.setCode(ResponseEnum.Success.getCode());
+			res.setMsg(ResponseEnum.Success.getMsg());
+			res.setData(tuser);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setCode(ResponseEnum.Error.getCode());
+			res.setMsg(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
 }

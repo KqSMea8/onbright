@@ -2,6 +2,7 @@ package com.bright.apollo.controller;
 
 import java.util.List;
 
+import com.bright.apollo.service.OboxDeviceConfigService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,13 +34,16 @@ public class DeviceController {
 	@Autowired
 	private DeviceService deviceService;
 
+	@Autowired
+	private OboxDeviceConfigService oboxDeviceConfigService;
+
 	// find deivce by serial_id
 	@RequestMapping(value = "/{serialId}", method = RequestMethod.GET)
 	public ResponseObject<TOboxDeviceConfig> getDevice(
 			@PathVariable(required = true, value = "serialId") String serialId) {
 		ResponseObject<TOboxDeviceConfig> res = new ResponseObject<TOboxDeviceConfig>();
 		try {
-			TOboxDeviceConfig device = deviceService.queryDeviceBySerialId(serialId);
+			TOboxDeviceConfig device = oboxDeviceConfigService.getTOboxDeviceConfigByDeviceSerialId(serialId);
 			if (device == null) {
 				res.setCode(ResponseEnum.RequestObjectNotExist.getCode());
 				res.setMsg(ResponseEnum.RequestObjectNotExist.getMsg());
@@ -159,6 +163,29 @@ public class DeviceController {
 				res.setPageCount((count / pageSize + (count % pageSize == 0 ? 0 : 1)));
 			}
 
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setCode(ResponseEnum.Error.getCode());
+			res.setMsg(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/getOboxDeviceConfigByUserId/{userId}", method = RequestMethod.GET)
+	public ResponseObject<TOboxDeviceConfig> getOboxDeviceConfigByUserId(@PathVariable(required = true, value = "userId") Integer userId) {
+		logger.info(" ====== getOboxDeviceConfigByUserId ====== ");
+		ResponseObject res = new ResponseObject();
+		try {
+			List<TOboxDeviceConfig> oboxDeviceConfigList = oboxDeviceConfigService.getOboxDeviceConfigByUserId(userId);
+			if ( oboxDeviceConfigList == null) {
+				res.setCode(ResponseEnum.NoExistCode.getCode());
+				res.setMsg(ResponseEnum.NoExistCode.getMsg());
+			} else {
+				res.setCode(ResponseEnum.Success.getCode());
+				res.setMsg(ResponseEnum.Success.getMsg());
+				res.setData(oboxDeviceConfigList);
+			}
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			res.setCode(ResponseEnum.Error.getCode());

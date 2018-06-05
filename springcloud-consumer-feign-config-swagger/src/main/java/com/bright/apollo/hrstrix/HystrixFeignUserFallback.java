@@ -87,4 +87,11 @@ public class HystrixFeignUserFallback extends BasicHystrixFeignFallback implemen
 		ResponseObject res = serverError();
 		return res;
 	}
+
+	@Override
+	public ResponseObject<TUser> getUserById(Integer id) {
+		logger.warn("===user server is break===");
+		ResponseObject res = serverError();
+		return res;
+	}
 }

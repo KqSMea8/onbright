@@ -66,4 +66,7 @@ public interface FeignUserClient {
 	 */
 	@RequestMapping(value = "/user/getUser/{userName}", method = RequestMethod.GET)
 	public ResponseObject<TUser> getUser(String username);
+
+	@RequestMapping(value = "/user/getUserById/{id}", method = RequestMethod.GET)
+	public ResponseObject<TUser> getUserById(Integer id);
 }

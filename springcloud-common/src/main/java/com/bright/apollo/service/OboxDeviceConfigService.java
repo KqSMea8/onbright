@@ -34,4 +34,6 @@ public interface OboxDeviceConfigService {
 
     TOboxDeviceConfig getOboxDeviceConfigById(int id);
 
+    List<TOboxDeviceConfig> getOboxDeviceConfigByUserId(Integer userId);
+
 }

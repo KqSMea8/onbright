@@ -74,6 +74,9 @@ public interface FeignDeviceClient {
 	 */
 	@RequestMapping(value = "/device/{userId}/{pageIndex}/{pageSize}", method = RequestMethod.GET)
 	ResponseObject<List<TOboxDeviceConfig>> getDeviceByUserAndPage(@PathVariable(value = "userId") Integer userId,@PathVariable(value = "pageIndex") Integer pageIndex,@PathVariable(value = "pageSize") Integer pageSize);
-	 
+
+	@RequestMapping(value = "/getOboxDeviceConfigByUserId/{userId}", method = RequestMethod.GET)
+	ResponseObject<List<TOboxDeviceConfig>> getOboxDeviceConfigByUserId(@PathVariable(value = "userId") Integer userId);
+
 
 }

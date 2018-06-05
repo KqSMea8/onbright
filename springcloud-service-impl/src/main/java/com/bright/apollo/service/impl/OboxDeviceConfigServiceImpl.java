@@ -104,5 +104,10 @@ public class OboxDeviceConfigServiceImpl  implements OboxDeviceConfigService {
         return odcMapper.getOboxDeviceConfigById(id);
     }
 
+    @Override
+    public List<TOboxDeviceConfig> getOboxDeviceConfigByUserId(Integer userId) {
+        return odcMapper.getOboxDeviceConfigByUserId(userId);
+    }
+
 
 }

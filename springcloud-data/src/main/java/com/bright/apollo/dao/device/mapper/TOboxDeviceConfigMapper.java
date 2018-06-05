@@ -103,6 +103,19 @@ public interface TOboxDeviceConfigMapper extends BaseMapper<TOboxDeviceConfig, T
 	void updateTOboxDeviceConfigStatus(TOboxDeviceConfig tOboxDeviceConfig);
 
 	@Select("select * from t_obox_device_config where device_serial_id= #{deviceSerialId}")
+	@Results(value = {
+			@Result(property = "oboxId",column = "obox_id"),
+			@Result(property = "deviceId",column = "device_id"),
+			@Result(property = "lastOpTime",column = "last_op_time"),
+			@Result(property = "deviceState",column = "device_state"),
+			@Result(property = "deviceType",column = "device_type"),
+			@Result(property = "deviceChildType",column = "device_child_type"),
+			@Result(property = "deviceVersion",column = "device_version"),
+			@Result(property = "device_serial_id",column = "deviceSerialId"),
+			@Result(property = "device_rf_addr",column = "deviceRfAddr"),
+			@Result(property = "group_addr",column = "groupAddr"),
+			@Result(property = "obox_serial_id",column = "oboxSerialId")
+	})
 	TOboxDeviceConfig getTOboxDeviceConfigByDeviceSerialId(@Param("deviceSerialId") String deviceSerialId);
 
 	@Select("select * from t_obox_device_config where device_serial_id= #{deviceSerialId} and device_rf_addr=#{address}")
@@ -113,4 +126,24 @@ public interface TOboxDeviceConfigMapper extends BaseMapper<TOboxDeviceConfig, T
 
 	@Select("select * from t_obox_device_config where id = #{id}")
 	TOboxDeviceConfig getOboxDeviceConfigById(@Param("id") int id);
+
+	@Select(" select * from t_obox_device_config todc " +
+			" inner join t_user_device on tud on todc.device_serial_id = tud.device_serial_id" +
+			" inner join t_user tu on tu.id = tud.user_id" +
+			" where tu.user_id=#{userId}")
+	@Results(value = {
+			@Result(property = "oboxId",column = "obox_id"),
+			@Result(property = "deviceId",column = "device_id"),
+			@Result(property = "lastOpTime",column = "last_op_time"),
+			@Result(property = "deviceState",column = "device_state"),
+			@Result(property = "deviceType",column = "device_type"),
+			@Result(property = "deviceChildType",column = "device_child_type"),
+			@Result(property = "deviceVersion",column = "device_version"),
+			@Result(property = "device_serial_id",column = "deviceSerialId"),
+			@Result(property = "device_rf_addr",column = "deviceRfAddr"),
+			@Result(property = "group_addr",column = "groupAddr"),
+			@Result(property = "obox_serial_id",column = "oboxSerialId")
+	})
+	List<TOboxDeviceConfig> getOboxDeviceConfigByUserId(@Param("userId") Integer userId);
+
 }
