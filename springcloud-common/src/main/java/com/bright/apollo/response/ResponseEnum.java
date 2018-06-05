@@ -25,7 +25,10 @@ public enum ResponseEnum {
 	MicroServiceUnConnection(213,"Micro Service UnConnection"),
 	UnKonwUser(214,"User Not Exist"),
 	SearchIsEmpty(215,"Search Is Empty"),
-	
+	SendOboxError(216,"Send Obox error"),
+	SendOboxTimeOut(217,"Send Obox TimeOut"),
+	SendOboxFail(218,"Send Obox Fail"),
+	SendOboxUnKnowFail(219,"Send Obox UnKnow Fail"),
 	Success(200,"success");
 	private int code;
 	

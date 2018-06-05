@@ -11,9 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bright.apollo.common.dto.OboxResp;
+import com.bright.apollo.common.dto.OboxResp.Type;
 import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.common.entity.TUser;
+import com.bright.apollo.feign.FeignAliClient;
 import com.bright.apollo.feign.FeignDeviceClient;
 import com.bright.apollo.feign.FeignOboxClient;
 import com.bright.apollo.feign.FeignSceneClient;
@@ -47,7 +50,117 @@ public class FacadeController {
 	private FeignDeviceClient feignDeviceClient;
 	@Autowired
 	private FeignSceneClient feignSceneClient;
-
+	@Autowired
+	private FeignAliClient feignAliClient;
+	//release obox
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@ApiOperation(value = "release  obox", httpMethod = "DELETE", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/device/{oboxSerialId}", method = RequestMethod.DELETE)
+	public ResponseObject releaseDevice(@PathVariable(required = true) String oboxSerialId) {
+		ResponseObject res = new ResponseObject();
+		try { 
+			//query obox if exist
+			ResponseObject<TObox> resObox = feignOboxClient.getObox(oboxSerialId);
+			if(resObox==null&&resObox.getCode()!=ResponseEnum.Success.getCode()&&
+					resObox.getData()==null
+					){
+				res.setCode(ResponseEnum.RequestObjectNotExist.getCode());
+				res.setMsg(ResponseEnum.RequestObjectNotExist.getMsg());
+			}else{
+				//send cmd or use a facade to send the order to ali
+				ResponseObject<OboxResp> releaseObox = feignAliClient.releaseObox(oboxSerialId);
+				if(releaseObox!=null&&releaseObox.getCode()==ResponseEnum.Success.getCode()&&
+						releaseObox.getData()!=null
+						){
+					OboxResp oboxResp=releaseObox.getData();
+					if (oboxResp.getType() != Type.success) {
+						if (oboxResp.getType() == Type.obox_process_failure || oboxResp.getType() == Type.socket_write_error) {
+							res.setCode(ResponseEnum.SendOboxFail.getCode());
+							res.setMsg(ResponseEnum.SendOboxFail.getMsg());
+						}else if (oboxResp.getType() == Type.reply_timeout) {
+							res.setCode(ResponseEnum.SendOboxTimeOut.getCode());
+							res.setMsg(ResponseEnum.SendOboxTimeOut.getMsg());
+						}else{
+							res.setCode(ResponseEnum.SendOboxUnKnowFail.getCode());
+							res.setMsg(ResponseEnum.SendOboxUnKnowFail.getMsg());
+						}
+					}
+				}else{
+					res.setCode(ResponseEnum.SendOboxError.getCode());
+					res.setMsg(ResponseEnum.SendOboxError.getMsg());
+				}
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setCode(ResponseEnum.RequestTimeout.getCode());
+			res.setMsg(ResponseEnum.RequestTimeout.getMsg());
+		}
+		return res;
+	}
+	//control  device 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@ApiOperation(value = "control  device", httpMethod = "PUT", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/device/{serialId}", method = RequestMethod.PUT)
+	public ResponseObject controlDevice(@PathVariable(required = true) String serialId) {
+		ResponseObject res = new ResponseObject();
+		try {
+			//the device is exist
+			
+			//the device's obox can conect 
+			
+			//send cmd
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setCode(ResponseEnum.RequestTimeout.getCode());
+			res.setMsg(ResponseEnum.RequestTimeout.getMsg());
+		}
+		return res;
+	}
+	//control scene 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@ApiOperation(value = "control  scene", httpMethod = "PUT", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/scene/{sceneNumber}", method = RequestMethod.PUT)
+	public ResponseObject controlScene(@PathVariable(required = true) Integer sceneNumber) {
+		ResponseObject res = new ResponseObject();
+		try {
+			//the device is exist
+			
+			//the device's obox can conect 
+			
+			//send cmd
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setCode(ResponseEnum.RequestTimeout.getCode());
+			res.setMsg(ResponseEnum.RequestTimeout.getMsg());
+		}
+		return res;
+	}
+	//search/scan
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@ApiOperation(value = "search  device", httpMethod = "POST", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/device/{serialId}", method = RequestMethod.POST)
+	public ResponseObject searchDevices(@PathVariable(required = true) String serialId) {
+		//modify the request param 
+		ResponseObject res = new ResponseObject();
+		try {
+			//the device is exist
+			
+			//the device's obox can conect 
+			
+			//send cmd
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setCode(ResponseEnum.RequestTimeout.getCode());
+			res.setMsg(ResponseEnum.RequestTimeout.getMsg());
+		}
+		return res;
+	}
+	
+	
 	// delete obox
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@ApiOperation(value = "delete  obox", httpMethod = "DELETE", produces = "application/json")
@@ -73,7 +186,7 @@ public class FacadeController {
 
 	// delete device
 	@SuppressWarnings({ "rawtypes" })
-	@ApiOperation(value = "delete  obox", httpMethod = "DELETE", produces = "application/json")
+	@ApiOperation(value = "delete  device", httpMethod = "DELETE", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/device/{serialId}", method = RequestMethod.DELETE)
 	public ResponseObject delDevice(@PathVariable(required = true) String serialId) {

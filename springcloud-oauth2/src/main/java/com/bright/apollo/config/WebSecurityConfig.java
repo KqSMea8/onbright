@@ -23,7 +23,7 @@ import com.bright.apollo.config.service.impl.UserDetailsServiceImpl;
  */
 @Order(10)
 @Configuration
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
+public class WebSecurityConfig extends 	{
 	 
 
     @Autowired
@@ -47,7 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
     @Override
     protected void configure(HttpSecurity http) throws Exception {
  
-    	http.formLogin().loginPage("/login").permitAll().and().authorizeRequests().antMatchers("/health", "/css/**")
+    	http.csrf().disable().formLogin().loginPage("/login").permitAll().and().authorizeRequests().antMatchers("/health", "/css/**")
 		.anonymous().and().authorizeRequests().anyRequest().authenticated();
      }
 

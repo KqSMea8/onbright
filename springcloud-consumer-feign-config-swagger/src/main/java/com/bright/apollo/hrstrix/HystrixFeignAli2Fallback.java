@@ -19,9 +19,20 @@ import com.bright.apollo.response.ResponseObject;
 public class  HystrixFeignAli2Fallback extends BasicHystrixFeignFallback implements FeignAliClient {
     private Logger logger = Logger.getLogger(getClass());
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public ResponseObject<OboxResp> toAliService(CMDEnum cmd, String inMsg, String deviceSerial) {
         logger.warn("===device server is break===");
         return serverError();
     }
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignAliClient#releaseObox(java.lang.String)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<OboxResp> releaseObox(String serialId) {
+		logger.warn("===device server is break===");
+        return serverError();
+	}
 }
