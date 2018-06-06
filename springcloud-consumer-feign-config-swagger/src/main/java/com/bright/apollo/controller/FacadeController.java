@@ -56,8 +56,8 @@ public class FacadeController {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@ApiOperation(value = "release  obox", httpMethod = "DELETE", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
-	@RequestMapping(value = "/device/{oboxSerialId}", method = RequestMethod.DELETE)
-	public ResponseObject releaseDevice(@PathVariable(required = true) String oboxSerialId) {
+	@RequestMapping(value = "/release/{oboxSerialId}", method = RequestMethod.DELETE)
+	public ResponseObject releaseDevice(@PathVariable(required = true,value="oboxSerialId") String oboxSerialId) {
 		ResponseObject res = new ResponseObject();
 		try { 
 			//query obox if exist
@@ -138,6 +138,53 @@ public class FacadeController {
 		}
 		return res;
 	}
+	//stop scan
+	@SuppressWarnings({ "rawtypes" })
+	@ApiOperation(value = "search  device", httpMethod = "DELETE", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/scan/{oboxSerialId}", method = RequestMethod.DELETE)
+	public ResponseObject stopScan(@PathVariable(required = true) String oboxSerialId) {
+ 
+		//modify the request param 
+		ResponseObject res = new ResponseObject();
+		try {
+			ResponseObject<TObox> resObox = feignOboxClient.getObox(oboxSerialId);
+			if(resObox==null&&resObox.getCode()!=ResponseEnum.Success.getCode()&&
+					resObox.getData()==null
+					){
+				res.setCode(ResponseEnum.RequestObjectNotExist.getCode());
+				res.setMsg(ResponseEnum.RequestObjectNotExist.getMsg());
+			}else{
+ 				ResponseObject<OboxResp> releaseObox = feignAliClient.stopScan(oboxSerialId);
+				if(releaseObox!=null&&releaseObox.getCode()==ResponseEnum.Success.getCode()&&
+						releaseObox.getData()!=null
+						){
+					OboxResp oboxResp=releaseObox.getData();
+					if (oboxResp.getType() != Type.success) {
+						if (oboxResp.getType() == Type.obox_process_failure || oboxResp.getType() == Type.socket_write_error) {
+							res.setCode(ResponseEnum.SendOboxFail.getCode());
+							res.setMsg(ResponseEnum.SendOboxFail.getMsg());
+						}else if (oboxResp.getType() == Type.reply_timeout) {
+							res.setCode(ResponseEnum.SendOboxTimeOut.getCode());
+							res.setMsg(ResponseEnum.SendOboxTimeOut.getMsg());
+						}else{
+							res.setCode(ResponseEnum.SendOboxUnKnowFail.getCode());
+							res.setMsg(ResponseEnum.SendOboxUnKnowFail.getMsg());
+						}
+					}
+				}else{
+					res.setCode(ResponseEnum.SendOboxError.getCode());
+					res.setMsg(ResponseEnum.SendOboxError.getMsg());
+				}
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setCode(ResponseEnum.RequestTimeout.getCode());
+			res.setMsg(ResponseEnum.RequestTimeout.getMsg());
+		}
+		return res;
+	}
+	
 	//search/scan
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@ApiOperation(value = "search  device", httpMethod = "POST", produces = "application/json")

@@ -22,8 +22,19 @@ import com.bright.apollo.response.ResponseObject;
 public interface FeignAliClient {
 
     @RequestMapping(value = "/aliService/toAli", method = RequestMethod.POST)
-    ResponseObject<OboxResp> toAliService(@PathVariable CMDEnum cmd, @PathVariable String inMsg, @PathVariable String deviceSerial);
+    ResponseObject<OboxResp> toAliService(@PathVariable(value="cmd") CMDEnum cmd, @PathVariable(value="inMsg") String inMsg, @PathVariable(value="deviceSerial") String deviceSerial);
 
-    @RequestMapping(value = "/aliService/release/{serialId}", method = RequestMethod.GET)
-	public ResponseObject<OboxResp> releaseObox(@PathVariable(required=true) String serialId) ;
+    @RequestMapping(value = "/aliService/release/{oboxSerialId}", method = RequestMethod.GET)
+	ResponseObject<OboxResp> releaseObox(@PathVariable(required=true,value="oboxSerialId") String oboxSerialId) ;
+
+	/**  
+	 * @param oboxSerialId
+	 * @return  
+	 * @Description:  
+	 */
+    @RequestMapping(value = "/aliService/stopScan/{oboxSerialId}", method = RequestMethod.DELETE)
+	ResponseObject<OboxResp> stopScan(@PathVariable(required=true,value="oboxSerialId") String oboxSerialId);
+    
+    
+    
 }
