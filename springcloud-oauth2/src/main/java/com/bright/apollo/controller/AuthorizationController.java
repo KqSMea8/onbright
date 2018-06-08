@@ -21,6 +21,7 @@ import org.apache.oltu.oauth2.common.exception.OAuthProblemException;
 import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
 import org.apache.oltu.oauth2.common.message.OAuthResponse;
 import org.apache.oltu.oauth2.common.message.types.GrantType;
+import org.apache.oltu.oauth2.common.token.OAuthToken;
 import org.apache.oltu.oauth2.common.utils.JSONUtils;
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
@@ -42,7 +43,7 @@ import java.util.UUID;
 public class AuthorizationController {
 
     @RequestMapping(value="/thirdPartyOauth",method = RequestMethod.GET)
-    public void getAuthorizationOauth(HttpServletRequest request) throws OAuthSystemException,OAuthProblemException {
+    public String getAuthorizationOauth(HttpServletRequest request) throws OAuthSystemException,OAuthProblemException {
         String clientId = request.getParameter("clientid");
         OAuthClientRequest oAuthClientRequest =
                 OAuthClientRequest
@@ -59,22 +60,26 @@ public class AuthorizationController {
         OAuthResourceResponse codeResponse = oAuthClient.resource(
                 oAuthClientRequest, OAuth.HttpMethod.GET, OAuthResourceResponse.class);
         System.out.println("getResponseCode ------ "+codeResponse.getResponseCode());
-        System.out.println("getBody ------ "+codeResponse.getBody());
+        String code = codeResponse.getBody().replaceAll("\"","");
+        System.out.println("getBody ------ "+code);
 //        return "redirect:"+oAuthClientRequest.getLocationUri();
+        System.out.println(request.getLocalPort());
+        System.out.println(request.getLocalAddr());
+        return "https://"+request.getLocalAddr()+":"+request.getLocalPort()+"/authorization/getOauthCode?client_id="+clientId+
+                "&response_type=code&state=0&redirect_uri=https://"+request.getLocalAddr()+":"+request.getLocalPort()+
+                "/authorization/thirdPartyGetToken?code="+code;
     }
 
     @RequestMapping(value ="getOauthCode",method = RequestMethod.GET)
-    @ResponseBody
-    public Object getAuthorizationCode(HttpServletRequest httpServletRequest,
+    public String getAuthorizationCode(HttpServletRequest httpServletRequest,
                                      HttpServletResponse response) throws OAuthProblemException, OAuthSystemException {
             OAuthIssuerImpl oAuthIssuer = new OAuthIssuerImpl(new MD5Generator());
             String authCode = oAuthIssuer.authorizationCode();
-            return new ResponseEntity(authCode,HttpStatus.OK);
+            return authCode;
     }
 
     @RequestMapping(value ="/thirdPartyGetToken",method = RequestMethod.GET)
-    @ResponseBody
-    public JSONObject getToken(HttpServletRequest httpServletRequest,
+    public Object getToken(HttpServletRequest httpServletRequest,
                                HttpServletResponse response) throws OAuthProblemException, OAuthSystemException {
         JSONObject json = new JSONObject();
         String clientId = httpServletRequest.getParameter("clientid");
@@ -97,13 +102,14 @@ public class AuthorizationController {
 
         String accessToken = tokenResponse.getAccessToken();
         Long expiresIn = tokenResponse.getExpiresIn();
+        tokenResponse.getRefreshToken();
 
-        //这里便拿到了 token, 可以做持久化.
-        System.out.println("accessToken = " + accessToken);
-        System.out.println("expiresIn = " + expiresIn);
-        json.put("code",tokenResponse.getResponseCode());
-        json.put("msg",tokenResponse.getBody());
-        return json;
+        OAuthToken oAuthToken = tokenResponse.getOAuthToken();
+        System.out.println("getOAuthToken = AccessToken ------ "
+                + oAuthToken.getAccessToken()+" RefreshToken ------ "
+                + oAuthToken.getRefreshToken()+" ExpiresIn ------ "
+                + oAuthToken.getExpiresIn());
+        return tokenResponse.getOAuthToken();
     }
 
     @RequestMapping(value="oauthCreateToken",method = RequestMethod.POST)
@@ -119,12 +125,11 @@ public class AuthorizationController {
                     .buildBodyMessage();
 
             httpServletResponse.setStatus(response.getResponseStatus());
-            Map<String,Object> json = new HashMap<String, Object>();
-            json.put("access_token",accessToken);
-            json.put("refresh_token",refreshToken);
-            json.put("expires_in",3600);
-            json.put("status",HttpServletResponse.SC_OK);
-            System.out.println("------ "+json);
-            return json;
+            Map<String,Object> map = new HashMap<String, Object>();
+            map.put("access_token",accessToken);
+            map.put("refresh_token",refreshToken);
+            map.put("expires_in",3600);
+            map.put("status",HttpServletResponse.SC_OK);
+            return map;
     }
 }
