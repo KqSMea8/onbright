@@ -124,8 +124,8 @@
       <file leaf-file-name="AuthorizationController.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/springcloud-oauth2/src/main/java/com/bright/apollo/controller/AuthorizationController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="220">
-              <caret line="104" column="49" selection-start-line="104" selection-start-column="49" selection-end-line="104" selection-end-column="49" />
+            <state relative-caret-position="409">
+              <caret line="180" column="40" selection-start-line="180" selection-start-column="40" selection-end-line="180" selection-end-column="40" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#6507#6523#0" expanded="true" />
@@ -844,12 +844,12 @@
       <workItem from="1528354451124" duration="2393000" />
       <workItem from="1528358010650" duration="169000" />
       <workItem from="1528358233566" duration="25000" />
-      <workItem from="1528359107029" duration="34098000" />
+      <workItem from="1528359107029" duration="34206000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="254753000" />
+    <option name="totallyTimeSpent" value="254861000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1338,8 +1338,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-oauth2/src/main/java/com/bright/apollo/controller/AuthorizationController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="104" column="49" selection-start-line="104" selection-start-column="49" selection-end-line="104" selection-end-column="49" />
+        <state relative-caret-position="409">
+          <caret line="180" column="40" selection-start-line="180" selection-start-column="40" selection-end-line="180" selection-end-column="40" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#6507#6523#0" expanded="true" />

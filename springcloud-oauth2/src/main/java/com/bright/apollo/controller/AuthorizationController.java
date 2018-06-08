@@ -178,7 +178,7 @@ public class AuthorizationController {
             OAuthResponse response = OAuthASResponse
                     .tokenResponse(HttpServletResponse.SC_OK)
                     .setAccessToken(accessToken)
-                    .setExpiresIn("3600")
+                    .setExpiresIn("86400")
                     .setRefreshToken(refreshToken)
                     .buildBodyMessage();
 
