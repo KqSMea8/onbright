@@ -124,8 +124,8 @@
       <file leaf-file-name="AuthorizationController.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/springcloud-oauth2/src/main/java/com/bright/apollo/controller/AuthorizationController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="317">
-              <caret line="55" column="8" selection-start-line="55" selection-start-column="8" selection-end-line="55" selection-end-column="8" />
+            <state relative-caret-position="492">
+              <caret line="120" column="79" selection-start-line="120" selection-start-column="79" selection-end-line="120" selection-end-column="79" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#6507#6523#0" expanded="true" />
@@ -835,12 +835,12 @@
       <workItem from="1528354451124" duration="2393000" />
       <workItem from="1528358010650" duration="169000" />
       <workItem from="1528358233566" duration="25000" />
-      <workItem from="1528359107029" duration="27369000" />
+      <workItem from="1528359107029" duration="28048000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="248024000" />
+    <option name="totallyTimeSpent" value="248703000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -865,7 +865,7 @@
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="4" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.14368482" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.23290846" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32908458" />
       <window_info anchor="bottom" id="Messages" order="13" weight="0.32908458" />
       <window_info anchor="right" id="Palette&#9;" order="6" />
@@ -1335,8 +1335,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-oauth2/src/main/java/com/bright/apollo/controller/AuthorizationController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="317">
-          <caret line="55" column="8" selection-start-line="55" selection-start-column="8" selection-end-line="55" selection-end-column="8" />
+        <state relative-caret-position="492">
+          <caret line="120" column="79" selection-start-line="120" selection-start-column="79" selection-end-line="120" selection-end-column="79" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#6507#6523#0" expanded="true" />

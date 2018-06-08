@@ -53,7 +53,7 @@ public class AuthorizationController {
         System.out.println(" ====== HTTP_CLIENT_IP ====== "+ request.getHeader("HTTP_CLIENT_IP"));
         System.out.println(" ====== HTTP_X_FORWARDED_FOR ====== "+ request.getHeader("HTTP_X_FORWARDED_FOR"));
         System.out.println(" ====== getRemoteAddr ====== "+ request.getRemoteAddr());
-        
+        System.out.println(" ====== Host ====== "+ request.getHeader("Host"));
 
         if(StringUtils.isNotEmpty(XFor) && !"unKnown".equalsIgnoreCase(XFor)){
             //多次反向代理后会有多个ip值，第一个ip才是真实ip
@@ -117,8 +117,8 @@ public class AuthorizationController {
         System.out.println(request.getLocalPort());
         System.out.println(request.getLocalAddr());
         String ip = getIpAddr(request);
-        return "https://"+ip+":"+request.getLocalPort()+"/authorization/getOauthCode?client_id="+clientId+
-                "&response_type=code&state=0&redirect_uri=https://"+ip+":"+request.getLocalPort()+
+        return "https://47.100.11.153:"+request.getLocalPort()+"/authorization/getOauthCode?client_id="+clientId+
+                "&response_type=code&state=0&redirect_uri=https://47.100.11.153:"+request.getLocalPort()+
                 "/authorization/thirdPartyGetToken?code="+code;
     }
 
