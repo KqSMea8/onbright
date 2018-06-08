@@ -11,8 +11,7 @@ eureka:
     prefer-ip-address: true
     instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${spring.application.instance_id:${server.port}}
     appname: springcloud-oauth2	
-logging:
-  config: classpath:logback.xml
+
 management:
   security:
     enabled: false

@@ -1,4 +1,4 @@
-package com.bright.apollo.config;  
+package com.bright.apollo.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,18 +13,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.bright.apollo.config.service.impl.UserDetailsServiceImpl;
 
-  
-/**  
- *@Title:  
- *@Description:  
+
+/**
+ *@Title:
+ *@Description:
  *@Author:JettyLiu
- *@Since:2018年3月7日  
- *@Version:1.1.0  
+ *@Since:2018年3月7日
+ *@Version:1.1.0
  */
 @Order(10)
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
-	 
+
 
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
@@ -46,16 +46,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
- 
+
     	http.formLogin().loginPage("/login").permitAll().and().authorizeRequests().antMatchers("/health", "/css/**")
 		.anonymous().and().authorizeRequests().anyRequest().authenticated();
      }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/favor.ioc");
+        web.ignoring().antMatchers("/favor.ioc","/authorization/*");
     }
 
-	
+
 
 }
