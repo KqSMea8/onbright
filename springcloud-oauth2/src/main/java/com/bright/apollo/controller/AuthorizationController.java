@@ -131,7 +131,7 @@ public class AuthorizationController {
         String port = localPort.equals("8815")?"":localPort;
         System.out.println(" port ===== "+port);
         String ip = request.getHeader("Host");
-        return redirectUrl+"&code="+code+"state=111";
+        return redirectUrl+"&code="+code+"&state=111";
     }
 
     @RequestMapping(value ="getOauthCode",method = RequestMethod.GET)
