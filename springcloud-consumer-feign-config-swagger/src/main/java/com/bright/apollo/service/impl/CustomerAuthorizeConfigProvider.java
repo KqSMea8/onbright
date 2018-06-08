@@ -20,7 +20,7 @@ public class CustomerAuthorizeConfigProvider implements AuthorizeConfigProvider 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.bright.apollo.service.AuthorizeConfigProvider#config(org.
 	 * springframework.security.config.annotation.web.configurers.
 	 * ExpressionUrlAuthorizationConfigurer.ExpressionInterceptUrlRegistry)
@@ -30,7 +30,7 @@ public class CustomerAuthorizeConfigProvider implements AuthorizeConfigProvider 
 		// permit through url
 		config.antMatchers("/swagger-ui.html", "/swagger-resources/**",
 				"/webjars/springfox-swagger-ui/**","/v2/api-docs", "/user/register/", "/user/wxLogin",
-				"/user/forget").permitAll();
+				"/user/forget","/rokid/*").permitAll();
 		return false;
 	}
 
