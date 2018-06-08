@@ -124,12 +124,21 @@
       <file leaf-file-name="AuthorizationController.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/springcloud-oauth2/src/main/java/com/bright/apollo/controller/AuthorizationController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="492">
-              <caret line="120" column="79" selection-start-line="120" selection-start-column="79" selection-end-line="120" selection-end-column="79" />
+            <state relative-caret-position="438">
+              <caret line="118" column="40" selection-start-line="118" selection-start-column="40" selection-end-line="118" selection-end-column="40" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#6507#6523#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ServletRequest.class" pinned="false" current-in-tab="false">
+        <entry file="jar://$MAVEN_REPOSITORY$/org/apache/tomcat/embed/tomcat-embed-core/8.5.16/tomcat-embed-core-8.5.16.jar!/javax/servlet/ServletRequest.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="212">
+              <caret line="74" column="8" selection-start-line="74" selection-start-column="8" selection-end-line="74" selection-end-column="8" />
             </state>
           </provider>
         </entry>
@@ -835,12 +844,12 @@
       <workItem from="1528354451124" duration="2393000" />
       <workItem from="1528358010650" duration="169000" />
       <workItem from="1528358233566" duration="25000" />
-      <workItem from="1528359107029" duration="28048000" />
+      <workItem from="1528359107029" duration="28991000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="248703000" />
+    <option name="totallyTimeSpent" value="249646000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -964,13 +973,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/springcloud-oauth2/src/main/java/com/bright/apollo/config/WebSecurityConfig.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1485">
-          <caret line="55" column="65" selection-start-line="55" selection-start-column="65" selection-end-line="55" selection-end-column="65" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-oauth2/src/main/java/com/bright/apollo/config/AuthorizationServerConfiguration.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2187">
@@ -1333,10 +1335,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/tomcat/embed/tomcat-embed-core/8.5.16/tomcat-embed-core-8.5.16.jar!/javax/servlet/ServletRequest.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="212">
+          <caret line="74" column="8" selection-start-line="74" selection-start-column="8" selection-end-line="74" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-oauth2/src/main/java/com/bright/apollo/controller/AuthorizationController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="492">
-          <caret line="120" column="79" selection-start-line="120" selection-start-column="79" selection-end-line="120" selection-end-column="79" />
+        <state relative-caret-position="438">
+          <caret line="118" column="40" selection-start-line="118" selection-start-column="40" selection-end-line="118" selection-end-column="40" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#6507#6523#0" expanded="true" />

@@ -114,11 +114,12 @@ public class AuthorizationController {
         String code = codeResponse.getBody().replaceAll("\"","");
         System.out.println("getBody ------ "+code);
 //        return "redirect:"+oAuthClientRequest.getLocationUri();
-        System.out.println(request.getLocalPort());
-        System.out.println(request.getLocalAddr());
-        String ip = getIpAddr(request);
-        return "https://47.100.11.153:"+request.getLocalPort()+"/authorization/getOauthCode?client_id="+clientId+
-                "&response_type=code&state=0&redirect_uri=https://47.100.11.153:"+request.getLocalPort()+
+        String localPort = String.valueOf(request.getLocalPort());
+        String port = localPort.equals("80")?"":localPort;
+        System.out.println(" port ===== "+port);
+        String ip = request.getHeader("Host");
+        return "https://"+ip+":"+port+"/authorization/getOauthCode?client_id="+clientId+
+                "&response_type=code&state=0&redirect_uri=https://"+ip+":"+port+
                 "/authorization/thirdPartyGetToken?code="+code;
     }
 
