@@ -48,6 +48,13 @@ public class AuthorizationController {
         String XFor = request.getHeader("X-Forwarded-For");
         System.out.println(" ====== Xip ====== "+ Xip);
         System.out.println(" ====== XFor ====== "+ XFor);
+        System.out.println(" ====== Proxy-Client-IP ====== "+ request.getHeader("Proxy-Client-IP"));
+        System.out.println(" ====== WL-Proxy-Client-IP ====== "+ request.getHeader("WL-Proxy-Client-IP"));
+        System.out.println(" ====== HTTP_CLIENT_IP ====== "+ request.getHeader("HTTP_CLIENT_IP"));
+        System.out.println(" ====== HTTP_X_FORWARDED_FOR ====== "+ request.getHeader("HTTP_X_FORWARDED_FOR"));
+        System.out.println(" ====== getRemoteAddr ====== "+ request.getRemoteAddr());
+        
+
         if(StringUtils.isNotEmpty(XFor) && !"unKnown".equalsIgnoreCase(XFor)){
             //多次反向代理后会有多个ip值，第一个ip才是真实ip
             int index = XFor.indexOf(",");
