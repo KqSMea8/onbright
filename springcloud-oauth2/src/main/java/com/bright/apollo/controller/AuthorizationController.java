@@ -35,6 +35,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -94,8 +96,11 @@ public class AuthorizationController {
     }
 
     @RequestMapping(value="/thirdPartyOauth",method = RequestMethod.GET)
-    public String getAuthorizationOauth(HttpServletRequest request) throws OAuthSystemException,OAuthProblemException {
+    public String getAuthorizationOauth(HttpServletRequest request) throws OAuthSystemException, OAuthProblemException, UnsupportedEncodingException {
         String clientId = request.getParameter("clientid");
+        String redirectUrl = request.getParameter("redirect_uri");
+        redirectUrl = URLDecoder.decode(redirectUrl,"UTF-8");
+        System.out.println(" ====== redirectUrl ====== "+redirectUrl);
         OAuthClientRequest oAuthClientRequest =
                 OAuthClientRequest
                         .authorizationLocation("http://localhost:8815/authorization/getOauthCode")
