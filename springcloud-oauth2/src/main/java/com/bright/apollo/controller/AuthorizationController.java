@@ -101,6 +101,14 @@ public class AuthorizationController {
         String redirectUrl = request.getParameter("redirect_uri");
         redirectUrl = URLDecoder.decode(redirectUrl,"UTF-8");
         System.out.println(" ====== redirectUrl ====== "+redirectUrl);
+        String[] urlParams = redirectUrl.split("\\?");
+        System.out.println("params ======"+urlParams);
+        System.out.println("params[1] ======"+urlParams[1]);
+        String[] paramArray = urlParams[1].split("&");
+        String skillId = paramArray[0].substring(0,8);
+        String token = paramArray[1].substring(0,6);
+        System.out.println("skillId ====== "+skillId);
+        System.out.println("token ====== "+token);
         OAuthClientRequest oAuthClientRequest =
                 OAuthClientRequest
                         .authorizationLocation("http://localhost:8815/authorization/getOauthCode")
@@ -123,9 +131,7 @@ public class AuthorizationController {
         String port = localPort.equals("8815")?"":localPort;
         System.out.println(" port ===== "+port);
         String ip = request.getHeader("Host");
-        return "https://"+ip+":"+port+"/authorization/getOauthCode?client_id="+clientId+
-                "&response_type=code&state=0&redirect_uri=https://"+ip+":"+port+
-                "/authorization/thirdPartyGetToken?code="+code;
+        return redirectUrl+"&code="+code+"state=111";
     }
 
     @RequestMapping(value ="getOauthCode",method = RequestMethod.GET)
