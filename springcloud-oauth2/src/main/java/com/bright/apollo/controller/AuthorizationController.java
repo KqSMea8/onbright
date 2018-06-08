@@ -115,7 +115,7 @@ public class AuthorizationController {
         System.out.println("getBody ------ "+code);
 //        return "redirect:"+oAuthClientRequest.getLocationUri();
         String localPort = String.valueOf(request.getLocalPort());
-        String port = localPort.equals("80")?"":localPort;
+        String port = localPort.equals("8815")?"":localPort;
         System.out.println(" port ===== "+port);
         String ip = request.getHeader("Host");
         return "https://"+ip+":"+port+"/authorization/getOauthCode?client_id="+clientId+
