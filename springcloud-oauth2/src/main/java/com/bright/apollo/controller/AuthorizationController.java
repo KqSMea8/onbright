@@ -57,21 +57,27 @@ public class AuthorizationController {
         }
         XFor = Xip;
         if(StringUtils.isNotEmpty(XFor) && !"unKnown".equalsIgnoreCase(XFor)){
+            System.out.println(" ====== unKnown ====== ");
             return XFor;
         }
         if (StringUtils.isBlank(XFor) || "unknown".equalsIgnoreCase(XFor)) {
+            System.out.println(" ====== Proxy-Client-IP ====== ");
             XFor = request.getHeader("Proxy-Client-IP");
         }
         if (StringUtils.isBlank(XFor) || "unknown".equalsIgnoreCase(XFor)) {
+            System.out.println(" ====== WL-Proxy-Client-IP ====== ");
             XFor = request.getHeader("WL-Proxy-Client-IP");
         }
         if (StringUtils.isBlank(XFor) || "unknown".equalsIgnoreCase(XFor)) {
+            System.out.println(" ====== HTTP_CLIENT_IP ====== ");
             XFor = request.getHeader("HTTP_CLIENT_IP");
         }
         if (StringUtils.isBlank(XFor) || "unknown".equalsIgnoreCase(XFor)) {
+            System.out.println(" ====== HTTP_X_FORWARDED_FOR ====== ");
             XFor = request.getHeader("HTTP_X_FORWARDED_FOR");
         }
         if (StringUtils.isBlank(XFor) || "unknown".equalsIgnoreCase(XFor)) {
+            System.out.println(" ====== getRemoteAddr ====== ");
             XFor = request.getRemoteAddr();
         }
         return XFor;
