@@ -39,8 +39,60 @@ public class  HystrixFeignAli2Fallback extends BasicHystrixFeignFallback impleme
 	/* (non-Javadoc)  
 	 * @see com.bright.apollo.feign.FeignAliClient#stopScan(java.lang.String)  
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public ResponseObject<OboxResp> stopScan(String oboxSerialId) {
+		logger.warn("===device server is break===");
+        return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignAliClient#scanByRestart(java.lang.String, java.lang.String, java.lang.String, java.lang.String)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<OboxResp> scanByRestart(String oboxSerialId, String deviceType, String deviceChildType,
+			String serialId) {
+		logger.warn("===device server is break===");
+        return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignAliClient#scanByUnStop(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.Integer)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<OboxResp> scanByUnStop(String oboxSerialId, String deviceType, String deviceChildType,
+			String serialId, Integer countOfDevice) {
+		logger.warn("===device server is break===");
+        return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignAliClient#scanByInitiative(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.Integer)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<OboxResp> scanByInitiative(String oboxSerialId, String deviceType, String deviceChildType,
+			String serialId, Integer countOfDevice) {
+		logger.warn("===device server is break===");
+        return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignAliClient#controlServerScene(java.lang.Integer)  
+	 */
+	@Override
+	public ResponseObject controlServerScene(Integer sceneNumber) {
+		logger.warn("===device server is break===");
+        return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignAliClient#setDeviceStatus(java.lang.String, java.lang.String)  
+	 */
+	@Override
+	public ResponseObject<OboxResp> setDeviceStatus(String oboxSerialId, String status) {
 		logger.warn("===device server is break===");
         return serverError();
 	}
