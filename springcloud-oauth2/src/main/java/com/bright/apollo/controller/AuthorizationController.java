@@ -46,6 +46,8 @@ public class AuthorizationController {
     private  String getIpAddr(HttpServletRequest request)  {
         String Xip = request.getHeader("X-Real-IP");
         String XFor = request.getHeader("X-Forwarded-For");
+        System.out.println(" ====== Xip ====== "+ Xip);
+        System.out.println(" ====== XFor ====== "+ XFor);
         if(StringUtils.isNotEmpty(XFor) && !"unKnown".equalsIgnoreCase(XFor)){
             //多次反向代理后会有多个ip值，第一个ip才是真实ip
             int index = XFor.indexOf(",");
@@ -56,6 +58,7 @@ public class AuthorizationController {
             }
         }
         XFor = Xip;
+        System.out.println(" ====== XFor = Xip ====== "+ XFor);
         if(StringUtils.isNotEmpty(XFor) && !"unKnown".equalsIgnoreCase(XFor)){
             System.out.println(" ====== unKnown ====== ");
             return XFor;
