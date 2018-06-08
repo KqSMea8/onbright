@@ -124,8 +124,8 @@
       <file leaf-file-name="AuthorizationController.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/springcloud-oauth2/src/main/java/com/bright/apollo/controller/AuthorizationController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="465">
-              <caret line="133" column="43" selection-start-line="133" selection-start-column="43" selection-end-line="133" selection-end-column="43" />
+            <state relative-caret-position="220">
+              <caret line="104" column="49" selection-start-line="104" selection-start-column="49" selection-end-line="104" selection-end-column="49" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#6507#6523#0" expanded="true" />
@@ -844,12 +844,12 @@
       <workItem from="1528354451124" duration="2393000" />
       <workItem from="1528358010650" duration="169000" />
       <workItem from="1528358233566" duration="25000" />
-      <workItem from="1528359107029" duration="32717000" />
+      <workItem from="1528359107029" duration="34098000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="253372000" />
+    <option name="totallyTimeSpent" value="254753000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -958,12 +958,6 @@
           <line>241</line>
           <properties />
           <option name="timeStamp" value="11" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/springcloud-oauth2/src/main/java/com/bright/apollo/controller/AuthorizationController.java</url>
-          <line>48</line>
-          <properties />
-          <option name="timeStamp" value="23" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
@@ -1344,8 +1338,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-oauth2/src/main/java/com/bright/apollo/controller/AuthorizationController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="465">
-          <caret line="133" column="43" selection-start-line="133" selection-start-column="43" selection-end-line="133" selection-end-column="43" />
+        <state relative-caret-position="220">
+          <caret line="104" column="49" selection-start-line="104" selection-start-column="49" selection-end-line="104" selection-end-column="49" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#6507#6523#0" expanded="true" />
