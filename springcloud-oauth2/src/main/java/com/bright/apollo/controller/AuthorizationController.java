@@ -103,8 +103,8 @@ public class AuthorizationController {
         logger.info(" ====== /thirdPartyOauth ====== ");
         String clientId = request.getParameter("clientid");
         logger.info(" ====== clientId ====== "+clientId);
-        String redirectUrl = "";
-        String data = "";
+        String redirectUrl = request.getParameter("redirect_uri");
+        String data = request.getParameter("data");
         String state = request.getParameter("state");
         logger.info(" ====== state ====== "+state);
         String platform = "";
