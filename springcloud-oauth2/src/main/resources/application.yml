@@ -1,5 +1,8 @@
 server:
   port: 8815
+  tomcat:
+    protocol-header: x-forwarded-proto
+  use-forward-headers: true
 spring:
   application:
     name: springcloud-oauth2
