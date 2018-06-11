@@ -1,6 +1,7 @@
 package com.bright.apollo.controller;
 
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -34,6 +35,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -42,9 +45,64 @@ import java.util.UUID;
 @RequestMapping("/authorization")
 public class AuthorizationController {
 
+    private  String getIpAddr(HttpServletRequest request)  {
+        String Xip = request.getHeader("X-Real-IP");
+        String XFor = request.getHeader("X-Forwarded-For");
+        System.out.println(" ====== Xip ====== "+ Xip);
+        System.out.println(" ====== XFor ====== "+ XFor);
+        System.out.println(" ====== Proxy-Client-IP ====== "+ request.getHeader("Proxy-Client-IP"));
+        System.out.println(" ====== WL-Proxy-Client-IP ====== "+ request.getHeader("WL-Proxy-Client-IP"));
+        System.out.println(" ====== HTTP_CLIENT_IP ====== "+ request.getHeader("HTTP_CLIENT_IP"));
+        System.out.println(" ====== HTTP_X_FORWARDED_FOR ====== "+ request.getHeader("HTTP_X_FORWARDED_FOR"));
+        System.out.println(" ====== getRemoteAddr ====== "+ request.getRemoteAddr());
+        System.out.println(" ====== Host ====== "+ request.getHeader("Host"));
+
+        if(StringUtils.isNotEmpty(XFor) && !"unKnown".equalsIgnoreCase(XFor)){
+            //多次反向代理后会有多个ip值，第一个ip才是真实ip
+            int index = XFor.indexOf(",");
+            if(index != -1){
+                return XFor.substring(0,index);
+            }else{
+                return XFor;
+            }
+        }
+        XFor = Xip;
+        System.out.println(" ====== XFor = Xip ====== "+ XFor);
+        if(StringUtils.isNotEmpty(XFor) && !"unKnown".equalsIgnoreCase(XFor)){
+            System.out.println(" ====== unKnown ====== ");
+            return XFor;
+        }
+        if (StringUtils.isBlank(XFor) || "unknown".equalsIgnoreCase(XFor)) {
+            System.out.println(" ====== Proxy-Client-IP ====== ");
+            XFor = request.getHeader("Proxy-Client-IP");
+        }
+        if (StringUtils.isBlank(XFor) || "unknown".equalsIgnoreCase(XFor)) {
+            System.out.println(" ====== WL-Proxy-Client-IP ====== ");
+            XFor = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if (StringUtils.isBlank(XFor) || "unknown".equalsIgnoreCase(XFor)) {
+            System.out.println(" ====== HTTP_CLIENT_IP ====== ");
+            XFor = request.getHeader("HTTP_CLIENT_IP");
+        }
+        if (StringUtils.isBlank(XFor) || "unknown".equalsIgnoreCase(XFor)) {
+            System.out.println(" ====== HTTP_X_FORWARDED_FOR ====== ");
+            XFor = request.getHeader("HTTP_X_FORWARDED_FOR");
+        }
+        if (StringUtils.isBlank(XFor) || "unknown".equalsIgnoreCase(XFor)) {
+            System.out.println(" ====== getRemoteAddr ====== ");
+            XFor = request.getRemoteAddr();
+        }
+        return XFor;
+    }
+
     @RequestMapping(value="/thirdPartyOauth",method = RequestMethod.GET)
-    public String getAuthorizationOauth(HttpServletRequest request) throws OAuthSystemException,OAuthProblemException {
+    public String getAuthorizationOauth(HttpServletRequest request) throws OAuthSystemException, OAuthProblemException, UnsupportedEncodingException {
         String clientId = request.getParameter("clientid");
+        String redirectUrl = request.getParameter("redirect_uri");
+        redirectUrl = URLDecoder.decode(redirectUrl,"UTF-8");
+        System.out.println(" ====== redirectUrl ====== "+redirectUrl);
+        String state = request.getParameter("state");
+        System.out.println(" ====== state ====== "+state);
         OAuthClientRequest oAuthClientRequest =
                 OAuthClientRequest
                         .authorizationLocation("http://localhost:8815/authorization/getOauthCode")
@@ -63,11 +121,11 @@ public class AuthorizationController {
         String code = codeResponse.getBody().replaceAll("\"","");
         System.out.println("getBody ------ "+code);
 //        return "redirect:"+oAuthClientRequest.getLocationUri();
-        System.out.println(request.getLocalPort());
-        System.out.println(request.getLocalAddr());
-        return "https://"+request.getLocalAddr()+":"+request.getLocalPort()+"/authorization/getOauthCode?client_id="+clientId+
-                "&response_type=code&state=0&redirect_uri=https://"+request.getLocalAddr()+":"+request.getLocalPort()+
-                "/authorization/thirdPartyGetToken?code="+code;
+        String localPort = String.valueOf(request.getLocalPort());
+        String port = localPort.equals("8815")?"":localPort;
+        System.out.println(" port ===== "+port);
+        String ip = request.getHeader("Host");
+        return redirectUrl+"&code="+code+"&state="+state;
     }
 
     @RequestMapping(value ="getOauthCode",method = RequestMethod.GET)
@@ -120,7 +178,7 @@ public class AuthorizationController {
             OAuthResponse response = OAuthASResponse
                     .tokenResponse(HttpServletResponse.SC_OK)
                     .setAccessToken(accessToken)
-                    .setExpiresIn("3600")
+                    .setExpiresIn("86400")
                     .setRefreshToken(refreshToken)
                     .buildBodyMessage();
 

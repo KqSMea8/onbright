@@ -124,12 +124,21 @@
       <file leaf-file-name="AuthorizationController.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/springcloud-oauth2/src/main/java/com/bright/apollo/controller/AuthorizationController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="248">
-              <caret line="109" column="58" selection-start-line="109" selection-start-column="58" selection-end-line="109" selection-end-column="58" />
+            <state relative-caret-position="409">
+              <caret line="180" column="40" selection-start-line="180" selection-start-column="40" selection-end-line="180" selection-end-column="40" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#6507#6523#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ServletRequest.class" pinned="false" current-in-tab="false">
+        <entry file="jar://$MAVEN_REPOSITORY$/org/apache/tomcat/embed/tomcat-embed-core/8.5.16/tomcat-embed-core-8.5.16.jar!/javax/servlet/ServletRequest.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="212">
+              <caret line="74" column="8" selection-start-line="74" selection-start-column="8" selection-end-line="74" selection-end-column="8" />
             </state>
           </provider>
         </entry>
@@ -553,7 +562,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Maven.installAll">
+  <component name="RunManager" selected="Spring Boot.OauthApplication">
     <configuration default="true" type="Application" factoryName="Application">
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
     </configuration>
@@ -835,12 +844,12 @@
       <workItem from="1528354451124" duration="2393000" />
       <workItem from="1528358010650" duration="169000" />
       <workItem from="1528358233566" duration="25000" />
-      <workItem from="1528359107029" duration="24260000" />
+      <workItem from="1528359107029" duration="34206000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="244915000" />
+    <option name="totallyTimeSpent" value="254861000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -865,7 +874,7 @@
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="4" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.5874855" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.23290846" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32908458" />
       <window_info anchor="bottom" id="Messages" order="13" weight="0.32908458" />
       <window_info anchor="right" id="Palette&#9;" order="6" />
@@ -873,7 +882,7 @@
       <window_info anchor="bottom" id="Java Enterprise" order="9" />
       <window_info anchor="right" id="Capture Analysis" order="4" />
       <window_info anchor="bottom" id="Version Control" order="11" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49919093" visible="true" weight="0.35921204" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49919093" weight="0.35921204" />
       <window_info anchor="bottom" id="Spring" order="7" weight="0.32908458" />
       <window_info anchor="bottom" id="Terminal" order="8" />
       <window_info content_ui="combo" id="Project" order="0" weight="0.26860842" />
@@ -954,17 +963,10 @@
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="22" />
+      <option name="time" value="24" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/springcloud-oauth2/src/main/java/com/bright/apollo/config/WebSecurityConfig.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1485">
-          <caret line="55" column="65" selection-start-line="55" selection-start-column="65" selection-end-line="55" selection-end-column="65" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-oauth2/src/main/java/com/bright/apollo/config/AuthorizationServerConfiguration.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2187">
@@ -1327,10 +1329,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/tomcat/embed/tomcat-embed-core/8.5.16/tomcat-embed-core-8.5.16.jar!/javax/servlet/ServletRequest.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="212">
+          <caret line="74" column="8" selection-start-line="74" selection-start-column="8" selection-end-line="74" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-oauth2/src/main/java/com/bright/apollo/controller/AuthorizationController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="248">
-          <caret line="109" column="58" selection-start-line="109" selection-start-column="58" selection-end-line="109" selection-end-column="58" />
+        <state relative-caret-position="409">
+          <caret line="180" column="40" selection-start-line="180" selection-start-column="40" selection-end-line="180" selection-end-column="40" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#6507#6523#0" expanded="true" />
