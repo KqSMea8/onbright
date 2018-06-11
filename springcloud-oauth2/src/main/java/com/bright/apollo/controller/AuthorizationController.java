@@ -5,6 +5,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.log4j.Logger;
 import org.apache.oltu.oauth2.as.issuer.MD5Generator;
 import org.apache.oltu.oauth2.as.issuer.OAuthIssuerImpl;
 import org.apache.oltu.oauth2.as.request.OAuthAuthzRequest;
@@ -44,6 +45,8 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/authorization")
 public class AuthorizationController {
+
+    Logger logger = Logger.getLogger(AuthorizationController.class);
 
     private  String getIpAddr(HttpServletRequest request)  {
         String Xip = request.getHeader("X-Real-IP");
@@ -97,12 +100,27 @@ public class AuthorizationController {
 
     @RequestMapping(value="/thirdPartyOauth",method = RequestMethod.GET)
     public String getAuthorizationOauth(HttpServletRequest request) throws OAuthSystemException, OAuthProblemException, UnsupportedEncodingException {
+        logger.info(" ====== /thirdPartyOauth ====== ");
         String clientId = request.getParameter("clientid");
-        String redirectUrl = request.getParameter("redirect_uri");
-        redirectUrl = URLDecoder.decode(redirectUrl,"UTF-8");
-        System.out.println(" ====== redirectUrl ====== "+redirectUrl);
+        logger.info(" ====== clientId ====== "+clientId);
+        String redirectUrl = "";
+        String data = "";
         String state = request.getParameter("state");
-        System.out.println(" ====== state ====== "+state);
+        logger.info(" ====== state ====== "+state);
+        String platform = "";
+        if(redirectUrl!=null&&!redirectUrl.equals("")){//天猫
+            redirectUrl = request.getParameter("redirect_uri");
+            platform = "tmall";
+            logger.info(" ====== "+platform+" ====== redirectUrl ====== "+redirectUrl);
+        }
+        if(data!=null&&!data.equals("")){//rokid
+            redirectUrl = request.getParameter("data");
+            platform = "rokid";
+            logger.info(" ====== "+platform+"  ====== redirectUrl ====== "+redirectUrl);
+        }
+
+        redirectUrl = URLDecoder.decode(redirectUrl,"UTF-8");
+
         OAuthClientRequest oAuthClientRequest =
                 OAuthClientRequest
                         .authorizationLocation("http://localhost:8815/authorization/getOauthCode")
@@ -110,22 +128,24 @@ public class AuthorizationController {
                         .setRedirectURI("http://localhost:8815/authorization/thirdPartyGetToken")
                         .setResponseType("code")
                         .buildBodyMessage();
-//        System.out.println("location uri :"+oAuthClientRequest.getLocationUri());
-//        HttpGet httpGet = new HttpGet(oAuthClientRequest.getLocationUri());
-//        HttpClient client = HttpClientBuilder.create().build();
-//        client.execute(httpGet);
+
         OAuthClient oAuthClient = new OAuthClient(new URLConnectionClient());
         OAuthResourceResponse codeResponse = oAuthClient.resource(
                 oAuthClientRequest, OAuth.HttpMethod.GET, OAuthResourceResponse.class);
-        System.out.println("getResponseCode ------ "+codeResponse.getResponseCode());
         String code = codeResponse.getBody().replaceAll("\"","");
-        System.out.println("getBody ------ "+code);
-//        return "redirect:"+oAuthClientRequest.getLocationUri();
-        String localPort = String.valueOf(request.getLocalPort());
-        String port = localPort.equals("8815")?"":localPort;
-        System.out.println(" port ===== "+port);
+        logger.info("code ====== "+code);
         String ip = request.getHeader("Host");
-        return redirectUrl+"&code="+code+"&state="+state;
+        if(platform.equals("tmall")){
+            redirectUrl = redirectUrl+"&code="+code+"&state="+state;
+            logger.info("return "+platform+"  ====== "+redirectUrl);
+            return redirectUrl;
+        }else{
+            String url = "https://"+ip+
+                   "/authorization/thirdPartyOauth?responsetype=code&clientid="+clientId+
+                   "&state="+state+"&redirect_uri="+data;
+            logger.info("return "+platform+" ====== "+url);
+            return url;
+        }
     }
 
     @RequestMapping(value ="getOauthCode",method = RequestMethod.GET)
@@ -139,11 +159,8 @@ public class AuthorizationController {
     @RequestMapping(value ="/thirdPartyGetToken",method = RequestMethod.GET)
     public Object getToken(HttpServletRequest httpServletRequest,
                                HttpServletResponse response) throws OAuthProblemException, OAuthSystemException {
-        JSONObject json = new JSONObject();
         String clientId = httpServletRequest.getParameter("clientid");
-//        OAuthTokenRequest tokenRequest = new OAuthTokenRequest(httpServletRequest);
         String code = httpServletRequest.getParameter(OAuth.OAUTH_CODE);
-        System.out.println("code ------ "+code);
         OAuthClientRequest request = OAuthClientRequest
                 .tokenLocation("http://localhost:8815/authorization/oauthCreateToken")
                 .setGrantType(GrantType.AUTHORIZATION_CODE)
@@ -158,12 +175,10 @@ public class AuthorizationController {
         OAuthAccessTokenResponse tokenResponse =
                 oAuthClient.accessToken(request, OAuth.HttpMethod.POST);
 
-        String accessToken = tokenResponse.getAccessToken();
-        Long expiresIn = tokenResponse.getExpiresIn();
         tokenResponse.getRefreshToken();
 
         OAuthToken oAuthToken = tokenResponse.getOAuthToken();
-        System.out.println("getOAuthToken = AccessToken ------ "
+        logger.info(" ====== getOAuthToken = AccessToken ------ "
                 + oAuthToken.getAccessToken()+" RefreshToken ------ "
                 + oAuthToken.getRefreshToken()+" ExpiresIn ------ "
                 + oAuthToken.getExpiresIn());
@@ -174,19 +189,20 @@ public class AuthorizationController {
     public Object createToken(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException , OAuthSystemException {
             String accessToken = UUID.randomUUID().toString();
             String refreshToken = UUID.randomUUID().toString();
-            System.out.println("accessToken ------ "+accessToken);
-            OAuthResponse response = OAuthASResponse
-                    .tokenResponse(HttpServletResponse.SC_OK)
-                    .setAccessToken(accessToken)
-                    .setExpiresIn("86400")
-                    .setRefreshToken(refreshToken)
-                    .buildBodyMessage();
+            logger.info(" ====== "+accessToken);
+            logger.info(" ====== "+refreshToken);
+//            OAuthResponse response = OAuthASResponse
+//                    .tokenResponse(HttpServletResponse.SC_OK)
+//                    .setAccessToken(accessToken)
+//                    .setExpiresIn("86400")
+//                    .setRefreshToken(refreshToken)
+//                    .buildBodyMessage();
 
-            httpServletResponse.setStatus(response.getResponseStatus());
+//            httpServletResponse.setStatus(response.getResponseStatus());
             Map<String,Object> map = new HashMap<String, Object>();
             map.put("access_token",accessToken);
             map.put("refresh_token",refreshToken);
-            map.put("expires_in",3600);
+            map.put("expires_in",86400);
             map.put("status",HttpServletResponse.SC_OK);
             return map;
     }
