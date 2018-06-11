@@ -59,11 +59,10 @@ public class SceneController {
 	}
 	// get list by page
 
-	@SuppressWarnings({ "rawtypes" })
 	@RequestMapping(value = "/{sceneNumber}", method = RequestMethod.PUT)
-	public ResponseObject updateScene(@PathVariable(required = true) Integer sceneNumber,
+	public ResponseObject<SceneInfo> updateScene(@PathVariable(required = true) Integer sceneNumber,
 			@RequestBody(required = true) SceneInfo info) {
-		ResponseObject res = new ResponseObject();
+		ResponseObject<SceneInfo> res = new ResponseObject<SceneInfo>();
 		try {
 			TScene scene = info.getScene();
 			if (scene != null)
@@ -76,6 +75,7 @@ public class SceneController {
 				sceneService.batchUpdate(actions);
 			res.setCode(ResponseEnum.Success.getCode());
 			res.setMsg(ResponseEnum.Success.getMsg());
+			res.setData(sceneService.querySceneInfoBySceneNumber(sceneNumber));
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("===getScene error msg:" + e.getMessage());

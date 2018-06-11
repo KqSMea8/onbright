@@ -4,6 +4,9 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.feign.FeignOboxClient;
@@ -38,9 +41,9 @@ public class HystrixFeignOboxFallback extends BasicHystrixFeignFallback implemen
 	 * @see com.bright.apollo.feign.FeignOboxClient#updateObox(java.lang.String,
 	 * com.bright.apollo.common.entity.TObox)
 	 */
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public ResponseObject updateObox(String serialId, TObox obox) {
+	public ResponseObject<TObox> updateObox(String serialId, TObox obox) {
 		logger.warn("===obox server is break===");
 		return serverError();
 	}
@@ -64,15 +67,19 @@ public class HystrixFeignOboxFallback extends BasicHystrixFeignFallback implemen
 	 * com.bright.apollo.feign.FeignOboxClient#addObox(com.bright.apollo.common.
 	 * entity.TObox)
 	 */
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "unchecked" })
 	@Override
-	public ResponseObject addObox(TObox obox) {
+	public ResponseObject<TObox> addObox(String serialId, TObox obox) {
 		logger.warn("===obox server is break===");
 		return serverError();
 	}
 
-	/* (non-Javadoc)  
-	 * @see com.bright.apollo.feign.FeignOboxClient#getOboxByUserAndPage(java.lang.Integer, java.lang.Integer, java.lang.Integer)  
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.bright.apollo.feign.FeignOboxClient#getOboxByUserAndPage(java.lang.
+	 * Integer, java.lang.Integer, java.lang.Integer)
 	 */
 	@Override
 	public ResponseObject<List<TObox>> getOboxByUserAndPage(Integer userId, Integer pageIndex, Integer pageSize) {

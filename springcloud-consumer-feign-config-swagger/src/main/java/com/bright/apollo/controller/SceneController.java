@@ -46,18 +46,17 @@ public class SceneController {
 		return res;
 	}
 
-	@SuppressWarnings("rawtypes")
-	@RequestMapping(value = "/{sceneNumber}", method = RequestMethod.PUT)
+ 	@RequestMapping(value = "/{sceneNumber}", method = RequestMethod.PUT)
 	@ApiOperation(value = "update Scene", httpMethod = "PUT", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
-	public ResponseObject updateScene(@PathVariable(required = true) Integer sceneNumber,
+	public ResponseObject<SceneInfo> updateScene(@PathVariable(required = true) Integer sceneNumber,
 			@RequestBody(required = true) SceneInfo info) {
-		ResponseObject res = null;
+		ResponseObject<SceneInfo> res = null;
 		try {
 			return feignSceneClient.updateScene(sceneNumber, info);
 		} catch (Exception e) {
 			e.printStackTrace();
-			res = new ResponseObject();
+			res = new ResponseObject<SceneInfo>();
 			res.setCode(ResponseEnum.Error.getCode());
 			res.setMsg(ResponseEnum.Error.getMsg());
 		}

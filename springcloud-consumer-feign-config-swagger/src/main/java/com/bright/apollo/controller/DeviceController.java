@@ -29,28 +29,27 @@ import io.swagger.annotations.ApiResponse;
 public class DeviceController {
  	@Autowired
 	private FeignDeviceClient feignDeviceClient;
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@ApiOperation(value = "get deivcie by device serialId", httpMethod = "GET", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/{serialId}", method = RequestMethod.GET)
 	public ResponseObject<TOboxDeviceConfig> getDevice(@PathVariable(required = true) String serialId) {
-		ResponseObject res = new ResponseObject();
+		ResponseObject<TOboxDeviceConfig> res = null;
 		try {
- 			res = feignDeviceClient.getDevice(serialId);
+ 			return feignDeviceClient.getDevice(serialId);
  		} catch (Exception e) {
 			e.printStackTrace();
+			res=new ResponseObject<TOboxDeviceConfig>();
  			res.setCode(ResponseEnum.Error.getCode());
 			res.setMsg(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
-	@SuppressWarnings("rawtypes")
-	@ApiOperation(value = "update deivcie by device serialId", httpMethod = "PUT", produces = "application/json")
+ 	@ApiOperation(value = "update deivcie by device serialId", httpMethod = "PUT", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/{serialId}", method = RequestMethod.PUT)
-	public ResponseObject updateDevice(@PathVariable(required = true) String serialId,
+	public ResponseObject<TOboxDeviceConfig> updateDevice(@PathVariable(required = true) String serialId,
 			@RequestBody(required = true) TOboxDeviceConfig device) {
-		ResponseObject res = new ResponseObject();
+		ResponseObject<TOboxDeviceConfig> res = new ResponseObject<TOboxDeviceConfig>();
 		try {
 			res = feignDeviceClient.updateDevice(serialId,device);
 		} catch (Exception e) {
@@ -60,17 +59,17 @@ public class DeviceController {
 		}
 		return res;
 	}
-	@SuppressWarnings("rawtypes")
 	@ApiOperation(value = "add device", httpMethod = "POST", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/{serialId}", method = RequestMethod.POST)
-	public ResponseObject addDevice(@PathVariable(required = true) String serialId,
+	public ResponseObject<TOboxDeviceConfig> addDevice(@PathVariable(required = true) String serialId,
 			@RequestBody(required = true) TOboxDeviceConfig device) {
-		ResponseObject res = new ResponseObject();
+		ResponseObject<TOboxDeviceConfig> res = null;
 		try { 
-			res = feignDeviceClient.addDevice(serialId,device);
+			return feignDeviceClient.addDevice(serialId,device);
 		} catch (Exception e) {
 			e.printStackTrace();
+			res=new ResponseObject<TOboxDeviceConfig>();
 			res.setCode(ResponseEnum.Error.getCode());
 			res.setMsg(ResponseEnum.Error.getMsg());
 		}
@@ -81,11 +80,12 @@ public class DeviceController {
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/{serialId}", method = RequestMethod.DELETE)
 	public ResponseObject delDevice(@PathVariable(required = true) String serialId) {
-		ResponseObject res = new ResponseObject();
+		ResponseObject res = null;
 		try {
-			res = feignDeviceClient.delDevice(serialId);
+			return feignDeviceClient.delDevice(serialId);
 		} catch (Exception e) {
 			e.printStackTrace();
+			res=new ResponseObject();
  			res.setCode(ResponseEnum.Error.getCode());
 			res.setMsg(ResponseEnum.Error.getMsg());
 		}

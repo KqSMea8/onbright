@@ -35,7 +35,6 @@ public class OboxController {
 	@RequestMapping(value = "/{serialId}", method = RequestMethod.GET)
 	public ResponseObject<TObox> getObox(@PathVariable(required = true) String serialId) {
 		ResponseObject<TObox> res = null;
-
 		try {
 			return feignOboxClient.getObox(serialId);
 		} catch (Exception e) {
@@ -44,22 +43,20 @@ public class OboxController {
 			res.setCode(ResponseEnum.Error.getCode());
 			res.setMsg(ResponseEnum.Error.getMsg());
 		}
-
 		return res;
 	}
 
-	@SuppressWarnings("rawtypes")
 	@ApiOperation(value = "update obox ", httpMethod = "PUT", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/{serialId}", method = RequestMethod.PUT)
-	public ResponseObject updateObox(@PathVariable(required = true) String serialId,
+	public ResponseObject<TObox> updateObox(@PathVariable(required = true) String serialId,
 			@RequestBody(required = true) TObox obox) {
-		ResponseObject res = null;
+		ResponseObject<TObox> res = null;
 		try {
 			return feignOboxClient.updateObox(serialId, obox);
 		} catch (Exception e) {
 			e.printStackTrace();
-			res = new ResponseObject();
+			res = new ResponseObject<TObox>();
 			res.setCode(ResponseEnum.Error.getCode());
 			res.setMsg(ResponseEnum.Error.getMsg());
 		}
@@ -82,21 +79,22 @@ public class OboxController {
 		}
 		return res;
 	}
-	@SuppressWarnings("rawtypes")
+
 	@ApiOperation(value = "add obox ", httpMethod = "POST", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
-	@RequestMapping(value = "/addObox", method = RequestMethod.POST)
-	public ResponseObject addObox(@RequestBody(required=true) TObox obox) {
-		ResponseObject res = null;
+	@RequestMapping(value = "/addObox/{serialId}", method = RequestMethod.POST)
+	public ResponseObject<TObox> addObox(@PathVariable(required = true, value = "serialId") String serialId,
+			@RequestBody(required = true) TObox obox) {
+		ResponseObject<TObox> res = null;
 		try {
-			return feignOboxClient.addObox(obox);
+			return feignOboxClient.addObox(serialId, obox);
 		} catch (Exception e) {
 			e.printStackTrace();
-			res = new ResponseObject();
+			res = new ResponseObject<TObox>();
 			res.setCode(ResponseEnum.Error.getCode());
 			res.setMsg(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
- 
+
 }

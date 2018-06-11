@@ -1,11 +1,13 @@
 package com.bright.apollo.common.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
 import java.util.Date;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(value={"id"})
 public class TOboxDeviceConfig implements Serializable{
     /**  
 	 *   

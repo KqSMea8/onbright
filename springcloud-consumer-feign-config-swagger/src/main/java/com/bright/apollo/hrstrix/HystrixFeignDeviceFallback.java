@@ -40,9 +40,9 @@ public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implem
 	 * com.bright.apollo.feign.FeignDeviceClient#updateDevice(java.lang.String,
 	 * com.bright.apollo.common.entity.TOboxDeviceConfig)
 	 */
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public ResponseObject updateDevice(String serialId, TOboxDeviceConfig device) {
+	public ResponseObject<TOboxDeviceConfig> updateDevice(String serialId, TOboxDeviceConfig device) {
 		logger.warn("===device server is break===");
 		return serverError();
 	}
@@ -54,9 +54,9 @@ public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implem
 	 * com.bright.apollo.feign.FeignDeviceClient#addDevice(java.lang.String,
 	 * com.bright.apollo.common.entity.TOboxDeviceConfig)
 	 */
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public ResponseObject addDevice(String serialId, TOboxDeviceConfig device) {
+	public ResponseObject<TOboxDeviceConfig> addDevice(String serialId, TOboxDeviceConfig device) {
 		logger.warn("===device server is break===");
 		return serverError();
 	}
