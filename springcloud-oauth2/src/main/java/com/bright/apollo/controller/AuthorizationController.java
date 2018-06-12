@@ -1,5 +1,8 @@
 package com.bright.apollo.controller;
 
+import com.bright.apollo.common.entity.OltuClientDetail;
+import com.bright.apollo.redis.RedisBussines;
+import com.bright.apollo.service.OltuService;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.client.HttpClient;
@@ -26,6 +29,7 @@ import org.apache.oltu.oauth2.common.message.types.GrantType;
 import org.apache.oltu.oauth2.common.token.OAuthToken;
 import org.apache.oltu.oauth2.common.utils.JSONUtils;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,6 +51,12 @@ import java.util.UUID;
 public class AuthorizationController {
 
     Logger logger = Logger.getLogger(AuthorizationController.class);
+
+    @Autowired
+    private RedisBussines redisBussines;
+
+    @Autowired
+    private OltuService oltuService;
 
     private  String getIpAddr(HttpServletRequest request)  {
         String Xip = request.getHeader("X-Real-IP");
@@ -133,8 +143,10 @@ public class AuthorizationController {
         OAuthResourceResponse codeResponse = oAuthClient.resource(
                 oAuthClientRequest, OAuth.HttpMethod.GET, OAuthResourceResponse.class);
         String code = codeResponse.getBody().replaceAll("\"","");
+
         logger.info("code ====== "+code);
         String ip = request.getHeader("Host");
+        logger.info("host ====== "+ip);
         if(platform.equals("tmall")){
             redirectUrl = redirectUrl+"&code="+code+"&state="+state;
             logger.info("return "+platform+"  ====== "+redirectUrl);
@@ -159,13 +171,25 @@ public class AuthorizationController {
     @RequestMapping(value ="/thirdPartyGetToken",method = RequestMethod.GET)
     public Object getToken(HttpServletRequest httpServletRequest,
                                HttpServletResponse response) throws OAuthProblemException, OAuthSystemException {
-        String clientId = httpServletRequest.getParameter("clientid");
         String code = httpServletRequest.getParameter(OAuth.OAUTH_CODE);
+        if(null!=code){
+            Map<String,Object> map = new HashMap<String, Object>();
+            map.put("msg","code不能为空");
+            return map;
+        }
+        String clientId = httpServletRequest.getParameter("clientid");
+        String clientSecret = httpServletRequest.getParameter("client_secret");
+        OltuClientDetail oltuClientDetail = oltuService.getOltuCLentByClientIdAndclientSecret(clientId,clientSecret);
+        if(oltuClientDetail ==null){
+            Map<String,Object> map = new HashMap<String, Object>();
+            map.put("msg","clientId或者clientSecret不正确");
+            return map;
+        }
         OAuthClientRequest request = OAuthClientRequest
                 .tokenLocation("http://localhost:8815/authorization/oauthCreateToken")
                 .setGrantType(GrantType.AUTHORIZATION_CODE)
                 .setClientId(clientId)
-                .setClientSecret(UUID.randomUUID().toString())
+                .setClientSecret(clientSecret)
                 .setRedirectURI("http://localhost:8815/authorization/thirdPartyOauth")
                 .setCode(code)
                 .buildQueryMessage();
@@ -178,10 +202,13 @@ public class AuthorizationController {
         tokenResponse.getRefreshToken();
 
         OAuthToken oAuthToken = tokenResponse.getOAuthToken();
-        logger.info(" ====== getOAuthToken = AccessToken ------ "
+        logger.info(" ====== getOAuthToken ===== AccessToken ------ "
                 + oAuthToken.getAccessToken()+" RefreshToken ------ "
                 + oAuthToken.getRefreshToken()+" ExpiresIn ------ "
                 + oAuthToken.getExpiresIn());
+
+        redisBussines.setValueWithExpire("acctoken_"+oAuthToken.getAccessToken(),oAuthToken.getAccessToken(),86400*7);
+        redisBussines.setValueWithExpire("refreshtoken_"+oAuthToken.getRefreshToken(),oAuthToken.getRefreshToken(),86400*7);
         return tokenResponse.getOAuthToken();
     }
 
@@ -189,8 +216,8 @@ public class AuthorizationController {
     public Object createToken(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException , OAuthSystemException {
             String accessToken = UUID.randomUUID().toString();
             String refreshToken = UUID.randomUUID().toString();
-            logger.info(" ====== "+accessToken);
-            logger.info(" ====== "+refreshToken);
+            logger.info(" ====== accessToken ====== "+accessToken);
+            logger.info(" ====== refreshToken ====== "+refreshToken);
 //            OAuthResponse response = OAuthASResponse
 //                    .tokenResponse(HttpServletResponse.SC_OK)
 //                    .setAccessToken(accessToken)
@@ -202,7 +229,7 @@ public class AuthorizationController {
             Map<String,Object> map = new HashMap<String, Object>();
             map.put("access_token",accessToken);
             map.put("refresh_token",refreshToken);
-            map.put("expires_in",86400);
+            map.put("expires_in",86400*7);
             map.put("status",HttpServletResponse.SC_OK);
             return map;
     }
