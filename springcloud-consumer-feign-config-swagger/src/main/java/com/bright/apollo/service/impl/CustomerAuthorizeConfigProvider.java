@@ -28,9 +28,10 @@ public class CustomerAuthorizeConfigProvider implements AuthorizeConfigProvider 
 	@Override
 	public boolean config(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry config) {
 		// permit through url
+		System.out.println(" ===config=== ");
 		config.antMatchers("/swagger-ui.html", "/swagger-resources/**",
 				"/webjars/springfox-swagger-ui/**","/v2/api-docs", "/user/register/", "/user/wxLogin",
-				"/user/forget","/rokid/*").permitAll();
+				"/user/forget","/rokid/*","/tmall/**").permitAll();
 		return false;
 	}
 

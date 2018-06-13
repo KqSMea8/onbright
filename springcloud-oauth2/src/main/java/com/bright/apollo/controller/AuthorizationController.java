@@ -5,43 +5,47 @@ import com.bright.apollo.redis.RedisBussines;
 import com.bright.apollo.service.OltuService;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
-import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.conn.ClientConnectionManager;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.conn.ssl.TrustStrategy;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.ssl.SSLContextBuilder;
 import org.apache.log4j.Logger;
 import org.apache.oltu.oauth2.as.issuer.MD5Generator;
 import org.apache.oltu.oauth2.as.issuer.OAuthIssuerImpl;
-import org.apache.oltu.oauth2.as.request.OAuthAuthzRequest;
-import org.apache.oltu.oauth2.as.request.OAuthTokenRequest;
-import org.apache.oltu.oauth2.as.response.OAuthASResponse;
 import org.apache.oltu.oauth2.client.OAuthClient;
 import org.apache.oltu.oauth2.client.URLConnectionClient;
 import org.apache.oltu.oauth2.client.request.OAuthClientRequest;
-import org.apache.oltu.oauth2.client.response.GitHubTokenResponse;
 import org.apache.oltu.oauth2.client.response.OAuthAccessTokenResponse;
-import org.apache.oltu.oauth2.client.response.OAuthAuthzResponse;
 import org.apache.oltu.oauth2.client.response.OAuthResourceResponse;
 import org.apache.oltu.oauth2.common.OAuth;
 import org.apache.oltu.oauth2.common.exception.OAuthProblemException;
 import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
-import org.apache.oltu.oauth2.common.message.OAuthResponse;
 import org.apache.oltu.oauth2.common.message.types.GrantType;
 import org.apache.oltu.oauth2.common.token.OAuthToken;
-import org.apache.oltu.oauth2.common.utils.JSONUtils;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -109,7 +113,7 @@ public class AuthorizationController {
     }
 
     @RequestMapping(value="/thirdPartyOauth",method = RequestMethod.GET)
-    public String getAuthorizationOauth(HttpServletRequest request) throws OAuthSystemException, OAuthProblemException, UnsupportedEncodingException {
+    public void getAuthorizationOauth(HttpServletRequest request,HttpServletResponse response) throws OAuthSystemException, OAuthProblemException, IOException {
         logger.info(" ====== /thirdPartyOauth ====== ");
         String clientId = request.getParameter("clientid");
         logger.info(" ====== clientId ====== "+clientId);
@@ -150,13 +154,17 @@ public class AuthorizationController {
         if(platform.equals("tmall")){
             redirectUrl = redirectUrl+"&code="+code+"&state="+state;
             logger.info("return "+platform+"  ====== "+redirectUrl);
-            return redirectUrl;
+//            httpGet = new HttpGet(re
+            logger.info(" ====== response ====== "+response);
+            response.sendRedirect(redirectUrl);
+//            return "redirect:"+redirectUrl;
         }else{
             String url = "https://"+ip+
                    "/authorization/thirdPartyOauth?responsetype=code&clientid="+clientId+
                    "&state="+state+"&redirect_uri="+data;
             logger.info("return "+platform+" ====== "+url);
-            return url;
+            response.sendRedirect(url);
+//            return "redirect:"+url;
         }
     }
 
@@ -168,21 +176,30 @@ public class AuthorizationController {
             return authCode;
     }
 
-    @RequestMapping(value ="/thirdPartyGetToken",method = RequestMethod.GET)
+    @RequestMapping(value ="/thirdPartyGetToken",method = RequestMethod.POST)
     public Object getToken(HttpServletRequest httpServletRequest,
                                HttpServletResponse response) throws OAuthProblemException, OAuthSystemException {
+        System.out.println("====== /thirdPartyGetToken ======= ");
+        logger.info(" ====== /thirdPartyGetToken =======");
         String code = httpServletRequest.getParameter(OAuth.OAUTH_CODE);
-        if(null!=code){
+        logger.info(" ====== OAuth.OAUTH_CODE ====== "+OAuth.OAUTH_CODE);
+        logger.info(" ====== code ====== "+code);
+        if(null==code){
             Map<String,Object> map = new HashMap<String, Object>();
             map.put("msg","code不能为空");
+            logger.info(" ====== code不能为空 ====== ");
             return map;
         }
-        String clientId = httpServletRequest.getParameter("clientid");
+        String clientId = httpServletRequest.getParameter("client_id");
         String clientSecret = httpServletRequest.getParameter("client_secret");
+        logger.info(" ======= clientId ====== "+clientId);
+        logger.info(" ======= clientSecret ====== "+clientSecret);
         OltuClientDetail oltuClientDetail = oltuService.getOltuCLentByClientIdAndclientSecret(clientId,clientSecret);
+        logger.info("oltuClientDetail ====== "+oltuClientDetail);
         if(oltuClientDetail ==null){
             Map<String,Object> map = new HashMap<String, Object>();
             map.put("msg","clientId或者clientSecret不正确");
+            logger.info(" ====== clientId或者clientSecret不正确 ====== ");
             return map;
         }
         OAuthClientRequest request = OAuthClientRequest
@@ -190,17 +207,15 @@ public class AuthorizationController {
                 .setGrantType(GrantType.AUTHORIZATION_CODE)
                 .setClientId(clientId)
                 .setClientSecret(clientSecret)
-                .setRedirectURI("http://localhost:8815/authorization/thirdPartyOauth")
                 .setCode(code)
                 .buildQueryMessage();
         request.addHeader("Accept", "application/json");
         request.addHeader("Content-Type", "application/json");
         OAuthClient oAuthClient = new OAuthClient(new URLConnectionClient());
+        logger.info("====== tokenResponse begin ======");
         OAuthAccessTokenResponse tokenResponse =
                 oAuthClient.accessToken(request, OAuth.HttpMethod.POST);
-
-        tokenResponse.getRefreshToken();
-
+        logger.info("====== tokenResponse end ======");
         OAuthToken oAuthToken = tokenResponse.getOAuthToken();
         logger.info(" ====== getOAuthToken ===== AccessToken ------ "
                 + oAuthToken.getAccessToken()+" RefreshToken ------ "
@@ -209,15 +224,19 @@ public class AuthorizationController {
 
         redisBussines.setValueWithExpire("acctoken_"+oAuthToken.getAccessToken(),oAuthToken.getAccessToken(),86400*7);
         redisBussines.setValueWithExpire("refreshtoken_"+oAuthToken.getRefreshToken(),oAuthToken.getRefreshToken(),86400*7);
-        return tokenResponse.getOAuthToken();
+        Map<String,Object> map = new HashMap<String, Object>();
+        map.put("access_token",oAuthToken.getAccessToken());
+        map.put("refresh_token",oAuthToken.getRefreshToken());
+        map.put("expires_in",86400*7);
+        return map;
     }
 
     @RequestMapping(value="oauthCreateToken",method = RequestMethod.POST)
     public Object createToken(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException , OAuthSystemException {
             String accessToken = UUID.randomUUID().toString();
             String refreshToken = UUID.randomUUID().toString();
-            logger.info(" ====== accessToken ====== "+accessToken);
-            logger.info(" ====== refreshToken ====== "+refreshToken);
+            logger.info(" ====== accessToken 1====== "+accessToken);
+            logger.info(" ====== refreshToken 1====== "+refreshToken);
 //            OAuthResponse response = OAuthASResponse
 //                    .tokenResponse(HttpServletResponse.SC_OK)
 //                    .setAccessToken(accessToken)
@@ -233,4 +252,5 @@ public class AuthorizationController {
             map.put("status",HttpServletResponse.SC_OK);
             return map;
     }
+
 }
