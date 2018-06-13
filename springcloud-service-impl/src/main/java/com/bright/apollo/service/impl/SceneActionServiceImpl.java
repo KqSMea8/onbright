@@ -4,9 +4,10 @@ import com.bright.apollo.common.entity.TSceneAction;
 import com.bright.apollo.dao.scene.mapper.TSceneActionMapper;
 import com.bright.apollo.service.SceneActionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class SceneActionServiceImpl implements SceneActionService {
 
     @Autowired
