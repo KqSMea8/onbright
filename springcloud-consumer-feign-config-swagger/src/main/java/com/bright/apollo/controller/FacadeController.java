@@ -109,37 +109,33 @@ public class FacadeController {
 	@RequestMapping(value = "/device/{serialId}", method = RequestMethod.PUT)
 	@ResponseBody
 	public ResponseObject controlDevice(@PathVariable(required = true, value = "serialId") String serialId,
-			@RequestParam(required = true, value = "status") String status
-			) {
+			@RequestParam(required = true, value = "status") String status) {
 		ResponseObject res = new ResponseObject();
 		try {
 			// the device and obox is exist
 			ResponseObject<TOboxDeviceConfig> deviceRes = feignDeviceClient.getDevice(serialId);
-			if(deviceRes==null||deviceRes.getCode()!=ResponseEnum.Success.getCode()||
-					deviceRes.getData()==null
-					){
+			if (deviceRes == null || deviceRes.getCode() != ResponseEnum.Success.getCode()
+					|| deviceRes.getData() == null) {
 				res.setCode(ResponseEnum.RequestObjectNotExist.getCode());
 				res.setMsg(ResponseEnum.RequestObjectNotExist.getMsg());
 				return res;
 			}
 			TOboxDeviceConfig tOboxDeviceConfig = deviceRes.getData();
 			ResponseObject<TObox> oboxRes = feignOboxClient.getObox(tOboxDeviceConfig.getOboxSerialId());
-			if(oboxRes==null||oboxRes.getCode()!=ResponseEnum.Success.getCode()||
-					oboxRes.getData()==null
-					){
+			if (oboxRes == null || oboxRes.getCode() != ResponseEnum.Success.getCode() || oboxRes.getData() == null) {
 				res.setCode(ResponseEnum.RequestObjectNotExist.getCode());
 				res.setMsg(ResponseEnum.RequestObjectNotExist.getMsg());
 				return res;
 			}
 			// may will add respone return status and serialId
-			ResponseObject<OboxResp> resSet =feignAliClient.setDeviceStatus(tOboxDeviceConfig.getOboxSerialId(),status);
-			if(resSet==null||resSet.getCode()!=ResponseEnum.Success.getCode()){
- 				return resSet;
+			ResponseObject<OboxResp> resSet = feignAliClient.setDeviceStatus(tOboxDeviceConfig.getOboxSerialId(),
+					status);
+			if (resSet == null || resSet.getCode() != ResponseEnum.Success.getCode()) {
+				return resSet;
 			}
 			OboxResp oboxResp = resSet.getData();
 			if (oboxResp.getType() != Type.success) {
-				if (oboxResp.getType() == Type.obox_process_failure
-						|| oboxResp.getType() == Type.socket_write_error) {
+				if (oboxResp.getType() == Type.obox_process_failure || oboxResp.getType() == Type.socket_write_error) {
 					res.setCode(ResponseEnum.SendOboxFail.getCode());
 					res.setMsg(ResponseEnum.SendOboxFail.getMsg());
 				} else if (oboxResp.getType() == Type.reply_timeout) {
@@ -262,9 +258,9 @@ public class FacadeController {
 	@ResponseBody
 	public ResponseObject searchDevicesByOldStyle(
 			@PathVariable(value = "oboxSerialId", required = true) String oboxSerialId,
-			@RequestParam(required=false,value="deviceType") String deviceType,
-			@RequestParam(required=false,value="deviceChildType") String deviceChildType,
-			@RequestParam(required=false,value="deviceChildType") String serialId) {
+			@RequestParam(required = false, value = "deviceType") String deviceType,
+			@RequestParam(required = false, value = "deviceChildType") String deviceChildType,
+			@RequestParam(required = false, value = "deviceChildType") String serialId) {
 		ResponseObject res = new ResponseObject();
 		try {
 			ResponseObject<TObox> resObox = feignOboxClient.getObox(oboxSerialId);
@@ -386,9 +382,9 @@ public class FacadeController {
 	@ResponseBody
 	public ResponseObject searchDevicesByInitiative(
 			@PathVariable(value = "oboxSerialId", required = true) String oboxSerialId,
-			@RequestParam(value = "deviceType",required=false) String deviceType,
-			@RequestParam(value = "deviceChildType",required=false) String deviceChildType,
-			@RequestParam(value = "serialId",required=false) String serialId) {
+			@RequestParam(value = "deviceType", required = false) String deviceType,
+			@RequestParam(value = "deviceChildType", required = false) String deviceChildType,
+			@RequestParam(value = "serialId", required = false) String serialId) {
 		ResponseObject res = new ResponseObject();
 		try {
 			ResponseObject<TObox> resObox = feignOboxClient.getObox(oboxSerialId);

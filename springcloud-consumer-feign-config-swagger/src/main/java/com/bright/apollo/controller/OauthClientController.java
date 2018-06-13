@@ -8,11 +8,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bright.apollo.common.entity.OauthClientDetails;
-import com.bright.apollo.feign.FeignOauthClient;
-import com.bright.apollo.feign.FeignOboxClient;
+import com.bright.apollo.feign.FeignUserClient;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
-import com.bright.apollo.service.OauthService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,14 +31,14 @@ public class OauthClientController {
 	Logger logger = Logger.getLogger(OauthClientController.class);
 	
 	@Autowired
-	private FeignOauthClient feignOauthClient;
+	private FeignUserClient feignUserClient;
 	@ApiOperation(value = "add oauth client", httpMethod = "POST", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(value = "/addClient",method = RequestMethod.POST)
 	public ResponseObject<OauthClientDetails> addClient(@RequestBody(required = true) OauthClientDetails oauthClientDetails) {
 		ResponseObject<OauthClientDetails> res=null;
 		try {
-			res=feignOauthClient.addOauthClientDetails(oauthClientDetails);
+			res=feignUserClient.addOauthClientDetails(oauthClientDetails);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			res=new ResponseObject<OauthClientDetails>();

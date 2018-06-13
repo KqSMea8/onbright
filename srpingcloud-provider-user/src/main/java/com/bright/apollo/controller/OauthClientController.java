@@ -14,7 +14,7 @@ import com.bright.apollo.service.OauthService;
 
 /**  
  *@Title:  
- *@Description: the springcloud-oauth2's work is checkout token
+ *@Description: the springcloud-oauth2's work is checkout token 
  *@Author:JettyLiu
  *@Since:2018年6月13日  
  *@Version:1.1.0  
@@ -28,7 +28,7 @@ public class OauthClientController {
 	@Autowired
 	private OauthService oauthService;
 	
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(value = "/addClient",method = RequestMethod.POST)
 	public ResponseObject<OauthClientDetails> addClient(@RequestBody(required = true) OauthClientDetails oauthClientDetails) {
 		ResponseObject<OauthClientDetails> res=new ResponseObject<OauthClientDetails>();
 		try {

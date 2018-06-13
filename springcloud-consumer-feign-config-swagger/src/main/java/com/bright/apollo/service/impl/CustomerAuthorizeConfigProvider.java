@@ -29,8 +29,8 @@ public class CustomerAuthorizeConfigProvider implements AuthorizeConfigProvider 
 	public boolean config(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry config) {
 		// permit through url
 		config.antMatchers("/swagger-ui.html", "/swagger-resources/**",
-				"/webjars/springfox-swagger-ui/**","/v2/api-docs", "/user/register/", "/user/wxLogin",
-				"/user/forget","/rokid/*").permitAll();
+				"/webjars/springfox-swagger-ui/**","/v2/api-docs", "/user/**",
+				"/rokid/*","/oauthclient/**").permitAll();
 		return false;
 	}
 
