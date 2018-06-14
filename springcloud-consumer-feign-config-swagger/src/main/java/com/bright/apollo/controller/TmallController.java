@@ -64,7 +64,7 @@ public class TmallController {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 //	@ApiOperation(value = "get deivcie by device serialId", httpMethod = "GET", produces = "application/json")
 //	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
-	@RequestMapping(value = "/tmallCmd", method = RequestMethod.POST)
+	@RequestMapping(value = "/tmallCmd", method = RequestMethod.POST,produces = "application/json ;charset=UTF-8")
 	public Object tmallCmd(@RequestBody Object object, HttpServletResponse response) throws IOException {
 
 		logger.info("====== messageID ======"+object);
@@ -96,7 +96,7 @@ public class TmallController {
 			extensionsMap.put("extension2","");
 			JSONObject devices = new JSONObject();
 
-			devices.put("deviceId","34ea34cf2e61");//34ea34cf2e63
+			devices.put("deviceId","34ea34cf2e63");
 			devices.put("deviceName","大灯");
 			devices.put("deviceType","light");
 			devices.put("zone","阳台");
@@ -112,7 +112,7 @@ public class TmallController {
 
 			JSONObject devices2 = new JSONObject();
 
-			devices2.put("deviceId","34ea34cf2e63");//34ea34cf2e61
+			devices2.put("deviceId","34ea34cf2e61");
 			devices2.put("deviceName","灯");
 			devices2.put("deviceType","light");
 			devices2.put("zone","客厅");
