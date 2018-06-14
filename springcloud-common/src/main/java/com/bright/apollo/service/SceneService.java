@@ -18,6 +18,7 @@ import com.bright.apollo.service.base.BasicService;
  */
 public interface SceneService extends BasicService{
 	public int updateScene(TScene tScene);
+	@Deprecated
 	public int deleteSceneBySceneNumber(Integer sceneNumber);
 	/**  
 	 * @param scene  
@@ -29,50 +30,59 @@ public interface SceneService extends BasicService{
 	 * @param list  
 	 * @Description:  
 	 */
+	@Deprecated
 	public <T> void batchAdd(List<T> list);
 	/**  
 	 * @param sceneNumber
 	 * @return  
 	 * @Description:  
 	 */
+	@Deprecated
 	public SceneInfo querySceneInfoBySceneNumber(Integer sceneNumber);
 	/**
 	 * @param list  
 	 * @return  
 	 * @Description:  
 	 */
+	@Deprecated
 	public List<TSceneAction> queryActionsBySceneNumber(Integer sceneNumber);
 	/**
 	 * @param list  
 	 * @return  
 	 * @Description:  
 	 */
+	@Deprecated
 	public List<TSceneCondition> queryConditionsBySceneNumber(Integer sceneNumber);
 	/**  
 	 * @param <T>
 	 * @param conditions  
 	 * @Description:  
 	 */
+	@Deprecated
 	public <T> void batchUpdate(List<T> list);
 	/**  
 	 * @param condtionId  
 	 * @Description:  
 	 */
+	@Deprecated
 	public int deleteSceneConditionById(Integer condtionId);
 	/**  
 	 * @param sceneNumber  
 	 * @Description:  
 	 */
+	@Deprecated
 	public int deleteSceneConditionBySceneNumber(Integer sceneNumber);
 	/**  
 	 * @param actionId  
 	 * @Description:  
 	 */
+	@Deprecated
 	public int deleteSceneActionById(Integer actionId);
 	/**  
 	 * @param sceneNumber  
 	 * @Description:  
 	 */
+	@Deprecated
 	public int deleteSceneActionBySceneNumber(Integer sceneNumber);
 	/**  
 	 * @param userId
@@ -81,12 +91,14 @@ public interface SceneService extends BasicService{
 	 * @return  
 	 * @Description:  
 	 */
+	@Deprecated
 	public List<TScene> querySceneByUserId(Integer userId, Integer pageIndex, Integer pageSize);
 	/**  
 	 * @param userId
 	 * @return  
 	 * @Description:  
 	 */
+	@Deprecated
 	public int queryCountSceneByUserId(Integer userId);
 
 	List<TScene> getSceneByOboxSerialId(String oboxSerialId);

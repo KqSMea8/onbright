@@ -38,6 +38,7 @@ public class SceneServiceImpl implements SceneService {
 	 * apollo.business.base.BasicBusiness, java.lang.Object)
 	 */
 	@Override
+	@Deprecated
 	public <T, E> T handlerExample(E e) {
 		List<T> selectByExample = handlerExampleToList(e);
 		if (selectByExample != null && selectByExample.size() > 0)
@@ -54,6 +55,7 @@ public class SceneServiceImpl implements SceneService {
 	 */
 	@SuppressWarnings({ "unchecked" })
 	@Override
+	@Deprecated
 	public <T, E> List<T> handlerExampleToList(E e) {
 //		return sceneBusiness.selectByExample(e);
 		return null;
@@ -67,6 +69,7 @@ public class SceneServiceImpl implements SceneService {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
+	@Deprecated
 	public <T> T queryTById(T t) {
 //		if (t != null)
 //			return (T) sceneBusiness.selectByPrimaryKey(t);
@@ -97,6 +100,7 @@ public class SceneServiceImpl implements SceneService {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
+	@Deprecated
 	public int deleteSceneBySceneNumber(Integer sceneNumber) {
 //		TSceneExample example = new TSceneExample();
 //		example.or().andSceneNumberEqualTo(sceneNumber);
@@ -133,6 +137,7 @@ public class SceneServiceImpl implements SceneService {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
+	@Deprecated
 	public <T> void batchAdd(List<T> list) {
 //		sceneBusiness.batchAdd(list);
 	}
@@ -145,6 +150,7 @@ public class SceneServiceImpl implements SceneService {
 	 * lang.Integer)
 	 */
 	@Override
+	@Deprecated
 	public SceneInfo querySceneInfoBySceneNumber(Integer sceneNumber) {
 		TScene scene = queryTById(new TScene(sceneNumber));
 		if (scene == null)
@@ -169,6 +175,7 @@ public class SceneServiceImpl implements SceneService {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
+	@Deprecated
 	public List<TSceneAction> queryActionsBySceneNumber(Integer sceneNumber) {
 		TSceneActionExample example = new TSceneActionExample();
 		example.or().andSceneNumberEqualTo(sceneNumber);
@@ -185,6 +192,7 @@ public class SceneServiceImpl implements SceneService {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
+	@Deprecated
 	public List<TSceneCondition> queryConditionsBySceneNumber(Integer sceneNumber) {
 		TSceneConditionExample example = new TSceneConditionExample();
 		example.or().andSceneNumberEqualTo(sceneNumber);
@@ -199,6 +207,7 @@ public class SceneServiceImpl implements SceneService {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
+	@Deprecated
 	public <T> void batchUpdate(List<T> list) {
 //		sceneBusiness.batchUpdate(list);
 	}
@@ -212,6 +221,7 @@ public class SceneServiceImpl implements SceneService {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
+	@Deprecated
 	public int deleteSceneConditionById(Integer condtionId) {
 //		return sceneBusiness.deleteByPrimaryKey(new TSceneCondition(condtionId));
 		return 0;
@@ -226,6 +236,7 @@ public class SceneServiceImpl implements SceneService {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
+	@Deprecated
 	public int deleteSceneConditionBySceneNumber(Integer sceneNumber) {
 		TSceneConditionExample conditionExample = new TSceneConditionExample();
 		conditionExample.or().andSceneNumberEqualTo(sceneNumber);
@@ -242,6 +253,7 @@ public class SceneServiceImpl implements SceneService {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
+	@Deprecated
 	public int deleteSceneActionById(Integer actionId) {
 //		return sceneBusiness.deleteByPrimaryKey(new TSceneAction(actionId));
 		return 0;
@@ -256,6 +268,7 @@ public class SceneServiceImpl implements SceneService {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
+	@Deprecated
 	public int deleteSceneActionBySceneNumber(Integer sceneNumber) {
 		TSceneActionExample actionExample = new TSceneActionExample();
 		actionExample.or().andSceneNumberEqualTo(sceneNumber);
@@ -268,6 +281,7 @@ public class SceneServiceImpl implements SceneService {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
+	@Deprecated
 	public List<TScene> querySceneByUserId(Integer userId, Integer pageIndex, Integer pageSize) {
 // 		return sceneBusiness.querySceneByUserId(userId,pageIndex*pageSize,(pageIndex+1)*pageSize);
 		return null;
@@ -277,6 +291,7 @@ public class SceneServiceImpl implements SceneService {
 	 * @see com.bright.apollo.service.SceneService#queryCountSceneByUserId(java.lang.Integer)  
 	 */
 	@Override
+	@Deprecated
 	public int queryCountSceneByUserId(Integer userId) {
 // 		return sceneBusiness.queryCountSceneByUserId(userId);
 		return 0;

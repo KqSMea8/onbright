@@ -29,6 +29,7 @@ public class DeviceServiceImpl implements DeviceService {
 	 * Object)
 	 */
 	@Override
+	@Deprecated
 	public <T, E> T handlerExample(E e) {
 		List<T> selectByExample = handlerExampleToList(e);
 		if (selectByExample != null && selectByExample.size() > 0)
@@ -45,6 +46,7 @@ public class DeviceServiceImpl implements DeviceService {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
+	@Deprecated
 	public <T, E> List<T> handlerExampleToList(E e) {
 //		return deviceBusiness.selectByExample(e);
 		return null;
@@ -58,6 +60,7 @@ public class DeviceServiceImpl implements DeviceService {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
+	@Deprecated
 	public <T> T queryTById(T t) {
 //		if (t != null)
 //			return (T) deviceBusiness.selectByPrimaryKey(t);
@@ -68,6 +71,7 @@ public class DeviceServiceImpl implements DeviceService {
 	 * @see com.bright.apollo.service.DeviceService#queryDeviceBySerialId(java.lang.String)  
 	 */
 	@Override
+	@Deprecated
 	public TOboxDeviceConfig queryDeviceBySerialId(String serialId) {
 		TOboxDeviceConfigExample example=new TOboxDeviceConfigExample();
 		example.or().andDeviceSerialIdEqualTo(serialId);
@@ -78,6 +82,7 @@ public class DeviceServiceImpl implements DeviceService {
 	 * @see com.bright.apollo.service.DeviceService#updateDeviceBySerialId(com.bright.apollo.common.entity.TOboxDeviceConfig)  
 	 */
 	@Override
+	@Deprecated
 	public void updateDeviceBySerialId(TOboxDeviceConfig device) {
 //		deviceBusiness.updateDeviceBySerialId(device);
 		
@@ -88,6 +93,7 @@ public class DeviceServiceImpl implements DeviceService {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
+	@Deprecated
 	public int addDevice(TOboxDeviceConfig device) {
 		  
 //		return deviceBusiness.insertSelective(device);
@@ -99,6 +105,7 @@ public class DeviceServiceImpl implements DeviceService {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
+	@Deprecated
 	public void deleteDeviceBySerialId(String serialId) {
 		TOboxDeviceConfigExample example=new TOboxDeviceConfigExample();
 		example.or().andDeviceSerialIdEqualTo(serialId);
@@ -110,6 +117,7 @@ public class DeviceServiceImpl implements DeviceService {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
+	@Deprecated
 	public List<TOboxDeviceConfig> queryDeviceByUserId(Integer userId, Integer pageIndex, Integer pageSize) {
 		  
 //		return deviceBusiness.queryDeviceByUserId(userId,pageIndex*pageSize,(pageIndex+1)*pageSize);
@@ -120,6 +128,7 @@ public class DeviceServiceImpl implements DeviceService {
 	 * @see com.bright.apollo.service.DeviceService#queryCountOboxByUserId(java.lang.Integer)  
 	 */
 	@Override
+	@Deprecated
 	public int queryCountDeviceByUserId(Integer userId) {
 	 
 //		return deviceBusiness.queryCountDeviceByUserId(userId);

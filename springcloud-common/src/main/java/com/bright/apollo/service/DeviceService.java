@@ -19,24 +19,28 @@ public interface DeviceService extends BasicService{
 	 * @return  
 	 * @Description:  
 	 */
+	@Deprecated
 	TOboxDeviceConfig queryDeviceBySerialId(String serialId);
 
 	/**  
 	 * @param device  
 	 * @Description:  
 	 */
+	@Deprecated
 	void updateDeviceBySerialId(TOboxDeviceConfig device);
 
 	/**  
 	 * @param device  
 	 * @Description:  
 	 */
+	@Deprecated
 	int addDevice(TOboxDeviceConfig device);
 
 	/**  
 	 * @param serialId  
 	 * @Description:  
 	 */
+	@Deprecated
 	void deleteDeviceBySerialId(String serialId);
 
 	/**  
@@ -46,6 +50,7 @@ public interface DeviceService extends BasicService{
 	 * @return  
 	 * @Description:  
 	 */
+	@Deprecated
 	List<TOboxDeviceConfig> queryDeviceByUserId(Integer userId, Integer pageIndex, Integer pageSize);
 
 	/**  
@@ -53,6 +58,7 @@ public interface DeviceService extends BasicService{
 	 * @return  
 	 * @Description:  
 	 */
+	@Deprecated
 	int queryCountDeviceByUserId(Integer userId);
 
 }

@@ -40,18 +40,21 @@ public interface UserService extends BasicService{
 	 * @param object3  
 	 * @Description:  
 	 */
+	@Deprecated
 	int saveUserByWeiXinInfo(String openid, String headimgurl, String nickname);
 
 	/**  
 	 * @param tUserByMobile  
 	 * @Description:  
 	 */
+	@Deprecated
 	int updateUser(TUser tUserByMobile);
 
 	/**  
 	 * @param tUser  
 	 * @Description:  
 	 */
+	@Deprecated
 	int deleteUserById(Integer userId);
 
 	/**  
@@ -59,12 +62,14 @@ public interface UserService extends BasicService{
 	 * @param MobileUserId  
 	 * @Description:  
 	 */
+	@Deprecated
 	List<TUserObox> getListOfUserObox(Integer WxUserId, Integer MobileUserId);
 
 	/**  
 	 * @param tUserOboxs  
 	 * @Description:  
 	 */
+	@Deprecated
 	int insertBatchByUserObox(List<TUserObox> tUserOboxs);
 
 	/**  
@@ -72,12 +77,14 @@ public interface UserService extends BasicService{
 	 * @param id2  
 	 * @Description:  
 	 */
+	@Deprecated
 	List<TUserObox> getListOverPrivilegeOfUserObox(Integer WxUserId, Integer MobileUserId);
 
 	/**  
 	 * @param list  
 	 * @Description:  
 	 */
+	@Deprecated
 	int updateBatchByUserObox(List<TUserObox> list);
 
 	/**  
@@ -86,12 +93,14 @@ public interface UserService extends BasicService{
 	 * @return  
 	 * @Description:  
 	 */
+	@Deprecated
 	List<TUserDevice> getListOfUserDevice(Integer WxUserId, Integer MobileUserId);
 
 	/**  
 	 * @param tUserDevices  
 	 * @Description:  
 	 */
+	@Deprecated
 	int insertBatchByUserDevice(List<TUserDevice> tUserDevices);
 
 	/**  
@@ -100,12 +109,14 @@ public interface UserService extends BasicService{
 	 * @return  
 	 * @Description:  
 	 */
+	@Deprecated
 	List<TUserDevice> getListOverPrivilegeOfUserDevice(Integer WxUserId, Integer MobileUserId);
 
 	/**  
 	 * @param list2  
 	 * @Description:  
 	 */
+	@Deprecated
 	int updateBatchByUserDevice(List<TUserDevice> list2);
 
 	/**  
@@ -113,6 +124,7 @@ public interface UserService extends BasicService{
 	 * @return  
 	 * @Description:  
 	 */
+	@Deprecated
 	List<TUserObox> queryUserOboxByUserId(Integer id);
 
 	/**  
@@ -120,6 +132,7 @@ public interface UserService extends BasicService{
 	 * @return  
 	 * @Description:  
 	 */
+	@Deprecated
 	List<TUserDevice> queryUserDeviceByUserId(Integer id);
 
 	/**  
@@ -127,6 +140,7 @@ public interface UserService extends BasicService{
 	 * @return  
 	 * @Description:  
 	 */
+	@Deprecated
 	List<TUserScene> queryUserSceneByUserId(Integer id);
 
 	TUser getUserByUserId(int id);
