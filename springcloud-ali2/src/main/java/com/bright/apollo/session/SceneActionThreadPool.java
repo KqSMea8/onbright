@@ -12,12 +12,13 @@ import com.zz.common.util.StringUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
+@Component
 public class SceneActionThreadPool {
     private static ExecutorService executor;
 

@@ -32,9 +32,8 @@ public class HystrixFeignSceneFallback extends BasicHystrixFeignFallback impleme
 	 * com.bright.apollo.feign.FeignSceneClient#updateScene(java.lang.Integer,
 	 * com.bright.apollo.response.SceneInfo)
 	 */
-	@SuppressWarnings("rawtypes")
 	@Override
-	public ResponseObject updateScene(Integer sceneNumber, SceneInfo info) {
+	public ResponseObject<SceneInfo> updateScene(Integer sceneNumber, SceneInfo info) {
 		logger.warn("===scene server is break===");
 		return serverError();
 	}

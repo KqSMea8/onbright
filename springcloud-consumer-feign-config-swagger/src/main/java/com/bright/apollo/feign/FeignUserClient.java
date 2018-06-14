@@ -5,9 +5,11 @@ import java.util.List;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.bright.apollo.common.entity.OauthClientDetails;
 import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.common.entity.TScene;
@@ -31,7 +33,7 @@ public interface FeignUserClient {
 	public ResponseObject register(@PathVariable(value = "mobile") String mobile);
 
 	@SuppressWarnings("rawtypes")
-	@RequestMapping(value = "/user/{mobile}", method = RequestMethod.GET)
+	@RequestMapping(value = "/user/forget/{mobile}", method = RequestMethod.GET)
 	public ResponseObject forget(@PathVariable(value = "mobile") String mobile);
 
  
@@ -69,4 +71,14 @@ public interface FeignUserClient {
 
 	@RequestMapping(value = "/user/getUserById/{id}", method = RequestMethod.GET)
 	public ResponseObject<TUser> getUserById(Integer id);
+	
+	
+	/**  
+	 * @param oauthClientDetails
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/oauthclient/addClient", method = RequestMethod.POST)
+	ResponseObject<OauthClientDetails> addOauthClientDetails(@RequestBody(required = true) OauthClientDetails oauthClientDetails);
+
 }

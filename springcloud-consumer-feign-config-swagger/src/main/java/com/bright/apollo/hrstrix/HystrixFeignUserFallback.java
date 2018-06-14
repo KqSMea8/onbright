@@ -1,13 +1,9 @@
 package com.bright.apollo.hrstrix;
 
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
-import com.bright.apollo.common.entity.TObox;
-import com.bright.apollo.common.entity.TOboxDeviceConfig;
-import com.bright.apollo.common.entity.TScene;
+import com.bright.apollo.common.entity.OauthClientDetails;
 import com.bright.apollo.common.entity.TUser;
 import com.bright.apollo.feign.FeignUserClient;
 import com.bright.apollo.response.ResponseObject;
@@ -90,6 +86,16 @@ public class HystrixFeignUserFallback extends BasicHystrixFeignFallback implemen
 
 	@Override
 	public ResponseObject<TUser> getUserById(Integer id) {
+		logger.warn("===user server is break===");
+		ResponseObject res = serverError();
+		return res;
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignUserClient#addOauthClientDetails(com.bright.apollo.common.entity.OauthClientDetails)  
+	 */
+	@Override
+	public ResponseObject<OauthClientDetails> addOauthClientDetails(OauthClientDetails oauthClientDetails) {
 		logger.warn("===user server is break===");
 		ResponseObject res = serverError();
 		return res;

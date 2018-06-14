@@ -96,7 +96,7 @@ public class TmallController {
 			extensionsMap.put("extension2","");
 			JSONObject devices = new JSONObject();
 
-			devices.put("deviceId","34ea34cf2e63");
+			devices.put("deviceId","34ea34cf2e61");//34ea34cf2e63
 			devices.put("deviceName","大灯");
 			devices.put("deviceType","light");
 			devices.put("zone","阳台");
@@ -112,7 +112,7 @@ public class TmallController {
 
 			JSONObject devices2 = new JSONObject();
 
-			devices2.put("deviceId","34ea34cf2e61");
+			devices2.put("deviceId","34ea34cf2e63");//34ea34cf2e61
 			devices2.put("deviceName","灯");
 			devices2.put("deviceType","light");
 			devices2.put("zone","客厅");
@@ -178,69 +178,69 @@ public class TmallController {
 					setConnectionManager(connectionManager)
 					.setDefaultRequestConfig(requestConfig).build();
 
-			if(name.equals("TurnOn")&&deviceId.equals("34ea34cf2e61")){
-				nvps.add(new BasicNameValuePair("CMD", "set_group"));
-				nvps.add(new BasicNameValuePair("access_token", "cbdea8b7-451e-4d04-a254-2dbe11d29ff1"));
-				nvps.add(new BasicNameValuePair("operate_type", "06"));
-				nvps.add(new BasicNameValuePair("group_id", "104"));
-				nvps.add(new BasicNameValuePair("group_state", "ff000000000002"));
-				nvps.add(new BasicNameValuePair("appkey", "00000000-2898-fa39-a85f-89320033c587"));
-				httpPost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
-				httpClient.execute(httpPost);
-//				("https://cloud.on-bright.com/common?CMD=set_group&access_token=cbdea8b7-451e-4d04-a254-2dbe11d29ff1&operate_type=06&group_id=104&group_state=ff000000000002&appkey=00000000-2898-fa39-a85f-89320033c587");
-			}
-			if(name.equals("TurnOff")&&deviceId.equals("34ea34cf2e61")){
-				nvps.add(new BasicNameValuePair("CMD", "set_group"));
-				nvps.add(new BasicNameValuePair("access_token", "cbdea8b7-451e-4d04-a254-2dbe11d29ff1"));
-				nvps.add(new BasicNameValuePair("operate_type", "06"));
-				nvps.add(new BasicNameValuePair("group_id", "104"));
-				nvps.add(new BasicNameValuePair("group_state", "00000000000002"));
-				nvps.add(new BasicNameValuePair("appkey", "00000000-2898-fa39-a85f-89320033c587"));
-				httpPost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
-				httpClient.execute(httpPost);
-//				response.sendRedirect("https://cloud.on-bright.com/common?CMD=set_group&access_token=cbdea8b7-451e-4d04-a254-2dbe11d29ff1&operate_type=06&group_id=104&group_state=00000000000002&appkey=00000000-2898-fa39-a85f-89320033c587");
-			}
 			if(name.equals("TurnOn")&&deviceId.equals("34ea34cf2e63")){
 				nvps.add(new BasicNameValuePair("CMD", "set_group"));
-				nvps.add(new BasicNameValuePair("access_token", "cbdea8b7-451e-4d04-a254-2dbe11d29ff1"));
+				nvps.add(new BasicNameValuePair("access_token", "b0a81b1b-844e-4fe5-a52c-251fbbbe4db3"));
 				nvps.add(new BasicNameValuePair("operate_type", "06"));
-				nvps.add(new BasicNameValuePair("group_id", "105"));
+				nvps.add(new BasicNameValuePair("group_id", "104"));
 				nvps.add(new BasicNameValuePair("group_state", "ff000000000002"));
 				nvps.add(new BasicNameValuePair("appkey", "00000000-2898-fa39-a85f-89320033c587"));
 				httpPost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
 				httpClient.execute(httpPost);
-//				("https://cloud.on-bright.com/common?CMD=set_group&access_token=cbdea8b7-451e-4d04-a254-2dbe11d29ff1&operate_type=06&group_id=104&group_state=ff000000000002&appkey=00000000-2898-fa39-a85f-89320033c587");
+//				("https://cloud.on-bright.com/common?CMD=set_group&access_token=b0a81b1b-844e-4fe5-a52c-251fbbbe4db3&operate_type=06&group_id=104&group_state=ff000000000002&appkey=00000000-2898-fa39-a85f-89320033c587");
 			}
 			if(name.equals("TurnOff")&&deviceId.equals("34ea34cf2e63")){
 				nvps.add(new BasicNameValuePair("CMD", "set_group"));
-				nvps.add(new BasicNameValuePair("access_token", "cbdea8b7-451e-4d04-a254-2dbe11d29ff1"));
+				nvps.add(new BasicNameValuePair("access_token", "b0a81b1b-844e-4fe5-a52c-251fbbbe4db3"));
+				nvps.add(new BasicNameValuePair("operate_type", "06"));
+				nvps.add(new BasicNameValuePair("group_id", "104"));
+				nvps.add(new BasicNameValuePair("group_state", "00000000000002"));
+				nvps.add(new BasicNameValuePair("appkey", "00000000-2898-fa39-a85f-89320033c587"));
+				httpPost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+				httpClient.execute(httpPost);
+//				response.sendRedirect("https://cloud.on-bright.com/common?CMD=set_group&access_token=b0a81b1b-844e-4fe5-a52c-251fbbbe4db3&operate_type=06&group_id=104&group_state=00000000000002&appkey=00000000-2898-fa39-a85f-89320033c587");
+			}
+			if(name.equals("TurnOn")&&deviceId.equals("34ea34cf2e61")){
+				nvps.add(new BasicNameValuePair("CMD", "set_group"));
+				nvps.add(new BasicNameValuePair("access_token", "b0a81b1b-844e-4fe5-a52c-251fbbbe4db3"));
+				nvps.add(new BasicNameValuePair("operate_type", "06"));
+				nvps.add(new BasicNameValuePair("group_id", "105"));
+				nvps.add(new BasicNameValuePair("group_state", "ff000000000002"));
+				nvps.add(new BasicNameValuePair("appkey", "00000000-2898-fa39-a85f-89320033c587"));
+				httpPost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+				httpClient.execute(httpPost);
+//				("https://cloud.on-bright.com/common?CMD=set_group&access_token=b0a81b1b-844e-4fe5-a52c-251fbbbe4db3&operate_type=06&group_id=104&group_state=ff000000000002&appkey=00000000-2898-fa39-a85f-89320033c587");
+			}
+			if(name.equals("TurnOff")&&deviceId.equals("34ea34cf2e61")){
+				nvps.add(new BasicNameValuePair("CMD", "set_group"));
+				nvps.add(new BasicNameValuePair("access_token", "b0a81b1b-844e-4fe5-a52c-251fbbbe4db3"));
 				nvps.add(new BasicNameValuePair("operate_type", "06"));
 				nvps.add(new BasicNameValuePair("group_id", "105"));
 				nvps.add(new BasicNameValuePair("group_state", "00000000000002"));
 				nvps.add(new BasicNameValuePair("appkey", "00000000-2898-fa39-a85f-89320033c587"));
 				httpPost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
 				httpClient.execute(httpPost);
-//				response.sendRedirect("https://cloud.on-bright.com/common?CMD=set_group&access_token=cbdea8b7-451e-4d04-a254-2dbe11d29ff1&operate_type=06&group_id=104&group_state=00000000000002&appkey=00000000-2898-fa39-a85f-89320033c587");
+//				response.sendRedirect("https://cloud.on-bright.com/common?CMD=set_group&access_token=b0a81b1b-844e-4fe5-a52c-251fbbbe4db3&operate_type=06&group_id=104&group_state=00000000000002&appkey=00000000-2898-fa39-a85f-89320033c587");
 			}
 			if(name.equals("TurnOn")&&deviceId.equals("34ea34cf2e69")){
 				nvps.add(new BasicNameValuePair("CMD", "setting_node_status"));
-				nvps.add(new BasicNameValuePair("access_token", "cbdea8b7-451e-4d04-a254-2dbe11d29ff1"));
+				nvps.add(new BasicNameValuePair("access_token", "b0a81b1b-844e-4fe5-a52c-251fbbbe4db3"));
 				nvps.add(new BasicNameValuePair("serialId", "185f010000"));
 				nvps.add(new BasicNameValuePair("status", "02000000000000"));
 				nvps.add(new BasicNameValuePair("appkey", "00000000-2898-fa39-a85f-89320033c587"));
 				httpPost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
 				httpClient.execute(httpPost);
-//				("https://cloud.on-bright.com/common?CMD=set_group&access_token=cbdea8b7-451e-4d04-a254-2dbe11d29ff1&operate_type=06&group_id=104&group_state=ff000000000002&appkey=00000000-2898-fa39-a85f-89320033c587");
+//				("https://cloud.on-bright.com/common?CMD=set_group&access_token=b0a81b1b-844e-4fe5-a52c-251fbbbe4db3&operate_type=06&group_id=104&group_state=ff000000000002&appkey=00000000-2898-fa39-a85f-89320033c587");
 			}
 			if(name.equals("TurnOff")&&deviceId.equals("34ea34cf2e69")){
 				nvps.add(new BasicNameValuePair("CMD", "setting_node_status"));
-				nvps.add(new BasicNameValuePair("access_token", "cbdea8b7-451e-4d04-a254-2dbe11d29ff1"));
+				nvps.add(new BasicNameValuePair("access_token", "b0a81b1b-844e-4fe5-a52c-251fbbbe4db3"));
 				nvps.add(new BasicNameValuePair("serialId", "185f010000"));
 				nvps.add(new BasicNameValuePair("status", "00000000000000"));
 				nvps.add(new BasicNameValuePair("appkey", "00000000-2898-fa39-a85f-89320033c587"));
 				httpPost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
 				httpClient.execute(httpPost);
-//				response.sendRedirect("https://cloud.on-bright.com/common?CMD=set_group&access_token=cbdea8b7-451e-4d04-a254-2dbe11d29ff1&operate_type=06&group_id=104&group_state=00000000000002&appkey=00000000-2898-fa39-a85f-89320033c587");
+//				response.sendRedirect("https://cloud.on-bright.com/common?CMD=set_group&access_token=b0a81b1b-844e-4fe5-a52c-251fbbbe4db3&operate_type=06&group_id=104&group_state=00000000000002&appkey=00000000-2898-fa39-a85f-89320033c587");
 			}
 			headerMap.put("namespace","AliGenie.Iot.Device.Control");
 			headerMap.put("name",name+"Response");

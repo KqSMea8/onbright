@@ -38,7 +38,7 @@ public interface FeignSceneClient {
 	 */
 	@RequestMapping(value = "/scene/{sceneNumber}", method = RequestMethod.PUT)
 	@SuppressWarnings("rawtypes")
-	ResponseObject updateScene(@PathVariable(value = "sceneNumber") Integer sceneNumber, @RequestBody SceneInfo info);
+	ResponseObject<SceneInfo> updateScene(@PathVariable(value = "sceneNumber") Integer sceneNumber, @RequestBody SceneInfo info);
 
 	/**
 	 * @param sceneNumber

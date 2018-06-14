@@ -37,7 +37,7 @@ public interface FeignDeviceClient {
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/device/{serialId}", method = RequestMethod.PUT)
-	ResponseObject updateDevice(@PathVariable(value = "serialId") String serialId,@RequestBody TOboxDeviceConfig device);
+	ResponseObject<TOboxDeviceConfig> updateDevice(@PathVariable(value = "serialId") String serialId,@RequestBody TOboxDeviceConfig device);
 
 	/**  
 	 * @param serialId
@@ -46,7 +46,7 @@ public interface FeignDeviceClient {
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/device/{serialId}", method = RequestMethod.POST)
-	ResponseObject addDevice(@PathVariable(value = "serialId") String serialId,@RequestBody TOboxDeviceConfig device);
+	ResponseObject<TOboxDeviceConfig> addDevice(@PathVariable(value = "serialId") String serialId,@RequestBody TOboxDeviceConfig device);
 
 	/**  
 	 * @param serialId

@@ -16,10 +16,6 @@ import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.service.DeviceService;
 
-
-
-
-
 /**
  * @Title:
  * @Description:
@@ -63,11 +59,11 @@ public class DeviceController {
 	// list page of device
 
 	// update device
-	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/{serialId}", method = RequestMethod.PUT)
-	public ResponseObject updateDevice(@PathVariable(required = true, value = "serialId") String serialId,
+	public ResponseObject<TOboxDeviceConfig> updateDevice(
+			@PathVariable(required = true, value = "serialId") String serialId,
 			@RequestBody(required = true) TOboxDeviceConfig device) {
-		ResponseObject res = new ResponseObject();
+		ResponseObject<TOboxDeviceConfig> res = new ResponseObject<TOboxDeviceConfig>();
 		try {
 			if (deviceService.queryDeviceBySerialId(serialId) == null) {
 				res.setCode(ResponseEnum.RequestObjectNotExist.getCode());
@@ -76,6 +72,7 @@ public class DeviceController {
 				deviceService.updateDeviceBySerialId(device);
 				res.setCode(ResponseEnum.Success.getCode());
 				res.setMsg(ResponseEnum.Success.getMsg());
+				res.setData(deviceService.queryDeviceBySerialId(serialId));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -87,11 +84,10 @@ public class DeviceController {
 	}
 
 	// add device
-	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/{serialId}", method = RequestMethod.POST)
-	public ResponseObject addDevice(@PathVariable(required = true, value = "serialId") String serialId,
+	public ResponseObject<TOboxDeviceConfig> addDevice(@PathVariable(required = true, value = "serialId") String serialId,
 			@RequestBody(required = true) TOboxDeviceConfig device) {
-		ResponseObject res = new ResponseObject();
+		ResponseObject<TOboxDeviceConfig> res = new ResponseObject<TOboxDeviceConfig>();
 		try {
 			if (deviceService.queryDeviceBySerialId(serialId) != null) {
 				res.setCode(ResponseEnum.ObjExist.getCode());
@@ -100,6 +96,7 @@ public class DeviceController {
 				deviceService.addDevice(device);
 				res.setCode(ResponseEnum.Success.getCode());
 				res.setMsg(ResponseEnum.Success.getMsg());
+				res.setData(deviceService.queryDeviceBySerialId(serialId));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -133,7 +130,6 @@ public class DeviceController {
 	}
 
 	// list device
-	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/{userId}/{pageIndex}/{pageSize}", method = RequestMethod.GET)
 	public ResponseObject<List<TOboxDeviceConfig>> getDeviceByUserAndPage(
 			@PathVariable(required = true, value = "userId") Integer userId,
@@ -171,14 +167,14 @@ public class DeviceController {
 		return res;
 	}
 
-	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/getOboxDeviceConfigByUserId/{userId}", method = RequestMethod.GET)
-	public ResponseObject<TOboxDeviceConfig> getOboxDeviceConfigByUserId(@PathVariable(required = true, value = "userId") Integer userId) {
+	public ResponseObject<List<TOboxDeviceConfig>> getOboxDeviceConfigByUserId(
+			@PathVariable(required = true, value = "userId") Integer userId) {
 		logger.info(" ====== getOboxDeviceConfigByUserId ====== ");
-		ResponseObject res = new ResponseObject();
+		ResponseObject<List<TOboxDeviceConfig>> res = new ResponseObject<List<TOboxDeviceConfig>>();
 		try {
 			List<TOboxDeviceConfig> oboxDeviceConfigList = oboxDeviceConfigService.getOboxDeviceConfigByUserId(userId);
-			if ( oboxDeviceConfigList == null) {
+			if (oboxDeviceConfigList == null) {
 				res.setCode(ResponseEnum.NoExistCode.getCode());
 				res.setMsg(ResponseEnum.NoExistCode.getMsg());
 			} else {

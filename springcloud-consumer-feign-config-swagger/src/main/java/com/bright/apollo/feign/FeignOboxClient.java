@@ -36,9 +36,8 @@ public interface FeignOboxClient {
 	 * @return
 	 * @Description:
 	 */
-	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/obox/{serialId}", method = RequestMethod.PUT)
-	ResponseObject updateObox(@PathVariable(value = "serialId") String serialId, @RequestBody TObox obox);
+	ResponseObject<TObox> updateObox(@PathVariable(value = "serialId") String serialId, @RequestBody TObox obox);
 
 	/**
 	 * @param serialId
@@ -50,13 +49,14 @@ public interface FeignOboxClient {
 	ResponseObject deleteObox(@PathVariable(value = "serialId") String serialId);
 
 	/**
+	 * @param serialId 
 	 * @param obox
 	 * @return
 	 * @Description:
 	 */
-	@SuppressWarnings("rawtypes")
-	@RequestMapping(value = "/obox/addObox", method = RequestMethod.POST)
-	ResponseObject addObox(@RequestBody TObox obox);
+	@RequestMapping(value = "/obox/addObox/{serialId}", method = RequestMethod.POST)
+	ResponseObject<TObox> addObox(@PathVariable(required = true, value = "serialId") String serialId,
+			@RequestBody(required = true) TObox obox);
 
 	/**
 	 * @param id
