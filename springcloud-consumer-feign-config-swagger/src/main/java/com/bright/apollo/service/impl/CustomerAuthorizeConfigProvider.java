@@ -30,8 +30,9 @@ public class CustomerAuthorizeConfigProvider implements AuthorizeConfigProvider 
 		// permit through url
 		System.out.println(" ===config=== ");
 		config.antMatchers("/swagger-ui.html", "/swagger-resources/**",
-				"/webjars/springfox-swagger-ui/**","/v2/api-docs", "/user/register/", "/user/wxLogin",
-				"/user/forget","/rokid/*","/tmall/**").permitAll();
+				"/webjars/springfox-swagger-ui/**","/v2/api-docs", "/user/**",
+				"/rokid/*","/oauthclient/**","/tmall/**").permitAll();
+
 		return false;
 	}
 
