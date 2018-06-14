@@ -46,6 +46,7 @@ public class UserServiceImpl implements UserService {
 	private TUserDeviceMapper userDeviceMapper;
 
 	@Override
+	@Deprecated
 	public <T, E> T handlerExample(E e) {
 		List<T> selectByExample = handlerExampleToList(e);
 		if (selectByExample != null && selectByExample.size() > 0)
@@ -62,6 +63,7 @@ public class UserServiceImpl implements UserService {
 	 */
 	@SuppressWarnings({ "unchecked" })
 	@Override
+	@Deprecated
 	public <T, E> List<T> handlerExampleToList(E e) {
 //		return userBusiness.selectByExample(e);
 		return null;
@@ -75,6 +77,7 @@ public class UserServiceImpl implements UserService {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
+	@Deprecated
 	public <T> T queryTById(T t) {
 //		if (t != null)
 //			return (T) userBusiness.selectByPrimaryKey(t);
@@ -106,6 +109,7 @@ public class UserServiceImpl implements UserService {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
+	@Deprecated
 	public int saveUserByWeiXinInfo(String openid, String headimgurl, String nickname) {
 
 //		return userBusiness.insertSelective(new TUser(openid, nickname, headimgurl));
@@ -121,6 +125,7 @@ public class UserServiceImpl implements UserService {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
+	@Deprecated
 	public int updateUser(TUser tUser) {
 //		return userBusiness.updateByPrimaryKeySelective(tUser);
 		return 0;
@@ -135,6 +140,7 @@ public class UserServiceImpl implements UserService {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
+	@Deprecated
 	public int deleteUserById(Integer userId) {
 		TUserExample example = new TUserExample();
 		example.or().andIdEqualTo(userId);
@@ -147,6 +153,7 @@ public class UserServiceImpl implements UserService {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
+	@Deprecated
 	public List<TUserObox> getListOfUserObox(Integer WxUserId, Integer MobileUserId) {
 		  
 //		return userBusiness.getListOfUserObox(WxUserId,MobileUserId);
@@ -158,6 +165,7 @@ public class UserServiceImpl implements UserService {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
+	@Deprecated
 	public int insertBatchByUserObox(List<TUserObox> tUserOboxs) {
 		  
 //		return userBusiness.insertBatchByUserObox(tUserOboxs);
@@ -169,6 +177,7 @@ public class UserServiceImpl implements UserService {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
+	@Deprecated
 	public List<TUserObox> getListOverPrivilegeOfUserObox(Integer WxUserId, Integer MobileUserId) {
 		  
 //		return userBusiness.getListOverPrivilegeOfUserObox(WxUserId,MobileUserId);
@@ -180,6 +189,7 @@ public class UserServiceImpl implements UserService {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
+	@Deprecated
 	public int updateBatchByUserObox(List<TUserObox> list) {
 		  
 //		return userBusiness.updateBatchByUserObox(list);
@@ -191,6 +201,7 @@ public class UserServiceImpl implements UserService {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
+	@Deprecated
 	public List<TUserDevice> getListOfUserDevice(Integer WxUserId, Integer MobileUserId) {
 		  
 //		return userBusiness.getListOfUserDevice(WxUserId,MobileUserId);
@@ -202,6 +213,7 @@ public class UserServiceImpl implements UserService {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
+	@Deprecated
 	public int insertBatchByUserDevice(List<TUserDevice> tUserDevices) {
 //		return userBusiness.insertBatchByUserDevice(tUserDevices);
 		return 0;
@@ -212,6 +224,7 @@ public class UserServiceImpl implements UserService {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
+	@Deprecated
 	public List<TUserDevice> getListOverPrivilegeOfUserDevice(Integer WxUserId, Integer MobileUserId) {
 	 
 //		return userBusiness.getListOverPrivilegeOfUserDevice(WxUserId,MobileUserId);
@@ -223,6 +236,7 @@ public class UserServiceImpl implements UserService {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
+	@Deprecated
 	public int updateBatchByUserDevice(List<TUserDevice> list) {
 //		return userBusiness.updateBatchByUserDevice(list);
 		return 0;
@@ -233,6 +247,7 @@ public class UserServiceImpl implements UserService {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
+	@Deprecated
 	public List<TUserObox> queryUserOboxByUserId(Integer id) {
 		TUserOboxExample example=new TUserOboxExample();
 		example.or().andUserIdEqualTo(id);
@@ -246,6 +261,7 @@ public class UserServiceImpl implements UserService {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
+	@Deprecated
 	public List<TUserDevice> queryUserDeviceByUserId(Integer id) {
 
 		return null;
@@ -256,6 +272,7 @@ public class UserServiceImpl implements UserService {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
+	@Deprecated
 	public List<TUserScene> queryUserSceneByUserId(Integer id) {
 		TUserSceneExample example=new TUserSceneExample();
 		example.or().andUserIdEqualTo(id);

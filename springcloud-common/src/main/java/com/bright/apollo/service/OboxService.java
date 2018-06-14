@@ -32,12 +32,14 @@ public interface OboxService extends BasicService{
 	 * @return  
 	 * @Description:  
 	 */
+	@Deprecated
 	TObox queryOboxBySerialId(String oboxSerialId);
 
 	/**  
 	 * @param obox  
 	 * @Description:  
 	 */
+	@Deprecated
 	int addObox(TObox obox);
 
 	/**  
@@ -47,6 +49,7 @@ public interface OboxService extends BasicService{
 	 * @return  
 	 * @Description:  
 	 */
+	@Deprecated
 	List<TObox> queryOboxByUserId(Integer userId, Integer pageIndex, Integer pageSize);
 
 	/**  
@@ -54,6 +57,7 @@ public interface OboxService extends BasicService{
 	 * @return  
 	 * @Description:  
 	 */
+	@Deprecated
 	int queryCountOboxByUserId(Integer userId);
 
 	TObox queryOboxsByOboxSerialId(String oboxSerialId) throws Exception;

@@ -32,6 +32,7 @@ public class OboxServiceImpl implements OboxService {
 	 * Object)
 	 */
 	@Override
+	@Deprecated
 	public <T, E> T handlerExample(E e) {
 		List<T> selectByExample = handlerExampleToList(e);
 		if (selectByExample != null && selectByExample.size() > 0)
@@ -48,6 +49,7 @@ public class OboxServiceImpl implements OboxService {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
+	@Deprecated
 	public <T, E> List<T> handlerExampleToList(E e) {
 		return null;
 	}
@@ -60,6 +62,7 @@ public class OboxServiceImpl implements OboxService {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
+	@Deprecated
 	public <T> T queryTById(T t) {
 		return null;
 	}
@@ -86,6 +89,7 @@ public class OboxServiceImpl implements OboxService {
 	 * @see com.bright.apollo.service.OboxService#queryOboxBySerialId(java.lang.String)  
 	 */
 	@Override
+	@Deprecated
 	public TObox queryOboxBySerialId(String oboxSerialId) {
 		TOboxExample example=new TOboxExample();
 		example.or().andOboxSerialIdEqualTo(oboxSerialId);
@@ -97,6 +101,7 @@ public class OboxServiceImpl implements OboxService {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
+	@Deprecated
 	public int addObox(TObox obox) {
 		  return 0;
 	}
@@ -106,6 +111,7 @@ public class OboxServiceImpl implements OboxService {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
+	@Deprecated
 	public List<TObox> queryOboxByUserId(Integer userId, Integer pageIndex, Integer pageSize) {
 		  
 		return null;
@@ -115,6 +121,7 @@ public class OboxServiceImpl implements OboxService {
 	 * @see com.bright.apollo.service.OboxService#queryCountOboxByUserId(java.lang.Integer)  
 	 */
 	@Override
+	@Deprecated
 	public int queryCountOboxByUserId(Integer userId) {
 		 
 		return 0;

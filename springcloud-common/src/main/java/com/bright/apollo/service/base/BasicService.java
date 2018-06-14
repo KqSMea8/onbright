@@ -11,9 +11,11 @@ import java.util.List;
  */
 public interface BasicService {
 	@SuppressWarnings("rawtypes")
+	@Deprecated
 	public <T ,  E> T handlerExample(E e);
 	
 	@SuppressWarnings("rawtypes")
+	@Deprecated
 	public <T , E> List<T> handlerExampleToList(E e);
 	//select by primarykey
 	<T> T queryTById(T t);
