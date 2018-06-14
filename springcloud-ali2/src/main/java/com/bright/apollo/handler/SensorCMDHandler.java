@@ -108,7 +108,7 @@ public class SensorCMDHandler extends BasicHandler {
 //                }
 //            }
 //        } else {
-            TOboxDeviceConfig tOboxDeviceConfig = oboxDeviceConfigService.queryOboxConfigByRFAddr(tObox.getId(),addr);
+            TOboxDeviceConfig tOboxDeviceConfig = oboxDeviceConfigService.queryOboxConfigByRFAddr(tObox.getOboxId(),addr);
 //            TOboxDeviceConfig tOboxDeviceConfig = OboxBusiness
 //                    .queryOboxConfigByAddr(tObox.getOboxId(), addr);
             if (tOboxDeviceConfig == null) {
@@ -120,7 +120,7 @@ public class SensorCMDHandler extends BasicHandler {
                         String status = data.substring(18,
                                 18 + 2 * (msg.getLength() - 9));
                         for (int i = 1; i < 5; i++) {
-                            TOboxDeviceConfig config = oboxDeviceConfigService.queryOboxConfigByRFAddr(tObox.getId(),ByteHelper.int2HexString(i));
+                            TOboxDeviceConfig config = oboxDeviceConfigService.queryOboxConfigByRFAddr(tObox.getOboxId(),ByteHelper.int2HexString(i));
 //                            TOboxDeviceConfig config = OboxBusiness
 //                                    .queryOboxConfigByAddr(tObox.getOboxId(),
 //                                            ByteHelper.int2HexString(i));

@@ -37,7 +37,7 @@ public class SetStatusHandler extends BasicHandler{
             return replyMsg;
         }
 
-        TOboxDeviceConfig tOboxDeviceConfig = oboxDeviceConfigService.queryOboxConfigByRFAddr(obox.getId(),nodeAddr);
+        TOboxDeviceConfig tOboxDeviceConfig = oboxDeviceConfigService.queryOboxConfigByRFAddr(obox.getOboxId(),nodeAddr);
 //        TOboxDeviceConfig tOboxDeviceConfig = OboxBusiness.queryOboxConfigByAddr(obox.getOboxId(), nodeAddr);
         if (tOboxDeviceConfig == null) {
             Message<String>  replyMsg = new Message<String>();
@@ -45,8 +45,8 @@ public class SetStatusHandler extends BasicHandler{
 
             return replyMsg;
         }
-        TObox bestOBOXChannel = oboxService.queryOboxsByDeviceChannelId(tOboxDeviceConfig.getId());
-//        TObox bestOBOXChannel = DeviceBusiness.queryBestDeviceChannel(tOboxDeviceConfig.getId());
+        TObox bestOBOXChannel = oboxService.queryOboxsByDeviceChannelId(tOboxDeviceConfig.getOboxId());
+//        TObox bestOBOXChannel = DeviceBusiness.queryBestDeviceChannel(tOboxDeviceConfig.getOboxId());
         if (bestOBOXChannel == null) {
             Message<String>  replyMsg = new Message<String>();
             replyMsg.setData("00"+data);

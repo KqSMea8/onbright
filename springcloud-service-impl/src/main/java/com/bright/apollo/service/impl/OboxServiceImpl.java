@@ -95,8 +95,7 @@ public class OboxServiceImpl implements OboxService {
 	/* (non-Javadoc)  
 	 * @see com.bright.apollo.service.OboxService#addObox(com.bright.apollo.common.entity.TObox)  
 	 */
-	@SuppressWarnings("unchecked")
-	@Override
+ 	@Override
 	public int addObox(TObox obox) {
 		  return 0;
 	}

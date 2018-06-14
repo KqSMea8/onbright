@@ -38,7 +38,7 @@ public class ReleaseCMDHandler extends BasicHandler {
             if ("01".equals(isSuccess)) {
                 if (type.equals("03") || type.equals("01")) {
                     if (tObox.getOboxSerialId().equals(oboxSerialId)) {
-                        List<TOboxDeviceConfig> tOboxDeviceConfigs = oboxDeviceConfigService.getOboxDeviceConfigByOboxId(tObox.getId());
+                        List<TOboxDeviceConfig> tOboxDeviceConfigs = oboxDeviceConfigService.getOboxDeviceConfigByOboxId(tObox.getOboxId());
 
                         for (TOboxDeviceConfig tOboxDeviceConfig : tOboxDeviceConfigs) {
 //                            if (!tOboxDeviceConfig.getGroupAddr().equals("00")) {
@@ -52,13 +52,13 @@ public class ReleaseCMDHandler extends BasicHandler {
 //                                    DeviceBusiness.deleteOBOXGroupByAddr(tOboxDeviceConfig.getOboxSerialId(), tOboxDeviceConfig.getGroupAddr());
 //                                }
 //                            }
-//                            DeviceBusiness.deleteDeviceGroup(tOboxDeviceConfig.getId());
-//                            DeviceBusiness.deleteUserDeviceByDeviceId(tOboxDeviceConfig.getId());
-//                            DeviceBusiness.delDeviceChannel(tOboxDeviceConfig.getId());
+//                            DeviceBusiness.deleteDeviceGroup(tOboxDeviceConfig.getOboxId());
+//                            DeviceBusiness.deleteUserDeviceByDeviceId(tOboxDeviceConfig.getOboxId());
+//                            DeviceBusiness.delDeviceChannel(tOboxDeviceConfig.getOboxId());
 
                         }
 
-                        oboxDeviceConfigService.deleteTOboxDeviceConfig(tObox.getId());
+                        oboxDeviceConfigService.deleteTOboxDeviceConfig(tObox.getOboxId());
 //                        OboxBusiness.batchDelIrKeyByOboxSerialId(tObox.getOboxSerialId());
                         List<TScene> scenes = sceneService.getSceneByOboxSerialId(tObox.getOboxSerialId());
                         if (scenes != null) {
@@ -82,9 +82,9 @@ public class ReleaseCMDHandler extends BasicHandler {
 //                                            }
 //                                            DeviceBusiness.deleteOBOXGroupByAddr(tOboxDeviceConfig.getOboxSerialId(), tOboxDeviceConfig.getGroupAddr());
 //                                        }
-//                                        DeviceBusiness.deleteDeviceGroup(tOboxDeviceConfig.getId());
-//                                        DeviceBusiness.deleteUserDeviceByDeviceId(tOboxDeviceConfig.getId());
-//                                        DeviceBusiness.delDeviceChannel(tOboxDeviceConfig.getId());
+//                                        DeviceBusiness.deleteDeviceGroup(tOboxDeviceConfig.getOboxId());
+//                                        DeviceBusiness.deleteUserDeviceByDeviceId(tOboxDeviceConfig.getOboxId());
+//                                        DeviceBusiness.delDeviceChannel(tOboxDeviceConfig.getOboxId());
 //
 //                                    }
 //

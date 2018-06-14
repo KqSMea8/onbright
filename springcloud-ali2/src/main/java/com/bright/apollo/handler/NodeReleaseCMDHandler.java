@@ -42,14 +42,14 @@ public class NodeReleaseCMDHandler extends BasicHandler{
 //                            DeviceBusiness.deleteOBOXGroupByAddr(tOboxDeviceConfig.getOboxSerialId(), tOboxDeviceConfig.getGroupAddr());
 //                        }
 //                    }
-//                    DeviceBusiness.deleteDeviceGroup(tOboxDeviceConfig.getId());
-//                    DeviceBusiness.deleteUserDeviceByDeviceId(tOboxDeviceConfig.getId());
-//                    DeviceBusiness.delDeviceChannel(tOboxDeviceConfig.getId());
+//                    DeviceBusiness.deleteDeviceGroup(tOboxDeviceConfig.getOboxId());
+//                    DeviceBusiness.deleteUserDeviceByDeviceId(tOboxDeviceConfig.getOboxId());
+//                    DeviceBusiness.delDeviceChannel(tOboxDeviceConfig.getOboxId());
 //
 //                }
 
 //                OboxBusiness.delOboxDeviceConfigs(tObox.getOboxId());
-                oboxDeviceConfigService.deleteTOboxDeviceConfigByOboxId(tObox.getId());
+                oboxDeviceConfigService.deleteTOboxDeviceConfigByOboxId(tObox.getOboxId());
 //                List<TScene> scenes = OboxBusiness.queryOboxScenes(tObox.getOboxSerialId());
                 List<TScene> scenes = sceneService.getSceneByOboxSerialId(tObox.getOboxSerialId());
                 if (scenes != null) {

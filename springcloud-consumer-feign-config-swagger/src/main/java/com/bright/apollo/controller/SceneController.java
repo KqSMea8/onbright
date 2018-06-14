@@ -29,7 +29,7 @@ import io.swagger.annotations.ApiResponse;
 public class SceneController {
 	@Autowired
 	private FeignSceneClient feignSceneClient;
-
+	
 	@RequestMapping(value = "/{sceneNumber}", method = RequestMethod.GET)
 	@ApiOperation(value = "get Scene by sceneNumber", httpMethod = "GET", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)

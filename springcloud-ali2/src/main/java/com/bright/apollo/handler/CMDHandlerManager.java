@@ -272,7 +272,7 @@ public class CMDHandlerManager {
                             dbObox.setOboxVersion(oboxVersion);
                             dbObox.setOboxName(oboxName);
                             dbObox.setOboxSerialId(serialId);
-                            dbObox.setOboxStatus(1);
+                            dbObox.setOboxStatus((byte)1);
 //                            dbObox.setOboxPwd("88888888");
 //                            dbObox.setOboxActivate(0);
 //							dbObox.setOboxIP(ip[0].substring(1));
@@ -283,7 +283,7 @@ public class CMDHandlerManager {
 //							if (tKey != null) {
 //								dbObox.setLicense(tKey.getId());
 //							}
-                            dbObox.setOboxStatus(1);
+                            dbObox.setOboxStatus((byte)1);
                             dbObox.setOboxName(oboxName);
 //                            dbObox.setOboxActivate(0);
                             dbObox.setOboxVersion(oboxVersion);

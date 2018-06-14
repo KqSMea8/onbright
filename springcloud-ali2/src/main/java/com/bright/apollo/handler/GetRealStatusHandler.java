@@ -29,7 +29,7 @@ public class GetRealStatusHandler extends BasicHandler {
         String state = data.substring(14,28);
         String addr = data.substring(12, 14);
         TObox tObox = oboxService.queryOboxsByOboxSerialId(oboxSerialId);
-        TOboxDeviceConfig tOboxDeviceConfig = oboxDeviceConfigService.queryOboxConfigByRFAddr(tObox.getId(),addr);
+        TOboxDeviceConfig tOboxDeviceConfig = oboxDeviceConfigService.queryOboxConfigByRFAddr(tObox.getOboxId(),addr);
 //        TOboxDeviceConfig tOboxDeviceConfig = OboxBusiness
 //                .queryOboxConfigByAddr(tObox.getOboxId(), addr);
         if(tObox!=null&&tOboxDeviceConfig!=null){

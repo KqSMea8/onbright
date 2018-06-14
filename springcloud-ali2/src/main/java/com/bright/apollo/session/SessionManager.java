@@ -174,7 +174,7 @@ public class SessionManager {
                         }
                     }
                     clientSession.getUserIdSet().clear();
-                    obox.setOboxStatus(0);
+                    obox.setOboxStatus((byte)0);
                     oboxService.update(obox);
 //                    OboxBusiness.updateObox(obox);
                 }else {

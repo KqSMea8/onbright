@@ -44,13 +44,13 @@ public class UpdateNodeNameCMDHandler extends BasicHandler{
                 if ("00".equals(groupAddr)) {
                     //node
 
-                    TOboxDeviceConfig tOboxDeviceConfig = oboxDeviceConfigService.queryOboxConfigByRFAddr(obox.getId(), nodeAddr);
+                    TOboxDeviceConfig tOboxDeviceConfig = oboxDeviceConfigService.queryOboxConfigByRFAddr(obox.getOboxId(), nodeAddr);
                     if (tOboxDeviceConfig == null) {
                         return null;
                     }
                     userDeviceService.deleteUserDevice(tOboxDeviceConfig.getOboxSerialId());
-//                    DeviceBusiness.deleteUserDeviceByDeviceId(tOboxDeviceConfig.getId());
-                    oboxDeviceConfigService.deleteTOboxDeviceConfigByOboxIdAndNodeAddress(obox.getId(),nodeAddr);
+//                    DeviceBusiness.deleteUserDeviceByDeviceId(tOboxDeviceConfig.getOboxId());
+                    oboxDeviceConfigService.deleteTOboxDeviceConfigByOboxIdAndNodeAddress(obox.getOboxId(),nodeAddr);
 //                    OboxBusiness.deleteOBOXDeviceConfig(obox.getOboxId(), nodeAddr);
 //                    IrCfgBusiness.delTIrCfgBySerialId(tOboxDeviceConfig.getDeviceSerialId());
                 }else{
@@ -115,7 +115,7 @@ public class UpdateNodeNameCMDHandler extends BasicHandler{
                 if ("00".equals(groupAddr)) {
                     //node
 
-                    TOboxDeviceConfig tOboxDeviceConfig = oboxDeviceConfigService.queryOboxConfigByRFAddr(obox.getId(),nodeAddr);
+                    TOboxDeviceConfig tOboxDeviceConfig = oboxDeviceConfigService.queryOboxConfigByRFAddr(obox.getOboxId(),nodeAddr);
                     if (tOboxDeviceConfig == null) {
                         return null;
                     }

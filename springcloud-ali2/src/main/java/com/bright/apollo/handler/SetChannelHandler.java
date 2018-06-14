@@ -36,7 +36,7 @@ public class SetChannelHandler extends BasicHandler {
 
             return replyMsg;
         }
-        TOboxDeviceConfig tOboxDeviceConfig = oboxDeviceConfigService.queryOboxConfigByRFAddr(obox.getId(),nodeAddr);
+        TOboxDeviceConfig tOboxDeviceConfig = oboxDeviceConfigService.queryOboxConfigByRFAddr(obox.getOboxId(),nodeAddr);
 //        TOboxDeviceConfig tOboxDeviceConfig = OboxBusiness.queryOboxConfigByAddr(obox.getOboxId(), nodeAddr);
         if (tOboxDeviceConfig == null) {
 

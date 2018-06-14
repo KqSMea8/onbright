@@ -48,7 +48,7 @@ public class VersionCMDHandler extends BasicHandler {
         }else {
             //node
             String addr = data.substring(16, 18);
-            TOboxDeviceConfig tOboxDeviceConfig = oboxDeviceConfigService.queryOboxConfigByRFAddr(dbObox.getId(), addr);
+            TOboxDeviceConfig tOboxDeviceConfig = oboxDeviceConfigService.queryOboxConfigByRFAddr(dbObox.getOboxId(), addr);
             if (tOboxDeviceConfig != null) {
                 tOboxDeviceConfig.setDeviceVersion(version);
                 oboxDeviceConfigService.updateTOboxDeviceConfig(tOboxDeviceConfig);
