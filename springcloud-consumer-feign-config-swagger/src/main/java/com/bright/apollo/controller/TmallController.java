@@ -99,7 +99,7 @@ public class TmallController {
 			devices.put("deviceId","34ea34cf2e63");
 			devices.put("deviceName","大灯");
 			devices.put("deviceType","light");
-			devices.put("zone","");
+			devices.put("zone","阳台");
 			devices.put("brand","1");
 			devices.put("model","1");
 			devices.put("icon","https://git.cn-hangzhou.oss-cdn.aliyun-inc.com/uploads/aicloud/aicloud-proxy-service/41baa00903a71c97e3533cf4e19a88bb/image.png");
