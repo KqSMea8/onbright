@@ -20,7 +20,7 @@ public class UserCacheService {
 	@Autowired
 	private RedisBussines redisBussines;
 	public String getCode(String mobile) {
-		String reply = redisBussines.get("Code__"+mobile);
+		String reply = (String) redisBussines.get("Code__"+mobile);
 		return reply;
 	}
 	
@@ -37,7 +37,7 @@ public class UserCacheService {
 		
 	}
 	public String getForgetPass(String mobile, int code) { 
-		String reply = redisBussines.get("ForgetPass__"+mobile);
+		String reply = (String) redisBussines.get("ForgetPass__"+mobile);
 		return reply;
 	}
 
@@ -50,7 +50,7 @@ public class UserCacheService {
 		redisBussines.setValueWithExpire("BindCode__"+mobile, code,60*5);
 	}
 	public String getBindCode(String mobile) {
-		String reply = redisBussines.get("BindCode__"+mobile);
+		String reply = (String) redisBussines.get("BindCode__"+mobile);
 		return reply;
 	}
 

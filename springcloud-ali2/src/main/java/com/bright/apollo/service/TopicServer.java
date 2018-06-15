@@ -221,7 +221,7 @@ public class TopicServer {
         logger.info(" request mStr: " + mString);
         RRpcRequest rrpcRequest = new RRpcRequest();
         //设备所属产品的Key
-        String productKey = AliDevCache.getProductKey(deviceSerial);
+        String productKey = AliDevCache.getProductKey("vfssadffsadsafdfsda");
         String deviceName = AliDevCache.getDeviceName(deviceSerial);
         String eAliRegionEnum = AliDevCache.getProductRegion(deviceSerial);
         if (StringUtils.isEmpty(productKey)) {
