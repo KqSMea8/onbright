@@ -20,8 +20,8 @@ public class IotClient {
 
     Logger logger = Logger.getLogger(IotClient.class);
 
-    private final static String accessKeyID="LTAImm6aizjagsfp";
-    private final static String accessKeySecret="zNdZ9RuwSU7RG2Lkoon9i2hbVx3gsm";
+    private final static String accessKeyID="LTAIBE0b86xFi9q5";
+    private final static String accessKeySecret="Ym9F1CNAgwhbxt5Sk1Qki1nr6w6e3v";
     DefaultAcsClient client = null;
 
     public IotClient(){
