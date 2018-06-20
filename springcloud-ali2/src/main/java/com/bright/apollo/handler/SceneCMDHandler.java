@@ -95,7 +95,7 @@ public class SceneCMDHandler extends BasicHandler{
 //                    scene.setLicense(dbObox.getLicense());
                     scene.setSceneName(scene_id);
                     scene.setOboxSceneNumber(scene_number);
-                    scene.setSceneStatus(sceneStatus);
+                    scene.setSceneStatus((byte)sceneStatus);
                     scene.setSceneType("01");
                     String scene_group	= data.substring(40, 42);
                     if (!scene_group.equals("00")) {
@@ -148,7 +148,7 @@ public class SceneCMDHandler extends BasicHandler{
                     }else {
                         //modify name
                         scene.setSceneName(scene_id);
-                        scene.setSceneStatus(sceneStatus);
+                        scene.setSceneStatus((byte)sceneStatus);
                         sceneService.updateScene(scene);
 //                        OboxBusiness.updateOboxSceneById(scene);
                     }

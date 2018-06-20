@@ -1,12 +1,15 @@
 package com.bright.apollo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bright.apollo.common.entity.TObox;
+import com.bright.apollo.feign.FeignOboxClient;
 import com.bright.apollo.feign.FeignSceneClient;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
@@ -29,7 +32,9 @@ import io.swagger.annotations.ApiResponse;
 public class SceneController {
 	@Autowired
 	private FeignSceneClient feignSceneClient;
-	
+	@Autowired
+	private FeignOboxClient feignOboxClient;
+
 	@RequestMapping(value = "/{sceneNumber}", method = RequestMethod.GET)
 	@ApiOperation(value = "get Scene by sceneNumber", httpMethod = "GET", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
@@ -46,7 +51,7 @@ public class SceneController {
 		return res;
 	}
 
- 	@RequestMapping(value = "/{sceneNumber}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/{sceneNumber}", method = RequestMethod.PUT)
 	@ApiOperation(value = "update Scene", httpMethod = "PUT", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	public ResponseObject<SceneInfo> updateScene(@PathVariable(required = true) Integer sceneNumber,
@@ -87,7 +92,7 @@ public class SceneController {
 	public ResponseObject deleteSceneCondition(@PathVariable Integer sceneNumber, @PathVariable Integer condtionId) {
 		ResponseObject res = null;
 		try {
-			return feignSceneClient.deleteSceneCondition(sceneNumber,condtionId);
+			return feignSceneClient.deleteSceneCondition(sceneNumber, condtionId);
 		} catch (Exception e) {
 			e.printStackTrace();
 			res = new ResponseObject();
@@ -96,6 +101,7 @@ public class SceneController {
 		}
 		return res;
 	}
+
 	@SuppressWarnings("rawtypes")
 	@ApiOperation(value = "del SceneAction by sceneNumber,if actionId not null delete by actionId.else delete action by sceneNumber", httpMethod = "DELETE", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
@@ -103,16 +109,17 @@ public class SceneController {
 	public ResponseObject deleteSceneAction(@PathVariable Integer sceneNumber, @PathVariable Integer actionId) {
 		ResponseObject res = null;
 		try {
-			return feignSceneClient.deleteSceneAction(sceneNumber,actionId);
+			return feignSceneClient.deleteSceneAction(sceneNumber, actionId);
 		} catch (Exception e) {
 			e.printStackTrace();
 			res = new ResponseObject();
 			res.setCode(ResponseEnum.Error.getCode());
 			res.setMsg(ResponseEnum.Error.getMsg());
 		}
-		return res;	
+		return res;
 	}
-	@ApiOperation(value = "add Scene ", httpMethod = "POST", produces = "application/json")
+
+	@ApiOperation(value = "add servr scene ", httpMethod = "POST", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/addScene", method = RequestMethod.POST)
 	public ResponseObject<SceneInfo> addScene(@RequestBody(required = true) SceneInfo info) {
@@ -128,4 +135,6 @@ public class SceneController {
 		return res;
 
 	}
+
+	
 }

@@ -14,6 +14,7 @@ import com.bright.apollo.common.entity.TSceneCondition;
  *@Since:2018年3月17日  
  *@Version:1.1.0  
  */
+@Deprecated
 public class SceneInfo implements Serializable  {
 
 	/**  

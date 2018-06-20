@@ -5,6 +5,9 @@ import com.bright.apollo.common.entity.TAliDevice;
 import com.bright.apollo.common.entity.TAliDeviceUS;
 import com.bright.apollo.dao.device.mapper.AliDeviceMapper;
 import com.bright.apollo.service.AliDeviceService;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -57,4 +60,38 @@ public class AliDeviceServiceImpl implements AliDeviceService {
     public void updateAliUSDevice(TAliDeviceUS aliDevice) {
         mapper.updateAliUSDevice(aliDevice);
     }
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.AliDeviceService#getAliUSDeviceByProductKeyAndDeviceSerialId(java.lang.String, java.lang.String)  
+	 */
+	@Override
+	public List<TAliDeviceUS>  getAliUSDeviceByProductKeyAndDeviceSerialId(String productKey, String deviceSerialId) {
+		 
+		return mapper.getAliUSDeviceByProductKeyAndDeviceSerialId(productKey, deviceSerialId);
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.AliDeviceService#addAliDevUS(com.bright.apollo.common.entity.TAliDeviceUS)  
+	 */
+	@Override
+	public int addAliDevUS(TAliDeviceUS tAliDeviceUS) {
+		  
+		return mapper.addAliDevUS(tAliDeviceUS);
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.AliDeviceService#addAliDev(com.bright.apollo.common.entity.TAliDevice)  
+	 */
+	@Override
+	public int addAliDev(TAliDevice tAliDevice) {
+		return mapper.addAliDev(tAliDevice);
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.AliDeviceService#getAliDeviceByProductKeyAndDeviceSerialId(java.lang.String, java.lang.String)  
+	 */
+	@Override
+	public List<TAliDevice> getAliDeviceByProductKeyAndDeviceSerialId(String productKey, String oboxSerialId) {
+		return mapper.addAliDev(productKey,oboxSerialId);
+	}
 }
