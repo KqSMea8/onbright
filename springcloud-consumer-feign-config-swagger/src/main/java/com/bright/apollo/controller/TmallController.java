@@ -1,12 +1,12 @@
 package com.bright.apollo.controller;
 
 
+import com.bright.apollo.common.entity.TOboxDeviceConfig;
+import com.bright.apollo.feign.FeignDeviceClient;
+import com.bright.apollo.feign.FeignOboxClient;
 import com.bright.apollo.redis.RedisBussines;
-
-import com.google.gson.JsonObject;
-import org.apache.http.HttpEntity;
+import com.bright.apollo.response.ResponseObject;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -17,10 +17,7 @@ import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.entity.BasicHttpEntity;
-import org.apache.http.entity.HttpEntityWrapper;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicNameValuePair;
@@ -30,14 +27,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import springfox.documentation.spring.web.json.Json;
-
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
@@ -61,11 +54,14 @@ public class TmallController {
 	@Autowired
 	private RedisBussines redisBussines;
 
+	@Autowired
+	private FeignDeviceClient feignDeviceClient;
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 //	@ApiOperation(value = "get deivcie by device serialId", httpMethod = "GET", produces = "application/json")
 //	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/tmallCmd", method = RequestMethod.POST,produces = "application/json ;charset=UTF-8")
-	public Object tmallCmd(@RequestBody Object object, HttpServletResponse response) throws IOException {
+	public Object tmallCmd(@RequestBody Object object) throws IOException {
 
 		logger.info("====== messageID ======"+object);
 		Map<String,Object> requestMap = (Map<String, Object>) object;
@@ -84,6 +80,11 @@ public class TmallController {
 			headerMap.put("messageId",requestHeaderMap.get("messageId"));
 			headerMap.put("payLoadVersion","1");
 			map.put("header",headerMap);
+
+//			ResponseObject<List<TOboxDeviceConfig>> responseObject = feignDeviceClient.getOboxDeviceConfigByUserId(429);
+//			List<TOboxDeviceConfig> oboxDeviceConfigList = responseObject.getData();
+
+
 
 			JSONArray jsonArray = new JSONArray();
 			JSONArray propertiesJsonArray = new JSONArray();
@@ -178,70 +179,8 @@ public class TmallController {
 					setConnectionManager(connectionManager)
 					.setDefaultRequestConfig(requestConfig).build();
 
-			if(name.equals("TurnOn")&&deviceId.equals("34ea34cf2e63")){
-				nvps.add(new BasicNameValuePair("CMD", "set_group"));
-				nvps.add(new BasicNameValuePair("access_token", "b0a81b1b-844e-4fe5-a52c-251fbbbe4db3"));
-				nvps.add(new BasicNameValuePair("operate_type", "06"));
-				nvps.add(new BasicNameValuePair("group_id", "104"));
-				nvps.add(new BasicNameValuePair("group_state", "ff000000000002"));
-				nvps.add(new BasicNameValuePair("appkey", "00000000-2898-fa39-a85f-89320033c587"));
-				httpPost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
-				httpClient.execute(httpPost);
-//				("https://cloud.on-bright.com/common?CMD=set_group&access_token=b0a81b1b-844e-4fe5-a52c-251fbbbe4db3&operate_type=06&group_id=104&group_state=ff000000000002&appkey=00000000-2898-fa39-a85f-89320033c587");
-			}
-			if(name.equals("TurnOff")&&deviceId.equals("34ea34cf2e63")){
-				nvps.add(new BasicNameValuePair("CMD", "set_group"));
-				nvps.add(new BasicNameValuePair("access_token", "b0a81b1b-844e-4fe5-a52c-251fbbbe4db3"));
-				nvps.add(new BasicNameValuePair("operate_type", "06"));
-				nvps.add(new BasicNameValuePair("group_id", "104"));
-				nvps.add(new BasicNameValuePair("group_state", "00000000000002"));
-				nvps.add(new BasicNameValuePair("appkey", "00000000-2898-fa39-a85f-89320033c587"));
-				httpPost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
-				httpClient.execute(httpPost);
-//				response.sendRedirect("https://cloud.on-bright.com/common?CMD=set_group&access_token=b0a81b1b-844e-4fe5-a52c-251fbbbe4db3&operate_type=06&group_id=104&group_state=00000000000002&appkey=00000000-2898-fa39-a85f-89320033c587");
-			}
-			if(name.equals("TurnOn")&&deviceId.equals("34ea34cf2e61")){
-				nvps.add(new BasicNameValuePair("CMD", "set_group"));
-				nvps.add(new BasicNameValuePair("access_token", "b0a81b1b-844e-4fe5-a52c-251fbbbe4db3"));
-				nvps.add(new BasicNameValuePair("operate_type", "06"));
-				nvps.add(new BasicNameValuePair("group_id", "105"));
-				nvps.add(new BasicNameValuePair("group_state", "ff000000000002"));
-				nvps.add(new BasicNameValuePair("appkey", "00000000-2898-fa39-a85f-89320033c587"));
-				httpPost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
-				httpClient.execute(httpPost);
-//				("https://cloud.on-bright.com/common?CMD=set_group&access_token=b0a81b1b-844e-4fe5-a52c-251fbbbe4db3&operate_type=06&group_id=104&group_state=ff000000000002&appkey=00000000-2898-fa39-a85f-89320033c587");
-			}
-			if(name.equals("TurnOff")&&deviceId.equals("34ea34cf2e61")){
-				nvps.add(new BasicNameValuePair("CMD", "set_group"));
-				nvps.add(new BasicNameValuePair("access_token", "b0a81b1b-844e-4fe5-a52c-251fbbbe4db3"));
-				nvps.add(new BasicNameValuePair("operate_type", "06"));
-				nvps.add(new BasicNameValuePair("group_id", "105"));
-				nvps.add(new BasicNameValuePair("group_state", "00000000000002"));
-				nvps.add(new BasicNameValuePair("appkey", "00000000-2898-fa39-a85f-89320033c587"));
-				httpPost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
-				httpClient.execute(httpPost);
-//				response.sendRedirect("https://cloud.on-bright.com/common?CMD=set_group&access_token=b0a81b1b-844e-4fe5-a52c-251fbbbe4db3&operate_type=06&group_id=104&group_state=00000000000002&appkey=00000000-2898-fa39-a85f-89320033c587");
-			}
-			if(name.equals("TurnOn")&&deviceId.equals("34ea34cf2e69")){
-				nvps.add(new BasicNameValuePair("CMD", "setting_node_status"));
-				nvps.add(new BasicNameValuePair("access_token", "b0a81b1b-844e-4fe5-a52c-251fbbbe4db3"));
-				nvps.add(new BasicNameValuePair("serialId", "185f010000"));
-				nvps.add(new BasicNameValuePair("status", "02000000000000"));
-				nvps.add(new BasicNameValuePair("appkey", "00000000-2898-fa39-a85f-89320033c587"));
-				httpPost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
-				httpClient.execute(httpPost);
-//				("https://cloud.on-bright.com/common?CMD=set_group&access_token=b0a81b1b-844e-4fe5-a52c-251fbbbe4db3&operate_type=06&group_id=104&group_state=ff000000000002&appkey=00000000-2898-fa39-a85f-89320033c587");
-			}
-			if(name.equals("TurnOff")&&deviceId.equals("34ea34cf2e69")){
-				nvps.add(new BasicNameValuePair("CMD", "setting_node_status"));
-				nvps.add(new BasicNameValuePair("access_token", "b0a81b1b-844e-4fe5-a52c-251fbbbe4db3"));
-				nvps.add(new BasicNameValuePair("serialId", "185f010000"));
-				nvps.add(new BasicNameValuePair("status", "00000000000000"));
-				nvps.add(new BasicNameValuePair("appkey", "00000000-2898-fa39-a85f-89320033c587"));
-				httpPost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
-				httpClient.execute(httpPost);
-//				response.sendRedirect("https://cloud.on-bright.com/common?CMD=set_group&access_token=b0a81b1b-844e-4fe5-a52c-251fbbbe4db3&operate_type=06&group_id=104&group_state=00000000000002&appkey=00000000-2898-fa39-a85f-89320033c587");
-			}
+			templateControl(name,deviceId,nvps,httpPost,httpClient);//展示台模板(仅供展厅展示使用，日后可删除)
+
 			headerMap.put("namespace","AliGenie.Iot.Device.Control");
 			headerMap.put("name",name+"Response");
 			headerMap.put("messageId",requestHeaderMap.get("messageId"));
@@ -252,6 +191,67 @@ public class TmallController {
 		}
 		logger.info("map ====== "+map);
 		return map.toString();
+	}
+
+	private void templateControl(String name,String deviceId,List<NameValuePair> nvps,HttpPost httpPost,CloseableHttpClient httpClient) throws IOException {
+		if(name.equals("TurnOn")&&deviceId.equals("34ea34cf2e63")){
+			nvps.add(new BasicNameValuePair("CMD", "set_group"));
+			nvps.add(new BasicNameValuePair("access_token", "cf44bef3-5fb2-4a4f-8ce1-8fc45a7d23d8"));
+			nvps.add(new BasicNameValuePair("operate_type", "06"));
+			nvps.add(new BasicNameValuePair("group_id", "104"));
+			nvps.add(new BasicNameValuePair("group_state", "ff000000000002"));
+			nvps.add(new BasicNameValuePair("appkey", "00000000-2898-fa39-a85f-89320033c587"));
+			httpPost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+			httpClient.execute(httpPost);
+		}
+		if(name.equals("TurnOff")&&deviceId.equals("34ea34cf2e63")){
+			nvps.add(new BasicNameValuePair("CMD", "set_group"));
+			nvps.add(new BasicNameValuePair("access_token", "cf44bef3-5fb2-4a4f-8ce1-8fc45a7d23d8"));
+			nvps.add(new BasicNameValuePair("operate_type", "06"));
+			nvps.add(new BasicNameValuePair("group_id", "104"));
+			nvps.add(new BasicNameValuePair("group_state", "00000000000002"));
+			nvps.add(new BasicNameValuePair("appkey", "00000000-2898-fa39-a85f-89320033c587"));
+			httpPost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+			httpClient.execute(httpPost);
+		}
+		if(name.equals("TurnOn")&&deviceId.equals("34ea34cf2e61")){
+			nvps.add(new BasicNameValuePair("CMD", "set_group"));
+			nvps.add(new BasicNameValuePair("access_token", "cf44bef3-5fb2-4a4f-8ce1-8fc45a7d23d8"));
+			nvps.add(new BasicNameValuePair("operate_type", "06"));
+			nvps.add(new BasicNameValuePair("group_id", "105"));
+			nvps.add(new BasicNameValuePair("group_state", "ff000000000002"));
+			nvps.add(new BasicNameValuePair("appkey", "00000000-2898-fa39-a85f-89320033c587"));
+			httpPost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+			httpClient.execute(httpPost);
+		}
+		if(name.equals("TurnOff")&&deviceId.equals("34ea34cf2e61")){
+			nvps.add(new BasicNameValuePair("CMD", "set_group"));
+			nvps.add(new BasicNameValuePair("access_token", "cf44bef3-5fb2-4a4f-8ce1-8fc45a7d23d8"));
+			nvps.add(new BasicNameValuePair("operate_type", "06"));
+			nvps.add(new BasicNameValuePair("group_id", "105"));
+			nvps.add(new BasicNameValuePair("group_state", "00000000000002"));
+			nvps.add(new BasicNameValuePair("appkey", "00000000-2898-fa39-a85f-89320033c587"));
+			httpPost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+			httpClient.execute(httpPost);
+		}
+		if(name.equals("TurnOn")&&deviceId.equals("34ea34cf2e69")){
+			nvps.add(new BasicNameValuePair("CMD", "setting_node_status"));
+			nvps.add(new BasicNameValuePair("access_token", "cf44bef3-5fb2-4a4f-8ce1-8fc45a7d23d8"));
+			nvps.add(new BasicNameValuePair("serialId", "185f010000"));
+			nvps.add(new BasicNameValuePair("status", "02000000000000"));
+			nvps.add(new BasicNameValuePair("appkey", "00000000-2898-fa39-a85f-89320033c587"));
+			httpPost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+			httpClient.execute(httpPost);
+		}
+		if(name.equals("TurnOff")&&deviceId.equals("34ea34cf2e69")){
+			nvps.add(new BasicNameValuePair("CMD", "setting_node_status"));
+			nvps.add(new BasicNameValuePair("access_token", "cf44bef3-5fb2-4a4f-8ce1-8fc45a7d23d8"));
+			nvps.add(new BasicNameValuePair("serialId", "185f010000"));
+			nvps.add(new BasicNameValuePair("status", "00000000000000"));
+			nvps.add(new BasicNameValuePair("appkey", "00000000-2898-fa39-a85f-89320033c587"));
+			httpPost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+			httpClient.execute(httpPost);
+		}
 	}
 
 	private static TrustManager manager = new X509TrustManager() {

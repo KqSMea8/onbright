@@ -69,4 +69,5 @@ public interface FeignOboxClient {
 	ResponseObject<List<TObox>> getOboxByUserAndPage(@PathVariable(value = "userId") Integer userId,
 			@PathVariable(value = "pageIndex") Integer pageIndex, @PathVariable(value = "pageSize") Integer pageSize);
 
+
 }
