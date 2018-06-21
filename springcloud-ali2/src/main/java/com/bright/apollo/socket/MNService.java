@@ -154,7 +154,7 @@ public class MNService {
                                     if (dbObox != null) {
 //            	    					AliDevCache.DelDevInfo(tAliDevice.getOboxSerialId());
 
-                                        dbObox.setOboxStatus(0);
+                                        dbObox.setOboxStatus((byte)0);
 //                                        dbObox.setOboxIP("0.0.0.0");
                                         oboxService.update(dbObox);
                                     }
@@ -169,7 +169,7 @@ public class MNService {
                                         if (dbObox != null) {
 //                	    					AliDevCache.DelDevInfo(tAliDeviceUS.getDeviceSerialId());
 
-                                            dbObox.setOboxStatus(0);
+                                            dbObox.setOboxStatus((byte)0);
 //                                            dbObox.setOboxIP("0.0.0.0");
                                             oboxService.update(dbObox);
                                         }

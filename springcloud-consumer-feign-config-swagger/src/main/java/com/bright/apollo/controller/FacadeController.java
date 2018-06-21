@@ -6,7 +6,9 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,6 +20,7 @@ import com.bright.apollo.common.dto.OboxResp.Type;
 import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.common.entity.TScene;
+import com.bright.apollo.common.entity.TSceneCondition;
 import com.bright.apollo.common.entity.TUser;
 import com.bright.apollo.enums.SceneTypeEnum;
 import com.bright.apollo.feign.FeignAliClient;
@@ -25,6 +28,7 @@ import com.bright.apollo.feign.FeignDeviceClient;
 import com.bright.apollo.feign.FeignOboxClient;
 import com.bright.apollo.feign.FeignSceneClient;
 import com.bright.apollo.feign.FeignUserClient;
+import com.bright.apollo.response.AliDevInfo;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.response.SceneInfo;
@@ -177,7 +181,7 @@ public class FacadeController {
 				}
 				if (scene.getSceneRun() == 0) {
 					// old code
-					scene.setSceneRun(1);
+					scene.setSceneRun((byte) 1);
 					SceneInfo sceneInfo = sceneRes.getData();
 					sceneInfo.setScene(scene);
 					ResponseObject updateScene = feignSceneClient.updateScene(sceneNumber, sceneInfo);
@@ -190,7 +194,7 @@ public class FacadeController {
 					if (resp != null && resp.getCode() == ResponseEnum.Success.getCode()) {
 						return resp;
 					}
-					scene.setSceneRun(0);
+					scene.setSceneRun((byte) 0);
 					sceneInfo.setScene(scene);
 					feignSceneClient.updateScene(sceneNumber, sceneInfo);
 				}
@@ -615,5 +619,120 @@ public class FacadeController {
 			res.setMsg(ResponseEnum.RequestTimeout.getMsg());
 		}
 		return res;
+	}
+
+	// ======add local scene
+	@ApiOperation(value = "add local scene ", httpMethod = "POST", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/addLocalScene", method = RequestMethod.POST)
+	public ResponseObject<SceneInfo> addLocalScene(@RequestBody(required = true) SceneInfo info) {
+		ResponseObject<SceneInfo> res = new ResponseObject<SceneInfo>();
+		try {
+			if (!StringUtils.isEmpty(info.getScene().getOboxSerialId())
+					|| !StringUtils.isEmpty(info.getScene().getSceneName())) {
+				res.setCode(ResponseEnum.RequestParamError.getCode());
+				res.setMsg(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TObox> tOboxRes = feignOboxClient.getObox(info.getScene().getOboxSerialId());
+			if (tOboxRes == null || tOboxRes.getCode() != ResponseEnum.Success.getCode()
+					|| tOboxRes.getData() == null) {
+				res.setCode(ResponseEnum.RequestParamError.getCode());
+				res.setMsg(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<OboxResp> oboxRespone = feignAliClient.addLocalScene(info.getScene().getSceneName(),
+					info.getScene().getOboxSerialId(), info.getScene().getSceneGroup());
+			if (oboxRespone != null && oboxRespone.getCode() == ResponseEnum.Success.getCode()
+					&& oboxRespone.getData() != null) {
+				OboxResp oboxResp = oboxRespone.getData();
+				if (oboxResp.getType() != Type.success) {
+					if (oboxResp.getType() == Type.obox_process_failure
+							|| oboxResp.getType() == Type.socket_write_error) {
+						res.setCode(ResponseEnum.SendOboxFail.getCode());
+						res.setMsg(ResponseEnum.SendOboxFail.getMsg());
+					} else if (oboxResp.getType() == Type.reply_timeout) {
+						res.setCode(ResponseEnum.SendOboxTimeOut.getCode());
+						res.setMsg(ResponseEnum.SendOboxTimeOut.getMsg());
+					} else {
+						res.setCode(ResponseEnum.SendOboxUnKnowFail.getCode());
+						res.setMsg(ResponseEnum.SendOboxUnKnowFail.getMsg());
+					}
+					return res;
+				}
+			}
+			info.getScene().setSceneNumber(Integer.parseInt(oboxRespone.getData().toString().substring(6, 8), 16));
+			List<TSceneCondition> conditions = info.getConditions();
+			// check sceneCondition oboxSerialId
+			if (isNotCommonObox(conditions, info.getScene().getOboxSerialId())) {
+				res.setCode(ResponseEnum.RequestParamError.getCode());
+				res.setMsg(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			oboxRespone = feignAliClient.addLocalSceneCondition(info.getScene().getSceneNumber(), info.getConditions());
+			return feignSceneClient.addLocalScene(info);
+		} catch (Exception e) {
+			e.printStackTrace();
+			res = new ResponseObject<SceneInfo>();
+			res.setCode(ResponseEnum.Error.getCode());
+			res.setMsg(ResponseEnum.Error.getMsg());
+		}
+		return res;
+
+	}
+
+	@ApiOperation(value = "add obox ", httpMethod = "POST", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/addObox", method = RequestMethod.POST)
+	public ResponseObject<TObox> addObox(@PathVariable(required = true, value = "serialId") String serialId,
+			@RequestBody(required = true) TObox obox) {
+		ResponseObject<TObox> res = null;
+		try {
+			return feignOboxClient.addObox(serialId, obox);
+		} catch (Exception e) {
+			e.printStackTrace();
+			res = new ResponseObject<TObox>();
+			res.setCode(ResponseEnum.Error.getCode());
+			res.setMsg(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	@ApiOperation(value = "regist Ali device", httpMethod = "GET", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/registAliDev/{type}/{zone}", method = RequestMethod.GET)
+	public ResponseObject<AliDevInfo> registAliDev(@PathVariable(required = true, value = "type") String type,
+			@PathVariable(required = false, value = "zone") String zone) {
+		ResponseObject<AliDevInfo> res = new ResponseObject<AliDevInfo>();
+		try {
+			return feignAliClient.registAliDev(type,zone);
+		} catch (Exception e) {
+			e.printStackTrace();
+			res.setCode(ResponseEnum.Error.getCode());
+			res.setMsg(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	/**
+	 * @param conditions
+	 * @param oboxSerialId
+	 * @return
+	 * @Description:
+	 */
+	private boolean isNotCommonObox(List<TSceneCondition> conditions, String oboxSerialId) {
+		for (int i = 0; i < conditions.size(); i++) {
+			TSceneCondition tSceneCondition = conditions.get(i);
+			if (!StringUtils.isEmpty(tSceneCondition.getSerialid())) {
+				ResponseObject<TObox> oboxResp = feignOboxClient.getObox(tSceneCondition.getSerialid());
+				if (oboxResp == null || oboxResp.getCode() != ResponseEnum.Success.getCode()
+						|| oboxResp.getData() == null || StringUtils.isEmpty(oboxResp.getData().getOboxSerialId())
+						|| !oboxResp.getData().getOboxSerialId().equals(oboxSerialId)) {
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 }

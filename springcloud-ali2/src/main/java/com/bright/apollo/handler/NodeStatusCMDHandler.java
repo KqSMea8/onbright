@@ -45,7 +45,7 @@ public class NodeStatusCMDHandler extends BasicHandler{
             if (!"00".equals(rf_addr) && !"ff".equals(rf_addr)) {
 
                 TOboxDeviceConfig tOboxDeviceConfig
-                        = oboxDeviceConfigService.queryOboxConfigByRFAddr(physicalOBOX.getId(),rf_addr);
+                        = oboxDeviceConfigService.queryOboxConfigByRFAddr(physicalOBOX.getOboxId(),rf_addr);
 //                if (tOboxDeviceConfig != null) {
 //
 //                    TUserOperation tUserOperation = new TUserOperation();

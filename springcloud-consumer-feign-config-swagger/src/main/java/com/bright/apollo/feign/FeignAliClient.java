@@ -1,5 +1,7 @@
 package com.bright.apollo.feign;
 
+import java.util.List;
+
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -7,8 +9,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bright.apollo.common.dto.OboxResp;
+import com.bright.apollo.common.entity.TSceneCondition;
 import com.bright.apollo.enums.CMDEnum;
 import com.bright.apollo.hrstrix.HystrixFeignAli2Fallback;
+import com.bright.apollo.response.AliDevInfo;
 import com.bright.apollo.response.ResponseObject;
 
 /**
@@ -24,7 +28,7 @@ public interface FeignAliClient {
 	@RequestMapping(value = "/aliService/toAli", method = RequestMethod.POST)
 	ResponseObject<OboxResp> toAliService(@RequestParam(value = "cmd") CMDEnum cmd,
 			@RequestParam(value = "inMsg") String inMsg, @RequestParam(value = "deviceSerial") String deviceSerial);
-	
+
 	/**
 	 * @param oboxSerialId
 	 * @return
@@ -42,11 +46,10 @@ public interface FeignAliClient {
 	 * @Description:
 	 */
 	@RequestMapping(value = "/aliService/scanByRestart/{oboxSerialId}", method = RequestMethod.POST)
-	ResponseObject<OboxResp> scanByRestart(
-			@PathVariable(value = "oboxSerialId", required = true) String oboxSerialId,
-			@RequestParam(required=false,value="deviceType") String deviceType,
-			@RequestParam(required=false,value="deviceChildType") String deviceChildType,
-			@RequestParam(required=false,value="deviceChildType") String serialId);
+	ResponseObject<OboxResp> scanByRestart(@PathVariable(value = "oboxSerialId", required = true) String oboxSerialId,
+			@RequestParam(required = false, value = "deviceType") String deviceType,
+			@RequestParam(required = false, value = "deviceChildType") String deviceChildType,
+			@RequestParam(required = false, value = "deviceChildType") String serialId);
 
 	/**
 	 * @param oboxSerialId
@@ -88,26 +91,56 @@ public interface FeignAliClient {
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/aliService/controlServerScene/{sceneNumber}", method = RequestMethod.PUT)
-	ResponseObject controlServerScene(
-			@PathVariable(required = true, value = "sceneNumber") Integer sceneNumber);
+	ResponseObject controlServerScene(@PathVariable(required = true, value = "sceneNumber") Integer sceneNumber);
 
-
-	/**  
+	/**
 	 * @param oboxSerialId
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
 	@RequestMapping(value = "/aliService/release/{oboxSerialId}", method = RequestMethod.GET)
 	ResponseObject<OboxResp> releaseObox(@PathVariable(required = true, value = "oboxSerialId") String oboxSerialId);
 
-	/**  
+	/**
 	 * @param oboxSerialId
 	 * @param status
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/aliService/setDeviceStatus/{oboxSerialId}", method = RequestMethod.PUT)
+	ResponseObject<OboxResp> setDeviceStatus(@PathVariable(required = true, value = "oboxSerialId") String oboxSerialId,
+			@RequestParam(required = true, value = "status") String status);
+
+	/**
+	 * @param sceneName
+	 * @param sceneGroup
+	 * @param string
+	 * @Description:
+	 */
+	@RequestMapping(value = "/aliService/addLocalScene", method = RequestMethod.POST)
+	ResponseObject<OboxResp> addLocalScene(@RequestParam(required = true, value = "sceneName") String sceneName,
+			@RequestParam(required = true, value = "oboxSerialId") String oboxSerialId,
+			@RequestParam(required = false, value = "sceneGroup") String sceneGroup);
+
+	/**
+	 * @param sceneNumber
+	 * @param conditions
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/aliService/addLocalSceneCondition/{sceneNumber}", method = RequestMethod.POST)
+	ResponseObject<OboxResp> addLocalSceneCondition(
+			@PathVariable(required = true, value = "sceneNumber") Integer sceneNumber,
+			@RequestParam(required = true, value = "conditions") List<TSceneCondition> conditions);
+
+	/**  
+	 * @param type
+	 * @param zone
 	 * @return  
 	 * @Description:  
 	 */
-	@RequestMapping(value = "/aliService/setDeviceStatus/{oboxSerialId}", method = RequestMethod.PUT)
-	ResponseObject<OboxResp> setDeviceStatus(@PathVariable(required = true, value = "oboxSerialId") String oboxSerialId, 
-			@RequestParam(required = true, value = "status") String status);
+	@RequestMapping(value = "/aliDevice/registAliDev/{type}/{zone}", method = RequestMethod.POST)
+	ResponseObject<AliDevInfo> registAliDev(@PathVariable(required = true, value = "type") String type,
+			@PathVariable(required = false, value = "zone") String zone);
 
 }

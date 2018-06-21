@@ -37,25 +37,25 @@ public class DeleteOBOXHandler extends BasicHandler {
                 String oboxId = clientSession.getUid();
                 TObox tObox = oboxService.queryOboxById(Integer.parseInt(oboxId));
                 if (tObox != null) {
-                    List<TOboxDeviceConfig> tOboxDeviceConfigs = oboxDeviceConfigService.getOboxDeviceConfigByOboxId(tObox.getId());
+                    List<TOboxDeviceConfig> tOboxDeviceConfigs = oboxDeviceConfigService.getOboxDeviceConfigByOboxId(tObox.getOboxId());
 //                    List<TOboxDeviceConfig> tOboxDeviceConfigs = OboxBusiness.queryOboxConfigs(tObox.getOboxId());
                     for (TOboxDeviceConfig tOboxDeviceConfig : tOboxDeviceConfigs) {
                         if (!tOboxDeviceConfig.getGroupAddr().equals("00")) {
 //                            DeviceBusiness.deleteOBOXGroupByAddr(tOboxDeviceConfig.getOboxSerialId(), tOboxDeviceConfig.getGroupAddr());
                         }
-//                        DeviceBusiness.deleteDeviceGroup(tOboxDeviceConfig.getId());
+//                        DeviceBusiness.deleteDeviceGroup(tOboxDeviceConfig.getOboxId());
                         userDeviceService.deleteUserDevice(tOboxDeviceConfig.getDeviceSerialId());
-//                        DeviceBusiness.deleteUserDeviceByDeviceId(tOboxDeviceConfig.getId());
-                        deviceChannelService.deleteDeviceChannel(tOboxDeviceConfig.getId());
-//                        DeviceBusiness.delDeviceChannel(tOboxDeviceConfig.getId());
+//                        DeviceBusiness.deleteUserDeviceByDeviceId(tOboxDeviceConfig.getOboxId());
+                        deviceChannelService.deleteDeviceChannel(tOboxDeviceConfig.getOboxId());
+//                        DeviceBusiness.delDeviceChannel(tOboxDeviceConfig.getOboxId());
 
                     }
 
-                    oboxDeviceConfigService.deleteTOboxDeviceConfigByOboxId(tObox.getId());
+                    oboxDeviceConfigService.deleteTOboxDeviceConfigByOboxId(tObox.getOboxId());
 //                    OboxBusiness.delOboxDeviceConfigs(tObox.getOboxId());
                     sceneService.deleteSceneByOboxSerialId(tObox.getOboxSerialId());
 //                    OboxBusiness.delOboxScenes(tObox.getOboxSerialId());
-                    deviceChannelService.delectDeviceChannelByOboxId(tObox.getId());
+                    deviceChannelService.delectDeviceChannelByOboxId(tObox.getOboxId());
 //                    DeviceBusiness.deleteDeviceChannelByOBOXId(tObox.getOboxId());
                     userOboxService.delectUserOboxByOboxSerialId(tObox.getOboxSerialId());
 //                    UserBusiness.deleteUserOBOXByoboxId(tObox.getOboxId());

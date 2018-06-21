@@ -37,7 +37,6 @@ public interface FeignSceneClient {
 	 * @Description:
 	 */
 	@RequestMapping(value = "/scene/{sceneNumber}", method = RequestMethod.PUT)
-	@SuppressWarnings("rawtypes")
 	ResponseObject<SceneInfo> updateScene(@PathVariable(value = "sceneNumber") Integer sceneNumber, @RequestBody SceneInfo info);
 
 	/**
@@ -87,4 +86,12 @@ public interface FeignSceneClient {
 	@RequestMapping(value = "/scene/{userId}/{pageIndex}/{pageSize}", method = RequestMethod.GET)
 	ResponseObject<List<SceneInfo>> getSceneByUserAndPage(@PathVariable(value = "userId") Integer userId,
 			@PathVariable(value = "pageIndex") Integer pageIndex, @PathVariable(value = "pageSize") Integer pageSize);
+
+	/**  
+	 * @param info
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/scene/addLocalScene", method = RequestMethod.POST)
+	ResponseObject<SceneInfo> addLocalScene(@RequestBody(required = true) SceneInfo info);
 }

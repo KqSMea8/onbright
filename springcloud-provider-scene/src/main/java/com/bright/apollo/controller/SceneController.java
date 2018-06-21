@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -242,7 +243,6 @@ public class SceneController {
 	}
 
 	// list scene
-	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/{userId}/{pageIndex}/{pageSize}", method = RequestMethod.GET)
 	public ResponseObject<List<SceneInfo>> getSceneByUserAndPage(
 			@PathVariable(required = true, value = "userId") Integer userId,
@@ -282,6 +282,24 @@ public class SceneController {
 				res.setPageCount((count / pageSize + (count % pageSize == 0 ? 0 : 1)));
 			}
 
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setCode(ResponseEnum.Error.getCode());
+			res.setMsg(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	
+	@RequestMapping(value = "/addLocalScene", method = RequestMethod.POST)
+	public ResponseObject<SceneInfo> addLocalScene(@RequestBody(required = true) SceneInfo info) {
+		ResponseObject<SceneInfo>res=new ResponseObject<SceneInfo>();
+		try {
+			if(!StringUtils.isEmpty(info.getScene().getOboxSerialId())){
+				res.setCode(ResponseEnum.RequestParamError.getCode());
+				res.setMsg(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			res.setCode(ResponseEnum.Error.getCode());

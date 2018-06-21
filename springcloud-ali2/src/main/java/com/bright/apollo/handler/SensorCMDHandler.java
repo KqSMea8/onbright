@@ -1,22 +1,36 @@
 package com.bright.apollo.handler;
 
+import java.util.Calendar;
+import java.util.List;
+import java.util.TimeZone;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.bright.apollo.bean.Message;
-import com.bright.apollo.common.entity.*;
+import com.bright.apollo.common.entity.TObox;
+import com.bright.apollo.common.entity.TOboxDeviceConfig;
+import com.bright.apollo.common.entity.TScene;
+import com.bright.apollo.common.entity.TSceneAction;
+import com.bright.apollo.common.entity.TSceneCondition;
+import com.bright.apollo.common.entity.TUser;
+import com.bright.apollo.common.entity.TUserScene;
 import com.bright.apollo.enums.DeviceTypeEnum;
 import com.bright.apollo.enums.NodeTypeEnum;
 import com.bright.apollo.enums.SceneTypeEnum;
-import com.bright.apollo.service.*;
+import com.bright.apollo.service.JPushService;
+import com.bright.apollo.service.OboxDeviceConfigService;
+import com.bright.apollo.service.OboxService;
+import com.bright.apollo.service.SceneActionService;
+import com.bright.apollo.service.SceneConditionService;
+import com.bright.apollo.service.SceneService;
+import com.bright.apollo.service.UserSceneService;
+import com.bright.apollo.service.UserService;
 import com.bright.apollo.session.ClientSession;
 import com.bright.apollo.session.SceneActionThreadPool;
 import com.bright.apollo.session.SessionManager;
 import com.bright.apollo.tool.ByteHelper;
 import com.zz.common.util.DateTime;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Calendar;
-import java.util.List;
-import java.util.TimeZone;
 
 public class SensorCMDHandler extends BasicHandler {
 
@@ -96,7 +110,7 @@ public class SensorCMDHandler extends BasicHandler {
 //                                                .getSceneNumber());
 //                                if (tSceneActions != null
 //                                        && !tSceneActions.isEmpty()) {
-//                                    tScene.setSceneRun(1);
+//                                    tScene.setSceneRun((byte)1);
 //                                    SceneBusiness.updateScene(tScene);
 //                                    // take action
 //                                    sceneActionThreadPool.addSceneAction(tScene
@@ -108,7 +122,7 @@ public class SensorCMDHandler extends BasicHandler {
 //                }
 //            }
 //        } else {
-            TOboxDeviceConfig tOboxDeviceConfig = oboxDeviceConfigService.queryOboxConfigByRFAddr(tObox.getId(),addr);
+            TOboxDeviceConfig tOboxDeviceConfig = oboxDeviceConfigService.queryOboxConfigByRFAddr(tObox.getOboxId(),addr);
 //            TOboxDeviceConfig tOboxDeviceConfig = OboxBusiness
 //                    .queryOboxConfigByAddr(tObox.getOboxId(), addr);
             if (tOboxDeviceConfig == null) {
@@ -120,7 +134,7 @@ public class SensorCMDHandler extends BasicHandler {
                         String status = data.substring(18,
                                 18 + 2 * (msg.getLength() - 9));
                         for (int i = 1; i < 5; i++) {
-                            TOboxDeviceConfig config = oboxDeviceConfigService.queryOboxConfigByRFAddr(tObox.getId(),ByteHelper.int2HexString(i));
+                            TOboxDeviceConfig config = oboxDeviceConfigService.queryOboxConfigByRFAddr(tObox.getOboxId(),ByteHelper.int2HexString(i));
 //                            TOboxDeviceConfig config = OboxBusiness
 //                                    .queryOboxConfigByAddr(tObox.getOboxId(),
 //                                            ByteHelper.int2HexString(i));
@@ -494,7 +508,7 @@ public class SensorCMDHandler extends BasicHandler {
                                     stateMacth = true;
 
                                 } else {
-                                    tScene.setAlterNeed(1);
+                                    tScene.setAlterNeed((byte)1);
                                     break;
                                 }
                             } else if ((index & 0x07) == 0x02) {
@@ -503,7 +517,7 @@ public class SensorCMDHandler extends BasicHandler {
                                         .parseInt(condState, 16)) {
                                     stateMacth = true;
                                 } else {
-                                    tScene.setAlterNeed(1);
+                                    tScene.setAlterNeed((byte)(byte)1);
                                     break;
                                 }
                             } else if ((index & 0x07) == 0x03) {
@@ -512,7 +526,7 @@ public class SensorCMDHandler extends BasicHandler {
                                         .parseInt(condState, 16)) {
                                     stateMacth = true;
                                 } else {
-                                    tScene.setAlterNeed(1);
+                                    tScene.setAlterNeed((byte)1);
                                     break;
                                 }
 
@@ -523,7 +537,7 @@ public class SensorCMDHandler extends BasicHandler {
                                     stateMacth = true;
 
                                 } else {
-                                    tScene.setAlterNeed(1);
+                                    tScene.setAlterNeed((byte)1);
                                     break;
                                 }
 
@@ -534,7 +548,7 @@ public class SensorCMDHandler extends BasicHandler {
                                     stateMacth = true;
 
                                 } else {
-                                    tScene.setAlterNeed(1);
+                                    tScene.setAlterNeed((byte)1);
                                     break;
                                 }
 
@@ -560,9 +574,9 @@ public class SensorCMDHandler extends BasicHandler {
                                             && tOboxDeviceConfig
                                             .getDeviceType().equals(
                                                     "0b")) {
-                                        tScene.setAlterNeed(1);
+                                        tScene.setAlterNeed((byte)1);
                                     }
-                                    tScene.setSceneRun(1);
+                                    tScene.setSceneRun((byte)1);
                                     sceneService.updateScene(tScene);
 //                                    SceneBusiness.updateScene(tScene);
                                     // take action
@@ -586,12 +600,12 @@ public class SensorCMDHandler extends BasicHandler {
                                                 if (tSceneAction.getAction()
                                                         .substring(0, 2)
                                                         .equals("00")) {
-                                                    scene.setSceneStatus(0);
+                                                    scene.setSceneStatus((byte)0);
                                                     sceneService.updateScene(scene);
 //                                                    SceneBusiness
 //                                                            .updateScene(scene);
                                                 } else {
-                                                    scene.setSceneStatus(1);
+                                                    scene.setSceneStatus((byte)1);
 //                                                    SceneBusiness
 //                                                            .updateScene(scene);
                                                     sceneService.updateScene(scene);
@@ -1081,9 +1095,9 @@ public class SensorCMDHandler extends BasicHandler {
                                                 && tOboxDeviceConfig
                                                 .getDeviceType()
                                                 .equals("0b")) {
-                                            tScene.setAlterNeed(1);
+                                            tScene.setAlterNeed((byte)1);
                                         }
-                                        tScene.setSceneRun(1);
+                                        tScene.setSceneRun((byte)1);
                                         sceneService.updateScene(tScene);
 //                                        SceneBusiness.updateScene(tScene);
                                         // take action
@@ -1110,12 +1124,12 @@ public class SensorCMDHandler extends BasicHandler {
                                                             .getAction()
                                                             .substring(0, 2)
                                                             .equals("00")) {
-                                                        scene.setSceneStatus(0);
+                                                        scene.setSceneStatus((byte)0);
                                                         sceneService.updateScene(scene);
 //                                                        SceneBusiness
 //                                                                .updateScene(scene);
                                                     } else {
-                                                        scene.setSceneStatus(1);
+                                                        scene.setSceneStatus((byte)1);
                                                         sceneService.updateScene(scene);
 //                                                        SceneBusiness
 //                                                                .updateScene(scene);
@@ -1138,9 +1152,9 @@ public class SensorCMDHandler extends BasicHandler {
                                                     && tOboxDeviceConfig
                                                     .getDeviceType()
                                                     .equals("0b")) {
-                                                tScene.setAlterNeed(1);
+                                                tScene.setAlterNeed((byte)1);
                                             }
-                                            tScene.setSceneRun(1);
+                                            tScene.setSceneRun((byte)1);
                                             sceneService.updateScene(tScene);
 //                                            SceneBusiness.updateScene(tScene);
                                             // take action
@@ -1168,12 +1182,12 @@ public class SensorCMDHandler extends BasicHandler {
                                                             .getAction()
                                                             .substring(0, 2)
                                                             .equals("00")) {
-                                                        scene.setSceneStatus(0);
+                                                        scene.setSceneStatus((byte)0);
                                                         sceneService.updateScene(scene);
 //                                                        SceneBusiness
 //                                                                .updateScene(scene);
                                                     } else {
-                                                        scene.setSceneStatus(1);
+                                                        scene.setSceneStatus((byte)1);
                                                         sceneService.updateScene(scene);
 //                                                        SceneBusiness
 //                                                                .updateScene(scene);

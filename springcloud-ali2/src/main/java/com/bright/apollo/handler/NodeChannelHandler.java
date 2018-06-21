@@ -43,7 +43,7 @@ public class NodeChannelHandler extends BasicHandler  {
                 if (tObox == null) {
                     return null;
                 }
-                TOboxDeviceConfig tOboxDeviceConfig = oboxDeviceConfigService.queryOboxConfigByRFAddr(tObox.getId(), rfAddr);
+                TOboxDeviceConfig tOboxDeviceConfig = oboxDeviceConfigService.queryOboxConfigByRFAddr(tObox.getOboxId(), rfAddr);
 
                 //receive OBOX channel
                 TObox dbObox = oboxService.queryOboxsByOboxSerialId(clientSession.getUid());

@@ -1,13 +1,19 @@
 package com.bright.apollo.session;
 
-import com.bright.apollo.bean.PushMessage;
-import com.bright.apollo.bean.SceneDTO;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.bright.apollo.cache.AccessTokenTool;
 import com.bright.apollo.common.entity.TScene;
-import com.bright.apollo.common.entity.TUser;
 import com.bright.apollo.enums.CMDEnum;
-import com.bright.apollo.enums.PushMessageType;
 import com.bright.apollo.enums.SceneTypeEnum;
+import com.bright.apollo.request.SceneDTO;
 import com.bright.apollo.service.SceneService;
 import com.bright.apollo.tool.NumberHelper;
 import com.google.gson.Gson;
@@ -16,11 +22,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.zz.common.util.ObjectUtils;
 import com.zz.common.util.StringUtils;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import java.util.*;
 
 @Component
 public class PushUtil {

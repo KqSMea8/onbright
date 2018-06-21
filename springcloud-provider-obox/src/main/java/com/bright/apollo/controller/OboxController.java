@@ -3,7 +3,6 @@ package com.bright.apollo.controller;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.aspectj.weaver.tools.Trace;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,7 +34,7 @@ public class OboxController {
 	public ResponseObject<TObox> getObox(@PathVariable(value = "serialId") String serialId) {
 		ResponseObject<TObox> res = new ResponseObject<TObox>();
 		try {
-			TObox obox = oboxService.queryOboxBySerialId(serialId);
+			TObox obox = oboxService.queryOboxsByOboxSerialId(serialId);
 			if (obox == null) {
 				res.setCode(ResponseEnum.RequestObjectNotExist.getCode());
 				res.setMsg(ResponseEnum.RequestObjectNotExist.getMsg());

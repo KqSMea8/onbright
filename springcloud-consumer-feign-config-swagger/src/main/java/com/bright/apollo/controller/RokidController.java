@@ -75,7 +75,7 @@ public class RokidController {
 			}
 			logger.info(" ====== RokidRequest ====== "+rokidRequest);
 			String userToken = rokidRequest.getUserAuth().getUserToken();
-			String uid = redisBussines.get(userToken);
+			String uid = (String) redisBussines.get(userToken);
 			ResponseObject<TUser> rsUser= feignUserClient.getUserById(Integer.valueOf(uid));
 			TUser user = rsUser.getData();
 			if(user == null){
@@ -106,7 +106,7 @@ public class RokidController {
 			}
 			logger.info(" ====== RokidRequest ====== "+rokidRequest);
 			userToken = rokidRequest.getUserAuth().getUserToken();
-			String uid = redisBussines.get(userToken);
+			String uid = (String) redisBussines.get(userToken);
 			ResponseObject<TUser> rsUser= feignUserClient.getUserById(Integer.valueOf(uid));
 			TUser user = rsUser.getData();
 			if(user == null){
@@ -140,7 +140,7 @@ public class RokidController {
 			}
 			logger.info(" ====== RokidRequest ====== "+rokidRequest);
 			userToken = rokidRequest.getUserAuth().getUserToken();
-			String uid = redisBussines.get(userToken);
+			String uid = (String) redisBussines.get(userToken);
 			ResponseObject<TUser> rsUser= feignUserClient.getUserById(Integer.valueOf(uid));
 			TUser user = rsUser.getData();
 			if(user == null){

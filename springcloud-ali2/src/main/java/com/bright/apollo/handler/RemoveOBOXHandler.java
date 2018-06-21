@@ -56,7 +56,7 @@ public class RemoveOBOXHandler extends BasicHandler {
 
         sceneService.deleteSceneByOboxSerialId(obox.getOboxSerialId());
 //        OboxBusiness.delOboxScenes(obox.getOboxSerialId());
-        oboxDeviceConfigService.deleteTOboxDeviceConfigByOboxId(obox.getId());
+        oboxDeviceConfigService.deleteTOboxDeviceConfigByOboxId(obox.getOboxId());
 //        OboxBusiness.delOboxDeviceConfigs(obox.getOboxId());
         oboxService.deleteOboxById(obox);
 //        OboxBusiness.delObox(obox.getOboxId());

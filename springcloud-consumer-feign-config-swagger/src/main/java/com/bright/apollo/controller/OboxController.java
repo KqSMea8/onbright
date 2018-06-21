@@ -79,7 +79,7 @@ public class OboxController {
 		}
 		return res;
 	}
-
+/*
 	@ApiOperation(value = "add obox ", httpMethod = "POST", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/addObox/{serialId}", method = RequestMethod.POST)
@@ -95,6 +95,6 @@ public class OboxController {
 			res.setMsg(ResponseEnum.Error.getMsg());
 		}
 		return res;
-	}
+	}*/
 
 }

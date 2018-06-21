@@ -33,7 +33,7 @@ public class DroneHeartBeatHandler extends BasicHandler {
         if (tObox == null) {
             return null;
         }
-        TOboxDeviceConfig tOboxDeviceConfig = oboxDeviceConfigService.queryOboxConfigByRFAddr(tObox.getId(), rfAddr);
+        TOboxDeviceConfig tOboxDeviceConfig = oboxDeviceConfigService.queryOboxConfigByRFAddr(tObox.getOboxId(), rfAddr);
 
         if (tOboxDeviceConfig != null) {
             if (tOboxDeviceConfig.getDeviceType().equals("10")) {
