@@ -34,17 +34,9 @@ redis:
       max-idle: 8
       # 连接池中的最小空闲连接
       min-idle: 0
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/master
 datasource:
     username: root
     password: Iltwao!1
     url: jdbc:mysql://rm-bp1phzwe9h981t77x6o.mysql.rds.aliyuncs.com:3306/onbright_ali_new?useUnicode=true&amp;characterEncoding=utf8
     driver-class-name: com.mysql.jdbc.Driver
-<<<<<<< HEAD
     type: com.alibaba.druid.pool.DruidDataSource
-=======
-    type: com.alibaba.druid.pool.DruidDataSource
->>>>>>> origin/master
