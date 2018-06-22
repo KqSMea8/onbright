@@ -92,6 +92,6 @@ public class AliDeviceServiceImpl implements AliDeviceService {
 	 */
 	@Override
 	public List<TAliDevice> getAliDeviceByProductKeyAndDeviceSerialId(String productKey, String oboxSerialId) {
-		return mapper.addAliDev(productKey,oboxSerialId);
+		return mapper.getAliDeviceByProductKeyAndDeviceSerialId(productKey,oboxSerialId);
 	}
 }
