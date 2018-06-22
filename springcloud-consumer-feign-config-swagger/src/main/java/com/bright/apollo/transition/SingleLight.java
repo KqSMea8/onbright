@@ -1,4 +1,4 @@
 package com.bright.apollo.transition;
 
-public class SingleLight extends Light {
+public class SingleLight extends TMallDeviceAdapter {
 }

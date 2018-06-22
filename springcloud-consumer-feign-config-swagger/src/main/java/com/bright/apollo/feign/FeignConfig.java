@@ -6,13 +6,13 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class FeignConfig {
-    /*@Bean
+    @Bean
     Logger.Level feignLoggerLevel() {
         return Logger.Level.FULL;
-    }*/
-
-    @Bean
-    public feign.Logger.Level multipartLoggerLevel() {
-        return feign.Logger.Level.FULL;
     }
+
+//    @Bean
+//    public feign.Logger.Level multipartLoggerLevel() {
+//        return Logger.Level.FULL;
+//    }
 }

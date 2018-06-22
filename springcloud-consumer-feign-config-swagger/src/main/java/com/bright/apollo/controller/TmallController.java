@@ -6,6 +6,7 @@ import com.bright.apollo.feign.FeignDeviceClient;
 import com.bright.apollo.feign.FeignOboxClient;
 import com.bright.apollo.redis.RedisBussines;
 import com.bright.apollo.response.ResponseObject;
+import com.bright.apollo.transition.TMallDeviceAdapter;
 import com.bright.apollo.transition.TMallTemplate;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.config.CookieSpecs;
@@ -89,7 +90,16 @@ public class TmallController {
 
 			ResponseObject<List<TOboxDeviceConfig>> responseObject = feignDeviceClient.getOboxDeviceConfigByUserId(429);
 			List<TOboxDeviceConfig> oboxDeviceConfigList = responseObject.getData();
+
 			logger.info(" ====== responseObject ====== "+responseObject);
+
+			TMallDeviceAdapter adapter = null;
+
+			for(TOboxDeviceConfig oboxDeviceConfig :oboxDeviceConfigList){
+				adapter = new TMallDeviceAdapter(oboxDeviceConfig,tMallTemplate);
+				adapter = adapter.onbright2TMall();
+				logger.info("====== adapter ====== "+adapter);
+			}
 
 
 			JSONArray jsonArray = new JSONArray();

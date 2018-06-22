@@ -2,7 +2,7 @@ package com.bright.apollo.transition;
 
 import org.json.JSONArray;
 
-public class ColorLight extends Light {
+public class ColorLight extends TMallDeviceAdapter {
 
     private String[] colorLightActions;
 
