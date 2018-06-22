@@ -88,6 +88,6 @@ public interface AliDeviceMapper {
 	 * @Description:  
 	 */
     @Select("select * from t_ali_device where productKey = #{productKey} and obox_serial_id = #{deviceSerialId}")
-	List<TAliDevice> addAliDev(String productKey, String oboxSerialId);
+	List<TAliDevice> getAliDeviceByProductKeyAndDeviceSerialId(String productKey, String oboxSerialId);
  
 }

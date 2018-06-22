@@ -15,7 +15,7 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/tpyliujunjie/SpringcloudConfig
+          uri: https://github.com/onbright-canton/onbrightConfig/
           searchPaths: '{application}'
 security:
   basic:

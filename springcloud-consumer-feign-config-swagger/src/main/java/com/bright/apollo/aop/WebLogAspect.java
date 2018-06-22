@@ -22,9 +22,9 @@ import org.springframework.web.context.request.ServletRequestAttributes;
  *@Since:2018年3月10日  
  *@Version:1.1.0  
  */
-@Aspect
-@Order(1)
-@Component
+//@Aspect
+//@Order(1)
+//@Component
 public class WebLogAspect {
     private Logger logger = Logger.getLogger(getClass());
 
