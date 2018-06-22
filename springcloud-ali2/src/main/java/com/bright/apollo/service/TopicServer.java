@@ -94,9 +94,9 @@ public class TopicServer {
         logger.info(" ====== sendRPCRequest start ====== ");
         try {
             if (region.equals(AliRegionEnum.AMERICA)) {
-                response =  iotClient.getClient(AliRegionEnum.AMERICA.name()).getAcsResponse(request);
+                response =  iotClient.getClient(AliRegionEnum.AMERICA.getValue()).getAcsResponse(request);
             }else {
-                response =  iotClient.getClient(AliRegionEnum.SOURTHCHINA.name()).getAcsResponse(request);
+                response =  iotClient.getClient(AliRegionEnum.SOURTHCHINA.getValue()).getAcsResponse(request);
             }
 
         } catch (ClientException e) {
@@ -221,7 +221,7 @@ public class TopicServer {
         logger.info(" request mStr: " + mString);
         RRpcRequest rrpcRequest = new RRpcRequest();
         //设备所属产品的Key
-        String productKey = AliDevCache.getProductKey("vfssadffsadsafdfsda");
+        String productKey = AliDevCache.getProductKey(deviceSerial);
         String deviceName = AliDevCache.getDeviceName(deviceSerial);
         String eAliRegionEnum = AliDevCache.getProductRegion(deviceSerial);
         if (StringUtils.isEmpty(productKey)) {

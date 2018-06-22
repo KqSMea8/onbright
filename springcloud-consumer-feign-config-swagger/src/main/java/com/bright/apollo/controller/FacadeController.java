@@ -106,7 +106,7 @@ public class FacadeController {
 		return res;
 	}
 
-	// control device
+	// control device the 
 	@SuppressWarnings({ "rawtypes" })
 	@ApiOperation(value = "control  device", httpMethod = "PUT", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
