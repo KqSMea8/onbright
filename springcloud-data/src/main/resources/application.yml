@@ -1,7 +1,8 @@
-spring:
   datasource:
     username: root
     password: Iltwao!1
-    url: jdbc:mysql://rm-bp16t7i071284ljuo.mysql.rds.aliyuncs.com:3306/bright_apollo?useUnicode=true&amp;characterEncoding=utf8
+    url: jdbc:mysql://rm-bp1phzwe9h981t77x6o.mysql.rds.aliyuncs.com:3306/bright_apollo_new?useUnicode=true&amp;characterEncoding=utf8
     driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
+
+

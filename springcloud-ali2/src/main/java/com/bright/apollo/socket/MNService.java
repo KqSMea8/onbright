@@ -39,9 +39,9 @@ public class MNService {
     Logger logger = Logger.getLogger(MNService.class);
     public static MNService instance;
 
-    private static final String accessKeyId ="LTAImm6aizjagsfp";
-    private static final String accessKeySecret ="zNdZ9RuwSU7RG2Lkoon9i2hbVx3gsm";
-    private static final String endPoint ="http://1558412029548413.mns.cn-shanghai.aliyuncs.com/";
+    private static final String accessKeyId ="LTAIBE0b86xFi9q5";//LTAImm6aizjagsfp
+    private static final String accessKeySecret ="Ym9F1CNAgwhbxt5Sk1Qki1nr6w6e3v";//zNdZ9RuwSU7RG2Lkoon9i2hbVx3gsm
+    private static final String endPoint ="http://1563722132092243.mns.cn-hangzhou.aliyuncs.com/";
     private static final String queueStr = "aliyun-iot-"+ ALIDevTypeEnum.OBOX.getSouthChinaName();
 
     private static final String AmericaEndPoint ="http://1558412029548413.mns.us-west-1.aliyuncs.com/";
@@ -300,6 +300,7 @@ public class MNService {
 
         for (Thread thread : list) {
             try {
+                logger.info("join ====== "+thread.getName());
                 thread.join();
             } catch (InterruptedException e) {
                 e.printStackTrace();

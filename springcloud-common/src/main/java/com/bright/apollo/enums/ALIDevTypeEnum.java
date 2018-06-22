@@ -1,9 +1,9 @@
 package com.bright.apollo.enums;
 
 public enum ALIDevTypeEnum {
-    OBOX("RlhxDHnuR6X","3PQo9W8wweT"),
+    OBOX("b1V3Y8BwKzU","3PQo9W8wweT"),
 
-    DEVICE("9ZGKJGCqLKI","LJjxCM3gZrj");
+    DEVICE("b1eakXpQ1WU","LJjxCM3gZrj");
 
     private String southChinaName;
     private String americaName;

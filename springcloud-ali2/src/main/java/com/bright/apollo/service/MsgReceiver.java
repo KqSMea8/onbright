@@ -40,6 +40,7 @@ public class MsgReceiver {
 
     public boolean setPolling()
     {
+        logger.info(" ====== setPolling ======= "+Thread.currentThread().getName());
         synchronized (lockObj) {
             Boolean ret = sPollingMap.get(queueName);
             if (ret == null || !ret) {
@@ -62,9 +63,11 @@ public class MsgReceiver {
     public Message receiveMessage()
     {
         boolean polling = false;
+        logger.info("polling ====== " + polling +" ====== thread name "+Thread.currentThread().getName());
         while (true) {
             synchronized (lockObj) {
                 Boolean p = sPollingMap.get(queueName);
+                logger.info("p ====== "+p);
                 if (p != null && p) {
                     try {
                         logger.info("Thread" + workerId + " Have a nice sleep!");
@@ -80,7 +83,7 @@ public class MsgReceiver {
             try {
                 Message message = null;
                 if (!polling) {
-
+                    logger.info("message ====== "+message);
                     message = cloudQueue.popMessage();
 
                     if (message == null) {

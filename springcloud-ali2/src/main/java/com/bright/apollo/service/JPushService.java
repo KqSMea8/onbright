@@ -18,8 +18,8 @@ import org.apache.log4j.Logger;
 public class JPushService {
     protected static final Logger LOG = Logger.getLogger(JPushService.class);
 
-    private static final String appKey ="df0d09f3a46fb7b6522d2dcc";
-    private static final String masterSecret = "4a71faba23f73942c2196cb0";
+    private static final String appKey ="LTAIBE0b86xFi9q5";
+    private static final String masterSecret = "Ym9F1CNAgwhbxt5Sk1Qki1nr6w6e3v";
 
 
     public static final String TITLE = "Test from API example";
