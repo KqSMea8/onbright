@@ -6,6 +6,7 @@ import com.bright.apollo.feign.FeignDeviceClient;
 import com.bright.apollo.feign.FeignOboxClient;
 import com.bright.apollo.redis.RedisBussines;
 import com.bright.apollo.response.ResponseObject;
+import com.bright.apollo.transition.TMallTemplate;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
@@ -26,6 +27,7 @@ import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -57,6 +59,9 @@ public class TmallController {
 	@Autowired
 	private FeignDeviceClient feignDeviceClient;
 
+	@Autowired
+	private TMallTemplate tMallTemplate;
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 //	@ApiOperation(value = "get deivcie by device serialId", httpMethod = "GET", produces = "application/json")
 //	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
@@ -64,6 +69,7 @@ public class TmallController {
 	public Object tmallCmd(@RequestBody Object object) throws IOException {
 
 		logger.info("====== messageID ======"+object);
+		logger.info("====== tMallTemplate ====== "+tMallTemplate.getDefaultAction());
 		Map<String,Object> requestMap = (Map<String, Object>) object;
 		Map<String,Object> requestHeaderMap = (Map<String, Object>) requestMap.get("header");
 		JSONObject map = new JSONObject();
@@ -81,9 +87,9 @@ public class TmallController {
 			headerMap.put("payLoadVersion","1");
 			map.put("header",headerMap);
 
-//			ResponseObject<List<TOboxDeviceConfig>> responseObject = feignDeviceClient.getOboxDeviceConfigByUserId(429);
-//			List<TOboxDeviceConfig> oboxDeviceConfigList = responseObject.getData();
-
+			ResponseObject<List<TOboxDeviceConfig>> responseObject = feignDeviceClient.getOboxDeviceConfigByUserId(429);
+			List<TOboxDeviceConfig> oboxDeviceConfigList = responseObject.getData();
+			logger.info(" ====== responseObject ====== "+responseObject);
 
 
 			JSONArray jsonArray = new JSONArray();

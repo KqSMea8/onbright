@@ -18,10 +18,10 @@
 			<artifactId>zipkin-autoconfigure-ui</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-	<!-- 	<dependency>
+		<!--<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-eureka</artifactId>
-		</dependency> -->
+		</dependency>-->
 <!-- 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>

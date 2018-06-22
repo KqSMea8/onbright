@@ -19,6 +19,7 @@ import com.bright.apollo.response.ResponseObject;
  *@Since:2018年3月2日  
  *@Version:1.1.0  
  */
+
 @FeignClient(name = "springcloud-provider-device",fallback = HystrixFeignDeviceFallback.class, configuration = FeignConfig.class)
 public interface FeignDeviceClient {
 	/**  

@@ -128,9 +128,9 @@ public interface TOboxDeviceConfigMapper extends BaseMapper<TOboxDeviceConfig, T
 	TOboxDeviceConfig getOboxDeviceConfigById(@Param("id") int id);
 
 	@Select(" select * from t_obox_device_config todc " +
-			" inner join t_user_device on tud on todc.device_serial_id = tud.device_serial_id" +
+			" inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id" +
 			" inner join t_user tu on tu.id = tud.user_id" +
-			" where tu.user_id=#{userId}")
+			" where tud.user_id = #{userId}")
 	@Results(value = {
 			@Result(property = "oboxId",column = "obox_id"),
 			@Result(property = "deviceId",column = "device_id"),
