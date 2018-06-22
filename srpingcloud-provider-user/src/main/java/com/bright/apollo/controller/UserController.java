@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bright.apollo.cache.UserCacheService;
 import com.bright.apollo.common.entity.TUser;
+import com.bright.apollo.common.entity.TUserDevice;
+import com.bright.apollo.common.entity.TUserObox;
 import com.bright.apollo.constant.Constant;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
@@ -147,6 +150,7 @@ public class UserController {
 		}
 		return res;
 	}
+
 	@RequestMapping(value = "/getUser/{userName}", method = RequestMethod.GET)
 	public ResponseObject<TUser> getUser(@PathVariable(required = true) String userName) {
 		ResponseObject<TUser> res = new ResponseObject<TUser>();
@@ -181,6 +185,45 @@ public class UserController {
 			res.setCode(ResponseEnum.Success.getCode());
 			res.setMsg(ResponseEnum.Success.getMsg());
 			res.setData(tuser);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setCode(ResponseEnum.Error.getCode());
+			res.setMsg(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/addUserObox", method = RequestMethod.POST)
+	public ResponseObject addUserObox(@RequestBody(required = true) TUserObox tUserObox) {
+		ResponseObject res = new ResponseObject();
+		try {
+			TUser tuser = userService.getUserByUserId(tUserObox.getId());
+			if (tuser == null) {
+				res.setCode(ResponseEnum.UnKonwUser.getCode());
+				res.setMsg(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+			res.setCode(ResponseEnum.Success.getCode());
+			res.setMsg(ResponseEnum.Success.getMsg());
+			//res.setData(tuser);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setCode(ResponseEnum.Error.getCode());
+			res.setMsg(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/addUserDevice", method = RequestMethod.POST)
+	public ResponseObject addUserDevice(@RequestBody(required = true) TUserDevice tUserDevice) {
+		ResponseObject res = new ResponseObject();
+		try {
+			userService.addUserDevice(tUserDevice);
+			res.setCode(ResponseEnum.Success.getCode());
+			res.setMsg(ResponseEnum.Success.getMsg());
+			//res.setData(tuser);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			res.setCode(ResponseEnum.Error.getCode());

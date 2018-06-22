@@ -2,8 +2,7 @@ package com.bright.apollo.service.impl;
 
 import java.util.List;
 
-//import org.springframework.beans.factory.annotation.Autowired;
-import com.bright.apollo.dao.scene.mapper.TSceneMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 //import com.bright.apollo.business.SceneBusiness;
@@ -12,6 +11,10 @@ import com.bright.apollo.common.entity.TSceneAction;
 import com.bright.apollo.common.entity.TSceneActionExample;
 import com.bright.apollo.common.entity.TSceneCondition;
 import com.bright.apollo.common.entity.TSceneConditionExample;
+import com.bright.apollo.dao.scene.mapper.TSceneActionMapper;
+import com.bright.apollo.dao.scene.mapper.TSceneConditionMapper;
+//import org.springframework.beans.factory.annotation.Autowired;
+import com.bright.apollo.dao.scene.mapper.TSceneMapper;
 //import com.bright.apollo.common.entity.TSceneExample;
 import com.bright.apollo.response.SceneInfo;
 import com.bright.apollo.service.SceneService;
@@ -28,8 +31,12 @@ public class SceneServiceImpl implements SceneService {
 //	@SuppressWarnings("rawtypes")
 //	@Autowired
 //	private SceneBusiness sceneBusiness;
-
+	@Autowired
 	private TSceneMapper sceneMapper;
+	@Autowired
+	private TSceneConditionMapper tSceneConditionMapper;
+	@Autowired
+	private TSceneActionMapper tSceneActionMapper;
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -100,18 +107,9 @@ public class SceneServiceImpl implements SceneService {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	@Deprecated
-	public int deleteSceneBySceneNumber(Integer sceneNumber) {
-//		TSceneExample example = new TSceneExample();
-//		example.or().andSceneNumberEqualTo(sceneNumber);
-//		sceneBusiness.deleteByExample(example);
-//		TSceneActionExample actionExample = new TSceneActionExample();
-//		actionExample.or().andSceneNumberEqualTo(sceneNumber);
-//		sceneBusiness.deleteByExample(actionExample);
-//		TSceneConditionExample conditionExample = new TSceneConditionExample();
-//		conditionExample.or().andSceneNumberEqualTo(sceneNumber);
-//		return sceneBusiness.deleteByExample(conditionExample);
-		return 0;
+	public void deleteSceneBySceneNumber(Integer sceneNumber) {
+		sceneMapper.deleteSceneBySceneNum(sceneNumber);
+		
 	}
 
 	/*
@@ -236,12 +234,8 @@ public class SceneServiceImpl implements SceneService {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	@Deprecated
-	public int deleteSceneConditionBySceneNumber(Integer sceneNumber) {
-		TSceneConditionExample conditionExample = new TSceneConditionExample();
-		conditionExample.or().andSceneNumberEqualTo(sceneNumber);
-//		return sceneBusiness.deleteByExample(conditionExample);
-		return 0;
+	public void deleteSceneConditionBySceneNumber(Integer sceneNumber) {
+		tSceneConditionMapper.deleteSceneConditionBySceneNum(sceneNumber);
 	}
 
 	/*
@@ -268,12 +262,8 @@ public class SceneServiceImpl implements SceneService {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	@Deprecated
-	public int deleteSceneActionBySceneNumber(Integer sceneNumber) {
-		TSceneActionExample actionExample = new TSceneActionExample();
-		actionExample.or().andSceneNumberEqualTo(sceneNumber);
-//		return sceneBusiness.deleteByExample(actionExample);
-		return 0;
+	public void deleteSceneActionBySceneNumber(Integer sceneNumber) {
+		tSceneActionMapper.deleteSceneActionBySceneNumber(sceneNumber);
 	}
 
 	/* (non-Javadoc)  
@@ -330,6 +320,15 @@ public class SceneServiceImpl implements SceneService {
 	@Override
 	public List<TScene> getALlScene() {
 		return sceneMapper.getALlScene();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.SceneService#getConditionsBySceneNumber(java.lang.Integer)  
+	 */
+	@Override
+	public List<TSceneCondition> getConditionsBySceneNumber(Integer sceneNumber) {
+		  
+		return tSceneConditionMapper.getConditionsBySceneNumber(sceneNumber);
 	}
 
 

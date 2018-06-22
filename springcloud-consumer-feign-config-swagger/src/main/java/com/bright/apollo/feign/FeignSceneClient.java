@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.bright.apollo.common.entity.TScene;
+import com.bright.apollo.common.entity.TSceneCondition;
 import com.bright.apollo.hrstrix.HystrixFeignSceneFallback;
 import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.response.SceneInfo;
@@ -37,7 +39,8 @@ public interface FeignSceneClient {
 	 * @Description:
 	 */
 	@RequestMapping(value = "/scene/{sceneNumber}", method = RequestMethod.PUT)
-	ResponseObject<SceneInfo> updateScene(@PathVariable(value = "sceneNumber") Integer sceneNumber, @RequestBody SceneInfo info);
+	ResponseObject<SceneInfo> updateScene(@PathVariable(value = "sceneNumber") Integer sceneNumber,
+			@RequestBody SceneInfo info);
 
 	/**
 	 * @param sceneNumber
@@ -64,7 +67,8 @@ public interface FeignSceneClient {
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/scene/deleteSceneCondition/{sceneNumber}/{condtionId}", method = RequestMethod.DELETE)
-	public ResponseObject deleteSceneCondition(@PathVariable(value = "sceneNumber") Integer sceneNumber, @PathVariable(value = "condtionId") Integer condtionId);
+	public ResponseObject deleteSceneCondition(@PathVariable(value = "sceneNumber") Integer sceneNumber,
+			@PathVariable(value = "condtionId") Integer condtionId);
 
 	/**
 	 * @param sceneNumber
@@ -74,7 +78,8 @@ public interface FeignSceneClient {
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/scene/deleteSceneAction/{sceneNumber}/{actionId}", method = RequestMethod.DELETE)
-	public ResponseObject deleteSceneAction(@PathVariable(value = "sceneNumber") Integer sceneNumber, @PathVariable(value = "actionId") Integer actionId);
+	public ResponseObject deleteSceneAction(@PathVariable(value = "sceneNumber") Integer sceneNumber,
+			@PathVariable(value = "actionId") Integer actionId);
 
 	/**
 	 * @param userId
@@ -87,11 +92,52 @@ public interface FeignSceneClient {
 	ResponseObject<List<SceneInfo>> getSceneByUserAndPage(@PathVariable(value = "userId") Integer userId,
 			@PathVariable(value = "pageIndex") Integer pageIndex, @PathVariable(value = "pageSize") Integer pageSize);
 
-	/**  
+	/**
 	 * @param info
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
 	@RequestMapping(value = "/scene/addLocalScene", method = RequestMethod.POST)
 	ResponseObject<SceneInfo> addLocalScene(@RequestBody(required = true) SceneInfo info);
+
+	/**
+	 * @param oboxSerialId
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/scene/getScenesByOboxSerialId/{oboxSerialId}", method = RequestMethod.GET)
+	ResponseObject<List<TScene>> getScenesByOboxSerialId(@PathVariable(value = "oboxSerialId") String oboxSerialId);
+
+	/**
+	 * @param sceneNumber
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/scene/getSceneConditionsBySceneNumber/{sceneNumber}", method = RequestMethod.GET)
+	ResponseObject<List<TSceneCondition>> getSceneConditionsBySceneNumber(
+			@PathVariable(value = "sceneNumber") Integer sceneNumber);
+
+	/**
+	 * @param sceneNumber
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/scene/deleteSceneConditionBySceneNumber/{sceneNumber}", method = RequestMethod.DELETE)
+	ResponseObject deleteSceneConditionBySceneNumber(@PathVariable(value = "sceneNumber") Integer sceneNumber);
+
+	/**
+	 * @param sceneNumber
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/scene/deleteSceneActionsBySceneNumber/{sceneNumber}", method = RequestMethod.DELETE)
+	ResponseObject deleteSceneActionsBySceneNumber(@PathVariable(value = "sceneNumber") Integer sceneNumber);
+
+	/**
+	 * @param oboxSerialId
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/scene/deleteSceneByOboxSerialId/{oboxSerialId}", method = RequestMethod.DELETE)
+	ResponseObject deleteSceneByOboxSerialId(@PathVariable(value = "oboxSerialId") String oboxSerialId);
 }

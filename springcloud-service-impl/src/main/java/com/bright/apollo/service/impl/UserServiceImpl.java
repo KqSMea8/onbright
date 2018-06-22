@@ -2,21 +2,21 @@ package com.bright.apollo.service.impl;
 
 import java.util.List;
 
-//import org.springframework.beans.factory.annotation.Autowired;
-import com.bright.apollo.dao.user.mapper.TUserDeviceMapper;
-import com.bright.apollo.dao.user.mapper.TUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 //import com.bright.apollo.business.UserBusiness;
 import com.bright.apollo.common.entity.TUser;
 import com.bright.apollo.common.entity.TUserDevice;
-import com.bright.apollo.common.entity.TUserDeviceExample;
 import com.bright.apollo.common.entity.TUserExample;
 import com.bright.apollo.common.entity.TUserObox;
 import com.bright.apollo.common.entity.TUserOboxExample;
 import com.bright.apollo.common.entity.TUserScene;
 import com.bright.apollo.common.entity.TUserSceneExample;
+//import org.springframework.beans.factory.annotation.Autowired;
+import com.bright.apollo.dao.user.mapper.TUserDeviceMapper;
+import com.bright.apollo.dao.user.mapper.TUserMapper;
+import com.bright.apollo.dao.user.mapper.TUserOboxMapper;
 import com.bright.apollo.service.UserService;
 
 /**
@@ -45,6 +45,9 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private TUserDeviceMapper userDeviceMapper;
 
+	@Autowired
+	private TUserOboxMapper tUserOboxMapper;
+	
 	@Override
 	@Deprecated
 	public <T, E> T handlerExample(E e) {
@@ -294,6 +297,23 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<TUser> getUsersByDeviceId(int configDeviceId) {
 		return userDeviceMapper.getUsersByDeviceId(configDeviceId);
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.UserService#addUserObox(com.bright.apollo.common.entity.TUserObox)  
+	 */
+	@Override
+	public int addUserObox(TUserObox tUserObox) {
+		  
+		return tUserOboxMapper.addUserObox(tUserObox);
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.UserService#addUserDevice(com.bright.apollo.common.entity.TUserDevice)  
+	 */
+	@Override
+	public int addUserDevice(TUserDevice tUserDevice) {
+ 		return userDeviceMapper.addUserDevice(tUserDevice);
 	}
 
 

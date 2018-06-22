@@ -5,6 +5,8 @@ import org.springframework.stereotype.Component;
 
 import com.bright.apollo.common.entity.OauthClientDetails;
 import com.bright.apollo.common.entity.TUser;
+import com.bright.apollo.common.entity.TUserDevice;
+import com.bright.apollo.common.entity.TUserObox;
 import com.bright.apollo.feign.FeignUserClient;
 import com.bright.apollo.response.ResponseObject;
 
@@ -96,6 +98,28 @@ public class HystrixFeignUserFallback extends BasicHystrixFeignFallback implemen
 	 */
 	@Override
 	public ResponseObject<OauthClientDetails> addOauthClientDetails(OauthClientDetails oauthClientDetails) {
+		logger.warn("===user server is break===");
+		ResponseObject res = serverError();
+		return res;
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignUserClient#addUserObox(com.bright.apollo.common.entity.TUserObox)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject addUserObox(TUserObox tUserObox) {
+		logger.warn("===user server is break===");
+		ResponseObject res = serverError();
+		return res;
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignUserClient#addUserDevice(com.bright.apollo.common.entity.TUserDevice)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject addUserDevice(TUserDevice tUserDevice) {
 		logger.warn("===user server is break===");
 		ResponseObject res = serverError();
 		return res;

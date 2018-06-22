@@ -85,7 +85,8 @@ public class DeviceController {
 
 	// add device
 	@RequestMapping(value = "/{serialId}", method = RequestMethod.POST)
-	public ResponseObject<TOboxDeviceConfig> addDevice(@PathVariable(required = true, value = "serialId") String serialId,
+	public ResponseObject<TOboxDeviceConfig> addDevice(
+			@PathVariable(required = true, value = "serialId") String serialId,
 			@RequestBody(required = true) TOboxDeviceConfig device) {
 		ResponseObject<TOboxDeviceConfig> res = new ResponseObject<TOboxDeviceConfig>();
 		try {
@@ -182,6 +183,25 @@ public class DeviceController {
 				res.setMsg(ResponseEnum.Success.getMsg());
 				res.setData(oboxDeviceConfigList);
 			}
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setCode(ResponseEnum.Error.getCode());
+			res.setMsg(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	@RequestMapping(value = "/getDevicesByOboxSerialId/{oboxSerialId}", method = RequestMethod.GET)
+	public ResponseObject<List<TOboxDeviceConfig>> getDevicesByOboxSerialId(
+			@PathVariable(required = true, value = "oboxSerialId") String oboxSerialId) {
+		logger.info(" ====== getDevicesByOboxSerialId ====== ");
+		ResponseObject<List<TOboxDeviceConfig>> res = new ResponseObject<List<TOboxDeviceConfig>>();
+		try {
+			List<TOboxDeviceConfig> oboxDeviceConfigList = oboxDeviceConfigService
+					.getOboxDeviceConfigByOboxSerialId(oboxSerialId);
+			res.setCode(ResponseEnum.Success.getCode());
+			res.setMsg(ResponseEnum.Success.getMsg());
+			res.setData(oboxDeviceConfigList);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			res.setCode(ResponseEnum.Error.getCode());

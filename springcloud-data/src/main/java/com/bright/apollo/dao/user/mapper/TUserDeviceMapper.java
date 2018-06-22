@@ -5,7 +5,9 @@ import com.bright.apollo.common.entity.TUserDevice;
 import com.bright.apollo.common.entity.TUserDeviceExample;
 import com.bright.apollo.dao.mapper.base.BaseMapper;
 import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
@@ -53,5 +55,17 @@ public interface TUserDeviceMapper extends BaseMapper<TUserDevice, TUserDeviceEx
 			" inner join t_user_device tud on tuser.id = tud.user_id " +
 			" where id=#{configDeviceId} ")
 	List<TUser> getUsersByDeviceId(@Param("configDeviceId") int configDeviceId);
+
+	/**  
+	 * @param tUserDevice
+	 * @return  
+	 * @Description:  
+	 */
+	@Insert("insert into t_user_device (device_serial_id,\n" +
+			"user_id,\n" +
+			"privilege) values(#{deviceSerialId},#{userId}," +
+			"#{privilege})")
+	@Options(useGeneratedKeys=true, keyProperty="id", keyColumn="id")
+	int addUserDevice(TUserDevice tUserDevice);
 
 }

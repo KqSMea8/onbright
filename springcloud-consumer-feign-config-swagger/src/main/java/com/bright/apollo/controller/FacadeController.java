@@ -22,12 +22,16 @@ import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.common.entity.TScene;
 import com.bright.apollo.common.entity.TSceneCondition;
 import com.bright.apollo.common.entity.TUser;
+import com.bright.apollo.common.entity.TUserDevice;
+import com.bright.apollo.common.entity.TUserObox;
 import com.bright.apollo.enums.SceneTypeEnum;
 import com.bright.apollo.feign.FeignAliClient;
 import com.bright.apollo.feign.FeignDeviceClient;
 import com.bright.apollo.feign.FeignOboxClient;
 import com.bright.apollo.feign.FeignSceneClient;
 import com.bright.apollo.feign.FeignUserClient;
+import com.bright.apollo.request.OboxDTO;
+import com.bright.apollo.request.SceneDTO;
 import com.bright.apollo.response.AliDevInfo;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
@@ -106,7 +110,7 @@ public class FacadeController {
 		return res;
 	}
 
-	// control device the 
+	// control device the
 	@SuppressWarnings({ "rawtypes" })
 	@ApiOperation(value = "control  device", httpMethod = "PUT", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
@@ -681,17 +685,238 @@ public class FacadeController {
 
 	}
 
-	@ApiOperation(value = "add obox ", httpMethod = "POST", produces = "application/json")
+	@ApiOperation(value = "add obox ", httpMethod = "POST", produces = "application/json;charset=UTF-8")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/addObox", method = RequestMethod.POST)
-	public ResponseObject<TObox> addObox(@PathVariable(required = true, value = "serialId") String serialId,
-			@RequestBody(required = true) TObox obox) {
-		ResponseObject<TObox> res = null;
+	public ResponseObject<TObox> addObox(@RequestBody(required = true) OboxDTO oboxDTO) {
+		ResponseObject<TObox> res = new ResponseObject<TObox>();
 		try {
-			return feignOboxClient.addObox(serialId, obox);
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (principal.getUsername() != null && !principal.getUsername().equals("")) {
+				res.setCode(ResponseEnum.RequestParamError.getCode());
+				res.setMsg(ResponseEnum.RequestParamError.getMsg());
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser.getCode() == ResponseEnum.Success.getCode() && resUser.getData() != null) {
+				ResponseObject<TObox> oboxRes = feignOboxClient.getObox(oboxDTO.getOboxSerialId());
+				if (oboxRes == null || oboxRes.getCode() != ResponseEnum.Success.getCode()
+						|| oboxRes.getData() == null) {
+					res.setCode(ResponseEnum.RequestObjectNotExist.getCode());
+					res.setMsg(ResponseEnum.RequestObjectNotExist.getMsg());
+					return res;
+				}
+				if (oboxRes.getData().getOboxStatus() != (byte) 1) {
+					// return
+					// respError(ErrorEnum.request_fail_not_online.getValue());
+					res.setCode(ResponseEnum.REQUESTFAILNOTONLINE.getCode());
+					res.setMsg(ResponseEnum.REQUESTFAILNOTONLINE.getMsg());
+					return res;
+				}
+				TUserObox tUserObox = new TUserObox();
+				tUserObox.setUserId(resUser.getData().getId());
+				tUserObox.setOboxSerialId(oboxRes.getData().getOboxSerialId());
+				ResponseObject resobj = feignUserClient.addUserObox(tUserObox);
+				TObox tobox = oboxRes.getData();
+				if (oboxDTO.getOboxName() != null) {
+					tobox.setOboxName(oboxDTO.getOboxName());
+				}
+				if (oboxDTO.getOboxVersion() != null) {
+					tobox.setOboxVersion(oboxDTO.getOboxVersion());
+				}
+				tobox.setOboxControl((byte) 0);
+				feignOboxClient.updateObox(tobox.getOboxSerialId(), tobox);
+				ResponseObject<List<TOboxDeviceConfig>> resList = feignDeviceClient
+						.getDevicesByOboxSerialId(tobox.getOboxSerialId());
+				if (resList == null || resList.getCode() != ResponseEnum.Success.getCode()) {
+					res.setCode(ResponseEnum.Error.getCode());
+					res.setMsg(ResponseEnum.Error.getMsg());
+					return res;
+				}
+				List<TOboxDeviceConfig> deviceList = resList.getData();
+				if (deviceList != null && deviceList.size() > 0) {
+					for (TOboxDeviceConfig tOboxDeviceConfig : deviceList) {
+						/*
+						 * if (!tOboxDeviceConfig.getGroupAddr().equals("00")) {
+						 * TServerOboxGroup tServerOboxGroup =
+						 * DeviceBusiness.queryOBOXGroupByAddr(
+						 * tOboxDeviceConfig.getOboxSerialId(),
+						 * tOboxDeviceConfig.getGroupAddr()); if
+						 * (tServerOboxGroup != null) { TServerGroup
+						 * tServerGroup = DeviceBusiness
+						 * .querySererGroupById(tServerOboxGroup.getServerId());
+						 * if (tServerGroup != null) { if
+						 * (tServerGroup.getGroupStyle().equals(GroupTypeEnum.
+						 * local.getValue())) {
+						 * DeviceBusiness.deleteServerGroup(tServerGroup); } }
+						 * DeviceBusiness.deleteOBOXGroupByAddr(
+						 * tOboxDeviceConfig.getOboxSerialId(),
+						 * tOboxDeviceConfig.getGroupAddr()); } }
+						 */
+						// DeviceBusiness.deleteDeviceGroup(tOboxDeviceConfig.getId());
+						feignDeviceClient.delDevice(tOboxDeviceConfig.getDeviceSerialId());
+						// DeviceBusiness.deleteUserDeviceByDeviceId(tOboxDeviceConfig.getId());
+						// .DeviceBusiness.delDeviceChannel(tOboxDeviceConfig.getId());
+					}
+				}
+				feignDeviceClient.deleleDeviceByOboxSerialId(tobox.getOboxSerialId());
+				ResponseObject<List<TScene>> resScenes = feignSceneClient
+						.getScenesByOboxSerialId(tobox.getOboxSerialId());
+				if (resScenes == null || resScenes.getCode() != ResponseEnum.Success.getCode()) {
+					res.setCode(ResponseEnum.Error.getCode());
+					res.setMsg(ResponseEnum.Error.getMsg());
+					return res;
+				}
+				List<TScene> scenes = resScenes.getData();
+				if (scenes != null) {
+					for (TScene tScene : scenes) {
+						ResponseObject<List<TSceneCondition>> resCondition = feignSceneClient
+								.getSceneConditionsBySceneNumber(tScene.getSceneNumber());
+						if (resCondition == null || resCondition.getCode() != ResponseEnum.Success.getCode()) {
+							res.setCode(ResponseEnum.Error.getCode());
+							res.setMsg(ResponseEnum.Error.getMsg());
+							return res;
+						}
+						List<TSceneCondition> tSceneConditions = resCondition.getData();
+						if (tSceneConditions != null) {
+							feignSceneClient.deleteSceneConditionBySceneNumber(tScene.getSceneNumber());
+							// SceneBusiness.deleteSceneConditionBySceneNumber(tScene.getSceneNumber());
+						}
+						feignUserClient.deleteUserSceneBySceneNumber(tScene.getSceneNumber());
+						// SceneBusiness.deleteUserScene(tScene.getSceneNumber());
+						feignSceneClient.deleteSceneActionsBySceneNumber(tScene.getSceneNumber());
+						// SceneBusiness.deleteSceneActionsBySceneNumber(tScene.getSceneNumber());
+						feignSceneClient.deleteScene(tScene.getSceneNumber());
+						// SceneBusiness.deleteSceneBySceneNumber(tScene.getSceneNumber());
+						// SceneBusiness.deleteSceneLocationBySceneNumber(tScene.getSceneNumber());
+					}
+					feignSceneClient.deleteSceneByOboxSerialId(tobox.getOboxSerialId());
+					// OboxBusiness.delOboxScenes(dbObox.getOboxSerialId());
+				}
+				List<TOboxDeviceConfig> oboxDeviceConfigs = oboxDTO.getDeviceConfigs();
+				if (oboxDeviceConfigs != null) {
+					for (TOboxDeviceConfig oboxDeviceConfig : oboxDeviceConfigs) {
+						oboxDeviceConfig.setOboxId(tobox.getOboxId());
+						oboxDeviceConfig.setOboxSerialId(tobox.getOboxSerialId());
+						ResponseObject<TOboxDeviceConfig> resDevice = feignDeviceClient
+								.addDevice(oboxDeviceConfig.getDeviceSerialId(), oboxDeviceConfig);
+						if (resDevice != null || resDevice.getCode() == ResponseEnum.Success.getCode()
+								|| resDevice.getData() != null) {
+							TUserDevice tUserDevice=new TUserDevice();
+							tUserDevice.setDeviceSerialId(oboxDeviceConfig.getDeviceSerialId());
+							tUserDevice.setUserId(resUser.getData().getId());
+							feignUserClient.addUserDevice(tUserDevice);
+						}
+						//int ret = OboxBusiness.addOboxConfig(oboxDeviceConfig);
+						/*TDeviceChannel tDeviceChannel = new TDeviceChannel();
+						tDeviceChannel.setDeviceId(ret);
+						tDeviceChannel.setOboxId(dbObox.getOboxId());
+						tDeviceChannel.setSignalIntensity(15);
+						DeviceBusiness.addDeviceChannel(tDeviceChannel);
+						DeviceBusiness.addUserDevice(userId, ret);*/
+					}
+				}
+				List<SceneDTO> sceneDTOs = oboxDTO.getScenes();
+				if (sceneDTOs != null) {
+					for (SceneDTO sceneDTO : sceneDTOs) {
+						TScene tScene = new TScene();
+						tScene.setSceneName(sceneDTO.getSceneName());
+						if (!sceneDTO.getSceneType().equals(SceneTypeEnum.local.getValue())) {
+							continue;
+						}
+						tScene.setSceneType(sceneDTO.getSceneType());
+ 						tScene.setSceneStatus(sceneDTO.getSceneStatus());
+						tScene.setOboxSceneNumber(sceneDTO.getOboxSceneNumber());
+						tScene.setOboxSerialId(tobox.getOboxSerialId());
+						
+						/*if (!StringUtils.isEmpty(sceneDTO.getSceneGroup())) {
+							tScene.setSceneGroup(sceneDTO.getSceneGroup());
+						}*/
+						
+						//waiting for new week
+ 						/*int ret = SceneBusiness.addScene(tScene);
+						
+						
+						TUserScene tUserScene = new TUserScene();
+						tUserScene.setSceneNumber(ret);
+						tUserScene.setUserId(userId);
+						SceneBusiness.addUserScene(tUserScene);
+						
+						List<SceneActionDTO> tActionDTOs = sceneDTO.getActions();
+						if (tActionDTOs != null) {
+							for (SceneActionDTO sceneActionDTO : tActionDTOs) {
+								TSceneAction tSceneAction = new TSceneAction();
+								tSceneAction.setAction(sceneActionDTO.getAction());
+								tSceneAction.setSceneNumber(ret);
+								
+								String node_type = sceneActionDTO.getNodeType();
+								if (node_type.equals(NodeTypeEnum.group.getValue())) {
+									//group
+									TServerOboxGroup tServerOboxGroup = DeviceBusiness.queryOBOXGroupByAddr(dbObox.getOboxSerialId(), sceneActionDTO.getOboxGroupAddr());
+									if (tServerOboxGroup != null) {
+										TServerGroup tServerGroup = DeviceBusiness.querySererGroupById(tServerOboxGroup.getServerId());
+										
+										if (tServerGroup != null) {
+											tSceneAction.setActionID(tServerGroup.getId());
+											tSceneAction.setNodeType(NodeTypeEnum.group.getValue());
+										}
+									}
+								}else if(node_type.equals(NodeTypeEnum.single.getValue())){
+								
+									TOboxDeviceConfig tOboxDeviceConfig = DeviceBusiness.queryDeviceConfigBySerialID(sceneActionDTO.getDeviceSerialId());
+									if (tOboxDeviceConfig != null) {
+										tSceneAction.setActionID(tOboxDeviceConfig.getId());
+									}
+								}
+								
+								SceneBusiness.addSceneAction(tSceneAction);
+							}
+						}
+						
+						List<List<SceneConditionDTO>> sceneConditionDTOs = sceneDTO.getConditions();
+						if (sceneConditionDTOs != null) {
+							for (int i = 0; i < sceneConditionDTOs.size(); i++) {
+								List<SceneConditionDTO> list = sceneConditionDTOs.get(i);
+								for (SceneConditionDTO sceneConditionDTO : list) {
+									if (sceneConditionDTO.getDeviceSerialId() != null) {
+										//node condition
+										String condition = sceneConditionDTO.getCondition();
+										String serialID = sceneConditionDTO.getDeviceSerialId();
+										
+										TOboxDeviceConfig tOboxDeviceConfig = DeviceBusiness.queryDeviceConfigBySerialID(sceneConditionDTO.getDeviceSerialId());
+										if (tOboxDeviceConfig != null) {
+											TSceneCondition tSceneCondition = new TSceneCondition();
+											tSceneCondition.setSerialId(serialID);
+											tSceneCondition.setCondition(condition);
+											tSceneCondition.setSceneNumber(ret);
+											tSceneCondition.setConditionGroup(i);
+											SceneBusiness.addSceneCondition(tSceneCondition);
+										}						
+										
+
+									}else {
+										//time condition
+										String cond = sceneConditionDTO.getCondition();
+										TSceneCondition tSceneCondition = new TSceneCondition();
+										tSceneCondition.setCondition(cond);
+										tSceneCondition.setConditionGroup(i);
+										tSceneCondition.setSceneNumber(ret);
+									
+										SceneBusiness.addSceneCondition(tSceneCondition);
+									}
+								}
+							}
+						}*/
+					}
+				}
+			} else {
+				res.setCode(ResponseEnum.UnKonwUser.getCode());
+				res.setMsg(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+
+			// return feignOboxClient.addObox(serialId, obox);
 		} catch (Exception e) {
 			e.printStackTrace();
-			res = new ResponseObject<TObox>();
 			res.setCode(ResponseEnum.Error.getCode());
 			res.setMsg(ResponseEnum.Error.getMsg());
 		}
@@ -705,7 +930,7 @@ public class FacadeController {
 			@PathVariable(required = false, value = "zone") String zone) {
 		ResponseObject<AliDevInfo> res = new ResponseObject<AliDevInfo>();
 		try {
-			return feignAliClient.registAliDev(type,zone);
+			return feignAliClient.registAliDev(type, zone);
 		} catch (Exception e) {
 			e.printStackTrace();
 			res.setCode(ResponseEnum.Error.getCode());

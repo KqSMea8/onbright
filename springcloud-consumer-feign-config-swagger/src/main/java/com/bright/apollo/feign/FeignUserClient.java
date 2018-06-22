@@ -1,7 +1,5 @@
 package com.bright.apollo.feign;
 
-import java.util.List;
-
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,12 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.bright.apollo.common.entity.OauthClientDetails;
-import com.bright.apollo.common.entity.TObox;
-import com.bright.apollo.common.entity.TOboxDeviceConfig;
-import com.bright.apollo.common.entity.TScene;
 import com.bright.apollo.common.entity.TUser;
+import com.bright.apollo.common.entity.TUserDevice;
+import com.bright.apollo.common.entity.TUserObox;
 import com.bright.apollo.hrstrix.HystrixFeignUserFallback;
-import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
 
 /**
@@ -80,5 +76,22 @@ public interface FeignUserClient {
 	 */
 	@RequestMapping(value = "/oauthclient/addClient", method = RequestMethod.POST)
 	ResponseObject<OauthClientDetails> addOauthClientDetails(@RequestBody(required = true) OauthClientDetails oauthClientDetails);
+
+	/**  
+	 * @param tUserObox
+	 * @return  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/user/addUserObox", method = RequestMethod.POST)
+	ResponseObject addUserObox(@RequestBody(required = true) TUserObox tUserObox);
+
+	/**  
+	 * @param tUserDevice  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/user/addUserDevice", method = RequestMethod.POST)
+	ResponseObject addUserDevice(@RequestBody(required = true) TUserDevice tUserDevice);
 
 }

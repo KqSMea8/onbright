@@ -37,10 +37,11 @@ public interface TUserOboxMapper extends BaseMapper<TUserObox, TUserOboxExample,
 
 	@Insert("insert into t_user_obox(obox_serial_id,\n" +
 			"user_id,\n" +
-			"last_op_time,\n" +
-			"privilege) values(#{oboxSerialId},#{userId},#{lastOpTime},#{privilege})")
-	void addUserObox(TUserObox userObox);
+			"privilege) values(#{oboxSerialId},#{userId},#{privilege})")
+	int addUserObox(TUserObox userObox);
 
 	@Delete("delete from t_user_obox where obox_serial_id = #{oboxSerialId}")
 	void delectUserOboxByOboxSerialId(@Param("oboxSerialId") String oboxSerialId);
+
+	 
 }

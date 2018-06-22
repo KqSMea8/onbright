@@ -108,7 +108,7 @@ public class SceneController {
 		}
 		return res;
 	}
-
+	//modify the code 
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/deleteSceneCondition/{sceneNumber}/{condtionId}", method = RequestMethod.DELETE)
 	public ResponseObject deleteSceneCondition(@PathVariable Integer sceneNumber, @PathVariable Integer condtionId) {
@@ -264,13 +264,14 @@ public class SceneController {
 				res.setMsg(ResponseEnum.SearchIsEmpty.getMsg());
 			} else {
 				int count = sceneService.queryCountSceneByUserId(userId);
-				List<SceneInfo> infos=new ArrayList<SceneInfo>();
-				for(TScene scene:list){
-					SceneInfo info=new SceneInfo();
+				List<SceneInfo> infos = new ArrayList<SceneInfo>();
+				for (TScene scene : list) {
+					SceneInfo info = new SceneInfo();
 					info.setScene(scene);
 					List<TSceneAction> actions = sceneService.queryActionsBySceneNumber(scene.getSceneNumber());
 					info.setActions(actions);
-					List<TSceneCondition> conditions = sceneService.queryConditionsBySceneNumber(scene.getSceneNumber());
+					List<TSceneCondition> conditions = sceneService
+							.queryConditionsBySceneNumber(scene.getSceneNumber());
 					info.setConditions(conditions);
 					infos.add(info);
 				}
@@ -289,17 +290,102 @@ public class SceneController {
 		}
 		return res;
 	}
-	
+
 	@RequestMapping(value = "/addLocalScene", method = RequestMethod.POST)
 	public ResponseObject<SceneInfo> addLocalScene(@RequestBody(required = true) SceneInfo info) {
-		ResponseObject<SceneInfo>res=new ResponseObject<SceneInfo>();
+		ResponseObject<SceneInfo> res = new ResponseObject<SceneInfo>();
 		try {
-			if(!StringUtils.isEmpty(info.getScene().getOboxSerialId())){
+			if (!StringUtils.isEmpty(info.getScene().getOboxSerialId())) {
 				res.setCode(ResponseEnum.RequestParamError.getCode());
 				res.setMsg(ResponseEnum.RequestParamError.getMsg());
 				return res;
 			}
-			
+
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setCode(ResponseEnum.Error.getCode());
+			res.setMsg(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	@RequestMapping(value = "/getScenesByOboxSerialId/{oboxSerialId}", method = RequestMethod.GET)
+	public ResponseObject<List<TScene>> getScenesByOboxSerialId(
+			@PathVariable(value = "oboxSerialId") String oboxSerialId) {
+		ResponseObject<List<TScene>> res = new ResponseObject<List<TScene>>();
+		try {
+			List<TScene> list = sceneService.getSceneByOboxSerialId(oboxSerialId);
+			res.setCode(ResponseEnum.Success.getCode());
+			res.setMsg(ResponseEnum.Success.getMsg());
+			res.setData(list);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setCode(ResponseEnum.Error.getCode());
+			res.setMsg(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	@RequestMapping(value = "/getSceneConditionsBySceneNumber/{sceneNumber}", method = RequestMethod.GET)
+	public ResponseObject<List<TSceneCondition>> getSceneConditionsBySceneNumber(
+			@PathVariable(value = "sceneNumber") Integer sceneNumber) {
+		ResponseObject<List<TSceneCondition>> res = new ResponseObject<List<TSceneCondition>>();
+		try {
+			List<TSceneCondition> list = sceneService.getConditionsBySceneNumber(sceneNumber);
+			res.setCode(ResponseEnum.Success.getCode());
+			res.setMsg(ResponseEnum.Success.getMsg());
+			res.setData(list);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setCode(ResponseEnum.Error.getCode());
+			res.setMsg(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/deleteSceneConditionBySceneNumber/{sceneNumber}", method = RequestMethod.DELETE)
+	public ResponseObject deleteSceneConditionBySceneNumber(
+			@PathVariable(value = "sceneNumber") Integer sceneNumber) {
+		ResponseObject res = new ResponseObject();
+		try {
+			sceneService.deleteSceneConditionBySceneNumber(sceneNumber);
+			res.setCode(ResponseEnum.Success.getCode());
+			res.setMsg(ResponseEnum.Success.getMsg());
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setCode(ResponseEnum.Error.getCode());
+			res.setMsg(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/getScenesByOboxSerialId/{oboxSerialId}", method = RequestMethod.GET)
+	public ResponseObject deleteSceneActionsBySceneNumber(
+			@PathVariable(value = "sceneNumber") Integer sceneNumber) {
+		ResponseObject res = new ResponseObject();
+		try {
+			sceneService.deleteSceneActionBySceneNumber(sceneNumber);
+			res.setCode(ResponseEnum.Success.getCode());
+			res.setMsg(ResponseEnum.Success.getMsg());
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setCode(ResponseEnum.Error.getCode());
+			res.setMsg(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/deleteSceneByOboxSerialId/{oboxSerialId}", method = RequestMethod.DELETE)
+	public ResponseObject deleteSceneByOboxSerialId(
+			@PathVariable(value = "oboxSerialId") String oboxSerialId) {
+		ResponseObject res = new ResponseObject();
+		try {
+			sceneService.deleteSceneByOboxSerialId(oboxSerialId);
+			res.setCode(ResponseEnum.Success.getCode());
+			res.setMsg(ResponseEnum.Success.getMsg());
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			res.setCode(ResponseEnum.Error.getCode());

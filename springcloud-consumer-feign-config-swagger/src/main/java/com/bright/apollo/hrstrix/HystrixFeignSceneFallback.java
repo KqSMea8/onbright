@@ -5,6 +5,8 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
+import com.bright.apollo.common.entity.TScene;
+import com.bright.apollo.common.entity.TSceneCondition;
 import com.bright.apollo.feign.FeignSceneClient;
 import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.response.SceneInfo;
@@ -99,6 +101,46 @@ public class HystrixFeignSceneFallback extends BasicHystrixFeignFallback impleme
 	@SuppressWarnings("unchecked")
 	@Override
 	public ResponseObject<SceneInfo> addLocalScene(SceneInfo info) {
+		logger.warn("===scene server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignSceneClient#getScenesByOboxSerialId(java.lang.String)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<List<TScene>> getScenesByOboxSerialId(String oboxSerialId) {
+		logger.warn("===scene server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignSceneClient#getSceneConditionsBySceneNumber(java.lang.Integer)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<List<TSceneCondition>> getSceneConditionsBySceneNumber(Integer sceneNumber) {
+		logger.warn("===scene server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignSceneClient#deleteSceneConditionBySceneNumber(java.lang.Integer)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject deleteSceneConditionBySceneNumber(Integer sceneNumber) {
+		logger.warn("===scene server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignSceneClient#deleteSceneActionsBySceneNumber(java.lang.Integer)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject deleteSceneActionsBySceneNumber(Integer sceneNumber) {
 		logger.warn("===scene server is break===");
 		return serverError();
 	}

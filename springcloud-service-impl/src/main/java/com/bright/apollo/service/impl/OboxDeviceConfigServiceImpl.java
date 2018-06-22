@@ -109,5 +109,14 @@ public class OboxDeviceConfigServiceImpl  implements OboxDeviceConfigService {
         return odcMapper.getOboxDeviceConfigByUserId(userId);
     }
 
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.OboxDeviceConfigService#getOboxDeviceConfigByOboxSerialId(java.lang.String)  
+	 */
+	@Override
+	public List<TOboxDeviceConfig> getOboxDeviceConfigByOboxSerialId(String oboxSerialId) {
+		  
+		return odcMapper.getOboxDeviceConfigByOboxSerialId(oboxSerialId);
+	}
+
 
 }

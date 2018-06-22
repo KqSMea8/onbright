@@ -2,7 +2,6 @@ package com.bright.apollo.service;
 
 import java.util.List;
 
-import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.common.entity.TScene;
 import com.bright.apollo.common.entity.TSceneAction;
 import com.bright.apollo.common.entity.TSceneCondition;
@@ -18,8 +17,8 @@ import com.bright.apollo.service.base.BasicService;
  */
 public interface SceneService extends BasicService{
 	public int updateScene(TScene tScene);
-	@Deprecated
-	public int deleteSceneBySceneNumber(Integer sceneNumber);
+	
+	public void deleteSceneBySceneNumber(Integer sceneNumber);
 	/**  
 	 * @param scene  
 	 * @Description:  
@@ -70,8 +69,7 @@ public interface SceneService extends BasicService{
 	 * @param sceneNumber  
 	 * @Description:  
 	 */
-	@Deprecated
-	public int deleteSceneConditionBySceneNumber(Integer sceneNumber);
+	public void deleteSceneConditionBySceneNumber(Integer sceneNumber);
 	/**  
 	 * @param actionId  
 	 * @Description:  
@@ -82,8 +80,7 @@ public interface SceneService extends BasicService{
 	 * @param sceneNumber  
 	 * @Description:  
 	 */
-	@Deprecated
-	public int deleteSceneActionBySceneNumber(Integer sceneNumber);
+	public void deleteSceneActionBySceneNumber(Integer sceneNumber);
 	/**  
 	 * @param userId
 	 * @param pageIndex
@@ -114,4 +111,11 @@ public interface SceneService extends BasicService{
 	TScene getSceneBySceneNumber(int sceneNumber);
 
 	List<TScene> getALlScene();
+	/**  
+	 * @param sceneNumber
+	 * @return  
+	 * @Description:  
+	 */
+	List<TSceneCondition> getConditionsBySceneNumber(Integer sceneNumber);
+ 
 }

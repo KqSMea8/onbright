@@ -29,6 +29,7 @@ public enum ResponseEnum {
 	SendOboxTimeOut(217,"Send Obox TimeOut"),
 	SendOboxFail(218,"Send Obox Fail"),
 	SendOboxUnKnowFail(219,"Send Obox UnKnow Fail"),
+	REQUESTFAILNOTONLINE(220,"request fail not online"),
 	Success(200,"success");
 	private int code;
 	

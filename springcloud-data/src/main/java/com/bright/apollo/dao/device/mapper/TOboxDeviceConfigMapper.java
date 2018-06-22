@@ -146,4 +146,26 @@ public interface TOboxDeviceConfigMapper extends BaseMapper<TOboxDeviceConfig, T
 	})
 	List<TOboxDeviceConfig> getOboxDeviceConfigByUserId(@Param("userId") Integer userId);
 
+	/**  
+	 * @param oboxSerialId
+	 * @return  
+	 * @Description:  
+	 */
+	@Select(" select * from t_obox_device_config " +
+			" where obox_serial_id=#{oboxSerialId}")
+	@Results(value = {
+			@Result(property = "oboxId",column = "obox_id"),
+			@Result(property = "deviceId",column = "device_id"),
+			@Result(property = "lastOpTime",column = "last_op_time"),
+			@Result(property = "deviceState",column = "device_state"),
+			@Result(property = "deviceType",column = "device_type"),
+			@Result(property = "deviceChildType",column = "device_child_type"),
+			@Result(property = "deviceVersion",column = "device_version"),
+			@Result(property = "device_serial_id",column = "deviceSerialId"),
+			@Result(property = "device_rf_addr",column = "deviceRfAddr"),
+			@Result(property = "group_addr",column = "groupAddr"),
+			@Result(property = "obox_serial_id",column = "oboxSerialId")
+	})
+	List<TOboxDeviceConfig> getOboxDeviceConfigByOboxSerialId(String oboxSerialId);
+
 }

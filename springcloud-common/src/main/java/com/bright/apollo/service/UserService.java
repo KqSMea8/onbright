@@ -148,4 +148,12 @@ public interface UserService extends BasicService{
 	List<TUser> getUsersBySceneNumber(int sceneNumber);
 
 	List<TUser> getUsersByDeviceId(int configDeviceId);
+	
+	int addUserObox(TUserObox tUserObox);
+
+	/**  
+	 * @param tUserDevice  
+	 * @Description:  
+	 */
+	int addUserDevice(TUserDevice tUserDevice);
 }

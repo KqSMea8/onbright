@@ -47,4 +47,12 @@ public interface TSceneConditionMapper extends BaseMapper<TSceneCondition, TScen
 	@Select("select * from t_scene_condition where scene_number = #{sceneNumber} and condition_group = #{conditionGroup}")
 	List<TSceneCondition> getSceneConditionBySceneNumberAndGroup(@Param("sceneNumber") int sceneNumber,@Param("conditionGroup") int conditionGroup);
 
+	/**  
+	 * @param sceneNumber
+	 * @return  
+	 * @Description:  
+	 */
+	@Select("select * from t_scene_condition where scene_number = #{sceneNumber} ")
+	List<TSceneCondition> getConditionsBySceneNumber(Integer sceneNumber);
+
 }

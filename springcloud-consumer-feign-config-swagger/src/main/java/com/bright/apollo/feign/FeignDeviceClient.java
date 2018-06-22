@@ -19,7 +19,7 @@ import com.bright.apollo.response.ResponseObject;
  *@Since:2018年3月2日  
  *@Version:1.1.0  
  */
-@FeignClient(name = "springcloud-provider-deivce",fallback = HystrixFeignDeviceFallback.class, configuration = FeignConfig.class)
+@FeignClient(name = "springcloud-provider-device",fallback = HystrixFeignDeviceFallback.class, configuration = FeignConfig.class)
 public interface FeignDeviceClient {
 	/**  
 	 * @param serialId
@@ -75,8 +75,16 @@ public interface FeignDeviceClient {
 	@RequestMapping(value = "/device/{userId}/{pageIndex}/{pageSize}", method = RequestMethod.GET)
 	ResponseObject<List<TOboxDeviceConfig>> getDeviceByUserAndPage(@PathVariable(value = "userId") Integer userId,@PathVariable(value = "pageIndex") Integer pageIndex,@PathVariable(value = "pageSize") Integer pageSize);
 
-	@RequestMapping(value = "/getOboxDeviceConfigByUserId/{userId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/device/getOboxDeviceConfigByUserId/{userId}", method = RequestMethod.GET)
 	ResponseObject<List<TOboxDeviceConfig>> getOboxDeviceConfigByUserId(@PathVariable(value = "userId") Integer userId);
+
+	/**  
+	 * @param oboxSerialId
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/device/getDevicesByOboxSerialId/{oboxSerialId}", method = RequestMethod.GET)
+	ResponseObject<List<TOboxDeviceConfig>> getDevicesByOboxSerialId(@PathVariable(value = "oboxSerialId") String oboxSerialId);
 
 
 }
