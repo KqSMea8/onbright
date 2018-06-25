@@ -28,6 +28,28 @@ public class TMallTemplate {
     @Value("${tmall.curtains}")
     private String curtainDevices;
 
+    @Value("${tmallControllProperties.light}")
+    private String lightControllProperties;
+
+    public String getLightControllProperties() {
+        return lightControllProperties;
+    }
+
+    public void setLightControllProperties(String lightControllProperties) {
+        this.lightControllProperties = lightControllProperties;
+    }
+
+    public String getDefaultControllProperties() {
+        return defaultControllProperties;
+    }
+
+    public void setDefaultControllProperties(String defaultControllProperties) {
+        this.defaultControllProperties = defaultControllProperties;
+    }
+
+    @Value("${tmallControllProperties.outletAndcurtain}")
+    private String defaultControllProperties;
+
     public String getLightActions() {
         return lightActions;
     }

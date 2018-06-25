@@ -100,4 +100,10 @@ public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implem
 		return serverError();
 	}
 
+	@Override
+	public ResponseObject<List<TOboxDeviceConfig>> getDevicesByOboxSerialId(String oboxSerialId) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
 }

@@ -145,4 +145,10 @@ public class HystrixFeignSceneFallback extends BasicHystrixFeignFallback impleme
 		return serverError();
 	}
 
+	@Override
+	public ResponseObject deleteSceneByOboxSerialId(String oboxSerialId) {
+		logger.warn("===scene server is break===");
+		return serverError();
+	}
+
 }

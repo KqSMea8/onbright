@@ -114,7 +114,7 @@ public class DeviceController {
 	public ResponseObject delDevice(@PathVariable(required = true, value = "serialId") String serialId) {
 		ResponseObject res = new ResponseObject();
 		try {
-			if (deviceService.queryDeviceBySerialId(serialId) == null) {
+			if (oboxDeviceConfigService.queryDeviceConfigBySerialID(serialId) == null) {
 				res.setCode(ResponseEnum.ObjExist.getCode());
 				res.setMsg(ResponseEnum.ObjExist.getMsg());
 			} else {

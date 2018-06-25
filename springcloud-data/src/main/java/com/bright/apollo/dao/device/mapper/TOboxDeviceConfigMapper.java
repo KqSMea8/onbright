@@ -111,10 +111,10 @@ public interface TOboxDeviceConfigMapper extends BaseMapper<TOboxDeviceConfig, T
 			@Result(property = "deviceType",column = "device_type"),
 			@Result(property = "deviceChildType",column = "device_child_type"),
 			@Result(property = "deviceVersion",column = "device_version"),
-			@Result(property = "device_serial_id",column = "deviceSerialId"),
-			@Result(property = "device_rf_addr",column = "deviceRfAddr"),
-			@Result(property = "group_addr",column = "groupAddr"),
-			@Result(property = "obox_serial_id",column = "oboxSerialId")
+			@Result(property = "deviceSerialId",column = "device_serial_id"),
+			@Result(property = "deviceRfAddr",column = "device_rf_addr"),
+			@Result(property = "groupAddr",column = "group_addr"),
+			@Result(property = "oboxSerialId",column = " obox_serial_id")
 	})
 	TOboxDeviceConfig getTOboxDeviceConfigByDeviceSerialId(@Param("deviceSerialId") String deviceSerialId);
 
@@ -139,10 +139,10 @@ public interface TOboxDeviceConfigMapper extends BaseMapper<TOboxDeviceConfig, T
 			@Result(property = "deviceType",column = "device_type"),
 			@Result(property = "deviceChildType",column = "device_child_type"),
 			@Result(property = "deviceVersion",column = "device_version"),
-			@Result(property = "device_serial_id",column = "deviceSerialId"),
-			@Result(property = "device_rf_addr",column = "deviceRfAddr"),
-			@Result(property = "group_addr",column = "groupAddr"),
-			@Result(property = "obox_serial_id",column = "oboxSerialId")
+			@Result(property = "deviceSerialId",column = "device_serial_id"),
+			@Result(property = "deviceRfAddr",column = "device_rf_addr"),
+			@Result(property = "groupAddr",column = "group_addr"),
+			@Result(property = "oboxSerialId",column = " obox_serial_id")
 	})
 	List<TOboxDeviceConfig> getOboxDeviceConfigByUserId(@Param("userId") Integer userId);
 
@@ -161,10 +161,10 @@ public interface TOboxDeviceConfigMapper extends BaseMapper<TOboxDeviceConfig, T
 			@Result(property = "deviceType",column = "device_type"),
 			@Result(property = "deviceChildType",column = "device_child_type"),
 			@Result(property = "deviceVersion",column = "device_version"),
-			@Result(property = "device_serial_id",column = "deviceSerialId"),
-			@Result(property = "device_rf_addr",column = "deviceRfAddr"),
-			@Result(property = "group_addr",column = "groupAddr"),
-			@Result(property = "obox_serial_id",column = "oboxSerialId")
+			@Result(property = "deviceSerialId",column = "device_serial_id"),
+			@Result(property = "deviceRfAddr",column = "device_rf_addr"),
+			@Result(property = "groupAddr",column = "group_addr"),
+			@Result(property = "oboxSerialId",column = " obox_serial_id")
 	})
 	List<TOboxDeviceConfig> getOboxDeviceConfigByOboxSerialId(String oboxSerialId);
 
