@@ -77,7 +77,7 @@ public class SetStatusHandler extends BasicHandler{
 
         }else {
 //            ScheduledExecutorService service= Executors.newSingleThreadScheduledExecutor();
-//            service.schedule(new SetStatusTask(bestOBOXChannel, bodyBytes), Integer.parseInt(deley, 16), TimeUnit.SECONDS);
+//            service.schedule(new setStatusTask(bestOBOXChannel, bodyBytes), Integer.parseInt(deley, 16), TimeUnit.SECONDS);
 //            replyMsg.setData("01" + msg.getData());
 //            return replyMsg;
         }

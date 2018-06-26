@@ -39,13 +39,13 @@ public class AliServerController {
 		ResponseObject<OboxResp> res = new ResponseObject<OboxResp>();
 		try {
 			OboxResp resp = topicServer.request(cmd, inMsgByte, deviceSerial);
-			res.setCode(ResponseEnum.Success.getCode());
-			res.setMsg(ResponseEnum.Success.getMsg());
+			res.setStatus(ResponseEnum.AddSuccess.getStatus());
+			res.setMessage(ResponseEnum.AddSuccess.getMsg());
 			res.setData(resp);
 		} catch (Exception e) {
 			e.printStackTrace();
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
@@ -63,13 +63,13 @@ public class AliServerController {
 			bodyBytes[7] = 0x03;
 
 			OboxResp resp = topicServer.request(CMDEnum.release_all_devices, bodyBytes, serialId);
-			res.setCode(ResponseEnum.Success.getCode());
-			res.setMsg(ResponseEnum.Success.getMsg());
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 			res.setData(resp);
 		} catch (Exception e) {
 			e.printStackTrace();
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
@@ -81,13 +81,13 @@ public class AliServerController {
 			byte[] sendbodyBytes = new byte[15];
 			sendbodyBytes[0] = (byte) Integer.parseInt("00", 16);
 			OboxResp resp = topicServer.request(CMDEnum.search_new_device, sendbodyBytes, oboxSerialId);
-			res.setCode(ResponseEnum.Success.getCode());
-			res.setMsg(ResponseEnum.Success.getMsg());
+			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
 			res.setData(resp);
 		} catch (Exception e) {
 			e.printStackTrace();
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
@@ -120,13 +120,13 @@ public class AliServerController {
 				System.arraycopy(oboxSerialIdBytes, 0, sendbodyBytes, 6, oboxSerialIdBytes.length);
 			}
 			OboxResp resp = topicServer.request(CMDEnum.search_new_device, sendbodyBytes, oboxSerialId);
-			res.setCode(ResponseEnum.Success.getCode());
-			res.setMsg(ResponseEnum.Success.getMsg());
+			res.setStatus(ResponseEnum.AddSuccess.getStatus());
+			res.setMessage(ResponseEnum.AddSuccess.getMsg());
 			res.setData(resp);
 		} catch (Exception e) {
 			e.printStackTrace();
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 
@@ -165,13 +165,13 @@ public class AliServerController {
 				System.arraycopy(oboxSerialIdBytes, 0, sendbodyBytes, 6, oboxSerialIdBytes.length);
 			}
 			OboxResp resp = topicServer.request(CMDEnum.search_new_device, sendbodyBytes, oboxSerialId);
-			res.setCode(ResponseEnum.Success.getCode());
-			res.setMsg(ResponseEnum.Success.getMsg());
+			res.setStatus(ResponseEnum.AddSuccess.getStatus());
+			res.setMessage(ResponseEnum.AddSuccess.getMsg());
 			res.setData(resp);
 		} catch (Exception e) {
 			e.printStackTrace();
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 
@@ -211,13 +211,13 @@ public class AliServerController {
 				System.arraycopy(oboxSerialIdBytes, 0, sendbodyBytes, 6, oboxSerialIdBytes.length);
 			}
 			OboxResp resp = topicServer.request(CMDEnum.search_new_device, sendbodyBytes, oboxSerialId);
-			res.setCode(ResponseEnum.Success.getCode());
-			res.setMsg(ResponseEnum.Success.getMsg());
+			res.setStatus(ResponseEnum.AddSuccess.getStatus());
+			res.setMessage(ResponseEnum.AddSuccess.getMsg());
 			res.setData(resp);
 		} catch (Exception e) {
 			e.printStackTrace();
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 
@@ -235,12 +235,12 @@ public class AliServerController {
 		try {
 			// check the param by the invoker
 			sceneActionThreadPool.addSceneAction(sceneNumber);
-			res.setCode(ResponseEnum.Success.getCode());
-			res.setMsg(ResponseEnum.Success.getMsg());
+			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
 		} catch (Exception e) {
 			e.printStackTrace();
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 
@@ -266,13 +266,13 @@ public class AliServerController {
 			bodyBytes[6] = (byte) Integer.parseInt(rfAddr, 16);
 			System.arraycopy(stateBytes, 0, bodyBytes, 7, stateBytes.length);
 			OboxResp resp = topicServer.request(CMDEnum.setting_node_status, bodyBytes, oboxSerialId);
-			res.setCode(ResponseEnum.Success.getCode());
-			res.setMsg(ResponseEnum.Success.getMsg());
+			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
 			res.setData(resp);
 		} catch (Exception e) {
 			e.printStackTrace();
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
@@ -302,17 +302,17 @@ public class AliServerController {
 			}
 			OboxResp oboxResp = topicServer.request(CMDEnum.setting_sc_info, bodyBytes, oboxSerialId);
 			if (oboxResp == null || oboxResp.getData() == null || oboxResp.getData().substring(0, 2).equals("00")) {
-				res.setCode(ResponseEnum.SendOboxFail.getCode());
-				res.setMsg(ResponseEnum.SendOboxFail.getMsg());
+				res.setStatus(ResponseEnum.SendOboxFail.getStatus());
+				res.setMessage(ResponseEnum.SendOboxFail.getMsg());
 			} else {
-				res.setCode(ResponseEnum.Success.getCode());
-				res.setMsg(ResponseEnum.Success.getMsg());
+				res.setStatus(ResponseEnum.AddSuccess.getStatus());
+				res.setMessage(ResponseEnum.AddSuccess.getMsg());
 				res.setData(oboxResp);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}/*
@@ -368,8 +368,8 @@ public class AliServerController {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}*/

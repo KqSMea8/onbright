@@ -11,6 +11,7 @@ import com.bright.apollo.common.entity.OauthClientDetails;
 import com.bright.apollo.common.entity.TUser;
 import com.bright.apollo.common.entity.TUserDevice;
 import com.bright.apollo.common.entity.TUserObox;
+import com.bright.apollo.common.entity.TUserScene;
 import com.bright.apollo.hrstrix.HystrixFeignUserFallback;
 import com.bright.apollo.response.ResponseObject;
 
@@ -93,5 +94,12 @@ public interface FeignUserClient {
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/user/addUserDevice", method = RequestMethod.POST)
 	ResponseObject addUserDevice(@RequestBody(required = true) TUserDevice tUserDevice);
+
+	/**  
+	 * @param tUserScene  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/user/addUserScene", method = RequestMethod.POST)
+	ResponseObject<TUserScene> addUserScene(@RequestBody(required = true) TUserScene tUserScene);
 
 }

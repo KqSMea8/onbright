@@ -41,18 +41,18 @@ public class DeviceController {
 		try {
 			TOboxDeviceConfig device = oboxDeviceConfigService.getTOboxDeviceConfigByDeviceSerialId(serialId);
 			if (device == null) {
-				res.setCode(ResponseEnum.RequestObjectNotExist.getCode());
-				res.setMsg(ResponseEnum.RequestObjectNotExist.getMsg());
+				res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
+				res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
 			} else {
-				res.setCode(ResponseEnum.Success.getCode());
-				res.setMsg(ResponseEnum.Success.getMsg());
+				res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+				res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 				res.setData(device);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("===getScene error msg:" + e.getMessage());
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
@@ -66,19 +66,19 @@ public class DeviceController {
 		ResponseObject<TOboxDeviceConfig> res = new ResponseObject<TOboxDeviceConfig>();
 		try {
 			if (deviceService.queryDeviceBySerialId(serialId) == null) {
-				res.setCode(ResponseEnum.RequestObjectNotExist.getCode());
-				res.setMsg(ResponseEnum.RequestObjectNotExist.getMsg());
+				res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
+				res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
 			} else {
 				deviceService.updateDeviceBySerialId(device);
-				res.setCode(ResponseEnum.Success.getCode());
-				res.setMsg(ResponseEnum.Success.getMsg());
+				res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+				res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
 				res.setData(deviceService.queryDeviceBySerialId(serialId));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("===getScene error msg:" + e.getMessage());
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
@@ -91,19 +91,19 @@ public class DeviceController {
 		ResponseObject<TOboxDeviceConfig> res = new ResponseObject<TOboxDeviceConfig>();
 		try {
 			if (deviceService.queryDeviceBySerialId(serialId) != null) {
-				res.setCode(ResponseEnum.ObjExist.getCode());
-				res.setMsg(ResponseEnum.ObjExist.getMsg());
+				res.setStatus(ResponseEnum.ObjExist.getStatus());
+				res.setMessage(ResponseEnum.ObjExist.getMsg());
 			} else {
 				deviceService.addDevice(device);
-				res.setCode(ResponseEnum.Success.getCode());
-				res.setMsg(ResponseEnum.Success.getMsg());
+				res.setStatus(ResponseEnum.AddSuccess.getStatus());
+				res.setMessage(ResponseEnum.AddSuccess.getMsg());
 				res.setData(deviceService.queryDeviceBySerialId(serialId));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("===getScene error msg:" + e.getMessage());
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
@@ -115,17 +115,17 @@ public class DeviceController {
 		ResponseObject res = new ResponseObject();
 		try {
 			if (deviceService.queryDeviceBySerialId(serialId) == null) {
-				res.setCode(ResponseEnum.ObjExist.getCode());
-				res.setMsg(ResponseEnum.ObjExist.getMsg());
+				res.setStatus(ResponseEnum.ObjExist.getStatus());
+				res.setMessage(ResponseEnum.ObjExist.getMsg());
 			} else {
 				deviceService.deleteDeviceBySerialId(serialId);
-				res.setCode(ResponseEnum.Success.getCode());
-				res.setMsg(ResponseEnum.Success.getMsg());
+				res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+				res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
@@ -138,8 +138,8 @@ public class DeviceController {
 		ResponseObject<List<TOboxDeviceConfig>> res = new ResponseObject<List<TOboxDeviceConfig>>();
 		try {
 			if (userId == 0) {
-				res.setCode(ResponseEnum.RequestParamError.getCode());
-				res.setMsg(ResponseEnum.RequestParamError.getMsg());
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
 				return res;
 			}
 			if (pageIndex == null)
@@ -148,12 +148,12 @@ public class DeviceController {
 				pageSize = 10;
 			List<TOboxDeviceConfig> list = deviceService.queryDeviceByUserId(userId, pageIndex, pageSize);
 			if (list == null || list.size() <= 0) {
-				res.setCode(ResponseEnum.SearchIsEmpty.getCode());
-				res.setMsg(ResponseEnum.SearchIsEmpty.getMsg());
+				res.setStatus(ResponseEnum.SearchIsEmpty.getStatus());
+				res.setMessage(ResponseEnum.SearchIsEmpty.getMsg());
 			} else {
 				int count = deviceService.queryCountDeviceByUserId(userId);
-				res.setCode(ResponseEnum.Success.getCode());
-				res.setMsg(ResponseEnum.Success.getMsg());
+				res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+				res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 				res.setData(list);
 				res.setPageSize(pageSize);
 				res.setPageIndex(pageIndex);
@@ -162,8 +162,8 @@ public class DeviceController {
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
@@ -176,17 +176,17 @@ public class DeviceController {
 		try {
 			List<TOboxDeviceConfig> oboxDeviceConfigList = oboxDeviceConfigService.getOboxDeviceConfigByUserId(userId);
 			if (oboxDeviceConfigList == null) {
-				res.setCode(ResponseEnum.NoExistCode.getCode());
-				res.setMsg(ResponseEnum.NoExistCode.getMsg());
+				res.setStatus(ResponseEnum.NoExistCode.getStatus());
+				res.setMessage(ResponseEnum.NoExistCode.getMsg());
 			} else {
-				res.setCode(ResponseEnum.Success.getCode());
-				res.setMsg(ResponseEnum.Success.getMsg());
+				res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+				res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 				res.setData(oboxDeviceConfigList);
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
@@ -199,13 +199,13 @@ public class DeviceController {
 		try {
 			List<TOboxDeviceConfig> oboxDeviceConfigList = oboxDeviceConfigService
 					.getOboxDeviceConfigByOboxSerialId(oboxSerialId);
-			res.setCode(ResponseEnum.Success.getCode());
-			res.setMsg(ResponseEnum.Success.getMsg());
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 			res.setData(oboxDeviceConfigList);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}

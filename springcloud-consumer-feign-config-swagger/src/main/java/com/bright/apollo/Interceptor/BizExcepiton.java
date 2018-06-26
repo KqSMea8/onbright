@@ -21,8 +21,8 @@ public class BizExcepiton {
 	@ResponseBody
 	public ResponseObject processException(Exception exception) {
 		ResponseObject res = new ResponseObject();
-		res.setCode(ResponseEnum.Error.getCode());
-		res.setMsg(ResponseEnum.Error.getMsg());
+		res.setStatus(ResponseEnum.Error.getStatus());
+		res.setMessage(ResponseEnum.Error.getMsg());
 		return res;
 	}
 }

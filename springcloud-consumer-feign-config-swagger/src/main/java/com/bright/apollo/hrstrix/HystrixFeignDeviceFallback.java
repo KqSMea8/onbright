@@ -40,7 +40,7 @@ public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implem
 	 * com.bright.apollo.feign.FeignDeviceClient#updateDevice(java.lang.String,
 	 * com.bright.apollo.common.entity.TOboxDeviceConfig)
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({ "unchecked" })
 	@Override
 	public ResponseObject<TOboxDeviceConfig> updateDevice(String serialId, TOboxDeviceConfig device) {
 		logger.warn("===device server is break===");
@@ -54,7 +54,7 @@ public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implem
 	 * com.bright.apollo.feign.FeignDeviceClient#addDevice(java.lang.String,
 	 * com.bright.apollo.common.entity.TOboxDeviceConfig)
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({"unchecked" })
 	@Override
 	public ResponseObject<TOboxDeviceConfig> addDevice(String serialId, TOboxDeviceConfig device) {
 		logger.warn("===device server is break===");
@@ -87,6 +87,7 @@ public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implem
 	/* (non-Javadoc)  
 	 * @see com.bright.apollo.feign.FeignDeviceClient#getDeviceByUserAndPage(java.lang.Integer, java.lang.Integer, java.lang.Integer)  
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public ResponseObject<List<TOboxDeviceConfig>> getDeviceByUserAndPage(Integer userId, Integer pageIndex,
 			Integer pageSize) {
@@ -94,8 +95,19 @@ public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implem
 		return serverError();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public ResponseObject<List<TOboxDeviceConfig>> getOboxDeviceConfigByUserId(Integer userId) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#getDevicesByOboxSerialId(java.lang.String)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<List<TOboxDeviceConfig>> getDevicesByOboxSerialId(String oboxSerialId) {
 		logger.warn("===device server is break===");
 		return serverError();
 	}

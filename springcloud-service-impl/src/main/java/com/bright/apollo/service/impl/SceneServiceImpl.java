@@ -24,7 +24,7 @@ import com.bright.apollo.service.SceneService;
  * @Description:
  * @Author:JettyLiu
  * @Since:2018年3月2日
- * @Version:1.1.0
+ * @Version:1.1.0 
  */
 @Service
 public class SceneServiceImpl implements SceneService {
@@ -329,6 +329,22 @@ public class SceneServiceImpl implements SceneService {
 	public List<TSceneCondition> getConditionsBySceneNumber(Integer sceneNumber) {
 		  
 		return tSceneConditionMapper.getConditionsBySceneNumber(sceneNumber);
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.SceneService#addSceneAction(com.bright.apollo.common.entity.TSceneAction)  
+	 */
+	@Override
+	public int addSceneAction(TSceneAction tSceneAction) {   
+		return tSceneActionMapper.addSceneAction(tSceneAction);
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.SceneService#addSceneCondition(com.bright.apollo.common.entity.TSceneCondition)  
+	 */
+	@Override
+	public int addSceneCondition(TSceneCondition tSceneCondition) {
+		return tSceneConditionMapper.addSceneCondition(tSceneCondition);
 	}
 
 

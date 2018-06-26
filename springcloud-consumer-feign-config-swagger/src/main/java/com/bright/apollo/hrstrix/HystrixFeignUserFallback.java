@@ -7,6 +7,7 @@ import com.bright.apollo.common.entity.OauthClientDetails;
 import com.bright.apollo.common.entity.TUser;
 import com.bright.apollo.common.entity.TUserDevice;
 import com.bright.apollo.common.entity.TUserObox;
+import com.bright.apollo.common.entity.TUserScene;
 import com.bright.apollo.feign.FeignUserClient;
 import com.bright.apollo.response.ResponseObject;
 
@@ -120,6 +121,17 @@ public class HystrixFeignUserFallback extends BasicHystrixFeignFallback implemen
 	@SuppressWarnings("rawtypes")
 	@Override
 	public ResponseObject addUserDevice(TUserDevice tUserDevice) {
+		logger.warn("===user server is break===");
+		ResponseObject res = serverError();
+		return res;
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignUserClient#addUserScene(com.bright.apollo.common.entity.TUserScene)  
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public ResponseObject<TUserScene> addUserScene(TUserScene tUserScene) {
 		logger.warn("===user server is break===");
 		ResponseObject res = serverError();
 		return res;

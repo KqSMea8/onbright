@@ -39,8 +39,8 @@ public class DeviceController {
  		} catch (Exception e) {
 			e.printStackTrace();
 			res=new ResponseObject<TOboxDeviceConfig>();
- 			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+ 			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
@@ -54,8 +54,8 @@ public class DeviceController {
 			res = feignDeviceClient.updateDevice(serialId,device);
 		} catch (Exception e) {
 			e.printStackTrace();
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
@@ -70,8 +70,8 @@ public class DeviceController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			res=new ResponseObject<TOboxDeviceConfig>();
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
@@ -86,8 +86,8 @@ public class DeviceController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			res=new ResponseObject();
- 			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+ 			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}

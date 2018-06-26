@@ -15,6 +15,7 @@ import com.bright.apollo.cache.UserCacheService;
 import com.bright.apollo.common.entity.TUser;
 import com.bright.apollo.common.entity.TUserDevice;
 import com.bright.apollo.common.entity.TUserObox;
+import com.bright.apollo.common.entity.TUserScene;
 import com.bright.apollo.constant.Constant;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
@@ -51,25 +52,25 @@ public class UserController {
 		ResponseObject res = new ResponseObject();
 		try {
 			if (!Verify.checkCellphone(mobile)) {
-				res.setCode(ResponseEnum.ErrorMobile.getCode());
-				res.setMsg(ResponseEnum.ErrorMobile.getMsg());
+				res.setStatus(ResponseEnum.ErrorMobile.getStatus());
+				res.setMessage(ResponseEnum.ErrorMobile.getMsg());
 				return res;
 			}
 			TUser tUser = userService.queryUserByName(mobile);
 			if (tUser != null) {
-				res.setCode(ResponseEnum.ExistMobile.getCode());
-				res.setMsg(ResponseEnum.ExistMobile.getMsg());
+				res.setStatus(ResponseEnum.ExistMobile.getStatus());
+				res.setMessage(ResponseEnum.ExistMobile.getMsg());
 				return res;
 			}
 			int code = RandomUtil.makeCode();
 			msgService.sendAuthCode(code, mobile);
 			userCacheService.saveCode(mobile, code);
-			res.setCode(ResponseEnum.Success.getCode());
-			res.setMsg(ResponseEnum.Success.getMsg());
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
@@ -81,23 +82,23 @@ public class UserController {
 		try {
 			JSONObject wxToken = wxService.getWxToken(code);
 			if (wxToken == null || !wxToken.has("access_token") || !wxToken.has("openid")) {
-				res.setCode(ResponseEnum.WxLoginError.getCode());
-				res.setMsg(ResponseEnum.WxLoginError.getMsg());
+				res.setStatus(ResponseEnum.WxLoginError.getStatus());
+				res.setMessage(ResponseEnum.WxLoginError.getMsg());
 			} else {
 				String token = wxToken.getString("access_token");
 				String openId = wxToken.getString("openid");
 				JSONObject wxUserInfo = wxService.getWxUserInfo(token, openId);
 				if (wxUserInfo == null || !wxUserInfo.has("headimgurl") || !wxUserInfo.has("nickname")
 						|| !wxUserInfo.has("sex")) {
-					res.setCode(ResponseEnum.WxLoginError.getCode());
-					res.setMsg(ResponseEnum.WxLoginError.getMsg());
+					res.setStatus(ResponseEnum.WxLoginError.getStatus());
+					res.setMessage(ResponseEnum.WxLoginError.getMsg());
 				} else {
 					userCacheService.saveOpenId(openId);
 					final JSONObject requestByBasic = HttpUtil.requestByBasic(
 							Constant.OAUTH + "?grant_type=password&username" + openId + "&password=" + openId,
 							Constant.APPID, Constant.SECRET);
-					res.setCode(ResponseEnum.Success.getCode());
-					res.setMsg(ResponseEnum.Success.getMsg());
+					res.setStatus(ResponseEnum.AddSuccess.getStatus());
+					res.setMessage(ResponseEnum.AddSuccess.getMsg());
 					res.setData(requestByBasic);
 					new Thread(new Runnable() {
 						@Override
@@ -116,8 +117,8 @@ public class UserController {
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
@@ -128,25 +129,25 @@ public class UserController {
 		ResponseObject res = new ResponseObject();
 		try {
 			if (!Verify.checkCellphone(mobile)) {
-				res.setCode(ResponseEnum.ErrorMobile.getCode());
-				res.setMsg(ResponseEnum.ErrorMobile.getMsg());
+				res.setStatus(ResponseEnum.ErrorMobile.getStatus());
+				res.setMessage(ResponseEnum.ErrorMobile.getMsg());
 				return res;
 			}
 			TUser tUser = userService.queryUserByName(mobile);
 			if (tUser == null) {
-				res.setCode(ResponseEnum.NoExistMobile.getCode());
-				res.setMsg(ResponseEnum.NoExistMobile.getMsg());
+				res.setStatus(ResponseEnum.NoExistMobile.getStatus());
+				res.setMessage(ResponseEnum.NoExistMobile.getMsg());
 				return res;
 			}
 			int code = RandomUtil.makeCode();
 			msgService.sendCode(code, mobile);
 			userCacheService.saveCode(mobile, code);
-			res.setCode(ResponseEnum.Success.getCode());
-			res.setMsg(ResponseEnum.Success.getMsg());
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
@@ -157,17 +158,17 @@ public class UserController {
 		try {
 			TUser tuser = userService.queryUserByName(userName);
 			if (tuser == null) {
-				res.setCode(ResponseEnum.UnKonwUser.getCode());
-				res.setMsg(ResponseEnum.UnKonwUser.getMsg());
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
 				return res;
 			}
-			res.setCode(ResponseEnum.Success.getCode());
-			res.setMsg(ResponseEnum.Success.getMsg());
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 			res.setData(tuser);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
@@ -178,17 +179,17 @@ public class UserController {
 		try {
 			TUser tuser = userService.getUserByUserId(id);
 			if (tuser == null) {
-				res.setCode(ResponseEnum.UnKonwUser.getCode());
-				res.setMsg(ResponseEnum.UnKonwUser.getMsg());
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
 				return res;
 			}
-			res.setCode(ResponseEnum.Success.getCode());
-			res.setMsg(ResponseEnum.Success.getMsg());
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 			res.setData(tuser);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
@@ -200,17 +201,17 @@ public class UserController {
 		try {
 			TUser tuser = userService.getUserByUserId(tUserObox.getId());
 			if (tuser == null) {
-				res.setCode(ResponseEnum.UnKonwUser.getCode());
-				res.setMsg(ResponseEnum.UnKonwUser.getMsg());
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
 				return res;
 			}
-			res.setCode(ResponseEnum.Success.getCode());
-			res.setMsg(ResponseEnum.Success.getMsg());
+			res.setStatus(ResponseEnum.AddSuccess.getStatus());
+			res.setMessage(ResponseEnum.AddSuccess.getMsg());
 			//res.setData(tuser);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
@@ -221,13 +222,29 @@ public class UserController {
 		ResponseObject res = new ResponseObject();
 		try {
 			userService.addUserDevice(tUserDevice);
-			res.setCode(ResponseEnum.Success.getCode());
-			res.setMsg(ResponseEnum.Success.getMsg());
+			res.setStatus(ResponseEnum.AddSuccess.getStatus());
+			res.setMessage(ResponseEnum.AddSuccess.getMsg());
 			//res.setData(tuser);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/addUserScene", method = RequestMethod.POST)
+	public ResponseObject<TUserScene> addUserScene(@RequestBody(required = true) TUserScene tUserScene) {
+		ResponseObject<TUserScene> res = new ResponseObject<TUserScene>();
+		try {
+			userService.addUserScene(tUserScene);
+			res.setStatus(ResponseEnum.AddSuccess.getStatus());
+			res.setMessage(ResponseEnum.AddSuccess.getMsg());
+			res.setData(userService.getUserSceneByUserIdAndSceneNumber(tUserScene.getUserId(),tUserScene.getSceneNumber()));
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}

@@ -33,13 +33,13 @@ public class OauthClientController {
 		ResponseObject<OauthClientDetails> res=new ResponseObject<OauthClientDetails>();
 		try {
 			oauthService.addOauthClientDetails(oauthClientDetails);
-			res.setCode(ResponseEnum.Success.getCode());
-			res.setMsg(ResponseEnum.Success.getMsg());
+			res.setStatus(ResponseEnum.AddSuccess.getStatus());
+			res.setMessage(ResponseEnum.AddSuccess.getMsg());
 			res.setData(oauthClientDetails);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}

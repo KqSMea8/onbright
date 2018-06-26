@@ -291,7 +291,7 @@ public class TScene implements Serializable {
 	 *
 	 * @mbg.generated Fri Jun 15 14:45:54 CST 2018
 	 */
-	public void setMsgAlter(Byte msgAlter) {
+	public void setMessageAlter(Byte msgAlter) {
 		this.msgAlter = msgAlter;
 	}
 

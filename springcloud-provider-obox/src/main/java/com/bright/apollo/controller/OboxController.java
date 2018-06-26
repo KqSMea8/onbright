@@ -36,18 +36,18 @@ public class OboxController {
 		try {
 			TObox obox = oboxService.queryOboxsByOboxSerialId(serialId);
 			if (obox == null) {
-				res.setCode(ResponseEnum.RequestObjectNotExist.getCode());
-				res.setMsg(ResponseEnum.RequestObjectNotExist.getMsg());
+				res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
+				res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
 			} else {
-				res.setCode(ResponseEnum.Success.getCode());
-				res.setMsg(ResponseEnum.Success.getMsg());
+				res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+				res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 				res.setData(obox);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("===getScene error msg:" + e.getMessage());
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
@@ -59,19 +59,19 @@ public class OboxController {
 		ResponseObject<TObox> res = new ResponseObject<TObox>();
 		try {
 			if (oboxService.queryOboxBySerialId(serialId) == null) {
-				res.setCode(ResponseEnum.ObjExist.getCode());
-				res.setMsg(ResponseEnum.ObjExist.getMsg());
+				res.setStatus(ResponseEnum.ObjExist.getStatus());
+				res.setMessage(ResponseEnum.ObjExist.getMsg());
 			} else {
 				oboxService.update(obox);
-				res.setCode(ResponseEnum.Success.getCode());
-				res.setMsg(ResponseEnum.Success.getMsg());
+				res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+				res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
 				res.setData(oboxService.queryOboxBySerialId(serialId));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("===getScene error msg:" + e.getMessage());
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
@@ -83,18 +83,18 @@ public class OboxController {
 		try {
 			TObox obox = oboxService.queryOboxBySerialId(serialId);
 			if (obox == null) {
-				res.setCode(ResponseEnum.RequestObjectNotExist.getCode());
-				res.setMsg(ResponseEnum.RequestObjectNotExist.getMsg());
+				res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
+				res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
 			} else {
 				oboxService.deleteOboxById(obox);
-				res.setCode(ResponseEnum.Success.getCode());
-				res.setMsg(ResponseEnum.Success.getMsg());
+				res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+				res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
 				res.setData(obox);
 			}
 		} catch (Exception e) {
 			logger.error("===getScene error msg:" + e.getMessage());
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
@@ -106,19 +106,19 @@ public class OboxController {
 		ResponseObject<TObox> res = new ResponseObject<TObox>();
 		try {
 			if (oboxService.queryOboxBySerialId(serialId) != null) {
-				res.setCode(ResponseEnum.ObjExist.getCode());
-				res.setMsg(ResponseEnum.ObjExist.getMsg());
+				res.setStatus(ResponseEnum.ObjExist.getStatus());
+				res.setMessage(ResponseEnum.ObjExist.getMsg());
 				return res;
 			}
 			oboxService.addObox(obox);
-			res.setCode(ResponseEnum.Success.getCode());
-			res.setMsg(ResponseEnum.Success.getMsg());
+			res.setStatus(ResponseEnum.AddSuccess.getStatus());
+			res.setMessage(ResponseEnum.AddSuccess.getMsg());
 			res.setData(oboxService.queryOboxBySerialId(serialId));
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("===getScene error msg:" + e.getMessage());
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
@@ -133,8 +133,8 @@ public class OboxController {
 		ResponseObject<List<TObox>> res = new ResponseObject<List<TObox>>();
 		try {
 			if (userId == 0) {
-				res.setCode(ResponseEnum.RequestParamError.getCode());
-				res.setMsg(ResponseEnum.RequestParamError.getMsg());
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
 				return res;
 			}
 			if (pageIndex == null)
@@ -143,12 +143,12 @@ public class OboxController {
 				pageSize = 10;
 			List<TObox> list = oboxService.queryOboxByUserId(userId, pageIndex, pageSize);
 			if (list == null || list.size() <= 0) {
-				res.setCode(ResponseEnum.SearchIsEmpty.getCode());
-				res.setMsg(ResponseEnum.SearchIsEmpty.getMsg());
+				res.setStatus(ResponseEnum.SearchIsEmpty.getStatus());
+				res.setMessage(ResponseEnum.SearchIsEmpty.getMsg());
 			} else {
 				int count = oboxService.queryCountOboxByUserId(userId);
-				res.setCode(ResponseEnum.Success.getCode());
-				res.setMsg(ResponseEnum.Success.getMsg());
+				res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+				res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 				res.setData(list);
 				res.setPageSize(pageSize);
 				res.setPageIndex(pageIndex);
@@ -156,8 +156,8 @@ public class OboxController {
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}

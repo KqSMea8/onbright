@@ -115,7 +115,7 @@ public class CMDHandlerManager {
          */
         cmdHandlers.put(Command.SCENE.getValue(), new SceneCMDHandler());
 
-        cmdHandlers.put(Command.SETSTATUS.getValue(), new SetStatusHandler());
+        cmdHandlers.put(Command.setStatus.getValue(), new SetStatusHandler());
 
         cmdHandlers.put(Command.SETRELEASE.getValue(), new SetReleaseHandler());
 

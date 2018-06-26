@@ -35,11 +35,11 @@ public interface TSceneConditionMapper extends BaseMapper<TSceneCondition, TScen
 
 	@Insert("insert into t_scene_condition (scene_number,\n" +
 			"serialId,\n" +
-			"last_op_time,\n" +
 			"cond,\n" +
 			"condition_group) " +
-			"values (#{sceneNumber},#{serialid},#{lastOpTime},#{cond},#{conditionGroup})")
-	void addSceneCondition(TSceneCondition sceneCondition);
+			"values (#{sceneNumber},#{serialid},#{cond},#{conditionGroup})")
+	@Options(useGeneratedKeys=true, keyProperty="id", keyColumn="id")
+	int addSceneCondition(TSceneCondition sceneCondition);
 
 	@Select("select * from t_scene_condition where serialId = #{serialId}")
 	List<TSceneCondition> getSceneConditionBySerialId(@Param("serialId") String serialId);

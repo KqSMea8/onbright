@@ -17,6 +17,7 @@ import com.bright.apollo.common.entity.TUserSceneExample;
 import com.bright.apollo.dao.user.mapper.TUserDeviceMapper;
 import com.bright.apollo.dao.user.mapper.TUserMapper;
 import com.bright.apollo.dao.user.mapper.TUserOboxMapper;
+import com.bright.apollo.dao.user.mapper.TUserSceneMapper;
 import com.bright.apollo.service.UserService;
 
 /**
@@ -32,7 +33,7 @@ public class UserServiceImpl implements UserService {
 //	@Autowired
 //	private UserBusiness userBusiness;
 
-	/*
+	/* 
 	 * (non-Javadoc)
 	 * 
 	 * @see
@@ -47,6 +48,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private TUserOboxMapper tUserOboxMapper;
+	
+	@Autowired
+	private TUserSceneMapper tUserSceneMapper;
 	
 	@Override
 	@Deprecated
@@ -314,6 +318,23 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public int addUserDevice(TUserDevice tUserDevice) {
  		return userDeviceMapper.addUserDevice(tUserDevice);
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.UserService#addUserScene(com.bright.apollo.common.entity.TUserScene)  
+	 */
+	@Override
+	public void addUserScene(TUserScene tUserScene) {
+		  
+		tUserSceneMapper.addUserScene(tUserScene);
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.UserService#getUserSceneByUserIdAndSceneNumber(java.lang.Integer, java.lang.Integer)  
+	 */
+	@Override
+	public TUserScene getUserSceneByUserIdAndSceneNumber(Integer userId, Integer sceneNumber) {
+		 return tUserSceneMapper.getUserSceneByUserIdAndSceneNumber(userId,sceneNumber);
 	}
 
 

@@ -116,8 +116,8 @@ public class AliDeviceController {
 					tAliDevice = aliService.registDevice(aliDevTypeEnum.getSouthChinaName(), null, region);
 				}
 				if (tAliDevice == null) {
-					res.setCode(ResponseEnum.RequestObjectNotExist.getCode());
-					res.setMsg(ResponseEnum.RequestObjectNotExist.getMsg());
+					res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
+					res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
 					return res;
 				} else {
 					aliDevInfo.setDeviceName(tAliDevice.getDeviceName());
@@ -130,8 +130,8 @@ public class AliDeviceController {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}

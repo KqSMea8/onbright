@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import com.bright.apollo.common.entity.TScene;
+import com.bright.apollo.common.entity.TSceneAction;
 import com.bright.apollo.common.entity.TSceneCondition;
 import com.bright.apollo.feign.FeignSceneClient;
 import com.bright.apollo.response.ResponseObject;
@@ -61,7 +62,7 @@ public class HystrixFeignSceneFallback extends BasicHystrixFeignFallback impleme
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public ResponseObject<SceneInfo> addScene(SceneInfo info) {
+	public ResponseObject<SceneInfo> addSceneInfo(SceneInfo info) {
 		logger.warn("===scene server is break===");
 		return serverError();
 	}
@@ -141,6 +142,46 @@ public class HystrixFeignSceneFallback extends BasicHystrixFeignFallback impleme
 	@SuppressWarnings("rawtypes")
 	@Override
 	public ResponseObject deleteSceneActionsBySceneNumber(Integer sceneNumber) {
+		logger.warn("===scene server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignSceneClient#deleteSceneByOboxSerialId(java.lang.String)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject deleteSceneByOboxSerialId(String oboxSerialId) {
+		logger.warn("===scene server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignSceneClient#addScene(com.bright.apollo.common.entity.TScene)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<TScene> addScene(TScene tScene) {
+		logger.warn("===scene server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignSceneClient#addSceneAction(com.bright.apollo.common.entity.TSceneAction)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject addSceneAction(TSceneAction tSceneAction) {
+		logger.warn("===scene server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignSceneClient#addSceneCondition(com.bright.apollo.common.entity.TSceneCondition)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject addSceneCondition(TSceneCondition tSceneCondition) {
 		logger.warn("===scene server is break===");
 		return serverError();
 	}

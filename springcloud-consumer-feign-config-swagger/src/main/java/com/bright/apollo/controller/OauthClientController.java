@@ -24,7 +24,7 @@ import io.swagger.annotations.ApiResponse;
  *@Version:1.1.0  
  */
 @Api("OauthClient Controller")
-@RestController
+@RestController 
 @RequestMapping("oauthclient")
 public class OauthClientController {
 
@@ -42,8 +42,8 @@ public class OauthClientController {
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			res=new ResponseObject<OauthClientDetails>();
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}

@@ -9,7 +9,7 @@ public enum Command {
 
     OBOXINFO("a001"),
 
-    SETSTATUS("8100"),
+    setStatus("8100"),
 
     NODESTATUS("a100"),
 
