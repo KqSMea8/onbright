@@ -8,5 +8,5 @@ public interface ThirdPartyTransition {
 
     TMallDeviceAdapter onbright2TMall();
 
-    TOboxDeviceConfig TMall2Obright();
+    Map<String,Object> TMall2Obright();
 }

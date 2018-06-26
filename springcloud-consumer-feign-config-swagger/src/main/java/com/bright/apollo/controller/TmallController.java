@@ -70,17 +70,14 @@ public class TmallController {
 	public Object tmallCmd(@RequestBody Object object) throws IOException {
 
 		logger.info("====== messageID ======"+object);
-		logger.info("====== tMallTemplate ====== "+tMallTemplate.getDefaultAction());
 		Map<String,Object> requestMap = (Map<String, Object>) object;
 		Map<String,Object> requestHeaderMap = (Map<String, Object>) requestMap.get("header");
 		JSONObject map = new JSONObject();
 		JSONObject headerMap = new JSONObject();
 		JSONObject playloadMap = new JSONObject();
-		String responstStr = "Response";
-//		response.sendRedirect("http://localhost:8201/user/forget/13522333323");
+		TMallDeviceAdapter adapter = null;
+
 		if(requestHeaderMap.get("namespace").equals("AliGenie.Iot.Device.Discovery")){//天猫精灵发现设备
-
-
 
 			headerMap.put("namespace","AliGenie.Iot.Device.Discovery");
 			headerMap.put("name","DiscoveryDevicesResponse");
@@ -90,87 +87,35 @@ public class TmallController {
 
 			ResponseObject<List<TOboxDeviceConfig>> responseObject = feignDeviceClient.getOboxDeviceConfigByUserId(429);
 			List<TOboxDeviceConfig> oboxDeviceConfigList = responseObject.getData();
+			JSONArray jsonArray = new JSONArray();
+			JSONObject extensionsMap = new JSONObject();
+			extensionsMap.put("extension1","");
+			extensionsMap.put("extension2","");
 
-			logger.info(" ====== responseObject ====== "+responseObject);
-
-			TMallDeviceAdapter adapter = null;
-
+			List<JSONObject> list = new ArrayList<JSONObject>();
 			for(TOboxDeviceConfig oboxDeviceConfig :oboxDeviceConfigList){
 				adapter = new TMallDeviceAdapter(oboxDeviceConfig,tMallTemplate);
 				adapter = adapter.onbright2TMall();
 				logger.info("====== adapter ====== "+adapter);
+				JSONObject devices = new JSONObject();
+				devices.put("deviceId",adapter.getDeviceId());
+				devices.put("deviceName",adapter.getDeviceName());
+				devices.put("deviceType",adapter.getDeviceType());
+				devices.put("zone",adapter.getZone());
+				devices.put("brand",adapter.getBrand());
+				devices.put("model",adapter.getModel());
+				devices.put("icon",adapter.getIcon());
+				devices.put("properties",adapter.getProperties());
+				devices.put("actions",adapter.getAction());
+				devices.put("extensions",extensionsMap);
+				list.add(devices);
+				System.out.println("list ====== "+list);
 			}
-
-
-			JSONArray jsonArray = new JSONArray();
-			JSONArray propertiesJsonArray = new JSONArray();
-			JSONObject propertiesMap = new JSONObject();
-			propertiesMap.put("name","color");
-			propertiesMap.put("value","Red");
-			propertiesJsonArray.put(propertiesMap);
-			JSONObject extensionsMap = new JSONObject();
-			extensionsMap.put("extension1","");
-			extensionsMap.put("extension2","");
-			JSONObject devices = new JSONObject();
-
-			devices.put("deviceId","34ea34cf2e63");
-			devices.put("deviceName","大灯");
-			devices.put("deviceType","light");
-			devices.put("zone","阳台");
-			devices.put("brand","1");
-			devices.put("model","1");
-			devices.put("icon","https://git.cn-hangzhou.oss-cdn.aliyun-inc.com/uploads/aicloud/aicloud-proxy-service/41baa00903a71c97e3533cf4e19a88bb/image.png");
-			devices.put("properties",propertiesJsonArray);
-			String[] actions = new String[2];
-			actions[0] = "TurnOn";
-			actions[1] = "TurnOff";
-			devices.put("actions",actions);
-			devices.put("extensions",extensionsMap);
-
-			JSONObject devices2 = new JSONObject();
-
-			devices2.put("deviceId","34ea34cf2e61");
-			devices2.put("deviceName","灯");
-			devices2.put("deviceType","light");
-			devices2.put("zone","客厅");
-			devices2.put("brand","1");
-			devices2.put("model","1");
-			devices2.put("icon","https://git.cn-hangzhou.oss-cdn.aliyun-inc.com/uploads/aicloud/aicloud-proxy-service/41baa00903a71c97e3533cf4e19a88bb/image.png");
-			devices2.put("properties",propertiesJsonArray);
-			String[] actions2 = new String[2];
-			actions2[0] = "TurnOn";
-			actions2[1] = "TurnOff";
-			devices2.put("actions",actions);
-			devices2.put("extensions",extensionsMap);
-
-			JSONObject devices3 = new JSONObject();
-
-			devices3.put("deviceId","34ea34cf2e69");
-			devices3.put("deviceName","窗帘");
-			devices3.put("deviceType","curtain");
-			devices3.put("zone","");
-			devices3.put("brand","1");
-			devices3.put("model","1");
-			devices3.put("icon","https://git.cn-hangzhou.oss-cdn.aliyun-inc.com/uploads/aicloud/aicloud-proxy-service/41baa00903a71c97e3533cf4e19a88bb/image.png");
-			devices3.put("properties",propertiesJsonArray);
-			String[] actions3 = new String[2];
-			actions3[0] = "TurnOn";
-			actions3[1] = "TurnOff";
-			devices3.put("actions",actions);
-			devices3.put("extensions",extensionsMap);
-
-
-			List<JSONObject> list = new ArrayList<JSONObject>();
-			list.add(devices);
-			list.add(devices2);
-			list.add(devices3);
+			templateScan(list);//展示使用(日后可删除)
 			jsonArray.put(list);
-			System.out.println("jsonArray ====== "+jsonArray);
 			playloadMap.put("devices",list);
-
 			map.put("payload",playloadMap);
-
-		}else{//天猫精灵控制设备
+		}else if(requestHeaderMap.get("namespace").equals("AliGenie.Iot.Device.Control")){//天猫精灵控制设备
 			try {
 				enableSSl();
 			} catch (NoSuchAlgorithmException e) {
@@ -178,15 +123,23 @@ public class TmallController {
 			} catch (KeyManagementException e) {
 				e.printStackTrace();
 			}
+
+			List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+
 			Map<String,Object> playLoadMap = (Map<String, Object>) requestMap.get("payload");
 			String name = (String)requestHeaderMap.get("name");
 			String deviceId = (String)playLoadMap.get("deviceId");
 
+
+
+			ResponseObject<TOboxDeviceConfig> responseObject = feignDeviceClient.getDevice(deviceId);
+			TOboxDeviceConfig oboxDeviceConfig = responseObject.getData();
+
+			//====== 生成httpsClient begin ======
 			RequestConfig requestConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD_STRICT).build();
 			HttpPost httpPost =new HttpPost("https://cloud.on-bright.com/common");
-			List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-			Registry<ConnectionSocketFactory> socketFactoryRegistry =
-					RegistryBuilder.<ConnectionSocketFactory>create().
+			Registry<ConnectionSocketFactory>
+					socketFactoryRegistry =RegistryBuilder.<ConnectionSocketFactory>create().
 							register("http", PlainConnectionSocketFactory.INSTANCE).
 							register("https", socketFactory).build();
 			PoolingHttpClientConnectionManager connectionManager =
@@ -194,6 +147,13 @@ public class TmallController {
 			CloseableHttpClient httpClient = HttpClients.custom().
 					setConnectionManager(connectionManager)
 					.setDefaultRequestConfig(requestConfig).build();
+			//====== 生成httpsClient end ======
+
+			adapter = new TMallDeviceAdapter(playLoadMap,tMallTemplate,oboxDeviceConfig);
+
+			Map<String,Object> paramMap = adapter.TMall2Obright();
+
+			logger.info("paramMap ====== "+paramMap);
 
 			templateControl(name,deviceId,nvps,httpPost,httpClient);//展示台模板(仅供展厅展示使用，日后可删除)
 
@@ -207,6 +167,72 @@ public class TmallController {
 		}
 		logger.info("map ====== "+map);
 		return map.toString();
+	}
+
+	private void templateScan(List<JSONObject> list ){
+		JSONArray jsonArray = new JSONArray();
+		JSONArray propertiesJsonArray = new JSONArray();
+		JSONObject propertiesMap = new JSONObject();
+		propertiesMap.put("name","color");
+		propertiesMap.put("value","Red");
+		propertiesJsonArray.put(propertiesMap);
+		JSONObject extensionsMap = new JSONObject();
+		extensionsMap.put("extension1","");
+		extensionsMap.put("extension2","");
+		JSONObject devices = new JSONObject();
+
+		devices.put("deviceId","34ea34cf2e63");
+		devices.put("deviceName","大灯");
+		devices.put("deviceType","light");
+		devices.put("zone","阳台");
+		devices.put("brand","1");
+		devices.put("model","1");
+		devices.put("icon","https://git.cn-hangzhou.oss-cdn.aliyun-inc.com/uploads/aicloud/aicloud-proxy-service/41baa00903a71c97e3533cf4e19a88bb/image.png");
+		devices.put("properties",propertiesJsonArray);
+		String[] actions = new String[2];
+		actions[0] = "TurnOn";
+		actions[1] = "TurnOff";
+		devices.put("actions",actions);
+		devices.put("extensions",extensionsMap);
+
+		JSONObject devices2 = new JSONObject();
+
+		devices2.put("deviceId","34ea34cf2e61");
+		devices2.put("deviceName","灯");
+		devices2.put("deviceType","light");
+		devices2.put("zone","客厅");
+		devices2.put("brand","1");
+		devices2.put("model","1");
+		devices2.put("icon","https://git.cn-hangzhou.oss-cdn.aliyun-inc.com/uploads/aicloud/aicloud-proxy-service/41baa00903a71c97e3533cf4e19a88bb/image.png");
+		devices2.put("properties",propertiesJsonArray);
+		String[] actions2 = new String[2];
+		actions2[0] = "TurnOn";
+		actions2[1] = "TurnOff";
+		devices2.put("actions",actions2);
+		devices2.put("extensions",extensionsMap);
+
+		JSONObject devices3 = new JSONObject();
+
+		devices3.put("deviceId","34ea34cf2e69");
+		devices3.put("deviceName","窗帘");
+		devices3.put("deviceType","curtain");
+		devices3.put("zone","");
+		devices3.put("brand","1");
+		devices3.put("model","1");
+		devices3.put("icon","https://git.cn-hangzhou.oss-cdn.aliyun-inc.com/uploads/aicloud/aicloud-proxy-service/41baa00903a71c97e3533cf4e19a88bb/image.png");
+		devices3.put("properties",propertiesJsonArray);
+		String[] actions3 = new String[2];
+		actions3[0] = "TurnOn";
+		actions3[1] = "TurnOff";
+		devices3.put("actions",actions3);
+		devices3.put("extensions",extensionsMap);
+		list.add(devices);
+		list.add(devices2);
+		list.add(devices3);
+	}
+
+	private void postControl(List<NameValuePair> nvps,HttpPost httpPost,CloseableHttpClient httpClient){
+
 	}
 
 	private void templateControl(String name,String deviceId,List<NameValuePair> nvps,HttpPost httpPost,CloseableHttpClient httpClient) throws IOException {

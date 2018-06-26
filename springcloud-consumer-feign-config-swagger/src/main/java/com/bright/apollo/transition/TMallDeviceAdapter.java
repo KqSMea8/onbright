@@ -1,9 +1,13 @@
 package com.bright.apollo.transition;
 
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
+import com.bright.apollo.enums.ColorEnum;
+import com.zz.common.util.ArrayUtils;
 import org.json.JSONArray;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class TMallDeviceAdapter implements ThirdPartyTransition{
@@ -12,18 +16,17 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
 
     private TMallTemplate tMallTemplate;
 
-    private Map<String, Object> map;
+    private Map<String, Object> playloadMap;
 
     public TMallDeviceAdapter(TOboxDeviceConfig oboxDeviceConfig,TMallTemplate tMallTemplate){
         this.oboxDeviceConfig = oboxDeviceConfig;
         this.tMallTemplate = tMallTemplate;
-        this.brand = "XXX";
-        this.model = "XXX";
-        this.zone = "XXX";
     }
 
-    public TMallDeviceAdapter(Map<String, Object> map){
-        this.map = map;
+    public TMallDeviceAdapter(Map<String, Object> map,TMallTemplate tMallTemplate,TOboxDeviceConfig oboxDeviceConfig){
+        this.playloadMap = map;
+        this.tMallTemplate = tMallTemplate;
+        this.oboxDeviceConfig = oboxDeviceConfig;
     }
 
     public TMallDeviceAdapter(){
@@ -120,7 +123,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         this.icon = icon;
     }
 
-    private void PropertiesTransition(Map<String,Object> dfMap,String[] properties){
+    private void propertiesTransition(Map<String,Object> dfMap,String[] properties){
         String[] propertyString = null;
         for(String property : properties){
             propertyString = property.split("-");
@@ -128,7 +131,8 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         }
     }
 
-    private String[] ActionsTransition(String[] specialAction,String[] defaultAction){
+    //转换动作
+    private String[] actionsTransition(String[] specialAction,String[] defaultAction){
         int idx = 0;
         String[] actions = new String[specialAction.length+defaultAction.length];
         for(String action : specialAction){
@@ -142,52 +146,173 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         return actions;
     }
 
-    private void SetLight(TMallDeviceAdapter tMallDeviceAdapter,String[] defaultActions,Map<String,Object> dfMap ){
+    //设置设备参数
+    private void setProperty(TMallDeviceAdapter tMallDeviceAdapter,TOboxDeviceConfig oboxDeviceConfig){
+        tMallDeviceAdapter.setDeviceId(oboxDeviceConfig.getDeviceSerialId());
+        tMallDeviceAdapter.setDeviceName(oboxDeviceConfig.getDeviceId());
+        tMallDeviceAdapter.setDeviceType(oboxDeviceConfig.getDeviceType());
+        tMallDeviceAdapter.setBrand("XXX");
+        tMallDeviceAdapter.setZone("XXX");
+        tMallDeviceAdapter.setModel("XXX");
+        tMallDeviceAdapter.setIcon(icon);
+    }
+
+    //设置灯设备动作和属性
+    private void setLight(TMallDeviceAdapter tMallDeviceAdapter,String[] defaultActions,Map<String,Object> dfMap ){
         JSONArray jsonArray = new JSONArray();
         String[] lightActions = tMallTemplate.getLightActions().split("\\|");
         String[] lightProperties = tMallTemplate.getLightProperties().split("\\|");
-        PropertiesTransition(dfMap,lightProperties);
+        if(tMallDeviceAdapter instanceof ColorLight == false){
+            for(int i=0;i<lightActions.length;i++){
+                String lightAction = lightActions[i];
+                if(lightAction.equals("SetColor")){
+                    lightActions = (String[]) ArrayUtils.remove(lightActions,i);
+                }
+            }
+            for(int i=0;i<lightProperties.length;i++){
+                String lightProperty = lightProperties[i];
+                if(lightProperty.indexOf("color")>=0){
+                    lightProperties = (String[])  ArrayUtils.remove(lightProperties,i);
+                }
+            }
+        }
+        propertiesTransition(dfMap,lightProperties);
         jsonArray.put(dfMap);
         tMallDeviceAdapter.setProperties(jsonArray);
-        tMallDeviceAdapter.setAction(ActionsTransition(lightActions,defaultActions));
+        tMallDeviceAdapter.setAction(actionsTransition(lightActions,defaultActions));
     }
 
+    //发现设备转换
     private TMallDeviceAdapter transition(TMallTemplate tMallTemplate, TOboxDeviceConfig oboxDeviceConfig){
         String deviceType = oboxDeviceConfig.getDeviceType();
         String deviceChildType = oboxDeviceConfig.getDeviceChildType();
+        String deviceState = oboxDeviceConfig.getDeviceState();
         String[] defaultActions = tMallTemplate.getDefaultAction().split("\\|");
         String[] defaultProperties = tMallTemplate.getDefaultProperties().split("\\|");
         Map<String,Object> dfMap = new HashMap<String, Object>();
-        PropertiesTransition(dfMap,defaultProperties);
-        this.setDeviceId(oboxDeviceConfig.getDeviceSerialId());
-        this.setDeviceName(oboxDeviceConfig.getDeviceId());
         JSONArray jsonArray = new JSONArray();
-        if(deviceType.equals("01")&&deviceChildType.equals("01")){//单色灯
-            SingleLight singleLight = new SingleLight();
-            SetLight(singleLight,defaultActions,dfMap);
-            return singleLight;
-        }else if(deviceType.equals("01")&&deviceChildType.equals("02")){//冷暖色灯
-            WarmCollLight warmCollLight = new WarmCollLight();
-            SetLight(warmCollLight,defaultActions,dfMap);
-            return warmCollLight;
-        }else if(deviceType.equals("01")&&deviceChildType.equals("03")){//彩灯
-            ColorLight colorLight = new ColorLight();
-            SetLight(colorLight,defaultActions,dfMap);
-            return colorLight;
-        }else if(deviceType.equals("04")&&deviceChildType.equals("01")){//1路开关
-            Singleswitch singleswitch = new Singleswitch();
-            singleswitch.setAction(defaultActions);
-            jsonArray.put(dfMap);
-            singleswitch.setProperties(jsonArray);
-            return singleswitch;
-        }else if(deviceType.equals("05")&&deviceChildType.equals("01")){//窗帘
-            Curtain curtain = new Curtain();
-            curtain.setAction(defaultActions);
-            jsonArray.put(dfMap);
-            curtain.setProperties(jsonArray);
-            return curtain;
+        if(deviceType.equals("01")){//灯设备
+            oboxDeviceConfig.setDeviceType("light");
+            String onOff = deviceState.substring(0,2);
+            for(int i=0;i<defaultProperties.length;i++){
+                String def = defaultProperties[i];
+                if(onOff.equals("ff")&&def.indexOf("off")>=0){
+                    defaultProperties = (String[]) ArrayUtils.remove(defaultProperties,i);
+                }else if(onOff.equals("00")&&def.indexOf("on")>=0){
+                    defaultProperties = (String[]) ArrayUtils.remove(defaultProperties,i);
+                }
+            }
+            propertiesTransition(dfMap,defaultProperties);
+            if(deviceChildType.equals("01")){//单色灯
+                SingleLight singleLight = new SingleLight();
+                setProperty(singleLight,oboxDeviceConfig);
+                setLight(singleLight,defaultActions,dfMap);
+                return singleLight;
+            }else if(deviceChildType.equals("02")){//冷暖色灯
+                WarmCollLight warmCollLight = new WarmCollLight();
+                setProperty(warmCollLight,oboxDeviceConfig);
+                setLight(warmCollLight,defaultActions,dfMap);
+                return warmCollLight;
+            }else if(deviceChildType.equals("03")){//彩灯
+                ColorLight colorLight = new ColorLight();
+                setProperty(colorLight,oboxDeviceConfig);
+                setLight(colorLight,defaultActions,dfMap);
+                return colorLight;
+            }
+        }else if(deviceType.equals("04")){//智能插座/开关
+            oboxDeviceConfig.setDeviceType("outlet");
+            propertiesTransition(dfMap,defaultProperties);
+            if(deviceChildType.equals("01")){//一路开关
+                Singleswitch singleswitch = new Singleswitch();
+                setProperty(singleswitch,oboxDeviceConfig);
+                singleswitch.setAction(defaultActions);
+                jsonArray.put(dfMap);
+                singleswitch.setProperties(jsonArray);
+                return singleswitch;
+            }
+        }else if(deviceType.equals("05")){//开合类设备
+            propertiesTransition(dfMap,defaultProperties);
+            if(deviceChildType.equals("01")){//窗帘
+                oboxDeviceConfig.setDeviceType("curtain");
+                Curtain curtain = new Curtain();
+                setProperty(curtain,oboxDeviceConfig);
+                curtain.setAction(defaultActions);
+                jsonArray.put(dfMap);
+                curtain.setProperties(jsonArray);
+                return curtain;
+            }
         }
+
         return null;
+    }
+
+    private Map<String,Object> compositeCommand(TMallTemplate tMallTemplate, TOboxDeviceConfig oboxDeviceConfig,Map<String,Object> playloadMap){
+        String attribute = (String)playloadMap.get("attribute");
+        String value = (String)playloadMap.get("value");
+        String deviceId = (String)playloadMap.get("deviceId");
+        String deviceType = (String)playloadMap.get("deviceType");
+        String lightProperties = tMallTemplate.getLightProperties();
+        String dfControllProperties = tMallTemplate.getDefaultControllProperties();
+        String lightControllProperties = tMallTemplate.getLightControllProperties();
+        String deviceState = oboxDeviceConfig.getDeviceState();
+        List<String> propertiesLists = new ArrayList<String>();
+        Map<String,Object> returnMap = new HashMap<String, Object>();
+        String[] dfControllArrays = dfControllProperties.split("\\|");
+        for (String dfControll: dfControllArrays){
+            propertiesLists.add(dfControll);
+        }
+        String[] lightControllArrays = lightControllProperties.split("\\|");
+        for (String lightControllPropertiy:lightControllArrays){
+            propertiesLists.add(lightControllPropertiy);
+        }
+        String[] lightPropertiesArrays = lightProperties.split("\\|");
+        for (String lightProperty:lightPropertiesArrays){
+            propertiesLists.add("light_"+lightProperty);
+        }
+
+        for (String properties : propertiesLists){
+            String[] propertyArr =  properties.split("-");
+            if(deviceType.equals("light")){
+                if(("light_"+attribute+"_"+value).equals(propertyArr[0])){
+                    value = propertyArr[1];
+                    deviceState = changeState(deviceState,value);
+                }else if(("light_"+attribute).equals(propertyArr[0])){
+                    if(attribute.equals("brightnessStep")){
+                        Integer val = Integer.valueOf(value);
+                        value = String.valueOf(val*255/100);
+                        deviceState = changeState(deviceState,value);
+                    }else if(attribute.equals("brightness")){
+                        if(value.equals("max")){
+                            value = "255";
+                        }else{
+                            value = "0";
+                        }
+                        deviceState = changeState(deviceState,value);
+                    }else if(attribute.equals("color")){
+                        value = ColorEnum.getRegion(value).getValue();
+                        deviceState = changeColorState(deviceState,value);
+                    }
+
+                }
+            }else if((attribute+"_"+value).equals(propertyArr[0])){
+                value = propertyArr[1];
+                deviceState = changeState(deviceState,value);
+            }
+        }
+        returnMap.put("deviceId",deviceId);
+        returnMap.put("deviceState",deviceState);
+        return returnMap;
+    }
+
+    private String changeState(String deviceState,String value){
+        String endStr = deviceState.substring(2,deviceState.length());
+        return value+endStr;
+    }
+
+    private String changeColorState(String deviceState,String value){
+        String beginStr = deviceState.substring(0,6);
+        String endStr = deviceState.substring(12,deviceState.length());
+        return beginStr+value+endStr;
     }
 
     @Override
@@ -196,13 +321,14 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
     }
 
     @Override
-    public TOboxDeviceConfig TMall2Obright() {
-        return null;
+    public Map<String,Object> TMall2Obright() {
+        return compositeCommand(tMallTemplate,oboxDeviceConfig,playloadMap);
     }
 
     @Override
     public String toString(){
         return "deviceId:"+getDeviceId()+"\n deviceName:"+getDeviceName()+"\n properties:"+getProperties()+
-               "\n action:"+getAction();
+               "\n action:"+getAction()+"\n zone:"+getZone()+"\n model:"+getModel()+"\n brand:"+getBrand()+
+                "\n icon:"+getIcon();
     }
 }
