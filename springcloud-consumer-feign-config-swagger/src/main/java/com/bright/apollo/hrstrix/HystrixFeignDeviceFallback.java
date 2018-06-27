@@ -112,4 +112,14 @@ public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implem
 		return serverError();
 	}
 
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#getDeviceByUser(java.lang.Integer)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<List<TOboxDeviceConfig>> getDeviceByUser(Integer userId) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
 }

@@ -87,5 +87,13 @@ public interface FeignDeviceClient {
 	@RequestMapping(value = "/device/getDevicesByOboxSerialId/{oboxSerialId}", method = RequestMethod.GET)
 	ResponseObject<List<TOboxDeviceConfig>> getDevicesByOboxSerialId(@PathVariable(value = "oboxSerialId") String oboxSerialId);
 
+	/**  
+	 * @param id
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/device/getDeviceByUser/{userId}", method = RequestMethod.GET)
+	ResponseObject<List<TOboxDeviceConfig>> getDeviceByUser(@PathVariable(value = "userId") Integer userId);
+
 
 }

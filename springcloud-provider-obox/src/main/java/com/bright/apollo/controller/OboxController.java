@@ -161,5 +161,25 @@ public class OboxController {
 		}
 		return res;
 	}
-
+	@RequestMapping(value = "/getOboxByUser/{userId}", method = RequestMethod.GET)
+	public ResponseObject<List<TObox>> getOboxByUser(
+			@PathVariable(required = true, value = "userId") Integer userId){
+		ResponseObject<List<TObox>> res = new ResponseObject<List<TObox>>();
+		try {
+			if (userId == 0) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			List<TObox> list = oboxService.queryOboxByUserId(userId);
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+			res.setData(list);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
 }

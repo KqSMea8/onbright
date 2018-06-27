@@ -87,4 +87,29 @@ public interface TOboxMapper extends BaseMapper<TObox, TOboxExample, Integer> {
 			"where todc.id =#{oboxDeviceId} and tob.id = #{oboxId} ")
 	List<TObox> getOboxsByDeviceChannel(@Param("oboxDeviceId") int oboxDeviceId,@Param("oboxId") int oboxId);
 
+	/**  
+	 * @param userId
+	 * @return  
+	 * @Description:  
+	 */
+	@Results(value = {
+            @Result(column="obox_id"   ,property="oboxId"),
+            @Result(column="obox_name" ,  property="oboxName"),
+            @Result(column="obox_pwd" ,  property="oboxPwd"),
+            @Result(column="obox_version" ,  property="oboxVersion"),
+            @Result(column="last_op_time" ,  property="lastOpTime"),
+            @Result(column="obox_status" ,  property="oboxStatus"),
+            @Result(column="license"  , property="license"),
+            @Result(column="obox_ip" ,  property="oboxIp" ),
+            @Result(column="obox_addr"  , property="oboxAddr" ),
+            @Result(column="obox_person"  , property="oboxPerson"),
+            @Result(column="obox_activate" ,  property="oboxActivate"),
+            @Result(column="obox_control" ,  property="oboxControl")
+    })
+	@Select(" select * from t_obox todc " +
+			" inner join t_user_obox tud on todc.obox_serial_id = tud.obox_serial_id" +
+			" inner join t_user tu on tu.id = tud.user_id" +
+			" where tud.user_id = #{userId}")
+	List<TObox> getOboxByUserId(Integer userId);
+
 }

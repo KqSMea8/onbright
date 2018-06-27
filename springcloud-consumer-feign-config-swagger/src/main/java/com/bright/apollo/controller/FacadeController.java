@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -56,6 +57,7 @@ import io.swagger.annotations.ApiResponse;
  * @Since:2018年3月16日
  * @Version:1.1.0
  */
+@Controller
 @Api("facade Controller")
 @RestController
 @RequestMapping("facade")
@@ -597,7 +599,31 @@ public class FacadeController {
 		}
 		return res;
 	}
+	@RequestMapping(value = "/obox", method = RequestMethod.GET)
+	public ResponseObject<List<TObox>> getOboxByUser() {
+		ResponseObject<List<TObox>> res = new ResponseObject<List<TObox>>();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (principal.getUsername() != null && !principal.getUsername().equals("")) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser.getStatus() == ResponseEnum.SelectSuccess.getStatus() && resUser.getData() != null) {
+				TUser tUser = resUser.getData();
+				res = feignOboxClient.getOboxByUser(tUser.getId());
+			} else {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+			}
 
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setStatus(ResponseEnum.RequestTimeout.getStatus());
+			res.setMessage(ResponseEnum.RequestTimeout.getMsg());
+		}
+		return res;
+	}
 	// query device by page
 	@ApiOperation(value = "get device by user and page,the pageIndex default value is 0,the pageSize defalt value is 10", httpMethod = "GET", produces = "application/json")
 	@ApiResponse(code = 200, message = "SelectSuccess", response = ResponseObject.class)
@@ -631,7 +657,32 @@ public class FacadeController {
 		}
 		return res;
 	}
-
+	@ApiOperation(value = "get device by user and page,the pageIndex default value is 0,the pageSize defalt value is 10", httpMethod = "GET", produces = "application/json")
+	@ApiResponse(code = 200, message = "SelectSuccess", response = ResponseObject.class)
+	@RequestMapping(value = "/device", method = RequestMethod.GET)
+	public ResponseObject<List<TOboxDeviceConfig>> getDevice() {
+		ResponseObject<List<TOboxDeviceConfig>> res = new ResponseObject<List<TOboxDeviceConfig>>();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (principal.getUsername() != null && !principal.getUsername().equals("")) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser.getStatus() == ResponseEnum.SelectSuccess.getStatus() && resUser.getData() != null) {
+				TUser tUser = resUser.getData();
+				res = feignDeviceClient.getDeviceByUser(tUser.getId());
+			} else {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setStatus(ResponseEnum.RequestTimeout.getStatus());
+			res.setMessage(ResponseEnum.RequestTimeout.getMsg());
+		}
+		return res;
+	}
 	@ApiOperation(value = "get scene by user and page,the pageIndex default value is 0,the pageSize defalt value is 10", httpMethod = "GET", produces = "application/json")
 	@ApiResponse(code = 200, message = "SelectSuccess", response = ResponseObject.class)
 	@RequestMapping(value = "/scene/{pageIndex}/{pageSize}", method = RequestMethod.GET)
@@ -666,58 +717,26 @@ public class FacadeController {
 	}
 
 	// ======add local scene
+	@SuppressWarnings("rawtypes")
 	@ApiOperation(value = "add local scene ", httpMethod = "POST", produces = "application/json")
 	@ApiResponse(code = 200, message = "SelectSuccess", response = ResponseObject.class)
 	@RequestMapping(value = "/addLocalScene", method = RequestMethod.POST)
-	public ResponseObject<SceneInfo> addLocalScene(@RequestBody(required = true) SceneInfo info) {
-		ResponseObject<SceneInfo> res = new ResponseObject<SceneInfo>();
+	public ResponseObject addLocalScene(@RequestBody(required = true) SceneDTO sceneDTO) {
+		ResponseObject res = new ResponseObject();
 		try {
-			if (!StringUtils.isEmpty(info.getScene().getOboxSerialId())
-					|| !StringUtils.isEmpty(info.getScene().getSceneName())) {
-				res.setStatus(ResponseEnum.RequestParamError.getStatus());
-				res.setMessage(ResponseEnum.RequestParamError.getMsg());
-				return res;
+			String sceneName = sceneDTO.getSceneName();
+			String sceneType = sceneDTO.getSceneType();
+			Byte msgAlter = sceneDTO.getMsgAlter();
+			String sceneGroup = sceneDTO.getSceneGroup();
+			Integer sceneNumber = sceneDTO.getSceneNumber();
+			if((sceneNumber==null||sceneNumber==0)&&!StringUtils.isEmpty(sceneName)&&!StringUtils.isEmpty(sceneType)&&
+					sceneType.equals(SceneTypeEnum.local.getValue())){
+				
+			}else{
+				
 			}
-			ResponseObject<TObox> tOboxRes = feignOboxClient.getObox(info.getScene().getOboxSerialId());
-			if (tOboxRes == null || tOboxRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()
-					|| tOboxRes.getData() == null) {
-				res.setStatus(ResponseEnum.RequestParamError.getStatus());
-				res.setMessage(ResponseEnum.RequestParamError.getMsg());
-				return res;
-			}
-			ResponseObject<OboxResp> oboxRespone = feignAliClient.addLocalScene(info.getScene().getSceneName(),
-					info.getScene().getOboxSerialId(), info.getScene().getSceneGroup());
-			if (oboxRespone != null && oboxRespone.getStatus() == ResponseEnum.SelectSuccess.getStatus()
-					&& oboxRespone.getData() != null) {
-				OboxResp oboxResp = oboxRespone.getData();
-				if (oboxResp.getType() != Type.success) {
-					if (oboxResp.getType() == Type.obox_process_failure
-							|| oboxResp.getType() == Type.socket_write_error) {
-						res.setStatus(ResponseEnum.SendOboxFail.getStatus());
-						res.setMessage(ResponseEnum.SendOboxFail.getMsg());
-					} else if (oboxResp.getType() == Type.reply_timeout) {
-						res.setStatus(ResponseEnum.SendOboxTimeOut.getStatus());
-						res.setMessage(ResponseEnum.SendOboxTimeOut.getMsg());
-					} else {
-						res.setStatus(ResponseEnum.SendOboxUnKnowFail.getStatus());
-						res.setMessage(ResponseEnum.SendOboxUnKnowFail.getMsg());
-					}
-					return res;
-				}
-			}
-			info.getScene().setSceneNumber(Integer.parseInt(oboxRespone.getData().toString().substring(6, 8), 16));
-			List<TSceneCondition> conditions = info.getConditions();
-			// check sceneCondition oboxSerialId
-			if (isNotCommonObox(conditions, info.getScene().getOboxSerialId())) {
-				res.setStatus(ResponseEnum.RequestParamError.getStatus());
-				res.setMessage(ResponseEnum.RequestParamError.getMsg());
-				return res;
-			}
-			oboxRespone = feignAliClient.addLocalSceneCondition(info.getScene().getSceneNumber(), info.getConditions());
-			return feignSceneClient.addLocalScene(info);
 		} catch (Exception e) {
 			e.printStackTrace();
-			res = new ResponseObject<SceneInfo>();
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}

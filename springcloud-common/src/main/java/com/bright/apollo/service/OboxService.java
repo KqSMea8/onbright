@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.service.base.BasicService;
-import org.springframework.stereotype.Service;
 
 /**  
  *@Title:  
@@ -67,6 +66,13 @@ public interface OboxService extends BasicService{
 	TObox queryOboxById(int id) throws Exception;
 
 	List<TObox> getOboxsByDeviceChannel(int oboxDeviceId,int oboxId);
+
+	/**  
+	 * @param userId
+	 * @return  
+	 * @Description:  
+	 */
+	List<TObox> queryOboxByUserId(Integer userId);
 
 
 }

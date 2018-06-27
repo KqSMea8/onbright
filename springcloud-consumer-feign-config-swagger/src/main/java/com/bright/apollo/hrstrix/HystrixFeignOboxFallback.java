@@ -4,9 +4,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.feign.FeignOboxClient;
@@ -81,8 +78,19 @@ public class HystrixFeignOboxFallback extends BasicHystrixFeignFallback implemen
 	 * com.bright.apollo.feign.FeignOboxClient#getOboxByUserAndPage(java.lang.
 	 * Integer, java.lang.Integer, java.lang.Integer)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public ResponseObject<List<TObox>> getOboxByUserAndPage(Integer userId, Integer pageIndex, Integer pageSize) {
+		logger.warn("===obox server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignOboxClient#getOboxByUser(java.lang.Integer)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<List<TObox>> getOboxByUser(Integer userId) {
 		logger.warn("===obox server is break===");
 		return serverError();
 	}

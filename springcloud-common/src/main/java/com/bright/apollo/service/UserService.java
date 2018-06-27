@@ -167,4 +167,11 @@ public interface UserService extends BasicService{
 	 * @Description:  
 	 */
 	TUserScene getUserSceneByUserIdAndSceneNumber(Integer userId, Integer sceneNumber);
+
+	/**  
+	 * @param userId
+	 * @return  
+	 * @Description:  
+	 */
+	List<TUserDevice> getListOfUserDeviceByUserId(Integer userId);
 }

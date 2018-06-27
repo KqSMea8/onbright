@@ -68,4 +68,13 @@ public interface TUserDeviceMapper extends BaseMapper<TUserDevice, TUserDeviceEx
 	@Options(useGeneratedKeys=true, keyProperty="id", keyColumn="id")
 	int addUserDevice(TUserDevice tUserDevice);
 
+	/**  
+	 * @param userId
+	 * @return  
+	 * @Description:  
+	 */
+	@Select(" select * from t_user_device " +
+			" where user_id=#{userId} ")
+	List<TUserDevice> getListOfUserDeviceByUserId(@Param("userId") Integer userId);
+
 }

@@ -209,4 +209,20 @@ public class DeviceController {
 		}
 		return res;
 	}
+	@RequestMapping(value = "/getDeviceByUser/{userId}", method = RequestMethod.GET)
+	public ResponseObject<List<TOboxDeviceConfig>> getDeviceByUser(@PathVariable(value = "userId") Integer userId) {
+		ResponseObject<List<TOboxDeviceConfig>> res = new ResponseObject<List<TOboxDeviceConfig>>();
+		try {
+			List<TOboxDeviceConfig> oboxDeviceConfigList = oboxDeviceConfigService
+					.getOboxDeviceConfigByUserId(userId);
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+			res.setData(oboxDeviceConfigList);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
 }

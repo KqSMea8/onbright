@@ -1,5 +1,7 @@
 package com.bright.apollo.hrstrix;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
@@ -132,6 +134,17 @@ public class HystrixFeignUserFallback extends BasicHystrixFeignFallback implemen
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public ResponseObject<TUserScene> addUserScene(TUserScene tUserScene) {
+		logger.warn("===user server is break===");
+		ResponseObject res = serverError();
+		return res;
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignUserClient#getUserDevcieByUser(java.lang.Integer)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject<List<TUserDevice>> getUserDevcieByUser(Integer userId) {
 		logger.warn("===user server is break===");
 		ResponseObject res = serverError();
 		return res;

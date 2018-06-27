@@ -337,5 +337,13 @@ public class UserServiceImpl implements UserService {
 		 return tUserSceneMapper.getUserSceneByUserIdAndSceneNumber(userId,sceneNumber);
 	}
 
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.UserService#getListOfUserDeviceByUserId(java.lang.Integer)  
+	 */
+	@Override
+	public List<TUserDevice> getListOfUserDeviceByUserId(Integer userId) {
+		return userDeviceMapper.getListOfUserDeviceByUserId(userId);
+	}
+
 
 }

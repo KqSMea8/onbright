@@ -1,5 +1,7 @@
 package com.bright.apollo.controller;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -241,6 +243,21 @@ public class UserController {
 			res.setStatus(ResponseEnum.AddSuccess.getStatus());
 			res.setMessage(ResponseEnum.AddSuccess.getMsg());
 			res.setData(userService.getUserSceneByUserIdAndSceneNumber(tUserScene.getUserId(),tUserScene.getSceneNumber()));
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	@RequestMapping(value = "/getUserDevcieByUser/{userId}", method = RequestMethod.GET)
+	public ResponseObject<List<TUserDevice>> getUserDevcieByUser(@PathVariable(required = true,value="userId") Integer userId) {
+		ResponseObject<List<TUserDevice>> res = new ResponseObject<List<TUserDevice>>();
+		try { 
+			List<TUserDevice> list=userService.getListOfUserDeviceByUserId(userId);
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+			res.setData(list);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
