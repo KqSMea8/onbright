@@ -5,7 +5,9 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
+import com.bright.apollo.common.entity.TNvr;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
+import com.bright.apollo.common.entity.TYSCamera;
 import com.bright.apollo.feign.FeignDeviceClient;
 import com.bright.apollo.response.ResponseObject;
 
@@ -40,7 +42,7 @@ public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implem
 	 * com.bright.apollo.feign.FeignDeviceClient#updateDevice(java.lang.String,
 	 * com.bright.apollo.common.entity.TOboxDeviceConfig)
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({ "unchecked" })
 	@Override
 	public ResponseObject<TOboxDeviceConfig> updateDevice(String serialId, TOboxDeviceConfig device) {
 		logger.warn("===device server is break===");
@@ -54,7 +56,7 @@ public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implem
 	 * com.bright.apollo.feign.FeignDeviceClient#addDevice(java.lang.String,
 	 * com.bright.apollo.common.entity.TOboxDeviceConfig)
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({"unchecked" })
 	@Override
 	public ResponseObject<TOboxDeviceConfig> addDevice(String serialId, TOboxDeviceConfig device) {
 		logger.warn("===device server is break===");
@@ -87,6 +89,7 @@ public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implem
 	/* (non-Javadoc)  
 	 * @see com.bright.apollo.feign.FeignDeviceClient#getDeviceByUserAndPage(java.lang.Integer, java.lang.Integer, java.lang.Integer)  
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public ResponseObject<List<TOboxDeviceConfig>> getDeviceByUserAndPage(Integer userId, Integer pageIndex,
 			Integer pageSize) {
@@ -94,14 +97,76 @@ public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implem
 		return serverError();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public ResponseObject<List<TOboxDeviceConfig>> getOboxDeviceConfigByUserId(Integer userId) {
 		logger.warn("===device server is break===");
 		return serverError();
 	}
 
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#getDevicesByOboxSerialId(java.lang.String)  
+	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public ResponseObject<List<TOboxDeviceConfig>> getDevicesByOboxSerialId(String oboxSerialId) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#getDeviceByUser(java.lang.Integer)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<List<TOboxDeviceConfig>> getDeviceByUser(Integer userId) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#getYSCameraBySerialId(java.lang.String)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<TYSCamera> getYSCameraBySerialId(String deviceSerialId) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#getNvrByIP(java.lang.String)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<TNvr> getNvrByIP(String ip) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#getDeviceTypeByUser(java.lang.Integer)  
+	 */
+	@Override
+	public ResponseObject<List<TOboxDeviceConfig>> getDeviceTypeByUser(Integer userId) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#getDevciesByUserIdAndType(java.lang.Integer, java.lang.String)  
+	 */
+	@Override
+	public ResponseObject<List<TOboxDeviceConfig>> getDevciesByUserIdAndType(Integer userId, String deviceType) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#getYSCameraByUserId(java.lang.Integer)  
+	 */
+	@Override
+	public ResponseObject<List<TYSCamera>> getYSCameraByUserId(Integer userId) {
 		logger.warn("===device server is break===");
 		return serverError();
 	}

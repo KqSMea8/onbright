@@ -24,7 +24,7 @@ public class SceneDTO extends TScene implements Serializable{
 		setOboxSerialId(scene.getOboxSerialId());
 		setSceneNumber(scene.getSceneNumber());
 		setOboxSceneNumber(scene.getOboxSceneNumber());
-		setMsgAlter(scene.getMsgAlter());
+		setMessageAlter(scene.getMsgAlter());
 		setSceneGroup(scene.getSceneGroup());
 		setSceneName(scene.getSceneName());
 		setSceneType(scene.getSceneType());

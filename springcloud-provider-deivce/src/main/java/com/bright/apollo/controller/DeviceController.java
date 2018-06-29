@@ -11,10 +11,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bright.apollo.common.entity.TNvr;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
+import com.bright.apollo.common.entity.TYSCamera;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
+import com.bright.apollo.service.CameraService;
 import com.bright.apollo.service.DeviceService;
+import com.bright.apollo.service.NvrService;
 
 /**
  * @Title:
@@ -33,6 +37,12 @@ public class DeviceController {
 	@Autowired
 	private OboxDeviceConfigService oboxDeviceConfigService;
 
+	@Autowired
+	private CameraService cameraService;
+
+	@Autowired
+	private NvrService nvrService;
+
 	// find deivce by serial_id
 	@RequestMapping(value = "/{serialId}", method = RequestMethod.GET)
 	public ResponseObject<TOboxDeviceConfig> getDevice(
@@ -41,18 +51,18 @@ public class DeviceController {
 		try {
 			TOboxDeviceConfig device = oboxDeviceConfigService.getTOboxDeviceConfigByDeviceSerialId(serialId);
 			if (device == null) {
-				res.setCode(ResponseEnum.RequestObjectNotExist.getCode());
-				res.setMsg(ResponseEnum.RequestObjectNotExist.getMsg());
+				res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
+				res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
 			} else {
-				res.setCode(ResponseEnum.Success.getCode());
-				res.setMsg(ResponseEnum.Success.getMsg());
+				res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+				res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 				res.setData(device);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("===getScene error msg:" + e.getMessage());
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
@@ -66,19 +76,19 @@ public class DeviceController {
 		ResponseObject<TOboxDeviceConfig> res = new ResponseObject<TOboxDeviceConfig>();
 		try {
 			if (deviceService.queryDeviceBySerialId(serialId) == null) {
-				res.setCode(ResponseEnum.RequestObjectNotExist.getCode());
-				res.setMsg(ResponseEnum.RequestObjectNotExist.getMsg());
+				res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
+				res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
 			} else {
 				deviceService.updateDeviceBySerialId(device);
-				res.setCode(ResponseEnum.Success.getCode());
-				res.setMsg(ResponseEnum.Success.getMsg());
+				res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+				res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
 				res.setData(deviceService.queryDeviceBySerialId(serialId));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("===getScene error msg:" + e.getMessage());
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
@@ -91,19 +101,19 @@ public class DeviceController {
 		ResponseObject<TOboxDeviceConfig> res = new ResponseObject<TOboxDeviceConfig>();
 		try {
 			if (deviceService.queryDeviceBySerialId(serialId) != null) {
-				res.setCode(ResponseEnum.ObjExist.getCode());
-				res.setMsg(ResponseEnum.ObjExist.getMsg());
+				res.setStatus(ResponseEnum.ObjExist.getStatus());
+				res.setMessage(ResponseEnum.ObjExist.getMsg());
 			} else {
 				deviceService.addDevice(device);
-				res.setCode(ResponseEnum.Success.getCode());
-				res.setMsg(ResponseEnum.Success.getMsg());
+				res.setStatus(ResponseEnum.AddSuccess.getStatus());
+				res.setMessage(ResponseEnum.AddSuccess.getMsg());
 				res.setData(deviceService.queryDeviceBySerialId(serialId));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("===getScene error msg:" + e.getMessage());
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
@@ -114,18 +124,18 @@ public class DeviceController {
 	public ResponseObject delDevice(@PathVariable(required = true, value = "serialId") String serialId) {
 		ResponseObject res = new ResponseObject();
 		try {
-			if (oboxDeviceConfigService.queryDeviceConfigBySerialID(serialId) == null) {
-				res.setCode(ResponseEnum.ObjExist.getCode());
-				res.setMsg(ResponseEnum.ObjExist.getMsg());
+			if (deviceService.queryDeviceBySerialId(serialId) == null) {
+				res.setStatus(ResponseEnum.ObjExist.getStatus());
+				res.setMessage(ResponseEnum.ObjExist.getMsg());
 			} else {
 				deviceService.deleteDeviceBySerialId(serialId);
-				res.setCode(ResponseEnum.Success.getCode());
-				res.setMsg(ResponseEnum.Success.getMsg());
+				res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+				res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
@@ -138,8 +148,8 @@ public class DeviceController {
 		ResponseObject<List<TOboxDeviceConfig>> res = new ResponseObject<List<TOboxDeviceConfig>>();
 		try {
 			if (userId == 0) {
-				res.setCode(ResponseEnum.RequestParamError.getCode());
-				res.setMsg(ResponseEnum.RequestParamError.getMsg());
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
 				return res;
 			}
 			if (pageIndex == null)
@@ -148,12 +158,12 @@ public class DeviceController {
 				pageSize = 10;
 			List<TOboxDeviceConfig> list = deviceService.queryDeviceByUserId(userId, pageIndex, pageSize);
 			if (list == null || list.size() <= 0) {
-				res.setCode(ResponseEnum.SearchIsEmpty.getCode());
-				res.setMsg(ResponseEnum.SearchIsEmpty.getMsg());
+				res.setStatus(ResponseEnum.SearchIsEmpty.getStatus());
+				res.setMessage(ResponseEnum.SearchIsEmpty.getMsg());
 			} else {
 				int count = deviceService.queryCountDeviceByUserId(userId);
-				res.setCode(ResponseEnum.Success.getCode());
-				res.setMsg(ResponseEnum.Success.getMsg());
+				res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+				res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 				res.setData(list);
 				res.setPageSize(pageSize);
 				res.setPageIndex(pageIndex);
@@ -162,8 +172,8 @@ public class DeviceController {
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
@@ -176,17 +186,17 @@ public class DeviceController {
 		try {
 			List<TOboxDeviceConfig> oboxDeviceConfigList = oboxDeviceConfigService.getOboxDeviceConfigByUserId(userId);
 			if (oboxDeviceConfigList == null) {
-				res.setCode(ResponseEnum.NoExistCode.getCode());
-				res.setMsg(ResponseEnum.NoExistCode.getMsg());
+				res.setStatus(ResponseEnum.NoExistCode.getStatus());
+				res.setMessage(ResponseEnum.NoExistCode.getMsg());
 			} else {
-				res.setCode(ResponseEnum.Success.getCode());
-				res.setMsg(ResponseEnum.Success.getMsg());
+				res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+				res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 				res.setData(oboxDeviceConfigList);
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
@@ -199,13 +209,111 @@ public class DeviceController {
 		try {
 			List<TOboxDeviceConfig> oboxDeviceConfigList = oboxDeviceConfigService
 					.getOboxDeviceConfigByOboxSerialId(oboxSerialId);
-			res.setCode(ResponseEnum.Success.getCode());
-			res.setMsg(ResponseEnum.Success.getMsg());
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 			res.setData(oboxDeviceConfigList);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	@RequestMapping(value = "/getDeviceByUser/{userId}", method = RequestMethod.GET)
+	public ResponseObject<List<TOboxDeviceConfig>> getDeviceByUser(@PathVariable(value = "userId") Integer userId) {
+		ResponseObject<List<TOboxDeviceConfig>> res = new ResponseObject<List<TOboxDeviceConfig>>();
+		try {
+			List<TOboxDeviceConfig> oboxDeviceConfigList = oboxDeviceConfigService.getOboxDeviceConfigByUserId(userId);
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+			res.setData(oboxDeviceConfigList);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	@RequestMapping(value = "/getYSCameraBySerialId/{deviceSerialId}", method = RequestMethod.GET)
+	public ResponseObject<TYSCamera> getYSCameraBySerialId(
+			@PathVariable(value = "deviceSerialId") String deviceSerialId) {
+		ResponseObject<TYSCamera> res = new ResponseObject<TYSCamera>();
+		try {
+			TYSCamera tysCamera = cameraService.getYSCameraBySerialId(deviceSerialId);
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+			res.setData(tysCamera);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	@RequestMapping(value = "/getNvrByIP/{deviceSerialId}", method = RequestMethod.GET)
+	public ResponseObject<TNvr> getNvrByIP(@PathVariable(value = "ip") String ip) {
+		ResponseObject<TNvr> res = new ResponseObject<TNvr>();
+		try {
+			TNvr nvr = nvrService.getNvrByIP(ip);
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+			res.setData(nvr);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	@RequestMapping(value = "/getDeviceTypeByUser/{userId}", method = RequestMethod.GET)
+	public ResponseObject<List<TOboxDeviceConfig>> getDeviceTypeByUser(@PathVariable(value = "userId") Integer userId) {
+		ResponseObject<List<TOboxDeviceConfig>> res = new ResponseObject<List<TOboxDeviceConfig>>();
+		try {
+			List<TOboxDeviceConfig> list = oboxDeviceConfigService.getDeviceTypeByUser(userId);
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+			res.setData(list);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	@RequestMapping(value = "/getDevciesByUserIdAndType/{userId}/{deviceType}", method = RequestMethod.GET)
+	public ResponseObject<List<TOboxDeviceConfig>> getDevciesByUserIdAndType(
+			@PathVariable(value = "userId") Integer userId, @PathVariable(value = "deviceType") String deviceType) {
+		ResponseObject<List<TOboxDeviceConfig>> res = new ResponseObject<List<TOboxDeviceConfig>>();
+		try {
+			List<TOboxDeviceConfig> list = oboxDeviceConfigService.getDevciesByUserIdAndType(userId,deviceType);
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+			res.setData(list);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	@RequestMapping(value = "/getYSCameraByUserId/{userId}", method = RequestMethod.GET)
+	public ResponseObject<List<TYSCamera>> getYSCameraByUserId(
+			@PathVariable(value = "userId") Integer userId){
+		ResponseObject<List<TYSCamera>> res = new ResponseObject<List<TYSCamera>>();
+		try {
+			List<TYSCamera> list = cameraService.getYSCameraByUserId(userId);
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+			res.setData(list);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}

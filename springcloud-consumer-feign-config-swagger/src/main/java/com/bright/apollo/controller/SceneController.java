@@ -45,8 +45,8 @@ public class SceneController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			res = new ResponseObject<SceneInfo>();
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
@@ -58,12 +58,13 @@ public class SceneController {
 			@RequestBody(required = true) SceneInfo info) {
 		ResponseObject<SceneInfo> res = null;
 		try {
-			return feignSceneClient.updateScene(sceneNumber, info);
+			//rewrite
+		//	return feignSceneClient.updateScene(sceneNumber, info);
 		} catch (Exception e) {
 			e.printStackTrace();
 			res = new ResponseObject<SceneInfo>();
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
@@ -79,8 +80,8 @@ public class SceneController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			res = new ResponseObject();
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
@@ -96,8 +97,8 @@ public class SceneController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			res = new ResponseObject();
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
@@ -113,8 +114,8 @@ public class SceneController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			res = new ResponseObject();
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
@@ -125,12 +126,12 @@ public class SceneController {
 	public ResponseObject<SceneInfo> addScene(@RequestBody(required = true) SceneInfo info) {
 		ResponseObject<SceneInfo> res = null;
 		try {
-			return feignSceneClient.addScene(info);
+			return feignSceneClient.addSceneInfo(info);
 		} catch (Exception e) {
 			e.printStackTrace();
 			res = new ResponseObject<SceneInfo>();
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 

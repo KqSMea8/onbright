@@ -43,4 +43,19 @@ public interface OboxDeviceConfigService {
 	 */
 	List<TOboxDeviceConfig> getOboxDeviceConfigByOboxSerialId(String oboxSerialId);
 
+	/**  
+	 * @param userId
+	 * @return  
+	 * @Description:  
+	 */
+	List<TOboxDeviceConfig> getDeviceTypeByUser(Integer userId);
+
+	/**  
+	 * @param userId
+	 * @param deviceType
+	 * @return  
+	 * @Description:  
+	 */
+	List<TOboxDeviceConfig> getDevciesByUserIdAndType(Integer userId, String deviceType);
+
 }

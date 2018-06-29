@@ -84,6 +84,13 @@ public class AliDeviceServiceImpl implements AliDeviceService {
 	 */
 	@Override
 	public int addAliDev(TAliDevice tAliDevice) {
+		if(tAliDevice==null){
+			return 0;
+		}
+		tAliDevice.setProductKey(tAliDevice.getProductKey()==null?"":tAliDevice.getProductKey());
+		tAliDevice.setDeviceName(tAliDevice.getDeviceName()==null?"":tAliDevice.getDeviceName());
+		tAliDevice.setOboxSerialId(tAliDevice.getOboxSerialId()==null?"":tAliDevice.getOboxSerialId());
+		tAliDevice.setOffline(tAliDevice.getOffline()==null?0:tAliDevice.getOffline());
 		return mapper.addAliDev(tAliDevice);
 	}
 

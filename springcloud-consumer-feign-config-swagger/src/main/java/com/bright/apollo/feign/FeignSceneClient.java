@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.bright.apollo.common.entity.TScene;
+import com.bright.apollo.common.entity.TSceneAction;
 import com.bright.apollo.common.entity.TSceneCondition;
 import com.bright.apollo.hrstrix.HystrixFeignSceneFallback;
 import com.bright.apollo.response.ResponseObject;
@@ -38,9 +39,8 @@ public interface FeignSceneClient {
 	 * @return
 	 * @Description:
 	 */
-	@RequestMapping(value = "/scene/{sceneNumber}", method = RequestMethod.PUT)
-	ResponseObject<SceneInfo> updateScene(@PathVariable(value = "sceneNumber") Integer sceneNumber,
-			@RequestBody SceneInfo info);
+	@RequestMapping(value = "/scene/updateScene", method = RequestMethod.PUT)
+	ResponseObject<TScene> updateScene(@RequestBody(required=true) TScene scene);
 
 	/**
 	 * @param sceneNumber
@@ -56,8 +56,8 @@ public interface FeignSceneClient {
 	 * @return
 	 * @Description:
 	 */
-	@RequestMapping(value = "/scene/addScene", method = RequestMethod.POST)
-	ResponseObject<SceneInfo> addScene(@RequestBody SceneInfo info);
+	@RequestMapping(value = "/scene/addSceneInfo", method = RequestMethod.POST)
+	ResponseObject<SceneInfo> addSceneInfo(@RequestBody SceneInfo info);
 
 	/**
 	 * @param sceneNumber
@@ -140,4 +140,38 @@ public interface FeignSceneClient {
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/scene/deleteSceneByOboxSerialId/{oboxSerialId}", method = RequestMethod.DELETE)
 	ResponseObject deleteSceneByOboxSerialId(@PathVariable(value = "oboxSerialId") String oboxSerialId);
+
+	/**
+	 * @param tScene
+	 * @Description:
+	 */
+	@RequestMapping(value = "/scene/addScene", method = RequestMethod.POST)
+	ResponseObject<TScene> addScene(@RequestBody(required = true) TScene tScene);
+
+	/**
+	 * @param tSceneAction
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/scene/addSceneAction", method = RequestMethod.POST)
+	ResponseObject addSceneAction(@RequestBody(required = true) TSceneAction tSceneAction);
+
+	/**
+	 * @param tSceneCondition
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/addSceneCondition", method = RequestMethod.POST)
+	ResponseObject addSceneCondition(@RequestBody(required = true) TSceneCondition tSceneCondition);
+
+	/**
+	 * @param oboxSerialId
+	 * @param sceneNumber
+	 * @Description:
+	 */
+	@RequestMapping(value = "/scene/getScenesByOboxSerialIdAndSceneNumber/{oboxSerialId}/{sceneNumber}", method = RequestMethod.GET)
+	ResponseObject<TScene> getScenesByOboxSerialIdAndSceneNumber(
+			@PathVariable(value = "oboxSerialId") String oboxSerialId,
+			@PathVariable(value = "sceneNumber") Integer sceneNumber);
+
 }

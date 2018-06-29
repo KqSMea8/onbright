@@ -129,8 +129,9 @@ public class JPushService {
 //                        .addAudienceTarget(AudienceTarget.alias("alias1", "alias2"))
                         .build())
                 .setMessage(Message.newBuilder()
+                        //.setMessageContent(content)
                         .setMsgContent(content)
-                        .addExtra("from", "apollo-jpush")
+                		.addExtra("from", "apollo-jpush")
                         .build())
                 .build();
     }

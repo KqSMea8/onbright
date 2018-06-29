@@ -42,8 +42,8 @@ public class UserController {
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			res = new ResponseObject();
-			res.setCode(ResponseEnum.RequestTimeout.getCode());
-			res.setMsg(ResponseEnum.RequestTimeout.getMsg());
+			res.setStatus(ResponseEnum.RequestTimeout.getStatus());
+			res.setMessage(ResponseEnum.RequestTimeout.getMsg());
 			return res;
 		}
 	}
@@ -60,8 +60,8 @@ public class UserController {
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			res = new ResponseObject();
-			res.setCode(ResponseEnum.RequestTimeout.getCode());
-			res.setMsg(ResponseEnum.RequestTimeout.getMsg());
+			res.setStatus(ResponseEnum.RequestTimeout.getStatus());
+			res.setMessage(ResponseEnum.RequestTimeout.getMsg());
 			return res;
 		}
 	}

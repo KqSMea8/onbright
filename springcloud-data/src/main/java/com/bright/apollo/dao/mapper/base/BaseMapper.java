@@ -15,6 +15,7 @@ import java.util.List;
  * @version V1.0   
  * @param <T>
  */
+@Deprecated
 @Component
 public interface BaseMapper<T, E, PK extends Serializable> {
 

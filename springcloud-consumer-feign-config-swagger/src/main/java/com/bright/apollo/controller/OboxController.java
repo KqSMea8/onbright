@@ -40,8 +40,8 @@ public class OboxController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			res = new ResponseObject<TObox>();
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
@@ -57,8 +57,8 @@ public class OboxController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			res = new ResponseObject<TObox>();
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
@@ -74,8 +74,8 @@ public class OboxController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			res = new ResponseObject();
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
@@ -91,8 +91,8 @@ public class OboxController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			res = new ResponseObject<TObox>();
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}*/

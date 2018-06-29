@@ -1,5 +1,7 @@
 package com.bright.apollo.feign;
 
+import java.util.List;
+
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,6 +13,7 @@ import com.bright.apollo.common.entity.OauthClientDetails;
 import com.bright.apollo.common.entity.TUser;
 import com.bright.apollo.common.entity.TUserDevice;
 import com.bright.apollo.common.entity.TUserObox;
+import com.bright.apollo.common.entity.TUserScene;
 import com.bright.apollo.hrstrix.HystrixFeignUserFallback;
 import com.bright.apollo.response.ResponseObject;
 
@@ -63,7 +66,7 @@ public interface FeignUserClient {
 	 * @Description:  
 	 */
 	@RequestMapping(value = "/user/getUser/{userName}", method = RequestMethod.GET)
-	public ResponseObject<TUser> getUser(String username);
+	public ResponseObject<TUser> getUser(@PathVariable(required = true, value = "userName") String userName);
 
 	@RequestMapping(value = "/user/getUserById/{id}", method = RequestMethod.GET)
 	public ResponseObject<TUser> getUserById(Integer id);
@@ -93,5 +96,20 @@ public interface FeignUserClient {
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/user/addUserDevice", method = RequestMethod.POST)
 	ResponseObject addUserDevice(@RequestBody(required = true) TUserDevice tUserDevice);
+
+	/**  
+	 * @param tUserScene  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/user/addUserScene", method = RequestMethod.POST)
+	ResponseObject<TUserScene> addUserScene(@RequestBody(required = true) TUserScene tUserScene);
+
+	/**  
+	 * @param id
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/user/getUserDevcieByUser/{userId}", method = RequestMethod.GET)
+	ResponseObject<List<TUserDevice>> getUserDevcieByUser(@PathVariable(required = true,value="userId") Integer userId);
 
 }

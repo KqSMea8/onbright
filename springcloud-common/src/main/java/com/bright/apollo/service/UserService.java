@@ -2,9 +2,6 @@ package com.bright.apollo.service;
 
 import java.util.List;
 
-import com.bright.apollo.common.entity.TObox;
-import com.bright.apollo.common.entity.TOboxDeviceConfig;
-import com.bright.apollo.common.entity.TScene;
 import com.bright.apollo.common.entity.TUser;
 import com.bright.apollo.common.entity.TUserDevice;
 import com.bright.apollo.common.entity.TUserObox;
@@ -156,4 +153,25 @@ public interface UserService extends BasicService{
 	 * @Description:  
 	 */
 	int addUserDevice(TUserDevice tUserDevice);
+
+	/**  
+	 * @param tUserScene  
+	 * @Description:  
+	 */
+	void addUserScene(TUserScene tUserScene);
+
+	/**  
+	 * @param userId
+	 * @param sceneNumber
+	 * @return  
+	 * @Description:  
+	 */
+	TUserScene getUserSceneByUserIdAndSceneNumber(Integer userId, Integer sceneNumber);
+
+	/**  
+	 * @param userId
+	 * @return  
+	 * @Description:  
+	 */
+	List<TUserDevice> getListOfUserDeviceByUserId(Integer userId);
 }

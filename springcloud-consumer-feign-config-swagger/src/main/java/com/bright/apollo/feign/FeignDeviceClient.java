@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.bright.apollo.common.entity.TNvr;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
+import com.bright.apollo.common.entity.TYSCamera;
 import com.bright.apollo.hrstrix.HystrixFeignDeviceFallback;
 import com.bright.apollo.response.ResponseObject;
 
@@ -86,6 +88,53 @@ public interface FeignDeviceClient {
 	 */
 	@RequestMapping(value = "/device/getDevicesByOboxSerialId/{oboxSerialId}", method = RequestMethod.GET)
 	ResponseObject<List<TOboxDeviceConfig>> getDevicesByOboxSerialId(@PathVariable(value = "oboxSerialId") String oboxSerialId);
+
+	/**  
+	 * @param id
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/device/getDeviceByUser/{userId}", method = RequestMethod.GET)
+	ResponseObject<List<TOboxDeviceConfig>> getDeviceByUser(@PathVariable(value = "userId") Integer userId);
+
+	/**  
+	 * @param deviceSerialId  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/device/getYSCameraBySerialId/{deviceSerialId}", method = RequestMethod.GET)
+	ResponseObject<TYSCamera> getYSCameraBySerialId(@PathVariable(value = "deviceSerialId") String deviceSerialId);
+
+	/**  
+	 * @param deviceSerialId  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/device/getNvrByIP/{ip}", method = RequestMethod.GET)
+	ResponseObject<TNvr> getNvrByIP(@PathVariable(value = "ip") String ip);
+
+	/**  
+	 * @param id
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/device/getDeviceTypeByUser/{userId}", method = RequestMethod.GET)
+	ResponseObject<List<TOboxDeviceConfig>> getDeviceTypeByUser(@PathVariable(value = "userId") Integer userId);
+
+	/**  
+	 * @param id
+	 * @param deviceType
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/device/getDevciesByUserIdAndType/{userId}/{deviceType}", method = RequestMethod.GET)
+	ResponseObject<List<TOboxDeviceConfig>> getDevciesByUserIdAndType(@PathVariable(value = "userId") Integer userId,@PathVariable(value = "deviceType") String deviceType);
+
+	/**  
+	 * @param id
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/device/getYSCameraByUserId/{userId}", method = RequestMethod.GET)
+	ResponseObject<List<TYSCamera>> getYSCameraByUserId(@PathVariable(value = "userId") Integer userId);
 
 
 }

@@ -1,14 +1,17 @@
 package com.bright.apollo.hrstrix;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import com.bright.apollo.common.dto.OboxResp;
-import com.bright.apollo.common.entity.TSceneCondition;
+import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.enums.CMDEnum;
 import com.bright.apollo.feign.FeignAliClient;
+import com.bright.apollo.request.SceneActionDTO;
+import com.bright.apollo.request.SceneConditionDTO;
 import com.bright.apollo.response.AliDevInfo;
 import com.bright.apollo.response.ResponseObject;
 
@@ -26,7 +29,7 @@ public class HystrixFeignAli2Fallback extends BasicHystrixFeignFallback implemen
 	@SuppressWarnings("unchecked")
 	@Override
 	public ResponseObject<OboxResp> toAliService(CMDEnum cmd, String inMsg, String deviceSerial) {
-		logger.warn("===device server is break===");
+		logger.warn("===ali server is break===");
 		return serverError();
 	}
 
@@ -38,7 +41,7 @@ public class HystrixFeignAli2Fallback extends BasicHystrixFeignFallback implemen
 	@SuppressWarnings("unchecked")
 	@Override
 	public ResponseObject<OboxResp> releaseObox(String oboxSerialId) {
-		logger.warn("===device server is break===");
+		logger.warn("===ali server is break===");
 		return serverError();
 	}
 
@@ -50,7 +53,7 @@ public class HystrixFeignAli2Fallback extends BasicHystrixFeignFallback implemen
 	@SuppressWarnings("unchecked")
 	@Override
 	public ResponseObject<OboxResp> stopScan(String oboxSerialId) {
-		logger.warn("===device server is break===");
+		logger.warn("===ali server is break===");
 		return serverError();
 	}
 
@@ -65,7 +68,7 @@ public class HystrixFeignAli2Fallback extends BasicHystrixFeignFallback implemen
 	@Override
 	public ResponseObject<OboxResp> scanByRestart(String oboxSerialId, String deviceType, String deviceChildType,
 			String serialId) {
-		logger.warn("===device server is break===");
+		logger.warn("===ali server is break===");
 		return serverError();
 	}
 
@@ -80,7 +83,7 @@ public class HystrixFeignAli2Fallback extends BasicHystrixFeignFallback implemen
 	@Override
 	public ResponseObject<OboxResp> scanByUnStop(String oboxSerialId, String deviceType, String deviceChildType,
 			String serialId, Integer countOfDevice) {
-		logger.warn("===device server is break===");
+		logger.warn("===ali server is break===");
 		return serverError();
 	}
 
@@ -95,7 +98,7 @@ public class HystrixFeignAli2Fallback extends BasicHystrixFeignFallback implemen
 	@Override
 	public ResponseObject<OboxResp> scanByInitiative(String oboxSerialId, String deviceType, String deviceChildType,
 			String serialId, Integer countOfDevice) {
-		logger.warn("===device server is break===");
+		logger.warn("===ali server is break===");
 		return serverError();
 	}
 
@@ -107,7 +110,7 @@ public class HystrixFeignAli2Fallback extends BasicHystrixFeignFallback implemen
 	 */
 	@Override
 	public ResponseObject controlServerScene(Integer sceneNumber) {
-		logger.warn("===device server is break===");
+		logger.warn("===ali server is break===");
 		return serverError();
 	}
 
@@ -121,7 +124,7 @@ public class HystrixFeignAli2Fallback extends BasicHystrixFeignFallback implemen
 	@SuppressWarnings("unchecked")
 	@Override
 	public ResponseObject<OboxResp> setDeviceStatus(String oboxSerialId, String status) {
-		logger.warn("===device server is break===");
+		logger.warn("===ali server is break===");
 		return serverError();
 	}
 
@@ -135,21 +138,7 @@ public class HystrixFeignAli2Fallback extends BasicHystrixFeignFallback implemen
 	@SuppressWarnings("unchecked")
 	@Override
 	public ResponseObject<OboxResp> addLocalScene(String sceneName, String oboxSerialId, String sceneGroup) {
-		logger.warn("===device server is break===");
-		return serverError();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.bright.apollo.feign.FeignAliClient#addLocalSceneCondition(java.lang.
-	 * Integer, java.util.List)
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	public ResponseObject<OboxResp> addLocalSceneCondition(Integer sceneNumber, List<TSceneCondition> conditions) {
-		logger.warn("===device server is break===");
+		logger.warn("===ali server is break===");
 		return serverError();
 	}
 
@@ -159,8 +148,41 @@ public class HystrixFeignAli2Fallback extends BasicHystrixFeignFallback implemen
 	@SuppressWarnings("unchecked")
 	@Override
 	public ResponseObject<AliDevInfo> registAliDev(String type, String zone) {
-		logger.warn("===device server is break===");
+		logger.warn("===ali server is break===");
 		return serverError();
 	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignAliClient#addLocalSceneCondition(java.lang.Integer, java.lang.String, java.util.List)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<OboxResp> addLocalSceneCondition(Integer sceneNumber, String oboxSerialId,
+			List<List<SceneConditionDTO>> sceneConditionDTOs) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignAliClient#addLocalSceneAction(java.util.List, java.lang.Integer, java.lang.String)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject addLocalSceneAction(List<SceneActionDTO> nodeActionDTOs, Integer sceneNumber,
+			String oboxSerialId) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignAliClient#getSearchNewDevice(com.bright.apollo.common.entity.TObox)  
+	 */
+	@Override
+	public ResponseObject<List<Map<String, String>>> getSearchNewDevice(TObox obox) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
+	 
 
 }

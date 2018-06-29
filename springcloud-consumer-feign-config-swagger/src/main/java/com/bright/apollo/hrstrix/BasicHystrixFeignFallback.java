@@ -18,8 +18,8 @@ public class BasicHystrixFeignFallback {
 	@SuppressWarnings("rawtypes")
 	protected static ResponseObject serverError() {
 		ResponseObject res=new ResponseObject();
-		res.setCode(ResponseEnum.MicroServiceUnConnection.getCode());
-		res.setMsg(ResponseEnum.MicroServiceUnConnection.getMsg());
+		res.setStatus(ResponseEnum.MicroServiceUnConnection.getStatus());
+		res.setMessage(ResponseEnum.MicroServiceUnConnection.getMsg());
 		return res;
 	}
 	

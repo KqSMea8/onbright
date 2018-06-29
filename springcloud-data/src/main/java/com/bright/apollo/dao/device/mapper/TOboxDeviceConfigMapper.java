@@ -166,6 +166,55 @@ public interface TOboxDeviceConfigMapper extends BaseMapper<TOboxDeviceConfig, T
 			@Result(property = "groupAddr",column = "group_addr"),
 			@Result(property = "oboxSerialId",column = " obox_serial_id")
 	})
-	List<TOboxDeviceConfig> getOboxDeviceConfigByOboxSerialId(String oboxSerialId);
+	List<TOboxDeviceConfig> getOboxDeviceConfigByOboxSerialId(@Param("oboxSerialId") String oboxSerialId);
+
+	/**  
+	 * @param userId
+	 * @return  
+	 * @Description:  
+	 */
+	@Select(" select * from t_obox_device_config todc " +
+			" inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id" +
+			" inner join t_user tu on tu.id = tud.user_id" +
+			" where tud.user_id = #{userId} group by todc.device_type")
+	@Results(value = {
+			@Result(property = "oboxId",column = "obox_id"),
+			@Result(property = "deviceId",column = "device_id"),
+			@Result(property = "lastOpTime",column = "last_op_time"),
+			@Result(property = "deviceState",column = "device_state"),
+			@Result(property = "deviceType",column = "device_type"),
+			@Result(property = "deviceChildType",column = "device_child_type"),
+			@Result(property = "deviceVersion",column = "device_version"),
+			@Result(property = "deviceSerialId",column = "device_serial_id"),
+			@Result(property = "deviceRfAddr",column = "device_rf_addr"),
+			@Result(property = "groupAddr",column = "group_addr"),
+			@Result(property = "oboxSerialId",column = " obox_serial_id")
+	})
+	List<TOboxDeviceConfig> getDeviceTypeByUser(@Param("userId") Integer userId);
+
+	/**  
+	 * @param userId
+	 * @param deviceType
+	 * @return  
+	 * @Description:  
+	 */
+	@Select(" select * from t_obox_device_config todc " +
+			" inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id" +
+			" inner join t_user tu on tu.id = tud.user_id" +
+			" where tud.user_id = #{userId} and todc.device_type=#{deviceType}")
+	@Results(value = {
+			@Result(property = "oboxId",column = "obox_id"),
+			@Result(property = "deviceId",column = "device_id"),
+			@Result(property = "lastOpTime",column = "last_op_time"),
+			@Result(property = "deviceState",column = "device_state"),
+			@Result(property = "deviceType",column = "device_type"),
+			@Result(property = "deviceChildType",column = "device_child_type"),
+			@Result(property = "deviceVersion",column = "device_version"),
+			@Result(property = "deviceSerialId",column = "device_serial_id"),
+			@Result(property = "deviceRfAddr",column = "device_rf_addr"),
+			@Result(property = "groupAddr",column = "group_addr"),
+			@Result(property = "oboxSerialId",column = " obox_serial_id")
+	})
+	List<TOboxDeviceConfig> getDevciesByUserIdAndType(@Param("userId") Integer userId, @Param("deviceType") String deviceType);
 
 }

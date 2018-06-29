@@ -19,9 +19,9 @@ public class ResponseObject<T> implements Serializable {
 	 */
 	private static final long serialVersionUID = -3946200024233048495L;
 
-	private String msg;
+	private String message;
 
-	private int code;
+	private int status;
 
 	private T data;
 
@@ -31,20 +31,20 @@ public class ResponseObject<T> implements Serializable {
 
 	private Integer pageCount;
 
-	public String getMsg() {
-		return msg;
+	public String getMessage() {
+		return message;
 	}
 
-	public void setMsg(String msg) {
-		this.msg = msg;
+	public void setMessage(String message) {
+		this.message = message;
 	}
 
-	public int getCode() {
-		return code;
+	public int getStatus() {
+		return status;
 	}
 
-	public void setCode(int code) {
-		this.code = code;
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 	public T getData() {

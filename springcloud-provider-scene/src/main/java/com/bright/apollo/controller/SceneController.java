@@ -43,45 +43,46 @@ public class SceneController {
 		try {
 			SceneInfo info = sceneService.querySceneInfoBySceneNumber(sceneNumber);
 			if (info == null) {
-				res.setCode(ResponseEnum.RequestObjectNotExist.getCode());
-				res.setMsg(ResponseEnum.RequestObjectNotExist.getMsg());
+				res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
+				res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
 			} else {
-				res.setCode(ResponseEnum.Success.getCode());
-				res.setMsg(ResponseEnum.Success.getMsg());
+				res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+				res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 				res.setData(info);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("===getScene error msg:" + e.getMessage());
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
 	// get list by page
 
-	@RequestMapping(value = "/{sceneNumber}", method = RequestMethod.PUT)
-	public ResponseObject<SceneInfo> updateScene(@PathVariable(required = true) Integer sceneNumber,
-			@RequestBody(required = true) SceneInfo info) {
-		ResponseObject<SceneInfo> res = new ResponseObject<SceneInfo>();
+	@RequestMapping(value = "/updateScene", method = RequestMethod.PUT)
+	public ResponseObject<TScene> updateScene(@RequestBody(required=true) TScene scene) {
+		ResponseObject<TScene> res = new ResponseObject<TScene>();
 		try {
-			TScene scene = info.getScene();
-			if (scene != null)
-				sceneService.updateScene(scene);
-			List<TSceneCondition> conditions = info.getConditions();
-			if (conditions != null && !conditions.isEmpty())
-				sceneService.batchUpdate(conditions);
-			List<TSceneAction> actions = info.getActions();
-			if (actions != null && !actions.isEmpty())
-				sceneService.batchUpdate(actions);
-			res.setCode(ResponseEnum.Success.getCode());
-			res.setMsg(ResponseEnum.Success.getMsg());
-			res.setData(sceneService.querySceneInfoBySceneNumber(sceneNumber));
+			if(scene==null||scene.getSceneNumber()==null||scene.getSceneNumber()==0){
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+			}else{
+				if(sceneService.getSceneBySceneNumber(scene.getSceneNumber())==null){
+					res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
+					res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
+				}else{
+					sceneService.updateScene(scene);
+					res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+					res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+					res.setData(sceneService.getSceneBySceneNumber(scene.getSceneNumber()));
+				}
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("===getScene error msg:" + e.getMessage());
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
@@ -93,22 +94,23 @@ public class SceneController {
 		try {
 			TScene tScene = sceneService.queryTById(new TScene(sceneNumber));
 			if (tScene == null) {
-				res.setCode(ResponseEnum.RequestObjectNotExist.getCode());
-				res.setMsg(ResponseEnum.RequestObjectNotExist.getMsg());
+				res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
+				res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
 			} else {
 				sceneService.deleteSceneBySceneNumber(sceneNumber);
-				res.setCode(ResponseEnum.Success.getCode());
-				res.setMsg(ResponseEnum.Success.getMsg());
+				res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+				res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("===getScene error msg:" + e.getMessage());
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
-	//modify the code 
+
+	// modify the code
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/deleteSceneCondition/{sceneNumber}/{condtionId}", method = RequestMethod.DELETE)
 	public ResponseObject deleteSceneCondition(@PathVariable Integer sceneNumber, @PathVariable Integer condtionId) {
@@ -117,27 +119,27 @@ public class SceneController {
 			if (condtionId != null && condtionId != 0) {
 				TSceneCondition tSceneCondition = sceneService.queryTById(new TSceneCondition(condtionId));
 				if (tSceneCondition == null) {
-					res.setCode(ResponseEnum.RequestObjectNotExist.getCode());
-					res.setMsg(ResponseEnum.RequestObjectNotExist.getMsg());
+					res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
+					res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
 				} else {
 					sceneService.deleteSceneConditionById(condtionId);
-					res.setCode(ResponseEnum.Success.getCode());
-					res.setMsg(ResponseEnum.Success.getMsg());
+					res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+					res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
 				}
 			} else {
 				// delete all
 				if (sceneNumber == null || sceneNumber == 0) {
-					res.setCode(ResponseEnum.RequestObjectNotExist.getCode());
-					res.setMsg(ResponseEnum.RequestObjectNotExist.getMsg());
+					res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
+					res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
 				} else {
 					TScene tScene = sceneService.queryTById(new TScene(sceneNumber));
 					if (tScene == null) {
-						res.setCode(ResponseEnum.RequestObjectNotExist.getCode());
-						res.setMsg(ResponseEnum.RequestObjectNotExist.getMsg());
+						res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
+						res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
 					} else {
 						sceneService.deleteSceneConditionBySceneNumber(sceneNumber);
-						res.setCode(ResponseEnum.Success.getCode());
-						res.setMsg(ResponseEnum.Success.getMsg());
+						res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+						res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
 
 					}
 				}
@@ -145,8 +147,8 @@ public class SceneController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("===getScene error msg:" + e.getMessage());
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
@@ -159,44 +161,44 @@ public class SceneController {
 			if (actionId != null && actionId != 0) {
 				TSceneAction tSceneAction = sceneService.queryTById(new TSceneAction(actionId));
 				if (tSceneAction == null) {
-					res.setCode(ResponseEnum.RequestObjectNotExist.getCode());
-					res.setMsg(ResponseEnum.RequestObjectNotExist.getMsg());
+					res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
+					res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
 				} else {
 					sceneService.deleteSceneActionById(actionId);
-					res.setCode(ResponseEnum.Success.getCode());
-					res.setMsg(ResponseEnum.Success.getMsg());
+					res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+					res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
 				}
 			} else {
 				// delete all
 				TScene tScene = sceneService.queryTById(new TScene(sceneNumber));
 				if (tScene == null) {
-					res.setCode(ResponseEnum.RequestObjectNotExist.getCode());
-					res.setMsg(ResponseEnum.RequestObjectNotExist.getMsg());
+					res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
+					res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
 				} else {
 					sceneService.deleteSceneActionBySceneNumber(sceneNumber);
-					res.setCode(ResponseEnum.Success.getCode());
-					res.setMsg(ResponseEnum.Success.getMsg());
+					res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+					res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
 
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("===getScene error msg:" + e.getMessage());
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
 
-	@RequestMapping(value = "/addScene", method = RequestMethod.POST)
-	public ResponseObject<SceneInfo> addScene(@RequestBody(required = true) SceneInfo info) {
+	@RequestMapping(value = "/addSceneInfo", method = RequestMethod.POST)
+	public ResponseObject<SceneInfo> addSceneInfo(@RequestBody(required = true) SceneInfo info) {
 		ResponseObject<SceneInfo> res = new ResponseObject<SceneInfo>();
 		try {
 			TScene scene = info.getScene();
 			SceneInfo sceneInfo = new SceneInfo();
 			if (scene.getSceneNumber() != null && scene.getSceneNumber().intValue() != 0) {
-				res.setCode(ResponseEnum.RequestParamError.getCode());
-				res.setMsg(ResponseEnum.RequestParamError.getMsg());
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
 				return res;
 			}
 			scene.setSceneNumber(null);
@@ -230,13 +232,13 @@ public class SceneController {
 				sceneInfo.setConditions(list);
 			}
 			res.setData(sceneInfo);
-			res.setCode(ResponseEnum.Success.getCode());
-			res.setMsg(ResponseEnum.Success.getMsg());
+			res.setStatus(ResponseEnum.AddSuccess.getStatus());
+			res.setMessage(ResponseEnum.AddSuccess.getMsg());
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("===getScene error msg:" + e.getMessage());
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 
@@ -250,8 +252,8 @@ public class SceneController {
 		ResponseObject<List<SceneInfo>> res = new ResponseObject<List<SceneInfo>>();
 		try {
 			if (userId == 0) {
-				res.setCode(ResponseEnum.RequestParamError.getCode());
-				res.setMsg(ResponseEnum.RequestParamError.getMsg());
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
 				return res;
 			}
 			if (pageIndex == null)
@@ -260,8 +262,8 @@ public class SceneController {
 				pageSize = 10;
 			List<TScene> list = sceneService.querySceneByUserId(userId, pageIndex, pageSize);
 			if (list == null || list.size() <= 0) {
-				res.setCode(ResponseEnum.SearchIsEmpty.getCode());
-				res.setMsg(ResponseEnum.SearchIsEmpty.getMsg());
+				res.setStatus(ResponseEnum.SearchIsEmpty.getStatus());
+				res.setMessage(ResponseEnum.SearchIsEmpty.getMsg());
 			} else {
 				int count = sceneService.queryCountSceneByUserId(userId);
 				List<SceneInfo> infos = new ArrayList<SceneInfo>();
@@ -275,8 +277,8 @@ public class SceneController {
 					info.setConditions(conditions);
 					infos.add(info);
 				}
-				res.setCode(ResponseEnum.Success.getCode());
-				res.setMsg(ResponseEnum.Success.getMsg());
+				res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+				res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 				res.setData(infos);
 				res.setPageSize(pageSize);
 				res.setPageIndex(pageIndex);
@@ -285,8 +287,8 @@ public class SceneController {
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
@@ -296,15 +298,15 @@ public class SceneController {
 		ResponseObject<SceneInfo> res = new ResponseObject<SceneInfo>();
 		try {
 			if (!StringUtils.isEmpty(info.getScene().getOboxSerialId())) {
-				res.setCode(ResponseEnum.RequestParamError.getCode());
-				res.setMsg(ResponseEnum.RequestParamError.getMsg());
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
 				return res;
 			}
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
@@ -315,13 +317,13 @@ public class SceneController {
 		ResponseObject<List<TScene>> res = new ResponseObject<List<TScene>>();
 		try {
 			List<TScene> list = sceneService.getSceneByOboxSerialId(oboxSerialId);
-			res.setCode(ResponseEnum.Success.getCode());
-			res.setMsg(ResponseEnum.Success.getMsg());
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 			res.setData(list);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
@@ -332,64 +334,153 @@ public class SceneController {
 		ResponseObject<List<TSceneCondition>> res = new ResponseObject<List<TSceneCondition>>();
 		try {
 			List<TSceneCondition> list = sceneService.getConditionsBySceneNumber(sceneNumber);
-			res.setCode(ResponseEnum.Success.getCode());
-			res.setMsg(ResponseEnum.Success.getMsg());
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 			res.setData(list);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
-	
+
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/deleteSceneConditionBySceneNumber/{sceneNumber}", method = RequestMethod.DELETE)
-	public ResponseObject deleteSceneConditionBySceneNumber(
-			@PathVariable(value = "sceneNumber") Integer sceneNumber) {
+	public ResponseObject deleteSceneConditionBySceneNumber(@PathVariable(value = "sceneNumber") Integer sceneNumber) {
 		ResponseObject res = new ResponseObject();
 		try {
 			sceneService.deleteSceneConditionBySceneNumber(sceneNumber);
-			res.setCode(ResponseEnum.Success.getCode());
-			res.setMsg(ResponseEnum.Success.getMsg());
+			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
-	
+
 	@SuppressWarnings("rawtypes")
-	@RequestMapping(value = "/getScenesByOboxSerialId/{oboxSerialId}", method = RequestMethod.GET)
-	public ResponseObject deleteSceneActionsBySceneNumber(
-			@PathVariable(value = "sceneNumber") Integer sceneNumber) {
+	@RequestMapping(value = "/deleteScenesBySceneNumber/{sceneNumber}", method = RequestMethod.DELETE)
+	public ResponseObject deleteScenesBySceneNumber(@PathVariable(value = "sceneNumber") Integer sceneNumber) {
 		ResponseObject res = new ResponseObject();
 		try {
 			sceneService.deleteSceneActionBySceneNumber(sceneNumber);
-			res.setCode(ResponseEnum.Success.getCode());
-			res.setMsg(ResponseEnum.Success.getMsg());
+			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
-	
+
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/deleteSceneByOboxSerialId/{oboxSerialId}", method = RequestMethod.DELETE)
-	public ResponseObject deleteSceneByOboxSerialId(
-			@PathVariable(value = "oboxSerialId") String oboxSerialId) {
+	public ResponseObject deleteSceneByOboxSerialId(@PathVariable(value = "oboxSerialId") String oboxSerialId) {
 		ResponseObject res = new ResponseObject();
 		try {
 			sceneService.deleteSceneByOboxSerialId(oboxSerialId);
-			res.setCode(ResponseEnum.Success.getCode());
-			res.setMsg(ResponseEnum.Success.getMsg());
+			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			res.setCode(ResponseEnum.Error.getCode());
-			res.setMsg(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	@RequestMapping(value = "/addScene", method = RequestMethod.POST)
+	public ResponseObject<TScene> addScene(@RequestBody(required = true) TScene scene) {
+		ResponseObject<TScene> res = new ResponseObject<TScene>();
+		try {
+			if (scene.getSceneNumber() != null || scene.getSceneNumber() == 0) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+			} else {
+				int sceneNumber = sceneService.addScene(scene);
+				if (sceneNumber == 0) {
+					res.setStatus(ResponseEnum.RequestParamError.getStatus());
+					res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				} else {
+					scene.setSceneNumber(sceneNumber);
+					res.setData(scene);
+					res.setStatus(ResponseEnum.AddSuccess.getStatus());
+					res.setMessage(ResponseEnum.AddSuccess.getMsg());
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("===addScene error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+
+	}
+
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/addSceneAction", method = RequestMethod.POST)
+	public ResponseObject addSceneAction(@RequestBody(required = true) TSceneAction tSceneAction) {
+		ResponseObject res = new ResponseObject();
+		try {
+			if (tSceneAction != null && (tSceneAction.getSceneNumber() == null 
+					|| tSceneAction.getSceneNumber() == 0)) {
+				sceneService.addSceneAction(tSceneAction);
+				res.setStatus(ResponseEnum.AddSuccess.getStatus());
+				res.setMessage(ResponseEnum.AddSuccess.getMsg());
+			} else {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("===addSceneAction error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+
+	}
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/addSceneCondition", method = RequestMethod.POST)
+	public ResponseObject addSceneCondition(@RequestBody(required = true) TSceneCondition tSceneCondition) {
+		ResponseObject res = new ResponseObject();
+		try {
+			if (tSceneCondition != null && (tSceneCondition.getSceneNumber() == null 
+					|| tSceneCondition.getSceneNumber() == 0)) {
+				sceneService.addSceneCondition(tSceneCondition);
+				res.setStatus(ResponseEnum.AddSuccess.getStatus());
+				res.setMessage(ResponseEnum.AddSuccess.getMsg());
+			} else {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("===addSceneAction error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	@RequestMapping(value = "/getScenesByOboxSerialIdAndSceneNumber/{oboxSerialId}/{sceneNumber}", method = RequestMethod.GET)
+	public ResponseObject<TScene> getScenesByOboxSerialIdAndSceneNumber(
+			@PathVariable(value = "oboxSerialId") String oboxSerialId,
+			@PathVariable(value = "sceneNumber") Integer sceneNumber) {
+		ResponseObject<TScene> res = new ResponseObject<TScene>();
+		try {
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+			res.setData(sceneService.getTSceneByOboxSerialIdAndSceneNumber(oboxSerialId, sceneNumber));
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("===getScenesByOboxSerialIdAndSceneNumber error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}

@@ -147,4 +147,12 @@ public class OboxServiceImpl implements OboxService {
 		return oboxMapper.getOboxsByDeviceChannel(oboxDeviceId,oboxId);
 	}
 
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.OboxService#queryOboxByUserId(java.lang.Integer)  
+	 */
+	@Override
+	public List<TObox> queryOboxByUserId(Integer userId) {
+ 		return oboxMapper.getOboxByUserId(userId);
+	}
+
 }

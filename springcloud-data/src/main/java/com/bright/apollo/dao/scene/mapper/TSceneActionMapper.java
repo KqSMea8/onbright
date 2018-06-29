@@ -35,12 +35,12 @@ public interface TSceneActionMapper extends BaseMapper<TSceneAction, TSceneActio
 
 	@Insert("insert into t_scene_action (actionID,\n" +
 			"action,\n" +
-			"last_op_time,\n" +
 			"node_type,\n" +
 			"scene_number,\n" +
 			"preSet) " +
-			"values(#{actionid},#{action},#{lastOpTime},#{nodeType},#{sceneNumber},#{preset})")
-	void addSceneAction(TSceneAction sceneAction);
+			"values(#{actionid},#{action},#{nodeType},#{sceneNumber},#{preset})")
+	@Options(useGeneratedKeys=true, keyProperty="id", keyColumn="id")
+	int addSceneAction(TSceneAction sceneAction);
 
 	@Select("select * from t_scene_action where scene_number = #{sceneNumber} and actionID = #{actionId}")
 	TSceneAction getSceneActionBySceneNumberAndActionId(@Param("sceneNumber") int sceneNumber,@Param("actionId") String actionId);
