@@ -362,13 +362,13 @@ public class SceneController {
 	}
 
 	@SuppressWarnings("rawtypes")
-	@RequestMapping(value = "/getScenesByOboxSerialId/{oboxSerialId}", method = RequestMethod.GET)
-	public ResponseObject deleteSceneActionsBySceneNumber(@PathVariable(value = "sceneNumber") Integer sceneNumber) {
+	@RequestMapping(value = "/deleteScenesBySceneNumber/{sceneNumber}", method = RequestMethod.DELETE)
+	public ResponseObject deleteScenesBySceneNumber(@PathVariable(value = "sceneNumber") Integer sceneNumber) {
 		ResponseObject res = new ResponseObject();
 		try {
 			sceneService.deleteSceneActionBySceneNumber(sceneNumber);
-			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
-			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());

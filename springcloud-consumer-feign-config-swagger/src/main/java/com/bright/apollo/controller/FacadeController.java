@@ -2,6 +2,7 @@ package com.bright.apollo.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -35,6 +36,7 @@ import com.bright.apollo.common.entity.TUserObox;
 import com.bright.apollo.common.entity.TUserScene;
 import com.bright.apollo.common.entity.TYSCamera;
 import com.bright.apollo.enums.ConditionTypeEnum;
+import com.bright.apollo.enums.DeviceTypeEnum;
 import com.bright.apollo.enums.NodeTypeEnum;
 import com.bright.apollo.enums.SceneTypeEnum;
 import com.bright.apollo.feign.FeignAliClient;
@@ -47,6 +49,7 @@ import com.bright.apollo.request.SceneActionDTO;
 import com.bright.apollo.request.SceneConditionDTO;
 import com.bright.apollo.request.SceneDTO;
 import com.bright.apollo.response.AliDevInfo;
+import com.bright.apollo.response.DevcieCount;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.response.SceneInfo;
@@ -299,7 +302,7 @@ public class FacadeController {
 			@PathVariable(value = "oboxSerialId", required = true) String oboxSerialId,
 			@RequestParam(required = false, value = "deviceType") String deviceType,
 			@RequestParam(required = false, value = "deviceChildType") String deviceChildType,
-			@RequestParam(required = false, value = "deviceChildType") String serialId) {
+			@RequestParam(required = false, value = "serialId") String serialId) {
 		ResponseObject res = new ResponseObject();
 		try {
 			ResponseObject<TObox> resObox = feignOboxClient.getObox(oboxSerialId);
@@ -678,8 +681,8 @@ public class FacadeController {
 
 	@ApiOperation(value = "get device by user and page,the pageIndex default value is 0,the pageSize defalt value is 10", httpMethod = "GET", produces = "application/json")
 	@ApiResponse(code = 200, message = "SelectSuccess", response = ResponseObject.class)
-	@RequestMapping(value = "/device", method = RequestMethod.GET)
-	public ResponseObject<List<TOboxDeviceConfig>> getDevice() {
+	@RequestMapping(value = "/device/{deviceType}", method = RequestMethod.GET)
+	public ResponseObject<List<TOboxDeviceConfig>> getDevice(@PathVariable(required=false) String deviceType) {
 		ResponseObject<List<TOboxDeviceConfig>> res = new ResponseObject<List<TOboxDeviceConfig>>();
 		try {
 			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -690,7 +693,10 @@ public class FacadeController {
 			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
 			if (resUser.getStatus() == ResponseEnum.SelectSuccess.getStatus() && resUser.getData() != null) {
 				TUser tUser = resUser.getData();
-				res = feignDeviceClient.getDeviceByUser(tUser.getId());
+				if(StringUtils.isEmpty(deviceType))
+					res = feignDeviceClient.getDeviceByUser(tUser.getId());
+				else
+					res = feignDeviceClient.getDevciesByUserIdAndType(tUser.getId(),deviceType);
 			} else {
 				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
 				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
@@ -1175,11 +1181,10 @@ public class FacadeController {
 	@ApiResponse(code = 200, message = "SelectSuccess", response = ResponseObject.class)
 	@RequestMapping(value = "/registAliDev/{type}", method = RequestMethod.GET)
 	public ResponseObject<AliDevInfo> registAliDev(@PathVariable(required = true, value = "type") String type,
-			@RequestParam(value="zone",required=false)String zone) {
+			@RequestParam(value = "zone", required = false) String zone) {
 		ResponseObject<AliDevInfo> res = new ResponseObject<AliDevInfo>();
 		try {
-			 
-			//String zone=extractPathFromPattern(request);
+
 			return feignAliClient.registAliDev(type, zone);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1189,6 +1194,121 @@ public class FacadeController {
 		return res;
 	}
 
+	@ApiOperation(value = "query device count", httpMethod = "GET", produces = "application/json")
+	@ApiResponse(code = 200, message = "SelectSuccess", response = ResponseObject.class)
+	@RequestMapping(value = "/queryDevcieCount", method = RequestMethod.GET)
+	public ResponseObject<List<DevcieCount>> queryDevcieCount() {
+		ResponseObject<List<DevcieCount>> res = new ResponseObject<List<DevcieCount>>();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (principal.getUsername() != null && !principal.getUsername().equals("")) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+			}
+			List<DevcieCount> tCounts = new ArrayList<DevcieCount>();
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser.getStatus() == ResponseEnum.SelectSuccess.getStatus() && resUser.getData() != null) {
+				ResponseObject<List<TOboxDeviceConfig>> resDevices = feignDeviceClient
+						.getDeviceTypeByUser(resUser.getData().getId());
+				if (resDevices != null && resDevices.getStatus() == ResponseEnum.SelectSuccess.getStatus()
+						|| resDevices.getData() != null) {
+					List<TOboxDeviceConfig> list = resDevices.getData();
+					for (TOboxDeviceConfig tOboxDeviceConfig : list) {
+						ResponseObject<List<TOboxDeviceConfig>> deviceConfigs = feignDeviceClient
+								.getDevciesByUserIdAndType(resUser.getData().getId(),
+										tOboxDeviceConfig.getDeviceType());
+						if (deviceConfigs != null && deviceConfigs.getData() != null) {
+							DevcieCount count = new DevcieCount();
+							count.setType(tOboxDeviceConfig.getDeviceType());
+							count.setCount(deviceConfigs.getData().size());
+							tCounts.add(count);
+						}
+					}
+					ResponseObject<List<TObox>> oboxRes = feignOboxClient.getOboxByUser(resUser.getData().getId());
+					if (oboxRes != null && oboxRes.getData() != null) {
+						DevcieCount count = new DevcieCount();
+						count.setType(DeviceTypeEnum.obox.getValue());
+						count.setCount(oboxRes.getData().size());
+						tCounts.add(count);
+					}
+					/*TCount cameraCount = CameraBusiness.queryYSCameraCountByLicense(user.getLicense());
+					if (cameraCount != null) {
+						JsonObject object = new JsonObject();
+						object.addProperty("type", DeviceTypeEnum.camera.getValue()); 
+						object.addProperty("count", cameraCount.getCount()); 
+						devices.add(object);
+					}*/
+					//ResponseObject<List<TYSCamera>> cameraRes = feignDeviceClient.getYSCameraByUserId(resUser.getData().getId());
+					res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+					res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+					res.setData(tCounts);
+				}
+			} else {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	/**  
+	 * @param value
+	 * @return  
+	 * @Description:  
+	 */
+	@ApiOperation(value = "query device count", httpMethod = "GET", produces = "application/json")
+	@ApiResponse(code = 200, message = "SelectSuccess", response = ResponseObject.class)
+	@RequestMapping(value = "/getDeviceByObox/{oboxSerialId}", method = RequestMethod.GET)
+	public ResponseObject<List<TOboxDeviceConfig>> getDeviceByObox(@PathVariable(required=true,value="oboxSerialId") String oboxSerialId) {
+		ResponseObject<List<TOboxDeviceConfig>> res=new ResponseObject<List<TOboxDeviceConfig>>();
+		try {
+			return feignDeviceClient.getDevicesByOboxSerialId(oboxSerialId);
+		 
+		} catch (Exception e) {
+			e.printStackTrace();
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	/**  
+	 * @param value
+	 * @return  
+	 * @Description:  
+	 */
+	@ApiOperation(value = "getSearchNewDevice", httpMethod = "GET", produces = "application/json")
+	@ApiResponse(code = 200, message = "SelectSuccess", response = ResponseObject.class)
+	@RequestMapping(value = "/getSearchNewDevice/{oboxSerialId}", method = RequestMethod.GET)
+	public ResponseObject<List<Map<String, String>>> getSearchNewDevice(@PathVariable(value="oboxSerialId") String oboxSerialId) {
+		ResponseObject<List<Map<String, String>>> res=new ResponseObject<List<Map<String, String>>>();
+		try {
+			//return feignDeviceClient.getDevicesByOboxSerialId(oboxSerialId);
+			//TObox dbObox = OboxBusiness.queryOboxsByOboxSerialId(obox_serial_id);
+			ResponseObject<TObox> oboxRes = feignOboxClient.getObox(oboxSerialId);
+			if(oboxRes==null||oboxRes.getData()==null){
+				res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
+				res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
+			}else{
+				ResponseObject<List<Map<String, String>>> resList = feignAliClient.getSearchNewDevice(oboxRes.getData());
+				if(resList!=null&&resList.getStatus()==ResponseEnum.UpdateSuccess.getStatus()){
+					res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+					res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+					res.setData(resList.getData());
+				}else{
+					res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+					res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
 	/**
 	 * @param sceneConditionDTOs
 	 * @param oboxSerialId
@@ -1217,4 +1337,8 @@ public class FacadeController {
 		String bestMatchPattern = (String) request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE);
 		return new AntPathMatcher().extractPathWithinPattern(bestMatchPattern, path);
 	}
+
+	
+
+	
 }

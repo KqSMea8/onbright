@@ -1,6 +1,7 @@
 package com.bright.apollo.feign;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bright.apollo.common.dto.OboxResp;
+import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.enums.CMDEnum;
 import com.bright.apollo.hrstrix.HystrixFeignAli2Fallback;
 import com.bright.apollo.request.SceneActionDTO;
@@ -143,9 +145,9 @@ public interface FeignAliClient {
 	 * @return
 	 * @Description:
 	 */
-	@RequestMapping(value = "/aliDevice/registAliDev/{type}/{zone}", method = RequestMethod.POST)
+	@RequestMapping(value = "/aliDevice/registAliDev/{type}", method = RequestMethod.GET)
 	ResponseObject<AliDevInfo> registAliDev(@PathVariable(required = true, value = "type") String type,
-			@PathVariable(required = false, value = "zone") String zone);
+			@RequestParam(required = false, value = "zone") String zone);
 
 	/**
 	 * @param nodeActionDTOs
@@ -158,5 +160,13 @@ public interface FeignAliClient {
 	ResponseObject addLocalSceneAction(@RequestBody(required = true) List<SceneActionDTO> nodeActionDTOs,
 			@PathVariable(required = true, value = "sceneNumber") Integer sceneNumber,
 			@PathVariable(required = true, value = "oboxSerialId") String oboxSerialId);
+
+	/**  
+	 * @param data
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/aliDevice/getSearchNewDevice", method = RequestMethod.PUT)
+	ResponseObject<List<Map<String, String>>> getSearchNewDevice(@RequestBody(required = true)  TObox obox);
 
 }

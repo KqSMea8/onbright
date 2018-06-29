@@ -76,8 +76,8 @@ public interface AliDeviceMapper {
     @Insert("insert into t_ali_device(productKey,\n" +
 			"deviceName,\n" +
 			"deviceSecret,\n" +
-			"oboxSerialId,\n" +
-			"offline) values(#{productKey},#{deviceName},#{deviceSecret},#{oboxSerialId},#{offline}")
+			"obox_serial_id,\n" +
+			"offline) values(#{productKey},#{deviceName},#{deviceSecret},#{oboxSerialId},#{offline})")
 	@Options(useGeneratedKeys=true, keyProperty="Id", keyColumn="id")
 	int addAliDev(TAliDevice tAliDevice);
 
@@ -87,7 +87,17 @@ public interface AliDeviceMapper {
 	 * @return  
 	 * @Description:  
 	 */
-    @Select("select * from t_ali_device where productKey = #{productKey} and obox_serial_id = #{deviceSerialId}")
-	List<TAliDevice> getAliDeviceByProductKeyAndDeviceSerialId(String productKey, String oboxSerialId);
+    @Results(value = {
+    		@Result(property = "Id",column = "id"),
+    		@Result(property = "oboxSerialId",column = "obox_serial_id"),
+            @Result(property = "lastOpTime",column = "last_op_time"),
+    		@Result(property = "deviceName",column = "DeviceName"),
+    		@Result(property = "deviceSecret",column = "DeviceSecret"),
+    		@Result(property = "productKey",column = "productKey"),
+    		@Result(property = "offline",column = "offline")
+    })
+    @Select("select * from t_ali_device where productKey = #{productKey} and obox_serial_id = #{oboxSerialId}")
+    List<TAliDevice> getAliDeviceByProductKeyAndDeviceSerialId(@Param("productKey")  String productKey, @Param("oboxSerialId")  String oboxSerialId);
+     
  
 }

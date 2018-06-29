@@ -1,5 +1,7 @@
 package com.bright.apollo.service;
 
+import java.util.List;
+
 import com.bright.apollo.common.entity.TYSCamera;
 
 /**  
@@ -17,5 +19,12 @@ public interface CameraService {
 	 * @Description:  
 	 */
 	TYSCamera getYSCameraBySerialId(String deviceSerialId);
+
+	/**  
+	 * @param userId
+	 * @return  
+	 * @Description:  
+	 */
+	List<TYSCamera> getYSCameraByUserId(Integer userId);
 
 }

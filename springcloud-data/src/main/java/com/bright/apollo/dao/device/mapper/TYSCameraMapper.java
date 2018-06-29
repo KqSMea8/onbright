@@ -1,5 +1,7 @@
 package com.bright.apollo.dao.device.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
@@ -40,5 +42,12 @@ public interface TYSCameraMapper {
 			@Result(property = "videoLevel",column = " videolevel")
 	})
 	TYSCamera getYSCameraBySerialId(String deviceSerialId);
+
+	/**  
+	 * @param userId
+	 * @return  
+	 * @Description:  has no camere
+	 */
+	List<TYSCamera> getYSCameraByUserId(Integer userId);
 
 }

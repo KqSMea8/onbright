@@ -36,12 +36,13 @@ public class DeviceController {
 
 	@Autowired
 	private OboxDeviceConfigService oboxDeviceConfigService;
-	
+
 	@Autowired
 	private CameraService cameraService;
-	
+
 	@Autowired
 	private NvrService nvrService;
+
 	// find deivce by serial_id
 	@RequestMapping(value = "/{serialId}", method = RequestMethod.GET)
 	public ResponseObject<TOboxDeviceConfig> getDevice(
@@ -240,7 +241,7 @@ public class DeviceController {
 			@PathVariable(value = "deviceSerialId") String deviceSerialId) {
 		ResponseObject<TYSCamera> res = new ResponseObject<TYSCamera>();
 		try {
-			TYSCamera tysCamera=cameraService.getYSCameraBySerialId(deviceSerialId);
+			TYSCamera tysCamera = cameraService.getYSCameraBySerialId(deviceSerialId);
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 			res.setData(tysCamera);
@@ -251,15 +252,64 @@ public class DeviceController {
 		}
 		return res;
 	}
+
 	@RequestMapping(value = "/getNvrByIP/{deviceSerialId}", method = RequestMethod.GET)
-	public ResponseObject<TNvr> getNvrByIP(
-			@PathVariable(value = "ip") String ip) {
+	public ResponseObject<TNvr> getNvrByIP(@PathVariable(value = "ip") String ip) {
 		ResponseObject<TNvr> res = new ResponseObject<TNvr>();
 		try {
-			TNvr nvr=nvrService.getNvrByIP(ip);
+			TNvr nvr = nvrService.getNvrByIP(ip);
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 			res.setData(nvr);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	@RequestMapping(value = "/getDeviceTypeByUser/{userId}", method = RequestMethod.GET)
+	public ResponseObject<List<TOboxDeviceConfig>> getDeviceTypeByUser(@PathVariable(value = "userId") Integer userId) {
+		ResponseObject<List<TOboxDeviceConfig>> res = new ResponseObject<List<TOboxDeviceConfig>>();
+		try {
+			List<TOboxDeviceConfig> list = oboxDeviceConfigService.getDeviceTypeByUser(userId);
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+			res.setData(list);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	@RequestMapping(value = "/getDevciesByUserIdAndType/{userId}/{deviceType}", method = RequestMethod.GET)
+	public ResponseObject<List<TOboxDeviceConfig>> getDevciesByUserIdAndType(
+			@PathVariable(value = "userId") Integer userId, @PathVariable(value = "deviceType") String deviceType) {
+		ResponseObject<List<TOboxDeviceConfig>> res = new ResponseObject<List<TOboxDeviceConfig>>();
+		try {
+			List<TOboxDeviceConfig> list = oboxDeviceConfigService.getDevciesByUserIdAndType(userId,deviceType);
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+			res.setData(list);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	@RequestMapping(value = "/getYSCameraByUserId/{userId}", method = RequestMethod.GET)
+	public ResponseObject<List<TYSCamera>> getYSCameraByUserId(
+			@PathVariable(value = "userId") Integer userId){
+		ResponseObject<List<TYSCamera>> res = new ResponseObject<List<TYSCamera>>();
+		try {
+			List<TYSCamera> list = cameraService.getYSCameraByUserId(userId);
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+			res.setData(list);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());

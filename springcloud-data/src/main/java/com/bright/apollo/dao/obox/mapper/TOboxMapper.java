@@ -104,12 +104,13 @@ public interface TOboxMapper extends BaseMapper<TObox, TOboxExample, Integer> {
             @Result(column="obox_addr"  , property="oboxAddr" ),
             @Result(column="obox_person"  , property="oboxPerson"),
             @Result(column="obox_activate" ,  property="oboxActivate"),
-            @Result(column="obox_control" ,  property="oboxControl")
+            @Result(column="obox_control" ,  property="oboxControl"),
+            @Result(column="obox_serial_id" ,  property="oboxSerialId")
     })
 	@Select(" select * from t_obox todc " +
 			" inner join t_user_obox tud on todc.obox_serial_id = tud.obox_serial_id" +
 			" inner join t_user tu on tu.id = tud.user_id" +
 			" where tud.user_id = #{userId}")
-	List<TObox> getOboxByUserId(Integer userId);
+	List<TObox> getOboxByUserId(@Param("userId") Integer userId);
 
 }

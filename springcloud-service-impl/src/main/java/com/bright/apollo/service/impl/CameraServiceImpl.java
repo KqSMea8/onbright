@@ -1,5 +1,7 @@
 package com.bright.apollo.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +36,14 @@ public class CameraServiceImpl implements CameraService{
 	public TYSCamera getYSCameraBySerialId(String deviceSerialId) {
 		  
 		return tysCameraMapper.getYSCameraBySerialId(deviceSerialId);
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.CameraService#getYSCameraByUserId(java.lang.Integer)  
+	 */
+	@Override
+	public List<TYSCamera> getYSCameraByUserId(Integer userId) {
+ 		return tysCameraMapper.getYSCameraByUserId(userId);
 	}
 
 }
