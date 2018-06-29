@@ -366,7 +366,7 @@ public class FacadeController {
 			} else {
 				UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
 						.getPrincipal();
-				if (principal.getUsername() != null && !principal.getUsername().equals("")) {
+				if (principal.getUsername() == null && principal.getUsername().equals("")) {
 					res.setStatus(ResponseEnum.RequestParamError.getStatus());
 					res.setMessage(ResponseEnum.RequestParamError.getMsg());
 				}
@@ -378,12 +378,11 @@ public class FacadeController {
 							.getOboxDeviceConfigByUserId(tUser.getId());
 					if (resDevice == null || resDevice.getStatus() != ResponseEnum.SelectSuccess.getStatus()
 							|| resDevice.getData() != null) {
-						res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
-						res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
-						return res;
+						countOfDevice++;
+					}else{
+						List<TOboxDeviceConfig> list = resDevice.getData();
+						countOfDevice = list.size() + 1;
 					}
-					List<TOboxDeviceConfig> list = resDevice.getData();
-					countOfDevice = list.size() + 1;
 				} else {
 					res.setStatus(ResponseEnum.UnKonwUser.getStatus());
 					res.setMessage(ResponseEnum.UnKonwUser.getMsg());
@@ -631,7 +630,8 @@ public class FacadeController {
 			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
 			if (resUser.getStatus() == ResponseEnum.SelectSuccess.getStatus() && resUser.getData() != null) {
 				TUser tUser = resUser.getData();
-				res = feignOboxClient.getOboxByUser(tUser.getId());
+				return feignOboxClient.getOboxByUser(tUser.getId());
+				 
 			} else {
 				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
 				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
@@ -689,6 +689,7 @@ public class FacadeController {
 			if (principal.getUsername() != null && !principal.getUsername().equals("")) {
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
 			}
 			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
 			if (resUser.getStatus() == ResponseEnum.SelectSuccess.getStatus() && resUser.getData() != null) {
@@ -697,10 +698,13 @@ public class FacadeController {
 					res = feignDeviceClient.getDeviceByUser(tUser.getId());
 				else
 					res = feignDeviceClient.getDevciesByUserIdAndType(tUser.getId(),deviceType);
+				 
 			} else {
 				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
 				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
 			}
+			 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			res.setStatus(ResponseEnum.RequestTimeout.getStatus());
@@ -909,8 +913,8 @@ public class FacadeController {
 	@ApiOperation(value = "add obox ", httpMethod = "POST", produces = "application/json;charset=UTF-8")
 	@ApiResponse(code = 200, message = "SelectSuccess", response = ResponseObject.class)
 	@RequestMapping(value = "/addObox", method = RequestMethod.POST)
-	public ResponseObject<TObox> addObox(@RequestBody(required = true) OboxDTO oboxDTO) {
-		ResponseObject<TObox> res = new ResponseObject<TObox>();
+	public ResponseObject addObox(@RequestBody(required = true) OboxDTO oboxDTO) {
+		ResponseObject res = new ResponseObject();
 		try {
 			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			if (principal.getUsername() != null && !principal.getUsername().equals("")) {
@@ -1169,6 +1173,7 @@ public class FacadeController {
 			}
 			res.setStatus(ResponseEnum.AddSuccess.getStatus());
 			res.setMessage(ResponseEnum.AddSuccess.getMsg());
+ 
 		} catch (Exception e) {
 			e.printStackTrace();
 			res.setStatus(ResponseEnum.Error.getStatus());
@@ -1241,6 +1246,7 @@ public class FacadeController {
 					//ResponseObject<List<TYSCamera>> cameraRes = feignDeviceClient.getYSCameraByUserId(resUser.getData().getId());
 					res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 					res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+					 
 					res.setData(tCounts);
 				}
 			} else {

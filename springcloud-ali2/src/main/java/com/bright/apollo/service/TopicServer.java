@@ -227,8 +227,10 @@ public class TopicServer {
         if (StringUtils.isEmpty(productKey)) {
             TAliDevice device = aliDeviceService.getAliDeviceBySerializeId(deviceSerial);
             setCache(device,deviceSerial);
-            productKey = device.getProductKey();
-            deviceName = device.getDeviceName();
+            if(device!=null){
+            	productKey = device.getProductKey();
+                deviceName = device.getDeviceName();
+            }
         }
         rrpcRequest.setProductKey(productKey);
         rrpcRequest.setDeviceName(deviceName); //设备名称

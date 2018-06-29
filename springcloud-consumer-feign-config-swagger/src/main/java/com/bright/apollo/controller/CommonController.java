@@ -1,13 +1,14 @@
 package com.bright.apollo.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -56,17 +57,55 @@ public class CommonController {
 		if (CMDEnum.regist_aliDev.toString().equals(cmdEnum.toString()))
 			return facadeController.registAliDev(requestParam.getValue("type"), requestParam.getValue("zone"));
 		else if(CMDEnum.add_obox.toString().equals(cmdEnum.toString())){
-			return facadeController.addObox((OboxDTO) ObjectUtils.fromJsonToObject(requestParam.getValue("obox"), OboxDTO.class));
+			ResponseObject addObox = facadeController.addObox((OboxDTO) ObjectUtils.fromJsonToObject(requestParam.getValue("obox"), OboxDTO.class));
+			if(addObox!=null&&addObox.getStatus()<300){
+				Map<String, Object>map=new HashMap<String, Object>();
+				map.put("obox_serial_id", ((OboxDTO) ObjectUtils.fromJsonToObject(requestParam.getValue("obox"), OboxDTO.class)).getOboxSerialId());
+				addObox.setData(map);
+			}
+			return addObox;
 		}else if(CMDEnum.query_device_count.toString().equals(cmdEnum.toString())){
-			return facadeController.queryDevcieCount();
+			ResponseObject queryDevcieCount = facadeController.queryDevcieCount();
+			if(queryDevcieCount!=null&&queryDevcieCount.getData()!=null){
+				Map<String, Object>map=new HashMap<String, Object>();
+				map.put("devices", queryDevcieCount.getData());
+				queryDevcieCount.setData(map);
+			}
+			return queryDevcieCount;
 		}else if(CMDEnum.query_device.toString().equals(cmdEnum.toString())){
-			return facadeController.getDevice(requestParam.getValue("device_type"));
+			ResponseObject device = facadeController.getDevice(requestParam.getValue("device_type"));
+			if(device!=null&&device.getData()!=null){
+				Map<String, Object>map=new HashMap<String, Object>();
+				map.put("config", device.getData());
+				device.setData(map);
+			}
+			return device;
 		}else if(CMDEnum.query_obox.toString().equals(cmdEnum.toString())){
-			return facadeController.getOboxByUser();
+			ResponseObject oboxByUser = facadeController.getOboxByUser();
+			if(oboxByUser!=null&&oboxByUser.getData()!=null){
+				Map<String, Object>map=new HashMap<String, Object>();
+				map.put("oboxs", oboxByUser.getData());
+				oboxByUser.setData(map);
+			}
+			return oboxByUser;
+			//之前的代码要改回来
 		}else if(CMDEnum.query_obox_config.toString().equals(cmdEnum.toString())){
-			return facadeController.getDeviceByObox(requestParam.getValue("obox_serial_id"));
+			ResponseObject deviceByObox = facadeController.getDeviceByObox(requestParam.getValue("obox_serial_id"));
+			if(deviceByObox!=null&&deviceByObox.getData()!=null){
+				Map<String, Object>map=new HashMap<String, Object>();
+				map.put("config", deviceByObox.getData());
+				deviceByObox.setData(map);
+			}
+			return deviceByObox;
 		}else if(CMDEnum.setting_node_status.toString().equals(cmdEnum.toString())){
-			return facadeController.controlDevice(requestParam.getValue("serialId"),requestParam.getValue("status"));
+			ResponseObject controlDevice = facadeController.controlDevice(requestParam.getValue("serialId"),requestParam.getValue("status"));
+			if(controlDevice!=null&&controlDevice.getStatus()<300){
+				Map<String, Object>map=new HashMap<String, Object>();
+				map.put("serialId",requestParam.getValue("serialId"));
+				map.put("status",requestParam.getValue("status"));
+ 				controlDevice.setData(map);
+			}
+			return controlDevice;
 		}else if(CMDEnum.search_new_device.toString().equals(cmdEnum.toString())){
 			String state = requestParam.getValue("state");
 			if(StringUtils.isEmpty(state)){
@@ -96,7 +135,14 @@ public class CommonController {
 				return res;
 			}
 		}else if(CMDEnum.getting_new_device.toString().equals(cmdEnum.toString())){
-			return facadeController.getSearchNewDevice(requestParam.getValue("obox_serial_id"));
+			ResponseObject searchNewDevice = facadeController.getSearchNewDevice(requestParam.getValue("obox_serial_id"));
+			if(searchNewDevice!=null&&searchNewDevice.getData()!=null){
+				Object data = searchNewDevice.getData();
+				Map<String, Object> map=new HashMap<String, Object>();
+				map.put("nodes", data);
+				searchNewDevice.setData(map);
+			}
+			return searchNewDevice;
 		}else {
 			res = new ResponseObject();
 			res.setStatus(ResponseEnum.RequestParamError.getStatus());
