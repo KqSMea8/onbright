@@ -58,7 +58,8 @@ public class SceneController {
 			@RequestBody(required = true) SceneInfo info) {
 		ResponseObject<SceneInfo> res = null;
 		try {
-			return feignSceneClient.updateScene(sceneNumber, info);
+			//rewrite
+		//	return feignSceneClient.updateScene(sceneNumber, info);
 		} catch (Exception e) {
 			e.printStackTrace();
 			res = new ResponseObject<SceneInfo>();

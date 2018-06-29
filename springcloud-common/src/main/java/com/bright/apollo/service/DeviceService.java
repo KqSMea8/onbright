@@ -3,6 +3,7 @@ package com.bright.apollo.service;
 import java.util.List;
 
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
+import com.bright.apollo.common.entity.TYSCamera;
 import com.bright.apollo.service.base.BasicService;
 
 /**  
@@ -60,5 +61,7 @@ public interface DeviceService extends BasicService{
 	 */
 	@Deprecated
 	int queryCountDeviceByUserId(Integer userId);
+
+ 
 
 }

@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.bright.apollo.common.entity.TNvr;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
+import com.bright.apollo.common.entity.TYSCamera;
 import com.bright.apollo.hrstrix.HystrixFeignDeviceFallback;
 import com.bright.apollo.response.ResponseObject;
 
@@ -94,6 +96,20 @@ public interface FeignDeviceClient {
 	 */
 	@RequestMapping(value = "/device/getDeviceByUser/{userId}", method = RequestMethod.GET)
 	ResponseObject<List<TOboxDeviceConfig>> getDeviceByUser(@PathVariable(value = "userId") Integer userId);
+
+	/**  
+	 * @param deviceSerialId  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/device/getYSCameraBySerialId/{deviceSerialId}", method = RequestMethod.GET)
+	ResponseObject<TYSCamera> getYSCameraBySerialId(@PathVariable(value = "deviceSerialId") String deviceSerialId);
+
+	/**  
+	 * @param deviceSerialId  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/device/getNvrByIP/{ip}", method = RequestMethod.GET)
+	ResponseObject<TNvr> getNvrByIP(@PathVariable(value = "ip") String ip);
 
 
 }

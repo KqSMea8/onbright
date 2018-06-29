@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.common.entity.TOboxDeviceConfigExample;
+import com.bright.apollo.common.entity.TYSCamera;
 import com.bright.apollo.service.DeviceService;
 
 /**
@@ -134,5 +135,5 @@ public class DeviceServiceImpl implements DeviceService {
 //		return deviceBusiness.queryCountDeviceByUserId(userId);
 		return 0;
 	}
-
+ 
 }

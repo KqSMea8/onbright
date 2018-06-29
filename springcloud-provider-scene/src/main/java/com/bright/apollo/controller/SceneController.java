@@ -60,23 +60,24 @@ public class SceneController {
 	}
 	// get list by page
 
-	@RequestMapping(value = "/{sceneNumber}", method = RequestMethod.PUT)
-	public ResponseObject<SceneInfo> updateScene(@PathVariable(required = true) Integer sceneNumber,
-			@RequestBody(required = true) SceneInfo info) {
-		ResponseObject<SceneInfo> res = new ResponseObject<SceneInfo>();
+	@RequestMapping(value = "/updateScene", method = RequestMethod.PUT)
+	public ResponseObject<TScene> updateScene(@RequestBody(required=true) TScene scene) {
+		ResponseObject<TScene> res = new ResponseObject<TScene>();
 		try {
-			TScene scene = info.getScene();
-			if (scene != null)
-				sceneService.updateScene(scene);
-			List<TSceneCondition> conditions = info.getConditions();
-			if (conditions != null && !conditions.isEmpty())
-				sceneService.batchUpdate(conditions);
-			List<TSceneAction> actions = info.getActions();
-			if (actions != null && !actions.isEmpty())
-				sceneService.batchUpdate(actions);
-			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
-			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
-			res.setData(sceneService.querySceneInfoBySceneNumber(sceneNumber));
+			if(scene==null||scene.getSceneNumber()==null||scene.getSceneNumber()==0){
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+			}else{
+				if(sceneService.getSceneBySceneNumber(scene.getSceneNumber())==null){
+					res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
+					res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
+				}else{
+					sceneService.updateScene(scene);
+					res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+					res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+					res.setData(sceneService.getSceneBySceneNumber(scene.getSceneNumber()));
+				}
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("===getScene error msg:" + e.getMessage());
@@ -465,6 +466,22 @@ public class SceneController {
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
-
+	}
+	@RequestMapping(value = "/getScenesByOboxSerialIdAndSceneNumber/{oboxSerialId}/{sceneNumber}", method = RequestMethod.GET)
+	public ResponseObject<TScene> getScenesByOboxSerialIdAndSceneNumber(
+			@PathVariable(value = "oboxSerialId") String oboxSerialId,
+			@PathVariable(value = "sceneNumber") Integer sceneNumber) {
+		ResponseObject<TScene> res = new ResponseObject<TScene>();
+		try {
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+			res.setData(sceneService.getTSceneByOboxSerialIdAndSceneNumber(oboxSerialId, sceneNumber));
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("===getScenesByOboxSerialIdAndSceneNumber error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
 	}
 }
