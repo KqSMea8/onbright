@@ -176,7 +176,7 @@ public class AuthorizationController {
             return authCode;
     }
 
-    @RequestMapping(value ="/thirdPartyGetToken",method = RequestMethod.POST)
+    @RequestMapping(value ="/thirdPartyGetToken",method = RequestMethod.POST,produces = "application/json ;charset=UTF-8")
     public Object getToken(HttpServletRequest httpServletRequest,
                                HttpServletResponse response) throws OAuthProblemException, OAuthSystemException {
         System.out.println("====== /thirdPartyGetToken ======= ");

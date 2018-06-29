@@ -18,7 +18,7 @@ import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
  *@Since:2018年3月7日  
  *@Version:1.1.0  
  */
-@Configuration
+//@Configuration
 public class AllowedMethodConfig {
 
     @Autowired

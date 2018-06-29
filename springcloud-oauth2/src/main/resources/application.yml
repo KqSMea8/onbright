@@ -1,5 +1,9 @@
 server:
   port: 8815
+  ssl:
+    key-store: E:\keys\.keystore
+    key-store-password: 123456
+    key-store-type: JKS
 spring:
   application:
     name: springcloud-oauth2

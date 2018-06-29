@@ -17,15 +17,14 @@
 		    <input type="hidden" name="scope.${scop}" value="true"/>
 		</#list>
         <input name="user_oauth_approval" value="true" type="hidden"/>
-        <input type="hidden" id="csrf_token" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <button class="btn btn-primary" type="submit">Approve</button>
     </form>
-    <form id="denyForm" name="confirmationForm"
+    <#--<form id="denyForm" name="confirmationForm"
           action="../oauth/authorize" method="post">
         <input name="user_oauth_approval" value="false" type="hidden"/>
         <input type="hidden" id="csrf_token" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <button class="btn btn-primary" type="submit">Deny</button>
-    </form>
+    </form>-->
 </div>
 </body>
 </html>
