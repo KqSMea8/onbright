@@ -1,7 +1,7 @@
 server:
   port: 8815
   ssl:
-    key-store: E:\keys\.keystore
+    key-store: /root/.keystore
     key-store-password: 123456
     key-store-type: JKS
 spring:
@@ -47,6 +47,6 @@ logging:
 datasource:
     username: root
     password: Iltwao!1
-    url: jdbc:mysql://rm-bp1phzwe9h981t77x6o.mysql.rds.aliyuncs.com:3306/onbright_ali_new?useUnicode=true&amp;characterEncoding=utf8
+    url: jdbc:mysql://rm-bp1phzwe9h981t77x.mysql.rds.aliyuncs.com:3306/onbright_ali_new?useUnicode=true&amp;characterEncoding=utf8
     driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource

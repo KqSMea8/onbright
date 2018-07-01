@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.net.URLDecoder;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
@@ -119,6 +120,28 @@ public class CodeRedirectController {
     }
 
     private static SSLConnectionSocketFactory socketFactory;
+    
+    @RequestMapping(value="/sendRedirect",method = RequestMethod.POST)
+    public String sendRedirectURI(HttpServletRequest request,HttpServletResponse response) throws Exception {
+       logger.info(" ======= sendRedirectURI ====== ");
+       logger.info(" code ======= "+request.getParameter("code"));
+       String redirect_uri = request.getParameter("redirect_uri");
+       String state = request.getParameter("state");
+       System.out.println(request.getRequestURI());
+       if(redirect_uri!=null){
+       	redirect_uri = URLDecoder.decode(redirect_uri, "UTF-8");
+       	redirect_uri += "&"+state;
+       	System.out.println(redirect_uri);
+       	request.setAttribute("redirect_uri", redirect_uri);
+       }
+       Enumeration<String> m = request.getParameterNames();
+       while(m.hasMoreElements()){
+       	String element = m.nextElement();
+       	System.out.println("params ------ "+element+" ------ "+request.getParameter(element));
+       }
+       
+       return "";
+    }
 
 
 

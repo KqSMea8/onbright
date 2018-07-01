@@ -1,4 +1,14 @@
 package com.bright.apollo.config;
+import java.io.IOException;
+import java.net.URLDecoder;
+import java.util.Enumeration;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,9 +21,12 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter;
 
 import com.bright.apollo.config.service.impl.UserDetailsServiceImpl;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.filter.GenericFilterBean;
 
 
 /**
@@ -50,12 +63,42 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
             .authorizeRequests().antMatchers("/health", "/css/**","/oauth/**").permitAll()
             .and()
             .formLogin().loginPage("/login")
-            .permitAll();
+            .successForwardUrl("/aouth2/sendRedirect")
+            .permitAll()
+            .and()
+            .addFilterBefore(new BeforeLoginFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/favor.ioc","/authorization/*");
     }
+    
+    public class BeforeLoginFilter extends GenericFilterBean {
+
+        @Override
+        public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+            System.out.println("This is a filter before UsernamePasswordAuthenticationFilter.");
+            HttpServletRequest request = (HttpServletRequest)servletRequest;
+            String redirect_uri = request.getParameter("redirect_uri");
+            String state = request.getParameter("state");
+            System.out.println(request.getRequestURI());
+            if(redirect_uri!=null){
+            	redirect_uri = URLDecoder.decode(redirect_uri, "UTF-8");
+            	redirect_uri += "&"+state;
+            	System.out.println(redirect_uri);
+            	request.setAttribute("redirect_uri", redirect_uri);
+            }
+            Enumeration<String> m = request.getParameterNames();
+            while(m.hasMoreElements()){
+            	String element = m.nextElement();
+            	System.out.println("params ------ "+element+" ------ "+request.getParameter(element));
+            }
+            
+            // 继续调用 Filter 链
+            filterChain.doFilter(servletRequest, servletResponse);
+        }
+    }
+    
 
 }
