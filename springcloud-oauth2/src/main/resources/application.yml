@@ -24,7 +24,7 @@ endpoints:
     enabled: true
 redis:
     database: 0
-    host: 47.96.100.153
+    host: 120.27.212.190
     port: 6379
     timeout: 30000
     pool:
