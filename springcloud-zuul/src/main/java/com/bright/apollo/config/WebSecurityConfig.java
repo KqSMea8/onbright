@@ -1,4 +1,5 @@
 package com.bright.apollo.config;
+
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.util.Enumeration;
@@ -10,31 +11,23 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter;
-
-import com.bright.apollo.config.service.impl.UserDetailsServiceImpl;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.filter.GenericFilterBean;
 
+import com.bright.apollo.service.impl.UserDetailsServiceImpl;
 
-/**
- *@Title:
- *@Description:
+/**  
+ *@Title:  
+ *@Description:  
  *@Author:JettyLiu
- *@Since:2018年3月7日
- *@Version:1.1.0
+ *@Since:2018年7月2日  
+ *@Version:1.1.0  
  */
 @Order(10)
 @Configuration

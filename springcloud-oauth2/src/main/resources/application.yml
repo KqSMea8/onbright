@@ -1,9 +1,10 @@
 server:
   port: 8815
-  ssl:
-    key-store: /root/.keystore
-    key-store-password: 123456
-    key-store-type: JKS
+  contextPath: /uaa
+#  ssl:
+#    key-store: /root/.keystore
+#    key-store-password: 123456
+#    key-store-type: JKS
 spring:
   application:
     name: springcloud-oauth2
@@ -15,16 +16,13 @@ eureka:
     prefer-ip-address: true
     instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${spring.application.instance_id:${server.port}}
     appname: springcloud-oauth2
-management:
-  security:
-    enabled: false
 endpoints:
   health:
     sensitive: false
     enabled: true
 redis:
     database: 0
-    host: 120.27.212.190
+    host: 47.96.100.153
     port: 6379
     timeout: 3000
     pool:
@@ -47,6 +45,6 @@ logging:
 datasource:
     username: root
     password: Iltwao!1
-    url: jdbc:mysql://rm-bp1phzwe9h981t77x.mysql.rds.aliyuncs.com:3306/onbright_ali_new?useUnicode=true&amp;characterEncoding=utf8
+    url: jdbc:mysql://rm-bp1phzwe9h981t77x6o.mysql.rds.aliyuncs.com:3306/onbright_ali_new?useUnicode=true&amp;characterEncoding=utf8
     driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource

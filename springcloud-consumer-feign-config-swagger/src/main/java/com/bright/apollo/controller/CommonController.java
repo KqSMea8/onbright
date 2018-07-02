@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,7 @@ import com.bright.apollo.request.RequestParam;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
 import com.zz.common.exception.AppException;
+import com.zz.common.log.LogService;
 import com.zz.common.util.ObjectUtils;
 
 /**
@@ -29,7 +31,7 @@ import com.zz.common.util.ObjectUtils;
  */
 @RestController
 public class CommonController {
-
+	private Logger logger = Logger.getLogger(getClass());
 	@Autowired
 	private FacadeController facadeController;
 	 
@@ -39,6 +41,7 @@ public class CommonController {
 			UnsupportedEncodingException { 
 		ResponseObject res = null;
 		request.setCharacterEncoding("UTF-8");
+		printRequest(request);
 		String CMD = request.getParameter("CMD");
 		RequestParam requestParam = new RequestParam(request.getParameterMap());
 		if (StringUtils.isEmpty(CMD)) {
@@ -150,5 +153,12 @@ public class CommonController {
 			return res;
 		}
 	}
-	 
+	public  void printRequest(HttpServletRequest request){
+		logger.debug("=============RECV REQUEST PARAMS START=============");
+		logger.debug("URL="+request.getRequestURL());
+		for (String name : request.getParameterMap().keySet()) {
+			logger.debug("name=" + name + ";value=" + request.getParameter(name)); 
+		}
+		logger.debug("============RECV REQUEST PARAMS END=============");
+	}
 }
