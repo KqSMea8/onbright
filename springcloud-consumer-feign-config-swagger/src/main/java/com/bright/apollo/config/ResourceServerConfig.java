@@ -12,7 +12,9 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
+import org.springframework.security.web.access.AccessDeniedHandler;
 
+import com.bright.apollo.exception.AuthExceptionEntryPoint;
 import com.bright.apollo.service.AuthorizeConfigManager;
 
 /**  
@@ -34,6 +36,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     RedisTokenStore redisTokenStore(){
         return new RedisTokenStore(redisConnectionFactory);
     }
+    @Autowired
+    private AccessDeniedHandler CustomAccessDeniedHandler;
     @Override
     public void configure(HttpSecurity http) throws Exception {
     	 http. 
@@ -47,6 +51,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     }
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
-        resources.tokenStore(redisTokenStore()).resourceId(SERVER_RESOURCE_ID);
+        resources.tokenStore(redisTokenStore()).resourceId(SERVER_RESOURCE_ID)
+        .accessDeniedHandler(CustomAccessDeniedHandler).authenticationEntryPoint(new AuthExceptionEntryPoint());
     }
 }

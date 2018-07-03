@@ -19,7 +19,6 @@ import com.bright.apollo.request.RequestParam;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
 import com.zz.common.exception.AppException;
-import com.zz.common.log.LogService;
 import com.zz.common.util.ObjectUtils;
 
 /**
@@ -35,7 +34,7 @@ public class CommonController {
 	@Autowired
 	private FacadeController facadeController;
 	 
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping("/common")
 	public ResponseObject common(HttpServletRequest request, HttpServletResponse response) throws AppException,
 			UnsupportedEncodingException { 

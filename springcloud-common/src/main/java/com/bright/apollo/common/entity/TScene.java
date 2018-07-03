@@ -1,11 +1,14 @@
 package com.bright.apollo.common.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 import java.util.Date;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(value = {"lastOpTime" })
 public class TScene implements Serializable {
 	/**  
 	 *   
@@ -19,6 +22,7 @@ public class TScene implements Serializable {
 	 *
 	 * @mbg.generated Fri Jun 15 14:45:54 CST 2018
 	 */
+	@JsonProperty(value="scene_number")
 	private Integer sceneNumber;
 
 	/**
@@ -28,6 +32,7 @@ public class TScene implements Serializable {
 	 *
 	 * @mbg.generated Fri Jun 15 14:45:54 CST 2018
 	 */
+	@JsonProperty(value="scene_name")
 	private String sceneName;
 
 	/**
@@ -37,6 +42,7 @@ public class TScene implements Serializable {
 	 *
 	 * @mbg.generated Fri Jun 15 14:45:54 CST 2018
 	 */
+	@JsonProperty(value="obox_serial_id")
 	private String oboxSerialId;
 
 	/**
@@ -46,6 +52,7 @@ public class TScene implements Serializable {
 	 *
 	 * @mbg.generated Fri Jun 15 14:45:54 CST 2018
 	 */
+	@JsonProperty(value="obox_scene_number")
 	private Integer oboxSceneNumber;
 
 	/**
@@ -55,6 +62,7 @@ public class TScene implements Serializable {
 	 *
 	 * @mbg.generated Fri Jun 15 14:45:54 CST 2018
 	 */
+	@JsonProperty(value="scene_status")
 	private Byte sceneStatus;
 
 	/**
@@ -64,6 +72,7 @@ public class TScene implements Serializable {
 	 *
 	 * @mbg.generated Fri Jun 15 14:45:54 CST 2018
 	 */
+	@JsonProperty(value="scene_type")
 	private String sceneType;
 
 	/**
@@ -73,6 +82,7 @@ public class TScene implements Serializable {
 	 *
 	 * @mbg.generated Fri Jun 15 14:45:54 CST 2018
 	 */
+	@JsonProperty(value="msg_alter")
 	private Byte msgAlter;
 
 	/**
@@ -91,7 +101,8 @@ public class TScene implements Serializable {
 	 *
 	 * @mbg.generated Fri Jun 15 14:45:54 CST 2018
 	 */
-	private Byte sceneRun;
+	@JsonProperty(value="scene_run")
+	private Byte sceneRun=(byte)0;
 
 	/**
 	 *
@@ -100,6 +111,7 @@ public class TScene implements Serializable {
 	 *
 	 * @mbg.generated Fri Jun 15 14:45:54 CST 2018
 	 */
+	@JsonProperty(value="license")
 	private Integer license;
 
 	/**
@@ -109,6 +121,7 @@ public class TScene implements Serializable {
 	 *
 	 * @mbg.generated Fri Jun 15 14:45:54 CST 2018
 	 */
+	@JsonProperty(value="alter_need")
 	private Byte alterNeed;
 
 	/**
@@ -118,6 +131,7 @@ public class TScene implements Serializable {
 	 *
 	 * @mbg.generated Fri Jun 15 14:45:54 CST 2018
 	 */
+	@JsonProperty(value="scene_group")
 	private String sceneGroup;
 
 	/**

@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.HandlerMapping;
-
 import com.bright.apollo.common.dto.OboxResp;
 import com.bright.apollo.common.dto.OboxResp.Type;
 import com.bright.apollo.common.entity.TNvr;
@@ -35,8 +34,10 @@ import com.bright.apollo.common.entity.TUserDevice;
 import com.bright.apollo.common.entity.TUserObox;
 import com.bright.apollo.common.entity.TUserScene;
 import com.bright.apollo.common.entity.TYSCamera;
+import com.bright.apollo.enums.CMDEnum;
 import com.bright.apollo.enums.ConditionTypeEnum;
 import com.bright.apollo.enums.DeviceTypeEnum;
+import com.bright.apollo.enums.ErrorEnum;
 import com.bright.apollo.enums.NodeTypeEnum;
 import com.bright.apollo.enums.SceneTypeEnum;
 import com.bright.apollo.feign.FeignAliClient;
@@ -53,7 +54,6 @@ import com.bright.apollo.response.DevcieCount;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.response.SceneInfo;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -686,7 +686,7 @@ public class FacadeController {
 		ResponseObject<List<TOboxDeviceConfig>> res = new ResponseObject<List<TOboxDeviceConfig>>();
 		try {
 			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			if (principal.getUsername() != null && !principal.getUsername().equals("")) {
+			if (StringUtils.isEmpty(principal.getUsername())) {
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
 				return res;
@@ -908,7 +908,7 @@ public class FacadeController {
 		return res;
 
 	}
-
+ 
 	@SuppressWarnings("rawtypes")
 	@ApiOperation(value = "add obox ", httpMethod = "POST", produces = "application/json;charset=UTF-8")
 	@ApiResponse(code = 200, message = "SelectSuccess", response = ResponseObject.class)

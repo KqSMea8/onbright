@@ -16,6 +16,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
 import org.springframework.security.oauth2.provider.code.InMemoryAuthorizationCodeServices;
+import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
@@ -43,6 +44,8 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 
     @Autowired
     private JedisConnectionFactory jedisConnectionFactory;
+    @Autowired
+    private WebResponseExceptionTranslator customWebResponseExceptionTranslator;
 
     @Bean
     RedisTokenStore redisTokenStore(){
@@ -73,6 +76,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 //                .userDetailsService(userDetailsService)
                 .authenticationManager(authenticationManager);
         endpoints.tokenServices(defaultTokenServices());
+        endpoints.exceptionTranslator(customWebResponseExceptionTranslator);
     }
 
     /**
