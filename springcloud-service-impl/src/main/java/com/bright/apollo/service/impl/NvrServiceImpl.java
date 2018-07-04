@@ -28,4 +28,5 @@ public class NvrServiceImpl implements NvrService{
 		
 		return nvrMapper.getNvrByIP(ip);
 	}
+ 
 }

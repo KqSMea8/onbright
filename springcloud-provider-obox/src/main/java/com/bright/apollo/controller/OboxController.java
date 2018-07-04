@@ -30,7 +30,7 @@ public class OboxController {
 	private OboxService oboxService;
 
 	// find by id
-	@RequestMapping(value = "/{serialId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/getObox/{serialId}", method = RequestMethod.GET)
 	public ResponseObject<TObox> getObox(@PathVariable(value = "serialId") String serialId) {
 		ResponseObject<TObox> res = new ResponseObject<TObox>();
 		try {
@@ -126,7 +126,7 @@ public class OboxController {
 	// -------------------------------------
 	// find list of page
 	// -------------------------------------
-	@RequestMapping(value = "/{userId}/{pageIndex}/{pageSize}", method = RequestMethod.GET)
+	@RequestMapping(value = "/getOboxByUserAndPage/{userId}/{pageIndex}/{pageSize}", method = RequestMethod.GET)
 	public ResponseObject<List<TObox>> getOboxByUserAndPage(
 			@PathVariable(required = true, value = "userId") Integer userId,
 			@PathVariable(value = "pageIndex") Integer pageIndex, @PathVariable(value = "pageSize") Integer pageSize) {

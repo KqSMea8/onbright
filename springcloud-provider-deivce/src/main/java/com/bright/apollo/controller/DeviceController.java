@@ -290,7 +290,7 @@ public class DeviceController {
 			@PathVariable(value = "userId") Integer userId, @PathVariable(value = "deviceType") String deviceType) {
 		ResponseObject<List<TOboxDeviceConfig>> res = new ResponseObject<List<TOboxDeviceConfig>>();
 		try {
-			List<TOboxDeviceConfig> list = oboxDeviceConfigService.getDevciesByUserIdAndType(userId,deviceType);
+			List<TOboxDeviceConfig> list = oboxDeviceConfigService.getDevciesByUserIdAndType(userId, deviceType);
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 			res.setData(list);
@@ -301,9 +301,9 @@ public class DeviceController {
 		}
 		return res;
 	}
+
 	@RequestMapping(value = "/getYSCameraByUserId/{userId}", method = RequestMethod.GET)
-	public ResponseObject<List<TYSCamera>> getYSCameraByUserId(
-			@PathVariable(value = "userId") Integer userId){
+	public ResponseObject<List<TYSCamera>> getYSCameraByUserId(@PathVariable(value = "userId") Integer userId) {
 		ResponseObject<List<TYSCamera>> res = new ResponseObject<List<TYSCamera>>();
 		try {
 			List<TYSCamera> list = cameraService.getYSCameraByUserId(userId);
@@ -317,4 +317,6 @@ public class DeviceController {
 		}
 		return res;
 	}
+
+	 
 }

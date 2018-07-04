@@ -165,10 +165,14 @@ public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implem
 	/* (non-Javadoc)  
 	 * @see com.bright.apollo.feign.FeignDeviceClient#getYSCameraByUserId(java.lang.Integer)  
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public ResponseObject<List<TYSCamera>> getYSCameraByUserId(Integer userId) {
 		logger.warn("===device server is break===");
 		return serverError();
 	}
+
+ 
+	 
 
 }

@@ -18,4 +18,6 @@ public interface NvrService {
 	 */
 	TNvr getNvrByIP(String ip);
 
+ 
+
 }

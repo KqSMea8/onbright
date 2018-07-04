@@ -3,6 +3,8 @@ package com.bright.apollo.common.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -31,6 +33,8 @@ public class TObox implements Serializable {
 	 *
 	 * @mbg.generated Thu Jun 14 17:09:32 CST 2018
 	 */
+ 	@Expose
+	@SerializedName("obox_name")
  	@JsonProperty(value="obox_name")
 	private String oboxName;
 
@@ -42,6 +46,8 @@ public class TObox implements Serializable {
 	 * @mbg.generated Thu Jun 14 17:09:32 CST 2018
 	 */
  	@JsonProperty(value="obox_serial_id")
+ 	@Expose
+	@SerializedName("obox_serial_id")
 	private String oboxSerialId;
 
 	/**
@@ -52,6 +58,8 @@ public class TObox implements Serializable {
 	 * @mbg.generated Thu Jun 14 17:09:32 CST 2018
 	 */
  	@JsonProperty(value="obox_pwd")
+ 	@Expose
+ 	@SerializedName("obox_pwd")
 	private String oboxPwd;
 
 	/**
@@ -62,6 +70,8 @@ public class TObox implements Serializable {
 	 * @mbg.generated Thu Jun 14 17:09:32 CST 2018
 	 */
  	@JsonProperty(value="obox_version")
+ 	@Expose
+	@SerializedName("obox_version")
 	private String oboxVersion;
 
 	/**
@@ -81,6 +91,8 @@ public class TObox implements Serializable {
 	 * @mbg.generated Thu Jun 14 17:09:32 CST 2018
 	 */
 	@JsonProperty(value="obox_status")
+	@Expose
+	@SerializedName("obox_status")
 	private Byte oboxStatus=(byte)1;
 
 	/**
@@ -110,6 +122,8 @@ public class TObox implements Serializable {
 	 * @mbg.generated Thu Jun 14 17:09:32 CST 2018
 	 */
 	@JsonProperty(value="obox_addr")
+	@Expose
+	@SerializedName("obox_addr")
 	private String oboxAddr;
 
 	/**
@@ -120,6 +134,8 @@ public class TObox implements Serializable {
 	 * @mbg.generated Thu Jun 14 17:09:32 CST 2018
 	 */
 	@JsonProperty(value="obox_person")
+	@Expose
+	@SerializedName("obox_person")
 	private Byte oboxPerson;
 
 	/**
@@ -130,6 +146,8 @@ public class TObox implements Serializable {
 	 * @mbg.generated Thu Jun 14 17:09:32 CST 2018
 	 */
 	@JsonProperty(value="obox_activate")
+	@Expose
+	@SerializedName("obox_activate")
 	private Byte oboxActivate;
 
 	/**
@@ -140,6 +158,8 @@ public class TObox implements Serializable {
 	 * @mbg.generated Thu Jun 14 17:09:32 CST 2018
 	 */
 	@JsonProperty(value="obox_control")
+	@Expose
+	@SerializedName("obox_control")
 	private Byte oboxControl;
 
 	/**

@@ -41,7 +41,7 @@ public class MNService {
 
     private static final String accessKeyId ="LTAIBE0b86xFi9q5";//LTAImm6aizjagsfp
     private static final String accessKeySecret ="Ym9F1CNAgwhbxt5Sk1Qki1nr6w6e3v";//zNdZ9RuwSU7RG2Lkoon9i2hbVx3gsm
-    private static final String endPoint ="http://1563722132092243.mns.cn-hangzhou.aliyuncs.com/";
+    private static final String endPoint ="http://1563722132092243.mns.cn-shanghai.aliyuncs.com/";//http(s)://1563722132092243.mns.cn-hangzhou.aliyuncs.com/
     private static final String queueStr = "aliyun-iot-"+ ALIDevTypeEnum.OBOX.getSouthChinaName();
 
     private static final String AmericaEndPoint ="http://1558412029548413.mns.us-west-1.aliyuncs.com/";
@@ -138,8 +138,8 @@ public class MNService {
                         //update device status
 
                         JSONObject object = new JSONObject(aString);
-                        System.out.println(" productKey ------ "+object.get("productKey"));
-                        System.out.println(" deviceName ------ "+object.get("deviceName"));
+                        logger.info(" productKey ------ "+object.get("productKey"));
+                        logger.info(" deviceName ------ "+object.get("deviceName"));
 //        	    		String obox_serial_id = object.getString("deviceName");
                         if (object.getString("status").equals("offline")) {
                             if(ALIDevTypeEnum.getTypebyValue(object.getString("productKey")).equals(ALIDevTypeEnum.OBOX)){

@@ -36,4 +36,5 @@ public interface TNvrMapper {
 	})
 	TNvr getNvrByIP(String ip);
 
+	 
 }

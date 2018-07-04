@@ -42,7 +42,7 @@ logging:
   file: /usr/local/onbrightLog/aliProject%d{yyyy-MM-dd  HH:mm:ss}.log
 redis:
     database: 0
-    host: 120.27.212.190
+    host: 47.96.100.153
     port: 6379
     timeout: 3000
     pool:

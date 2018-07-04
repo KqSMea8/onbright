@@ -101,9 +101,8 @@ public class OboxServiceImpl implements OboxService {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	@Deprecated
 	public int addObox(TObox obox) {
-		  return 0;
+		  return oboxMapper.addObox(obox);
 	}
 
 	/* (non-Javadoc)  

@@ -484,4 +484,20 @@ public class SceneController {
 		}
 		return res;
 	}
+	@RequestMapping(value = "/getSceneBySceneNumber/{sceneNumber}", method = RequestMethod.GET)
+	public ResponseObject<TScene> getScenesByOboxSerialIdAndSceneNumber(
+			@PathVariable(value = "sceneNumber") Integer sceneNumber) {
+		ResponseObject<TScene> res = new ResponseObject<TScene>();
+		try {
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+			res.setData(sceneService.getSceneBySceneNumber(sceneNumber));
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("===getScenesByOboxSerialIdAndSceneNumber error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
 }

@@ -196,7 +196,7 @@ public class CMDHandlerManager {
             msg.setData(msg.getDecodeData().substring(14, 14 + 54 * 2));
 
             String cmd = msg.getCmd();
-
+            logger.info("===msg data:"+msg.getData());
             if ("a1".equals(cmd) || "b1".equals(cmd) || "b4".equals(cmd)) {
 //				if (clientSession.getStatus() == Session.STATUS_AUTHENTICATED) {
 //					CMDMsgCache.saveReply(clientSession.getUid(), cmd,
@@ -214,9 +214,9 @@ public class CMDHandlerManager {
             } else {
 
                 if (Command.HEARTBEAT.getValue().equals(cmd)) {
+                	logger.info("==="+Command.HEARTBEAT.getValue()+"===");
                     if (msg.getData().substring(0, 2).equals("01")){
                         String random_number = msg.getData().substring(2, 34);
-
                         String serialId = msg.getData().substring(34, 44);
                         String oboxVersion = msg.getData().substring(44, 60);
                         String oboxName = ByteHelper.fromHexAscii(msg.getData().substring(62, 62+2*Integer.parseInt(msg.getData().substring(60, 62), 16)));
@@ -226,6 +226,7 @@ public class CMDHandlerManager {
                         TAliDevice tAliDevice = aliDeviceService.getAliDeviceByProductKeyAndDeviceName(ProductKey, DeviceName);
 //                        TAliDevice tAliDevice = AliDevBusiness.queryAliDevByName(ProductKey, DeviceName);
                         if (tAliDevice != null) {
+                        	logger.info("===tAliDevice device name:"+tAliDevice.getDeviceName());
                             if (!tAliDevice.getOboxSerialId().equals(serialId)) {
                                 TAliDevice tAliDevice2 = aliDeviceService.getAliDeviceBySerializeId(serialId);
 //                                TAliDevice tAliDevice2 = AliDevBusiness.queryAliDevBySerial(serialId);
@@ -265,6 +266,7 @@ public class CMDHandlerManager {
 //                        TObox dbObox = OboxBusiness.queryOboxsByOboxSerialId(serialId);
 //						TKey tKey = OboxBusiness.queryKeyByProductKey(ProductKey);
                         if (dbObox == null) {
+                        	logger.info("===add obox===");
                             dbObox = new TObox();
 //							if (tKey != null) {
 //								dbObox.setLicense(tKey.getId());
@@ -276,6 +278,7 @@ public class CMDHandlerManager {
 //                            dbObox.setOboxPwd("88888888");
 //                            dbObox.setOboxActivate(0);
 //							dbObox.setOboxIP(ip[0].substring(1));
+                            dbObox.setOboxIp("0.0.0.0");
                             oboxService.addObox(dbObox);
 //                            OboxBusiness.addObox(dbObox);
                             dbObox = oboxService.queryOboxsByOboxSerialId(serialId);

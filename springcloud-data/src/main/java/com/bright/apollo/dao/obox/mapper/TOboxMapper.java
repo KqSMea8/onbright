@@ -42,7 +42,8 @@ public interface TOboxMapper extends BaseMapper<TObox, TOboxExample, Integer> {
             @Result(column="obox_addr"  , property="oboxAddr" ),
             @Result(column="obox_person"  , property="oboxPerson"),
             @Result(column="obox_activate" ,  property="oboxActivate"),
-            @Result(column="obox_control" ,  property="oboxControl")
+            @Result(column="obox_control" ,  property="oboxControl"),
+            @Result(column="obox_serial_id" ,  property="oboxSerialId")
     })
 	@Select("select * from t_obox where obox_serial_id = #{oboxSerialId} ")
 	TObox queryOboxsByOboxSerialId(@Param("oboxSerialId") String oboxSerialId) throws Exception;
@@ -112,5 +113,18 @@ public interface TOboxMapper extends BaseMapper<TObox, TOboxExample, Integer> {
 			" inner join t_user tu on tu.id = tud.user_id" +
 			" where tud.user_id = #{userId}")
 	List<TObox> getOboxByUserId(@Param("userId") Integer userId);
+
+	/**  
+	 * @param obox
+	 * @return  
+	 * @Description:  
+	 */
+	 @Insert("insert into t_obox(obox_name,\n" +
+				"obox_serial_id,\n" +
+				"obox_version,\n" +
+				"obox_status,\n" +
+				"obox_ip) values(#{oboxName},#{oboxSerialId},#{oboxVersion},#{oboxStatus},#{oboxIp})")
+	@Options(useGeneratedKeys=true, keyProperty="oboxId", keyColumn="id")
+	int addObox(TObox obox);
 
 }

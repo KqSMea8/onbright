@@ -27,7 +27,7 @@ public interface FeignOboxClient {
 	 * @return
 	 * @Description:
 	 */
-	@RequestMapping(value = "/obox/{serialId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/obox/getObox/{serialId}", method = RequestMethod.GET)
 	ResponseObject<TObox> getObox(@PathVariable(value = "serialId") String serialId);
 
 	/**
