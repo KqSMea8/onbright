@@ -4,30 +4,9 @@ import com.bright.apollo.bean.Message;
 import com.bright.apollo.common.dto.OboxResp;
 import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.enums.CMDEnum;
-import com.bright.apollo.service.CMDMessageService;
-import com.bright.apollo.service.OboxDeviceConfigService;
-import com.bright.apollo.service.OboxService;
-import com.bright.apollo.service.SceneService;
 import com.bright.apollo.session.ClientSession;
-import com.bright.apollo.session.SessionManager;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class RemoveOBOXHandler extends BasicHandler {
-    @Autowired
-    private OboxService oboxService;
-
-    @Autowired
-    private SceneService sceneService;
-
-    @Autowired
-    private OboxDeviceConfigService oboxDeviceConfigService;
-
-    @Autowired
-    private SessionManager sessionManager;
-
-    @Autowired
-    private CMDMessageService cmdMessageService;
-
     @Override
     public Message<String> process(ClientSession clientSession, Message<String> msg) throws Exception {
         String data = msg.getData();

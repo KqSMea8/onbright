@@ -76,5 +76,6 @@ public interface TUserDeviceMapper extends BaseMapper<TUserDevice, TUserDeviceEx
 	@Select(" select * from t_user_device " +
 			" where user_id=#{userId} ")
 	List<TUserDevice> getListOfUserDeviceByUserId(@Param("userId") Integer userId);
+ 
 
 }

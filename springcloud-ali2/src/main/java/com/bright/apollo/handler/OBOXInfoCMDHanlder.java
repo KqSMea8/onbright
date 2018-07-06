@@ -12,8 +12,7 @@ public class OBOXInfoCMDHanlder extends BasicHandler{
 
     private Logger log = Logger.getLogger(OBOXInfoCMDHanlder.class);
 
-    @Autowired
-    private OboxService oboxService;
+    
 
     @Override
     public Message<String> process(ClientSession clientSession, Message<String> msg) throws Exception {

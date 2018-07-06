@@ -201,12 +201,13 @@ public class UserController {
 	public ResponseObject addUserObox(@RequestBody(required = true) TUserObox tUserObox) {
 		ResponseObject res = new ResponseObject();
 		try {
-			TUser tuser = userService.getUserByUserId(tUserObox.getId());
+			TUser tuser = userService.getUserByUserId(tUserObox.getUserId());
 			if (tuser == null) {
 				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
 				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
 				return res;
 			}
+			userService.addUserObox(tUserObox);
 			res.setStatus(ResponseEnum.AddSuccess.getStatus());
 			res.setMessage(ResponseEnum.AddSuccess.getMsg());
 			//res.setData(tuser);

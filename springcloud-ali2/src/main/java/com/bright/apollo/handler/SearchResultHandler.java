@@ -1,38 +1,23 @@
 package com.bright.apollo.handler;
 
+import java.util.List;
+
+import org.apache.log4j.Logger;
+
 import com.bright.apollo.bean.Message;
 import com.bright.apollo.common.entity.TDeviceChannel;
 import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
+import com.bright.apollo.common.entity.TUserDevice;
 import com.bright.apollo.common.entity.TUserObox;
-import com.bright.apollo.service.*;
 import com.bright.apollo.session.ClientSession;
 import com.bright.apollo.tool.ByteHelper;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
-
+ 
 public class SearchResultHandler extends BasicHandler {
 
     private Logger log = Logger.getLogger(ControlPWCMDHandler.class);
 
-    @Autowired
-    private OboxService oboxService;
-
-    @Autowired
-    private OboxDeviceConfigService oboxDeviceConfigService;
-
-    @Autowired
-    private UserDeviceService userDeviceService;
-
-    @Autowired
-    private DeviceChannelService deviceChannelService;
-
-    @Autowired
-    private UserOboxService userOboxService;
-
-    @Override
+	@Override
     public Message<String> process(ClientSession clientSession, Message<String> msg) throws Exception {
         byte [] bodyBytes = ByteHelper.hexStringToBytes(msg.getData());
 
@@ -163,14 +148,13 @@ public class SearchResultHandler extends BasicHandler {
 //
 //                List<TUserObox> tUserOboxs = OboxBusiness.queryUserOboxsByOboxId(obox.getOboxId());
                 List<TUserObox> tUserOboxs = userOboxService.getUserOboxBySerialId(obox.getOboxSerialId());
-                TUserObox userObox = null;
-                if (!tUserOboxs.isEmpty()) {
+                 if (!tUserOboxs.isEmpty()) {
                     for (TUserObox tUserObox : tUserOboxs) {
-                        userObox = new TUserObox();
-                        userObox.setOboxSerialId(obox.getOboxSerialId());
-                        userObox.setUserId(tUserObox.getUserId());
-                        userOboxService.addUserObox(userObox);
-//                        DeviceBusiness.addUserDevice(tUserObox.getUserId(), returnIndex);
+                    	TUserDevice userDevice=new TUserDevice();
+                    	userDevice.setUserId(tUserObox.getUserId());
+                    	userDevice.setDeviceSerialId(device_serial_id);
+                    	userDeviceService.addUserDevice(userDevice);
+                    	//DeviceBusiness.addUserDevice(tUserObox.getUserId(), returnIndex);
                     }
                 }
 //

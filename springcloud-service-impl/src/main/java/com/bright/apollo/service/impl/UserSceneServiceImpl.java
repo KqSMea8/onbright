@@ -6,8 +6,12 @@ import com.bright.apollo.service.UserSceneService;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+@Service
 public class UserSceneServiceImpl  implements UserSceneService {
-
+	@Autowired
     private TUserSceneMapper userSceneMapper;
     @Override
     public void deleteUserSceneBySceneNum(int sceneNumber) {

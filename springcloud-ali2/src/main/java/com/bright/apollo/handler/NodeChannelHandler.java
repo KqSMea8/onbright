@@ -1,23 +1,16 @@
 package com.bright.apollo.handler;
 
+import org.apache.log4j.Logger;
+
 import com.bright.apollo.bean.Message;
 import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
-import com.bright.apollo.service.OboxDeviceConfigService;
-import com.bright.apollo.service.OboxService;
 import com.bright.apollo.session.ClientSession;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class NodeChannelHandler extends BasicHandler  {
 
     private Logger log = Logger.getLogger(NodeChannelHandler.class);
-
-    @Autowired
-    private OboxService oboxService;
-
-    @Autowired
-    private OboxDeviceConfigService oboxDeviceConfigService;
+ 
 
     @Override
     public Message<String> process(ClientSession clientSession, Message<String> msg) throws Exception {

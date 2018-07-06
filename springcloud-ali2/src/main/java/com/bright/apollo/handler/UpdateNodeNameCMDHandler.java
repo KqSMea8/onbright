@@ -3,25 +3,10 @@ package com.bright.apollo.handler;
 import com.bright.apollo.bean.Message;
 import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
-import com.bright.apollo.service.OboxDeviceConfigService;
-import com.bright.apollo.service.OboxService;
-import com.bright.apollo.service.UserDeviceService;
 import com.bright.apollo.session.ClientSession;
 import com.bright.apollo.tool.ByteHelper;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
 
 public class UpdateNodeNameCMDHandler extends BasicHandler{
-
-    @Autowired
-    private OboxService oboxService;
-
-    @Autowired
-    private OboxDeviceConfigService oboxDeviceConfigService;
-
-    @Autowired
-    private UserDeviceService userDeviceService;
 
     @Override
     public Message<String> process(ClientSession clientSession, Message<String> msg) throws Exception {

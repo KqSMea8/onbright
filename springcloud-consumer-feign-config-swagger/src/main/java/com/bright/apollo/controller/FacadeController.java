@@ -909,7 +909,7 @@ public class FacadeController {
 
 	}
 
-	/*@SuppressWarnings("rawtypes")
+	@SuppressWarnings("rawtypes")
 	@ApiOperation(value = "add server scene ", httpMethod = "POST", produces = "application/json")
 	@ApiResponse(code = 200, message = "SelectSuccess", response = ResponseObject.class)
 	@RequestMapping(value = "/addServerScene", method = RequestMethod.POST)
@@ -1049,7 +1049,7 @@ public class FacadeController {
 		}
 		return res;
 
-	}*/
+	}
 
 	@SuppressWarnings("rawtypes")
 	@ApiOperation(value = "add obox ", httpMethod = "POST", produces = "application/json;charset=UTF-8")
@@ -1349,13 +1349,15 @@ public class FacadeController {
 		ResponseObject<List<DevcieCount>> res = new ResponseObject<List<DevcieCount>>();
 		try {
 			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			if (principal.getUsername() != null && !principal.getUsername().equals("")) {
+			if (StringUtils.isEmpty(principal.getUsername())) {
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
 			}
 			List<DevcieCount> tCounts = new ArrayList<DevcieCount>();
 			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
 			if (resUser.getStatus() == ResponseEnum.SelectSuccess.getStatus() && resUser.getData() != null) {
+				logger.info("====userId:"+resUser.getData().getId()+"===userName:"+principal.getUsername());
 				ResponseObject<List<TOboxDeviceConfig>> resDevices = feignDeviceClient
 						.getDeviceTypeByUser(resUser.getData().getId());
 				if (resDevices != null && resDevices.getStatus() == ResponseEnum.SelectSuccess.getStatus()

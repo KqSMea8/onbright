@@ -9,10 +9,20 @@ import com.bright.apollo.enums.AliRegionEnum;
 import com.bright.apollo.enums.CMDEnum;
 import com.bright.apollo.enums.Command;
 import com.bright.apollo.service.AliDeviceService;
+import com.bright.apollo.service.CMDMessageService;
+import com.bright.apollo.service.DeviceChannelService;
+import com.bright.apollo.service.OboxDeviceConfigService;
 import com.bright.apollo.service.OboxService;
+import com.bright.apollo.service.SceneActionService;
+import com.bright.apollo.service.SceneConditionService;
+import com.bright.apollo.service.SceneService;
 import com.bright.apollo.service.TopicServer;
+import com.bright.apollo.service.UserDeviceService;
+import com.bright.apollo.service.UserOboxService;
+import com.bright.apollo.service.UserSceneService;
 import com.bright.apollo.session.ClientSession;
 import com.bright.apollo.session.PushThreadPool;
+import com.bright.apollo.session.SessionManager;
 import com.bright.apollo.tool.ByteHelper;
 import com.bright.apollo.tool.EncDecHelper;
 import com.zz.common.util.StringUtils;
@@ -44,7 +54,30 @@ public class CMDHandlerManager {
 
     @Autowired
     private PushThreadPool pushThreadPool;
+    @Autowired
+    private SceneService sceneService;
 
+    @Autowired
+    private SceneConditionService sceneConditionService;
+
+    @Autowired
+    private UserSceneService userSceneService;
+
+    @Autowired
+    private SceneActionService sceneActionService;
+
+    @Autowired
+    private OboxDeviceConfigService oboxDeviceConfigService;
+    @Autowired
+    private UserDeviceService userDeviceService;
+    @Autowired
+    private DeviceChannelService deviceChannelService;
+    @Autowired
+    private UserOboxService userOboxService;
+    @Autowired
+    private CMDMessageService cmdMessageService;
+    @Autowired
+    private SessionManager sessionManager;
     private static Map<String, BasicHandler> cmdHandlers = new HashMap<String, BasicHandler>();
 
     static {
@@ -137,7 +170,7 @@ public class CMDHandlerManager {
 
 //        cmdHandlers.put(Command.ERROR.getValue(), new ErrorHandler());
 
-        cmdHandlers.put(Command.FILTER.getValue(), new FilterCMDHandler());
+ //       cmdHandlers.put(Command.FILTER.getValue(), new FilterCMDHandler());
 
 //        cmdHandlers.put(Command.IRUP.getValue(), new IRUploadHandler());//红外上传学习码
 
@@ -149,7 +182,7 @@ public class CMDHandlerManager {
 
     public void processTopic(String ProductKey,String DeviceName,String inMsg){
         try {
-            logger.info("======topic msg=====:key:"+ProductKey+" device:"+DeviceName+" payload"+inMsg);
+            logger.info("======topic msg=====:key:"+ProductKey+" device:"+DeviceName+" payload:"+inMsg);
             if (inMsg.length() != 136) {
                 return;
             }
@@ -354,9 +387,22 @@ public class CMDHandlerManager {
                     }
                 }
 
-
-
+                //inject the obj to the handler
+                if(handler.getOboxService()==null){
+                	handler.setDeviceChannelService(deviceChannelService);
+                	handler.setOboxDeviceConfigService(oboxDeviceConfigService);
+                	handler.setOboxService(oboxService);
+                	handler.setSceneActionService(sceneActionService);
+                	handler.setSceneConditionService(sceneConditionService);
+                	handler.setSceneService(sceneService);
+                	handler.setUserDeviceService(userDeviceService);
+                	handler.setUserOboxService(userOboxService);
+                	handler.setUserSceneService(userSceneService);
+                	handler.setCmdMessageService(cmdMessageService);
+                	handler.setSessionManager(sessionManager);
+                }
                 handler.process(client, msg);
+                
 //				Message<String> replyMsg =
 //				if (replyMsg != null) {
 //

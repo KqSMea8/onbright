@@ -9,12 +9,7 @@ import com.bright.apollo.session.ClientSession;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class VersionCMDHandler extends BasicHandler {
-
-    @Autowired
-    private OboxService oboxService;
-
-    @Autowired
-    private OboxDeviceConfigService oboxDeviceConfigService;
+ 
 
     @Override
     public Message<String> process(ClientSession clientSession, Message<String> msg) throws Exception {
