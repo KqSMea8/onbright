@@ -72,9 +72,9 @@ public class SearchResultHandler extends BasicHandler {
 //                        }
                         userDeviceService.deleteUserDevice(deviceConfig.getOboxSerialId());
 //                        DeviceBusiness.deleteUserDeviceByDeviceId(deviceConfig.getOboxId());
-                        deviceChannelService.deleteDeviceChannel(deviceConfig.getOboxId());
+                        deviceChannelService.deleteDeviceChannel(deviceConfig.getId());
 //                        DeviceBusiness.delDeviceChannel(deviceConfig.getOboxId());
-                        oboxDeviceConfigService.deleteTOboxDeviceConfig(deviceConfig.getOboxId());
+                        oboxDeviceConfigService.deleteTOboxDeviceConfig(deviceConfig.getId());
 //                        DeviceBusiness.deleteDeviceById(deviceConfig.getOboxId());
                     }
                 }
@@ -122,7 +122,7 @@ public class SearchResultHandler extends BasicHandler {
                 deviceConfig.setDeviceType(device_type);
                 deviceConfig.setDeviceChildType(device_child_type);
                 deviceConfig.setDeviceState("aaaaaadddddd00");
-
+                deviceConfig.setOboxId(obox.getOboxId());
                 if (deviceConfig.getDeviceType().equals("0b") ) {
                     if (deviceConfig.getDeviceChildType().equals("03")) {
                         //rader
@@ -143,6 +143,8 @@ public class SearchResultHandler extends BasicHandler {
                 }
 
                 deviceConfig.setOboxSerialId(obox_serial_id);
+                deviceConfig.setDeviceVersion("0000000000000000");
+                deviceConfig.setGroupAddr("00");
 //                Integer returnIndex = OboxBusiness.addOboxConfig(deviceConfig);
                 Integer returnIndex =  oboxDeviceConfigService.addTOboxDeviceConfig(deviceConfig);
 //

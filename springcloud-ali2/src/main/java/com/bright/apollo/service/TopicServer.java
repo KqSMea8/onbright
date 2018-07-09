@@ -90,7 +90,7 @@ public class TopicServer {
         }
     }
 
-    private void sendRPCRequest(RRpcRequest request,String region,RRpcResponse response){
+    private RRpcResponse sendRPCRequest(RRpcRequest request,String region,RRpcResponse response){
         logger.info(" ====== sendRPCRequest start ====== ");
         try {
             if (region.equals(AliRegionEnum.AMERICA)) {
@@ -104,6 +104,7 @@ public class TopicServer {
             e.printStackTrace();
         }finally {
             logger.info(" ====== sendRPCRequest end ====== ");
+            return response;
         }
     }
 
@@ -237,7 +238,7 @@ public class TopicServer {
         rrpcRequest.setRequestBase64Byte(Base64.encodeBase64String(mString.getBytes())); //发给设备的数据，要求二进制数据做一次Base64编码
         rrpcRequest.setTimeout(3500); //超时时间，单位毫秒，如果超过这个时间设备没反应则返回"TIMEOUT"
         RRpcResponse rrpcResponse = null;
-        sendRPCRequest(rrpcRequest,eAliRegionEnum,rrpcResponse);
+        rrpcResponse=sendRPCRequest(rrpcRequest,eAliRegionEnum,rrpcResponse);
         /*if (eAliRegionEnum.equals(AliRegionEnum.AMERICA)) {
             rrpcResponse = iotClient.getClient(AliRegionEnum.AMERICA.name()).getAcsResponse(rrpcRequest);
         }else {
@@ -247,8 +248,15 @@ public class TopicServer {
         if (rrpcResponse.getSuccess()) {
             if (rrpcResponse.getRrpcCode().equals("SUCCESS")) {
                 byte[] contentBytes = Base64.decodeBase64(rrpcResponse.getPayloadBase64Byte());
-                String aString = new String(contentBytes, "utf-8");
-                cmdHandlerManager.processTopic(productKey,deviceSerial,aString);
+                final String aString = new String(contentBytes, "utf-8");
+                final String prk=productKey;
+                final String dname=deviceName;
+                new Thread(new Runnable() {
+					@Override
+					public void run() {
+						cmdHandlerManager.processTopic(prk,dname,aString);
+					}
+				}).start();
                 return new OboxResp(OboxResp.Type.success, aString.substring(22));
             }else if (rrpcResponse.getRrpcCode().equals("UNKNOW")){
                 return new OboxResp(OboxResp.Type.socket_write_error);

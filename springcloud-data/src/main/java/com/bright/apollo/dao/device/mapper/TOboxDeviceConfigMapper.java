@@ -2,14 +2,23 @@ package com.bright.apollo.dao.device.mapper;
 
 import java.util.List;
 
-import com.bright.apollo.dao.device.sqlProvider.OboxDeviceConfigSqlProvider;
-import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectProvider;
+import org.apache.ibatis.annotations.Update;
+import org.springframework.stereotype.Component;
 
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.common.entity.TOboxDeviceConfigExample;
+import com.bright.apollo.dao.device.sqlProvider.OboxDeviceConfigSqlProvider;
 import com.bright.apollo.dao.mapper.base.BaseMapper;
-import org.springframework.stereotype.Component;
-
+ 
 @Mapper
 @Component
 public interface TOboxDeviceConfigMapper extends BaseMapper<TOboxDeviceConfig, TOboxDeviceConfigExample, Integer> {
@@ -54,7 +63,20 @@ public interface TOboxDeviceConfigMapper extends BaseMapper<TOboxDeviceConfig, T
 	void updateTOboxDeviceConfig(TOboxDeviceConfig tOboxDeviceConfig);
 
 
-	@Select("select id,device_serial_id,device_rf_addr,group_addr from t_obox_device_config where device_serial_id = #{deviceSerialId}  ")
+	@Select("select * from t_obox_device_config where device_serial_id = #{deviceSerialId}  ")
+	@Results(value = {
+			@Result(property = "oboxId",column = "obox_id"),
+			@Result(property = "deviceId",column = "device_id"),
+			@Result(property = "lastOpTime",column = "last_op_time"),
+			@Result(property = "deviceState",column = "device_state"),
+			@Result(property = "deviceType",column = "device_type"),
+			@Result(property = "deviceChildType",column = "device_child_type"),
+			@Result(property = "deviceVersion",column = "device_version"),
+			@Result(property = "deviceSerialId",column = "device_serial_id"),
+			@Result(property = "deviceRfAddr",column = "device_rf_addr"),
+			@Result(property = "groupAddr",column = "group_addr"),
+			@Result(property = "oboxSerialId",column = " obox_serial_id")
+	})
 	TOboxDeviceConfig queryDeviceConfigBySerialID(@Param("deviceSerialId") String deviceSerialId);
 
 	@Delete("delete from t_obox_device_config where id = #{id}")
@@ -66,13 +88,12 @@ public interface TOboxDeviceConfigMapper extends BaseMapper<TOboxDeviceConfig, T
 			"device_type,\n" +
 			"device_child_type,\n" +
 			"device_version,\n" +
-			"last_op_time,\n" +
 			"device_serial_id,\n" +
 			"device_rf_addr,\n" +
 			"group_addr,\n" +
 			"obox_serial_id,\n" +
 			"online) values(#{oboxId},#{deviceId},#{deviceState},#{deviceType},#{deviceChildType}" +
-			",#{deviceVersion},#{lastOpTime},#{deviceSerialId},#{deviceRfAddr},#{groupAddr},#{oboxSerialId},#{online})")
+			",#{deviceVersion},#{deviceSerialId},#{deviceRfAddr},#{groupAddr},#{oboxSerialId},#{online})")
 	@Options(useGeneratedKeys=true, keyProperty="id", keyColumn="id")
 	int addTOboxDeviceConfig(TOboxDeviceConfig tOboxDeviceConfig);
 

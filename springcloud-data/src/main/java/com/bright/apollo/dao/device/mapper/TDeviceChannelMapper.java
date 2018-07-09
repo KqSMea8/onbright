@@ -19,8 +19,7 @@ public interface TDeviceChannelMapper extends BaseMapper<TDeviceChannel, TDevice
 
     @Select("insert into t_device_channel(device_id,\n" +
             "obox_id,\n" +
-            "last_op_time,\n" +
-            "signal_intensity) values(#{deviceId},#{oboxId},#{lastOpTime},#{signalIntensity})")
+            "signal_intensity) values(#{deviceId},#{oboxId},#{signalIntensity})")
     void addDeviceChannel(TDeviceChannel deviceChannel);
 
     @Delete("delete from t_device_channel where obox_id = #{oboxId}")
