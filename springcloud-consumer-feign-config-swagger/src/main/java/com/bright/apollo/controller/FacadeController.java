@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.HandlerMapping;
+
 import com.bright.apollo.common.dto.OboxResp;
 import com.bright.apollo.common.dto.OboxResp.Type;
 import com.bright.apollo.common.entity.TNvr;
@@ -159,7 +160,7 @@ public class FacadeController {
 			}
 			// may will add respone return status and serialId
 			ResponseObject<OboxResp> resSet = feignAliClient.setDeviceStatus(tOboxDeviceConfig.getOboxSerialId(),
-					status);
+					status,tOboxDeviceConfig.getDeviceRfAddr());
 			if (resSet == null || resSet.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
 				return resSet;
 			}
@@ -1083,7 +1084,10 @@ public class FacadeController {
 				TUserObox tUserObox = new TUserObox();
 				tUserObox.setUserId(resUser.getData().getId());
 				tUserObox.setOboxSerialId(oboxRes.getData().getOboxSerialId());
-				ResponseObject resobj = feignUserClient.addUserObox(tUserObox);
+				ResponseObject<TUserObox> userOboxRes=feignUserClient.getUserObox(resUser.getData().getId(),oboxRes.getData().getOboxSerialId());
+				ResponseObject resobj =null;
+				if(userOboxRes!=null&&userOboxRes.getData()==null)
+					resobj=feignUserClient.addUserObox(tUserObox);
 				TObox tobox = oboxRes.getData();
 				if (oboxDTO.getOboxName() != null) {
 					tobox.setOboxName(oboxDTO.getOboxName());
@@ -1164,16 +1168,20 @@ public class FacadeController {
 				List<TOboxDeviceConfig> oboxDeviceConfigs = oboxDTO.getDeviceConfigs();
 				if (oboxDeviceConfigs != null) {
 					for (TOboxDeviceConfig oboxDeviceConfig : oboxDeviceConfigs) {
-						oboxDeviceConfig.setOboxId(tobox.getOboxId());
+						oboxDeviceConfig.setOboxId(tobox.getId());
 						oboxDeviceConfig.setOboxSerialId(tobox.getOboxSerialId());
 						ResponseObject<TOboxDeviceConfig> resDevice = feignDeviceClient
 								.addDevice(oboxDeviceConfig.getDeviceSerialId(), oboxDeviceConfig);
-						if (resDevice != null || resDevice.getStatus() == ResponseEnum.SelectSuccess.getStatus()
-								|| resDevice.getData() != null) {
-							TUserDevice tUserDevice = new TUserDevice();
-							tUserDevice.setDeviceSerialId(oboxDeviceConfig.getDeviceSerialId());
-							tUserDevice.setUserId(resUser.getData().getId());
-							feignUserClient.addUserDevice(tUserDevice);
+						if (resDevice != null && resDevice.getStatus() == ResponseEnum.AddSuccess.getStatus()
+								&& resDevice.getData() != null) {
+							ResponseObject<TUserDevice> userDeviceRes =feignUserClient.getUserDevcieByUserIdAndSerialId(resUser.getData().getId(),oboxDeviceConfig.getDeviceSerialId());
+							if(userDeviceRes==null||userDeviceRes.getData()==null){
+								TUserDevice tUserDevice = new TUserDevice();
+								tUserDevice.setDeviceSerialId(oboxDeviceConfig.getDeviceSerialId());
+								tUserDevice.setUserId(resUser.getData().getId());
+								feignUserClient.addUserDevice(tUserDevice);
+							}
+							
 						}
 						// int ret =
 						// OboxBusiness.addOboxConfig(oboxDeviceConfig);

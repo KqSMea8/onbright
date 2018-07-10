@@ -49,5 +49,21 @@ public interface TUserOboxMapper extends BaseMapper<TUserObox, TUserOboxExample,
 	@Delete("delete from t_user_obox where obox_serial_id = #{oboxSerialId}")
 	void delectUserOboxByOboxSerialId(@Param("oboxSerialId") String oboxSerialId);
 
+	/**  
+	 * @param userId
+	 * @param oboxSerialId
+	 * @return  
+	 * @Description:  
+	 */
+	@Select("select * from t_user_obox where obox_serial_id = #{oboxSerialId} and user_id=#{userId}")
+	@Results(value = {
+			@Result(property = "id",column = "id"),
+ 			@Result(property = "lastOpTime",column = "last_op_time"),
+ 			@Result(property = "userId",column = "user_id"),
+   			@Result(property = "oboxSerialId",column = " obox_serial_id"),
+   			@Result(property = "privilege",column = " privilege")
+	})
+	TUserObox getUserOboxByUserIdAndOboxSerialId(@Param("userId")Integer userId, @Param("oboxSerialId")String oboxSerialId);
+
 	 
 }

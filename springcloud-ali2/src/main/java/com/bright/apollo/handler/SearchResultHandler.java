@@ -152,10 +152,14 @@ public class SearchResultHandler extends BasicHandler {
                 List<TUserObox> tUserOboxs = userOboxService.getUserOboxBySerialId(obox.getOboxSerialId());
                  if (!tUserOboxs.isEmpty()) {
                     for (TUserObox tUserObox : tUserOboxs) {
-                    	TUserDevice userDevice=new TUserDevice();
-                    	userDevice.setUserId(tUserObox.getUserId());
-                    	userDevice.setDeviceSerialId(device_serial_id);
-                    	userDeviceService.addUserDevice(userDevice);
+                    	TUserDevice userDevice=userDeviceService.getUserDeviceByUserIdAndSerialId(tUserObox.getUserId(),device_serial_id);
+                    	//TUserDevice userDevice=new TUserDevice();
+                    	if(userDevice==null){
+                    		userDevice=new TUserDevice();
+                    		userDevice.setUserId(tUserObox.getUserId());
+                        	userDevice.setDeviceSerialId(device_serial_id);
+                        	userDeviceService.addUserDevice(userDevice);
+                    	}
                     	//DeviceBusiness.addUserDevice(tUserObox.getUserId(), returnIndex);
                     }
                 }

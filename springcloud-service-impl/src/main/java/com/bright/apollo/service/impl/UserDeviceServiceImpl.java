@@ -25,4 +25,12 @@ public class UserDeviceServiceImpl implements UserDeviceService {
 		   
 		return userDeviceMapper.addUserDevice(tUserDevice);
 	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.UserDeviceService#getUserDeviceByUserIdAndSerialId(java.lang.Integer, java.lang.String)  
+	 */
+	@Override
+	public TUserDevice getUserDeviceByUserIdAndSerialId(Integer userId, String device_serial_id) {
+		return userDeviceMapper.getUserDeviceByUserIdAndSerialId(userId,device_serial_id);
+	}
 }

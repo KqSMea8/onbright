@@ -11,4 +11,12 @@ public interface UserDeviceService {
  * @Description:  
  */
 int addUserDevice(TUserDevice tUserDevice);
+
+/**  
+ * @param userId
+ * @param device_serial_id
+ * @return  
+ * @Description:  
+ */
+TUserDevice getUserDeviceByUserIdAndSerialId(Integer userId, String device_serial_id);
 }

@@ -39,7 +39,7 @@ public interface TOboxMapper extends BaseMapper<TObox, TOboxExample, Integer> {
 	 */
 	int queryCountOboxByUserId(Integer userId);
 	@Results(value = {
-            @Result(column="id"   ,property="oboxId"),
+            @Result(column="id"   ,property="id"),
             @Result(column="obox_name" ,  property="oboxName"),
             @Result(column="obox_pwd" ,  property="oboxPwd"),
             @Result(column="obox_version" ,  property="oboxVersion"),

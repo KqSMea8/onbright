@@ -1,6 +1,11 @@
-package com.bright.apollo.filter;
+/*package com.bright.apollo.filter;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Component;
 
@@ -8,13 +13,13 @@ import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
  
  
-/**
+*//**
  * @Title:
  * @Description:
  * @Author:JettyLiu
  * @Since:2018年7月2日
  * @Version:1.1.0
- */
+ *//*
 @Component
 public class PostRequestLogFilter extends ZuulFilter {
  
@@ -36,15 +41,16 @@ public class PostRequestLogFilter extends ZuulFilter {
 	@Override
 	public Object run() {
 		RequestContext ctx = RequestContext.getCurrentContext();
-		HttpServletRequest request = ctx.getRequest();
-		System.out.println("=============POST=============");
- 		System.out.println("=============RECV REQUEST PARAMS START=============");
-		System.out.println("URL="+request.getRequestURL());
-		for (String name : request.getParameterMap().keySet()) {
-			System.out.println("name=" + name + ";value=" + request.getParameter(name)); 
+		HttpServletResponse response = ctx.getResponse();
+		try {
+			PrintWriter writer = response.getWriter();
+			 
+			OutputStream outputStream = response.getOutputStream();
+			 
+		} catch (IOException e) {
+			System.out.println("errorMsg:"+e.getMessage());
 		}
-		System.out.println("============RECV REQUEST PARAMS END=============");
-		System.out.println("===Authorization:"+request.getHeader("Authorization"));
-   		return null;
+		System.out.println("=============POST=============");
+    	return null;
 	}
-}
+}*/

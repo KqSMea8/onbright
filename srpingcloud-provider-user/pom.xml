@@ -40,17 +40,17 @@
 			<groupId>com.bright.apollo</groupId>
 			<artifactId>springcloud-data</artifactId>
 			<version>${data-version}</version>
+			<!-- <exclusions>
+				<exclusion>
+					<groupId>com.bright.apollo</groupId>
+					<artifactId>springcloud-common</artifactId>
+				</exclusion>
+			</exclusions> -->
 		</dependency>
 		<dependency>
 			<groupId>com.bright.apollo</groupId>
 			<artifactId>springcloud-common</artifactId>
 			<version>${common-version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>com.fasterxml.jackson.core</groupId>
-					<artifactId>jackson-annotations</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.bright.apollo</groupId>
@@ -77,7 +77,7 @@
 			<groupId>com.bright.apollo</groupId>
 			<artifactId>springcloud-service-impl</artifactId>
 			<version>${service-impl-version}</version>
-			<!--<exclusions>
+			<!-- <exclusions>
 				<exclusion>
 					<groupId>com.bright.apollo</groupId>
 					<artifactId>springcloud-common</artifactId>
@@ -86,7 +86,7 @@
 					<groupId>com.bright.apollo</groupId>
 					<artifactId>springcloud-data</artifactId>
 				</exclusion>
-			</exclusions>-->
+			</exclusions> -->
 		</dependency>
 <!-- 		<dependency>
 			<groupId>org.springframework.security.oauth</groupId>

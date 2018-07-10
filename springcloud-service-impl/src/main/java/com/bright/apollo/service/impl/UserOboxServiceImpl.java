@@ -27,4 +27,13 @@ public class UserOboxServiceImpl implements UserOboxService {
     public void delectUserOboxByOboxSerialId(String oboxSerialId) {
 
     }
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.UserOboxService#getUserOboxByUserIdAndOboxSerialId(java.lang.Integer, java.lang.String)  
+	 */
+	@Override
+	public TUserObox getUserOboxByUserIdAndOboxSerialId(Integer userId, String oboxSerialId) {
+		 
+		return userOboxMapper.getUserOboxByUserIdAndOboxSerialId(userId,oboxSerialId);
+	}
 }

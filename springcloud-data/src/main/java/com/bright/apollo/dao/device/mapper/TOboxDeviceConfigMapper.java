@@ -135,7 +135,7 @@ public interface TOboxDeviceConfigMapper extends BaseMapper<TOboxDeviceConfig, T
 			@Result(property = "deviceSerialId",column = "device_serial_id"),
 			@Result(property = "deviceRfAddr",column = "device_rf_addr"),
 			@Result(property = "groupAddr",column = "group_addr"),
-			@Result(property = "oboxSerialId",column = " obox_serial_id")
+			@Result(property = "oboxSerialId",column = "obox_serial_id")
 	})
 	TOboxDeviceConfig getTOboxDeviceConfigByDeviceSerialId(@Param("deviceSerialId") String deviceSerialId);
 
