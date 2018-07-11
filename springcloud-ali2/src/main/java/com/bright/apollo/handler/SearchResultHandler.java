@@ -163,12 +163,17 @@ public class SearchResultHandler extends BasicHandler {
                     	//DeviceBusiness.addUserDevice(tUserObox.getUserId(), returnIndex);
                     }
                 }
-//
-                TDeviceChannel tDeviceChannel = new TDeviceChannel();
-                tDeviceChannel.setDeviceId(returnIndex);
-                tDeviceChannel.setOboxId(obox.getOboxId());
-                tDeviceChannel.setSignalIntensity(15);
-                deviceChannelService.addDeviceChannel(tDeviceChannel);
+//	
+                TDeviceChannel tDeviceChannel =deviceChannelService.getDeviceChannelById(returnIndex,obox.getOboxId());
+                if(tDeviceChannel==null){
+                	tDeviceChannel.setDeviceId(returnIndex);
+                	tDeviceChannel.setOboxId(obox.getOboxId());
+                	tDeviceChannel.setSignalIntensity(15);
+                	deviceChannelService.addDeviceChannel(tDeviceChannel);
+                }else{
+                	tDeviceChannel.setSignalIntensity(15);
+                	deviceChannelService.updateDeviceChannel(tDeviceChannel);
+                }
 //                DeviceBusiness.addDeviceChannel(tDeviceChannel);
 
             }

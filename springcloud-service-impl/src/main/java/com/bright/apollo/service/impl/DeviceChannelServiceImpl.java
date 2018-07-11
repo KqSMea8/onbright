@@ -26,4 +26,22 @@ public class DeviceChannelServiceImpl  implements DeviceChannelService {
     public void delectDeviceChannelByOboxId(int oboxId) {
 
     }
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.DeviceChannelService#getDeviceChannelById(java.lang.Integer, java.lang.Integer)  
+	 */
+	@Override
+	public TDeviceChannel getDeviceChannelById(Integer deviceId, Integer oboxId) {
+		   
+		return deviceChannelMapper.getDeviceChannelById(deviceId,oboxId);
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.DeviceChannelService#updateDeviceChannel(com.bright.apollo.common.entity.TDeviceChannel)  
+	 */
+	@Override
+	public void updateDeviceChannel(TDeviceChannel tDeviceChannel) {
+		deviceChannelMapper.updateDeviceChannel(tDeviceChannel);
+		
+	}
 }

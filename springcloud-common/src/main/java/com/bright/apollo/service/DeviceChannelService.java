@@ -9,5 +9,19 @@ public interface DeviceChannelService {
 
     void delectDeviceChannelByOboxId(int oboxId);
 
+	/**  
+	 * @param returnIndex
+	 * @param oboxId
+	 * @return  
+	 * @Description:  
+	 */
+	TDeviceChannel getDeviceChannelById(Integer deviceId, Integer oboxId);
+
+	/**  
+	 * @param tDeviceChannel  
+	 * @Description:  
+	 */
+	void updateDeviceChannel(TDeviceChannel tDeviceChannel);
+
 
 }

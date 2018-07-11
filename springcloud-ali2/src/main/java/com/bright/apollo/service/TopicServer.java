@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.iot.model.v20170420.PubRequest;
 import com.aliyuncs.iot.model.v20170420.PubResponse;
@@ -75,16 +76,24 @@ public class TopicServer {
     private void sendRequest(PubRequest request,String region,PubResponse response){
         logger.info(" ====== sendRequest start ====== ");
         try {
+        	DefaultAcsClient client =null;
             if (region.equals(AliRegionEnum.AMERICA)) {
-                response =  iotClient.getClient(AliRegionEnum.AMERICA.getValue()).getAcsResponse(request);
+                client = iotClient.getClient(AliRegionEnum.AMERICA.getValue());
             }else {
-                response =  iotClient.getClient(AliRegionEnum.SOURTHCHINA.getValue()).getAcsResponse(request);
+                client = iotClient.getClient(AliRegionEnum.SOURTHCHINA.getValue());
+            }
+            
+            if(client!=null){
+            	response = client.getAcsResponse(request);
+            }else{
+            	logger.error("===the DefaultAcsClient is null");
             }
         } catch (ClientException e) {
             logger.info("====== sendRequest exception ======"+e.getMessage());
         }finally {
             logger.info(" rep success topic: "+ response.getSuccess());
             logger.info(" ====== sendRequest end ====== ");
+            logger.error("======rep fail topic:" + response.getErrorMessage());
 //            System.out.println("rep success topic:" + response.getSuccess());
 //            System.out.println("rep fail topic:" + response.getErrorMessage());
         }
@@ -110,8 +119,8 @@ public class TopicServer {
 
     public void pubTopic(CMDEnum cmd, byte [] data, String deviceSerial) throws Exception{
         logger.info(" ====== pubTopic start ====== ");
-//        String mString = com.bright.apollo.tool.StringUtils.bytes2String(cmd,data,packageLength,head);
-        String mString = "";
+        String mString = com.bright.apollo.tool.StringUtils.bytes2String(cmd,data,packageLength,head);
+      //  String mString = "";
         PubRequest request = new PubRequest();
         String productKey = AliDevCache.getProductKey(deviceSerial);
         String deviceName = AliDevCache.getDeviceName(deviceSerial);
@@ -126,12 +135,7 @@ public class TopicServer {
         request.setQos(0); //QoS0 设备在线时发送 ，QoS1 设备不在线时，能在IOT HUB 上保存7天，上线后发送
         PubResponse response = null;
         sendRequest(request,region,response);
-        /*if (region.equals(AliRegionEnum.AMERICA)) {
-            response =  iotClient.getClient(AliRegionEnum.AMERICA.name()).getAcsResponse(request);
-        }else {
-            response =  iotClient.getClient(AliRegionEnum.SOURTHCHINA.name()).getAcsResponse(request);
-        }*/
-        logger.info(" rep success topic: "+ response.getSuccess());
+ 
         logger.info(" ====== pubTopic end ====== ");
     }
 
@@ -173,7 +177,8 @@ public class TopicServer {
 
 
     }
-
+    
+    
     public JSONObject requestDev(JSONObject object,String deviceSerial) throws Exception{
         logger.info(" ====== requestDev start ====== ");
         RRpcRequest rrpcRequest = new RRpcRequest();

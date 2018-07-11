@@ -130,7 +130,7 @@ public interface TOboxMapper extends BaseMapper<TObox, TOboxExample, Integer> {
 				"obox_version,\n" +
 				"obox_status,\n" +
 				"obox_ip) values(#{oboxName},#{oboxSerialId},#{oboxVersion},#{oboxStatus},#{oboxIp})")
-	@Options(useGeneratedKeys=true, keyProperty="oboxId", keyColumn="id")
+	@Options(useGeneratedKeys=true, keyProperty="id", keyColumn="id")
 	int addObox(TObox obox);
 
 }
