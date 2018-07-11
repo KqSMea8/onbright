@@ -1,38 +1,23 @@
 package com.bright.apollo.handler;
 
+import java.util.List;
+
+import org.apache.log4j.Logger;
+
 import com.bright.apollo.bean.Message;
 import com.bright.apollo.common.entity.TDeviceChannel;
 import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
+import com.bright.apollo.common.entity.TUserDevice;
 import com.bright.apollo.common.entity.TUserObox;
-import com.bright.apollo.service.*;
 import com.bright.apollo.session.ClientSession;
 import com.bright.apollo.tool.ByteHelper;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
-
+ 
 public class SearchResultHandler extends BasicHandler {
 
     private Logger log = Logger.getLogger(ControlPWCMDHandler.class);
 
-    @Autowired
-    private OboxService oboxService;
-
-    @Autowired
-    private OboxDeviceConfigService oboxDeviceConfigService;
-
-    @Autowired
-    private UserDeviceService userDeviceService;
-
-    @Autowired
-    private DeviceChannelService deviceChannelService;
-
-    @Autowired
-    private UserOboxService userOboxService;
-
-    @Override
+	@Override
     public Message<String> process(ClientSession clientSession, Message<String> msg) throws Exception {
         byte [] bodyBytes = ByteHelper.hexStringToBytes(msg.getData());
 
@@ -87,9 +72,9 @@ public class SearchResultHandler extends BasicHandler {
 //                        }
                         userDeviceService.deleteUserDevice(deviceConfig.getOboxSerialId());
 //                        DeviceBusiness.deleteUserDeviceByDeviceId(deviceConfig.getOboxId());
-                        deviceChannelService.deleteDeviceChannel(deviceConfig.getOboxId());
+                        deviceChannelService.deleteDeviceChannel(deviceConfig.getId());
 //                        DeviceBusiness.delDeviceChannel(deviceConfig.getOboxId());
-                        oboxDeviceConfigService.deleteTOboxDeviceConfig(deviceConfig.getOboxId());
+                        oboxDeviceConfigService.deleteTOboxDeviceConfig(deviceConfig.getId());
 //                        DeviceBusiness.deleteDeviceById(deviceConfig.getOboxId());
                     }
                 }
@@ -137,7 +122,7 @@ public class SearchResultHandler extends BasicHandler {
                 deviceConfig.setDeviceType(device_type);
                 deviceConfig.setDeviceChildType(device_child_type);
                 deviceConfig.setDeviceState("aaaaaadddddd00");
-
+                deviceConfig.setOboxId(obox.getOboxId());
                 if (deviceConfig.getDeviceType().equals("0b") ) {
                     if (deviceConfig.getDeviceChildType().equals("03")) {
                         //rader
@@ -158,19 +143,24 @@ public class SearchResultHandler extends BasicHandler {
                 }
 
                 deviceConfig.setOboxSerialId(obox_serial_id);
+                deviceConfig.setDeviceVersion("0000000000000000");
+                deviceConfig.setGroupAddr("00");
 //                Integer returnIndex = OboxBusiness.addOboxConfig(deviceConfig);
                 Integer returnIndex =  oboxDeviceConfigService.addTOboxDeviceConfig(deviceConfig);
 //
 //                List<TUserObox> tUserOboxs = OboxBusiness.queryUserOboxsByOboxId(obox.getOboxId());
                 List<TUserObox> tUserOboxs = userOboxService.getUserOboxBySerialId(obox.getOboxSerialId());
-                TUserObox userObox = null;
-                if (!tUserOboxs.isEmpty()) {
+                 if (!tUserOboxs.isEmpty()) {
                     for (TUserObox tUserObox : tUserOboxs) {
-                        userObox = new TUserObox();
-                        userObox.setOboxSerialId(obox.getOboxSerialId());
-                        userObox.setUserId(tUserObox.getUserId());
-                        userOboxService.addUserObox(userObox);
-//                        DeviceBusiness.addUserDevice(tUserObox.getUserId(), returnIndex);
+                    	TUserDevice userDevice=userDeviceService.getUserDeviceByUserIdAndSerialId(tUserObox.getUserId(),device_serial_id);
+                    	//TUserDevice userDevice=new TUserDevice();
+                    	if(userDevice==null){
+                    		userDevice=new TUserDevice();
+                    		userDevice.setUserId(tUserObox.getUserId());
+                        	userDevice.setDeviceSerialId(device_serial_id);
+                        	userDeviceService.addUserDevice(userDevice);
+                    	}
+                    	//DeviceBusiness.addUserDevice(tUserObox.getUserId(), returnIndex);
                     }
                 }
 //

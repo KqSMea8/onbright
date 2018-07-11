@@ -1,29 +1,20 @@
 package com.bright.apollo.handler;
 
+import java.util.List;
+
+import org.apache.log4j.Logger;
+
 import com.bright.apollo.bean.Message;
 import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.common.entity.TScene;
-import com.bright.apollo.common.entity.TSceneCondition;
-import com.bright.apollo.service.*;
 import com.bright.apollo.session.ClientSession;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
 
 public class ReleaseCMDHandler extends BasicHandler {
 
     private Logger log = Logger.getLogger(ReleaseCMDHandler.class);
 
-    @Autowired
-    private OboxService oboxService;
-
-    @Autowired
-    private OboxDeviceConfigService oboxDeviceConfigService;
-
-    @Autowired
-    private SceneService sceneService;
+ 
 
 
     @Override

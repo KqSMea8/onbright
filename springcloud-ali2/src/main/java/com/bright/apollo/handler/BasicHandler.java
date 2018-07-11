@@ -1,49 +1,162 @@
 package com.bright.apollo.handler;
 
+import java.util.List;
+
+import org.springframework.stereotype.Component;
+
 import com.bright.apollo.bean.Message;
 import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.common.entity.TScene;
 import com.bright.apollo.common.entity.TSceneCondition;
+import com.bright.apollo.service.CMDMessageService;
+import com.bright.apollo.service.DeviceChannelService;
+import com.bright.apollo.service.OboxDeviceConfigService;
+import com.bright.apollo.service.OboxService;
 import com.bright.apollo.service.SceneActionService;
 import com.bright.apollo.service.SceneConditionService;
 import com.bright.apollo.service.SceneService;
+import com.bright.apollo.service.UserDeviceService;
+import com.bright.apollo.service.UserOboxService;
 import com.bright.apollo.service.UserSceneService;
 import com.bright.apollo.session.ClientSession;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.bright.apollo.session.SessionManager;
 
-import java.util.List;
-
+@Component
 public abstract class BasicHandler {
-    @Autowired
-    private SceneService sceneService;
+	 
+	protected SceneService sceneService;
 
-    @Autowired
-    private SceneConditionService sceneConditionService;
+	 
+	protected SceneConditionService sceneConditionService;
 
-    @Autowired
-    private UserSceneService userSceneService;
+	 
+	protected UserSceneService userSceneService;
 
-    @Autowired
-    private SceneActionService sceneActionService;
+	 
+	protected SceneActionService sceneActionService;
 
-    public abstract Message<String> process(ClientSession clientSession, Message<String> msg) throws Exception;
+	protected OboxService oboxService;
 
-    protected void deleteSceneNumber(List<TScene> scenes,TObox tObox){
-        for (TScene tScene : scenes) {
-            List<TSceneCondition> tSceneConditions = sceneConditionService.getSceneConditionBySceneNum(tScene.getSceneNumber());
-            if (tSceneConditions != null) {
-                sceneConditionService.deleteSceneConditionBySceneNum(tScene.getSceneNumber());
-            }
-            userSceneService.deleteUserSceneBySceneNum(tScene.getSceneNumber());
-//                                SceneBusiness.deleteUserScene(tScene.getSceneNumber());
-//                                SceneBusiness.deleteSceneActionsBySceneNumber(tScene.getSceneNumber());
-            sceneActionService.deleteSceneActionBySceneNumber(tScene.getSceneNumber());
-//                                SceneBusiness.deleteSceneBySceneNumber(tScene.getSceneNumber());
-            sceneService.deleteSceneActionBySceneNumber(tScene.getSceneNumber());
-//                                SceneBusiness.deleteSceneLocationBySceneNumber(tScene.getSceneNumber());
-        }
-        sceneService.deleteSceneByOboxSerialId(tObox.getOboxSerialId());
-//                            OboxBusiness.delOboxScenes(tObox.getOboxSerialId());
+	protected OboxDeviceConfigService oboxDeviceConfigService;
 
-    }
+	protected UserDeviceService userDeviceService;
+
+	protected DeviceChannelService deviceChannelService;
+
+	protected UserOboxService userOboxService;
+	
+	protected CMDMessageService cmdMessageService;
+	
+	
+	protected SessionManager sessionManager;
+	public abstract Message<String> process(ClientSession clientSession, Message<String> msg) throws Exception;
+
+	protected void deleteSceneNumber(List<TScene> scenes, TObox tObox) {
+		for (TScene tScene : scenes) {
+			List<TSceneCondition> tSceneConditions = sceneConditionService
+					.getSceneConditionBySceneNum(tScene.getSceneNumber());
+			if (tSceneConditions != null) {
+				sceneConditionService.deleteSceneConditionBySceneNum(tScene.getSceneNumber());
+			}
+			userSceneService.deleteUserSceneBySceneNum(tScene.getSceneNumber());
+			// SceneBusiness.deleteUserScene(tScene.getSceneNumber());
+			// SceneBusiness.deleteSceneActionsBySceneNumber(tScene.getSceneNumber());
+			sceneActionService.deleteSceneActionBySceneNumber(tScene.getSceneNumber());
+			// SceneBusiness.deleteSceneBySceneNumber(tScene.getSceneNumber());
+			sceneService.deleteSceneActionBySceneNumber(tScene.getSceneNumber());
+			// SceneBusiness.deleteSceneLocationBySceneNumber(tScene.getSceneNumber());
+		}
+		sceneService.deleteSceneByOboxSerialId(tObox.getOboxSerialId());
+		// OboxBusiness.delOboxScenes(tObox.getOboxSerialId());
+
+	}
+
+	public SceneService getSceneService() {
+		return sceneService;
+	}
+
+	public void setSceneService(SceneService sceneService) {
+		this.sceneService = sceneService;
+	}
+
+	public SceneConditionService getSceneConditionService() {
+		return sceneConditionService;
+	}
+
+	public void setSceneConditionService(SceneConditionService sceneConditionService) {
+		this.sceneConditionService = sceneConditionService;
+	}
+
+	public UserSceneService getUserSceneService() {
+		return userSceneService;
+	}
+
+	public void setUserSceneService(UserSceneService userSceneService) {
+		this.userSceneService = userSceneService;
+	}
+
+	public SceneActionService getSceneActionService() {
+		return sceneActionService;
+	}
+
+	public void setSceneActionService(SceneActionService sceneActionService) {
+		this.sceneActionService = sceneActionService;
+	}
+
+	public OboxService getOboxService() {
+		return oboxService;
+	}
+
+	public void setOboxService(OboxService oboxService) {
+		this.oboxService = oboxService;
+	}
+
+	public OboxDeviceConfigService getOboxDeviceConfigService() {
+		return oboxDeviceConfigService;
+	}
+
+	public void setOboxDeviceConfigService(OboxDeviceConfigService oboxDeviceConfigService) {
+		this.oboxDeviceConfigService = oboxDeviceConfigService;
+	}
+
+	public UserDeviceService getUserDeviceService() {
+		return userDeviceService;
+	}
+
+	public void setUserDeviceService(UserDeviceService userDeviceService) {
+		this.userDeviceService = userDeviceService;
+	}
+
+	public DeviceChannelService getDeviceChannelService() {
+		return deviceChannelService;
+	}
+
+	public void setDeviceChannelService(DeviceChannelService deviceChannelService) {
+		this.deviceChannelService = deviceChannelService;
+	}
+
+	public UserOboxService getUserOboxService() {
+		return userOboxService;
+	}
+
+	public void setUserOboxService(UserOboxService userOboxService) {
+		this.userOboxService = userOboxService;
+	}
+
+	public CMDMessageService getCmdMessageService() {
+		return cmdMessageService;
+	}
+
+	public void setCmdMessageService(CMDMessageService cmdMessageService) {
+		this.cmdMessageService = cmdMessageService;
+	}
+
+	public SessionManager getSessionManager() {
+		return sessionManager;
+	}
+
+	public void setSessionManager(SessionManager sessionManager) {
+		this.sessionManager = sessionManager;
+	}
+	
 }

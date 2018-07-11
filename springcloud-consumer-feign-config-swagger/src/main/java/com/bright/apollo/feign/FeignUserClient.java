@@ -26,7 +26,7 @@ import com.bright.apollo.response.ResponseObject;
  */
 @FeignClient(name = "springcloud-provider-user", fallback = HystrixFeignUserFallback.class, configuration = FeignConfig.class)
 public interface FeignUserClient {
- 
+
 	@SuppressWarnings("rawtypes")
 	@GetMapping("/user/register/{mobile}")
 	public ResponseObject register(@PathVariable(value = "mobile") String mobile);
@@ -35,81 +35,101 @@ public interface FeignUserClient {
 	@RequestMapping(value = "/user/forget/{mobile}", method = RequestMethod.GET)
 	public ResponseObject forget(@PathVariable(value = "mobile") String mobile);
 
- 
-	/**  
-	 * @param serialId  
-	 * @Description:  
+	/**
+	 * @param serialId
+	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/user/deleteUserObox/{serialId}", method = RequestMethod.DELETE)
 	public ResponseObject deleteUserOboxByOboxSerialId(String serialId);
 
-	/**  
-	 * @param serialId  
-	 * @Description:  
+	/**
+	 * @param serialId
+	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/user/deleteUserDevice/{serialId}", method = RequestMethod.DELETE)
 	public ResponseObject deleteUserDeviceBySerialId(String serialId);
 
-	/**  
-	 * @param sceneNumber  
-	 * @Description:  
+	/**
+	 * @param sceneNumber
+	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/user/deleteUserScene/{sceneNumber}", method = RequestMethod.DELETE)
 	public ResponseObject deleteUserSceneBySceneNumber(Integer sceneNumber);
 
-	/**  
+	/**
 	 * @param username
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
 	@RequestMapping(value = "/user/getUser/{userName}", method = RequestMethod.GET)
 	public ResponseObject<TUser> getUser(@PathVariable(required = true, value = "userName") String userName);
 
 	@RequestMapping(value = "/user/getUserById/{id}", method = RequestMethod.GET)
 	public ResponseObject<TUser> getUserById(Integer id);
-	
-	
-	/**  
+
+	/**
 	 * @param oauthClientDetails
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
 	@RequestMapping(value = "/oauthclient/addClient", method = RequestMethod.POST)
-	ResponseObject<OauthClientDetails> addOauthClientDetails(@RequestBody(required = true) OauthClientDetails oauthClientDetails);
+	ResponseObject<OauthClientDetails> addOauthClientDetails(
+			@RequestBody(required = true) OauthClientDetails oauthClientDetails);
 
-	/**  
+	/**
 	 * @param tUserObox
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/user/addUserObox", method = RequestMethod.POST)
 	ResponseObject addUserObox(@RequestBody(required = true) TUserObox tUserObox);
 
-	/**  
-	 * @param tUserDevice  
-	 * @Description:  
+	/**
+	 * @param tUserDevice
+	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/user/addUserDevice", method = RequestMethod.POST)
 	ResponseObject addUserDevice(@RequestBody(required = true) TUserDevice tUserDevice);
 
-	/**  
-	 * @param tUserScene  
-	 * @Description:  
+	/**
+	 * @param tUserScene
+	 * @Description:
 	 */
 	@RequestMapping(value = "/user/addUserScene", method = RequestMethod.POST)
 	ResponseObject<TUserScene> addUserScene(@RequestBody(required = true) TUserScene tUserScene);
 
-	/**  
+	/**
 	 * @param id
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
 	@RequestMapping(value = "/user/getUserDevcieByUser/{userId}", method = RequestMethod.GET)
-	ResponseObject<List<TUserDevice>> getUserDevcieByUser(@PathVariable(required = true,value="userId") Integer userId);
+	ResponseObject<List<TUserDevice>> getUserDevcieByUser(
+			@PathVariable(required = true, value = "userId") Integer userId);
+
+	/**
+	 * @param userId
+	 * @param oboxSerialId
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/user/getUserObox/{userId}/{oboxSerialId}", method = RequestMethod.GET)
+	public ResponseObject<TUserObox> getUserObox(@PathVariable(required = true, value = "userId") Integer userId,
+			@PathVariable(required = true, value = "oboxSerialId") String oboxSerialId);
+
+	/**  
+	 * @param userId
+	 * @param deviceSerialId  
+	 * @return 
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/user/getUserDevcieByUserIdAndSerialId/{userId}/{oboxSerialId}", method = RequestMethod.GET)
+	public ResponseObject<TUserDevice> getUserDevcieByUserIdAndSerialId(@PathVariable(required = true, value = "userId") Integer userId,
+			@PathVariable(required = true, value = "deviceSerialId") String deviceSerialId);
 
 }

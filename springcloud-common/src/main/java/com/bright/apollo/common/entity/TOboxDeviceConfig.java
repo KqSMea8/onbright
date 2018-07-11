@@ -2,12 +2,15 @@ package com.bright.apollo.common.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.Date;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(value={"id"})
+@JsonIgnoreProperties(value={"id","lastOpTime"})
 public class TOboxDeviceConfig implements Serializable{
     /**  
 	 *   
@@ -30,6 +33,7 @@ public class TOboxDeviceConfig implements Serializable{
      *
      * @mbg.generated Wed Mar 14 16:07:21 CST 2018
      */
+    @JsonProperty(value="obox_id")
     private Integer oboxId;
 
     /**
@@ -39,6 +43,10 @@ public class TOboxDeviceConfig implements Serializable{
      *
      * @mbg.generated Wed Mar 14 16:07:21 CST 2018
      */
+    
+    @JsonProperty(value="name")
+    @Expose
+	@SerializedName("name")
     private String deviceId;
 
     /**
@@ -48,6 +56,10 @@ public class TOboxDeviceConfig implements Serializable{
      *
      * @mbg.generated Wed Mar 14 16:07:21 CST 2018
      */
+    
+    @JsonProperty(value="state")
+    @Expose
+	@SerializedName("state")
     private String deviceState;
 
     /**
@@ -57,6 +69,10 @@ public class TOboxDeviceConfig implements Serializable{
      *
      * @mbg.generated Wed Mar 14 16:07:21 CST 2018
      */
+    
+    @JsonProperty(value="device_type")
+    @Expose
+	@SerializedName("device_type")
     private String deviceType;
 
     /**
@@ -66,6 +82,10 @@ public class TOboxDeviceConfig implements Serializable{
      *
      * @mbg.generated Wed Mar 14 16:07:21 CST 2018
      */
+   
+    @JsonProperty(value="device_child_type")
+    @Expose
+   	@SerializedName("device_child_type")
     private String deviceChildType;
 
     /**
@@ -75,6 +95,10 @@ public class TOboxDeviceConfig implements Serializable{
      *
      * @mbg.generated Wed Mar 14 16:07:21 CST 2018
      */
+    
+    @JsonProperty(value="version")
+    @Expose
+	@SerializedName("version")
     private String deviceVersion;
 
     /**
@@ -93,6 +117,10 @@ public class TOboxDeviceConfig implements Serializable{
      *
      * @mbg.generated Wed Mar 14 16:07:21 CST 2018
      */
+    
+    @JsonProperty(value="serialId")
+    @Expose
+	@SerializedName("serialId")
     private String deviceSerialId;
 
     /**
@@ -102,6 +130,10 @@ public class TOboxDeviceConfig implements Serializable{
      *
      * @mbg.generated Wed Mar 14 16:07:21 CST 2018
      */
+    
+    @JsonProperty(value="addr")
+    @Expose
+	@SerializedName("addr")
     private String deviceRfAddr;
 
     /**
@@ -111,6 +143,10 @@ public class TOboxDeviceConfig implements Serializable{
      *
      * @mbg.generated Wed Mar 14 16:07:21 CST 2018
      */
+    
+    @JsonProperty(value="group_addr")
+    @Expose
+	@SerializedName("group_addr")
     private String groupAddr;
 
     /**
@@ -120,6 +156,10 @@ public class TOboxDeviceConfig implements Serializable{
      *
      * @mbg.generated Wed Mar 14 16:07:21 CST 2018
      */
+    
+    @JsonProperty(value="oboxSerialId")
+    @Expose
+	@SerializedName("obox_serial_id")
     private String oboxSerialId;
 
     /**
@@ -129,6 +169,10 @@ public class TOboxDeviceConfig implements Serializable{
      *
      * @mbg.generated Wed Mar 14 16:07:21 CST 2018
      */
+    
+    @JsonProperty(value="online")
+    @Expose
+	@SerializedName("online")
     private Integer online;
 
     /**
@@ -442,4 +486,5 @@ public class TOboxDeviceConfig implements Serializable{
     public void setOnline(Integer online) {
         this.online = online;
     }
+    
 }

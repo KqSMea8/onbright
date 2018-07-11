@@ -174,4 +174,12 @@ public interface FeignSceneClient {
 			@PathVariable(value = "oboxSerialId") String oboxSerialId,
 			@PathVariable(value = "sceneNumber") Integer sceneNumber);
 
+	/**  
+	 * @param sceneNumber
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/scene/getSceneBySceneNumber/{sceneNumber}", method = RequestMethod.GET)
+	ResponseObject<TScene> getSceneBySceneNumber(@PathVariable(value = "sceneNumber")Integer sceneNumber);
+
 }

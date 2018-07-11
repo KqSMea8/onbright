@@ -26,7 +26,7 @@ eureka:
     appname: springcloud-consumer-feign
 redis:
     database: 0
-    host: 120.27.212.190
+    host: 47.96.100.153
     port: 6379
     timeout: 3000
     pool:

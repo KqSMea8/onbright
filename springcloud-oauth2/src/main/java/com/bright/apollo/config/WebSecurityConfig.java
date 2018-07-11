@@ -46,14 +46,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
-
+ 
+  /*  @Bean
+ 
 //    @Autowired
 //    private RestAuthenticationSuccessHandler restAuthenticationSuccessHandler;
 
     @Bean
+ 
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
+    }*/
 
 
     @Override
@@ -67,7 +70,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 
     	http.csrf().disable()
             .requestMatchers().anyRequest().and()
-            .authorizeRequests().antMatchers("/health", "/css/**","/oauth/**").permitAll()
+            .authorizeRequests().antMatchers("/health", "/css/**","/oauth/**","/uaa/**").permitAll()
             .and()
             .formLogin().loginPage("/login")
 //            .successHandler(new RestAuthenticationSuccessHandler())

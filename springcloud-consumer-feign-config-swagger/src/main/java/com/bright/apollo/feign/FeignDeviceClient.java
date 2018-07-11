@@ -136,5 +136,7 @@ public interface FeignDeviceClient {
 	@RequestMapping(value = "/device/getYSCameraByUserId/{userId}", method = RequestMethod.GET)
 	ResponseObject<List<TYSCamera>> getYSCameraByUserId(@PathVariable(value = "userId") Integer userId);
 
+ 
+
 
 }

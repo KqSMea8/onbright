@@ -22,6 +22,8 @@ import com.bright.apollo.constant.Constant;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.service.MsgService;
+import com.bright.apollo.service.UserDeviceService;
+import com.bright.apollo.service.UserOboxService;
 import com.bright.apollo.service.UserService;
 import com.bright.apollo.service.WxService;
 import com.bright.apollo.tool.HttpUtil;
@@ -47,7 +49,10 @@ public class UserController {
 	private MsgService msgService;
 	@Autowired
 	private WxService wxService;
-
+	@Autowired
+	private UserOboxService userOboxService;
+	@Autowired
+	private UserDeviceService userDeviceService;
 	@SuppressWarnings("rawtypes")
 	@GetMapping("/register/{mobile}")
 	public ResponseObject register(@PathVariable String mobile) {
@@ -201,12 +206,13 @@ public class UserController {
 	public ResponseObject addUserObox(@RequestBody(required = true) TUserObox tUserObox) {
 		ResponseObject res = new ResponseObject();
 		try {
-			TUser tuser = userService.getUserByUserId(tUserObox.getId());
+			TUser tuser = userService.getUserByUserId(tUserObox.getUserId());
 			if (tuser == null) {
 				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
 				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
 				return res;
 			}
+			userService.addUserObox(tUserObox);
 			res.setStatus(ResponseEnum.AddSuccess.getStatus());
 			res.setMessage(ResponseEnum.AddSuccess.getMsg());
 			//res.setData(tuser);
@@ -258,6 +264,38 @@ public class UserController {
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 			res.setData(list);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	@RequestMapping(value = "/getUserObox/{userId}/{oboxSerialId}", method = RequestMethod.GET)
+	public ResponseObject<TUserObox> getUserObox(@PathVariable(required = true, value = "userId") Integer userId,
+			@PathVariable(required = true, value = "oboxSerialId") String oboxSerialId) {
+		ResponseObject<TUserObox> res = new ResponseObject<TUserObox>();
+		try { 
+			TUserObox tuserObox=userOboxService.getUserOboxByUserIdAndOboxSerialId(userId,oboxSerialId);
+ 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+			res.setData(tuserObox);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	@RequestMapping(value = "/user/getUserDevcieByUserIdAndSerialId/{userId}/{oboxSerialId}", method = RequestMethod.GET)
+	public ResponseObject<TUserDevice> getUserDevcieByUserIdAndSerialId(@PathVariable(required = true, value = "userId") Integer userId,
+			@PathVariable(required = true, value = "deviceSerialId") String deviceSerialId) {
+		ResponseObject<TUserDevice> res = new ResponseObject<TUserDevice>();
+		try { 
+			TUserDevice tuserDevice=userDeviceService.getUserDeviceByUserIdAndSerialId(userId,deviceSerialId);
+ 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+			res.setData(tuserDevice);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());

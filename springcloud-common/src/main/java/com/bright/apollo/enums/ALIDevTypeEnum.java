@@ -1,7 +1,7 @@
 package com.bright.apollo.enums;
 
 public enum ALIDevTypeEnum {
-    OBOX("b1V3Y8BwKzU","3PQo9W8wweT"),
+    OBOX("a103Rjc0j6B","3PQo9W8wweT"),
 
     DEVICE("b1eakXpQ1WU","LJjxCM3gZrj");
 

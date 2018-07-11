@@ -11,4 +11,12 @@ public interface UserOboxService {
     void addUserObox(TUserObox tUserObox);
 
     void delectUserOboxByOboxSerialId(String oboxSerialId);
+
+	/**  
+	 * @param userId
+	 * @param oboxSerialId
+	 * @return  
+	 * @Description:  
+	 */
+	TUserObox getUserOboxByUserIdAndOboxSerialId(Integer userId, String oboxSerialId);
 }

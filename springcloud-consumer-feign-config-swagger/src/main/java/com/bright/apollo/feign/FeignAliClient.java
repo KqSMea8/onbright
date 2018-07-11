@@ -108,12 +108,13 @@ public interface FeignAliClient {
 	/**
 	 * @param oboxSerialId
 	 * @param status
+	 * @param string 
 	 * @return
 	 * @Description:
 	 */
 	@RequestMapping(value = "/aliService/setDeviceStatus/{oboxSerialId}", method = RequestMethod.PUT)
 	ResponseObject<OboxResp> setDeviceStatus(@PathVariable(required = true, value = "oboxSerialId") String oboxSerialId,
-			@RequestParam(required = true, value = "status") String status);
+			@RequestParam(required = true, value = "status") String status, @RequestParam(required = true, value = "rfAddr") String rfAddr);
 
 	/**
 	 * @param sceneName

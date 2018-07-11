@@ -2,7 +2,6 @@ package com.bright.apollo.controller;
 
 import java.util.List;
 
-import com.bright.apollo.service.OboxDeviceConfigService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +18,9 @@ import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.service.CameraService;
 import com.bright.apollo.service.DeviceService;
 import com.bright.apollo.service.NvrService;
+import com.bright.apollo.service.OboxDeviceConfigService;
+
+
 
 /**
  * @Title:
@@ -100,14 +102,14 @@ public class DeviceController {
 			@RequestBody(required = true) TOboxDeviceConfig device) {
 		ResponseObject<TOboxDeviceConfig> res = new ResponseObject<TOboxDeviceConfig>();
 		try {
-			if (deviceService.queryDeviceBySerialId(serialId) != null) {
+ 			if (oboxDeviceConfigService.queryDeviceConfigBySerialID(serialId) != null) {
 				res.setStatus(ResponseEnum.ObjExist.getStatus());
 				res.setMessage(ResponseEnum.ObjExist.getMsg());
 			} else {
-				deviceService.addDevice(device);
+				oboxDeviceConfigService.addTOboxDeviceConfig(device);
 				res.setStatus(ResponseEnum.AddSuccess.getStatus());
 				res.setMessage(ResponseEnum.AddSuccess.getMsg());
-				res.setData(deviceService.queryDeviceBySerialId(serialId));
+				res.setData(oboxDeviceConfigService.queryDeviceConfigBySerialID(serialId));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -290,7 +292,7 @@ public class DeviceController {
 			@PathVariable(value = "userId") Integer userId, @PathVariable(value = "deviceType") String deviceType) {
 		ResponseObject<List<TOboxDeviceConfig>> res = new ResponseObject<List<TOboxDeviceConfig>>();
 		try {
-			List<TOboxDeviceConfig> list = oboxDeviceConfigService.getDevciesByUserIdAndType(userId,deviceType);
+			List<TOboxDeviceConfig> list = oboxDeviceConfigService.getDevciesByUserIdAndType(userId, deviceType);
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 			res.setData(list);
@@ -301,9 +303,9 @@ public class DeviceController {
 		}
 		return res;
 	}
+
 	@RequestMapping(value = "/getYSCameraByUserId/{userId}", method = RequestMethod.GET)
-	public ResponseObject<List<TYSCamera>> getYSCameraByUserId(
-			@PathVariable(value = "userId") Integer userId){
+	public ResponseObject<List<TYSCamera>> getYSCameraByUserId(@PathVariable(value = "userId") Integer userId) {
 		ResponseObject<List<TYSCamera>> res = new ResponseObject<List<TYSCamera>>();
 		try {
 			List<TYSCamera> list = cameraService.getYSCameraByUserId(userId);
@@ -317,4 +319,6 @@ public class DeviceController {
 		}
 		return res;
 	}
+
+	 
 }

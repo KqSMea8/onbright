@@ -13,6 +13,7 @@ import com.bright.apollo.feign.FeignAliClient;
 import com.bright.apollo.request.SceneActionDTO;
 import com.bright.apollo.request.SceneConditionDTO;
 import com.bright.apollo.response.AliDevInfo;
+import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
 
 /**
@@ -83,8 +84,13 @@ public class HystrixFeignAli2Fallback extends BasicHystrixFeignFallback implemen
 	@Override
 	public ResponseObject<OboxResp> scanByUnStop(String oboxSerialId, String deviceType, String deviceChildType,
 			String serialId, Integer countOfDevice) {
-		logger.warn("===ali server is break===");
-		return serverError();
+		logger.warn("===no respone===");
+		ResponseObject<OboxResp> res = new ResponseObject<OboxResp>();
+		OboxResp oboxResp = new OboxResp(OboxResp.Type.success);
+		res.setStatus(ResponseEnum.AddSuccess.getStatus());
+		res.setMessage(ResponseEnum.AddSuccess.getMsg());
+		res.setData(oboxResp);
+		return res;
 	}
 
 	/*
@@ -113,20 +119,7 @@ public class HystrixFeignAli2Fallback extends BasicHystrixFeignFallback implemen
 		logger.warn("===ali server is break===");
 		return serverError();
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.bright.apollo.feign.FeignAliClient#setDeviceStatus(java.lang.String,
-	 * java.lang.String)
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	public ResponseObject<OboxResp> setDeviceStatus(String oboxSerialId, String status) {
-		logger.warn("===ali server is break===");
-		return serverError();
-	}
+ 
 
 	/*
 	 * (non-Javadoc)
@@ -179,6 +172,15 @@ public class HystrixFeignAli2Fallback extends BasicHystrixFeignFallback implemen
 	 */
 	@Override
 	public ResponseObject<List<Map<String, String>>> getSearchNewDevice(TObox obox) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignAliClient#setDeviceStatus(java.lang.String, java.lang.String, java.lang.String)  
+	 */
+	@Override
+	public ResponseObject<OboxResp> setDeviceStatus(String oboxSerialId, String status, String rfAddr) {
 		logger.warn("===ali server is break===");
 		return serverError();
 	}

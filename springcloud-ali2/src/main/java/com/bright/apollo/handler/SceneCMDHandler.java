@@ -1,37 +1,22 @@
 package com.bright.apollo.handler;
 
+import java.util.List;
+
+import org.apache.log4j.Logger;
+
 import com.bright.apollo.bean.Message;
-import com.bright.apollo.common.entity.*;
+import com.bright.apollo.common.entity.TObox;
+import com.bright.apollo.common.entity.TOboxDeviceConfig;
+import com.bright.apollo.common.entity.TScene;
+import com.bright.apollo.common.entity.TSceneAction;
+import com.bright.apollo.common.entity.TSceneCondition;
 import com.bright.apollo.enums.NodeTypeEnum;
-import com.bright.apollo.service.*;
 import com.bright.apollo.session.ClientSession;
 import com.bright.apollo.tool.ByteHelper;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
 
 public class SceneCMDHandler extends BasicHandler{
 
     private Logger log = Logger.getLogger(SceneCMDHandler.class);
-
-    @Autowired
-    private OboxService oboxService;
-
-    @Autowired
-    private SceneService sceneService;
-
-    @Autowired
-    private SceneConditionService sceneConditionService;
-
-    @Autowired
-    private UserSceneService userSceneService;
-
-    @Autowired
-    private SceneActionService sceneActionService;
-
-    @Autowired
-    private OboxDeviceConfigService oboxDeviceConfigService;
 
     @Override
     public Message<String> process(ClientSession clientSession, Message<String> msg) throws Exception {

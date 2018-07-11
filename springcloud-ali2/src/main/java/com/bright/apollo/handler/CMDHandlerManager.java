@@ -9,10 +9,20 @@ import com.bright.apollo.enums.AliRegionEnum;
 import com.bright.apollo.enums.CMDEnum;
 import com.bright.apollo.enums.Command;
 import com.bright.apollo.service.AliDeviceService;
+import com.bright.apollo.service.CMDMessageService;
+import com.bright.apollo.service.DeviceChannelService;
+import com.bright.apollo.service.OboxDeviceConfigService;
 import com.bright.apollo.service.OboxService;
+import com.bright.apollo.service.SceneActionService;
+import com.bright.apollo.service.SceneConditionService;
+import com.bright.apollo.service.SceneService;
 import com.bright.apollo.service.TopicServer;
+import com.bright.apollo.service.UserDeviceService;
+import com.bright.apollo.service.UserOboxService;
+import com.bright.apollo.service.UserSceneService;
 import com.bright.apollo.session.ClientSession;
 import com.bright.apollo.session.PushThreadPool;
+import com.bright.apollo.session.SessionManager;
 import com.bright.apollo.tool.ByteHelper;
 import com.bright.apollo.tool.EncDecHelper;
 import com.zz.common.util.StringUtils;
@@ -44,7 +54,30 @@ public class CMDHandlerManager {
 
     @Autowired
     private PushThreadPool pushThreadPool;
+    @Autowired
+    private SceneService sceneService;
 
+    @Autowired
+    private SceneConditionService sceneConditionService;
+
+    @Autowired
+    private UserSceneService userSceneService;
+
+    @Autowired
+    private SceneActionService sceneActionService;
+
+    @Autowired
+    private OboxDeviceConfigService oboxDeviceConfigService;
+    @Autowired
+    private UserDeviceService userDeviceService;
+    @Autowired
+    private DeviceChannelService deviceChannelService;
+    @Autowired
+    private UserOboxService userOboxService;
+    @Autowired
+    private CMDMessageService cmdMessageService;
+    @Autowired
+    private SessionManager sessionManager;
     private static Map<String, BasicHandler> cmdHandlers = new HashMap<String, BasicHandler>();
 
     static {
@@ -137,7 +170,7 @@ public class CMDHandlerManager {
 
 //        cmdHandlers.put(Command.ERROR.getValue(), new ErrorHandler());
 
-        cmdHandlers.put(Command.FILTER.getValue(), new FilterCMDHandler());
+ //       cmdHandlers.put(Command.FILTER.getValue(), new FilterCMDHandler());
 
 //        cmdHandlers.put(Command.IRUP.getValue(), new IRUploadHandler());//红外上传学习码
 
@@ -149,7 +182,7 @@ public class CMDHandlerManager {
 
     public void processTopic(String ProductKey,String DeviceName,String inMsg){
         try {
-            logger.info("======topic msg=====:key:"+ProductKey+" device:"+DeviceName+" payload"+inMsg);
+            logger.info("======topic msg=====:key:"+ProductKey+" device:"+DeviceName+" payload:"+inMsg);
             if (inMsg.length() != 136) {
                 return;
             }
@@ -196,7 +229,7 @@ public class CMDHandlerManager {
             msg.setData(msg.getDecodeData().substring(14, 14 + 54 * 2));
 
             String cmd = msg.getCmd();
-
+            logger.info("===msg data:"+msg.getData());
             if ("a1".equals(cmd) || "b1".equals(cmd) || "b4".equals(cmd)) {
 //				if (clientSession.getStatus() == Session.STATUS_AUTHENTICATED) {
 //					CMDMsgCache.saveReply(clientSession.getUid(), cmd,
@@ -214,9 +247,9 @@ public class CMDHandlerManager {
             } else {
 
                 if (Command.HEARTBEAT.getValue().equals(cmd)) {
+                	logger.info("==="+Command.HEARTBEAT.getValue()+"===");
                     if (msg.getData().substring(0, 2).equals("01")){
                         String random_number = msg.getData().substring(2, 34);
-
                         String serialId = msg.getData().substring(34, 44);
                         String oboxVersion = msg.getData().substring(44, 60);
                         String oboxName = ByteHelper.fromHexAscii(msg.getData().substring(62, 62+2*Integer.parseInt(msg.getData().substring(60, 62), 16)));
@@ -226,6 +259,7 @@ public class CMDHandlerManager {
                         TAliDevice tAliDevice = aliDeviceService.getAliDeviceByProductKeyAndDeviceName(ProductKey, DeviceName);
 //                        TAliDevice tAliDevice = AliDevBusiness.queryAliDevByName(ProductKey, DeviceName);
                         if (tAliDevice != null) {
+                        	logger.info("===tAliDevice device name:"+tAliDevice.getDeviceName());
                             if (!tAliDevice.getOboxSerialId().equals(serialId)) {
                                 TAliDevice tAliDevice2 = aliDeviceService.getAliDeviceBySerializeId(serialId);
 //                                TAliDevice tAliDevice2 = AliDevBusiness.queryAliDevBySerial(serialId);
@@ -265,6 +299,7 @@ public class CMDHandlerManager {
 //                        TObox dbObox = OboxBusiness.queryOboxsByOboxSerialId(serialId);
 //						TKey tKey = OboxBusiness.queryKeyByProductKey(ProductKey);
                         if (dbObox == null) {
+                        	logger.info("===add obox===");
                             dbObox = new TObox();
 //							if (tKey != null) {
 //								dbObox.setLicense(tKey.getId());
@@ -276,6 +311,7 @@ public class CMDHandlerManager {
 //                            dbObox.setOboxPwd("88888888");
 //                            dbObox.setOboxActivate(0);
 //							dbObox.setOboxIP(ip[0].substring(1));
+                            dbObox.setOboxIp("0.0.0.0");
                             oboxService.addObox(dbObox);
 //                            OboxBusiness.addObox(dbObox);
                             dbObox = oboxService.queryOboxsByOboxSerialId(serialId);
@@ -351,9 +387,22 @@ public class CMDHandlerManager {
                     }
                 }
 
-
-
+                //inject the obj to the handler
+                if(handler.getOboxService()==null){
+                	handler.setDeviceChannelService(deviceChannelService);
+                	handler.setOboxDeviceConfigService(oboxDeviceConfigService);
+                	handler.setOboxService(oboxService);
+                	handler.setSceneActionService(sceneActionService);
+                	handler.setSceneConditionService(sceneConditionService);
+                	handler.setSceneService(sceneService);
+                	handler.setUserDeviceService(userDeviceService);
+                	handler.setUserOboxService(userOboxService);
+                	handler.setUserSceneService(userSceneService);
+                	handler.setCmdMessageService(cmdMessageService);
+                	handler.setSessionManager(sessionManager);
+                }
                 handler.process(client, msg);
+                
 //				Message<String> replyMsg =
 //				if (replyMsg != null) {
 //

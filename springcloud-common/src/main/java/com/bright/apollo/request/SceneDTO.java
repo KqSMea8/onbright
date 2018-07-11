@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.bright.apollo.common.entity.TScene;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**  
  *@Title:  
@@ -12,6 +14,7 @@ import com.bright.apollo.common.entity.TScene;
  *@Since:2018年6月20日  
  *@Version:1.1.0  	
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class SceneDTO extends TScene implements Serializable{
 
 	/**  
@@ -35,8 +38,9 @@ public class SceneDTO extends TScene implements Serializable{
 	/**
 	 * scene config
 	 */
+	@JsonProperty(value="actions")
 	private List<SceneActionDTO> actions;
-
+	@JsonProperty(value="conditions")
 	private List<List<SceneConditionDTO>> conditions;
 	
 	public List<SceneActionDTO> getActions() {

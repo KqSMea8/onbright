@@ -30,6 +30,7 @@ public enum ResponseEnum {
 	SendOboxFail(423,"Send Obox Fail"),
 	SendOboxUnKnowFail(424,"Send Obox UnKnow Fail"),
 	REQUESTFAILNOTONLINE(425,"request fail not online"),
+	AddObjError(426,"add obj error"),
 	
 	Error(511,"system error"),
  	ServerError(512,"server is error"),

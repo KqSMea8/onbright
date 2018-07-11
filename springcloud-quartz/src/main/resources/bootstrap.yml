@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: springcloud-quzrtz
+  zipkin:
+    base-url: http://localhost:9411
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: springcloud-config-server
+      fail-fast: true
+      username: root
+      password: booszy
+      profile: csdn
+eureka:
+  client:
+    service-url:
+      defaultZone: http://root:booszy@localhost:8761/eureka
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${spring.application.instance_id:${server.port}}
+    appname: springcloud-quzrtz
+datasource:
+    username: root
+    password: Iltwao!1
+    url: jdbc:mysql://rm-bp1phzwe9h981t77x6o.mysql.rds.aliyuncs.com:3306/onbright_ali_new?useUnicode=true&amp;characterEncoding=utf8
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+

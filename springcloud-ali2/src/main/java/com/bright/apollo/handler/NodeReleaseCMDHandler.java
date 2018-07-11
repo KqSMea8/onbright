@@ -1,28 +1,13 @@
 package com.bright.apollo.handler;
 
-import com.bright.apollo.bean.Message;
-import com.bright.apollo.common.entity.TObox;
-import com.bright.apollo.common.entity.TOboxDeviceConfig;
-import com.bright.apollo.common.entity.TScene;
-import com.bright.apollo.common.entity.TSceneCondition;
-import com.bright.apollo.service.OboxDeviceConfigService;
-import com.bright.apollo.service.OboxService;
-import com.bright.apollo.service.SceneService;
-import com.bright.apollo.session.ClientSession;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.List;
 
+import com.bright.apollo.bean.Message;
+import com.bright.apollo.common.entity.TObox;
+import com.bright.apollo.common.entity.TScene;
+import com.bright.apollo.session.ClientSession;
+
 public class NodeReleaseCMDHandler extends BasicHandler{
-
-    @Autowired
-    private OboxService oboxService;
-
-    @Autowired
-    private OboxDeviceConfigService oboxDeviceConfigService;
-
-    @Autowired
-    private SceneService sceneService;
 
     @Override
     public Message<String> process(ClientSession clientSession, Message<String> msg) throws Exception {

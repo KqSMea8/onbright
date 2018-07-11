@@ -1,21 +1,20 @@
 package com.bright.apollo.handler;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.bright.apollo.bean.Message;
 import com.bright.apollo.common.dto.OboxResp;
 import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.enums.CMDEnum;
-import com.bright.apollo.service.CMDMessageService;
 import com.bright.apollo.service.OboxService;
 import com.bright.apollo.session.ClientSession;
 import com.bright.apollo.tool.ByteHelper;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class SetReleaseHandler extends BasicHandler{
     @Autowired
     private OboxService oboxService;
 
-    @Autowired
-    private CMDMessageService cmdMessageService;
+    
     @Override
     public Message<String> process(ClientSession clientSession, Message<String> msg) throws Exception {
         String data = msg.getData();

@@ -1,18 +1,21 @@
 package com.bright.apollo.dao.user.mapper;
 
-import com.bright.apollo.common.entity.TUser;
-import com.bright.apollo.common.entity.TUserDevice;
-import com.bright.apollo.common.entity.TUserDeviceExample;
-import com.bright.apollo.dao.mapper.base.BaseMapper;
+import java.util.List;
+
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import com.bright.apollo.common.entity.TUser;
+import com.bright.apollo.common.entity.TUserDevice;
+import com.bright.apollo.common.entity.TUserDeviceExample;
+import com.bright.apollo.dao.mapper.base.BaseMapper;
 
 @Mapper
 @Component
@@ -76,5 +79,23 @@ public interface TUserDeviceMapper extends BaseMapper<TUserDevice, TUserDeviceEx
 	@Select(" select * from t_user_device " +
 			" where user_id=#{userId} ")
 	List<TUserDevice> getListOfUserDeviceByUserId(@Param("userId") Integer userId);
+
+	/**  
+	 * @param userId
+	 * @param device_serial_id
+	 * @return  
+	 * @Description:  
+	 */
+	@Select(" select * from t_user_device " +
+			" where user_id=#{userId} and device_serial_id=#{device_serial_id}")
+	@Results(value = {
+            @Result(property = "id",column = "id"),
+            @Result(property = "deviceSerialId",column = "device_serial_id"),
+            @Result(property = "lastOpTime",column = "last_op_time"),
+            @Result(property = "userId",column = "user_id"),
+            @Result(property = "privilege",column = "privilege")
+    })
+	TUserDevice getUserDeviceByUserIdAndSerialId(@Param("userId") Integer userId,@Param("device_serial_id") String device_serial_id);
+ 
 
 }
