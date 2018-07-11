@@ -2,8 +2,10 @@ package com.bright.apollo.controller;
 
 
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
+import com.bright.apollo.common.entity.TUser;
 import com.bright.apollo.feign.FeignDeviceClient;
 import com.bright.apollo.feign.FeignOboxClient;
+import com.bright.apollo.feign.FeignUserClient;
 import com.bright.apollo.redis.RedisBussines;
 import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.transition.TMallDeviceAdapter;
@@ -29,6 +31,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -61,6 +66,9 @@ public class TmallController {
 	private FeignDeviceClient feignDeviceClient;
 
 	@Autowired
+	private FeignUserClient feignUserClient;
+
+	@Autowired
 	private TMallTemplate tMallTemplate;
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -76,6 +84,11 @@ public class TmallController {
 		JSONObject headerMap = new JSONObject();
 		JSONObject playloadMap = new JSONObject();
 		TMallDeviceAdapter adapter = null;
+		Map<String,Object> payload = (Map<String,Object>) requestMap.get("payload");
+		String accessToken = (String)payload.get("accessToken");
+		logger.info(" ===== accessToken ====== "+accessToken);
+		OAuth2Authentication defaultOAuth2AccessToken = redisBussines.getObject("auth:"+accessToken,OAuth2Authentication.class);
+		logger.info(" ===== redisToken ====== "+defaultOAuth2AccessToken);
 
 		if(requestHeaderMap.get("namespace").equals("AliGenie.Iot.Device.Discovery")){//天猫精灵发现设备
 
@@ -84,6 +97,11 @@ public class TmallController {
 			headerMap.put("messageId",requestHeaderMap.get("messageId"));
 			headerMap.put("payLoadVersion","1");
 			map.put("header",headerMap);
+			User user = (User) defaultOAuth2AccessToken.getPrincipal();
+//			ResponseObject<TUser> userResponseObject = feignUserClient.getUser(user.getUsername());
+//			TUser tUser = userResponseObject.getData();
+
+			logger.info(" ====== username ====== "+user.getUsername());
 
 			ResponseObject<List<TOboxDeviceConfig>> responseObject = feignDeviceClient.getOboxDeviceConfigByUserId(429);
 			List<TOboxDeviceConfig> oboxDeviceConfigList = responseObject.getData();

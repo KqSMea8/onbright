@@ -1,6 +1,6 @@
 server:
   port: 8815
-  contextPath: /uaa
+contextPath: /uaa
 #  ssl:
 #    key-store: /root/.keystore
 #    key-store-password: 123456

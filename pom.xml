@@ -33,7 +33,7 @@
 		<module>springcloud-provider-deivce</module>
 		<module>springcloud-provider-obox</module>
 		<module>springcloud-provider-scene</module>
-		<module>srpingcloud-provider-user</module>
+		<module>springcloud-provider-user</module>
 		<module>springcloud-data</module>
 		<module>springcloud-thirdpart</module>
 		<module>springcloud-tool</module>

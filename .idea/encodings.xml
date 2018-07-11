@@ -13,13 +13,13 @@
     <file url="file://$PROJECT_DIR$/springcloud-provider-deivce" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-provider-obox" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-provider-scene" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud-provider-user" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-redis" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-service-impl" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-thirdpart" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-tool" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-zipkin-server" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-zuul" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/srpingcloud-provider-user" charset="UTF-8" />
     <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>

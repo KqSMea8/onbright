@@ -2,7 +2,6 @@ package com.bright.apollo.config;
 
 import javax.sql.DataSource;
 
-//import com.bright.apollo.controller.IntegrationAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +16,6 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
 import org.springframework.security.oauth2.provider.code.InMemoryAuthorizationCodeServices;
-import org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 import com.bright.apollo.config.service.impl.UserDetailsServiceImpl;
@@ -90,7 +88,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         tokenServices.setSupportRefreshToken(true);
         System.out.println(" ======================================= defaultTokenServices ====================== ");
 
-//        tokenServices.setClientDetailsService(clientDetails());
+        tokenServices.setClientDetailsService(clientDetails());
 
         tokenServices.setAccessTokenValiditySeconds(60 * 60 * 24 * 7); // token 7 day
         tokenServices.setRefreshTokenValiditySeconds(60 * 60 * 24 * 30);//refresh token 30 day

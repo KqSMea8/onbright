@@ -64,7 +64,7 @@ public class RokidController {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 //	@ApiOperation(value = "get deivcie by device serialId", httpMethod = "GET", produces = "application/json")
 //	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
-	@RequestMapping(value = "/getRokidList", method = RequestMethod.GET)
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	@ResponseBody
 	public String getRokidList(HttpServletRequest request) {
 		List<TOboxDeviceConfig>  list = null;
@@ -93,7 +93,7 @@ public class RokidController {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 //	@ApiOperation(value = "get deivcie by device serialId", httpMethod = "GET", produces = "application/json")
 //	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
-	@RequestMapping(value = "/executeRokid", method = RequestMethod.GET)
+	@RequestMapping(value = "/execute", method = RequestMethod.GET)
 	@ResponseBody
 	public String executeRokid(HttpServletRequest request) {
 		TOboxDeviceConfig oboxDeviceConfig = null;
@@ -127,7 +127,7 @@ public class RokidController {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 //	@ApiOperation(value = "get deivcie by device serialId", httpMethod = "GET", produces = "application/json")
 //	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
-	@RequestMapping(value = "/getRokidState", method = RequestMethod.GET)
+	@RequestMapping(value = "/get", method = RequestMethod.GET)
 	@ResponseBody
 	public String getRokidState(HttpServletRequest request) {
 		TOboxDeviceConfig oboxDeviceConfig = null;
