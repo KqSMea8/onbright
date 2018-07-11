@@ -14,7 +14,7 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
  */
 @SpringBootApplication
 @EnableEurekaClient
-@MapperScan("com.bright.apollo.dao")
+//@MapperScan("com.bright.apollo.dao")
 public class UserApplication {
 
 	public static void main(String[] args) {

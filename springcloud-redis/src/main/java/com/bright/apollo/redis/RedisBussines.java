@@ -9,10 +9,16 @@ package com.bright.apollo.redis;
  * @param <T>
  */
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ConfigurableObjectInputStream;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Component;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -25,6 +31,16 @@ public class RedisBussines {
 
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
+
+//    @Autowired
+//    public void setRedisTemplate(RedisTemplate redisTemplate) {
+//        RedisSerializer stringSerializer = new StringRedisSerializer();
+//        redisTemplate.setKeySerializer(stringSerializer);
+//        redisTemplate.setValueSerializer(stringSerializer);
+//        redisTemplate.setHashKeySerializer(stringSerializer);
+//        redisTemplate.setHashValueSerializer(stringSerializer);
+//        this.redisTemplate = redisTemplate;
+//    }
 
      
     public void delete(String... key){
@@ -54,6 +70,14 @@ public class RedisBussines {
   
     public String get(String key){
         return (String) redisTemplate.opsForValue().get(key);
+    }
+
+    public Object getObject(String key){
+        return redisTemplate.boundValueOps(key).get();
+    }
+
+    public <T> T getObject(String key,Class<T> clazz){
+        return (T) redisTemplate.boundValueOps(key).get();
     }
 
    
