@@ -241,7 +241,7 @@ public class TopicServer {
         rrpcRequest.setProductKey(productKey);
         rrpcRequest.setDeviceName(deviceName); //设备名称
         rrpcRequest.setRequestBase64Byte(Base64.encodeBase64String(mString.getBytes())); //发给设备的数据，要求二进制数据做一次Base64编码
-        rrpcRequest.setTimeout(3500); //超时时间，单位毫秒，如果超过这个时间设备没反应则返回"TIMEOUT"
+        rrpcRequest.setTimeout(5000); //超时时间，单位毫秒，如果超过这个时间设备没反应则返回"TIMEOUT"
         RRpcResponse rrpcResponse = null;
         rrpcResponse=sendRPCRequest(rrpcRequest,eAliRegionEnum,rrpcResponse);
         /*if (eAliRegionEnum.equals(AliRegionEnum.AMERICA)) {

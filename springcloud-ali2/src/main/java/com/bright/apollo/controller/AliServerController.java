@@ -171,11 +171,11 @@ public class AliServerController {
 				byte[] oboxSerialIdBytes = ByteHelper.hexStringToBytes(serialId);
 				System.arraycopy(oboxSerialIdBytes, 0, sendbodyBytes, 6, oboxSerialIdBytes.length);
 			}
-			topicServer.pubTopic(CMDEnum.search_new_device, sendbodyBytes, oboxSerialId);
-			//OboxResp resp = topicServer.request(CMDEnum.search_new_device, sendbodyBytes, oboxSerialId);
+			//topicServer.pubTopic(CMDEnum.search_new_device, sendbodyBytes, oboxSerialId);
+			OboxResp resp = topicServer.request(CMDEnum.search_new_device, sendbodyBytes, oboxSerialId);
 			res.setStatus(ResponseEnum.AddSuccess.getStatus());
 			res.setMessage(ResponseEnum.AddSuccess.getMsg());
-			//res.setData(resp);
+			res.setData(resp);
 		} catch (Exception e) {
 			e.printStackTrace();
 			res.setStatus(ResponseEnum.Error.getStatus());
@@ -273,11 +273,11 @@ public class AliServerController {
 			bodyBytes[5] = 0x00;
 			bodyBytes[6] = (byte) Integer.parseInt(rfAddr, 16);
 			System.arraycopy(stateBytes, 0, bodyBytes, 7, stateBytes.length);
-			//OboxResp resp = topicServer.request(CMDEnum.setting_node_status, bodyBytes, oboxSerialId);
-			topicServer.pubTopic(CMDEnum.setting_node_status, bodyBytes, oboxSerialId);
+			OboxResp resp = topicServer.request(CMDEnum.setting_node_status, bodyBytes, oboxSerialId);
+			//topicServer.pubTopic(CMDEnum.setting_node_status, bodyBytes, oboxSerialId);
 			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
 			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
-			//res.setData(resp);
+			res.setData(resp);
 		} catch (Exception e) {
 			e.printStackTrace();
 			res.setStatus(ResponseEnum.Error.getStatus());
