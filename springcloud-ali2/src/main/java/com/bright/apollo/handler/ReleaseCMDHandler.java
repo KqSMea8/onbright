@@ -48,7 +48,7 @@ public class ReleaseCMDHandler extends BasicHandler {
 //                            DeviceBusiness.delDeviceChannel(tOboxDeviceConfig.getOboxId());
 
                         }
-
+                        
                         oboxDeviceConfigService.deleteTOboxDeviceConfig(tObox.getOboxId());
 //                        OboxBusiness.batchDelIrKeyByOboxSerialId(tObox.getOboxSerialId());
                         List<TScene> scenes = sceneService.getSceneByOboxSerialId(tObox.getOboxSerialId());

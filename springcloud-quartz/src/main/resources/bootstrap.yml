@@ -1,17 +1,15 @@
 spring:
   application:
-    name: springcloud-quzrtz
+    name: springcloud-quartz
   zipkin:
     base-url: http://localhost:9411
-  cloud:
-    config:
-      discovery:
-        enabled: true
-        service-id: springcloud-config-server
-      fail-fast: true
-      username: root
-      password: booszy
-      profile: csdn
+  jpa:
+    hibernate:
+      ddl-auto: none
+  datasource:
+    url: jdbc:mysql://rm-bp1phzwe9h981t77x6o.mysql.rds.aliyuncs.com:3306/quartz?useUnicode=true&amp;characterEncoding=utf8
+    password: Iltwao!1
+    username: root
 eureka:
   client:
     service-url:
@@ -19,7 +17,7 @@ eureka:
   instance:
     prefer-ip-address: true
     instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${spring.application.instance_id:${server.port}}
-    appname: springcloud-quzrtz
+    appname: springcloud-quartz
 datasource:
     username: root
     password: Iltwao!1

@@ -10,7 +10,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Controller;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -66,7 +65,6 @@ import io.swagger.annotations.ApiResponse;
  * @Since:2018年3月16日
  * @Version:1.1.0
  */
-@Controller
 @Api("facade Controller")
 @RestController
 @RequestMapping("facade")
@@ -160,7 +158,7 @@ public class FacadeController {
 			}
 			// may will add respone return status and serialId
 			ResponseObject<OboxResp> resSet = feignAliClient.setDeviceStatus(tOboxDeviceConfig.getOboxSerialId(),
-					status,tOboxDeviceConfig.getDeviceRfAddr());
+					status, tOboxDeviceConfig.getDeviceRfAddr());
 			if (resSet == null || resSet.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
 				return resSet;
 			}
@@ -1002,48 +1000,96 @@ public class FacadeController {
 								.getSceneBySceneNumber(sceneActionDTO.getSceneNumber());
 						if (scRes != null && scRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()
 								&& scRes.getData() != null) {
-							tSceneAction.setActionid(scRes.getData().getSceneNumber().intValue()+"");
+							tSceneAction.setActionid(scRes.getData().getSceneNumber().intValue() + "");
 							tSceneAction.setNodeType(NodeTypeEnum.status.getValue());
 							feignSceneClient.addSceneAction(tSceneAction);
 						}
-					}else if (sceneActionDTO.getNodeType().equals(
-							NodeTypeEnum.nvr.getValue())) {
-						ResponseObject<TNvr> nvrRes = feignDeviceClient.getNvrByIP(sceneActionDTO
-								.getDeviceSerialId());
-						if (nvrRes!=null&&nvrRes.getData()!=null&&nvrRes.getStatus()!= ResponseEnum.SelectSuccess.getStatus()) {
-							tSceneAction.setActionid(nvrRes.getData().getId().intValue()+"");
-							tSceneAction.setNodeType(NodeTypeEnum.nvr
-									.getValue());
+					} else if (sceneActionDTO.getNodeType().equals(NodeTypeEnum.nvr.getValue())) {
+						ResponseObject<TNvr> nvrRes = feignDeviceClient.getNvrByIP(sceneActionDTO.getDeviceSerialId());
+						if (nvrRes != null && nvrRes.getData() != null
+								&& nvrRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
+							tSceneAction.setActionid(nvrRes.getData().getId().intValue() + "");
+							tSceneAction.setNodeType(NodeTypeEnum.nvr.getValue());
 							feignSceneClient.addSceneAction(tSceneAction);
 						}
-					} else if (sceneActionDTO.getNodeType().equals(
-							NodeTypeEnum.security.getValue())) {
-						
+					} else if (sceneActionDTO.getNodeType().equals(NodeTypeEnum.security.getValue())) {
+
 					}
 				}
 			}
-			List<List<SceneConditionDTO>> sceneConditionDTOs = sceneDTO
-					.getConditions();
+			List<List<SceneConditionDTO>> sceneConditionDTOs = sceneDTO.getConditions();
 			if (sceneConditionDTOs != null) {
 				logger.info("====create server add scene condition====");
 				for (int i = 0; i < sceneConditionDTOs.size(); i++) {
-					List<SceneConditionDTO> list = sceneConditionDTOs
-							.get(i);
+					List<SceneConditionDTO> list = sceneConditionDTOs.get(i);
 					for (SceneConditionDTO sceneConditionDTO : list) {
-						if (!sceneConditionDTO.getConditionType().equals(
-								ConditionTypeEnum.time.getValue())
-								&& !sceneConditionDTO.getConditionType()
-										.equals(ConditionTypeEnum.quartz
-												.getValue())) {
+						if (!sceneConditionDTO.getConditionType().equals(ConditionTypeEnum.time.getValue())
+								&& !sceneConditionDTO.getConditionType().equals(ConditionTypeEnum.quartz.getValue())) {
 							if (sceneConditionDTO.getDeviceSerialId() != null) {
-								
+								// node condition
+								String condition = sceneConditionDTO.getCondition();
+								String serialID = sceneConditionDTO.getDeviceSerialId();
+
+								if (sceneConditionDTO.getConditionType().equals(ConditionTypeEnum.device.getValue())) {
+									ResponseObject<TOboxDeviceConfig> deviceRes = feignDeviceClient
+											.getDeviceByUserAndSerialId(tUser.getId(), serialID);
+									if (deviceRes != null
+											&& deviceRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()
+											&& deviceRes.getData() != null) {
+										TSceneCondition tSceneCondition = new TSceneCondition();
+										tSceneCondition.setSerialid(serialID);
+										tSceneCondition.setCond(condition);
+										tSceneCondition.setSceneNumber(ret);
+										tSceneCondition.setConditionGroup(i);
+										feignSceneClient.addSceneCondition(tSceneCondition);
+									}
+
+								} else if (sceneConditionDTO.getConditionType()
+										.equals(ConditionTypeEnum.remoter.getValue())) {
+									
+								} else if (sceneConditionDTO.getConditionType()
+										.equals(ConditionTypeEnum.fingerprint.getValue())) {
+									
+								}
+
+							}
+						}else if (sceneConditionDTO.getConditionType()
+								.equals(ConditionTypeEnum.time.getValue())) {
+							String cond = sceneConditionDTO.getCondition();
+							TSceneCondition tSceneCondition = new TSceneCondition();
+							tSceneCondition.setCond(cond);
+							tSceneCondition.setConditionGroup(i);
+							tSceneCondition.setSceneNumber(ret);
+							feignSceneClient.addSceneCondition(tSceneCondition);
+							if (!StringUtils.isEmpty(tSceneCondition
+									.getCond())) {
+								//======================
+								//use feignquzrtzClient
+								/*quartzService
+										.startSchedule(
+												ret,
+												sceneName,
+												tSceneCondition
+														.getCondition(),
+												tSceneCondition
+														.getConditionGroup());*/
+							}
+						}else{
+							String cond = sceneConditionDTO.getCondition();
+							TSceneCondition tSceneCondition = new TSceneCondition();
+							tSceneCondition.setCond(cond);
+							tSceneCondition.setConditionGroup(i);
+							tSceneCondition.setSceneNumber(ret);
+							feignSceneClient.addSceneCondition(tSceneCondition);
+							if (!StringUtils.isEmpty(tSceneCondition
+									.getCond())) {							
 							}
 						}
 					}
 				}
 			}
 		} catch (Exception e) {
-			logger.error("===error msg:"+e.getMessage());
+			logger.error("===error msg:" + e.getMessage());
 			e.printStackTrace();
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
@@ -1084,10 +1130,11 @@ public class FacadeController {
 				TUserObox tUserObox = new TUserObox();
 				tUserObox.setUserId(resUser.getData().getId());
 				tUserObox.setOboxSerialId(oboxRes.getData().getOboxSerialId());
-				ResponseObject<TUserObox> userOboxRes=feignUserClient.getUserObox(resUser.getData().getId(),oboxRes.getData().getOboxSerialId());
-				ResponseObject resobj =null;
-				if(userOboxRes!=null&&userOboxRes.getData()==null)
-					resobj=feignUserClient.addUserObox(tUserObox);
+				ResponseObject<TUserObox> userOboxRes = feignUserClient.getUserObox(resUser.getData().getId(),
+						oboxRes.getData().getOboxSerialId());
+				ResponseObject resobj = null;
+				if (userOboxRes != null && userOboxRes.getData() == null)
+					resobj = feignUserClient.addUserObox(tUserObox);
 				TObox tobox = oboxRes.getData();
 				if (oboxDTO.getOboxName() != null) {
 					tobox.setOboxName(oboxDTO.getOboxName());
@@ -1174,14 +1221,16 @@ public class FacadeController {
 								.addDevice(oboxDeviceConfig.getDeviceSerialId(), oboxDeviceConfig);
 						if (resDevice != null && resDevice.getStatus() == ResponseEnum.AddSuccess.getStatus()
 								&& resDevice.getData() != null) {
-							ResponseObject<TUserDevice> userDeviceRes =feignUserClient.getUserDevcieByUserIdAndSerialId(resUser.getData().getId(),oboxDeviceConfig.getDeviceSerialId());
-							if(userDeviceRes==null||userDeviceRes.getData()==null){
+							ResponseObject<TUserDevice> userDeviceRes = feignUserClient
+									.getUserDevcieByUserIdAndSerialId(resUser.getData().getId(),
+											oboxDeviceConfig.getDeviceSerialId());
+							if (userDeviceRes == null || userDeviceRes.getData() == null) {
 								TUserDevice tUserDevice = new TUserDevice();
 								tUserDevice.setDeviceSerialId(oboxDeviceConfig.getDeviceSerialId());
 								tUserDevice.setUserId(resUser.getData().getId());
 								feignUserClient.addUserDevice(tUserDevice);
 							}
-							
+
 						}
 						// int ret =
 						// OboxBusiness.addOboxConfig(oboxDeviceConfig);
@@ -1365,7 +1414,7 @@ public class FacadeController {
 			List<DevcieCount> tCounts = new ArrayList<DevcieCount>();
 			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
 			if (resUser.getStatus() == ResponseEnum.SelectSuccess.getStatus() && resUser.getData() != null) {
-				logger.info("====userId:"+resUser.getData().getId()+"===userName:"+principal.getUsername());
+				logger.info("====userId:" + resUser.getData().getId() + "===userName:" + principal.getUsername());
 				ResponseObject<List<TOboxDeviceConfig>> resDevices = feignDeviceClient
 						.getDeviceTypeByUser(resUser.getData().getId());
 				if (resDevices != null && resDevices.getStatus() == ResponseEnum.SelectSuccess.getStatus()
