@@ -41,6 +41,7 @@ import com.bright.apollo.enums.SceneTypeEnum;
 import com.bright.apollo.feign.FeignAliClient;
 import com.bright.apollo.feign.FeignDeviceClient;
 import com.bright.apollo.feign.FeignOboxClient;
+import com.bright.apollo.feign.FeignQuartzClient;
 import com.bright.apollo.feign.FeignSceneClient;
 import com.bright.apollo.feign.FeignUserClient;
 import com.bright.apollo.request.OboxDTO;
@@ -80,7 +81,9 @@ public class FacadeController {
 	private FeignSceneClient feignSceneClient;
 	@Autowired
 	private FeignAliClient feignAliClient;
-
+	@Autowired
+	private FeignQuartzClient feignQuartzClient; 
+	
 	// release obox
 	@SuppressWarnings({ "rawtypes" })
 	@ApiOperation(value = "release  obox", httpMethod = "DELETE", produces = "application/json")
@@ -1073,6 +1076,8 @@ public class FacadeController {
 														.getCondition(),
 												tSceneCondition
 														.getConditionGroup());*/
+								feignQuartzClient.addJob(ret, sceneName,
+										tSceneCondition.getConditionGroup(), tSceneCondition.getCond());
 							}
 						}else{
 							String cond = sceneConditionDTO.getCondition();

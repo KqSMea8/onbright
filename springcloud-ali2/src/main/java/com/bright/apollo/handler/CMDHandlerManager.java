@@ -28,6 +28,7 @@ import com.bright.apollo.tool.EncDecHelper;
 import com.zz.common.util.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -179,7 +180,7 @@ public class CMDHandlerManager {
     public static BasicHandler getCMDHandler(Command cmd) {
         return cmdHandlers.get(cmd);
     }
-
+    @Async
     public void processTopic(String ProductKey,String DeviceName,String inMsg){
         try {
             logger.info("======topic msg=====:key:"+ProductKey+" device:"+DeviceName+" payload:"+inMsg);
