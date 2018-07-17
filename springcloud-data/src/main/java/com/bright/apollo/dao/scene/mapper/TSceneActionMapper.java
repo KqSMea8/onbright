@@ -28,6 +28,11 @@ public interface TSceneActionMapper extends BaseMapper<TSceneAction, TSceneActio
 	void deleteSceneActionBySceneNumber(@Param("sceneNumber") int sceneNumber);
 
 	@Select("select * from t_scene_action where scene_number = #{sceneNumber}")
+	@Results(value = { @Result(column = "id", property = "id"),
+			@Result(column = "scene_number", property = "sceneNumber"),
+			@Result(column = "actionID", property = "actionid"), @Result(column = "preSet", property = "preset"),
+			@Result(column = "last_op_time", property = "lastOpTime"), @Result(column = "node_type", property = "nodeType"),
+			@Result(column = "action", property = "action") })
 	List<TSceneAction> getSceneActionBySceneNumber(@Param("sceneNumber") int sceneNumber);
 
 	@Delete("delete t_scene_action where scene_number=#{sceneNumber} and actionId = #{actionID}")

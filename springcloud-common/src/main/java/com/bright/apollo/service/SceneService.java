@@ -129,5 +129,21 @@ public interface SceneService extends BasicService{
 	 * @Description:  
 	 */
 	int addSceneCondition(TSceneCondition tSceneCondition);
+
+	/**  
+	 * @param sceneNumber
+	 * @param conditionGroup
+	 * @return  
+	 * @Description:  
+	 */
+	public List<TSceneCondition> getSceneConditionBySceneNumberAndGroup(Integer sceneNumber,
+			Integer conditionGroup);
+
+	/**  
+	 * @param sceneNumber
+	 * @return  
+	 * @Description:  
+	 */
+	public List<TSceneAction> getSceneActionsBySceneNumber(Integer sceneNumber);
  
 }

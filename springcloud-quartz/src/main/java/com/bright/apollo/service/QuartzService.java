@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Service;
 
-import com.bright.apollo.controller.QuartzController;
 import com.bright.apollo.job.TimeJob;
 import com.bright.apollo.tool.ByteHelper;
 
@@ -32,7 +31,6 @@ public class QuartzService {
 	private static String SERVER_TRIGGER_GROUP_NAME = "OBTriggerGroup";
 	@Autowired
 	private SchedulerFactoryBean schedulerFactory;
-
 	/**
 	 * 开始一个cronTrigger()调度
 	 */

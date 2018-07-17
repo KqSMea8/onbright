@@ -11,18 +11,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.bright.apollo.common.entity.TNvr;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.common.entity.TYSCamera;
-import com.bright.apollo.hrstrix.HystrixFeignDeviceFallback;
+import com.bright.apollo.config.FeignConfig;
+import com.bright.apollo.hystrix.HystrixFeignDeviceFallback;
 import com.bright.apollo.response.ResponseObject;
 
-/**
- * @Title:
- * @Description:
- * @Author:JettyLiu
- * @Since:2018年3月2日
- * @Version:1.1.0
+ 
+/**  
+ *@Title:  
+ *@Description:  
+ *@Author:JettyLiu
+ *@Since:2018年7月17日  
+ *@Version:1.1.0  
  */
 @FeignClient(value = "springcloud-provider-device", fallback = HystrixFeignDeviceFallback.class, configuration = FeignConfig.class)
 public interface FeignDeviceClient {
+
 	/**
 	 * @param serialId
 	 * @return
@@ -149,5 +152,6 @@ public interface FeignDeviceClient {
 	@RequestMapping(value = "/device/getDeviceByUserAndSerialId/{userId}/{serialID}", method = RequestMethod.GET)
 	ResponseObject<TOboxDeviceConfig> getDeviceByUserAndSerialId(@PathVariable(value = "userId") Integer userId,
 			@PathVariable(value = "serialID") String serialID);
+
 
 }

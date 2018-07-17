@@ -500,4 +500,37 @@ public class SceneController {
 		}
 		return res;
 	}
+	@RequestMapping(value = "/getSceneConditionsBySceneNumberAndConditionGroup/{sceneNumber}/{conditionGroup}", method = RequestMethod.GET)
+	ResponseObject<List<TSceneCondition>> getSceneConditionsBySceneNumberAndConditionGroup(@PathVariable(value = "sceneNumber")Integer sceneNumber,
+			@PathVariable(value = "conditionGroup")Integer conditionGroup
+			){
+		ResponseObject<List<TSceneCondition>> res = new ResponseObject<List<TSceneCondition>>();
+		try {
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+			res.setData(sceneService.getSceneConditionBySceneNumberAndGroup(sceneNumber,conditionGroup));
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("===getSceneConditionsBySceneNumberAndConditionGroup error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	@RequestMapping(value = "/getSceneActionsBySceneNumber/{sceneNumber}", method = RequestMethod.GET)
+	ResponseObject<List<TSceneAction>> getSceneActionsBySceneNumber(@PathVariable(value = "sceneNumber")Integer sceneNumber
+			){
+		ResponseObject<List<TSceneAction>> res = new ResponseObject<List<TSceneAction>>();
+		try {
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+			res.setData(sceneService.getSceneActionsBySceneNumber(sceneNumber));
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("===getSceneConditionsBySceneNumberAndConditionGroup error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
 }

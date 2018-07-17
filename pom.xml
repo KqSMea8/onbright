@@ -41,6 +41,7 @@
 		<module>springcloud-redis</module>
 		<module>springcloud-service-impl</module>
 		<module>springcloud-ali2</module>
+		<module>springcloud-quartz</module>
 	</modules>
 	<dependencyManagement>
 		<dependencies>

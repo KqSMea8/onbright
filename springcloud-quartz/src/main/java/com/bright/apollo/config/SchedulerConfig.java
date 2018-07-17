@@ -28,10 +28,10 @@ import liquibase.integration.spring.SpringLiquibase;
 @Configuration
 @ConditionalOnProperty(name = "quartz.enabled")
 public class SchedulerConfig {
-
+	 //, SpringLiquibase springLiquibase
     // injecting SpringLiquibase to ensure liquibase is already initialized and created the quartz tables:
     @Bean
-    public JobFactory jobFactory(ApplicationContext applicationContext, SpringLiquibase springLiquibase) {
+    public JobFactory jobFactory(ApplicationContext applicationContext) {
         AutowiringSpringBeanJobFactory jobFactory = new AutowiringSpringBeanJobFactory();
         jobFactory.setApplicationContext(applicationContext);
         return jobFactory;
