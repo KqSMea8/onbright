@@ -335,5 +335,20 @@ public class DeviceController {
 		}
 		return res;
 	}
-	 
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/deleleDeviceByOboxSerialId/{serialId}", method = RequestMethod.DELETE)
+	ResponseObject deleleDeviceByOboxSerialId(
+			@PathVariable(value = "serialId") String serialId) {
+		ResponseObject res = new ResponseObject();
+		try {
+			oboxDeviceConfigService.deleteTOboxDeviceConfigByOboxSerialId(serialId);
+			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
+ 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
 }

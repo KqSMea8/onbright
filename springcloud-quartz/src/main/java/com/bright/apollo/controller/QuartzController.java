@@ -44,4 +44,20 @@ public class QuartzController {
 		}
 		return res;
 	}
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/deleteJob/{jobName}", method = RequestMethod.DELETE, produces = "application/json")
+    public ResponseObject deleteJob(@PathVariable(value="jobName",required=true) String jobName) {
+		ResponseObject res=new ResponseObject();
+		try {
+			quartzService.deleteJob(jobName);
+			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
+		} catch (Exception e) {
+			log.error("===error msg:"+e.getMessage());
+			res.setStatus(ResponseEnum.RequestTimeout.getStatus());
+			res.setMessage(ResponseEnum.RequestTimeout.getMsg());
+		}
+		return res;
+	}
+ 
 }

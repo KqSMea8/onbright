@@ -170,4 +170,24 @@ public interface FeignAliClient {
 	@RequestMapping(value = "/aliDevice/getSearchNewDevice", method = RequestMethod.PUT)
 	ResponseObject<List<Map<String, String>>> getSearchNewDevice(@RequestBody(required = true)  TObox obox);
 
+	/**  
+	 *   
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/aliScene/setLocalScene/{sceneStatus}/{oboxSceneNumber}/{sceneName}/{oboxSerialId}", method = RequestMethod.PUT)
+	ResponseObject setLocalScene(@PathVariable(value = "sceneStatus")Byte sceneStatus,
+			@PathVariable(value = "oboxSceneNumber")Integer oboxSceneNumber,
+			@PathVariable(value = "sceneName")String sceneName,
+			@PathVariable(value = "oboxSerialId")String oboxSerialId,
+			@RequestParam(required=false ,value="groupAddr") String groupAddr
+			);
+
+	 
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/aliScene/modifyLocalSceneCondition/{oboxSceneNumber}/{oboxSerialId}/{userId}", method = RequestMethod.PUT)
+	ResponseObject modifyLocalSceneCondition(@PathVariable(value = "oboxSceneNumber") Integer oboxSceneNumber,
+			@PathVariable(value = "oboxSerialId") String oboxSerialId,
+			@PathVariable(value = "userId") Integer userId,
+			@RequestBody List<List<SceneConditionDTO>> sceneConditionDTOs);
 }

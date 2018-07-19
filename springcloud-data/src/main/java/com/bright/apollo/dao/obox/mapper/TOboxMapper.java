@@ -62,18 +62,13 @@ public interface TOboxMapper extends BaseMapper<TObox, TOboxExample, Integer> {
 			"obox_status = #{oboxStatus}  where  obox_serial_id = #{oboxSerialId} ")
 	void updateObox(TObox obox);
 	@Results(value = {
-            @Result(column="id"   ,property="oboxId"),
+			@Result(column="id"   ,property="id"),
             @Result(column="obox_name" ,  property="oboxName"),
-            @Result(column="obox_pwd" ,  property="oboxPwd"),
             @Result(column="obox_version" ,  property="oboxVersion"),
             @Result(column="last_op_time" ,  property="lastOpTime"),
             @Result(column="obox_status" ,  property="oboxStatus"),
-            @Result(column="license"  , property="license"),
             @Result(column="obox_ip" ,  property="oboxIp" ),
-            @Result(column="obox_addr"  , property="oboxAddr" ),
-            @Result(column="obox_person"  , property="oboxPerson"),
-            @Result(column="obox_activate" ,  property="oboxActivate"),
-            @Result(column="obox_control" ,  property="oboxControl")
+            @Result(column="obox_serial_id" ,  property="oboxSerialId")
     })
 	@Select("select tb.* from t_device_channel tdc\n" +
 			"inner join t_obox tb on tdc.obox_id=tb.obox_id\n" +
@@ -100,18 +95,12 @@ public interface TOboxMapper extends BaseMapper<TObox, TOboxExample, Integer> {
 	 * @Description:  
 	 */
 	@Results(value = {
-            @Result(column="obox_id"   ,property="oboxId"),
+            @Result(column="id"   ,property="id"),
             @Result(column="obox_name" ,  property="oboxName"),
-            @Result(column="obox_pwd" ,  property="oboxPwd"),
             @Result(column="obox_version" ,  property="oboxVersion"),
             @Result(column="last_op_time" ,  property="lastOpTime"),
             @Result(column="obox_status" ,  property="oboxStatus"),
-            @Result(column="license"  , property="license"),
             @Result(column="obox_ip" ,  property="oboxIp" ),
-            @Result(column="obox_addr"  , property="oboxAddr" ),
-            @Result(column="obox_person"  , property="oboxPerson"),
-            @Result(column="obox_activate" ,  property="oboxActivate"),
-            @Result(column="obox_control" ,  property="oboxControl"),
             @Result(column="obox_serial_id" ,  property="oboxSerialId")
     })
 	@Select(" select * from t_obox todc " +
@@ -132,5 +121,25 @@ public interface TOboxMapper extends BaseMapper<TObox, TOboxExample, Integer> {
 				"obox_ip) values(#{oboxName},#{oboxSerialId},#{oboxVersion},#{oboxStatus},#{oboxIp})")
 	@Options(useGeneratedKeys=true, keyProperty="id", keyColumn="id")
 	int addObox(TObox obox);
+
+	/**  
+	 * @param userId
+	 * @param oboxSerialId
+	 * @return  
+	 * @Description:  
+	 */
+	 @Select("SELECT * FROM t_obox a WHERE  EXISTS "
+	 		+ "(SELECT 1 FROM t_user_obox b WHERE a.obox_id=b.obox_id and b.user_id = #{userId})"
+	 		+ " AND obox_serial_id = #{oboxSerialId} ")
+	 @Results(value = {
+	            @Result(column="id"   ,property="id"),
+	            @Result(column="obox_name" ,  property="oboxName"),
+	            @Result(column="obox_version" ,  property="oboxVersion"),
+	            @Result(column="last_op_time" ,  property="lastOpTime"),
+	            @Result(column="obox_status" ,  property="oboxStatus"),
+	            @Result(column="obox_ip" ,  property="oboxIp" ),
+	            @Result(column="obox_serial_id" ,  property="oboxSerialId")
+	    })
+	TObox getOboxByUserAndoboxSerialId(@Param("userId") Integer userId, @Param("oboxSerialId") String oboxSerialId);
 
 }

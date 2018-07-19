@@ -66,4 +66,10 @@ public interface OboxDeviceConfigService {
 	 */
 	TOboxDeviceConfig getDeviceByUserAndSerialId(Integer userId, String serialID);
 
+	/**  
+	 * @param serialId  
+	 * @Description:  
+	 */
+	void deleteTOboxDeviceConfigByOboxSerialId(String serialId);
+
 }

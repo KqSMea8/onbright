@@ -26,4 +26,14 @@ public interface FeignQuartzClient {
     		@PathVariable(value="group",required=true) Integer group,
     		@RequestParam(value="cronString",required=true) String cronString
     		);
+
+	/**  
+	 * @param jobName  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/quartz/deleteJob/{jobName}", method = RequestMethod.DELETE, produces = "application/json")
+	public ResponseObject deleteJob(@PathVariable(value="jobName",required=true) String jobName);
+
+ 
 }

@@ -1,12 +1,21 @@
 package com.bright.apollo.dao.scene.mapper;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
+import org.springframework.stereotype.Component;
+
 import com.bright.apollo.common.entity.TSceneAction;
 import com.bright.apollo.common.entity.TSceneActionExample;
 import com.bright.apollo.dao.mapper.base.BaseMapper;
-import org.apache.ibatis.annotations.*;
-import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Mapper
 @Component
@@ -35,7 +44,7 @@ public interface TSceneActionMapper extends BaseMapper<TSceneAction, TSceneActio
 			@Result(column = "action", property = "action") })
 	List<TSceneAction> getSceneActionBySceneNumber(@Param("sceneNumber") int sceneNumber);
 
-	@Delete("delete t_scene_action where scene_number=#{sceneNumber} and actionId = #{actionID}")
+	@Delete("delete t_scene_action where scene_number=#{sceneNumber} and actionID = #{actionId}")
 	void deleteSceneActionByBySceneNumberAndActionId(@Param("sceneNumber") int sceneNumber,@Param("actionId") String actionId);
 
 	@Insert("insert into t_scene_action (actionID,\n" +

@@ -28,6 +28,7 @@ import com.bright.apollo.tool.EncDecHelper;
 import com.zz.common.util.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
@@ -39,6 +40,7 @@ public class CMDHandlerManager {
     private Logger logger = Logger.getLogger(CMDHandlerManager.class);
 
     @Autowired
+    @Lazy
     private TopicServer topServer;
 
     @Autowired

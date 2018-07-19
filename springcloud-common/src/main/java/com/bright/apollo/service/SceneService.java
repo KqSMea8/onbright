@@ -145,5 +145,18 @@ public interface SceneService extends BasicService{
 	 * @Description:  
 	 */
 	public List<TSceneAction> getSceneActionsBySceneNumber(Integer sceneNumber);
+
+	/**  
+	 * @param tSceneAction  
+	 * @Description:  
+	 */
+	public void updateSceneAction(TSceneAction tSceneAction);
+
+	/**  
+	 * @param sceneNumber
+	 * @param actionId  
+	 * @Description:  
+	 */
+	public void deleteSceneActionBySceneNumberAndActionId(Integer sceneNumber, String actionId);
  
 }

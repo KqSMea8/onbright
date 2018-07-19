@@ -66,7 +66,7 @@ public interface FeignDeviceClient {
 	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
-	@RequestMapping(value = "/device/deleteByOboxSerialId/{serialId}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/device/deleleDeviceByOboxSerialId/{serialId}", method = RequestMethod.DELETE)
 	ResponseObject deleleDeviceByOboxSerialId(@PathVariable(value = "serialId") String serialId);
 
 	/**

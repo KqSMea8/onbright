@@ -18,6 +18,7 @@ import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.common.entity.TOboxDeviceConfigExample;
 import com.bright.apollo.dao.device.sqlProvider.OboxDeviceConfigSqlProvider;
 import com.bright.apollo.dao.mapper.base.BaseMapper;
+ 
 
 @Mapper
 @Component
@@ -216,7 +217,7 @@ public interface TOboxDeviceConfigMapper extends BaseMapper<TOboxDeviceConfig, T
 			@Result(property = "deviceSerialId", column = "device_serial_id"),
 			@Result(property = "deviceRfAddr", column = "device_rf_addr"),
 			@Result(property = "groupAddr", column = "group_addr"),
-			@Result(property = "oboxSerialId", column = " obox_serial_id") })
+			@Result(property = "oboxSerialId", column = "obox_serial_id") })
 	List<TOboxDeviceConfig> getDevciesByUserIdAndType(@Param("userId") Integer userId,
 			@Param("deviceType") String deviceType);
 
@@ -241,5 +242,12 @@ public interface TOboxDeviceConfigMapper extends BaseMapper<TOboxDeviceConfig, T
 			@Result(property = "groupAddr", column = "group_addr"),
 			@Result(property = "oboxSerialId", column = " obox_serial_id") })
 	TOboxDeviceConfig getDeviceByUserAndSerialId(@Param("userId") Integer userId, @Param("serialID") String serialID);
+
+	/**  
+	 * @param serialId  
+	 * @Description:  
+	 */
+	@Delete("delete from t_obox_device_config where obox_serial_id = #{serialId}")
+	void deleteTOboxDeviceConfigByOboxSerialId(@Param("serialId") String serialId);
 
 }

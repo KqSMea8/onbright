@@ -207,4 +207,43 @@ public class HystrixFeignSceneFallback extends BasicHystrixFeignFallback impleme
 		logger.warn("===scene server is break===");
 		return serverError();
 	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignSceneClient#getSceneConditionsBySceneNumberAndConditionGroup(java.lang.Integer, java.lang.Integer)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<List<TSceneCondition>> getSceneConditionsBySceneNumberAndConditionGroup(Integer sceneNumber,
+			Integer conditionGroup) {
+		logger.warn("===scene server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignSceneClient#getSceneActionsBySceneNumber(java.lang.Integer)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<List<TSceneAction>> getSceneActionsBySceneNumber(Integer sceneNumber) {
+		logger.warn("===scene server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignSceneClient#updateSceneAction(com.bright.apollo.common.entity.TSceneAction)  
+	 */
+	@Override
+	public ResponseObject updateSceneAction(TSceneAction tSceneAction) {
+		logger.warn("===scene server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignSceneClient#deleteSceneActionBySceneNumberAndActionId(java.lang.Integer, java.lang.String)  
+	 */
+	@Override
+	public ResponseObject deleteSceneActionBySceneNumberAndActionId(Integer sceneNumber, String actionId) {
+		logger.warn("===scene server is break===");
+		return serverError();
+	}
 }

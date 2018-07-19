@@ -27,4 +27,14 @@ public class HystrixFeignQuartzFallback extends BasicHystrixFeignFallback implem
 		return serverError();
 	}
 
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignQuartzClient#deleteJob(java.lang.String)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject deleteJob(String jobName) {
+		logger.warn("===quartz server is break===");
+		return serverError();
+	}
+ 
 }

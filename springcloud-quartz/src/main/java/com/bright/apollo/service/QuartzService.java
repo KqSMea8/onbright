@@ -5,9 +5,11 @@ import org.quartz.CronTrigger;
 import org.quartz.JobBuilder;
 import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
+import org.quartz.JobKey;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.TriggerBuilder;
+import org.quartz.TriggerKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +64,23 @@ public class QuartzService {
 			log.error("===error msg:" + e.getMessage());
 			e.printStackTrace();
 
+		}
+	}
+	/**  
+	 * @param jobName  
+	 * @Description:  
+	 */
+	public void deleteJob(String jobName) {
+		try {
+			Scheduler scheduler = schedulerFactory.getScheduler();
+			scheduler.pauseTrigger(new TriggerKey(jobName,
+					SERVER_TRIGGER_GROUP_NAME));
+			scheduler.unscheduleJob(new TriggerKey(jobName,
+					SERVER_TRIGGER_GROUP_NAME));
+			scheduler.deleteJob(new JobKey(jobName, SERVER_JOB_GROUP_NAME));
+		} catch (Exception e) {
+			// TODO: handle exception
+			throw new RuntimeException(e);
 		}
 	}
 }

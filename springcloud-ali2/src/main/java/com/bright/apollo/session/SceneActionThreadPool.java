@@ -12,6 +12,7 @@ import com.zz.common.util.StringUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -29,6 +30,7 @@ public class SceneActionThreadPool {
     private AliDevCache aliDevCache;
 
     @Autowired
+    @Lazy
     private TopicServer topicServer;
 
     @Autowired
@@ -37,7 +39,10 @@ public class SceneActionThreadPool {
     @Autowired
     private OboxDeviceConfigService oboxDeviceConfigService;
 
-    private final Logger log = Logger
+   
+ 
+
+	private final Logger log = Logger
             .getLogger(SceneActionThreadPool.class);
 
     public SceneActionThreadPool() {

@@ -182,4 +182,21 @@ public class OboxController {
 		}
 		return res;
 	}
+	@RequestMapping(value = "/getOboxByUserAndoboxSerialId/{userId}/{oboxSerialId}", method = RequestMethod.GET)
+	public ResponseObject<TObox> getOboxByUserAndoboxSerialId(
+			@PathVariable(required = true, value = "userId") Integer userId,
+			@PathVariable(required = true, value = "oboxSerialId") String oboxSerialId
+			){
+		ResponseObject<TObox> res = new ResponseObject<TObox>();
+		try {
+ 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+			res.setData(oboxService.getOboxByUserAndoboxSerialId(userId,oboxSerialId));
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
 }

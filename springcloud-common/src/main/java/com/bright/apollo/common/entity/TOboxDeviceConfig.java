@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(value={"id","lastOpTime"})
+@JsonIgnoreProperties(value={"id","lastOpTime","obox_id","group_addr"})
 public class TOboxDeviceConfig implements Serializable{
     /**  
 	 *   
@@ -157,9 +157,10 @@ public class TOboxDeviceConfig implements Serializable{
      * @mbg.generated Wed Mar 14 16:07:21 CST 2018
      */
     
-    @JsonProperty(value="oboxSerialId")
+    
     @Expose
 	@SerializedName("obox_serial_id")
+    @JsonProperty(value="obox_serial_id")
     private String oboxSerialId;
 
     /**

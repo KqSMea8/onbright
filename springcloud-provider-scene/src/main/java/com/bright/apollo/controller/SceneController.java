@@ -61,17 +61,17 @@ public class SceneController {
 	// get list by page
 
 	@RequestMapping(value = "/updateScene", method = RequestMethod.PUT)
-	public ResponseObject<TScene> updateScene(@RequestBody(required=true) TScene scene) {
+	public ResponseObject<TScene> updateScene(@RequestBody(required = true) TScene scene) {
 		ResponseObject<TScene> res = new ResponseObject<TScene>();
 		try {
-			if(scene==null||scene.getSceneNumber()==null||scene.getSceneNumber()==0){
+			if (scene == null || scene.getSceneNumber() == null || scene.getSceneNumber() == 0) {
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
-			}else{
-				if(sceneService.getSceneBySceneNumber(scene.getSceneNumber())==null){
+			} else {
+				if (sceneService.getSceneBySceneNumber(scene.getSceneNumber()) == null) {
 					res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
 					res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
-				}else{
+				} else {
 					sceneService.updateScene(scene);
 					res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
 					res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
@@ -427,8 +427,7 @@ public class SceneController {
 	public ResponseObject addSceneAction(@RequestBody(required = true) TSceneAction tSceneAction) {
 		ResponseObject res = new ResponseObject();
 		try {
-			if (tSceneAction != null && (tSceneAction.getSceneNumber() == null 
-					|| tSceneAction.getSceneNumber() == 0)) {
+			if (tSceneAction != null && (tSceneAction.getSceneNumber() == null || tSceneAction.getSceneNumber() == 0)) {
 				sceneService.addSceneAction(tSceneAction);
 				res.setStatus(ResponseEnum.AddSuccess.getStatus());
 				res.setMessage(ResponseEnum.AddSuccess.getMsg());
@@ -445,13 +444,14 @@ public class SceneController {
 		return res;
 
 	}
+
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/addSceneCondition", method = RequestMethod.POST)
 	public ResponseObject addSceneCondition(@RequestBody(required = true) TSceneCondition tSceneCondition) {
 		ResponseObject res = new ResponseObject();
 		try {
-			if (tSceneCondition != null && (tSceneCondition.getSceneNumber() == null 
-					|| tSceneCondition.getSceneNumber() == 0)) {
+			if (tSceneCondition != null
+					&& (tSceneCondition.getSceneNumber() == null || tSceneCondition.getSceneNumber() == 0)) {
 				sceneService.addSceneCondition(tSceneCondition);
 				res.setStatus(ResponseEnum.AddSuccess.getStatus());
 				res.setMessage(ResponseEnum.AddSuccess.getMsg());
@@ -467,6 +467,7 @@ public class SceneController {
 		}
 		return res;
 	}
+
 	@RequestMapping(value = "/getScenesByOboxSerialIdAndSceneNumber/{oboxSerialId}/{sceneNumber}", method = RequestMethod.GET)
 	public ResponseObject<TScene> getScenesByOboxSerialIdAndSceneNumber(
 			@PathVariable(value = "oboxSerialId") String oboxSerialId,
@@ -484,6 +485,7 @@ public class SceneController {
 		}
 		return res;
 	}
+
 	@RequestMapping(value = "/getSceneBySceneNumber/{sceneNumber}", method = RequestMethod.GET)
 	public ResponseObject<TScene> getScenesByOboxSerialIdAndSceneNumber(
 			@PathVariable(value = "sceneNumber") Integer sceneNumber) {
@@ -500,15 +502,16 @@ public class SceneController {
 		}
 		return res;
 	}
+
 	@RequestMapping(value = "/getSceneConditionsBySceneNumberAndConditionGroup/{sceneNumber}/{conditionGroup}", method = RequestMethod.GET)
-	ResponseObject<List<TSceneCondition>> getSceneConditionsBySceneNumberAndConditionGroup(@PathVariable(value = "sceneNumber")Integer sceneNumber,
-			@PathVariable(value = "conditionGroup")Integer conditionGroup
-			){
+	ResponseObject<List<TSceneCondition>> getSceneConditionsBySceneNumberAndConditionGroup(
+			@PathVariable(value = "sceneNumber") Integer sceneNumber,
+			@PathVariable(value = "conditionGroup") Integer conditionGroup) {
 		ResponseObject<List<TSceneCondition>> res = new ResponseObject<List<TSceneCondition>>();
 		try {
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
-			res.setData(sceneService.getSceneConditionBySceneNumberAndGroup(sceneNumber,conditionGroup));
+			res.setData(sceneService.getSceneConditionBySceneNumberAndGroup(sceneNumber, conditionGroup));
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("===getSceneConditionsBySceneNumberAndConditionGroup error msg:" + e.getMessage());
@@ -517,14 +520,48 @@ public class SceneController {
 		}
 		return res;
 	}
+
 	@RequestMapping(value = "/getSceneActionsBySceneNumber/{sceneNumber}", method = RequestMethod.GET)
-	ResponseObject<List<TSceneAction>> getSceneActionsBySceneNumber(@PathVariable(value = "sceneNumber")Integer sceneNumber
-			){
+	ResponseObject<List<TSceneAction>> getSceneActionsBySceneNumber(
+			@PathVariable(value = "sceneNumber") Integer sceneNumber) {
 		ResponseObject<List<TSceneAction>> res = new ResponseObject<List<TSceneAction>>();
 		try {
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 			res.setData(sceneService.getSceneActionsBySceneNumber(sceneNumber));
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("===getSceneConditionsBySceneNumberAndConditionGroup error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/updateSceneAction", method = RequestMethod.PUT)
+	ResponseObject updateSceneAction(@RequestBody TSceneAction tSceneAction){
+		ResponseObject res = new ResponseObject();
+		try {
+			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+			sceneService.updateSceneAction(tSceneAction);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("===getSceneConditionsBySceneNumberAndConditionGroup error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/deleteSceneActionBySceneNumberAndActionId/{sceneNumber}/{actionId}", method = RequestMethod.PUT)
+	ResponseObject deleteSceneActionBySceneNumberAndActionId(@PathVariable(value = "sceneNumber") Integer sceneNumber,
+			@PathVariable(value = "actionId") String actionId){
+		ResponseObject res = new ResponseObject();
+		try {
+			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
+			sceneService.deleteSceneActionBySceneNumberAndActionId(sceneNumber,actionId);
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("===getSceneConditionsBySceneNumberAndConditionGroup error msg:" + e.getMessage());

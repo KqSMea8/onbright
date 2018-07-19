@@ -13,9 +13,7 @@ import com.bright.apollo.common.entity.TSceneCondition;
 import com.bright.apollo.common.entity.TSceneConditionExample;
 import com.bright.apollo.dao.scene.mapper.TSceneActionMapper;
 import com.bright.apollo.dao.scene.mapper.TSceneConditionMapper;
-//import org.springframework.beans.factory.annotation.Autowired;
 import com.bright.apollo.dao.scene.mapper.TSceneMapper;
-//import com.bright.apollo.common.entity.TSceneExample;
 import com.bright.apollo.response.SceneInfo;
 import com.bright.apollo.service.SceneService;
 
@@ -388,6 +386,24 @@ public class SceneServiceImpl implements SceneService {
 	public List<TSceneAction> getSceneActionsBySceneNumber(Integer sceneNumber) {
 		
 		return tSceneActionMapper.getSceneActionBySceneNumber(sceneNumber);
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.SceneService#updateSceneAction(com.bright.apollo.common.entity.TSceneAction)  
+	 */
+	@Override
+	public void updateSceneAction(TSceneAction tSceneAction) {
+		tSceneActionMapper.updateSceneAction(tSceneAction);
+		
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.SceneService#deleteSceneActionBySceneNumberAndActionId(java.lang.Integer, java.lang.String)  
+	 */
+	@Override
+	public void deleteSceneActionBySceneNumberAndActionId(Integer sceneNumber, String actionId) {
+		  
+		tSceneActionMapper.deleteSceneActionByBySceneNumberAndActionId(sceneNumber, actionId);
 	}
 
 }
