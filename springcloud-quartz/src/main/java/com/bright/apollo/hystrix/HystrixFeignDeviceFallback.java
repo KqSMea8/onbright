@@ -3,6 +3,7 @@ package com.bright.apollo.hystrix;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
 
 import com.bright.apollo.common.entity.TNvr;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
@@ -17,6 +18,7 @@ import com.bright.apollo.response.ResponseObject;
  *@Since:2018年7月17日  
  *@Version:1.1.0  
  */
+@Component
 public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implements FeignDeviceClient {
 	private Logger logger = Logger.getLogger(getClass());
 

@@ -155,7 +155,7 @@ public class SceneActionThreadPool {
                 for (TSceneAction tSceneAction : tSceneActions) {
                     if (tSceneAction.getNodeType().equals(
                             NodeTypeEnum.single.getValue())) {
-                        TOboxDeviceConfig oboxDeviceConfig = oboxDeviceConfigService.getOboxDeviceConfigById(tSceneAction.getId());
+                        TOboxDeviceConfig oboxDeviceConfig = oboxDeviceConfigService.getTOboxDeviceConfigByDeviceSerialId(tSceneAction.getActionid());
 //                        TOboxDeviceConfig oboxDeviceConfig = DeviceBusiness
 //                                .queryDeviceConfigByID(tSceneAction
 //                                        .getActionID());

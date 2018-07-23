@@ -397,21 +397,15 @@ public class SceneController {
 	public ResponseObject<TScene> addScene(@RequestBody(required = true) TScene scene) {
 		ResponseObject<TScene> res = new ResponseObject<TScene>();
 		try {
-			if (scene.getSceneNumber() != null || scene.getSceneNumber() == 0) {
-				res.setStatus(ResponseEnum.RequestParamError.getStatus());
-				res.setMessage(ResponseEnum.RequestParamError.getMsg());
-			} else {
 				int sceneNumber = sceneService.addScene(scene);
 				if (sceneNumber == 0) {
 					res.setStatus(ResponseEnum.RequestParamError.getStatus());
 					res.setMessage(ResponseEnum.RequestParamError.getMsg());
 				} else {
-					scene.setSceneNumber(sceneNumber);
 					res.setData(scene);
 					res.setStatus(ResponseEnum.AddSuccess.getStatus());
 					res.setMessage(ResponseEnum.AddSuccess.getMsg());
 				}
-			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("===addScene error msg:" + e.getMessage());
@@ -427,7 +421,7 @@ public class SceneController {
 	public ResponseObject addSceneAction(@RequestBody(required = true) TSceneAction tSceneAction) {
 		ResponseObject res = new ResponseObject();
 		try {
-			if (tSceneAction != null && (tSceneAction.getSceneNumber() == null || tSceneAction.getSceneNumber() == 0)) {
+			if (tSceneAction != null && tSceneAction.getSceneNumber() != null && tSceneAction.getSceneNumber() != 0) {
 				sceneService.addSceneAction(tSceneAction);
 				res.setStatus(ResponseEnum.AddSuccess.getStatus());
 				res.setMessage(ResponseEnum.AddSuccess.getMsg());
@@ -451,7 +445,7 @@ public class SceneController {
 		ResponseObject res = new ResponseObject();
 		try {
 			if (tSceneCondition != null
-					&& (tSceneCondition.getSceneNumber() == null || tSceneCondition.getSceneNumber() == 0)) {
+					&& tSceneCondition.getSceneNumber() != null && tSceneCondition.getSceneNumber() != 0) {
 				sceneService.addSceneCondition(tSceneCondition);
 				res.setStatus(ResponseEnum.AddSuccess.getStatus());
 				res.setMessage(ResponseEnum.AddSuccess.getMsg());
@@ -487,7 +481,7 @@ public class SceneController {
 	}
 
 	@RequestMapping(value = "/getSceneBySceneNumber/{sceneNumber}", method = RequestMethod.GET)
-	public ResponseObject<TScene> getScenesByOboxSerialIdAndSceneNumber(
+	public ResponseObject<TScene> getSceneBySceneNumber(
 			@PathVariable(value = "sceneNumber") Integer sceneNumber) {
 		ResponseObject<TScene> res = new ResponseObject<TScene>();
 		try {

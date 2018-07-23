@@ -47,7 +47,7 @@ public interface TOboxDeviceConfigMapper extends BaseMapper<TOboxDeviceConfig, T
 	 */
 	int queryCountDeviceByUserId(Integer userId);
 
-	@Select("select id from t_obox_device_config where obox_id = #{oboxId} and device_rf_addr = #{address}")
+	@Select("select * from t_obox_device_config where obox_id = #{oboxId} and device_rf_addr = #{address}")
 	@Results(value = { @Result(property = "oboxId", column = "obox_id"),
 			@Result(property = "deviceId", column = "device_id"),
 			@Result(property = "lastOpTime", column = "last_op_time"),
@@ -228,8 +228,8 @@ public interface TOboxDeviceConfigMapper extends BaseMapper<TOboxDeviceConfig, T
 	 * @Description:
 	 */
 	@Select(" SELECT * FROM t_obox_device_config a " + 
-			" WHERE a.device_serial_id =#{userId} AND exists "
-			+ " (SELECT 1 FROM t_user_device WHERE user_id =#{serialID} and device_id=a.id)")
+			" WHERE a.device_serial_id =#{serialID} AND exists "
+			+ " (SELECT 1 FROM t_user_device WHERE user_id =#{userId} and device_serial_id=a.device_serial_id)")
 	@Results(value = { @Result(property = "oboxId", column = "obox_id"),
 			@Result(property = "deviceId", column = "device_id"),
 			@Result(property = "lastOpTime", column = "last_op_time"),
@@ -249,5 +249,12 @@ public interface TOboxDeviceConfigMapper extends BaseMapper<TOboxDeviceConfig, T
 	 */
 	@Delete("delete from t_obox_device_config where obox_serial_id = #{serialId}")
 	void deleteTOboxDeviceConfigByOboxSerialId(@Param("serialId") String serialId);
+
+	/**  
+	 * @param id  
+	 * @Description:  
+	 */
+	@Delete("delete from t_obox_device_config where id = #{id}")
+	void deleteTOboxDeviceConfigById(@Param("serialId") Integer id);
 
 }

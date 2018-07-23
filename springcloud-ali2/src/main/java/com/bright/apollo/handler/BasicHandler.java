@@ -18,21 +18,24 @@ import com.bright.apollo.service.SceneService;
 import com.bright.apollo.service.UserDeviceService;
 import com.bright.apollo.service.UserOboxService;
 import com.bright.apollo.service.UserSceneService;
+import com.bright.apollo.service.UserService;
 import com.bright.apollo.session.ClientSession;
+import com.bright.apollo.session.SceneActionThreadPool;
 import com.bright.apollo.session.SessionManager;
 
 @Component
 public abstract class BasicHandler {
 	 
 	protected SceneService sceneService;
-
+	
+	protected SceneActionThreadPool sceneActionThreadPool;
 	 
 	protected SceneConditionService sceneConditionService;
 
-	 
+	protected UserService userService; 
+	
 	protected UserSceneService userSceneService;
-
-	 
+	
 	protected SceneActionService sceneActionService;
 
 	protected OboxService oboxService;
@@ -157,6 +160,22 @@ public abstract class BasicHandler {
 
 	public void setSessionManager(SessionManager sessionManager) {
 		this.sessionManager = sessionManager;
+	}
+
+	public SceneActionThreadPool getSceneActionThreadPool() {
+		return sceneActionThreadPool;
+	}
+
+	public void setSceneActionThreadPool(SceneActionThreadPool sceneActionThreadPool) {
+		this.sceneActionThreadPool = sceneActionThreadPool;
+	}
+
+	public UserService getUserService() {
+		return userService;
+	}
+
+	public void setUserService(UserService userService) {
+		this.userService = userService;
 	}
 	
 }

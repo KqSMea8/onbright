@@ -74,7 +74,8 @@ public class SearchResultHandler extends BasicHandler {
 //                        DeviceBusiness.deleteUserDeviceByDeviceId(deviceConfig.getOboxId());
                         deviceChannelService.deleteDeviceChannel(deviceConfig.getId());
 //                        DeviceBusiness.delDeviceChannel(deviceConfig.getOboxId());
-                        oboxDeviceConfigService.deleteTOboxDeviceConfig(deviceConfig.getId());
+ //                       oboxDeviceConfigService.deleteTOboxDeviceConfig(deviceConfig.getId());
+                        oboxDeviceConfigService.deleteTOboxDeviceConfigById(deviceConfig.getId());
 //                        DeviceBusiness.deleteDeviceById(deviceConfig.getOboxId());
                     }
                 }
@@ -97,7 +98,8 @@ public class SearchResultHandler extends BasicHandler {
 //                        DeviceBusiness.deleteUserDeviceByDeviceId(deviceConfig.getOboxId());
                         deviceChannelService.deleteDeviceChannel(deviceConfig.getOboxId());
 //                        DeviceBusiness.delDeviceChannel(deviceConfig.getOboxId());
-                        oboxDeviceConfigService.deleteTOboxDeviceConfig(deviceConfig.getOboxId());
+//                        oboxDeviceConfigService.deleteTOboxDeviceConfig(deviceConfig.getOboxId());
+                        oboxDeviceConfigService.deleteTOboxDeviceConfigById(deviceConfig.getId());
 //                        DeviceBusiness.deleteDeviceById(deviceConfig.getOboxId());
                     }
                 }else{

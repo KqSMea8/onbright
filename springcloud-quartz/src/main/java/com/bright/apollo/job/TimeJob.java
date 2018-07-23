@@ -35,13 +35,13 @@ public class TimeJob implements Job {
 	 * 
 	 * @see org.quartz.Job#execute(org.quartz.JobExecutionContext)
 	 */
-	@Autowired
+	@Autowired(required=true)
 	private FeignSceneClient feignSceneClient;
 
-	@Autowired
+	@Autowired(required=true)
 	private FeignAliClient feignAliClient;
 
-	@Autowired
+	@Autowired(required=true)
 	private FeignDeviceClient feignDeviceClient;
 
 	@Override

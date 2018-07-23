@@ -1,6 +1,7 @@
 package com.bright.apollo.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -101,25 +102,9 @@ public class FacadeController {
 			} else {
 				// send cmd or use a facade to send the order to ali
 				ResponseObject<OboxResp> releaseObox = feignAliClient.releaseObox(oboxSerialId);
-				if (releaseObox != null && releaseObox.getStatus() == ResponseEnum.SelectSuccess.getStatus()
-						&& releaseObox.getData() != null) {
-					OboxResp oboxResp = releaseObox.getData();
-					if (oboxResp.getType() != Type.success) {
-						if (oboxResp.getType() == Type.obox_process_failure
-								|| oboxResp.getType() == Type.socket_write_error) {
-							res.setStatus(ResponseEnum.SendOboxFail.getStatus());
-							res.setMessage(ResponseEnum.SendOboxFail.getMsg());
-						} else if (oboxResp.getType() == Type.reply_timeout) {
-							res.setStatus(ResponseEnum.SendOboxTimeOut.getStatus());
-							res.setMessage(ResponseEnum.SendOboxTimeOut.getMsg());
-						} else {
-							res.setStatus(ResponseEnum.SendOboxUnKnowFail.getStatus());
-							res.setMessage(ResponseEnum.SendOboxUnKnowFail.getMsg());
-						}
-					} else {
-						res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
-						res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
-					}
+				if (releaseObox != null && releaseObox.getStatus() == ResponseEnum.SelectSuccess.getStatus()) {
+					res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+					res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
 				} else {
 					res.setStatus(ResponseEnum.SendOboxError.getStatus());
 					res.setMessage(ResponseEnum.SendOboxError.getMsg());
@@ -755,17 +740,23 @@ public class FacadeController {
 	@ApiOperation(value = "add local scene ", httpMethod = "POST", produces = "application/json")
 	@ApiResponse(code = 200, message = "SelectSuccess", response = ResponseObject.class)
 	@RequestMapping(value = "/addLocalScene", method = RequestMethod.POST)
-	public ResponseObject addLocalScene(@RequestBody(required = true) SceneDTO sceneDTO) {
-		ResponseObject res = new ResponseObject();
+	public ResponseObject<Map<String, Object>> addLocalScene(@RequestBody(required = true) SceneDTO sceneDTO) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		Map<String, Object> map = new HashMap<String, Object>();
 		try {
 			String sceneName = sceneDTO.getSceneName();
 			String sceneType = sceneDTO.getSceneType();
 			Byte msgAlter = sceneDTO.getMsgAlter();
 			String sceneGroup = sceneDTO.getSceneGroup();
 			Integer sceneNumber = null;
+			Byte alterNeed = sceneDTO.getAlterNeed();
 			TScene tScene = new TScene();
-			if (msgAlter != null) {
-				tScene.setMessageAlter(msgAlter);
+			map.put("scene_type", sceneType);
+			if (msgAlter == null || msgAlter == (byte) 0) {
+				tScene.setMessageAlter((byte) 0);
+			}
+			if (alterNeed == null || alterNeed == (byte) 0) {
+				tScene.setAlterNeed((byte) 0);
 			}
 			if (!StringUtils.isEmpty(sceneGroup)) {
 				tScene.setSceneGroup(sceneGroup);
@@ -890,14 +881,10 @@ public class FacadeController {
 				// tUserScene.setUserId(Integer.parseInt(uid));
 				// SceneBusiness.addUserScene(tUserScene);
 				// }
-
-				/*
-				 * jsonObject .addProperty("scene_number",
-				 * dbScene.getSceneNumber());
-				 * jsonObject.addProperty("obox_scene_number",
-				 * dbScene.getOboxSceneNumber());
-				 * jsonObject.addProperty("obox_serial_id", oboxSerialId);
-				 */
+				map.put("scene_number", dbScene.getSceneNumber());
+				map.put("obox_scene_number", dbScene.getOboxSceneNumber());
+				map.put("obox_serial_id", oboxSerialId);
+				res.setData(map);
 				res.setStatus(ResponseEnum.AddSuccess.getStatus());
 				res.setMessage(ResponseEnum.AddSuccess.getMsg());
 			} else {
@@ -917,8 +904,10 @@ public class FacadeController {
 	@ApiOperation(value = "add server scene ", httpMethod = "POST", produces = "application/json")
 	@ApiResponse(code = 200, message = "SelectSuccess", response = ResponseObject.class)
 	@RequestMapping(value = "/addServerScene", method = RequestMethod.POST)
-	public ResponseObject addServerScene(@RequestBody(required = true) SceneDTO sceneDTO) {
-		ResponseObject res = new ResponseObject();
+	public ResponseObject<Map<String, Object>> addServerScene(@RequestBody(required = true) SceneDTO sceneDTO) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("scene_type", SceneTypeEnum.server.getValue());
 		try {
 			logger.info("====add server scene====");
 			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -939,6 +928,7 @@ public class FacadeController {
 			String sceneType = sceneDTO.getSceneType();
 			Byte msgAlter = sceneDTO.getMsgAlter();
 			String sceneGroup = sceneDTO.getSceneGroup();
+			Byte alterNeed = sceneDTO.getAlterNeed();
 			if (StringUtils.isEmpty(sceneName)) {
 				logger.error("====sceneName can't be null====");
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
@@ -949,14 +939,16 @@ public class FacadeController {
 				sceneType = "00";
 			}
 			TScene tScene = new TScene();
-			if (msgAlter != null) {
-				tScene.setMessageAlter(msgAlter);
+			if (msgAlter == null || msgAlter == (byte) 0) {
+				tScene.setMessageAlter((byte) 0);
+			}
+			if (alterNeed == null || alterNeed == (byte) 0) {
+				tScene.setAlterNeed((byte) 0);
 			}
 			if (!StringUtils.isEmpty(sceneGroup)) {
 				tScene.setSceneGroup(sceneGroup);
 			}
 			tScene.setSceneName(sceneName);
-			tScene.setSceneType(sceneType);
 			tScene.setSceneType(sceneType);
 			tScene.setSceneStatus(sceneDTO.getSceneStatus());
 			ResponseObject<TScene> sceneRes = feignSceneClient.addScene(tScene);
@@ -967,6 +959,7 @@ public class FacadeController {
 				return res;
 			}
 			int ret = sceneRes.getData().getSceneNumber();
+			map.put("scene_number", ret);
 			// add user scene
 			TUserScene tUserScene = new TUserScene();
 			tUserScene.setSceneNumber(ret);
@@ -1082,6 +1075,9 @@ public class FacadeController {
 					}
 				}
 			}
+			res.setData(map);
+			res.setStatus(ResponseEnum.AddSuccess.getStatus());
+			res.setMessage(ResponseEnum.AddSuccess.getMsg());
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			e.printStackTrace();
@@ -1096,8 +1092,9 @@ public class FacadeController {
 	@ApiOperation(value = "modify server scene ", httpMethod = "PUT", produces = "application/json")
 	@ApiResponse(code = 200, message = "SelectSuccess", response = ResponseObject.class)
 	@RequestMapping(value = "/modifyServerScene", method = RequestMethod.PUT)
-	public ResponseObject modifyServerScene(@RequestBody(required = true) SceneDTO sceneDTO) {
-		ResponseObject res = new ResponseObject();
+	public ResponseObject<Map<String, Object>> modifyServerScene(@RequestBody(required = true) SceneDTO sceneDTO) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		Map<String, Object> map = new HashMap<String, Object>();
 		try {
 			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			if (StringUtils.isEmpty(principal.getUsername())) {
@@ -1332,6 +1329,11 @@ public class FacadeController {
 					}
 				}
 			}
+			map.put("scene_number", tScene.getSceneNumber());
+			map.put("scene_name", tScene.getSceneName());
+			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+			res.setData(map);
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			e.printStackTrace();
@@ -1342,11 +1344,12 @@ public class FacadeController {
 	}
 
 	@SuppressWarnings("rawtypes")
-	@ApiOperation(value = "modify server scene ", httpMethod = "PUT", produces = "application/json")
+	@ApiOperation(value = "modify local scene ", httpMethod = "PUT", produces = "application/json")
 	@ApiResponse(code = 200, message = "SelectSuccess", response = ResponseObject.class)
 	@RequestMapping(value = "/modifyLocalScene", method = RequestMethod.PUT)
-	public ResponseObject modifyLocalScene(@RequestBody(required = true) SceneDTO sceneDTO) {
-		ResponseObject res = new ResponseObject();
+	public ResponseObject<Map<String, Object>> modifyLocalScene(@RequestBody(required = true) SceneDTO sceneDTO) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		Map<String, Object> map = new HashMap<String, Object>();
 		try {
 			// fail safe
 			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -1602,24 +1605,32 @@ public class FacadeController {
 							needDTOs.add(sceneActionDTO);
 						} else if (tSceneAction.getNodeType().equals(NodeTypeEnum.camera.getValue())) {
 							feignSceneClient.deleteSceneActionBySceneNumberAndActionId(tScene.getSceneNumber(),
-									tSceneAction.getId().intValue()+"");
-							//SceneBusiness.deleteSceneActionBySceneNumberAndActionId(tScene.getSceneNumber(),
-							//		tSceneAction.getId());
+									tSceneAction.getId().intValue() + "");
+							// SceneBusiness.deleteSceneActionBySceneNumberAndActionId(tScene.getSceneNumber(),
+							// tSceneAction.getId());
 						} else if (tSceneAction.getNodeType().equals(NodeTypeEnum.nvr.getValue())) {
-							//SceneBusiness.deleteSceneActionBySceneNumberAndActionId(tScene.getSceneNumber(),
-							//		tSceneAction.getId());
+							// SceneBusiness.deleteSceneActionBySceneNumberAndActionId(tScene.getSceneNumber(),
+							// tSceneAction.getId());
 							feignSceneClient.deleteSceneActionBySceneNumberAndActionId(tScene.getSceneNumber(),
-									tSceneAction.getId().intValue()+"");
+									tSceneAction.getId().intValue() + "");
 						}
 					}
 				}
-				feignAliClient.addLocalSceneAction(needDTOs, tScene.getOboxSceneNumber(),
-						oboxSerialId);
-				//new Thread(new sceneAction(needDTOs, tScene.getOboxSceneNumber(), tObox)).start();
+				feignAliClient.addLocalSceneAction(needDTOs, tScene.getOboxSceneNumber(), oboxSerialId);
+				// new Thread(new sceneAction(needDTOs,
+				// tScene.getOboxSceneNumber(), tObox)).start();
 			}
-		//	jsonObject.addProperty("obox_scene_number", tScene.getOboxSceneNumber());
-		//	jsonObject.addProperty("obox_serial_id", tScene.getOboxSerialId());
-
+			// jsonObject.addProperty("obox_scene_number",
+			// tScene.getOboxSceneNumber());
+			// jsonObject.addProperty("obox_serial_id",
+			// tScene.getOboxSerialId());
+			map.put("obox_serial_id", tScene.getOboxSerialId());
+			map.put("obox_scene_number", tScene.getOboxSceneNumber());
+			map.put("scene_number", tScene.getSceneNumber());
+			map.put("scene_name", tScene.getSceneName());
+			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+			res.setData(map);
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			e.printStackTrace();

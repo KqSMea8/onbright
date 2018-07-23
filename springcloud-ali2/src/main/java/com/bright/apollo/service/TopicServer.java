@@ -104,7 +104,7 @@ public class TopicServer {
 			// response.getErrorMessage());
 		}
 	}
-
+	 
 	private RRpcResponse sendRPCRequest(RRpcRequest request, String region, RRpcResponse response) {
 		logger.info(" ====== sendRPCRequest start ====== ");
 		try {
@@ -123,6 +123,7 @@ public class TopicServer {
 		}
 	}
 
+ 
 	public void pubTopic(CMDEnum cmd, byte[] data, String deviceSerial) throws Exception {
 		logger.info(" ====== pubTopic start ====== ");
 		String mString = com.bright.apollo.tool.StringUtils.bytes2String(cmd, data, packageLength, head);
@@ -144,7 +145,6 @@ public class TopicServer {
 
 		logger.info(" ====== pubTopic end ====== ");
 	}
-
 	public void pubTopicDev(JSONObject object, String productKey, String deviceName, AliRegionEnum eAliRegionEnum)
 			throws Exception {
 		logger.info(" ====== pubTopicDev start ====== ");

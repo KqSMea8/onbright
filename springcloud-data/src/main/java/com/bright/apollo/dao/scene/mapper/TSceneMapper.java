@@ -2,12 +2,21 @@ package com.bright.apollo.dao.scene.mapper;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectKey;
+import org.apache.ibatis.annotations.Update;
+import org.springframework.stereotype.Component;
 
 import com.bright.apollo.common.entity.TScene;
 import com.bright.apollo.common.entity.TSceneExample;
 import com.bright.apollo.dao.mapper.base.BaseMapper;
-import org.springframework.stereotype.Component;
 
 @Mapper
 @Component
@@ -43,7 +52,8 @@ public interface TSceneMapper extends BaseMapper<TScene, TSceneExample, Integer>
 
 	@Delete("delete from t_scene where obox_serial_id = #{oboxSerialId} and obox_scene_number = #{oboxSceneNumber}")
 	void deleteSceneByOboxSerialIdAndSceneNum(@Param("oboxSerialId") String oboxSerialId,@Param("oboxSceneNumber") int oboxSceneNumber);
-
+	
+	@SelectKey(statement = "select LAST_INSERT_ID()",keyProperty = "sceneNumber",before = false,resultType = int.class) 
 	@Insert("insert into t_scene (scene_name,\n" +
 			"obox_serial_id,\n" +
 			"obox_scene_number,\n" +
@@ -58,7 +68,7 @@ public interface TSceneMapper extends BaseMapper<TScene, TSceneExample, Integer>
 			"#{oboxSceneNumber},#{sceneStatus},#{sceneType}," +
 			"#{msgAlter},#{lastOpTime},#{sceneRun},#{license}," +
 			"#{alterNeed},#{sceneGroup})")
-	@Options(useGeneratedKeys=true, keyProperty="scene_number", keyColumn="scene_number")
+	@Options(useGeneratedKeys=true, keyProperty="sceneNumber", keyColumn="scene_number")
 	int addScene(TScene scene);
 
 	@Update("update t_scene set scene_name = #{sceneName},\n" +
@@ -76,7 +86,19 @@ public interface TSceneMapper extends BaseMapper<TScene, TSceneExample, Integer>
 	@Options(useGeneratedKeys=true, keyProperty="scene_number", keyColumn="scene_number")
 	int updateScene(TScene scene);
 
-	@Select("select * from t_scene where obox_scene_number = #{sceneNumber}")
+	@Select("select * from t_scene where scene_number = #{sceneNumber}")
+	@Results(value = { @Result(column = "scene_name", property = "sceneName"),
+			@Result(column = "scene_number", property = "sceneNumber"),
+			@Result(column = "obox_serial_id", property = "oboxSerialId"),
+			@Result(column = "obox_scene_number", property = "oboxSceneNumber"),
+			@Result(column = "last_op_time", property = "lastOpTime"), 
+			@Result(column = "scene_status", property = "sceneStatus"),
+			@Result(column = "scene_type", property = "sceneType"),
+			@Result(column = "msg_alter", property = "msgAlter"),
+			@Result(column = "scene_run", property = "sceneRun"),
+			@Result(column = "license", property = "license"),
+			@Result(column = "alter_need", property = "alterNeed"),
+			@Result(column = "scene_group", property = "sceneGroup")})
 	TScene getSceneBySceneNumber(@Param("sceneNumber") int sceneNumber);
 
 	@Select("select * from t_scene")

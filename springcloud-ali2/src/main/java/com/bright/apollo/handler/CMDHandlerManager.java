@@ -20,8 +20,10 @@ import com.bright.apollo.service.TopicServer;
 import com.bright.apollo.service.UserDeviceService;
 import com.bright.apollo.service.UserOboxService;
 import com.bright.apollo.service.UserSceneService;
+import com.bright.apollo.service.UserService;
 import com.bright.apollo.session.ClientSession;
 import com.bright.apollo.session.PushThreadPool;
+import com.bright.apollo.session.SceneActionThreadPool;
 import com.bright.apollo.session.SessionManager;
 import com.bright.apollo.tool.ByteHelper;
 import com.bright.apollo.tool.EncDecHelper;
@@ -50,6 +52,9 @@ public class CMDHandlerManager {
     private AliDevCache aliDevCache;
 
     @Autowired
+    private UserService userService;
+    
+    @Autowired
     private AliDeviceService aliDeviceService;
 
     @Autowired
@@ -59,7 +64,10 @@ public class CMDHandlerManager {
     private PushThreadPool pushThreadPool;
     @Autowired
     private SceneService sceneService;
-
+    
+    @Autowired
+    private SceneActionThreadPool sceneActionThreadPool;
+    
     @Autowired
     private SceneConditionService sceneConditionService;
 
@@ -392,6 +400,8 @@ public class CMDHandlerManager {
 
                 //inject the obj to the handler
                 if(handler.getOboxService()==null){
+                	handler.setUserService(userService);
+                	handler.setSceneActionThreadPool(sceneActionThreadPool);
                 	handler.setDeviceChannelService(deviceChannelService);
                 	handler.setOboxDeviceConfigService(oboxDeviceConfigService);
                 	handler.setOboxService(oboxService);

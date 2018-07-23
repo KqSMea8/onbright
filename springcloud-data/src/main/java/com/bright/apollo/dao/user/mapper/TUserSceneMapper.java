@@ -28,8 +28,7 @@ public interface TUserSceneMapper extends BaseMapper<TUserScene, TUserSceneExamp
 	 * @return  
 	 * @Description:  
 	 */
-    @Insert("insert into t_user_scene (scene_number,\n" +
-			"user_id) values(#{sceneNumber},#{userId}")
+    @Insert("insert into t_user_scene (scene_number,user_id) values(#{sceneNumber},#{userId})")
 	void addUserScene(TUserScene tUserScene);
 
 	/**  

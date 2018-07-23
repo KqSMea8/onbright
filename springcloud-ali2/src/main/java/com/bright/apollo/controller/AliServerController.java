@@ -1,6 +1,7 @@
 package com.bright.apollo.controller;
 
 import java.util.List;
+import java.util.concurrent.Future;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -299,9 +300,10 @@ public class AliServerController {
 				byte[] groupbytes = ByteHelper.hexStringToBytes(sceneGroup);
 				System.arraycopy(groupbytes, 0, bodyBytes, 19, groupbytes.length);
 			}
-			topicServer.request(CMDEnum.setting_sc_info, bodyBytes, oboxSerialId);
+ 			Future<OboxResp> future = topicServer.request(CMDEnum.setting_sc_info, bodyBytes, oboxSerialId);
 			res.setStatus(ResponseEnum.AddSuccess.getStatus());
 			res.setMessage(ResponseEnum.AddSuccess.getMsg());
+			res.setData(future.get());
 		} catch (Exception e) {
 			e.printStackTrace();
 			res.setStatus(ResponseEnum.Error.getStatus());

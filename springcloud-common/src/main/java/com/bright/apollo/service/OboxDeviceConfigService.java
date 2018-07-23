@@ -72,4 +72,10 @@ public interface OboxDeviceConfigService {
 	 */
 	void deleteTOboxDeviceConfigByOboxSerialId(String serialId);
 
+	/**  
+	 * @param id  
+	 * @Description:  
+	 */
+	void deleteTOboxDeviceConfigById(Integer id);
+
 }

@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 /**  
  *@Title:  
@@ -15,46 +17,46 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SceneConditionDTO implements Serializable{
-
+	
 	/**  
 	 *   
 	 */
-	private static final long serialVersionUID = -7766923430552548587L;
+	private static final long serialVersionUID = 6365894444674300159L;
 
-	
-	@JsonProperty("condition")
+	@Expose
+	@SerializedName("condition")
 	private java.lang.String condition;//
 	
-	
-	@JsonProperty("condition_type")
+	@Expose
+	@SerializedName("condition_type")
 	private java.lang.String conditionType;//
 	
-	
-	@JsonProperty("conditionID")
+	@Expose
+	@SerializedName("conditionID")
 	private java.lang.String conditionID;//
 	
-	
-	@JsonProperty("serialId")
+	@Expose
+	@SerializedName("serialId")
 	private java.lang.String deviceSerialId;//remark:;length:10; not null,default:null
 	
-	
-	@JsonProperty("obox_serial_id")
+	@Expose
+	@SerializedName("obox_serial_id")
 	private java.lang.String oboxSerialId;//remark:;length:128; not null,default:null
 	
-	
-	@JsonProperty("addr")
+	@Expose
+	@SerializedName("addr")
 	private java.lang.String deviceRfAddr;//remark:;length:128; not null,default:null
 	
 	
-	
-	@JsonProperty("device_type")
+	@Expose
+	@SerializedName("device_type")
 	private java.lang.String deviceType;//remark:;length:128; not null,default:null
 	
-	
-	@JsonProperty("device_child_type")
+	@Expose
+	@SerializedName("device_child_type")
 	private java.lang.String deviceChildType;//remark:;length:128; not null,default:null
 	
-	@JsonProperty("oboxs")
+	@SerializedName("oboxs")
 	private List<String> oboxs;
  
 	public java.lang.String getCondition() {
@@ -130,4 +132,5 @@ public class SceneConditionDTO implements Serializable{
 	}
  
 
+	 
 }

@@ -169,7 +169,7 @@ public class CommonController {
 					&& (sceneDTO.getSceneType().equals(SceneTypeEnum.local.getValue()))) {
 				return facadeController.addLocalScene(sceneDTO);
 			}
-			// add delete,modify
+			// add modify
 
 		}
 		res = new ResponseObject();

@@ -161,7 +161,7 @@ public interface FeignSceneClient {
 	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
-	@RequestMapping(value = "/addSceneCondition", method = RequestMethod.POST)
+	@RequestMapping(value = "/scene/addSceneCondition", method = RequestMethod.POST)
 	ResponseObject addSceneCondition(@RequestBody(required = true) TSceneCondition tSceneCondition);
 
 	/**

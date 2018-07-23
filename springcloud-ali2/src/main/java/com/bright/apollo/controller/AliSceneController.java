@@ -41,7 +41,7 @@ public class AliSceneController {
 	private OboxDeviceConfigService oboxDeviceConfigService;
 	
 	@SuppressWarnings("rawtypes")
-	@RequestMapping(value = "/addSceneAction", method = RequestMethod.POST)
+	@RequestMapping(value = "/addSceneAction/{sceneNumber}", method = RequestMethod.POST)
 	public ResponseObject addSceneAction(@PathVariable(value = "sceneNumber") Integer sceneNumber) {
 		ResponseObject res = new ResponseObject();
 		try {
