@@ -35,5 +35,21 @@ public interface FeignQuartzClient {
 	@RequestMapping(value = "/quartz/deleteJob/{jobName}", method = RequestMethod.DELETE, produces = "application/json")
 	public ResponseObject deleteJob(@PathVariable(value="jobName",required=true) String jobName);
 
+	/**  
+	 * @param jobName  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/quartz/pauseJob/{jobName}", method = RequestMethod.PUT, produces = "application/json")
+	public ResponseObject pauseJob(@PathVariable(value="jobName",required=true) String jobName);
+
+	/**  
+	 * @param jobName  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/quartz/resumeJob/{jobName}", method = RequestMethod.PUT, produces = "application/json")
+	public ResponseObject resumeJob(@PathVariable(value="jobName",required=true) String jobName);
+
  
 }

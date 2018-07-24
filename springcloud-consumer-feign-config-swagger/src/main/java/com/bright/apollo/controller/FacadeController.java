@@ -2072,6 +2072,214 @@ public class FacadeController {
 		return res;
 	}
 
+	@ApiOperation(value = "delete scene", httpMethod = "DELETE", produces = "application/json")
+	@ApiResponse(code = 200, message = "deleteSuccess", response = ResponseObject.class)
+	@RequestMapping(value = "/deleteScene/{sceneNumber}", method = RequestMethod.DELETE)
+	public ResponseObject<Map<String, Object>> deleteScene(@PathVariable(value = "sceneNumber") Integer sceneNumber) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		try {
+			ResponseObject<TScene> sceneRes = feignSceneClient.getSceneBySceneNumber(sceneNumber);
+			Map<String, Object> map = new HashMap<String, Object>();
+			if (sceneRes == null || sceneRes.getData() == null
+					|| sceneRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+			} else {
+				TScene scene = sceneRes.getData();
+				if (scene.getSceneType() == SceneTypeEnum.server.getValue()) {
+					ResponseObject<List<TSceneCondition>> sceneConditionsRes = feignSceneClient
+							.getSceneConditionsBySceneNumber(sceneNumber);
+					if (sceneConditionsRes != null && sceneConditionsRes.getData() != null
+							&& sceneConditionsRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()) {
+						List<TSceneCondition> tSceneConditions = sceneConditionsRes.getData();
+						for (TSceneCondition tSceneCondition : tSceneConditions) {
+							if (tSceneCondition.getSerialid() == null) {
+								feignQuartzClient.deleteJob(scene.getSceneName() + "_"
+										+ String.format("%d", tSceneCondition.getConditionGroup()));
+								break;
+							}
+						}
+						feignSceneClient.deleteSceneConditionBySceneNumber(sceneNumber);
+					}
+				} else if (scene.getSceneType() == SceneTypeEnum.local.getValue()) {
+					ResponseObject<TObox> oboxRes = feignOboxClient.getObox(scene.getOboxSerialId());
+					if (oboxRes != null && oboxRes.getData() != null
+							&& oboxRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()) {
+						feignAliClient.deleteLocalScene(scene.getOboxSceneNumber(), scene.getSceneName(),
+								oboxRes.getData().getOboxSerialId());
+					}
+				}
+				feignUserClient.deleteUserSceneBySceneNumber(sceneNumber);
+				// SceneBusiness.deleteUserScene(tScene.getSceneNumber());
+				feignSceneClient.deleteSceneActionsBySceneNumber(sceneNumber);
+				// SceneBusiness.deleteSceneActionsBySceneNumber(tScene
+				// .getSceneNumber());
+				feignSceneClient.deleteScene(sceneNumber);
+				// SceneBusiness.deleteSceneBySceneNumber(tScene.getSceneNumber());
+				// SceneBusiness.deleteSceneLocationBySceneNumber(tScene
+				// .getSceneNumber());
+				res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+				res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
+				// JsonObject jsonObject = respRight();
+				map.put("scene_number", scene.getSceneNumber());
+				// jsonObject.addProperty("scene_number",
+				// tScene.getSceneNumber());
+				map.put("obox_scene_number", scene.getOboxSceneNumber());
+				// jsonObject.addProperty("obox_scene_number",
+				// tScene.getOboxSceneNumber());
+				map.put("obox_serial_id", scene.getOboxSerialId());
+				// jsonObject.addProperty("obox_serial_id",
+				// tScene.getOboxSerialId());
+				// jsonObject.addProperty("scene_status", sceneStatus);
+				map.put("scene_status", "03");
+				// return jsonObject;
+				res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+				res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
+				res.setData(map);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	@ApiOperation(value = "excute scene", httpMethod = "PUT", produces = "application/json")
+	@ApiResponse(code = 200, message = "SelectSuccess", response = ResponseObject.class)
+	@RequestMapping(value = "/excuteScene/{sceneNumber}", method = RequestMethod.PUT)
+	public ResponseObject<Map<String, Object>> excuteScene(@PathVariable(value = "sceneNumber") Integer sceneNumber) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			ResponseObject<TScene> sceneRes = feignSceneClient.getSceneBySceneNumber(sceneNumber);
+			if (sceneRes == null || sceneRes.getData() == null
+					|| sceneRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+			} else {
+				TScene scene = sceneRes.getData();
+				if (scene.getSceneType().equals("00")) {
+					if (scene.getSceneRun() == 0) {
+						scene.setSceneRun((byte) 1);
+						scene.setAlterNeed((byte) 1);
+						feignSceneClient.updateScene(scene);
+						// SceneBusiness.updateScene(tScene);
+						// sceneActionThreadPool.addSceneAction(tScene.getSceneNumber());
+						feignAliClient.addSceneAction(sceneNumber);
+					}
+				} else {
+					ResponseObject<TObox> oboxRes = feignOboxClient.getObox(scene.getOboxSerialId());
+					if (oboxRes != null && oboxRes.getData() != null
+							&& oboxRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()) {
+						// TObox obox = oboxRes.getData();
+						feignAliClient.excuteLocalScene(scene.getOboxSceneNumber(), scene.getSceneName(),
+								oboxRes.getData().getOboxSerialId());
+					}
+				}
+				map.put("scene_number", sceneNumber);
+				// jsonObject.addProperty("scene_number",
+				// tScene.getSceneNumber());
+				map.put("scene_type", scene.getSceneType());
+				// jsonObject.addProperty("scene_type", tScene.getSceneType());
+				String oboxSerialId = scene.getOboxSerialId();
+				if (StringUtils.isEmpty(oboxSerialId))
+					oboxSerialId = null;
+				// jsonObject
+				// .addProperty("obox_scene_number",
+				// tScene.getOboxSceneNumber());
+				map.put("obox_scene_number", scene.getOboxSceneNumber());
+				map.put("obox_serial_id", oboxSerialId);
+				// jsonObject.addProperty("obox_serial_id",oboxSerialId);
+				map.put("scene_status", "02");
+				// jsonObject.addProperty("scene_status", sceneStatus);
+				// return jsonObject;
+				res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+				res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+				res.setData(map);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	@ApiOperation(value = "enable/disable scene", httpMethod = "PUT", produces = "application/json")
+	@ApiResponse(code = 200, message = "UpdateSuccess", response = ResponseObject.class)
+	@RequestMapping(value = "/enableScene/{sceneNumber}/{sceneStatus}", method = RequestMethod.PUT)
+	public ResponseObject<Map<String, Object>> enableScene(@PathVariable(value = "sceneNumber") Integer sceneNumber,
+			@PathVariable(value = "sceneStatus") String sceneStatus) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			ResponseObject<TScene> sceneRes = feignSceneClient.getSceneBySceneNumber(sceneNumber);
+			if (sceneRes == null || sceneRes.getData() == null
+					|| sceneRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+			} else {
+				TScene scene = sceneRes.getData();
+				if (scene.getSceneType().equals("00")) {
+					scene.setSceneStatus((byte) Integer.parseInt(sceneStatus, 16));
+					ResponseObject<List<TSceneCondition>> sceneConditions = feignSceneClient
+							.getSceneConditionsBySceneNumber(sceneNumber);
+					if (sceneConditions != null && sceneConditions.getData() != null
+							&& sceneConditions.getStatus() == ResponseEnum.SelectSuccess.getStatus()) {
+						// QuartzService quartzService = new QuartzService();
+						List<TSceneCondition> tSceneConditions = sceneConditions.getData();
+						for (TSceneCondition tSceneCondition : tSceneConditions) {
+							if (tSceneCondition.getSerialid() == null) {
+								if (sceneStatus.equals("00")) {
+									// disable
+									feignQuartzClient.pauseJob(scene.getSceneName() + "_"
+											+ String.format("%d", tSceneCondition.getConditionGroup()));
+								} else if (sceneStatus.equals("01")) {
+									feignQuartzClient.resumeJob(scene.getSceneName() + "_"
+											+ String.format("%d", tSceneCondition.getConditionGroup()));
+								}
+							}
+						}
+					}
+					feignSceneClient.updateScene(scene);
+				} else {
+					ResponseObject<TObox> oboxRes = feignOboxClient.getObox(scene.getOboxSerialId());
+					if (oboxRes != null && oboxRes.getData() != null
+							&& oboxRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()) {
+						feignAliClient.excuteLocalScene(scene.getOboxSceneNumber(), scene.getSceneName(),
+								oboxRes.getData().getOboxSerialId(),sceneStatus);
+					}
+				}
+				map.put("scene_number", sceneNumber);
+				// jsonObject.addProperty("scene_number",
+				// tScene.getSceneNumber());
+				map.put("scene_type", scene.getSceneType());
+				// jsonObject.addProperty("scene_type", tScene.getSceneType());
+				String oboxSerialId = scene.getOboxSerialId();
+				if (StringUtils.isEmpty(oboxSerialId))
+					oboxSerialId = null;
+				// jsonObject
+				// .addProperty("obox_scene_number",
+				// tScene.getOboxSceneNumber());
+				map.put("obox_scene_number", scene.getOboxSceneNumber());
+				map.put("obox_serial_id", oboxSerialId);
+				// jsonObject.addProperty("obox_serial_id",oboxSerialId);
+				map.put("scene_status", "02");
+				// jsonObject.addProperty("scene_status", sceneStatus);
+				// return jsonObject;
+				res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+				res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+				res.setData(map);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	
 	/**
 	 * @param sceneConditionDTOs
 	 * @param oboxSerialId

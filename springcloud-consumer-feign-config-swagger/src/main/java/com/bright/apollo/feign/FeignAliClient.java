@@ -108,13 +108,14 @@ public interface FeignAliClient {
 	/**
 	 * @param oboxSerialId
 	 * @param status
-	 * @param string 
+	 * @param string
 	 * @return
 	 * @Description:
 	 */
 	@RequestMapping(value = "/aliService/setDeviceStatus/{oboxSerialId}", method = RequestMethod.PUT)
 	ResponseObject<OboxResp> setDeviceStatus(@PathVariable(required = true, value = "oboxSerialId") String oboxSerialId,
-			@RequestParam(required = true, value = "status") String status, @RequestParam(required = true, value = "rfAddr") String rfAddr);
+			@RequestParam(required = true, value = "status") String status,
+			@RequestParam(required = true, value = "rfAddr") String rfAddr);
 
 	/**
 	 * @param sceneName
@@ -162,32 +163,75 @@ public interface FeignAliClient {
 			@PathVariable(required = true, value = "sceneNumber") Integer sceneNumber,
 			@PathVariable(required = true, value = "oboxSerialId") String oboxSerialId);
 
-	/**  
+	/**
 	 * @param data
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
 	@RequestMapping(value = "/aliDevice/getSearchNewDevice", method = RequestMethod.PUT)
-	ResponseObject<List<Map<String, String>>> getSearchNewDevice(@RequestBody(required = true)  TObox obox);
+	ResponseObject<List<Map<String, String>>> getSearchNewDevice(@RequestBody(required = true) TObox obox);
 
-	/**  
-	 *   
-	 * @Description:  
+	/**
+	 * 
+	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/aliScene/setLocalScene/{sceneStatus}/{oboxSceneNumber}/{sceneName}/{oboxSerialId}", method = RequestMethod.PUT)
-	ResponseObject setLocalScene(@PathVariable(value = "sceneStatus")Byte sceneStatus,
-			@PathVariable(value = "oboxSceneNumber")Integer oboxSceneNumber,
-			@PathVariable(value = "sceneName")String sceneName,
-			@PathVariable(value = "oboxSerialId")String oboxSerialId,
-			@RequestParam(required=false ,value="groupAddr") String groupAddr
-			);
+	ResponseObject setLocalScene(@PathVariable(value = "sceneStatus") Byte sceneStatus,
+			@PathVariable(value = "oboxSceneNumber") Integer oboxSceneNumber,
+			@PathVariable(value = "sceneName") String sceneName,
+			@PathVariable(value = "oboxSerialId") String oboxSerialId,
+			@RequestParam(required = false, value = "groupAddr") String groupAddr);
 
-	 
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/aliScene/modifyLocalSceneCondition/{oboxSceneNumber}/{oboxSerialId}/{userId}", method = RequestMethod.PUT)
 	ResponseObject modifyLocalSceneCondition(@PathVariable(value = "oboxSceneNumber") Integer oboxSceneNumber,
-			@PathVariable(value = "oboxSerialId") String oboxSerialId,
-			@PathVariable(value = "userId") Integer userId,
+			@PathVariable(value = "oboxSerialId") String oboxSerialId, @PathVariable(value = "userId") Integer userId,
 			@RequestBody List<List<SceneConditionDTO>> sceneConditionDTOs);
+
+	/**
+	 * @param oboxSceneNumber
+	 * @param sceneName
+	 * @param oboxSerialId
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/aliScene/deleteLocalScene/{oboxSceneNumber}/{sceneName}/{oboxSerialId}", method = RequestMethod.DELETE)
+	ResponseObject deleteLocalScene(@PathVariable(value = "oboxSceneNumber") Integer oboxSceneNumber,
+			@PathVariable(value = "sceneName") String sceneName,
+			@PathVariable(value = "oboxSerialId") String oboxSerialId);
+
+	/**
+	 * @param oboxSceneNumber
+	 * @param sceneName
+	 * @param oboxSerialId
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/aliScene/excuteLocalScene/{oboxSceneNumber}/{sceneName}/{oboxSerialId}", method = RequestMethod.PUT)
+	ResponseObject excuteLocalScene(@PathVariable(value = "oboxSceneNumber") Integer oboxSceneNumber,
+			@PathVariable(value = "sceneName") String sceneName,
+			@PathVariable(value = "oboxSerialId") String oboxSerialId);
+
+	/**  
+	 * @param sceneNumber  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/aliScene/addSceneAction/{sceneNumber}", method = RequestMethod.POST)
+	ResponseObject addSceneAction(@PathVariable(value = "sceneNumber")  Integer sceneNumber);
+
+	/**  
+	 * @param oboxSceneNumber
+	 * @param sceneName
+	 * @param oboxSerialId
+	 * @param sceneStatus  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/aliScene/enableLocalScene/{oboxSceneNumber}/{sceneName}/{oboxSerialId}/{sceneStatus}", method = RequestMethod.PUT)
+	ResponseObject excuteLocalScene(@PathVariable(value = "oboxSceneNumber") Integer oboxSceneNumber,
+			@PathVariable(value = "sceneName") String sceneName,@PathVariable(value = "oboxSerialId") String oboxSerialId,
+			@PathVariable(value = "sceneStatus") String sceneStatus
+			);
 }

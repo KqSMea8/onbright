@@ -59,5 +59,34 @@ public class QuartzController {
 		}
 		return res;
 	}
- 
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/pauseJob/{jobName}", method = RequestMethod.PUT, produces = "application/json")
+	public ResponseObject pauseJob(@PathVariable(value="jobName",required=true) String jobName) {
+		ResponseObject res=new ResponseObject();
+		try {
+			quartzService.pauseJob(jobName);
+			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+		} catch (Exception e) {
+			log.error("===error msg:"+e.getMessage());
+			res.setStatus(ResponseEnum.RequestTimeout.getStatus());
+			res.setMessage(ResponseEnum.RequestTimeout.getMsg());
+		}
+		return res;
+	}
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/resumeJob/{jobName}", method = RequestMethod.PUT, produces = "application/json")
+	public ResponseObject resumeJob(@PathVariable(value="jobName",required=true) String jobName) {
+		ResponseObject res=new ResponseObject();
+		try {
+			quartzService.resumeJob(jobName);
+			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+		} catch (Exception e) {
+			log.error("===error msg:"+e.getMessage());
+			res.setStatus(ResponseEnum.RequestTimeout.getStatus());
+			res.setMessage(ResponseEnum.RequestTimeout.getMsg());
+		}
+		return res;
+	}
 }

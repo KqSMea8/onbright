@@ -79,8 +79,36 @@ public class QuartzService {
 					SERVER_TRIGGER_GROUP_NAME));
 			scheduler.deleteJob(new JobKey(jobName, SERVER_JOB_GROUP_NAME));
 		} catch (Exception e) {
-			// TODO: handle exception
+			log.error("===error msg:" + e.getMessage());
 			throw new RuntimeException(e);
+		}
+	}
+	/**  
+	 * @param jobName  
+	 * @Description:  
+	 */
+	public void pauseJob(String jobName) {
+		try {
+			Scheduler scheduler = schedulerFactory.getScheduler();
+			scheduler.pauseTrigger(new TriggerKey(jobName,
+					SERVER_TRIGGER_GROUP_NAME));
+		} catch (Exception e) {
+			log.error("===error msg:" + e.getMessage());
+ 			throw new RuntimeException(e);
+		}
+	}
+	/**  
+	 * @param jobName  
+	 * @Description:  
+	 */
+	public void resumeJob(String jobName) {
+		try {
+			Scheduler scheduler = schedulerFactory.getScheduler();
+			scheduler.resumeTrigger(new TriggerKey(jobName,
+					SERVER_TRIGGER_GROUP_NAME));
+		} catch (Exception e) {
+			log.error("===error msg:" + e.getMessage());
+ 			throw new RuntimeException(e);
 		}
 	}
 }
