@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.bright.apollo.common.entity.OauthClientDetails;
+import com.bright.apollo.common.entity.TCreateTableLog;
 import com.bright.apollo.common.entity.TUser;
 import com.bright.apollo.common.entity.TUserDevice;
 import com.bright.apollo.common.entity.TUserObox;
+import com.bright.apollo.common.entity.TUserOperation;
 import com.bright.apollo.common.entity.TUserScene;
 import com.bright.apollo.hrstrix.HystrixFeignUserFallback;
 import com.bright.apollo.response.ResponseObject;
@@ -122,14 +124,85 @@ public interface FeignUserClient {
 	public ResponseObject<TUserObox> getUserObox(@PathVariable(required = true, value = "userId") Integer userId,
 			@PathVariable(required = true, value = "oboxSerialId") String oboxSerialId);
 
-	/**  
+	/**
 	 * @param userId
-	 * @param deviceSerialId  
-	 * @return 
-	 * @Description:  
+	 * @param deviceSerialId
+	 * @return
+	 * @Description:
 	 */
 	@RequestMapping(value = "/user/getUserDevcieByUserIdAndSerialId/{userId}/{oboxSerialId}", method = RequestMethod.GET)
-	public ResponseObject<TUserDevice> getUserDevcieByUserIdAndSerialId(@PathVariable(required = true, value = "userId") Integer userId,
+	public ResponseObject<TUserDevice> getUserDevcieByUserIdAndSerialId(
+			@PathVariable(required = true, value = "userId") Integer userId,
 			@PathVariable(required = true, value = "deviceSerialId") String deviceSerialId);
+
+	/**
+	 * @param fromDate
+	 * @param toDate
+	 * @param serialId
+	 * @param startIndex
+	 * @param countIndex
+	 * @Description:
+	 */
+	@RequestMapping(value = "/user/getUserOperation/{fromDate}/{toDate}/{serialId}/{startIndex}/{countIndex}", method = RequestMethod.GET)
+	public ResponseObject<List<TUserOperation>> getUserOperation(
+			@PathVariable(required = true, value = "fromDate") Long fromDate,
+			@PathVariable(required = true, value = "toDate") Long toDate,
+			@PathVariable(required = true, value = "serialId") String serialId,
+			@PathVariable(required = true, value = "startIndex") Integer startIndex,
+			@PathVariable(required = true, value = "countIndex") Integer countIndex);
+
+	/**
+	 * @param from
+	 * @param to
+	 * @param serialId
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/user/getUserOperation/{from}/{to}/{serialId}", method = RequestMethod.GET)
+	public ResponseObject<List<TUserOperation>> queryUserOperationByDate(
+			@PathVariable(required = true, value = "from") long from,
+			@PathVariable(required = true, value = "to") long to,
+			@PathVariable(required = true, value = "serialId") String serialId);
+
+	/**
+	 * @param tableName
+	 * @param serialId
+	 * @param day
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/user/queryUserOperationByMonth/{tableName}/{serialId}/{day}", method = RequestMethod.GET)
+	public ResponseObject<List<TUserOperation>> queryUserOperationByMonth(
+			@PathVariable(required = true, value = "tableName") String tableName,
+			@PathVariable(required = true, value = "serialId") String serialId,
+			@PathVariable(required = true, value = "day") String day);
+
+	/**
+	 * @param tableName
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/user/queryUserOperationByMonthDayList/{tableName}", method = RequestMethod.GET)
+	public ResponseObject<List<TUserOperation>> queryUserOperationByMonthDayList(
+			@PathVariable(required = true, value = "tableName") String tableName);
+
+	/**
+	 * @param tUserOperationSuffix
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/user/listCreateTableLogByNameWithLike/{tUserOperationSuffix}", method = RequestMethod.GET)
+	public ResponseObject<List<TCreateTableLog>> listCreateTableLogByNameWithLike(
+			@PathVariable(required = true, value = "tUserOperationSuffix") String tUserOperationSuffix);
+
+	/**  
+	 * @param name
+	 * @param serialId
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/user/queryUserOperation/{name}/{serialId}", method = RequestMethod.GET)
+	public ResponseObject<List<TUserOperation>> queryUserOperation(@PathVariable(required = true, value = "name")String name,
+			@PathVariable(required = true, value = "serialId")String serialId);
 
 }

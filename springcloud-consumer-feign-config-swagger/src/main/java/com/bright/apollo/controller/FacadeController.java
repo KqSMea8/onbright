@@ -1,6 +1,9 @@
 package com.bright.apollo.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,9 +24,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.HandlerMapping;
-
 import com.bright.apollo.common.dto.OboxResp;
 import com.bright.apollo.common.dto.OboxResp.Type;
+import com.bright.apollo.common.entity.TCreateTableLog;
 import com.bright.apollo.common.entity.TNvr;
 import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
@@ -33,10 +36,13 @@ import com.bright.apollo.common.entity.TSceneCondition;
 import com.bright.apollo.common.entity.TUser;
 import com.bright.apollo.common.entity.TUserDevice;
 import com.bright.apollo.common.entity.TUserObox;
+import com.bright.apollo.common.entity.TUserOperation;
 import com.bright.apollo.common.entity.TUserScene;
 import com.bright.apollo.common.entity.TYSCamera;
+import com.bright.apollo.constant.SubTableConstant;
 import com.bright.apollo.enums.ConditionTypeEnum;
 import com.bright.apollo.enums.DeviceTypeEnum;
+import com.bright.apollo.enums.ErrorEnum;
 import com.bright.apollo.enums.NodeTypeEnum;
 import com.bright.apollo.enums.SceneTypeEnum;
 import com.bright.apollo.feign.FeignAliClient;
@@ -54,6 +60,9 @@ import com.bright.apollo.response.DevcieCount;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.response.SceneInfo;
+import com.bright.apollo.tool.ByteHelper;
+import com.bright.apollo.tool.DateHelper;
+import com.google.gson.JsonObject;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -2248,7 +2257,7 @@ public class FacadeController {
 					if (oboxRes != null && oboxRes.getData() != null
 							&& oboxRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()) {
 						feignAliClient.excuteLocalScene(scene.getOboxSceneNumber(), scene.getSceneName(),
-								oboxRes.getData().getOboxSerialId(),sceneStatus);
+								oboxRes.getData().getOboxSerialId(), sceneStatus);
 					}
 				}
 				map.put("scene_number", sceneNumber);
@@ -2279,7 +2288,275 @@ public class FacadeController {
 		}
 		return res;
 	}
-	
+
+	@ApiOperation(value = "enable/disable scene", httpMethod = "PUT", produces = "application/json")
+	@ApiResponse(code = 200, message = "SelectSuccess", response = ResponseObject.class)
+	@RequestMapping(value = "/queryUserOperationHistory/{serialId}/{type}/{fromDate}/{toDate}/{startIndex}/{countIndex}", method = RequestMethod.GET)
+	public ResponseObject<Map<String, Object>> queryUserOperationHistory(
+			@PathVariable(value = "serialId") String serialId, @PathVariable(value = "type") String type,
+			@PathVariable(value = "fromDate") Long fromDate, @PathVariable(value = "toDate") Long toDate,
+			@PathVariable(value = "startIndex") Integer startIndex,
+			@PathVariable(value = "countIndex") Integer countIndex) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			map.put("type", type);
+			if (type.equals("00")) {
+				ResponseObject<List<TUserOperation>> userOperationRes = feignUserClient.getUserOperation(fromDate,
+						toDate, serialId, startIndex, countIndex);
+				/*
+				 * List<TUserOperation> operations =
+				 * UserBusiness.queryUserOperation( from, to, serialId,
+				 * Integer.parseInt(startIndex),
+				 */
+				List<TUserOperation> operations = null;
+				if (userOperationRes != null && userOperationRes.getData() != null
+						&& userOperationRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()) {
+					operations = userOperationRes.getData();
+					for (TUserOperation tUserOperation : operations) {
+						tUserOperation.setTime(tUserOperation.getLastOpTime().getTime() / 1000);
+					}
+				}
+				map.put("history", operations);
+			} else if (type.equals("01")) {
+				List<JsonObject> list = new ArrayList<JsonObject>();
+				if ((toDate % fromDate) / 86400 > 0) {
+					for (int i = 1; i <= (toDate % fromDate) / 86400; i++) {
+						ResponseObject<List<TUserOperation>> userOperationRes = feignUserClient
+								.queryUserOperationByDate(fromDate + (i - 1) * 86400, fromDate + i * 86400, serialId);
+						/*
+						 * List<TUserOperation> operations =
+						 * UserBusiness.queryUserOperationByDate(from + (i - 1)
+						 * * 86400, from + i * 86400, serialId);
+						 */
+						if (userOperationRes != null && userOperationRes.getData() != null
+								&& userOperationRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()
+								&& userOperationRes.getData().size() != 0) {
+							JsonObject object = new JsonObject();
+							object.addProperty("from_date", String.valueOf(fromDate + (i - 1) * 86400));
+							object.addProperty("to_date", String.valueOf(fromDate + i * 86400));
+							object.addProperty("count", userOperationRes.getData().size());
+							list.add(object);
+						}
+					}
+					ResponseObject<List<TUserOperation>> userOperationRes = feignUserClient.queryUserOperationByDate(
+							fromDate + ((toDate % fromDate) / 86400) * 86400, toDate, serialId);
+					/*
+					 * List<TUserOperation> operations = UserBusiness
+					 * .queryUserOperationByDate(from + ((to % from) / 86400) *
+					 * 86400, to, serialId);
+					 */
+					if (userOperationRes != null && userOperationRes.getData() != null
+							&& userOperationRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()
+							&& userOperationRes.getData().size() != 0) {
+						// if (operations.size() != 0) {
+						JsonObject object = new JsonObject();
+						object.addProperty("from_date",
+								String.valueOf(fromDate + ((toDate % fromDate) / 86400) * 86400));
+						object.addProperty("to_date", String.valueOf(toDate));
+						object.addProperty("count", userOperationRes.getData().size());
+						list.add(object);
+					}
+				} else {
+					ResponseObject<List<TUserOperation>> userOperationRes = feignUserClient
+							.queryUserOperationByDate(fromDate, toDate, serialId);
+					// List<TUserOperation> operations =
+					// UserBusiness.queryUserOperationByDate(from, to,
+					// serialId);
+					if (userOperationRes != null && userOperationRes.getData() != null
+							&& userOperationRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()
+							&& userOperationRes.getData().size() != 0) {
+						// if (operations.size() != 0) {
+						JsonObject object = new JsonObject();
+						object.addProperty("from_date", String.valueOf(fromDate));
+						object.addProperty("to_date", String.valueOf(toDate));
+						object.addProperty("count", userOperationRes.getData().size());
+						list.add(object);
+					}
+				}
+				Collections.reverse(list);
+				map.put("history", list);
+				// jsonObject.add("history", g2.toJsonTree(list));
+			} else if (type.equals("02")) {
+				List<JsonObject> list = new ArrayList<JsonObject>();
+				for (int i = 0; i < 7; i++) {
+					ResponseObject<List<TUserOperation>> userOperationRes = feignUserClient.queryUserOperationByDate(
+							fromDate + i * 24 * 60 * 60, fromDate + (i + 1) * 24 * 60 * 60, serialId);
+					/*
+					 * List<TUserOperation> operations =
+					 * UserBusiness.queryUserOperationByDate(from + i * 24 * 60
+					 * * 60, from + (i + 1) * 24 * 60 * 60, serialId);
+					 */
+					float power = 0.0f;
+					List<TUserOperation> operations=null;
+					if (userOperationRes != null && userOperationRes.getData() != null
+							&& userOperationRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()
+							&& userOperationRes.getData().size() != 0) {
+						operations=userOperationRes.getData();
+						for (int j = 0; j < operations.size(); j++) {
+							TUserOperation operation1 = operations.get(j);
+							String bright1 = operation1.getDeviceState().substring(0, 2);
+							if (!bright1.equals("00")) {
+								if (j + 1 >= operations.size()) {
+									// the last one
+									String cString = dateToString(operation1.getLastOpTime());
+									String[] timeString = cString.split(" ");
+									String[] tc = timeString[1].split(":");
+
+									int remainH = 24 - Integer.parseInt(tc[0]);
+									int remainM = 60 - Integer.parseInt(tc[1]);
+									float time = remainH + remainM / 60.0f;
+									if (Integer.parseInt(bright1, 16) < 154) {
+										power += 6 * 0.1 * time;
+									} else {
+										power += 6 * ((Integer.parseInt(bright1, 16) - 154) / 100.0f) * time;
+									}
+								} else {
+									TUserOperation operation2 = operations.get(j + 1);
+
+									long date;
+									if (operation2.getLastOpTime().getTime() > operation1.getLastOpTime().getTime()) {
+										date = operation2.getLastOpTime().getTime()
+												- operation1.getLastOpTime().getTime();
+									} else {
+										date = operation1.getLastOpTime().getTime()
+												- operation2.getLastOpTime().getTime();
+									}
+
+									long day = date / (1000 * 60 * 60 * 24);
+									long hour = (date / (1000 * 60 * 60) - day * 24);
+									long min = ((date / (60 * 1000)) - day * 24 * 60 - hour * 60);
+
+									float time = hour + min / 60.0f;
+									if (Integer.parseInt(bright1, 16) < 154) {
+										power += 6 * 0.1 * time;
+									} else {
+										power += 6 * ((Integer.parseInt(bright1, 16) - 154) / 100.0f) * time;
+									}
+								}
+							}
+						}
+					}
+					JsonObject object = new JsonObject();
+					object.addProperty("day", fromDate + i * 24 * 60 * 60);
+					object.addProperty("power", String.valueOf(power));
+					object.addProperty("count", operations==null?0:operations.size());
+					list.add(object);
+				}
+				map.put("history", list);
+				//jsonObject.add("history", g2.toJsonTree(list));
+			} else if (type.equals("03")) {
+				//
+				/*
+				 * if (StringUtils.isEmpty(fromDate)) { return
+				 * respError(ErrorEnum.request_param_invalid.getValue()); }
+				 */
+				// TCount
+				List<JsonObject> list = new ArrayList<JsonObject>();
+				ResponseObject<List<TUserOperation>> userOperationRes=feignUserClient.queryUserOperationByMonthDayList(SubTableConstant.T_USER_OPERATION_SUFFIX
+						+ DateHelper.formatDate(new Date().getTime(), DateHelper.FORMATMONTH));
+				/*List<TUserOperation> days = UserBusiness
+						.queryUserOperationByMonthDayList(SubTableConstant.T_USER_OPERATION_SUFFIX
+								+ DateHelper.formatDate(new Date().getTime(), DateHelper.FORMATMONTH));*/
+				/*if (days == null || days.size() <= 0) {
+					// JsonObject object = new JsonObject();
+					jsonObject.add("history", g2.toJsonTree(null));
+					return jsonObject;
+				}*/
+				if (userOperationRes != null && userOperationRes.getData() != null
+						&& userOperationRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()
+						&& userOperationRes.getData().size() != 0) {
+					List<TUserOperation> days=userOperationRes.getData();
+					for (int i = 0; i < days.size(); i++) {
+						int power = 0;
+						logger.info("===days.get(i).getDay()===:" + days.get(i).getDay());
+						ResponseObject<List<TUserOperation>> operationRes=feignUserClient.queryUserOperationByMonth(
+								SubTableConstant.T_USER_OPERATION_SUFFIX
+								+ DateHelper.formatDate(new Date().getTime(), DateHelper.FORMATMONTH),
+						serialId, days.get(i).getDay());
+						if (operationRes != null && operationRes.getData() != null
+								&& operationRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()
+								&& operationRes.getData().size() != 0) {
+							List<TUserOperation> operations =operationRes.getData();
+						//if (operations != null && operations.size() > 0) {
+							for (int j = 0; j < operations.size(); j++) {
+								TUserOperation operation1 = operations.get(j);
+								if (!operation1.getDeviceState().substring(0, 2).equals("00")) {
+									power += Integer.parseInt(operation1.getDeviceState().substring(10, 14), 16);
+								}
+
+							}
+							JsonObject object = new JsonObject();
+							object.addProperty("day", operations.get(0).getLastOpTime().getTime() / 1000);
+							object.addProperty("power", ByteHelper.int2HexString(power));
+							object.addProperty("count", operations.size());
+							list.add(object);
+						}
+					}
+					map.put("history", list);
+					//jsonObject.add("history", g2.toJsonTree(list));
+				} 
+			} else if (type.equals("04")) {
+				List<JsonObject> list = new ArrayList<JsonObject>();
+				ResponseObject<List<TCreateTableLog>> createTableLogRes=feignUserClient.listCreateTableLogByNameWithLike(SubTableConstant.T_USER_OPERATION_SUFFIX);
+				/*List<TCreateTableLog> tCreateTableLogs = CreateTableLogBussiness
+						.listCreateTableLogByNameWithLike(SubTableConstant.T_USER_OPERATION_SUFFIX);*/
+				int months = 12;
+				if (createTableLogRes != null && createTableLogRes.getData() != null
+						&& createTableLogRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()
+						&& createTableLogRes.getData().size() <12) {
+				//if (tCreateTableLogs.size() < 12) {
+					months =createTableLogRes.getData().size();
+				}
+				logger.info("===months===:" + months);
+				List<TCreateTableLog> tCreateTableLogs = createTableLogRes.getData();
+				for (int i = 0; i < months; i++) {
+					int power = 0;
+					logger.info("===table name===:" + tCreateTableLogs.get(i).getName());
+					ResponseObject<List<TUserOperation>> operationRes=feignUserClient.queryUserOperation(tCreateTableLogs.get(i).getName(),
+							serialId);
+					/*List<TUserOperation> operations = UserBusiness.queryUserOperation(tCreateTableLogs.get(i).getName(),
+							serialId);*/
+					if (operationRes != null && operationRes.getData() != null
+							&& operationRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()
+							&& operationRes.getData().size() >0) {
+					//if (operations != null && operations.size() > 0) {
+						List<TUserOperation> operations = operationRes.getData();
+						logger.info("===get power===");
+						for (int j = 0; j < operations.size(); j++) {
+							TUserOperation operation1 = operations.get(j);
+							if (!operation1.getDeviceState().substring(0, 2).equals("00")) {
+								power += Integer.parseInt(operation1.getDeviceState().substring(10, 14), 16);
+							}
+
+						}
+						JsonObject object = new JsonObject();
+						object.addProperty("day", operations.get(0).getLastOpTime().getTime() / 1000);
+						object.addProperty("power", ByteHelper.int2HexString(power));
+						object.addProperty("count", operations.size());
+						list.add(object);
+					}
+				}
+				//jsonObject.add("history", g2.toJsonTree(list));
+				map.put("history", list);
+			} else {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+				//return respError(ErrorEnum.request_param_invalid.getValue());
+			}
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+			res.setData(map);
+			// return jsonObject;
+		} catch (Exception e) {
+			e.printStackTrace();
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
 	/**
 	 * @param sceneConditionDTOs
 	 * @param oboxSerialId
@@ -2308,5 +2585,11 @@ public class FacadeController {
 		String bestMatchPattern = (String) request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE);
 		return new AntPathMatcher().extractPathWithinPattern(bestMatchPattern, path);
 	}
+	private static String dateToString(java.util.Date time) {
+		SimpleDateFormat formatter;
+		formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String ctime = formatter.format(time);
 
+		return ctime;
+	}
 }

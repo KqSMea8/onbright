@@ -6,9 +6,11 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import com.bright.apollo.common.entity.OauthClientDetails;
+import com.bright.apollo.common.entity.TCreateTableLog;
 import com.bright.apollo.common.entity.TUser;
 import com.bright.apollo.common.entity.TUserDevice;
 import com.bright.apollo.common.entity.TUserObox;
+import com.bright.apollo.common.entity.TUserOperation;
 import com.bright.apollo.common.entity.TUserScene;
 import com.bright.apollo.feign.FeignUserClient;
 import com.bright.apollo.response.ResponseObject;
@@ -167,6 +169,74 @@ public class HystrixFeignUserFallback extends BasicHystrixFeignFallback implemen
 	@SuppressWarnings("rawtypes")
 	@Override
 	public ResponseObject<TUserDevice> getUserDevcieByUserIdAndSerialId(Integer userId, String deviceSerialId) {
+		logger.warn("===user server is break===");
+		ResponseObject res = serverError();
+		return res;
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignUserClient#getUserOperation(java.lang.Long, java.lang.Long, java.lang.String, java.lang.Integer, java.lang.Integer)  
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public ResponseObject<List<TUserOperation>> getUserOperation(Long fromDate, Long toDate, String serialId,
+			Integer startIndex, Integer countIndex) {
+		logger.warn("===user server is break===");
+		ResponseObject res = serverError();
+		return res;
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignUserClient#queryUserOperationByDate(long, long, java.lang.String)  
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public ResponseObject<List<TUserOperation>> queryUserOperationByDate(long from, long to, String serialId) {
+		logger.warn("===user server is break===");
+		ResponseObject res = serverError();
+		return res;
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignUserClient#queryUserOperationByMonth(java.lang.String, java.lang.String, java.lang.String)  
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public ResponseObject<List<TUserOperation>> queryUserOperationByMonth(String tableName, String serialId,
+			String day) {
+		logger.warn("===user server is break===");
+		ResponseObject res = serverError();
+		return res;
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignUserClient#queryUserOperationByMonthDayList(java.lang.String)  
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public ResponseObject<List<TUserOperation>> queryUserOperationByMonthDayList(String tableName) {
+		logger.warn("===user server is break===");
+		ResponseObject res = serverError();
+		return res;
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignUserClient#listCreateTableLogByNameWithLike(java.lang.String)  
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public ResponseObject<List<TCreateTableLog>> listCreateTableLogByNameWithLike(String tUserOperationSuffix) {
+		logger.warn("===user server is break===");
+		ResponseObject res = serverError();
+		return res;
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignUserClient#queryUserOperation(java.lang.String, java.lang.String)  
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public ResponseObject<List<TUserOperation>> queryUserOperation(String name, String serialId) {
 		logger.warn("===user server is break===");
 		ResponseObject res = serverError();
 		return res;
