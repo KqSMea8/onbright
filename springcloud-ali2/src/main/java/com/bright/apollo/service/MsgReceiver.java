@@ -1,4 +1,4 @@
-package com.bright.apollo.service;
+/*package com.bright.apollo.service;
 
 import com.aliyun.mns.client.CloudQueue;
 import com.aliyun.mns.client.MNSClient;
@@ -116,3 +116,4 @@ public class MsgReceiver {
         }
     }
 }
+*/

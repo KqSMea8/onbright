@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bright.apollo.cache.UserCacheService;
 import com.bright.apollo.common.entity.TCreateTableLog;
+import com.bright.apollo.common.entity.TCreateTableSql;
 import com.bright.apollo.common.entity.TUser;
 import com.bright.apollo.common.entity.TUserDevice;
 import com.bright.apollo.common.entity.TUserObox;
@@ -24,6 +25,7 @@ import com.bright.apollo.constant.Constant;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.service.CreateTableLogService;
+import com.bright.apollo.service.CreateTableSqlService;
 import com.bright.apollo.service.MsgService;
 import com.bright.apollo.service.UserDeviceService;
 import com.bright.apollo.service.UserOboxService;
@@ -61,6 +63,8 @@ public class UserController {
 	private UserOperationService userOperationService;
 	@Autowired
 	private CreateTableLogService createTableLogService;
+	@Autowired
+	private CreateTableSqlService createTableSqlService;
 	@SuppressWarnings("rawtypes")
 	@GetMapping("/register/{mobile}")
 	public ResponseObject register(@PathVariable String mobile) {
@@ -390,7 +394,6 @@ public class UserController {
 			@PathVariable(required = true, value = "tUserOperationSuffix") String tUserOperationSuffix){
 		ResponseObject<List<TCreateTableLog>> res = new ResponseObject<List<TCreateTableLog>>();
 		try {
-
 			res.setData(createTableLogService.listCreateTableLogByNameWithLike(tUserOperationSuffix));
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
@@ -409,6 +412,80 @@ public class UserController {
 			res.setData(userOperationService.queryUserOperation(name,serialId));
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/dropTable/{tableName}", method = RequestMethod.DELETE)
+	public ResponseObject dropTable(@PathVariable(required = true, value = "tableName")String tableName){
+		ResponseObject res = new ResponseObject();
+		try {
+			createTableLogService.dropTable(tableName);
+			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	/**  
+	 * @param createTableSql  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/createTable/{createTableSql}", method = RequestMethod.POST)
+	public ResponseObject createTable(@PathVariable(required = true, value = "createTableSql") String createTableSql){
+		ResponseObject res = new ResponseObject();
+		try {
+			createTableLogService.createTable(createTableSql);
+			res.setStatus(ResponseEnum.AddSuccess.getStatus());
+			res.setMessage(ResponseEnum.AddSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	/**
+	 * @param prefix
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/queryTCreateTableSqlByprefix/{prefix}", method = RequestMethod.GET)
+	public ResponseObject<TCreateTableSql> queryTCreateTableSqlByprefix(
+			@PathVariable(required = true, value = "prefix") String prefix){
+		ResponseObject<TCreateTableSql> res = new ResponseObject<TCreateTableSql>();
+		try {
+			res.setData(createTableSqlService.queryTCreateTableSqlByprefix(prefix));
+			res.setStatus(ResponseEnum.AddSuccess.getStatus());
+			res.setMessage(ResponseEnum.AddSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	/**  
+	 * @param tCreateTableLog  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/addCreateTableLog", method = RequestMethod.POST)
+	public ResponseObject addCreateTableLog(@RequestBody TCreateTableLog tCreateTableLog){
+
+		ResponseObject res = new ResponseObject();
+		try {
+			createTableLogService.addCreateTableLog(tCreateTableLog);
+ 			res.setStatus(ResponseEnum.AddSuccess.getStatus());
+			res.setMessage(ResponseEnum.AddSuccess.getMsg());
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());

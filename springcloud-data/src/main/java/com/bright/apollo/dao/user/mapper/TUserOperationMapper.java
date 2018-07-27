@@ -54,7 +54,7 @@ public interface TUserOperationMapper {
 	 * @return
 	 * @Description:
 	 */
-	@Select("select  last_op_time ,device_serial_id,device_state,device_type,device_child_type from #{tableName}"
+	@Select("select  last_op_time ,device_serial_id,device_state,device_type,device_child_type from ${tableName}"
 			+ " where device_serial_id = #{serialId} and DATE_FORMAT(last_op_time, '%Y%m%d')=#{day} order by last_op_time")
 	@Results(value = { @Result(property = "id", column = "id"),
 			@Result(property = "lastOpTime", column = "last_op_time"),
@@ -70,7 +70,7 @@ public interface TUserOperationMapper {
 	 * @return
 	 * @Description:
 	 */
-	@Select("select DATE_FORMAT(last_op_time, '%Y%m%d') as day FROM #{tableName}"
+	@Select("select DATE_FORMAT(last_op_time, '%Y%m%d') as day FROM ${tableName}"
 			+ " GROUP BY  DATE_FORMAT(last_op_time, '%Y%m%d')")
 	@Results(value = { @Result(property = "id", column = "id"),
 			@Result(property = "lastOpTime", column = "last_op_time"),
@@ -87,14 +87,14 @@ public interface TUserOperationMapper {
 	 * @Description:
 	 */
 	@Select("select  last_op_time ,device_serial_id,device_state,device_type,device_child_type from "
-			+ " #{name}  where device_serial_id = #{serialId}  order by last_op_time")
+			+ " ${tableName}  where device_serial_id = #{serialId}  order by last_op_time")
 	@Results(value = { @Result(property = "id", column = "id"),
 			@Result(property = "lastOpTime", column = "last_op_time"),
 			@Result(property = "deviceType", column = "device_type"),
 			@Result(property = "deviceChildType", column = "device_child_type"),
 			@Result(property = "deviceSerialId", column = "device_serial_id"),
 			@Result(property = "deviceState", column = "device_state"), @Result(property = "day", column = "day") })
-	List<TUserOperation> queryUserOperation(@Param("name") String name, @Param("serialId") String serialId);
+	List<TUserOperation> queryUserOperation(@Param("tableName") String tableName, @Param("serialId") String serialId);
 
 	/**
 	 * @param tUserOperation

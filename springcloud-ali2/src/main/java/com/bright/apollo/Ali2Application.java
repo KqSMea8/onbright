@@ -7,8 +7,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bright.apollo.listener.ContextListener;
-
 /**  
  *@Title:  
  *@Description:  
@@ -25,7 +23,9 @@ import com.bright.apollo.listener.ContextListener;
 public class Ali2Application {
 	public static void main(String[] args) {
         SpringApplication app = new SpringApplication(Ali2Application.class);
-        app.addListeners(new ContextListener());
+        //app.addListeners(new ContextListener());
+        //MNSListener
+      //  app.addListeners(new MNSListener());
         app.run(args);
 //        SpringApplication.run(SpringcloudAli2Application.class, args);
     }

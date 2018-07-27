@@ -58,7 +58,7 @@ public interface TOboxDeviceConfigMapper extends BaseMapper<TOboxDeviceConfig, T
 			@Result(property = "deviceSerialId", column = "device_serial_id"),
 			@Result(property = "deviceRfAddr", column = "device_rf_addr"),
 			@Result(property = "groupAddr", column = "group_addr"),
-			@Result(property = "oboxSerialId", column = " obox_serial_id") })
+			@Result(property = "oboxSerialId", column = "obox_serial_id") })
 	TOboxDeviceConfig queryOboxConfigByAddr(@Param("oboxId") int oboxId, @Param("address") String address);
 
 	@Update("update t_obox_device_config set obox_id= #{oboxId }" + ",device_id= #{deviceId }"

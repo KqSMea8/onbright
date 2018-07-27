@@ -38,6 +38,8 @@ public class SensorCMDHandler extends BasicHandler {
 
     @Override
     public Message<String> process(ClientSession clientSession, Message<String> msg) throws Exception {
+    	
+    	
         String data = msg.getData();
         String oboxSerialId = data.substring(0, 10);
         String addr = data.substring(12, 14);

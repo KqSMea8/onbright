@@ -20,4 +20,22 @@ public interface CreateTableLogService {
 	 */
 	List<TCreateTableLog> listCreateTableLogByNameWithLike(String tUserOperationSuffix);
 
+	/**  
+	 * @param tableName  
+	 * @Description:  
+	 */
+	void dropTable(String tableName);
+
+	/**  
+	 * @param createTableSql  
+	 * @Description:  
+	 */
+	void createTable(String createTableSql);
+
+	/**  
+	 * @param tCreateTableLog  
+	 * @Description:  
+	 */
+	int addCreateTableLog(TCreateTableLog tCreateTableLog);
+
 }
