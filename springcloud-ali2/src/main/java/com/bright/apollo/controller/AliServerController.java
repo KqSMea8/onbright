@@ -1,7 +1,10 @@
 package com.bright.apollo.controller;
 
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Future;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,7 +31,7 @@ import com.zz.common.util.StringUtils;
 @RestController
 @RequestMapping("aliService")
 public class AliServerController {
-
+	private Logger logger = Logger.getLogger(getClass());
 	@Autowired
 	private TopicServer topicServer;
 	@Autowired
@@ -45,11 +48,10 @@ public class AliServerController {
 		byte[] inMsgByte = inMsg.getBytes();
 		ResponseObject<OboxResp> res = new ResponseObject<OboxResp>();
 		try {
-			OboxResp resp = topicServer.request(cmd, inMsgByte, deviceSerial);
+			topicServer.request(cmd, inMsgByte, deviceSerial);
 			res.setStatus(ResponseEnum.AddSuccess.getStatus());
 			res.setMessage(ResponseEnum.AddSuccess.getMsg());
-			res.setData(resp);
-		} catch (Exception e) {
+ 		} catch (Exception e) {
 			e.printStackTrace();
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
@@ -68,12 +70,10 @@ public class AliServerController {
 			bodyBytes[5] = (byte) 0xff;
 			bodyBytes[6] = (byte) 0xff;
 			bodyBytes[7] = 0x03;
-
-			OboxResp resp = topicServer.request(CMDEnum.release_all_devices, bodyBytes, serialId);
+			topicServer.request(CMDEnum.release_all_devices, bodyBytes, serialId);
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
-			res.setData(resp);
-		} catch (Exception e) {
+ 		} catch (Exception e) {
 			e.printStackTrace();
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
@@ -87,10 +87,9 @@ public class AliServerController {
 		try {
 			byte[] sendbodyBytes = new byte[15];
 			sendbodyBytes[0] = (byte) Integer.parseInt("00", 16);
-			OboxResp resp = topicServer.request(CMDEnum.search_new_device, sendbodyBytes, oboxSerialId);
+			topicServer.request(CMDEnum.search_new_device, sendbodyBytes, oboxSerialId);
 			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
 			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
-			res.setData(resp);
 		} catch (Exception e) {
 			e.printStackTrace();
 			res.setStatus(ResponseEnum.Error.getStatus());
@@ -126,10 +125,9 @@ public class AliServerController {
 				byte[] oboxSerialIdBytes = ByteHelper.hexStringToBytes(serialId);
 				System.arraycopy(oboxSerialIdBytes, 0, sendbodyBytes, 6, oboxSerialIdBytes.length);
 			}
-			OboxResp resp = topicServer.request(CMDEnum.search_new_device, sendbodyBytes, oboxSerialId);
+			topicServer.request(CMDEnum.search_new_device, sendbodyBytes, oboxSerialId);
 			res.setStatus(ResponseEnum.AddSuccess.getStatus());
 			res.setMessage(ResponseEnum.AddSuccess.getMsg());
-			res.setData(resp);
 		} catch (Exception e) {
 			e.printStackTrace();
 			res.setStatus(ResponseEnum.Error.getStatus());
@@ -171,11 +169,9 @@ public class AliServerController {
 				byte[] oboxSerialIdBytes = ByteHelper.hexStringToBytes(serialId);
 				System.arraycopy(oboxSerialIdBytes, 0, sendbodyBytes, 6, oboxSerialIdBytes.length);
 			}
-			topicServer.pubTopic(CMDEnum.search_new_device, sendbodyBytes, oboxSerialId);
-			//OboxResp resp = topicServer.request(CMDEnum.search_new_device, sendbodyBytes, oboxSerialId);
+			topicServer.request(CMDEnum.search_new_device, sendbodyBytes, oboxSerialId);
 			res.setStatus(ResponseEnum.AddSuccess.getStatus());
 			res.setMessage(ResponseEnum.AddSuccess.getMsg());
-			//res.setData(resp);
 		} catch (Exception e) {
 			e.printStackTrace();
 			res.setStatus(ResponseEnum.Error.getStatus());
@@ -218,10 +214,9 @@ public class AliServerController {
 				byte[] oboxSerialIdBytes = ByteHelper.hexStringToBytes(serialId);
 				System.arraycopy(oboxSerialIdBytes, 0, sendbodyBytes, 6, oboxSerialIdBytes.length);
 			}
-			OboxResp resp = topicServer.request(CMDEnum.search_new_device, sendbodyBytes, oboxSerialId);
+			topicServer.request(CMDEnum.search_new_device, sendbodyBytes, oboxSerialId);
 			res.setStatus(ResponseEnum.AddSuccess.getStatus());
 			res.setMessage(ResponseEnum.AddSuccess.getMsg());
-			res.setData(resp);
 		} catch (Exception e) {
 			e.printStackTrace();
 			res.setStatus(ResponseEnum.Error.getStatus());
@@ -237,7 +232,7 @@ public class AliServerController {
 	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
-	@RequestMapping(value = "controlServerScene/{sceneNumber}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/controlServerScene/{sceneNumber}", method = RequestMethod.PUT)
 	ResponseObject controlServerScene(@PathVariable(required = true, value = "sceneNumber") Integer sceneNumber) {
 		ResponseObject res = new ResponseObject();
 		try {
@@ -273,12 +268,10 @@ public class AliServerController {
 			bodyBytes[5] = 0x00;
 			bodyBytes[6] = (byte) Integer.parseInt(rfAddr, 16);
 			System.arraycopy(stateBytes, 0, bodyBytes, 7, stateBytes.length);
-			//OboxResp resp = topicServer.request(CMDEnum.setting_node_status, bodyBytes, oboxSerialId);
-			topicServer.pubTopic(CMDEnum.setting_node_status, bodyBytes, oboxSerialId);
+			topicServer.request(CMDEnum.setting_node_status, bodyBytes, oboxSerialId);
 			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
 			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
-			//res.setData(resp);
-		} catch (Exception e) {
+ 		} catch (Exception e) {
 			e.printStackTrace();
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
@@ -309,16 +302,11 @@ public class AliServerController {
 				byte[] groupbytes = ByteHelper.hexStringToBytes(sceneGroup);
 				System.arraycopy(groupbytes, 0, bodyBytes, 19, groupbytes.length);
 			}
-			OboxResp oboxResp = topicServer.request(CMDEnum.setting_sc_info, bodyBytes, oboxSerialId);
-			if (oboxResp == null || oboxResp.getData() == null || oboxResp.getData().substring(0, 2).equals("00")) {
-				res.setStatus(ResponseEnum.SendOboxFail.getStatus());
-				res.setMessage(ResponseEnum.SendOboxFail.getMsg());
-			} else {
-				res.setStatus(ResponseEnum.AddSuccess.getStatus());
-				res.setMessage(ResponseEnum.AddSuccess.getMsg());
-				res.setData(oboxResp);
-			}
-		} catch (Exception e) {
+ 			Future<OboxResp> future = topicServer.request(CMDEnum.setting_sc_info, bodyBytes, oboxSerialId);
+			res.setStatus(ResponseEnum.AddSuccess.getStatus());
+			res.setMessage(ResponseEnum.AddSuccess.getMsg());
+			res.setData(future.get());
+ 		} catch (Exception e) {
 			e.printStackTrace();
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
@@ -392,8 +380,8 @@ public class AliServerController {
 			@PathVariable(required = true, value = "oboxSerialId") String oboxSerialId) {
 		ResponseObject res = new ResponseObject();
 		try {
-			new Thread(new sceneAction(nodeActionDTOs, sceneNumber,
-					oboxSerialId,oboxDeviceConfigService,topicServer)).start();
+			new Thread(new sceneAction(nodeActionDTOs, sceneNumber, oboxSerialId, oboxDeviceConfigService, topicServer))
+					.start();
 			res.setStatus(ResponseEnum.AddSuccess.getStatus());
 			res.setMessage(ResponseEnum.AddSuccess.getMsg());
 		} catch (Exception e) {
@@ -411,9 +399,9 @@ public class AliServerController {
 		private int sceneNumber;
 
 		private String oboxSerialId;
-		
+
 		private TopicServer topicServer;
-		
+
 		private OboxDeviceConfigService oboxDeviceConfigService;
 
 		public sceneAction(List<SceneActionDTO> lists, int sceneNumber, String oboxSerialId,

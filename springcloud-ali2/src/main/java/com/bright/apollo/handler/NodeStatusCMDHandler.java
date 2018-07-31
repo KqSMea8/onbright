@@ -5,6 +5,7 @@ import java.util.List;
 import com.bright.apollo.bean.Message;
 import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
+import com.bright.apollo.common.entity.TUserOperation;
 import com.bright.apollo.session.ClientSession;
 
 public class NodeStatusCMDHandler extends BasicHandler{
@@ -35,23 +36,23 @@ public class NodeStatusCMDHandler extends BasicHandler{
 
                 TOboxDeviceConfig tOboxDeviceConfig
                         = oboxDeviceConfigService.queryOboxConfigByRFAddr(physicalOBOX.getOboxId(),rf_addr);
-//                if (tOboxDeviceConfig != null) {
-//
-//                    TUserOperation tUserOperation = new TUserOperation();
-//                    tUserOperation.setDeviceSerialId(tOboxDeviceConfig
-//                            .getDeviceSerialId());
-//                    tUserOperation.setDeviceState(state);
-//                    tUserOperation.setDeviceChildType(tOboxDeviceConfig
-//                            .getDeviceChildType());
-//                    tUserOperation.setDeviceType(tOboxDeviceConfig
-//                            .getDeviceType());
-//                    UserBusiness.addUserOperation(tUserOperation);
-//
-//                    updateDeviceState(tOboxDeviceConfig, state);
-//					/*tOboxDeviceConfig.setDeviceState(state);
-//					//TODO 6合1
-//					OboxBusiness.updateOboxDeviceConfig(tOboxDeviceConfig);*/
-//                }
+                if (tOboxDeviceConfig != null) {
+
+					TUserOperation tUserOperation = new TUserOperation();
+					tUserOperation.setDeviceSerialId(tOboxDeviceConfig
+							.getDeviceSerialId());
+					tUserOperation.setDeviceState(state);
+					tUserOperation.setDeviceChildType(tOboxDeviceConfig
+							.getDeviceChildType());
+					tUserOperation.setDeviceType(tOboxDeviceConfig
+							.getDeviceType());
+					//UserBusiness.addUserOperation(tUserOperation);
+					userOperationService.addUserOperation(tUserOperation);
+					//updateDeviceState(tOboxDeviceConfig, state);
+					/*tOboxDeviceConfig.setDeviceState(state);
+					//TODO 6合1
+					OboxBusiness.updateOboxDeviceConfig(tOboxDeviceConfig);*/
+				}
             } else if ("ff".equals(rf_addr)) {
 //				if (physicalOBOX.getOboxVersion().substring(8, 12)
 //						.equals("0b01")) {
@@ -87,19 +88,18 @@ public class NodeStatusCMDHandler extends BasicHandler{
                         = oboxDeviceConfigService.getTOboxDeviceConfigByOboxSerialIdAndGroupAddress(physicalOBOXSerialId,group_rf_addr);
                 if (!tOboxDeviceConfigs.isEmpty()) {
                     for (TOboxDeviceConfig tOboxDeviceConfig : tOboxDeviceConfigs) {
-                        oboxDeviceConfigService.updateTOboxDeviceConfigStatus(tOboxDeviceConfig, state);
-//                        updateDeviceState(tOboxDeviceConfig, state);
-//                        TUserOperation tUserOperation = new TUserOperation();
-//                        tUserOperation.setDeviceSerialId(tOboxDeviceConfig
-//                                .getDeviceSerialId());
-//                        tUserOperation.setDeviceState(state);
-//                        tUserOperation.setDeviceChildType(tOboxDeviceConfig
-//                                .getDeviceChildType());
-//                        tUserOperation.setDeviceType(tOboxDeviceConfig
-//                                .getDeviceType());
-//                        UserBusiness.addUserOperation(tUserOperation);
-
-                    }
+//						updateDeviceState(tOboxDeviceConfig, state);
+						TUserOperation tUserOperation = new TUserOperation();
+						tUserOperation.setDeviceSerialId(tOboxDeviceConfig
+								.getDeviceSerialId());
+						tUserOperation.setDeviceState(state);
+						tUserOperation.setDeviceChildType(tOboxDeviceConfig
+								.getDeviceChildType());
+						tUserOperation.setDeviceType(tOboxDeviceConfig
+								.getDeviceType());
+						//UserBusiness.addUserOperation(tUserOperation);
+						userOperationService.addUserOperation(tUserOperation);
+					}
                 }
 //                TServerOboxGroup tServerOboxGroup = DeviceBusiness
 //                        .queryOBOXGroupByAddr(physicalOBOXSerialId,

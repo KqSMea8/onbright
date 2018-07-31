@@ -1,4 +1,4 @@
-package com.bright.apollo.socket;
+/*package com.bright.apollo.socket;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -81,6 +81,8 @@ public class MNService {
         gson = new Gson();
     }
 
+    
+    //jetty does
     public static MNService getInstance(AliRegionEnum eAliRegionEnum){
         if (instance == null){
 //            instance = new MNService(eAliRegionEnum);
@@ -252,6 +254,7 @@ public class MNService {
                         String [] topicArray = topic.split("/");
                         logger.info("topic:"+topic + " PopMessage Body: " + aString); //获取原始消息
                         if(ALIDevTypeEnum.getTypebyValue(topicArray[1]).equals(ALIDevTypeEnum.OBOX)){
+                        	
                             cmdHandlerManager.processTopic(topicArray[1],topicArray[2],aString);
                             //send the message from obox to app
                             JSONObject object = new JSONObject(aString);
@@ -317,3 +320,4 @@ public class MNService {
         }
     }
 }
+*/

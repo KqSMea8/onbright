@@ -70,7 +70,7 @@ public class SceneCMDHandler extends BasicHandler{
                 }else if (operte_type == 1) {
                     //add scene
                     log.info("====add scene====");
-                    scene = sceneService.getTSceneByOboxSerialIdAndSceneNumber(dbObox.getOboxSerialId(), scene_number);
+                    scene = sceneService.getTSceneByOboxSerialIdAndOboxSceneNumber(dbObox.getOboxSerialId(), scene_number);
                     if (scene != null) {
 //                        SceneBusiness.deleteUserScene(scene.getSceneNumber());
                         userSceneService.deleteUserSceneBySceneNum(scene.getSceneNumber());
@@ -88,6 +88,7 @@ public class SceneCMDHandler extends BasicHandler{
                     }
 //                    int ret = OboxBusiness.addOboxScene(scene);
                     int ret = sceneService.addScene(scene);
+                    cmdCache.saveAddLocalSceneInfo(scene_id, dbObox.getOboxSerialId(), scene_group,scene_number,ret);
 //                    List<TUserObox> tUserOboxs = OboxBusiness.queryUserOboxsByOboxId(dbObox.getOboxId());
 //                    for (TUserObox tUserObox : tUserOboxs) {
 //                        TUserOboxScene tUserScene = new TUserScene();
@@ -145,7 +146,7 @@ public class SceneCMDHandler extends BasicHandler{
                 int index = Integer.parseInt(data.substring(8, 10), 16);
                 int choice = Integer.parseInt(data.substring(4, 6), 16);
                 int condType = Integer.parseInt(data.substring(10, 12), 16);
-                TScene scene = sceneService.getTSceneByOboxSerialIdAndSceneNumber(dbObox.getOboxSerialId(), scene_number);
+                TScene scene = sceneService.getTSceneByOboxSerialIdAndOboxSceneNumber(dbObox.getOboxSerialId(), scene_number);
                 if (scene == null) {
                     log.error(String.format("not found scene_number %s in obox!", scene_number));
                     return null;
@@ -182,7 +183,7 @@ public class SceneCMDHandler extends BasicHandler{
 
             }else if ("03".equals(data.substring(2, 4))) {
                 //scene action
-                TScene scene = sceneService.getTSceneByOboxSerialIdAndSceneNumber(dbObox.getOboxSerialId(), scene_number);
+                TScene scene = sceneService.getTSceneByOboxSerialIdAndOboxSceneNumber(dbObox.getOboxSerialId(), scene_number);
                 if (scene == null) {
                     log.error(String.format("not found scene_number %s in obox!", scene_number));
                     return null;
@@ -214,6 +215,7 @@ public class SceneCMDHandler extends BasicHandler{
                                     tSceneAction.setAction(action);
                                     tSceneAction.setActionid(tOboxDeviceConfig.getDeviceSerialId());
                                     tSceneAction.setSceneNumber(scene.getSceneNumber());
+                                    tSceneAction.setNodeType(NodeTypeEnum.single.getValue());
                                     sceneActionService.addSceneAction(tSceneAction);
 //                                    SceneBusiness.addSceneAction(tSceneAction);
                                 }else if (cond == 2) {

@@ -2,11 +2,12 @@ package com.bright.apollo.service.impl;
 
 import java.util.List;
 
-import com.bright.apollo.dao.obox.mapper.TOboxMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.common.entity.TOboxExample;
+import com.bright.apollo.dao.obox.mapper.TOboxMapper;
 import com.bright.apollo.service.OboxService;
 
 /**
@@ -152,6 +153,14 @@ public class OboxServiceImpl implements OboxService {
 	@Override
 	public List<TObox> queryOboxByUserId(Integer userId) {
  		return oboxMapper.getOboxByUserId(userId);
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.OboxService#getOboxByUserAndoboxSerialId(java.lang.Integer, java.lang.String)  
+	 */
+	@Override
+	public TObox getOboxByUserAndoboxSerialId(Integer userId, String oboxSerialId) {
+ 		return oboxMapper.getOboxByUserAndoboxSerialId(userId,oboxSerialId);
 	}
 
 }

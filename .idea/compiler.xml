@@ -17,6 +17,7 @@
         <module name="springcloud-provider-deivce" />
         <module name="springcloud-provider-obox" />
         <module name="springcloud-provider-scene" />
+        <module name="springcloud-quartz" />
         <module name="springcloud-redis" />
         <module name="springcloud-service-impl" />
         <module name="springcloud-thirdpart" />

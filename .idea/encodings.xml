@@ -15,6 +15,7 @@
     <file url="file://$PROJECT_DIR$/springcloud-provider-obox" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-provider-scene" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-provider-user" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud-quartz" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-redis" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-service-impl" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-thirdpart" charset="UTF-8" />

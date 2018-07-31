@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.bright.apollo.bean.Message;
+import com.bright.apollo.cache.CmdCache;
 import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.common.entity.TScene;
 import com.bright.apollo.common.entity.TSceneCondition;
@@ -17,22 +18,28 @@ import com.bright.apollo.service.SceneConditionService;
 import com.bright.apollo.service.SceneService;
 import com.bright.apollo.service.UserDeviceService;
 import com.bright.apollo.service.UserOboxService;
+import com.bright.apollo.service.UserOperationService;
 import com.bright.apollo.service.UserSceneService;
+import com.bright.apollo.service.UserService;
 import com.bright.apollo.session.ClientSession;
+import com.bright.apollo.session.SceneActionThreadPool;
 import com.bright.apollo.session.SessionManager;
 
 @Component
 public abstract class BasicHandler {
 	 
+	protected UserOperationService userOperationService;
+	
 	protected SceneService sceneService;
-
+	
+	protected SceneActionThreadPool sceneActionThreadPool;
 	 
 	protected SceneConditionService sceneConditionService;
 
-	 
+	protected UserService userService; 
+	
 	protected UserSceneService userSceneService;
-
-	 
+	
 	protected SceneActionService sceneActionService;
 
 	protected OboxService oboxService;
@@ -47,6 +54,7 @@ public abstract class BasicHandler {
 	
 	protected CMDMessageService cmdMessageService;
 	
+	protected CmdCache cmdCache;
 	
 	protected SessionManager sessionManager;
 	public abstract Message<String> process(ClientSession clientSession, Message<String> msg) throws Exception;
@@ -157,6 +165,38 @@ public abstract class BasicHandler {
 
 	public void setSessionManager(SessionManager sessionManager) {
 		this.sessionManager = sessionManager;
+	}
+
+	public SceneActionThreadPool getSceneActionThreadPool() {
+		return sceneActionThreadPool;
+	}
+
+	public void setSceneActionThreadPool(SceneActionThreadPool sceneActionThreadPool) {
+		this.sceneActionThreadPool = sceneActionThreadPool;
+	}
+
+	public UserService getUserService() {
+		return userService;
+	}
+
+	public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
+
+	public UserOperationService getUserOperationService() {
+		return userOperationService;
+	}
+
+	public void setUserOperationService(UserOperationService userOperationService) {
+		this.userOperationService = userOperationService;
+	}
+
+	public CmdCache getCmdCache() {
+		return cmdCache;
+	}
+
+	public void setCmdCache(CmdCache cmdCache) {
+		this.cmdCache = cmdCache;
 	}
 	
 }

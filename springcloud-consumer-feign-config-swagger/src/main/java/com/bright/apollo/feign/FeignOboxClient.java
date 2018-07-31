@@ -77,5 +77,14 @@ public interface FeignOboxClient {
 	@RequestMapping(value = "/obox/getOboxByUser/{userId}", method = RequestMethod.GET)
 	ResponseObject<List<TObox>> getOboxByUser(@PathVariable(required = true,value = "userId") Integer userId);
 
+	/**  
+	 * @param userId
+	 * @param oboxSerialId
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/obox/getOboxByUserAndoboxSerialId/{userId}/{oboxSerialId}", method = RequestMethod.GET)
+	ResponseObject<TObox> getOboxByUserAndoboxSerialId(@PathVariable(value = "userId")  Integer userId,@PathVariable(value = "oboxSerialId")  String oboxSerialId);
+
 
 }

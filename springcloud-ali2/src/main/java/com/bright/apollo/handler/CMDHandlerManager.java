@@ -2,6 +2,7 @@ package com.bright.apollo.handler;
 
 import com.bright.apollo.bean.Message;
 import com.bright.apollo.cache.AliDevCache;
+import com.bright.apollo.cache.CmdCache;
 import com.bright.apollo.common.entity.TAliDevice;
 import com.bright.apollo.common.entity.TAliDeviceUS;
 import com.bright.apollo.common.entity.TObox;
@@ -19,15 +20,20 @@ import com.bright.apollo.service.SceneService;
 import com.bright.apollo.service.TopicServer;
 import com.bright.apollo.service.UserDeviceService;
 import com.bright.apollo.service.UserOboxService;
+import com.bright.apollo.service.UserOperationService;
 import com.bright.apollo.service.UserSceneService;
+import com.bright.apollo.service.UserService;
 import com.bright.apollo.session.ClientSession;
 import com.bright.apollo.session.PushThreadPool;
+import com.bright.apollo.session.SceneActionThreadPool;
 import com.bright.apollo.session.SessionManager;
 import com.bright.apollo.tool.ByteHelper;
 import com.bright.apollo.tool.EncDecHelper;
 import com.zz.common.util.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -38,14 +44,21 @@ public class CMDHandlerManager {
     private Logger logger = Logger.getLogger(CMDHandlerManager.class);
 
     @Autowired
+    @Lazy
     private TopicServer topServer;
 
     @Autowired
+    private UserOperationService userOperationService;
+    
+    @Autowired
     private EncDecHelper helper;
-
+    
     @Autowired
     private AliDevCache aliDevCache;
 
+    @Autowired
+    private UserService userService;
+    
     @Autowired
     private AliDeviceService aliDeviceService;
 
@@ -56,7 +69,10 @@ public class CMDHandlerManager {
     private PushThreadPool pushThreadPool;
     @Autowired
     private SceneService sceneService;
-
+    
+    @Autowired
+    private SceneActionThreadPool sceneActionThreadPool;
+    
     @Autowired
     private SceneConditionService sceneConditionService;
 
@@ -78,6 +94,8 @@ public class CMDHandlerManager {
     private CMDMessageService cmdMessageService;
     @Autowired
     private SessionManager sessionManager;
+    @Autowired
+    private CmdCache cmdCache;
     private static Map<String, BasicHandler> cmdHandlers = new HashMap<String, BasicHandler>();
 
     static {
@@ -179,7 +197,7 @@ public class CMDHandlerManager {
     public static BasicHandler getCMDHandler(Command cmd) {
         return cmdHandlers.get(cmd);
     }
-
+    @Async
     public void processTopic(String ProductKey,String DeviceName,String inMsg){
         try {
             logger.info("======topic msg=====:key:"+ProductKey+" device:"+DeviceName+" payload:"+inMsg);
@@ -215,9 +233,6 @@ public class CMDHandlerManager {
             }else {
                 client.setUid(obox_serial_id);
             }
-
-
-
             Message<String> msg = new Message<String>();
             msg.setHeader(inMsg.substring(0, 8));
             msg.setDecodeData(inMsg.substring(8));
@@ -389,6 +404,9 @@ public class CMDHandlerManager {
 
                 //inject the obj to the handler
                 if(handler.getOboxService()==null){
+                	handler.setUserOperationService(userOperationService);
+                	handler.setUserService(userService);
+                	handler.setSceneActionThreadPool(sceneActionThreadPool);
                 	handler.setDeviceChannelService(deviceChannelService);
                 	handler.setOboxDeviceConfigService(oboxDeviceConfigService);
                 	handler.setOboxService(oboxService);
@@ -400,6 +418,7 @@ public class CMDHandlerManager {
                 	handler.setUserSceneService(userSceneService);
                 	handler.setCmdMessageService(cmdMessageService);
                 	handler.setSessionManager(sessionManager);
+                	handler.setCmdCache(cmdCache);
                 }
                 handler.process(client, msg);
                 

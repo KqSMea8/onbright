@@ -31,7 +31,7 @@ public class RemoveOBOXHandler extends BasicHandler {
         byte [] bodyBytes = new byte [1];
         bodyBytes[0] = 00;
         OboxResp oboxResp = cmdMessageService.send(obox, CMDEnum.delete_obox, bodyBytes);
-        replyMsg.setData(oboxResp.getData());
+        replyMsg.setData(oboxResp.getDate());
 
         sceneService.deleteSceneByOboxSerialId(obox.getOboxSerialId());
 //        OboxBusiness.delOboxScenes(obox.getOboxSerialId());

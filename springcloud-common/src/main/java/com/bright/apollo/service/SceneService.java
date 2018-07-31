@@ -129,5 +129,42 @@ public interface SceneService extends BasicService{
 	 * @Description:  
 	 */
 	int addSceneCondition(TSceneCondition tSceneCondition);
+
+	/**  
+	 * @param sceneNumber
+	 * @param conditionGroup
+	 * @return  
+	 * @Description:  
+	 */
+	public List<TSceneCondition> getSceneConditionBySceneNumberAndGroup(Integer sceneNumber,
+			Integer conditionGroup);
+
+	/**  
+	 * @param sceneNumber
+	 * @return  
+	 * @Description:  
+	 */
+	public List<TSceneAction> getSceneActionsBySceneNumber(Integer sceneNumber);
+
+	/**  
+	 * @param tSceneAction  
+	 * @Description:  
+	 */
+	public void updateSceneAction(TSceneAction tSceneAction);
+
+	/**  
+	 * @param sceneNumber
+	 * @param actionId  
+	 * @Description:  
+	 */
+	public void deleteSceneActionBySceneNumberAndActionId(Integer sceneNumber, String actionId);
+
+	/**  
+	 * @param oboxSerialId
+	 * @param oboxSceneNumber
+	 * @return  
+	 * @Description:  
+	 */
+	public TScene getTSceneByOboxSerialIdAndOboxSceneNumber(String oboxSerialId, Integer oboxSceneNumber);
  
 }

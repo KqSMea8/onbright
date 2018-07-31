@@ -40,7 +40,7 @@ public interface FeignSceneClient {
 	 * @Description:
 	 */
 	@RequestMapping(value = "/scene/updateScene", method = RequestMethod.PUT)
-	ResponseObject<TScene> updateScene(@RequestBody(required=true) TScene scene);
+	ResponseObject<TScene> updateScene(@RequestBody(required = true) TScene scene);
 
 	/**
 	 * @param sceneNumber
@@ -161,7 +161,7 @@ public interface FeignSceneClient {
 	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
-	@RequestMapping(value = "/addSceneCondition", method = RequestMethod.POST)
+	@RequestMapping(value = "/scene/addSceneCondition", method = RequestMethod.POST)
 	ResponseObject addSceneCondition(@RequestBody(required = true) TSceneCondition tSceneCondition);
 
 	/**
@@ -169,17 +169,54 @@ public interface FeignSceneClient {
 	 * @param sceneNumber
 	 * @Description:
 	 */
-	@RequestMapping(value = "/scene/getScenesByOboxSerialIdAndSceneNumber/{oboxSerialId}/{sceneNumber}", method = RequestMethod.GET)
-	ResponseObject<TScene> getScenesByOboxSerialIdAndSceneNumber(
+	@RequestMapping(value = "/scene/getScenesByOboxSerialIdAndSceneNumber/{oboxSerialId}/{oboxSceneNumber}", method = RequestMethod.GET)
+	ResponseObject<TScene> getScenesByOboxSerialIdAndOboxSceneNumber(
 			@PathVariable(value = "oboxSerialId") String oboxSerialId,
-			@PathVariable(value = "sceneNumber") Integer sceneNumber);
+			@PathVariable(value = "oboxSceneNumber") Integer oboxSceneNumber);
 
-	/**  
+	/**
 	 * @param sceneNumber
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
 	@RequestMapping(value = "/scene/getSceneBySceneNumber/{sceneNumber}", method = RequestMethod.GET)
-	ResponseObject<TScene> getSceneBySceneNumber(@PathVariable(value = "sceneNumber")Integer sceneNumber);
+	ResponseObject<TScene> getSceneBySceneNumber(@PathVariable(value = "sceneNumber") Integer sceneNumber);
+
+	/**
+	 * @param sceneNumber
+	 * @param conditionGroup
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/scene/getSceneConditionsBySceneNumberAndConditionGroup/{sceneNumber}/{conditionGroup}", method = RequestMethod.GET)
+	ResponseObject<List<TSceneCondition>> getSceneConditionsBySceneNumberAndConditionGroup(
+			@PathVariable(value = "sceneNumber") Integer sceneNumber,
+			@PathVariable(value = "conditionGroup") Integer conditionGroup);
+
+	/**
+	 * @param sceneNumber
+	 * @Description:
+	 */
+	@RequestMapping(value = "/scene/getSceneActionsBySceneNumber/{sceneNumber}", method = RequestMethod.GET)
+	ResponseObject<List<TSceneAction>> getSceneActionsBySceneNumber(
+			@PathVariable(value = "sceneNumber") Integer sceneNumber);
+
+	/**
+	 * @param tSceneAction
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/scene/updateSceneAction", method = RequestMethod.PUT)
+	ResponseObject updateSceneAction(@RequestBody TSceneAction tSceneAction);
+
+	/**
+	 * @param sceneNumber
+	 * @param actionId
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/scene/deleteSceneActionBySceneNumberAndActionId/{sceneNumber}/{actionId}", method = RequestMethod.DELETE)
+	ResponseObject deleteSceneActionBySceneNumberAndActionId(@PathVariable(value = "sceneNumber") Integer sceneNumber,
+			@PathVariable(value = "actionId") String actionId);
 
 }

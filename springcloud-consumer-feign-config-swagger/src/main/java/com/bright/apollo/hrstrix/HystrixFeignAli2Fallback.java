@@ -179,8 +179,72 @@ public class HystrixFeignAli2Fallback extends BasicHystrixFeignFallback implemen
 	/* (non-Javadoc)  
 	 * @see com.bright.apollo.feign.FeignAliClient#setDeviceStatus(java.lang.String, java.lang.String, java.lang.String)  
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public ResponseObject<OboxResp> setDeviceStatus(String oboxSerialId, String status, String rfAddr) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignAliClient#setLocalScene(java.lang.Integer, java.lang.Integer, java.lang.String, java.lang.String, java.lang.String)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject setLocalScene(Byte sceneStatus, Integer oboxSceneNumber, String sceneName,
+			String oboxSerialId, String groupAddr) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignAliClient#modifyLocalSceneCondition(java.lang.Integer, java.lang.String, java.lang.Integer, java.util.List)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject modifyLocalSceneCondition(Integer oboxSceneNumber, String oboxSerialId, Integer userId,
+			List<List<SceneConditionDTO>> sceneConditionDTOs) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignAliClient#deleteLocalScene(java.lang.Integer, java.lang.String, java.lang.String)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject deleteLocalScene(Integer oboxSceneNumber, String sceneName, String oboxSerialId) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignAliClient#excuteLocalScene(java.lang.Integer, java.lang.String, java.lang.String)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject excuteLocalScene(Integer oboxSceneNumber, String sceneName, String oboxSerialId) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignAliClient#addSceneAction(java.lang.Integer)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject addSceneAction(Integer sceneNumber) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignAliClient#excuteLocalScene(java.lang.Integer, java.lang.String, java.lang.String, java.lang.String)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject excuteLocalScene(Integer oboxSceneNumber, String sceneName, String oboxSerialId,
+			String sceneStatus) {
 		logger.warn("===ali server is break===");
 		return serverError();
 	}

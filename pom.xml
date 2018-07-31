@@ -15,6 +15,7 @@
 		<service-impl-version>0.0.1-SNAPSHOT</service-impl-version>
         <!--<mqtt-version>0.0.1-SNAPSHOT</mqtt-version>-->
 		<jersey-version>1.19</jersey-version>
+		<quartz-version>2.2.3</quartz-version>
 	</properties>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -41,7 +42,8 @@
 		<module>springcloud-redis</module>
 		<module>springcloud-service-impl</module>
 		<module>springcloud-ali2</module>
-		<!--<module>springcloud-mqtt</module>-->
+		<module>springcloud-quartz</module>
+
 	</modules>
 	<dependencyManagement>
 		<dependencies>

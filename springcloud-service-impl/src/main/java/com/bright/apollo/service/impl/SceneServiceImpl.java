@@ -13,9 +13,7 @@ import com.bright.apollo.common.entity.TSceneCondition;
 import com.bright.apollo.common.entity.TSceneConditionExample;
 import com.bright.apollo.dao.scene.mapper.TSceneActionMapper;
 import com.bright.apollo.dao.scene.mapper.TSceneConditionMapper;
-//import org.springframework.beans.factory.annotation.Autowired;
 import com.bright.apollo.dao.scene.mapper.TSceneMapper;
-//import com.bright.apollo.common.entity.TSceneExample;
 import com.bright.apollo.response.SceneInfo;
 import com.bright.apollo.service.SceneService;
 
@@ -24,19 +22,20 @@ import com.bright.apollo.service.SceneService;
  * @Description:
  * @Author:JettyLiu
  * @Since:2018年3月2日
- * @Version:1.1.0 
+ * @Version:1.1.0
  */
 @Service
 public class SceneServiceImpl implements SceneService {
-//	@SuppressWarnings("rawtypes")
-//	@Autowired
-//	private SceneBusiness sceneBusiness;
+	// @SuppressWarnings("rawtypes")
+	// @Autowired
+	// private SceneBusiness sceneBusiness;
 	@Autowired
 	private TSceneMapper sceneMapper;
 	@Autowired
 	private TSceneConditionMapper tSceneConditionMapper;
 	@Autowired
 	private TSceneActionMapper tSceneActionMapper;
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -64,7 +63,7 @@ public class SceneServiceImpl implements SceneService {
 	@Override
 	@Deprecated
 	public <T, E> List<T> handlerExampleToList(E e) {
-//		return sceneBusiness.selectByExample(e);
+		// return sceneBusiness.selectByExample(e);
 		return null;
 	}
 
@@ -78,8 +77,8 @@ public class SceneServiceImpl implements SceneService {
 	@Override
 	@Deprecated
 	public <T> T queryTById(T t) {
-//		if (t != null)
-//			return (T) sceneBusiness.selectByPrimaryKey(t);
+		// if (t != null)
+		// return (T) sceneBusiness.selectByPrimaryKey(t);
 		return null;
 	}
 
@@ -93,9 +92,9 @@ public class SceneServiceImpl implements SceneService {
 	@SuppressWarnings("unchecked")
 	@Override
 	public int updateScene(TScene tScene) {
-//		return sceneBusiness.updateByPrimaryKeySelective(tScene);
+		// return sceneBusiness.updateByPrimaryKeySelective(tScene);
 		return sceneMapper.updateScene(tScene);
-//		return 0;
+		// return 0;
 	}
 
 	/*
@@ -109,7 +108,7 @@ public class SceneServiceImpl implements SceneService {
 	@Override
 	public void deleteSceneBySceneNumber(Integer sceneNumber) {
 		sceneMapper.deleteSceneBySceneNum(sceneNumber);
-		
+
 	}
 
 	/*
@@ -123,7 +122,7 @@ public class SceneServiceImpl implements SceneService {
 	@Override
 	public int addScene(TScene scene) {
 		return sceneMapper.addScene(scene);
-//		return sceneBusiness.insertSelective(scene);
+		// return sceneBusiness.insertSelective(scene);
 	}
 
 	/*
@@ -137,7 +136,7 @@ public class SceneServiceImpl implements SceneService {
 	@Override
 	@Deprecated
 	public <T> void batchAdd(List<T> list) {
-//		sceneBusiness.batchAdd(list);
+		// sceneBusiness.batchAdd(list);
 	}
 
 	/*
@@ -177,7 +176,7 @@ public class SceneServiceImpl implements SceneService {
 	public List<TSceneAction> queryActionsBySceneNumber(Integer sceneNumber) {
 		TSceneActionExample example = new TSceneActionExample();
 		example.or().andSceneNumberEqualTo(sceneNumber);
-//		return sceneBusiness.selectByExample(example);
+		// return sceneBusiness.selectByExample(example);
 		return null;
 	}
 
@@ -194,7 +193,7 @@ public class SceneServiceImpl implements SceneService {
 	public List<TSceneCondition> queryConditionsBySceneNumber(Integer sceneNumber) {
 		TSceneConditionExample example = new TSceneConditionExample();
 		example.or().andSceneNumberEqualTo(sceneNumber);
-//		return sceneBusiness.selectByExample(example);
+		// return sceneBusiness.selectByExample(example);
 		return null;
 	}
 
@@ -207,7 +206,7 @@ public class SceneServiceImpl implements SceneService {
 	@Override
 	@Deprecated
 	public <T> void batchUpdate(List<T> list) {
-//		sceneBusiness.batchUpdate(list);
+		// sceneBusiness.batchUpdate(list);
 	}
 
 	/*
@@ -221,7 +220,8 @@ public class SceneServiceImpl implements SceneService {
 	@Override
 	@Deprecated
 	public int deleteSceneConditionById(Integer condtionId) {
-//		return sceneBusiness.deleteByPrimaryKey(new TSceneCondition(condtionId));
+		// return sceneBusiness.deleteByPrimaryKey(new
+		// TSceneCondition(condtionId));
 		return 0;
 	}
 
@@ -249,7 +249,7 @@ public class SceneServiceImpl implements SceneService {
 	@Override
 	@Deprecated
 	public int deleteSceneActionById(Integer actionId) {
-//		return sceneBusiness.deleteByPrimaryKey(new TSceneAction(actionId));
+		// return sceneBusiness.deleteByPrimaryKey(new TSceneAction(actionId));
 		return 0;
 	}
 
@@ -266,24 +266,32 @@ public class SceneServiceImpl implements SceneService {
 		tSceneActionMapper.deleteSceneActionBySceneNumber(sceneNumber);
 	}
 
-	/* (non-Javadoc)  
-	 * @see com.bright.apollo.service.SceneService#querySceneByUserId(java.lang.Integer, java.lang.Integer, java.lang.Integer)  
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.bright.apollo.service.SceneService#querySceneByUserId(java.lang.
+	 * Integer, java.lang.Integer, java.lang.Integer)
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	@Deprecated
 	public List<TScene> querySceneByUserId(Integer userId, Integer pageIndex, Integer pageSize) {
-// 		return sceneBusiness.querySceneByUserId(userId,pageIndex*pageSize,(pageIndex+1)*pageSize);
+		// return
+		// sceneBusiness.querySceneByUserId(userId,pageIndex*pageSize,(pageIndex+1)*pageSize);
 		return null;
 	}
 
-	/* (non-Javadoc)  
-	 * @see com.bright.apollo.service.SceneService#queryCountSceneByUserId(java.lang.Integer)  
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.bright.apollo.service.SceneService#queryCountSceneByUserId(java.lang.
+	 * Integer)
 	 */
 	@Override
 	@Deprecated
 	public int queryCountSceneByUserId(Integer userId) {
-// 		return sceneBusiness.queryCountSceneByUserId(userId);
+		// return sceneBusiness.queryCountSceneByUserId(userId);
 		return 0;
 	}
 
@@ -304,12 +312,12 @@ public class SceneServiceImpl implements SceneService {
 
 	@Override
 	public TScene getTSceneByOboxSerialIdAndSceneNumber(String oboxSerialId, int sceneNumber) {
-		return sceneMapper.getTSceneByOboxSerialIdAndSceneNumber(oboxSerialId,sceneNumber);
+		return sceneMapper.getTSceneByOboxSerialIdAndSceneNumber(oboxSerialId, sceneNumber);
 	}
 
 	@Override
 	public void deleteSceneByOboxSerialIdAndSceneNum(String oboxSerialId, int oboxSceneNumber) {
-		sceneMapper.deleteSceneByOboxSerialIdAndSceneNum(oboxSerialId,oboxSceneNumber);
+		sceneMapper.deleteSceneByOboxSerialIdAndSceneNum(oboxSerialId, oboxSceneNumber);
 	}
 
 	@Override
@@ -322,30 +330,89 @@ public class SceneServiceImpl implements SceneService {
 		return sceneMapper.getALlScene();
 	}
 
-	/* (non-Javadoc)  
-	 * @see com.bright.apollo.service.SceneService#getConditionsBySceneNumber(java.lang.Integer)  
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.bright.apollo.service.SceneService#getConditionsBySceneNumber(java.
+	 * lang.Integer)
 	 */
 	@Override
 	public List<TSceneCondition> getConditionsBySceneNumber(Integer sceneNumber) {
-		  
+
 		return tSceneConditionMapper.getConditionsBySceneNumber(sceneNumber);
 	}
 
-	/* (non-Javadoc)  
-	 * @see com.bright.apollo.service.SceneService#addSceneAction(com.bright.apollo.common.entity.TSceneAction)  
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.bright.apollo.service.SceneService#addSceneAction(com.bright.apollo.
+	 * common.entity.TSceneAction)
 	 */
 	@Override
-	public int addSceneAction(TSceneAction tSceneAction) {   
+	public int addSceneAction(TSceneAction tSceneAction) {
 		return tSceneActionMapper.addSceneAction(tSceneAction);
 	}
 
-	/* (non-Javadoc)  
-	 * @see com.bright.apollo.service.SceneService#addSceneCondition(com.bright.apollo.common.entity.TSceneCondition)  
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.bright.apollo.service.SceneService#addSceneCondition(com.bright.
+	 * apollo.common.entity.TSceneCondition)
 	 */
 	@Override
 	public int addSceneCondition(TSceneCondition tSceneCondition) {
 		return tSceneConditionMapper.addSceneCondition(tSceneCondition);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.bright.apollo.service.SceneService#
+	 * getSceneConditionsBySceneNumberAndConditionGroup(java.lang.Integer,
+	 * java.lang.Integer)
+	 */
+	@Override
+	public List<TSceneCondition> getSceneConditionBySceneNumberAndGroup(Integer sceneNumber,
+			Integer conditionGroup) {
+		return tSceneConditionMapper.getSceneConditionBySceneNumberAndGroup(sceneNumber, conditionGroup);
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.SceneService#getSceneActionsBySceneNumber(java.lang.Integer)  
+	 */
+	@Override
+	public List<TSceneAction> getSceneActionsBySceneNumber(Integer sceneNumber) {
+		
+		return tSceneActionMapper.getSceneActionBySceneNumber(sceneNumber);
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.SceneService#updateSceneAction(com.bright.apollo.common.entity.TSceneAction)  
+	 */
+	@Override
+	public void updateSceneAction(TSceneAction tSceneAction) {
+		tSceneActionMapper.updateSceneAction(tSceneAction);
+		
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.SceneService#deleteSceneActionBySceneNumberAndActionId(java.lang.Integer, java.lang.String)  
+	 */
+	@Override
+	public void deleteSceneActionBySceneNumberAndActionId(Integer sceneNumber, String actionId) {
+		  
+		tSceneActionMapper.deleteSceneActionByBySceneNumberAndActionId(sceneNumber, actionId);
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.SceneService#getTSceneByOboxSerialIdAndOboxSceneNumber(java.lang.String, java.lang.Integer)  
+	 */
+	@Override
+	public TScene getTSceneByOboxSerialIdAndOboxSceneNumber(String oboxSerialId, Integer oboxSceneNumber) {
+		 
+		return sceneMapper.getTSceneByOboxSerialIdAndOboxSceneNumber(oboxSerialId,oboxSceneNumber);
+	}
 
 }

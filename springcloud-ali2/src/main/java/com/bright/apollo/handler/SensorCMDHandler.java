@@ -36,35 +36,10 @@ public class SensorCMDHandler extends BasicHandler {
 
     private final Logger log = Logger.getLogger(SensorCMDHandler.class);
 
-    @Autowired
-    private SessionManager sessionManager;
-
-    @Autowired
-    private SceneActionThreadPool sceneActionThreadPool;
-
-    @Autowired
-    private OboxService oboxService;
-
-    @Autowired
-    private OboxDeviceConfigService oboxDeviceConfigService;
-
-    @Autowired
-    private SceneService sceneService;
-
-    @Autowired
-    private SceneActionService sceneActionService;
-
-    @Autowired
-    private SceneConditionService sceneConditionService;
-
-    @Autowired
-    private UserSceneService userSceneService;
-
-    @Autowired
-    private UserService userService;
-
     @Override
     public Message<String> process(ClientSession clientSession, Message<String> msg) throws Exception {
+    	
+    	
         String data = msg.getData();
         String oboxSerialId = data.substring(0, 10);
         String addr = data.substring(12, 14);

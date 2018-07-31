@@ -319,6 +319,36 @@ public class DeviceController {
 		}
 		return res;
 	}
-
-	 
+	@RequestMapping(value = "/getDeviceByUserAndSerialId/{userId}/{serialID}", method = RequestMethod.GET)
+	ResponseObject<TOboxDeviceConfig> getDeviceByUserAndSerialId(@PathVariable(value = "userId") Integer userId,
+			@PathVariable(value = "serialID") String serialID) {
+		ResponseObject<TOboxDeviceConfig> res = new ResponseObject<TOboxDeviceConfig>();
+		try {
+			TOboxDeviceConfig device=oboxDeviceConfigService.getDeviceByUserAndSerialId(userId,serialID);
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+			res.setData(device);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/deleleDeviceByOboxSerialId/{serialId}", method = RequestMethod.DELETE)
+	ResponseObject deleleDeviceByOboxSerialId(
+			@PathVariable(value = "serialId") String serialId) {
+		ResponseObject res = new ResponseObject();
+		try {
+			oboxDeviceConfigService.deleteTOboxDeviceConfigByOboxSerialId(serialId);
+			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
+ 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
 }

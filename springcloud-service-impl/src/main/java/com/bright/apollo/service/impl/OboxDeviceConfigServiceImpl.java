@@ -136,5 +136,32 @@ public class OboxDeviceConfigServiceImpl  implements OboxDeviceConfigService {
 		return odcMapper.getDevciesByUserIdAndType(userId,deviceType);
 	}
 
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.OboxDeviceConfigService#getDeviceByUserAndSerialId(java.lang.Integer, java.lang.String)  
+	 */
+	@Override
+	public TOboxDeviceConfig getDeviceByUserAndSerialId(Integer userId, String serialID) {
+		 
+		return odcMapper.getDeviceByUserAndSerialId(userId,serialID);
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.OboxDeviceConfigService#deleteTOboxDeviceConfigByOboxSerialId(java.lang.String)  
+	 */
+	@Override
+	public void deleteTOboxDeviceConfigByOboxSerialId(String serialId) {
+		odcMapper.deleteTOboxDeviceConfigByOboxSerialId(serialId);
+		
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.OboxDeviceConfigService#deleteTOboxDeviceConfigById(java.lang.Integer)  
+	 */
+	@Override
+	public void deleteTOboxDeviceConfigById(Integer id) {
+		 
+		odcMapper.deleteTOboxDeviceConfigById(id);
+	}
+
 
 }

@@ -1,4 +1,4 @@
-package com.bright.apollo.listener;
+/*package com.bright.apollo.listener;
 
 
 
@@ -79,7 +79,12 @@ public class ContextListener implements ApplicationListener<ContextRefreshedEven
 
             //executor.submit(nettyThread);
             //executor.submit(pushThread);
-            new Thread(mnserver).start();
+        	
+            //du's code 
+        	//new Thread(mnserver).start();
+        	//jetty does
+        	mnserver.start();
+        	
 //            executor.submit(new Thread(mnserver2));
 //            MNService mnService = MNService.getInstance(AliRegionEnum.SOURTHCHINA);
 //            System.out.println("------mnService ------"+mnService);
@@ -101,3 +106,4 @@ public class ContextListener implements ApplicationListener<ContextRefreshedEven
 //        }
 //    }
 }
+*/

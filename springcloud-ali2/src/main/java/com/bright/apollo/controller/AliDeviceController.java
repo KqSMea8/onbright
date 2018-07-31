@@ -28,7 +28,6 @@ import com.bright.apollo.service.AliDeviceService;
 import com.bright.apollo.service.CMDMessageService;
 import com.bright.apollo.service.AliRequest.AliService;
 import com.bright.apollo.tool.ByteHelper;
-import com.google.gson.Gson;
 
 @RestController
 @RequestMapping("aliDevice")

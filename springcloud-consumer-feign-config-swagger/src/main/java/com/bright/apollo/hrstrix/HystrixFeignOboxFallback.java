@@ -95,4 +95,13 @@ public class HystrixFeignOboxFallback extends BasicHystrixFeignFallback implemen
 		return serverError();
 	}
 
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignOboxClient#getOboxByUserAndoboxSerialId(java.lang.Integer, java.lang.String)  
+	 */
+	@Override
+	public ResponseObject<TObox> getOboxByUserAndoboxSerialId(Integer userId, String oboxSerialId) {
+		logger.warn("===obox server is break===");
+		return serverError();
+	}
+
 }

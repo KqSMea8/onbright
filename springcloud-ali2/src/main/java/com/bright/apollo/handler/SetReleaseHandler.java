@@ -36,7 +36,7 @@ public class SetReleaseHandler extends BasicHandler{
         bodyBytes[7] = 0x03;
         OboxResp oboxResp = cmdMessageService.send(obox, CMDEnum.release_all_devices, bodyBytes);
         Message<String>  replyMsg = new Message<String>();
-        replyMsg.setData(oboxResp.getData());
+        replyMsg.setData(oboxResp.getDate());
 
         return replyMsg;
     }

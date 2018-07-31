@@ -12,6 +12,7 @@ import com.zz.common.util.StringUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -29,6 +30,7 @@ public class SceneActionThreadPool {
     private AliDevCache aliDevCache;
 
     @Autowired
+    @Lazy
     private TopicServer topicServer;
 
     @Autowired
@@ -37,7 +39,11 @@ public class SceneActionThreadPool {
     @Autowired
     private OboxDeviceConfigService oboxDeviceConfigService;
 
-    private final Logger log = Logger
+    @Autowired
+    private SceneService sceneService;
+ 
+
+	private final Logger log = Logger
             .getLogger(SceneActionThreadPool.class);
 
     public SceneActionThreadPool() {
@@ -150,7 +156,7 @@ public class SceneActionThreadPool {
                 for (TSceneAction tSceneAction : tSceneActions) {
                     if (tSceneAction.getNodeType().equals(
                             NodeTypeEnum.single.getValue())) {
-                        TOboxDeviceConfig oboxDeviceConfig = oboxDeviceConfigService.getOboxDeviceConfigById(tSceneAction.getId());
+                        TOboxDeviceConfig oboxDeviceConfig = oboxDeviceConfigService.getTOboxDeviceConfigByDeviceSerialId(tSceneAction.getActionid());
 //                        TOboxDeviceConfig oboxDeviceConfig = DeviceBusiness
 //                                .queryDeviceConfigByID(tSceneAction
 //                                        .getActionID());
@@ -290,8 +296,11 @@ public class SceneActionThreadPool {
 //                TScene fScene = SceneBusiness.querySceneBySceneNumber(sceneNumber);//父场景
 //                fScene.setSceneRun(0);
 //                SceneBusiness.updateScene(fScene);
-
-
+                TScene fScene = sceneService.getSceneBySceneNumber(sceneNumber);
+                if(fScene!=null){
+                	fScene.setSceneRun((byte)0);
+                	sceneService.updateScene(fScene);
+                }
             } catch (Exception e) {
 
                 e.printStackTrace();
