@@ -54,7 +54,7 @@ public class SetStatusHandler extends BasicHandler{
             //TODO
             OboxResp oboxResp = cmdMessageService.send(bestOBOXChannel, CMDEnum.setting_node_status, bodyBytes);
             if (oboxResp.getType() == OboxResp.Type.success) {
-                replyMsg.setData(oboxResp.getData());
+                replyMsg.setData(oboxResp.getDate());
                 return replyMsg;
             }else {
                 replyMsg.setData("00"+data);

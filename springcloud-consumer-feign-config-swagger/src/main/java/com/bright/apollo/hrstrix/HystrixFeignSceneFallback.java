@@ -193,7 +193,7 @@ public class HystrixFeignSceneFallback extends BasicHystrixFeignFallback impleme
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public ResponseObject<TScene> getScenesByOboxSerialIdAndSceneNumber(String oboxSerialId, Integer sceneNumber) {
+	public ResponseObject<TScene> getScenesByOboxSerialIdAndOboxSceneNumber(String oboxSerialId, Integer oboxSceneNumber) {
 		logger.warn("===scene server is break===");
 		return serverError();
 	}

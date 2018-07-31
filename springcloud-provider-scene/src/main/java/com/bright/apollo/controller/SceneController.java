@@ -92,15 +92,9 @@ public class SceneController {
 	public ResponseObject deleteScene(@PathVariable Integer sceneNumber) {
 		ResponseObject res = new ResponseObject();
 		try {
-			TScene tScene = sceneService.queryTById(new TScene(sceneNumber));
-			if (tScene == null) {
-				res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
-				res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
-			} else {
-				sceneService.deleteSceneBySceneNumber(sceneNumber);
-				res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
-				res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
-			}
+			sceneService.deleteSceneBySceneNumber(sceneNumber);
+			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("===getScene error msg:" + e.getMessage());
@@ -397,15 +391,15 @@ public class SceneController {
 	public ResponseObject<TScene> addScene(@RequestBody(required = true) TScene scene) {
 		ResponseObject<TScene> res = new ResponseObject<TScene>();
 		try {
-				int sceneNumber = sceneService.addScene(scene);
-				if (sceneNumber == 0) {
-					res.setStatus(ResponseEnum.RequestParamError.getStatus());
-					res.setMessage(ResponseEnum.RequestParamError.getMsg());
-				} else {
-					res.setData(scene);
-					res.setStatus(ResponseEnum.AddSuccess.getStatus());
-					res.setMessage(ResponseEnum.AddSuccess.getMsg());
-				}
+			int sceneNumber = sceneService.addScene(scene);
+			if (sceneNumber == 0) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+			} else {
+				res.setData(scene);
+				res.setStatus(ResponseEnum.AddSuccess.getStatus());
+				res.setMessage(ResponseEnum.AddSuccess.getMsg());
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("===addScene error msg:" + e.getMessage());
@@ -444,8 +438,8 @@ public class SceneController {
 	public ResponseObject addSceneCondition(@RequestBody(required = true) TSceneCondition tSceneCondition) {
 		ResponseObject res = new ResponseObject();
 		try {
-			if (tSceneCondition != null
-					&& tSceneCondition.getSceneNumber() != null && tSceneCondition.getSceneNumber() != 0) {
+			if (tSceneCondition != null && tSceneCondition.getSceneNumber() != null
+					&& tSceneCondition.getSceneNumber() != 0) {
 				sceneService.addSceneCondition(tSceneCondition);
 				res.setStatus(ResponseEnum.AddSuccess.getStatus());
 				res.setMessage(ResponseEnum.AddSuccess.getMsg());
@@ -462,15 +456,15 @@ public class SceneController {
 		return res;
 	}
 
-	@RequestMapping(value = "/getScenesByOboxSerialIdAndSceneNumber/{oboxSerialId}/{sceneNumber}", method = RequestMethod.GET)
-	public ResponseObject<TScene> getScenesByOboxSerialIdAndSceneNumber(
+	@RequestMapping(value = "/getScenesByOboxSerialIdAndSceneNumber/{oboxSerialId}/{oboxSceneNumber}", method = RequestMethod.GET)
+	public ResponseObject<TScene> getScenesByOboxSerialIdAndOboxSceneNumber(
 			@PathVariable(value = "oboxSerialId") String oboxSerialId,
-			@PathVariable(value = "sceneNumber") Integer sceneNumber) {
+			@PathVariable(value = "oboxSceneNumber") Integer oboxSceneNumber) {
 		ResponseObject<TScene> res = new ResponseObject<TScene>();
 		try {
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
-			res.setData(sceneService.getTSceneByOboxSerialIdAndSceneNumber(oboxSerialId, sceneNumber));
+			res.setData(sceneService.getTSceneByOboxSerialIdAndOboxSceneNumber(oboxSerialId, oboxSceneNumber));
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("===getScenesByOboxSerialIdAndSceneNumber error msg:" + e.getMessage());
@@ -481,8 +475,7 @@ public class SceneController {
 	}
 
 	@RequestMapping(value = "/getSceneBySceneNumber/{sceneNumber}", method = RequestMethod.GET)
-	public ResponseObject<TScene> getSceneBySceneNumber(
-			@PathVariable(value = "sceneNumber") Integer sceneNumber) {
+	public ResponseObject<TScene> getSceneBySceneNumber(@PathVariable(value = "sceneNumber") Integer sceneNumber) {
 		ResponseObject<TScene> res = new ResponseObject<TScene>();
 		try {
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
@@ -531,9 +524,10 @@ public class SceneController {
 		}
 		return res;
 	}
+
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/updateSceneAction", method = RequestMethod.PUT)
-	ResponseObject updateSceneAction(@RequestBody TSceneAction tSceneAction){
+	ResponseObject updateSceneAction(@RequestBody TSceneAction tSceneAction) {
 		ResponseObject res = new ResponseObject();
 		try {
 			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
@@ -547,15 +541,16 @@ public class SceneController {
 		}
 		return res;
 	}
+
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/deleteSceneActionBySceneNumberAndActionId/{sceneNumber}/{actionId}", method = RequestMethod.PUT)
 	ResponseObject deleteSceneActionBySceneNumberAndActionId(@PathVariable(value = "sceneNumber") Integer sceneNumber,
-			@PathVariable(value = "actionId") String actionId){
+			@PathVariable(value = "actionId") String actionId) {
 		ResponseObject res = new ResponseObject();
 		try {
 			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
 			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
-			sceneService.deleteSceneActionBySceneNumberAndActionId(sceneNumber,actionId);
+			sceneService.deleteSceneActionBySceneNumberAndActionId(sceneNumber, actionId);
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("===getSceneConditionsBySceneNumberAndConditionGroup error msg:" + e.getMessage());
@@ -563,5 +558,27 @@ public class SceneController {
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
+	}
+
+	/**
+	 * @param sceneNumber
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/deleteSceneActionsBySceneNumber/{sceneNumber}", method = RequestMethod.DELETE)
+	ResponseObject deleteSceneActionsBySceneNumber(@PathVariable(value = "sceneNumber") Integer sceneNumber) {
+		ResponseObject res = new ResponseObject();
+		try {
+			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
+			sceneService.deleteSceneActionBySceneNumber(sceneNumber);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("===getSceneConditionsBySceneNumberAndConditionGroup error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+
 	}
 }

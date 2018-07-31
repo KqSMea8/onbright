@@ -2,6 +2,7 @@ package com.bright.apollo.handler;
 
 import com.bright.apollo.bean.Message;
 import com.bright.apollo.cache.AliDevCache;
+import com.bright.apollo.cache.CmdCache;
 import com.bright.apollo.common.entity.TAliDevice;
 import com.bright.apollo.common.entity.TAliDeviceUS;
 import com.bright.apollo.common.entity.TObox;
@@ -93,6 +94,8 @@ public class CMDHandlerManager {
     private CMDMessageService cmdMessageService;
     @Autowired
     private SessionManager sessionManager;
+    @Autowired
+    private CmdCache cmdCache;
     private static Map<String, BasicHandler> cmdHandlers = new HashMap<String, BasicHandler>();
 
     static {
@@ -230,9 +233,6 @@ public class CMDHandlerManager {
             }else {
                 client.setUid(obox_serial_id);
             }
-
-
-
             Message<String> msg = new Message<String>();
             msg.setHeader(inMsg.substring(0, 8));
             msg.setDecodeData(inMsg.substring(8));
@@ -418,6 +418,7 @@ public class CMDHandlerManager {
                 	handler.setUserSceneService(userSceneService);
                 	handler.setCmdMessageService(cmdMessageService);
                 	handler.setSessionManager(sessionManager);
+                	handler.setCmdCache(cmdCache);
                 }
                 handler.process(client, msg);
                 

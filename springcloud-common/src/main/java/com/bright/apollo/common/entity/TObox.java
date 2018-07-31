@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(value = { "lastOpTime","obox_ip","id" })
+@JsonIgnoreProperties(value = { "lastOpTime","obox_ip" })
 public class TObox implements Serializable {
 	/**  
 	 *   

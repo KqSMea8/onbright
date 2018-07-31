@@ -39,7 +39,8 @@ public class SceneActionThreadPool {
     @Autowired
     private OboxDeviceConfigService oboxDeviceConfigService;
 
-   
+    @Autowired
+    private SceneService sceneService;
  
 
 	private final Logger log = Logger
@@ -295,8 +296,11 @@ public class SceneActionThreadPool {
 //                TScene fScene = SceneBusiness.querySceneBySceneNumber(sceneNumber);//父场景
 //                fScene.setSceneRun(0);
 //                SceneBusiness.updateScene(fScene);
-
-
+                TScene fScene = sceneService.getSceneBySceneNumber(sceneNumber);
+                if(fScene!=null){
+                	fScene.setSceneRun((byte)0);
+                	sceneService.updateScene(fScene);
+                }
             } catch (Exception e) {
 
                 e.printStackTrace();

@@ -406,4 +406,13 @@ public class SceneServiceImpl implements SceneService {
 		tSceneActionMapper.deleteSceneActionByBySceneNumberAndActionId(sceneNumber, actionId);
 	}
 
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.SceneService#getTSceneByOboxSerialIdAndOboxSceneNumber(java.lang.String, java.lang.Integer)  
+	 */
+	@Override
+	public TScene getTSceneByOboxSerialIdAndOboxSceneNumber(String oboxSerialId, Integer oboxSceneNumber) {
+		 
+		return sceneMapper.getTSceneByOboxSerialIdAndOboxSceneNumber(oboxSerialId,oboxSceneNumber);
+	}
+
 }

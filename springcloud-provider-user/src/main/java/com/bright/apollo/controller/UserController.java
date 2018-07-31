@@ -30,6 +30,7 @@ import com.bright.apollo.service.MsgService;
 import com.bright.apollo.service.UserDeviceService;
 import com.bright.apollo.service.UserOboxService;
 import com.bright.apollo.service.UserOperationService;
+import com.bright.apollo.service.UserSceneService;
 import com.bright.apollo.service.UserService;
 import com.bright.apollo.service.WxService;
 import com.bright.apollo.tool.HttpUtil;
@@ -65,6 +66,8 @@ public class UserController {
 	private CreateTableLogService createTableLogService;
 	@Autowired
 	private CreateTableSqlService createTableSqlService;
+	@Autowired
+	private UserSceneService userSceneService;
 	@SuppressWarnings("rawtypes")
 	@GetMapping("/register/{mobile}")
 	public ResponseObject register(@PathVariable String mobile) {
@@ -389,9 +392,10 @@ public class UserController {
 		}
 		return res;
 	}
+
 	@RequestMapping(value = "/user/listCreateTableLogByNameWithLike/{tUserOperationSuffix}", method = RequestMethod.GET)
 	public ResponseObject<List<TCreateTableLog>> listCreateTableLogByNameWithLike(
-			@PathVariable(required = true, value = "tUserOperationSuffix") String tUserOperationSuffix){
+			@PathVariable(required = true, value = "tUserOperationSuffix") String tUserOperationSuffix) {
 		ResponseObject<List<TCreateTableLog>> res = new ResponseObject<List<TCreateTableLog>>();
 		try {
 			res.setData(createTableLogService.listCreateTableLogByNameWithLike(tUserOperationSuffix));
@@ -404,12 +408,14 @@ public class UserController {
 		}
 		return res;
 	}
+
 	@RequestMapping(value = "/queryUserOperation/{name}/{serialId}", method = RequestMethod.GET)
-	public ResponseObject<List<TUserOperation>> queryUserOperation(@PathVariable(required = true, value = "name")String name,
-			@PathVariable(required = true, value = "serialId")String serialId){
+	public ResponseObject<List<TUserOperation>> queryUserOperation(
+			@PathVariable(required = true, value = "name") String name,
+			@PathVariable(required = true, value = "serialId") String serialId) {
 		ResponseObject<List<TUserOperation>> res = new ResponseObject<List<TUserOperation>>();
 		try {
-			res.setData(userOperationService.queryUserOperation(name,serialId));
+			res.setData(userOperationService.queryUserOperation(name, serialId));
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {
@@ -419,9 +425,10 @@ public class UserController {
 		}
 		return res;
 	}
+
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/dropTable/{tableName}", method = RequestMethod.DELETE)
-	public ResponseObject dropTable(@PathVariable(required = true, value = "tableName")String tableName){
+	public ResponseObject dropTable(@PathVariable(required = true, value = "tableName") String tableName) {
 		ResponseObject res = new ResponseObject();
 		try {
 			createTableLogService.dropTable(tableName);
@@ -434,13 +441,14 @@ public class UserController {
 		}
 		return res;
 	}
-	/**  
-	 * @param createTableSql  
-	 * @Description:  
+
+	/**
+	 * @param createTableSql
+	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/createTable/{createTableSql}", method = RequestMethod.POST)
-	public ResponseObject createTable(@PathVariable(required = true, value = "createTableSql") String createTableSql){
+	public ResponseObject createTable(@PathVariable(required = true, value = "createTableSql") String createTableSql) {
 		ResponseObject res = new ResponseObject();
 		try {
 			createTableLogService.createTable(createTableSql);
@@ -453,6 +461,7 @@ public class UserController {
 		}
 		return res;
 	}
+
 	/**
 	 * @param prefix
 	 * @return
@@ -460,7 +469,7 @@ public class UserController {
 	 */
 	@RequestMapping(value = "/queryTCreateTableSqlByprefix/{prefix}", method = RequestMethod.GET)
 	public ResponseObject<TCreateTableSql> queryTCreateTableSqlByprefix(
-			@PathVariable(required = true, value = "prefix") String prefix){
+			@PathVariable(required = true, value = "prefix") String prefix) {
 		ResponseObject<TCreateTableSql> res = new ResponseObject<TCreateTableSql>();
 		try {
 			res.setData(createTableSqlService.queryTCreateTableSqlByprefix(prefix));
@@ -473,19 +482,37 @@ public class UserController {
 		}
 		return res;
 	}
-	/**  
-	 * @param tCreateTableLog  
-	 * @Description:  
+
+	/**
+	 * @param tCreateTableLog
+	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/addCreateTableLog", method = RequestMethod.POST)
-	public ResponseObject addCreateTableLog(@RequestBody TCreateTableLog tCreateTableLog){
-
+	public ResponseObject addCreateTableLog(@RequestBody TCreateTableLog tCreateTableLog) {
 		ResponseObject res = new ResponseObject();
 		try {
 			createTableLogService.addCreateTableLog(tCreateTableLog);
- 			res.setStatus(ResponseEnum.AddSuccess.getStatus());
+			res.setStatus(ResponseEnum.AddSuccess.getStatus());
 			res.setMessage(ResponseEnum.AddSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/deleteUserScene/{sceneNumber}", method = RequestMethod.DELETE)
+	public ResponseObject deleteUserSceneBySceneNumber(
+			@PathVariable(required = true, value = "sceneNumber") Integer sceneNumber) {
+		ResponseObject res = new ResponseObject();
+		try {
+			userSceneService.deleteUserSceneBySceneNum(sceneNumber);
+			//createTableLogService.addCreateTableLog(tCreateTableLog);
+			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
@@ -494,4 +521,5 @@ public class UserController {
 		return res;
 	
 	}
+
 }

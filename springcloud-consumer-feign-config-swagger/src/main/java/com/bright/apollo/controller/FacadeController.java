@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -24,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.HandlerMapping;
+
+import com.bright.apollo.cache.CmdCache;
 import com.bright.apollo.common.dto.OboxResp;
 import com.bright.apollo.common.dto.OboxResp.Type;
 import com.bright.apollo.common.entity.TCreateTableLog;
@@ -42,7 +45,6 @@ import com.bright.apollo.common.entity.TYSCamera;
 import com.bright.apollo.constant.SubTableConstant;
 import com.bright.apollo.enums.ConditionTypeEnum;
 import com.bright.apollo.enums.DeviceTypeEnum;
-import com.bright.apollo.enums.ErrorEnum;
 import com.bright.apollo.enums.NodeTypeEnum;
 import com.bright.apollo.enums.SceneTypeEnum;
 import com.bright.apollo.feign.FeignAliClient;
@@ -80,6 +82,8 @@ import io.swagger.annotations.ApiResponse;
 @RestController
 @RequestMapping("facade")
 public class FacadeController {
+	private final long max_waitting_time=15000l;
+	 
 	private Logger logger = Logger.getLogger(getClass());
 	@Autowired
 	private FeignOboxClient feignOboxClient;
@@ -93,7 +97,8 @@ public class FacadeController {
 	private FeignAliClient feignAliClient;
 	@Autowired
 	private FeignQuartzClient feignQuartzClient;
-
+	@Autowired
+	private CmdCache cmdCache;
 	// release obox
 	@SuppressWarnings({ "rawtypes" })
 	@ApiOperation(value = "release  obox", httpMethod = "DELETE", produces = "application/json")
@@ -757,7 +762,7 @@ public class FacadeController {
 			String sceneType = sceneDTO.getSceneType();
 			Byte msgAlter = sceneDTO.getMsgAlter();
 			String sceneGroup = sceneDTO.getSceneGroup();
-			Integer sceneNumber = null;
+			Integer oboxSceneNumber = null;
 			Byte alterNeed = sceneDTO.getAlterNeed();
 			TScene tScene = new TScene();
 			map.put("scene_type", sceneType);
@@ -793,14 +798,40 @@ public class FacadeController {
 					res.setMessage(ResponseEnum.SendOboxError.getMsg());
 					return res;
 				}
-				String data = addLocalSceneRes.getData().getData();
+				String data = addLocalSceneRes.getData().getDate();
 				if (data.substring(0, 2).equals("00")) {
 					res.setStatus(ResponseEnum.SendOboxError.getStatus());
 					res.setMessage(ResponseEnum.SendOboxError.getMsg());
 					return res;
 				}
-				sceneNumber = Integer.parseInt(data.substring(6, 8), 16);
-				tScene.setOboxSceneNumber(sceneNumber);
+				String reply=null;
+				long startTime = System.currentTimeMillis();
+				oboxSceneNumber = Integer.parseInt(data.substring(6, 8), 16);
+				while (System.currentTimeMillis() - startTime < max_waitting_time) {			
+					try {
+						reply = cmdCache.getLocalSceneInfo(sceneName, oboxSerialId, sceneGroup,oboxSceneNumber);
+						if(StringUtils.isEmpty(reply)){
+							TimeUnit.MILLISECONDS.sleep(150);
+						}else{
+							cmdCache.delLocalSceneInfo(sceneName, oboxSerialId, sceneGroup,oboxSceneNumber);
+							break;
+						}
+					} catch (Exception e) {
+					}
+				}
+				if(StringUtils.isEmpty(reply)){
+					res.setStatus(ResponseEnum.SendOboxTimeOut.getStatus());
+					res.setMessage(ResponseEnum.SendOboxTimeOut.getMsg());
+					return res;
+				}
+				TScene dbScene = null;
+				if (dbScene == null) {
+					ResponseObject<TScene> dbSceneRes = feignSceneClient
+							.getScenesByOboxSerialIdAndOboxSceneNumber(oboxSerialId, oboxSceneNumber);
+					if (dbSceneRes != null)
+						dbScene = dbSceneRes.getData();
+				}
+				tScene.setOboxSceneNumber(oboxSceneNumber);
 				tScene.setSceneName(sceneName);
 				tScene.setSceneType(sceneType);
 				List<List<SceneConditionDTO>> sceneConditionDTOs = sceneDTO.getConditions();
@@ -811,7 +842,7 @@ public class FacadeController {
 						res.setMessage(ResponseEnum.RequestParamError.getMsg());
 						return res;
 					}
-					feignAliClient.addLocalSceneCondition(sceneNumber, oboxRes.getData().getOboxSerialId(),
+					feignAliClient.addLocalSceneCondition(oboxSceneNumber, oboxRes.getData().getOboxSerialId(),
 							sceneConditionDTOs);
 				}
 				List<SceneActionDTO> tActionDTOs = sceneDTO.getActions();
@@ -828,17 +859,11 @@ public class FacadeController {
 							nodeActionDTOs.add(sceneActionDTO);
 						}
 					}
-					feignAliClient.addLocalSceneAction(nodeActionDTOs, sceneNumber,
+					feignAliClient.addLocalSceneAction(nodeActionDTOs, oboxSceneNumber,
 							oboxRes.getData().getOboxSerialId());
 					// new Thread(new sceneAction(nodeActionDTOs, sceneNumber,
 				}
-				TScene dbScene = null;
-				if (dbScene == null) {
-					ResponseObject<TScene> dbSceneRes = feignSceneClient
-							.getScenesByOboxSerialIdAndSceneNumber(oboxSerialId, sceneNumber);
-					if (dbSceneRes != null)
-						dbScene = dbSceneRes.getData();
-				}
+				
 				// camamera action
 				for (SceneActionDTO sceneActionDTO : cameraActionDTOs) {
 					TYSCamera tysCamera = null;
@@ -2095,7 +2120,7 @@ public class FacadeController {
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
 			} else {
 				TScene scene = sceneRes.getData();
-				if (scene.getSceneType() == SceneTypeEnum.server.getValue()) {
+				if (scene.getSceneType().equals(SceneTypeEnum.server.getValue()) ) {
 					ResponseObject<List<TSceneCondition>> sceneConditionsRes = feignSceneClient
 							.getSceneConditionsBySceneNumber(sceneNumber);
 					if (sceneConditionsRes != null && sceneConditionsRes.getData() != null
@@ -2110,7 +2135,7 @@ public class FacadeController {
 						}
 						feignSceneClient.deleteSceneConditionBySceneNumber(sceneNumber);
 					}
-				} else if (scene.getSceneType() == SceneTypeEnum.local.getValue()) {
+				} else if (scene.getSceneType().equals(SceneTypeEnum.local.getValue())) {
 					ResponseObject<TObox> oboxRes = feignOboxClient.getObox(scene.getOboxSerialId());
 					if (oboxRes != null && oboxRes.getData() != null
 							&& oboxRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()) {
@@ -2118,12 +2143,12 @@ public class FacadeController {
 								oboxRes.getData().getOboxSerialId());
 					}
 				}
-				feignUserClient.deleteUserSceneBySceneNumber(sceneNumber);
+				//feignUserClient.deleteUserSceneBySceneNumber(sceneNumber);
 				// SceneBusiness.deleteUserScene(tScene.getSceneNumber());
-				feignSceneClient.deleteSceneActionsBySceneNumber(sceneNumber);
+			//	feignSceneClient.deleteSceneActionsBySceneNumber(sceneNumber);
 				// SceneBusiness.deleteSceneActionsBySceneNumber(tScene
 				// .getSceneNumber());
-				feignSceneClient.deleteScene(sceneNumber);
+			//	feignSceneClient.deleteScene(sceneNumber);
 				// SceneBusiness.deleteSceneBySceneNumber(tScene.getSceneNumber());
 				// SceneBusiness.deleteSceneLocationBySceneNumber(tScene
 				// .getSceneNumber());

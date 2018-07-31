@@ -1,7 +1,10 @@
 package com.bright.apollo.controller;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
+import org.bouncycastle.asn1.ocsp.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -152,8 +155,9 @@ public class AliSceneController {
 			@PathVariable(value = "sceneName") String sceneName,
 			@PathVariable(value = "oboxSerialId") String oboxSerialId) {
 		ResponseObject res = new ResponseObject();
+		Future<OboxResp> request =null;
+		byte[] bodyBytes = new byte[19];
 		try {
-			byte[] bodyBytes = new byte[19];
 			bodyBytes[0] = 0x01;
 			bodyBytes[1] = 0x10;
 			bodyBytes[2] = (byte) (int) oboxSceneNumber;
@@ -163,14 +167,15 @@ public class AliSceneController {
 			// TopicService topicService = TopicService.getInstance();
 			// OboxResp resp = topicService.request(getCmd(), bodyBytes,
 			// tObox.getOboxSerialId());
-			topicServer.request(CMDEnum.execute_sc, bodyBytes, oboxSerialId);
+			request = topicServer.request(CMDEnum.execute_sc, bodyBytes, oboxSerialId);
 			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
 			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
+			return res;
 		} catch (Exception e) {
 			e.printStackTrace();
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
-		}
+		}finally {}
 		return res;
 	}
 

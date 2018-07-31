@@ -42,7 +42,7 @@ public class MNSHandler {
 	public void handler() {
 		while (true) {
 			try {
-				Message popMessage = queue.popMessage(10);
+				Message popMessage = queue.popMessage(5);
 				if (popMessage != null) {
 					logger.info("======popMessage:" + popMessage);
 					queue.deleteMessage(popMessage.getReceiptHandle());

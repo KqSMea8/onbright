@@ -1,8 +1,10 @@
 package com.bright.apollo.controller;
 
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Future;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,7 +31,7 @@ import com.zz.common.util.StringUtils;
 @RestController
 @RequestMapping("aliService")
 public class AliServerController {
-
+	private Logger logger = Logger.getLogger(getClass());
 	@Autowired
 	private TopicServer topicServer;
 	@Autowired
@@ -304,7 +306,7 @@ public class AliServerController {
 			res.setStatus(ResponseEnum.AddSuccess.getStatus());
 			res.setMessage(ResponseEnum.AddSuccess.getMsg());
 			res.setData(future.get());
-		} catch (Exception e) {
+ 		} catch (Exception e) {
 			e.printStackTrace();
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());

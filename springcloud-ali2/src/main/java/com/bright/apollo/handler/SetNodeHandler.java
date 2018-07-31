@@ -36,7 +36,7 @@ public class SetNodeHandler extends BasicHandler{
             byte [] namebytes = ByteHelper.hexStringToBytes(name);
             System.arraycopy(namebytes, 0, bodyBytes, 8, namebytes.length);
             OboxResp oboxResp = cmdMessageService.send(obox, CMDEnum.update_node_name, bodyBytes);
-            replyMsg.setData(oboxResp.getData());
+            replyMsg.setData(oboxResp.getDate());
 
             return replyMsg;
 

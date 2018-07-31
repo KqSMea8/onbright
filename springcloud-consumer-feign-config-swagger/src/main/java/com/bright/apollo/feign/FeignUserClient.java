@@ -43,7 +43,7 @@ public interface FeignUserClient {
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/user/deleteUserObox/{serialId}", method = RequestMethod.DELETE)
-	public ResponseObject deleteUserOboxByOboxSerialId(String serialId);
+	public ResponseObject deleteUserOboxByOboxSerialId(@PathVariable(required = true, value = "serialId")String serialId);
 
 	/**
 	 * @param serialId
@@ -51,7 +51,7 @@ public interface FeignUserClient {
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/user/deleteUserDevice/{serialId}", method = RequestMethod.DELETE)
-	public ResponseObject deleteUserDeviceBySerialId(String serialId);
+	public ResponseObject deleteUserDeviceBySerialId(@PathVariable(required = true, value = "serialId")String serialId);
 
 	/**
 	 * @param sceneNumber
@@ -59,7 +59,7 @@ public interface FeignUserClient {
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/user/deleteUserScene/{sceneNumber}", method = RequestMethod.DELETE)
-	public ResponseObject deleteUserSceneBySceneNumber(Integer sceneNumber);
+	public ResponseObject deleteUserSceneBySceneNumber(@PathVariable(required = true, value = "sceneNumber")Integer sceneNumber);
 
 	/**
 	 * @param username

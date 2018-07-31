@@ -78,7 +78,7 @@ public class SetChannelHandler extends BasicHandler {
                 oboxResp = cmdMessageService.send(bestChannel, CMDEnum.setting_channel, bodyBytes);
 
                 if (oboxResp.getType() == OboxResp.Type.success) {
-                    replyMsg.setData(oboxResp.getData());
+                    replyMsg.setData(oboxResp.getDate());
 
                     return replyMsg;
                 }else {
@@ -88,7 +88,7 @@ public class SetChannelHandler extends BasicHandler {
                 }
             }
         }else {
-            replyMsg.setData(oboxResp.getData());
+            replyMsg.setData(oboxResp.getDate());
 
             return replyMsg;
         }

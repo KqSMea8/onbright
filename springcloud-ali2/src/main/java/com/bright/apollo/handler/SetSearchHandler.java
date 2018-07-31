@@ -51,7 +51,7 @@ public class SetSearchHandler extends BasicHandler {
         }
         OboxResp oboxResp = cmdMessageService.send(obox, CMDEnum.search_new_device, sendbodyBytes);
         Message<String>  replyMsg = new Message<String>();
-        replyMsg.setData(oboxResp.getData());
+        replyMsg.setData(oboxResp.getDate());
 
         return replyMsg;
     }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.bright.apollo.bean.Message;
+import com.bright.apollo.cache.CmdCache;
 import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.common.entity.TScene;
 import com.bright.apollo.common.entity.TSceneCondition;
@@ -53,6 +54,7 @@ public abstract class BasicHandler {
 	
 	protected CMDMessageService cmdMessageService;
 	
+	protected CmdCache cmdCache;
 	
 	protected SessionManager sessionManager;
 	public abstract Message<String> process(ClientSession clientSession, Message<String> msg) throws Exception;
@@ -187,6 +189,14 @@ public abstract class BasicHandler {
 
 	public void setUserOperationService(UserOperationService userOperationService) {
 		this.userOperationService = userOperationService;
+	}
+
+	public CmdCache getCmdCache() {
+		return cmdCache;
+	}
+
+	public void setCmdCache(CmdCache cmdCache) {
+		this.cmdCache = cmdCache;
 	}
 	
 }

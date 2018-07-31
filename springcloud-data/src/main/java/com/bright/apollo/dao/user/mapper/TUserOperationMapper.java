@@ -102,7 +102,7 @@ public interface TUserOperationMapper {
 	 * @Description:
 	 */
 	@Insert("insert into t_user_operation(device_serial_id,\n" + "device_state,\n" + "device_type,\n"
-			+ "device_child_type,) " + "values(#{deviceSerialId},#{deviceState},#{deviceType},#{deviceChildType})")
+			+ "device_child_type) values(#{deviceSerialId},#{deviceState},#{deviceType},#{deviceChildType})")
 	@Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
 	int addUserOperation(TUserOperation tUserOperation);
 }

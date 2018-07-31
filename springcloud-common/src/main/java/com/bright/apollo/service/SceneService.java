@@ -158,5 +158,13 @@ public interface SceneService extends BasicService{
 	 * @Description:  
 	 */
 	public void deleteSceneActionBySceneNumberAndActionId(Integer sceneNumber, String actionId);
+
+	/**  
+	 * @param oboxSerialId
+	 * @param oboxSceneNumber
+	 * @return  
+	 * @Description:  
+	 */
+	public TScene getTSceneByOboxSerialIdAndOboxSceneNumber(String oboxSerialId, Integer oboxSceneNumber);
  
 }

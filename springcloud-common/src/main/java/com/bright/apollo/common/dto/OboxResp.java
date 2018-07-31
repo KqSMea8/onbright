@@ -17,32 +17,39 @@ public class OboxResp {
 
     private Type type;
 
-    private String data;
-
+    private String date;
+    public OboxResp() {}
     public OboxResp(Type type) {
         Assert.notNull(type, "type can't be null!");
-        Assert.isTrue(type != Type.success, "when type is success, data can't be null");
+        Assert.isTrue(type != Type.success, "when type is success, date can't be null");
         this.type = type;
     }
 
-    public OboxResp(Type type, String data) {
+    public OboxResp(Type type, String date) {
         Assert.notNull(type, "type can't be null!");
-        Assert.notNull(data, "data can't be null!");
+        Assert.notNull(date, "date can't be null!");
         this.type = type;
-        this.data = data;
+        this.date = date;
 
     }
 
-    public Type getType() {
-        return type;
-    }
+	public Type getType() {
+		return type;
+	}
 
-    public String getData() {
-        return data;
-    }
+	public void setType(Type type) {
+		this.type = type;
+	}
 
-    @Override
-    public String toString() {
-        return "OboxResp [type=" + type + ", data=" + data + "]";
-    }
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+ 
+
+     
 }
