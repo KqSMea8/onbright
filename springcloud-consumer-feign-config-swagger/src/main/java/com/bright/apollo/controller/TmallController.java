@@ -71,6 +71,9 @@ public class TmallController {
 	@Autowired
 	private TMallTemplate tMallTemplate;
 
+	@Autowired
+	private FacadeController facadeController;
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 //	@ApiOperation(value = "get deivcie by device serialId", httpMethod = "GET", produces = "application/json")
 //	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
@@ -148,18 +151,13 @@ public class TmallController {
 			String name = (String)requestHeaderMap.get("name");
 			String deviceId = (String)playLoadMap.get("deviceId");
 
-
-
-			ResponseObject<TOboxDeviceConfig> responseObject = feignDeviceClient.getDevice(deviceId);
-			TOboxDeviceConfig oboxDeviceConfig = responseObject.getData();
-
 			//====== 生成httpsClient begin ======
 			RequestConfig requestConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD_STRICT).build();
 			HttpPost httpPost =new HttpPost("https://cloud.on-bright.com/common");
 			Registry<ConnectionSocketFactory>
 					socketFactoryRegistry =RegistryBuilder.<ConnectionSocketFactory>create().
-							register("http", PlainConnectionSocketFactory.INSTANCE).
-							register("https", socketFactory).build();
+					register("http", PlainConnectionSocketFactory.INSTANCE).
+					register("https", socketFactory).build();
 			PoolingHttpClientConnectionManager connectionManager =
 					new PoolingHttpClientConnectionManager(socketFactoryRegistry);
 			CloseableHttpClient httpClient = HttpClients.custom().
@@ -167,21 +165,28 @@ public class TmallController {
 					.setDefaultRequestConfig(requestConfig).build();
 			//====== 生成httpsClient end ======
 
-			adapter = new TMallDeviceAdapter(playLoadMap,tMallTemplate,oboxDeviceConfig);
-
-			Map<String,Object> paramMap = adapter.TMall2Obright();
-
-			logger.info("paramMap ====== "+paramMap);
-
 			templateControl(name,deviceId,nvps,httpPost,httpClient);//展示台模板(仅供展厅展示使用，日后可删除)
 
-			headerMap.put("namespace","AliGenie.Iot.Device.Control");
-			headerMap.put("name",name+"Response");
-			headerMap.put("messageId",requestHeaderMap.get("messageId"));
-			headerMap.put("payLoadVersion","1");
-			map.put("header",headerMap);
-			playloadMap.put("deviceId",playLoadMap.get("deviceId"));
-			map.put("payload",playloadMap);
+
+			try {
+				ResponseObject<TOboxDeviceConfig> responseObject = feignDeviceClient.getDevice(deviceId);
+				TOboxDeviceConfig oboxDeviceConfig = responseObject.getData();
+				adapter = new TMallDeviceAdapter(playLoadMap,tMallTemplate,oboxDeviceConfig);
+				Map<String,Object> paramMap = adapter.TMall2Obright();
+				logger.info("paramMap ====== "+paramMap);
+				facadeController.controlDevice((String)paramMap.get("deviceId"),(String)paramMap.get("deviceState"));
+			}catch (Exception e){
+				logger.info("exception ====== "+e);
+			}finally {
+				headerMap.put("namespace","AliGenie.Iot.Device.Control");
+				headerMap.put("name",name+"Response");
+				headerMap.put("messageId",requestHeaderMap.get("messageId"));
+				headerMap.put("payLoadVersion","1");
+				map.put("header",headerMap);
+				playloadMap.put("deviceId",playLoadMap.get("deviceId"));
+				map.put("payload",playloadMap);
+			}
+
 		}
 		logger.info("map ====== "+map);
 		return map.toString();
@@ -256,7 +261,7 @@ public class TmallController {
 	private void templateControl(String name,String deviceId,List<NameValuePair> nvps,HttpPost httpPost,CloseableHttpClient httpClient) throws IOException {
 		if(name.equals("TurnOn")&&deviceId.equals("34ea34cf2e63")){
 			nvps.add(new BasicNameValuePair("CMD", "set_group"));
-			nvps.add(new BasicNameValuePair("access_token", "cf44bef3-5fb2-4a4f-8ce1-8fc45a7d23d8"));
+			nvps.add(new BasicNameValuePair("access_token", "a7994eef-0260-4862-a732-b62e9984dc7c"));
 			nvps.add(new BasicNameValuePair("operate_type", "06"));
 			nvps.add(new BasicNameValuePair("group_id", "104"));
 			nvps.add(new BasicNameValuePair("group_state", "ff000000000002"));
@@ -266,7 +271,7 @@ public class TmallController {
 		}
 		if(name.equals("TurnOff")&&deviceId.equals("34ea34cf2e63")){
 			nvps.add(new BasicNameValuePair("CMD", "set_group"));
-			nvps.add(new BasicNameValuePair("access_token", "cf44bef3-5fb2-4a4f-8ce1-8fc45a7d23d8"));
+			nvps.add(new BasicNameValuePair("access_token", "a7994eef-0260-4862-a732-b62e9984dc7c"));
 			nvps.add(new BasicNameValuePair("operate_type", "06"));
 			nvps.add(new BasicNameValuePair("group_id", "104"));
 			nvps.add(new BasicNameValuePair("group_state", "00000000000002"));
@@ -276,7 +281,7 @@ public class TmallController {
 		}
 		if(name.equals("TurnOn")&&deviceId.equals("34ea34cf2e61")){
 			nvps.add(new BasicNameValuePair("CMD", "set_group"));
-			nvps.add(new BasicNameValuePair("access_token", "cf44bef3-5fb2-4a4f-8ce1-8fc45a7d23d8"));
+			nvps.add(new BasicNameValuePair("access_token", "a7994eef-0260-4862-a732-b62e9984dc7c"));
 			nvps.add(new BasicNameValuePair("operate_type", "06"));
 			nvps.add(new BasicNameValuePair("group_id", "105"));
 			nvps.add(new BasicNameValuePair("group_state", "ff000000000002"));
@@ -286,7 +291,7 @@ public class TmallController {
 		}
 		if(name.equals("TurnOff")&&deviceId.equals("34ea34cf2e61")){
 			nvps.add(new BasicNameValuePair("CMD", "set_group"));
-			nvps.add(new BasicNameValuePair("access_token", "cf44bef3-5fb2-4a4f-8ce1-8fc45a7d23d8"));
+			nvps.add(new BasicNameValuePair("access_token", "a7994eef-0260-4862-a732-b62e9984dc7c"));
 			nvps.add(new BasicNameValuePair("operate_type", "06"));
 			nvps.add(new BasicNameValuePair("group_id", "105"));
 			nvps.add(new BasicNameValuePair("group_state", "00000000000002"));
@@ -296,7 +301,7 @@ public class TmallController {
 		}
 		if(name.equals("TurnOn")&&deviceId.equals("34ea34cf2e69")){
 			nvps.add(new BasicNameValuePair("CMD", "setting_node_status"));
-			nvps.add(new BasicNameValuePair("access_token", "cf44bef3-5fb2-4a4f-8ce1-8fc45a7d23d8"));
+			nvps.add(new BasicNameValuePair("access_token", "a7994eef-0260-4862-a732-b62e9984dc7c"));
 			nvps.add(new BasicNameValuePair("serialId", "185f010000"));
 			nvps.add(new BasicNameValuePair("status", "02000000000000"));
 			nvps.add(new BasicNameValuePair("appkey", "00000000-2898-fa39-a85f-89320033c587"));
@@ -305,7 +310,7 @@ public class TmallController {
 		}
 		if(name.equals("TurnOff")&&deviceId.equals("34ea34cf2e69")){
 			nvps.add(new BasicNameValuePair("CMD", "setting_node_status"));
-			nvps.add(new BasicNameValuePair("access_token", "cf44bef3-5fb2-4a4f-8ce1-8fc45a7d23d8"));
+			nvps.add(new BasicNameValuePair("access_token", "a7994eef-0260-4862-a732-b62e9984dc7c"));
 			nvps.add(new BasicNameValuePair("serialId", "185f010000"));
 			nvps.add(new BasicNameValuePair("status", "00000000000000"));
 			nvps.add(new BasicNameValuePair("appkey", "00000000-2898-fa39-a85f-89320033c587"));

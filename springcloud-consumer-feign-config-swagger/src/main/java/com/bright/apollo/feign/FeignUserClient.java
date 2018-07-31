@@ -68,7 +68,7 @@ public interface FeignUserClient {
 	public ResponseObject<TUser> getUser(@PathVariable(required = true, value = "userName") String userName);
 
 	@RequestMapping(value = "/user/getUserById/{id}", method = RequestMethod.GET)
-	public ResponseObject<TUser> getUserById(Integer id);
+	public ResponseObject<TUser> getUserById(@PathVariable(required = true, value = "id") Integer id);
 
 	/**
 	 * @param oauthClientDetails

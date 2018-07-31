@@ -26,5 +26,8 @@
         <module name="srpingcloud-provider-user" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="springcloud-mqtt" target="8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

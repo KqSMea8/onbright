@@ -18,26 +18,16 @@ import com.google.gson.JsonObject;
 import com.zz.common.util.ObjectUtils;
 import com.zz.common.util.StringUtils;
 import io.swagger.annotations.Api;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**  
  *@Title:  
@@ -61,21 +51,39 @@ public class RokidController {
 	@Autowired
 	private RedisBussines redisBussines;
 
+	@Autowired
+	private CommonController commonController;
+
+	@Autowired
+	private FacadeController facadeController;
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 //	@ApiOperation(value = "get deivcie by device serialId", httpMethod = "GET", produces = "application/json")
 //	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
-	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	@RequestMapping(value = "/list", method = RequestMethod.POST)
 	@ResponseBody
 	public String getRokidList(HttpServletRequest request) {
+		logger.info("======= /rokid/list begin ======= ");
 		List<TOboxDeviceConfig>  list = null;
 		try{
 			RokidRequest rokidRequest = (RokidRequest) ObjectUtils.fromJsonToObject(printRequsetBody(request), RokidRequest.class);
 			if (rokidRequest == null||rokidRequest.getUserAuth()==null) {
 				return ErrorEnum.request_param_invalid.getValue();
 			}
-			logger.info(" ====== RokidRequest ====== "+rokidRequest);
-			String userToken = rokidRequest.getUserAuth().getUserToken();
-			String uid = (String) redisBussines.get(userToken);
+			logger.info(" ====== /rokid/list rokidRequest ====== "+rokidRequest);
+			RokidAuth auth = rokidRequest.getUserAuth();
+			String userToken = auth.getUserToken();
+
+			OAuth2Authentication defaultOAuth2AccessToken = redisBussines.getObject("auth:"+userToken,OAuth2Authentication.class);
+			User redisUser = (User) defaultOAuth2AccessToken.getPrincipal();
+			ResponseObject<TUser> userResponseObject = feignUserClient.getUser(redisUser.getUsername());
+			TUser tUser = userResponseObject.getData();
+			logger.info(" ====== /rokid/list tUser ====== "+tUser.getId());
+			String uid = String.valueOf(tUser.getId());
+
+			if(uid==null||uid.equals("")){
+				uid = auth.getUserId();
+			}
 			ResponseObject<TUser> rsUser= feignUserClient.getUserById(Integer.valueOf(uid));
 			TUser user = rsUser.getData();
 			if(user == null){
@@ -86,27 +94,37 @@ public class RokidController {
 		}catch (Exception e ){
 			logger.error(" ====== RokidController getRokidList ====== "+e.getMessage());
 		}
-
+		logger.info("======= /rokid/list end ======= ");
 		return getListRokid(list).toString();
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 //	@ApiOperation(value = "get deivcie by device serialId", httpMethod = "GET", produces = "application/json")
 //	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
-	@RequestMapping(value = "/execute", method = RequestMethod.GET)
+	@RequestMapping(value = "/execute", method = RequestMethod.POST)
 	@ResponseBody
 	public String executeRokid(HttpServletRequest request) {
+		logger.info("======= /rokid/execute begin ======= ");
 		TOboxDeviceConfig oboxDeviceConfig = null;
 		RokidRequest rokidRequest = null;
 		String userToken = null;
 		try{
 			rokidRequest = (RokidRequest) ObjectUtils.fromJsonToObject(printRequsetBody(request), RokidRequest.class);
-			if (rokidRequest == null||rokidRequest.getUserAuth()==null) {
+			if (rokidRequest == null||rokidRequest.getDevice().getUserAuth()==null) {
 				return ErrorEnum.request_param_invalid.getValue();
 			}
-			logger.info(" ====== RokidRequest ====== "+rokidRequest);
-			userToken = rokidRequest.getUserAuth().getUserToken();
-			String uid = (String) redisBussines.get(userToken);
+			logger.info(" ====== /rokid/execute rokidRequest ====== "+rokidRequest);
+			RokidAuth auth = rokidRequest.getDevice().getUserAuth();
+			userToken = auth.getUserToken();
+			OAuth2Authentication defaultOAuth2AccessToken = redisBussines.getObject("auth:"+userToken,OAuth2Authentication.class);
+			User redisUser = (User) defaultOAuth2AccessToken.getPrincipal();
+			ResponseObject<TUser> userResponseObject = feignUserClient.getUser(redisUser.getUsername());
+			TUser tUser = userResponseObject.getData();
+			logger.info(" ====== /rokid/execute tUser ====== "+tUser.getId());
+			String uid = String.valueOf(tUser.getId());
+			if(uid==null||uid.equals("")){
+				uid = auth.getUserId();
+			}
 			ResponseObject<TUser> rsUser= feignUserClient.getUserById(Integer.valueOf(uid));
 			TUser user = rsUser.getData();
 			if(user == null){
@@ -120,33 +138,31 @@ public class RokidController {
 		}catch (Exception e ){
 			logger.error(" ====== RokidController executeRokid ====== "+e.getMessage());
 		}
-
-		return getExecuteRokid(oboxDeviceConfig, rokidRequest.getAction(), userToken).toString();
+		logger.info("======= /rokid/execute end ======= ");
+		return getExecuteRokid(oboxDeviceConfig, rokidRequest.getAction(), userToken,request).toString();
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 //	@ApiOperation(value = "get deivcie by device serialId", httpMethod = "GET", produces = "application/json")
 //	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
-	@RequestMapping(value = "/get", method = RequestMethod.GET)
+	@RequestMapping(value = "/get", method = RequestMethod.POST)
 	@ResponseBody
-	public String getRokidState(HttpServletRequest request) {
+	public String getRokidState(HttpServletRequest request,@RequestBody Object obj)  {
+		logger.info("======= /rokid/get begin ======= ");
+		logger.info("======= /rokid/get param ======= "+obj);
+		Map<String,Object> paramMap = (Map<String,Object>)obj;
 		TOboxDeviceConfig oboxDeviceConfig = null;
-		RokidRequest rokidRequest = null;
-		String userToken = null;
+
+		Map<String,String> userMap  = (Map<String, String>) paramMap.get("userAuth");
+		Map<String,String> deviceMap  = (Map<String, String>) paramMap.get("device");
 		try{
-			rokidRequest = (RokidRequest) ObjectUtils.fromJsonToObject(printRequsetBody(request), RokidRequest.class);
-			if (rokidRequest == null||rokidRequest.getUserAuth()==null) {
-				return ErrorEnum.request_param_invalid.getValue();
-			}
-			logger.info(" ====== RokidRequest ====== "+rokidRequest);
-			userToken = rokidRequest.getUserAuth().getUserToken();
-			String uid = (String) redisBussines.get(userToken);
-			ResponseObject<TUser> rsUser= feignUserClient.getUserById(Integer.valueOf(uid));
+
+			ResponseObject<TUser> rsUser= feignUserClient.getUserById(Integer.valueOf(userMap.get("userId")));
 			TUser user = rsUser.getData();
 			if(user == null){
 				return ErrorEnum.user_not_found.getValue();
 			}
-			ResponseObject<TOboxDeviceConfig> responseObject = feignDeviceClient.getDevice(rokidRequest.getDevice().getDeviceId());
+			ResponseObject<TOboxDeviceConfig> responseObject = feignDeviceClient.getDevice(deviceMap.get("deviceId"));
 			oboxDeviceConfig = responseObject.getData();
 			if(oboxDeviceConfig == null){
 				return ErrorEnum.request_param_invalid.getValue();
@@ -154,18 +170,18 @@ public class RokidController {
 		}catch (Exception e ){
 			logger.error(" ====== RokidController getRokidState ====== "+e.getMessage());
 		}
-
-		return getRokidState(oboxDeviceConfig, rokidRequest.getDevice()).toString();
+		logger.info("======= /rokid/get end ======= ");
+		return getRokidState(oboxDeviceConfig, deviceMap).toString();
 	}
 
-	private JsonObject getRokidState(TOboxDeviceConfig tOboxDeviceConfig, RokidDevice rokidDevice) {
-
+	private JsonObject getRokidState(TOboxDeviceConfig tOboxDeviceConfig, Map<String,String> deviceMap) {
+		logger.info("======= getRokidState begin ======= ");
 		JsonObject respJsonObject = new JsonObject();
 		Gson g2 = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 		// switch
 		if (tOboxDeviceConfig.getDeviceType().equals(DeviceTypeEnum.socket.getValue())
 				&& tOboxDeviceConfig.getDeviceChildType().equals(DeviceTypeEnum.socket_jbox.getValue())
-				&& rokidDevice.getType().equals(RokidConstants.SWITCHTYPE)) {
+				&& deviceMap.get("type").equals(RokidConstants.SWITCHTYPE)) {
 			respJsonObject.addProperty("status", 0);
 			RokidSwitchDate data = new RokidSwitchDate();
 			RokidSwitchState rokidState = new RokidSwitchState();
@@ -188,7 +204,7 @@ public class RokidController {
 			}
 		} else if (tOboxDeviceConfig.getDeviceType().equals(DeviceTypeEnum.led.getValue())
 				&& tOboxDeviceConfig.getDeviceChildType().equals(DeviceTypeEnum.led_double.getValue())
-				&& rokidDevice.getType().equals(RokidConstants.LIGHT)) {// led_double
+				&& deviceMap.get("type").equals(RokidConstants.LIGHT)) {// led_double
 			if (StringUtils.isEmpty(tOboxDeviceConfig.getDeviceState())) {
 				return errorStatusResp();
 			}
@@ -214,6 +230,7 @@ public class RokidController {
 			respJsonObject.addProperty("message", RokidConstants.UNKONWDEVICE);
 			respJsonObject.addProperty("errorName", RokidConstants.E_DRIVER_DEVICE_NO_FOUND);
 		}
+		logger.info("======= getRokidState end ======= ");
 		return respJsonObject;
 
 	}
@@ -226,16 +243,26 @@ public class RokidController {
 		return respJsonObject;
 	}
 
-	private JsonObject setNodeStatus(Map<String, String[]> map,TOboxDeviceConfig tOboxDeviceConfig){
+	private JsonObject setNodeStatus(Map<String, String[]> map,TOboxDeviceConfig tOboxDeviceConfig,HttpServletRequest request){
 //		SettingNodeStatusHandler handler = (SettingNodeStatusHandler) HandlerManager
 //				.getHandler(CMDEnum.getCMDEnum("setting_node_status"));
+		logger.info(" ====== setNodeStatus begin  ====== ");
+		ResponseObject controlDevice = facadeController.controlDevice(map.get("serialId")[0],map.get("status")[0]);
+
+		if(controlDevice!=null&&controlDevice.getStatus()<300){
+			Map<String, Object> map2 = new HashMap<String, Object>();
+			map2.put("serialId",map.get("serialId")[0]);
+			map2.put("status",map.get("status")[0]);
+			controlDevice.setData(map2);
+		}
+
 		JsonObject respJsonObject = new JsonObject();
 		Gson g2 = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 //		JsonObject jsonObject = handler.process(new RequestParam(map));
-		JsonObject jsonObject = null;
-		boolean success = jsonObject.get("success").getAsBoolean();
+		Map<String,Object> resMap = (Map<String, Object>) controlDevice.getData();
+		boolean success = true;
 		if (success) {
-			String status = jsonObject.get("status").getAsString();
+			String status = (String)resMap.get("status");
 			if (tOboxDeviceConfig.getDeviceType().equals(DeviceTypeEnum.socket.getValue())
 					&& tOboxDeviceConfig.getDeviceChildType().equals(DeviceTypeEnum.socket_jbox.getValue())) {
 				if (status.startsWith("00")) {
@@ -258,15 +285,15 @@ public class RokidController {
 					respJsonObject.addProperty("status", 0);
 					RokidLedState rokidState = new RokidLedState();
 					rokidState.setSwitching(RokidSwitchEnum.off.getValue());
-					rokidState.setBrightness("0");
-					rokidState.setColor_temperature("0");
+					rokidState.setBrightness(0);
+					rokidState.setColor_temperature(0);
 					respJsonObject.add("data", g2.toJsonTree(rokidState));
 				}else{
 					respJsonObject.addProperty("status", 0);
 					RokidLedState rokidState = new RokidLedState();
 					rokidState.setSwitching(RokidSwitchEnum.on.getValue());
-					rokidState.setBrightness(((Integer.parseInt(status.substring(0, 2), 16) - 126) * 100 / 128) + "");
-					rokidState.setColor_temperature(((Integer.parseInt(status.substring(2, 4), 16)) * 100 / 255) + "");
+					rokidState.setBrightness(((Integer.parseInt(status.substring(0, 2), 16) - 126) * 100 / 128) );
+					rokidState.setColor_temperature(((Integer.parseInt(status.substring(2, 4), 16)) * 100 / 255) );
 					respJsonObject.add("data", g2.toJsonTree(rokidState));
 				}
 			}
@@ -274,18 +301,19 @@ public class RokidController {
 			respJsonObject.addProperty("status", 1);
 			respJsonObject.addProperty("message", "execute failed");
 		}
+		logger.info(" ====== setNodeStatus end  ====== ");
 		return respJsonObject;
 	}
 
 	private JsonObject getExecuteRokid(TOboxDeviceConfig tOboxDeviceConfig, RokidExeAction action,
-											 String userToken){
+											 String userToken,HttpServletRequest request){
 
 		if (StringUtils.isEmpty(userToken) || action == null || StringUtils.isEmpty(action.getProperty())
 				|| StringUtils.isEmpty(action.getName())
 				|| !VerificationCollection.useSet(RokidConstants.PROPERTY, action.getProperty())) {
 			return errorStatusResp();
 		}
-		logger.info("================================================");
+		logger.info(" ====== getExecuteRokid begin  ====== ");
 		Map<String, String[]> map = new HashMap<String, String[]>();
 		String[] token = { userToken };
 		map.put("access_token", token);
@@ -302,7 +330,7 @@ public class RokidController {
 					String[] status = { "01000000000000" };
 					map.put("status", status);
 				}
-				return setNodeStatus(map,tOboxDeviceConfig);
+				return setNodeStatus(map,tOboxDeviceConfig,request);
 			} else {
 				logger.info("================================================");
 				return errorStatusResp();
@@ -319,10 +347,10 @@ public class RokidController {
 					String[] status = { "ff000000000000" };
 					map.put("status", status);
 				}
-				return setNodeStatus(map,tOboxDeviceConfig);
+				return setNodeStatus(map,tOboxDeviceConfig,request);
 			} else if ((action.getProperty().equals(RokidConstants.BRIGHTNESSTYPE)
 					|| action.getProperty().equals(RokidConstants.COLORTEMPERATURETYPE))
-					&& !VerificationCollection.useSet(RokidConstants.BRINTNESS, action.getName())) {
+					&& VerificationCollection.useSet(RokidConstants.BRINTNESS, action.getName())) {
 				String state = tOboxDeviceConfig.getDeviceState();
 				if (action.getName().equals("max")) {
 					if (action.getProperty().equals(RokidConstants.BRIGHTNESSTYPE)) {
@@ -332,7 +360,7 @@ public class RokidController {
 						String[] status = { state.substring(0, 2) + "ff" + state.substring(4) };
 						map.put("status", status);
 					}
-					return setNodeStatus(map,tOboxDeviceConfig);
+					return setNodeStatus(map,tOboxDeviceConfig,request);
 				} else if (action.getName().equals("min")) {
 					if (action.getProperty().equals(RokidConstants.BRIGHTNESSTYPE)) {
 						String[] status = { "00" + state.substring(2) };
@@ -341,7 +369,7 @@ public class RokidController {
 						String[] status = { state.substring(0, 2) + "00" + state.substring(4) };
 						map.put("status", status);
 					}
-					return setNodeStatus(map,tOboxDeviceConfig);
+					return setNodeStatus(map,tOboxDeviceConfig,request);
 				} else if (action.getName().equals("up")) {
 					if (action.getProperty().equals(RokidConstants.BRIGHTNESSTYPE)) {
 						if (Integer.parseInt(state.substring(0, 2), 16) < 245) {
@@ -363,7 +391,7 @@ public class RokidController {
 							map.put("status", status);
 						}
 					}
-					return setNodeStatus(map,tOboxDeviceConfig);
+					return setNodeStatus(map,tOboxDeviceConfig,request);
 				} else if (action.getName().equals("down")) {
 					if (action.getProperty().equals(RokidConstants.BRIGHTNESSTYPE)) {
 						if (Integer.parseInt(state.substring(0, 2), 16) > 0) {
@@ -385,7 +413,7 @@ public class RokidController {
 							map.put("status", status);
 						}
 					}
-					return setNodeStatus(map,tOboxDeviceConfig);
+					return setNodeStatus(map,tOboxDeviceConfig,request);
 				} else if (action.getName().equals("num")) {
 					if (StringUtils.isEmpty(action.getValue()) || !NumberHelper.isNumeric(action.getValue())
 							||Integer.parseInt(action.getValue())>100||Integer.parseInt(action.getValue())<0
@@ -403,7 +431,7 @@ public class RokidController {
 						map.put("status", status);
 					}
 					logger.info("================================================");
-					return setNodeStatus(map,tOboxDeviceConfig);
+					return setNodeStatus(map,tOboxDeviceConfig,request);
 				} else {
 					logger.info("================================================");
 					return errorStatusResp();
@@ -416,6 +444,7 @@ public class RokidController {
 			logger.info("================================================");
 			return errorStatusResp();
 		}
+
 	}
 
 	private String printRequsetBody(HttpServletRequest request) throws Exception {
@@ -435,6 +464,7 @@ public class RokidController {
 	}
 
 	private JsonObject getListRokid(List<TOboxDeviceConfig> tOboxDeviceConfigs) {
+		logger.info(" ====== getListRokid begin  ====== ");
 		JsonObject respJsonObject = new JsonObject();
 		Gson g2 = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 		if (tOboxDeviceConfigs == null || tOboxDeviceConfigs.size() == 0) {
@@ -485,22 +515,25 @@ public class RokidController {
 			respJsonObject.add("data", g2.toJsonTree(list));
 			respJsonObject.addProperty("status", 0);
 		}
+		logger.info(" ====== getListRokid end  ====== ");
 		return respJsonObject;
 	}
 
 	public RokidLedState getLedState(String deviceState) {
+		logger.info(" ====== getLedState begin  ====== ");
 		RokidLedState state = new RokidLedState();
 		if (StringUtils.isEmpty(deviceState))
 			return null;
 		if (deviceState.startsWith("00")) {
-			state.setBrightness("0");
-			state.setColor_temperature("0");
+			state.setBrightness(0);
+			state.setColor_temperature(0);
 			state.setSwitching("off");
 		} else {
 			state.setSwitching("on");
-			state.setBrightness(((Integer.parseInt(deviceState.substring(0, 2), 16) - 126) * 100 / 128) + "");
-			state.setColor_temperature(((Integer.parseInt(deviceState.substring(2, 4), 16)) * 100 / 255) + "");
+			state.setBrightness(((Integer.parseInt(deviceState.substring(0, 2), 16) - 126) * 100 / 128) );
+			state.setColor_temperature(((Integer.parseInt(deviceState.substring(2, 4), 16)) * 100 / 255));
 		}
+		logger.info(" ====== getLedState end  ====== ");
 		return state;
 	}
 

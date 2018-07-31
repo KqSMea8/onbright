@@ -1,7 +1,7 @@
 package com.bright.apollo.listener;
 
 
-import com.bright.apollo.configure.AliExecutor;
+
 import com.bright.apollo.socket.MNServer;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 public class ContextListener implements ApplicationListener<ContextRefreshedEvent> {
 
     Logger  logger = Logger.getLogger(ContextListener.class);
-
 
 //
 //    //private static Thread nettyThread;
@@ -46,7 +45,6 @@ public class ContextListener implements ApplicationListener<ContextRefreshedEven
 //        WebApplicationContextUtils.getRequiredWebApplicationContext(event.getServletContext())
 //                .getAutowireCapableBeanFactory().autowireBean(this);
         logger.info(" ====== ContextListener ====== ");
-
         try {
 //            //加载离线消息
 //            List<TScene> tScenes = sceneService.getALlScene();

@@ -72,7 +72,7 @@ public class SensorCMDHandler extends BasicHandler {
         String state = data.substring(16, 32);
         int isEnvironment = 0;// 0 not Environment，1state is 0，2state
         log.info("==============msg================:" + msg.toString());
-        TObox tObox = oboxService.queryOboxBySerialId(oboxSerialId);
+        TObox tObox = oboxService.queryOboxsByOboxSerialId(oboxSerialId);
 //        TObox tObox = OboxBusiness.queryOboxsByOboxSerialId(oboxSerialId);
 
         byte[] body = new byte[16];

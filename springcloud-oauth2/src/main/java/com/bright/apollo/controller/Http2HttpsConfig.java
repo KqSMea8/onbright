@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 
-//@Configuration
+@Configuration
 @Order(100)
 public class Http2HttpsConfig {
 

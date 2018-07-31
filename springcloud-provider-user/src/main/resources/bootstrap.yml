@@ -1,17 +1,17 @@
 spring:
   application:
     name: springcloud-provider-user
-#  zipkin:
-#    base-url: http://localhost:9411
-#  cloud:
-#    config:
-#      discovery:
-#        enabled: true
-#        service-id: springcloud-config-server
-#      fail-fast: true
-#      username: root
-#      password: booszy
-#      profile: csdn
+  zipkin:
+    base-url: http://localhost:9411
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: springcloud-config-server
+      fail-fast: true
+      username: root
+      password: booszy
+      profile: csdn
 eureka:
   client:
     service-url:

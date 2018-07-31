@@ -13,25 +13,25 @@ public class RokidLedState implements Serializable,RokidState {
     private String switching;
 
     @Expose
-    private String brightness;
+    private Integer brightness;
     @Expose
-    private String color_temperature;
+    private Integer color_temperature;
     public String getSwitching() {
         return switching;
     }
     public void setSwitching(String switching) {
         this.switching = switching;
     }
-    public String getBrightness() {
+    public Integer getBrightness() {
         return brightness;
     }
-    public void setBrightness(String brightness) {
+    public void setBrightness(Integer brightness) {
         this.brightness = brightness;
     }
-    public String getColor_temperature() {
+    public Integer getColor_temperature() {
         return color_temperature;
     }
-    public void setColor_temperature(String color_temperature) {
+    public void setColor_temperature(Integer color_temperature) {
         this.color_temperature = color_temperature;
     }
     @Override

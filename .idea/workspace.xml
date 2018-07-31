@@ -22,12 +22,16 @@
     <ignored path="$PROJECT_DIR$/springcloud-tool/target/" />
     <ignored path="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/target/" />
     <ignored path="$PROJECT_DIR$/.idea/httpRequests/" />
+    <ignored path="$PROJECT_DIR$/springcloud-mqtt/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CoverageDataManager">
+    <SUITE FILE_PATH="coverage/springcloud_multi$Ali2Application.ic" NAME="Ali2Application Coverage Results" MODIFIED="1532412141677" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
   <component name="DatabaseView">
     <option name="SHOW_INTERMEDIATE" value="true" />
@@ -49,88 +53,99 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="RokidController.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/RokidController.java">
+      <file leaf-file-name="MqttInBoundConfiguration.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/mqtt/MqttInBoundConfiguration.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="162">
-              <caret line="49" column="22" selection-start-line="49" selection-start-column="17" selection-end-line="49" selection-end-column="22" />
+            <state relative-caret-position="193">
+              <caret line="41" selection-start-line="41" selection-end-line="41" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TopicServer.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/service/TopicServer.java">
+      <file leaf-file-name="TmallController.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/TmallController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="261">
-              <caret line="93" column="43" selection-start-line="93" selection-start-column="43" selection-end-line="93" selection-end-column="43" />
+            <state relative-caret-position="341">
+              <caret line="310" column="68" selection-start-line="310" selection-start-column="68" selection-end-line="310" selection-end-column="68" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="FacadeController.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/FacadeController.java">
+      <file leaf-file-name="SensorCMDHandler.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/handler/SensorCMDHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="194">
-              <caret line="211" column="47" selection-start-line="211" selection-start-column="47" selection-end-line="211" selection-end-column="47" />
+            <state relative-caret-position="216">
+              <caret line="74" column="58" selection-start-line="74" selection-start-column="58" selection-end-line="74" selection-end-column="58" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="application.yml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-oauth2/src/main/resources/application.yml">
+      <file leaf-file-name="CommandHandler.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/handler/CommandHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="5" column="24" lean-forward="true" selection-start-line="5" selection-start-column="24" selection-end-line="5" selection-end-column="24" />
+            <state relative-caret-position="352">
+              <caret line="38" column="16" selection-start-line="38" selection-start-column="16" selection-end-line="38" selection-end-column="16" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="logback.xml1" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-oauth2/src/main/resources/logback.xml1">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file leaf-file-name="BasicHandler.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/handler/BasicHandler.java">
+      <file leaf-file-name="OboxService.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/springcloud-common/src/main/java/com/bright/apollo/service/OboxService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2529">
-              <caret line="24" column="22" selection-start-line="24" selection-start-column="22" selection-end-line="24" selection-end-column="22" />
+            <state relative-caret-position="279">
+              <caret line="34" column="10" selection-start-line="34" selection-start-column="10" selection-end-line="34" selection-end-column="10" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="bootstrap.yml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/resources/bootstrap.yml">
+      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret line="9" column="11" selection-start-line="9" selection-start-column="11" selection-end-line="9" selection-end-column="11" />
+            <state relative-caret-position="67">
+              <caret line="20" column="9" selection-start-line="20" selection-start-column="9" selection-end-line="20" selection-end-column="9" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AuthorizeConfigProvider.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/service/AuthorizeConfigProvider.java">
+      <file leaf-file-name="OboxServiceImpl.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/springcloud-service-impl/src/main/java/com/bright/apollo/service/impl/OboxServiceImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="297">
-              <caret line="12" column="17" selection-start-line="12" selection-start-column="17" selection-end-line="12" selection-end-column="17" />
+            <state relative-caret-position="576">
+              <caret line="129" column="41" selection-start-line="129" selection-start-column="17" selection-end-line="129" selection-end-column="41" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AuthorizeConfigManager.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/service/AuthorizeConfigManager.java">
+      <file leaf-file-name="MqttOutBoundConfiguration.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/mqtt/MqttOutBoundConfiguration.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="297">
-              <caret line="12" column="17" selection-start-line="12" selection-start-column="17" selection-end-line="12" selection-end-column="17" />
+            <state relative-caret-position="326">
+              <caret line="33" column="58" selection-start-line="33" selection-start-column="58" selection-end-line="33" selection-end-column="58" />
+              <folding>
+                <element signature="e#896#897#0" expanded="true" />
+                <element signature="e#938#939#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CustomerAuthorizeConfigProvider.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/service/impl/CustomerAuthorizeConfigProvider.java">
+      <file leaf-file-name="MNService.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/socket/MNService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="747">
-              <caret line="37" selection-start-line="37" selection-end-line="37" />
+            <state relative-caret-position="395">
+              <caret line="262" column="46" selection-start-line="262" selection-start-column="46" selection-end-line="262" selection-end-column="46" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AliDeviceController.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/controller/AliDeviceController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="503">
+              <caret line="225" column="38" selection-start-line="225" selection-start-column="32" selection-end-line="225" selection-end-column="38" />
             </state>
           </provider>
         </entry>
@@ -148,40 +163,40 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>convert(</find>
-      <find>ConfigurableObjectInputStream</find>
-      <find>resolveClass</find>
-      <find>serialize(</find>
-      <find>deserialize(</find>
-      <find>ISO-8859-1</find>
-      <find>resolveClass(</find>
-      <find>serialize</find>
-      <find>deserialize</find>
-      <find>set</find>
-      <find>set(</find>
-      <find>RedisSerializer</find>
-      <find>514</find>
-      <find>getUser/</find>
-      <find>springcloud-provider-use</find>
-      <find>springcloud-provider-user</find>
-      <find>srpring</find>
-      <find>srping</find>
-      <find>springcloud</find>
-      <find>srpingcloud</find>
-      <find>tomcat</find>
-      <find>srp</find>
-      <find>password</find>
-      <find>security</find>
-      <find>appid</find>
-      <find>c798706a897d37c8757f966806ce61e3</find>
-      <find>MsgServiceImpl</find>
-      <find>511</find>
+      <find>commoncont</find>
+      <find>comm</find>
+      <find>setting_node_status</find>
+      <find>120.</find>
+      <find>/getObox/{serialId}</find>
       <find>2001</find>
-      <find>sendRPCRequest</find>
+      <find>1003</find>
+      <find>setDeviceStatus</find>
+      <find>setNodeStatus</find>
+      <find>/common</find>
+      <find>getExecuteRokid</find>
+      <find>setNodeStatus(</find>
+      <find>MqttOutboundProperties</find>
+      <find>processor</find>
+      <find>3.2.10</find>
+      <find>slf4j</find>
+      <find>SLF4J</find>
+      <find>logback</find>
+      <find>9993</find>
+      <find>99</find>
+      <find>MqttInboundProperties  url</find>
+      <find>mqttGateWay</find>
+      <find>意外错误 (6)</find>
+      <find>意外错误</find>
+      <find>mqttInputChannel</find>
+      <find>mqttClientFactory</find>
+      <find>application.yml1</find>
+      <find>mqttOutboundChannel</find>
+      <find>pushThread</find>
+      <find>32303030</find>
     </findStrings>
     <replaceStrings>
-      <replace />
       <replace>springcloud</replace>
+      <replace />
     </replaceStrings>
     <dirStrings>
       <dir>E:\springcloud-multi\springcloud-provider-user</dir>
@@ -193,57 +208,57 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/Light.java" />
-        <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/SingleLight.java" />
-        <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/ColorLight.java" />
-        <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/WarmCollLight.java" />
-        <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/Singleswitch.java" />
-        <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/feign/FeignDeviceClient.java" />
-        <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/hrstrix/HystrixFeignDeviceFallback.java" />
-        <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/hrstrix/HystrixFeignSceneFallback.java" />
-        <option value="$PROJECT_DIR$/springcloud-data/src/main/java/com/bright/apollo/dao/device/mapper/TOboxDeviceConfigMapper.java" />
-        <option value="$PROJECT_DIR$/springcloud-provider-deivce/src/main/java/com/bright/apollo/controller/DeviceController.java" />
-        <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/ThirdPartyTransition.java" />
-        <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/TMallTemplate.java" />
-        <option value="$PROJECT_DIR$/springcloud-common/src/main/java/com/bright/apollo/enums/ColorEnum.java" />
-        <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/TMallDeviceAdapter.java" />
-        <option value="$PROJECT_DIR$/springcloud-oauth2/src/main/resources/templates/login.ftl" />
-        <option value="$PROJECT_DIR$/springcloud-oauth2/src/main/resources/templates/authorize.ftl" />
-        <option value="$PROJECT_DIR$/springcloud-oauth2/src/main/java/com/bright/apollo/config/AllowedMethodConfig.java" />
-        <option value="$PROJECT_DIR$/springcloud-oauth2/src/main/java/com/bright/apollo/OauthApplication.java" />
-        <option value="$PROJECT_DIR$/springcloud-oauth2/src/main/java/com/bright/apollo/config/service/impl/InMemoryAuthenticationProvider.java" />
-        <option value="$PROJECT_DIR$/springcloud-oauth2/src/main/java/com/bright/apollo/config/InMemoryAuthenticationProvider.java" />
-        <option value="$PROJECT_DIR$/springcloud-oauth2/src/main/java/com/bright/apollo/controller/IntegrationAuthenticationFilter.java" />
-        <option value="$PROJECT_DIR$/springcloud-oauth2/src/main/java/com/bright/apollo/controller/AuthorizationController.java" />
-        <option value="$PROJECT_DIR$/springcloud-oauth2/src/main/java/com/bright/apollo/config/DefaultView.java" />
-        <option value="$PROJECT_DIR$/springcloud-oauth2/src/main/java/com/bright/apollo/controller/LoginPathController.java" />
-        <option value="$PROJECT_DIR$/springcloud-oauth2/src/main/java/com/bright/apollo/controller/CodeRedirectController.java" />
-        <option value="$PROJECT_DIR$/springcloud-oauth2/src/main/java/com/bright/apollo/controller/Http2HttpsConfig.java" />
-        <option value="$PROJECT_DIR$/springcloud-oauth2/pom.xml" />
-        <option value="$PROJECT_DIR$/springcloud-oauth2/src/main/java/com/bright/apollo/config/WebSecurityConfig.java" />
-        <option value="$PROJECT_DIR$/springcloud-oauth2/src/main/java/com/bright/apollo/config/AuthorizationServerConfiguration.java" />
-        <option value="$PROJECT_DIR$/springcloud-redis/src/main/java/com/bright/apollo/redis/RedisBussines.java" />
-        <option value="$PROJECT_DIR$/springcloud-redis/src/main/java/com/bright/apollo/config/RedisCacheConfig.java" />
-        <option value="$PROJECT_DIR$/springcloud-provider-user/src/main/java/com/bright/apollo/controller/UserController.java" />
-        <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/feign/FeignUserClient.java" />
-        <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/TmallController.java" />
-        <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/resources/bootstrap.yml" />
-        <option value="$PROJECT_DIR$/springcloud-provider-user/src/main/resources/application.yml" />
-        <option value="$PROJECT_DIR$/springcloud-provider-deivce/src/main/java/com/bright/apollo/SecurityInterceptor.java" />
-        <option value="$PROJECT_DIR$/springcloud-provider-deivce/src/main/java/com/bright/apollo/Interceptor/SecurityInterceptor.java" />
-        <option value="$PROJECT_DIR$/springcloud-provider-user/src/main/java/com/bright/apollo/MyWebAppConfigurer.java" />
-        <option value="$PROJECT_DIR$/springcloud-config-server/src/main/resources/application.yml" />
-        <option value="$PROJECT_DIR$/springcloud-provider-user/src/main/resources/bootstrap.yml" />
-        <option value="$PROJECT_DIR$/springcloud-provider-user/src/main/java/com/bright/apollo/UserApplication.java" />
-        <option value="$PROJECT_DIR$/.idea/encodings.xml" />
-        <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/.idea/compiler.xml" />
         <option value="$PROJECT_DIR$/.idea/misc.xml" />
         <option value="$PROJECT_DIR$/springcloud-provider-user/pom.xml" />
-        <option value="$PROJECT_DIR$/springcloud-redis/pom.xml" />
         <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/service/impl/CustomerAuthorizeConfigProvider.java" />
-        <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/RokidController.java" />
+        <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/exception/CustomAccessDeniedHandler.java" />
+        <option value="$PROJECT_DIR$/springcloud-oauth2/src/main/java/com/bright/apollo/controller/Http2HttpsConfig.java" />
+        <option value="$PROJECT_DIR$/springcloud-oauth2/src/main/java/com/bright/apollo/config/AllowedMethodConfig.java" />
         <option value="$PROJECT_DIR$/springcloud-oauth2/src/main/resources/application.yml" />
+        <option value="$PROJECT_DIR$/springcloud-provider-user/src/main/resources/bootstrap.yml" />
+        <option value="$PROJECT_DIR$/springcloud-provider-deivce/src/main/resources/application.yml" />
+        <option value="$PROJECT_DIR$/springcloud-provider-user/src/main/resources/application.yml" />
+        <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/UserController.java" />
+        <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/feign/FeignUserClient.java" />
+        <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/FacadeController.java" />
+        <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/CommonController.java" />
+        <option value="$PROJECT_DIR$/springcloud-zuul/src/main/resources/bootstrap.yml" />
+        <option value="$PROJECT_DIR$/springcloud-redis/pom.xml" />
+        <option value="$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/controller/AliServerController.java" />
+        <option value="$PROJECT_DIR$/springcloud-common/src/main/java/com/bright/apollo/enums/ErrorEnum.java" />
+        <option value="$PROJECT_DIR$/springcloud-common/src/main/java/com/bright/apollo/common/rokid/RokidLedState.java" />
+        <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/resources/bootstrap.yml" />
+        <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/RokidController.java" />
+        <option value="$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/mqtt/bean/MqttOutboundProperties.java" />
+        <option value="$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/mqtt/bean/MqttInboundProperties.java" />
+        <option value="$PROJECT_DIR$/springcloud-mqtt/resources/application.yml" />
+        <option value="$PROJECT_DIR$/springcloud-mqtt/src/java/main/com/bright/apollo/MqttApplication.java" />
+        <option value="$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/socket/MNServer.java" />
+        <option value="$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/listener/ContextListener.java" />
+        <option value="$PROJECT_DIR$/springcloud-mqtt/MqttApplication.java" />
+        <option value="$PROJECT_DIR$/springcloud-mqtt/src/main/java/com/bright/apollo/mqtt/bean/MqttOutboundProperties.java" />
+        <option value="$PROJECT_DIR$/springcloud-mqtt/src/main/java/com/bright/apollo/mqtt/bean/MqttInboundProperties.java" />
+        <option value="$PROJECT_DIR$/springcloud-mqtt/pom.xml" />
+        <option value="$PROJECT_DIR$/springcloud-mqtt/src/main/java/com/bright/apollo/mqtt/MqttGateWay.java" />
+        <option value="$PROJECT_DIR$/springcloud-mqtt/src/main/java/com/bright/apollo/mqtt/bean/MqttProperties.java" />
+        <option value="$PROJECT_DIR$/springcloud-mqtt/src/main/java/com/bright/apollo/mqtt/MqttInBoundConfiguration.java" />
+        <option value="$PROJECT_DIR$/springcloud-mqtt/src/main/java/com/bright/apollo/mqtt/MqttOutBoundConfiguration.java" />
+        <option value="$PROJECT_DIR$/springcloud-mqtt/src/main/java/com/bright/apollo/mqtt/MqttPropertiesConfiguration.java" />
+        <option value="$PROJECT_DIR$/springcloud-mqtt/src/main/resources/application.yml" />
+        <option value="$PROJECT_DIR$/springcloud-mqtt/src/main/java/com/bright/apollo/MqttApplication.java" />
+        <option value="$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/mqtt/MqttPropertiesConfiguration.java" />
+        <option value="$PROJECT_DIR$/springcloud-ali2/pom.xml" />
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/springcloud-ali2/src/main/resources/application.yml" />
+        <option value="$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/mqtt/bean/MqttProperties.java" />
+        <option value="$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/mqtt/MqttGateWay.java" />
+        <option value="$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/controller/AliDeviceController.java" />
+        <option value="$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/mqtt/MqttOutBoundConfiguration.java" />
+        <option value="$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/socket/MNService.java" />
+        <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/TmallController.java" />
+        <option value="$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/mqtt/MqttInBoundConfiguration.java" />
+        <option value="$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/handler/SensorCMDHandler.java" />
       </list>
     </option>
   </component>
@@ -271,24 +286,18 @@
       <expand>
         <path>
           <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
-          <item name="springcloud-provider-user" type="9519ce18:MavenProjectsStructure$ProjectNode" />
+          <item name="springcloud-ali2" type="9519ce18:MavenProjectsStructure$ProjectNode" />
         </path>
         <path>
           <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
-          <item name="springcloud-provider-user" type="9519ce18:MavenProjectsStructure$ProjectNode" />
+          <item name="springcloud-ali2" type="9519ce18:MavenProjectsStructure$ProjectNode" />
           <item name="Dependencies" type="f4be9f2a:MavenProjectsStructure$DependenciesNode" />
-        </path>
-        <path>
-          <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
-          <item name="springcloud-provider-user" type="9519ce18:MavenProjectsStructure$ProjectNode" />
-          <item name="Dependencies" type="f4be9f2a:MavenProjectsStructure$DependenciesNode" />
-          <item name="com.bright.apollo:springcloud-redis:0.0.1-SNAPSHOT" type="c0821a7e:MavenProjectsStructure$DependencyNode" />
         </path>
       </expand>
       <select />
     </treeState>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="10" />
     <option name="y" value="20" />
     <option name="width" value="1260" />
@@ -301,8 +310,6 @@
     </navigator>
     <panes>
       <pane id="AndroidView" />
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -376,6 +383,30 @@
               <item name="com" type="462c0819:PsiDirectoryNode" />
               <item name="bright" type="462c0819:PsiDirectoryNode" />
               <item name="apollo" type="462c0819:PsiDirectoryNode" />
+              <item name="bean" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-multi" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-multi" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-ali2" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="bright" type="462c0819:PsiDirectoryNode" />
+              <item name="apollo" type="462c0819:PsiDirectoryNode" />
+              <item name="controller" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-multi" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-multi" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-ali2" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="bright" type="462c0819:PsiDirectoryNode" />
+              <item name="apollo" type="462c0819:PsiDirectoryNode" />
               <item name="handler" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -405,17 +436,17 @@
             <path>
               <item name="springcloud-multi" type="b2602c69:ProjectViewProjectNode" />
               <item name="springcloud-multi" type="462c0819:PsiDirectoryNode" />
-              <item name="springcloud-common" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="springcloud-multi" type="b2602c69:ProjectViewProjectNode" />
-              <item name="springcloud-multi" type="462c0819:PsiDirectoryNode" />
-              <item name="springcloud-consumer-feign-config-swagger" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-ali2" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -433,26 +464,27 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="settings.github" />
+    <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.javacompiler" />
     <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/service/IotClient.java" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="E:\springcloud-multi\springcloud-consumer-feign-config-swagger\src\main" />
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\springcloud-multi\springcloud-ali2\src\main\java\com\bright\apollo" />
+      <recent name="E:\springcloud-multi\springcloud-mqtt\src\main\java" />
+      <recent name="E:\springcloud-multi\springcloud-mqtt" />
+      <recent name="E:\springcloud-multi\springcloud-mqtt\resources" />
+      <recent name="E:\springcloud-multi\springcloud-mqtt\src\java\main\com\bright\apollo\mqtt" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="src.java.main.com.bright.apollo" />
+      <recent name="com.bright.apollo.mqtt.bean" />
       <recent name="com.bright.apollo" />
       <recent name="com.bright.apollo.controller" />
       <recent name="com.bright.apollo.enums" />
-      <recent name="com.bright.apollo.configure" />
-      <recent name="com.bright.apollo.feign" />
     </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="E:\springcloud-multi\springcloud-common\src\main\java\com\bright\apollo\enums" />
-      <recent name="E:\springcloud-multi\springcloud-consumer-feign-config-swagger\src\main\java\lib" />
-      <recent name="E:\springcloud-multi\springcloud-ali2\src\main" />
-      <recent name="E:\springcloud-multi\springcloud-ali2\src\main\resources" />
-      <recent name="E:\springcloud-multi\springcloud-consumer-feign-config-swagger\src\main\java\com\bright\apollo\feign" />
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\springcloud-multi\springcloud-mqtt\src\main" />
+      <recent name="E:\springcloud-multi\springcloud-consumer-feign-config-swagger\src\main" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -467,7 +499,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.ConsumerApplication">
+  <component name="RunManager" selected="Maven.installAll">
     <configuration default="true" type="Application" factoryName="Application">
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
     </configuration>
@@ -587,6 +619,10 @@
         </option>
       </MavenSettings>
     </configuration>
+    <configuration name="Ali2Application" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="springcloud-ali2" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.bright.apollo.Ali2Application" />
+    </configuration>
     <configuration name="CommonApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="springcloud-common" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.bright.apollo.CommonApplication" />
@@ -610,6 +646,16 @@
     <configuration name="EurekaServerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="springcloud-eureka-server" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.bright.apollo.EurekaServerApplication" />
+    </configuration>
+    <configuration name="MqttApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="springcloud-mqtt" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.bright.apollo.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.bright.apollo.MqttApplication" />
     </configuration>
     <configuration name="OauthApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
       <module name="springcloud-oauth2" />
@@ -642,10 +688,6 @@
     <configuration name="ServiceImplApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="springcloud-service-impl" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.bright.apollo.ServiceImplApplication" />
-    </configuration>
-    <configuration name="SpringcloudAli2Application" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
-      <module name="springcloud-ali2" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.bright.apollo.springcloudali2.SpringcloudAli2Application" />
     </configuration>
     <configuration name="ThirdPartApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="springcloud-thirdpart" />
@@ -700,7 +742,6 @@
       <item itemvalue="Maven.dependency:tree" />
       <item itemvalue="Spring Boot.ZuulApplication" />
       <item itemvalue="Spring Boot.DeviceApplication" />
-      <item itemvalue="Spring Boot.SpringcloudAli2Application" />
       <item itemvalue="Spring Boot.ConfigServerApplication" />
       <item itemvalue="Spring Boot.ZipkinServerApplication" />
       <item itemvalue="Spring Boot.EurekaServerApplication" />
@@ -714,11 +755,14 @@
       <item itemvalue="Spring Boot.ToolApplication" />
       <item itemvalue="Spring Boot.ConsumerApplication" />
       <item itemvalue="Spring Boot.UserApplication" />
+      <item itemvalue="Spring Boot.Ali2Application" />
       <item itemvalue="Spring Boot.RedisApplication" />
       <item itemvalue="Spring Boot.OauthApplication" />
+      <item itemvalue="Spring Boot.MqttApplication" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Spring Boot.MqttApplication" />
         <item itemvalue="Spring Boot.OauthApplication" />
         <item itemvalue="Spring Boot.RedisApplication" />
       </list>
@@ -756,12 +800,24 @@
       <workItem from="1530684266612" duration="997000" />
       <workItem from="1530685770899" duration="3058000" />
       <workItem from="1530695376961" duration="688000" />
-      <workItem from="1531101389426" duration="12118000" />
+      <workItem from="1531101389426" duration="71145000" />
+      <workItem from="1532051112759" duration="1193000" />
+      <workItem from="1532313975820" duration="5179000" />
+      <workItem from="1532329778850" duration="436000" />
+      <workItem from="1532330235814" duration="595000" />
+      <workItem from="1532330857733" duration="263000" />
+      <workItem from="1532331142482" duration="288000" />
+      <workItem from="1532331475170" duration="5792000" />
+      <workItem from="1532401594994" duration="1361000" />
+      <workItem from="1532403229460" duration="5022000" />
+      <workItem from="1532416164236" duration="7451000" />
+      <workItem from="1532423823755" duration="4479000" />
+      <workItem from="1532483592015" duration="23511000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="608491000" />
+    <option name="totallyTimeSpent" value="723088000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -773,77 +829,79 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1296" height="1000" extended-state="6" />
+    <frame x="-8" y="-8" width="1296" height="1000" extended-state="7" />
     <editor active="true" />
     <layout>
-      <window_info anchor="right" id="Palette" order="3" />
-      <window_info anchor="bottom" id="Event Log" order="13" sideWeight="0.5008091" side_tool="true" weight="0.32560834" />
-      <window_info anchor="right" id="Maven Projects" order="8" weight="0.32928804" />
+      <window_info anchor="right" id="Palette" order="4" />
+      <window_info anchor="bottom" id="Event Log" order="13" sideWeight="0.50161815" side_tool="true" weight="0.45833334" />
+      <window_info anchor="right" id="Maven Projects" order="9" weight="0.32928804" />
       <window_info anchor="bottom" id="Database Changes" order="11" show_stripe_button="false" />
       <window_info id="Capture Tool" order="7" />
       <window_info id="Designer" order="2" />
-      <window_info anchor="right" id="Database" order="5" weight="0.32928804" />
+      <window_info anchor="right" id="Database" order="6" weight="0.32928804" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="right" id="Ant Build" order="2" weight="0.25" />
+      <window_info anchor="right" id="Ant Build" order="3" weight="0.25" />
       <window_info id="UI Designer" order="4" />
-      <window_info anchor="bottom" id="Debug" order="4" weight="0.22800925" />
+      <window_info anchor="bottom" id="Debug" order="4" sideWeight="0.49838188" weight="0.5289352" />
       <window_info anchor="bottom" id="TODO" order="7" weight="0.3287037" />
-      <window_info anchor="bottom" id="Messages" order="14" sideWeight="0.49919093" visible="true" weight="0.47800925" />
-      <window_info anchor="right" id="Palette&#9;" order="6" />
+      <window_info anchor="bottom" id="Messages" order="14" sideWeight="0.5234628" weight="0.47800925" />
+      <window_info anchor="right" id="Palette&#9;" order="7" />
       <window_info id="Image Layers" order="3" />
       <window_info anchor="bottom" id="Java Enterprise" order="10" weight="0.3298611" />
-      <window_info anchor="right" id="Capture Analysis" order="4" />
-      <window_info anchor="bottom" id="Version Control" order="12" weight="0.3298611" />
-      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.49919093" weight="0.5104167" />
+      <window_info anchor="right" id="Capture Analysis" order="5" />
+      <window_info anchor="bottom" id="Version Control" order="12" sideWeight="0.49919093" weight="0.3298611" />
+      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.49919093" weight="0.44560185" />
       <window_info anchor="bottom" id="Spring" order="8" weight="0.3287037" />
       <window_info anchor="bottom" id="Terminal" order="9" weight="0.3298611" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.27831715" />
-      <window_info anchor="bottom" id="Bean Validation" order="15" sideWeight="0.5008091" side_tool="true" weight="0.6539352" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2669903" />
+      <window_info anchor="bottom" id="Bean Validation" order="15" sideWeight="0.5008091" side_tool="true" weight="0.3298611" />
       <window_info id="Web" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Find" order="2" weight="0.32908458" />
-      <window_info anchor="right" id="Theme Preview" order="7" />
+      <window_info anchor="right" id="Theme Preview" order="8" />
       <window_info id="Favorites" order="5" side_tool="true" />
       <window_info anchor="bottom" id="Dependency Viewer" order="0" weight="0.32908458" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Message" order="1" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="1" weight="0.3907767" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.3907767" />
+      <window_info anchor="right" id="Coverage" order="0" side_tool="true" weight="0.32928804" />
     </layout>
     <layout-to-restore>
       <window_info id="Designer" order="2" />
-      <window_info anchor="right" id="Palette" order="3" />
-      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.49919093" weight="0.2662037" />
+      <window_info anchor="right" id="Palette" order="4" />
+      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.49919093" weight="0.5509259" />
       <window_info anchor="bottom" id="Spring" order="8" weight="0.3287037" />
       <window_info id="Image Layers" order="3" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
-      <window_info anchor="right" id="Ant Build" order="2" weight="0.25" />
+      <window_info anchor="right" id="Ant Build" order="3" weight="0.25" />
       <window_info id="UI Designer" order="4" />
       <window_info id="Favorites" order="5" side_tool="true" />
       <window_info anchor="bottom" id="Database Changes" order="11" show_stripe_button="false" />
       <window_info id="Capture Tool" order="7" />
-      <window_info anchor="right" id="Capture Analysis" order="4" />
-      <window_info anchor="bottom" id="Event Log" order="13" sideWeight="0.5008091" side_tool="true" weight="0.32560834" />
-      <window_info anchor="bottom" id="Messages" order="14" sideWeight="0.49919093" weight="0.6539352" />
+      <window_info anchor="right" id="Capture Analysis" order="5" />
+      <window_info anchor="bottom" id="Event Log" order="13" sideWeight="0.50161815" side_tool="true" weight="0.45833334" />
+      <window_info anchor="bottom" id="Messages" order="14" sideWeight="0.5234628" weight="0.47800925" />
       <window_info anchor="bottom" id="TODO" order="7" weight="0.3287037" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="1" weight="0.3907767" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.3907767" />
       <window_info anchor="bottom" id="Java Enterprise" order="10" weight="0.3298611" />
       <window_info anchor="bottom" id="Dependency Viewer" order="0" weight="0.32908458" />
-      <window_info anchor="bottom" id="Version Control" order="12" weight="0.3298611" />
-      <window_info anchor="right" id="Maven Projects" order="8" weight="0.32928804" />
+      <window_info anchor="bottom" id="Version Control" order="12" sideWeight="0.49919093" weight="0.3298611" />
+      <window_info anchor="right" id="Maven Projects" order="9" weight="0.32928804" />
       <window_info anchor="bottom" id="Terminal" order="9" weight="0.3298611" />
       <window_info anchor="bottom" id="Find" order="2" weight="0.32908458" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.27831715" />
-      <window_info anchor="right" id="Database" order="5" weight="0.32928804" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.27508092" />
+      <window_info anchor="right" id="Database" order="6" weight="0.32928804" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info id="Web" order="6" side_tool="true" />
-      <window_info anchor="right" id="Palette&#9;" order="6" />
-      <window_info anchor="right" id="Theme Preview" order="7" />
+      <window_info anchor="right" id="Palette&#9;" order="7" />
+      <window_info anchor="right" id="Theme Preview" order="8" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
-      <window_info anchor="bottom" id="Debug" order="4" weight="0.22800925" />
-      <window_info anchor="bottom" id="Bean Validation" order="15" sideWeight="0.5008091" side_tool="true" weight="0.6539352" />
+      <window_info anchor="right" id="Coverage" order="0" side_tool="true" weight="0.32928804" />
+      <window_info anchor="bottom" id="Debug" order="4" sideWeight="0.49838188" visible="true" weight="0.5289352" />
+      <window_info anchor="bottom" id="Bean Validation" order="15" sideWeight="0.5008091" side_tool="true" weight="0.3298611" />
     </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -856,22 +914,16 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>jar://$MAVEN_REPOSITORY$/org/springframework/security/oauth/spring-security-oauth2/2.0.14.RELEASE/spring-security-oauth2-2.0.14.RELEASE.jar!/org/springframework/security/oauth2/common/OAuth2AccessTokenJackson1Serializer.class</url>
-          <line>24</line>
+          <url>file://$PROJECT_DIR$/springcloud-mqtt/src/main/java/com/bright/apollo/mqtt/MqttInBoundConfiguration.java</url>
+          <line>47</line>
           <properties />
-          <option name="timeStamp" value="62" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>jar://$MAVEN_REPOSITORY$/org/springframework/security/oauth/spring-security-oauth2/2.0.14.RELEASE/spring-security-oauth2-2.0.14.RELEASE.jar!/org/springframework/security/oauth2/client/filter/OAuth2ClientAuthenticationProcessingFilter.class</url>
-          <line>98</line>
-          <properties />
-          <option name="timeStamp" value="78" />
+          <option name="timeStamp" value="167" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="117" />
+      <option name="time" value="175" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="SpringBootApplicationConfigurationType">
@@ -882,339 +934,379 @@
     </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/springcloud-provider-deivce/src/main/java/com/bright/apollo/DeviceApplication.java">
+    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-aop/4.3.10.RELEASE/spring-aop-4.3.10.RELEASE.jar!/org/springframework/aop/framework/DefaultAdvisorChainFactory.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
+        <state relative-caret-position="211">
+          <caret line="40" selection-start-line="40" selection-end-line="40" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-config-server/src/main/java/com/bright/apollo/ConfigServerApplication.java">
+    <entry file="jar://$MAVEN_REPOSITORY$/org/eclipse/paho/org.eclipse.paho.client.mqttv3/1.0.2/org.eclipse.paho.client.mqttv3-1.0.2.jar!/org/eclipse/paho/client/mqttv3/MqttException.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="113">
-          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+        <state relative-caret-position="201">
+          <caret line="17" column="42" selection-start-line="17" selection-start-column="42" selection-end-line="17" selection-end-column="42" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-config-server/src/main/resources/application.yml">
+    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-aop/4.3.10.RELEASE/spring-aop-4.3.10.RELEASE.jar!/org/springframework/aop/framework/adapter/DefaultAdvisorAdapterRegistry.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="567">
-          <caret line="21" column="13" lean-forward="true" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="17" />
+        <state relative-caret-position="130">
+          <caret line="61" selection-start-line="61" selection-end-line="61" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-provider-user/src/main/java/com/bright/apollo/UserApplication.java" />
-    <entry file="file://$PROJECT_DIR$/springcloud-provider-obox/src/main/java/com/bright/apollo/config/AsyncConfig.java">
+    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-aop/4.3.10.RELEASE/spring-aop-4.3.10.RELEASE.jar!/org/springframework/aop/framework/adapter/MethodBeforeAdviceAdapter.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-535">
-          <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
+        <state relative-caret-position="297">
+          <caret line="18" selection-start-line="18" selection-end-line="18" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-provider-obox/src/main/java/com/bright/apollo/OboxApplication.java">
+    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-aop/4.3.10.RELEASE/spring-aop-4.3.10.RELEASE.jar!/org/springframework/aop/support/AbstractGenericPointcutAdvisor.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="20" column="13" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
+        <state relative-caret-position="147">
+          <caret line="20" selection-start-line="20" selection-end-line="20" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-provider-obox/src/main/java/com/bright/apollo/controller/OboxController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="26" column="13" selection-start-line="26" selection-start-column="13" selection-end-line="26" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-provider-user/src/main/java/com/bright/apollo/cache/UserCacheService.java" />
-    <entry file="file://$PROJECT_DIR$/springcloud-provider-user/src/main/java/com/bright/apollo/controller/OauthClientController.java" />
-    <entry file="file://$PROJECT_DIR$/springcloud-provider-user/src/main/java/com/bright/apollo/controller/TestController.java" />
-    <entry file="file://$PROJECT_DIR$/springcloud-provider-user/src/main/java/com/bright/apollo/controller/UserController.java" />
-    <entry file="file://$PROJECT_DIR$/springcloud-provider-scene/src/main/java/com/bright/apollo/controller/SceneController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="33" column="13" selection-start-line="33" selection-start-column="13" selection-end-line="33" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-provider-scene/src/main/java/com/bright/apollo/SceneApplication.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-provider-user/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="6" column="30" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.idea/encodings.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="594">
-          <caret line="22" column="42" selection-start-line="22" selection-start-column="42" selection-end-line="22" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.idea/misc.xml">
+    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-aop/4.3.10.RELEASE/spring-aop-4.3.10.RELEASE.jar!/org/springframework/aop/TruePointcut.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="351">
-          <caret line="13" column="8" selection-start-line="13" selection-start-column="4" selection-end-line="17" selection-end-column="16" />
+          <caret line="16" selection-start-line="16" selection-end-line="16" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.idea/uiDesigner.xml">
+    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-aop/4.3.10.RELEASE/spring-aop-4.3.10.RELEASE.jar!/org/springframework/aop/TrueClassFilter.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2484">
-          <caret line="2" column="29" selection-start-line="2" selection-start-column="29" selection-end-line="2" selection-end-column="29" />
+        <state relative-caret-position="351">
+          <caret line="16" selection-start-line="16" selection-end-line="16" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/maven/lib/maven.jar!/schemas/maven-4.0.0.xsd">
+    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-core/4.3.10.RELEASE/spring-core-4.3.10.RELEASE.jar!/org/springframework/cglib/proxy/MethodProxy.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="279">
-          <caret line="239" column="12" selection-start-line="239" selection-start-column="12" selection-end-line="239" selection-end-column="12" />
+        <state relative-caret-position="148">
+          <caret line="120" selection-start-line="120" selection-end-line="120" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
+    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-context/4.3.10.RELEASE/spring-context-4.3.10.RELEASE.jar!/org/springframework/context/annotation/ConfigurationClassEnhancer.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-809" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.idea/compiler.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="756">
-          <caret line="28" selection-start-line="28" selection-end-line="28" />
+        <state relative-caret-position="148">
+          <caret line="123" selection-start-line="123" selection-end-line="123" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
+    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-beans/4.3.10.RELEASE/spring-beans-4.3.10.RELEASE.jar!/org/springframework/beans/factory/support/SimpleInstantiationStrategy.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="297">
-          <caret line="67" column="16" selection-start-line="67" selection-start-column="16" selection-end-line="67" selection-end-column="16" />
+        <state relative-caret-position="148">
+          <caret line="109" selection-start-line="109" selection-end-line="109" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-provider-user/.settings/org.eclipse.m2e.core.prefs">
+    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-beans/4.3.10.RELEASE/spring-beans-4.3.10.RELEASE.jar!/org/springframework/beans/factory/support/ConstructorResolver.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="4" selection-start-line="4" selection-end-line="4" />
+        <state relative-caret-position="238">
+          <caret line="469" selection-start-line="469" selection-end-line="469" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
+    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-beans/4.3.10.RELEASE/spring-beans-4.3.10.RELEASE.jar!/org/springframework/beans/factory/support/AbstractAutowireCapableBeanFactory.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="945">
-          <caret line="35" column="25" selection-start-line="35" selection-start-column="25" selection-end-line="35" selection-end-column="25" />
+        <state relative-caret-position="130">
+          <caret line="320" selection-start-line="320" selection-end-line="320" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-provider-user/src/main/java/com/bright/apollo/UserApplication.java">
+    <entry file="jar://$MAVEN_REPOSITORY$/org/eclipse/paho/org.eclipse.paho.client.mqttv3/1.0.2/org.eclipse.paho.client.mqttv3-1.0.2.jar!/org/eclipse/paho/client/mqttv3/internal/CommsReceiver.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="297">
-          <caret line="14" column="22" selection-start-line="14" selection-start-column="22" selection-end-line="14" selection-end-column="22" />
+        <state relative-caret-position="130">
+          <caret line="84" selection-start-line="84" selection-end-line="84" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/integration/spring-integration-java-dsl/1.2.2.RELEASE/spring-integration-java-dsl-1.2.2.RELEASE.jar!/org/springframework/integration/dsl/support/Consumer.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="8" column="9" selection-start-line="8" selection-start-column="9" selection-end-line="8" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-mqtt/src/main/java/com/bright/apollo/mqtt/bean/MqttProperties.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="6" column="12" lean-forward="true" selection-start-line="6" selection-start-column="12" selection-end-line="6" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-mqtt/src/main/java/com/bright/apollo/mqtt/bean/MqttOutboundProperties.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="54">
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-mqtt/src/main/java/com/bright/apollo/mqtt/bean/MqttInboundProperties.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="54">
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-mqtt/src/main/java/com/bright/apollo/mqtt/MqttInBoundConfiguration.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="18" column="16" selection-start-line="18" selection-start-column="16" selection-end-line="18" selection-end-column="16" />
           <folding>
-            <element signature="e#520#521#0" expanded="true" />
-            <element signature="e#577#578#0" expanded="true" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-provider-user/pom.xml">
+    <entry file="file://$PROJECT_DIR$/springcloud-mqtt/src/main/java/com/bright/apollo/mqtt/MqttOutBoundConfiguration.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2754">
-          <caret line="102" column="10" selection-start-line="102" selection-start-column="10" selection-end-line="102" selection-end-column="10" />
+        <state relative-caret-position="135">
+          <caret line="13" column="16" selection-start-line="13" selection-start-column="16" selection-end-line="13" selection-end-column="16" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-redis/src/main/java/com/bright/apollo/redis/RedisBussines.java">
+    <entry file="file://$PROJECT_DIR$/springcloud-mqtt/src/main/java/com/bright/apollo/mqtt/MqttPropertiesConfiguration.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
+        <state relative-caret-position="162">
+          <caret line="8" column="18" selection-start-line="8" selection-start-column="18" selection-end-line="8" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-mqtt/src/main/resources/application.yml1">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1107">
+          <caret line="41" column="35" selection-start-line="41" selection-start-column="35" selection-end-line="41" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/eclipse/paho/org.eclipse.paho.client.mqttv3/1.0.2/org.eclipse.paho.client.mqttv3-1.0.2.jar!/org/eclipse/paho/client/mqttv3/internal/ClientComms.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="27">
+          <caret line="493" selection-start-line="493" selection-end-line="493" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_161/src.zip!/java/net/Socket.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="877">
+          <caret line="588" selection-start-line="588" selection-end-line="588" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/eclipse/paho/org.eclipse.paho.client.mqttv3/1.0.2/org.eclipse.paho.client.mqttv3-1.0.2.jar!/org/eclipse/paho/client/mqttv3/internal/TCPNetworkModule.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="50">
+          <caret line="32" column="27" selection-start-line="32" selection-start-column="11" selection-end-line="32" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-mqtt/src/main/java/com/bright/apollo/mqtt/MqttGateWay.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="125">
+          <caret line="8" column="12" selection-start-line="8" selection-start-column="12" selection-end-line="8" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/mqtt/bean/MqttOutboundProperties.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="54">
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-mqtt/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1458">
+          <caret line="54" column="21" selection-start-line="24" selection-start-column="8" selection-end-line="54" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/controller/AliServerController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
           <caret line="29" column="13" selection-start-line="29" selection-start-column="13" selection-end-line="29" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-redis/pom.xml">
+    <entry file="file://$PROJECT_DIR$/springcloud-ali2/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1242">
-          <caret line="46" selection-start-line="46" selection-end-line="46" />
+        <state relative-caret-position="103">
+          <caret line="26" column="57" selection-start-line="26" selection-start-column="57" selection-end-line="26" selection-end-column="57" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/resources/application.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="230">
+          <caret line="69" column="35" selection-start-line="69" selection-start-column="35" selection-end-line="69" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/integration/spring-integration-stream/4.3.11.RELEASE/spring-integration-stream-4.3.11.RELEASE.jar!/org/springframework/integration/stream/CharacterStreamReadingMessageSource.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="338">
+          <caret line="60" column="60" selection-start-line="60" selection-start-column="60" selection-end-line="60" selection-end-column="60" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/integration/spring-integration-java-dsl/1.2.2.RELEASE/spring-integration-java-dsl-1.2.2.RELEASE.jar!/org/springframework/integration/dsl/IntegrationFlows.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="279">
+          <caret line="82" column="41" selection-start-line="82" selection-start-column="41" selection-end-line="82" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/mqtt/MqttPropertiesConfiguration.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="7" column="36" selection-start-line="7" selection-start-column="36" selection-end-line="7" selection-end-column="36" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/mqtt/bean/MqttProperties.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="7" column="42" selection-start-line="7" selection-start-column="42" selection-end-line="7" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-mqtt/src/main/java/com/bright/apollo/MqttApplication.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-185">
+          <caret line="47" column="16" selection-start-line="47" selection-start-column="16" selection-end-line="47" selection-end-column="16" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/mqtt/MqttGateWay.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="8" column="53" selection-start-line="8" selection-start-column="53" selection-end-line="8" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/bean/Message.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-320">
+          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/listener/ContextListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="261">
+          <caret line="30" column="14" selection-start-line="30" selection-start-column="14" selection-end-line="30" selection-end-column="14" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/socket/MNServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+        <state relative-caret-position="544">
+          <caret line="28" column="22" selection-start-line="28" selection-start-column="22" selection-end-line="28" selection-end-column="22" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/service/JPushService.java">
+    <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/handler/CMDHandlerManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="30" lean-forward="true" selection-start-line="30" selection-end-line="30" />
+        <state relative-caret-position="271">
+          <caret line="182" column="16" selection-start-line="182" selection-start-column="16" selection-end-line="182" selection-end-column="16" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/configure/MybatisMapperScannerConfig.java">
+    <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/controller/AliDeviceController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
+        <state relative-caret-position="503">
+          <caret line="225" column="38" selection-start-line="225" selection-start-column="32" selection-end-line="225" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/mqtt/bean/MqttInboundProperties.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="31">
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/mqtt/MqttOutBoundConfiguration.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="326">
+          <caret line="33" column="58" selection-start-line="33" selection-start-column="58" selection-end-line="33" selection-end-column="58" />
           <folding>
-            <element signature="e#0#803#0" expanded="true" />
+            <element signature="e#896#897#0" expanded="true" />
+            <element signature="e#938#939#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/configure/MybatisConfig.java">
+    <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/mqtt/MqttInBoundConfiguration.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
+        <state relative-caret-position="193">
+          <caret line="41" selection-start-line="41" selection-end-line="41" />
           <folding>
-            <element signature="e#0#972#0" expanded="true" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/configure/AliExecutor.java">
+    <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/TmallController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="44">
-          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
+        <state relative-caret-position="341">
+          <caret line="310" column="68" selection-start-line="310" selection-start-column="68" selection-end-line="310" selection-end-column="68" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-common/src/main/java/com/bright/apollo/service/OboxService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="279">
+          <caret line="34" column="10" selection-start-line="34" selection-start-column="10" selection-end-line="34" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-service-impl/src/main/java/com/bright/apollo/service/impl/OboxServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="576">
+          <caret line="129" column="41" selection-start-line="129" selection-start-column="17" selection-end-line="129" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/handler/SensorCMDHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="74" column="58" selection-start-line="74" selection-start-column="58" selection-end-line="74" selection-end-column="58" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/socket/MNService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="69" column="36" lean-forward="true" selection-start-line="69" selection-start-column="36" selection-end-line="69" selection-end-column="36" />
-          <folding>
-            <element signature="e#14983#14991#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="395">
+          <caret line="262" column="46" selection-start-line="262" selection-start-column="46" selection-end-line="262" selection-end-column="46" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/com/aliyun/mns/aliyun-sdk-mns/1.1.8/aliyun-sdk-mns-1.1.8.jar!/com/aliyun/mns/client/CloudAccount.class">
+    <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/handler/CommandHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-45">
-          <caret line="55" column="21" selection-start-line="55" selection-start-column="21" selection-end-line="55" selection-end-column="21" />
+        <state relative-caret-position="352">
+          <caret line="38" column="16" selection-start-line="38" selection-start-column="16" selection-end-line="38" selection-end-column="16" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/com/aliyun/aliyun-java-sdk-core/3.2.10/aliyun-java-sdk-core-3.2.10-sources.jar!/com/aliyuncs/DefaultAcsClient.java">
+    <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-774">
-          <caret line="52" column="11" selection-start-line="52" selection-start-column="11" selection-end-line="52" selection-end-column="11" />
-          <folding>
-            <element signature="e#2006#2007#0" expanded="true" />
-            <element signature="e#2050#2051#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/service/IotClient.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="446">
-          <caret line="36" column="33" lean-forward="true" selection-start-line="36" selection-start-column="33" selection-end-line="36" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/session/SceneActionThreadPool.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2403">
-          <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/service/MsgReceiver.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1269">
-          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-common/src/main/java/com/bright/apollo/service/MsgService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="271">
-          <caret line="14" column="38" selection-start-line="14" selection-start-column="38" selection-end-line="14" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-thirdpart/src/main/java/com/bright/apollo/service/impl/MsgServiceImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="738">
-          <caret line="47" column="5" selection-start-line="47" selection-start-column="5" selection-end-line="47" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/aop/WebLogAspect.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="692">
-          <caret line="75" column="1" selection-start-line="75" selection-start-column="1" selection-end-line="75" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/service/AuthorizeConfigProvider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="297">
-          <caret line="12" column="17" selection-start-line="12" selection-start-column="17" selection-end-line="12" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/service/impl/CustomerAuthorizeConfigProvider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="747">
-          <caret line="37" selection-start-line="37" selection-end-line="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/resources/bootstrap.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="9" column="11" selection-start-line="9" selection-start-column="11" selection-end-line="9" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/service/AuthorizeConfigManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="297">
-          <caret line="12" column="17" selection-start-line="12" selection-start-column="17" selection-end-line="12" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/RokidController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="49" column="22" selection-start-line="49" selection-start-column="17" selection-end-line="49" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/service/TopicServer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="261">
-          <caret line="93" column="43" selection-start-line="93" selection-start-column="43" selection-end-line="93" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/FacadeController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="194">
-          <caret line="211" column="47" selection-start-line="211" selection-start-column="47" selection-end-line="211" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-oauth2/src/main/resources/application.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="5" column="24" lean-forward="true" selection-start-line="5" selection-start-column="24" selection-end-line="5" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-oauth2/src/main/resources/logback.xml1">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/handler/BasicHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2529">
-          <caret line="24" column="22" selection-start-line="24" selection-start-column="22" selection-end-line="24" selection-end-column="22" />
+        <state relative-caret-position="67">
+          <caret line="20" column="9" selection-start-line="20" selection-start-column="9" selection-end-line="20" selection-end-column="9" />
         </state>
       </provider>
     </entry>
@@ -1275,6 +1367,7 @@
             <option name="proportions">
               <list>
                 <option value="0.2" />
+                <option value="0.6" />
               </list>
             </option>
           </splitter-proportions>
@@ -1294,7 +1387,7 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
-          <last-edited>Maven: antlr:antlr:2.7.7</last-edited>
+          <last-edited>Maven: com.alibaba:druid-spring-boot-starter:1.1.2</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

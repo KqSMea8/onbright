@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 
+import com.bright.apollo.mqtt.MqttGateWay;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
@@ -58,6 +59,9 @@ public class MNService {
     private CMDHandlerManager cmdHandlerManager;
     @Autowired
     private CommandHandler commandHandler;
+
+    @Autowired
+    private MqttGateWay mqttGateWay;
 
 
     public MNService() {
@@ -244,10 +248,17 @@ public class MNService {
                     }else if (messageType.equals("upload")) {
                         //upload topic
                         String topic = (String)map.get("topic");
+                        logger.info("ali topic ------ "+topic);
                         String [] topicArray = topic.split("/");
                         logger.info("topic:"+topic + " PopMessage Body: " + aString); //获取原始消息
                         if(ALIDevTypeEnum.getTypebyValue(topicArray[1]).equals(ALIDevTypeEnum.OBOX)){
                             cmdHandlerManager.processTopic(topicArray[1],topicArray[2],aString);
+                            //send the message from obox to app
+                            JSONObject object = new JSONObject(aString);
+                            TAliDevice tAliDevice =  aliDeviceService.getAliDeviceByProductKeyAndDeviceName(object.getString("productKey"),object.getString("deviceName"));
+                            object.put("serialId",tAliDevice.getOboxSerialId());
+                            object.put("onLine",true);
+                            mqttGateWay.sendToMqtt("topic1",object.toString());
                         }else {
                             commandHandler.process(topicArray[1],topicArray[2],aString);
                         }
@@ -273,6 +284,7 @@ public class MNService {
         //CloudQueue queue = client.getQueueRef(queueStr);
 //        int theradId = 1;
         logger.info("------ MNService getMNS method  ------");
+
         List<Thread> list = new ArrayList<Thread>();
         for (int i = 1; i < 4; i++) {
             Thread thread = new Thread(new workAction(i, AliRegionEnum.SOURTHCHINA, ALIDevTypeEnum.OBOX.getSouthChinaName()));

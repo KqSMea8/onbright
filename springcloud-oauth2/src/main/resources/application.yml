@@ -1,10 +1,10 @@
 server:
   port: 8815
-contextPath: /uaa
-#  ssl:
-#    key-store: /root/.keystore
-#    key-store-password: 123456
-#    key-store-type: JKS
+#contextPath: /uaa
+  ssl:
+    key-store: E:\keys\.keystore
+    key-store-password: 123456
+    key-store-type: JKS
 spring:
   application:
     name: springcloud-oauth2
