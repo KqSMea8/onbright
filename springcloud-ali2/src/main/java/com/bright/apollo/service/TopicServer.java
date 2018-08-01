@@ -123,7 +123,7 @@ public class TopicServer {
 		}
 	}
 
- 
+	@Async
 	public void pubTopic(CMDEnum cmd, byte[] data, String deviceSerial) throws Exception {
 		logger.info(" ====== pubTopic start ====== ");
 		String mString = com.bright.apollo.tool.StringUtils.bytes2String(cmd, data, packageLength, head);

@@ -45,13 +45,15 @@ public class SceneCMDHandler extends BasicHandler{
                 if (operte_type == 0) {
                     //delete scene
                     log.info("====delete scene====");
-                    scene = sceneService.getTSceneByOboxSerialIdAndSceneNumber(dbObox.getOboxSerialId(), scene_number);
+                    //scene = sceneService.getTSceneByOboxSerialIdAndSceneNumber(dbObox.getOboxSerialId(), scene_number);
+                    scene = sceneService.getTSceneByOboxSerialIdAndOboxSceneNumber(dbObox.getOboxSerialId(), scene_number);
 //                    scene = OboxBusiness.querySceneBySNumber(dbObox.getOboxSerialId(), scene_number);
                     if (scene == null) {
                         log.error(String.format("not found scene_number %s in obox!", scene_number));
                         return null;
                     }
-                    sceneService.getTSceneByOboxSerialIdAndSceneNumber(dbObox.getOboxSerialId(), scene.getOboxSceneNumber());
+                    sceneService.deleteSceneBySceneNum(scene.getSceneNumber());
+                    //sceneService.getTSceneByOboxSerialIdAndSceneNumber(dbObox.getOboxSerialId(), scene.getOboxSceneNumber());
 //                    OboxBusiness.delOboxScene(dbObox.getOboxSerialId(), scene.getOboxSceneNumber());
                     List<TSceneCondition> tSceneConditions =sceneConditionService.getSceneConditionBySceneNum(scene.getSceneNumber());
 //                    List<TSceneCondition> tSceneConditions = SceneBusiness.querySceneConditionsBySceneNumber(scene.getSceneNumber());
@@ -61,7 +63,7 @@ public class SceneCMDHandler extends BasicHandler{
                     }
                     userSceneService.deleteUserSceneBySceneNum(scene.getSceneNumber());
                     sceneActionService.deleteSceneActionBySceneNumber(scene.getSceneNumber());
-                    sceneService.deleteSceneActionBySceneNumber(scene.getSceneNumber());
+                   // sceneService.deleteSceneActionBySceneNumber(scene.getSceneNumber());
 //                    SceneBusiness.deleteUserScene(scene.getSceneNumber());
 //                    SceneBusiness.deleteSceneActionsBySceneNumber(scene.getSceneNumber());
 //                    SceneBusiness.deleteSceneBySceneNumber(scene.getSceneNumber());
