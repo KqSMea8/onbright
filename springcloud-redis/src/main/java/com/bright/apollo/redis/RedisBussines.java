@@ -69,7 +69,7 @@ public class RedisBussines {
 
   
     public String get(String key){
-        return (String) redisTemplate.opsForValue().get(key);
+         return (String) redisTemplate.opsForValue().get(key);
     }
 
     public Object getObject(String key){
@@ -88,7 +88,9 @@ public class RedisBussines {
     public double incr(String key, double by){
         return redisTemplate.opsForValue().increment(key, by);
     }
-
+    public boolean isKeyExist(String key){
+        return redisTemplate.hasKey(key);
+    }
   
     public <T> void setMapWithExpire(String key, Map<String, Object> map, long time){
         redisTemplate.opsForHash().putAll(key, map);

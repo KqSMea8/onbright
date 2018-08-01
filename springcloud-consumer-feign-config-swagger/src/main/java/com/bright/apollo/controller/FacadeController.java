@@ -533,58 +533,7 @@ public class FacadeController {
 		return res;
 	}
 
-	// delete device
-	@SuppressWarnings({ "rawtypes" })
-	@ApiOperation(value = "delete  device", httpMethod = "DELETE", produces = "application/json")
-	@ApiResponse(code = 200, message = "SelectSuccess", response = ResponseObject.class)
-	@RequestMapping(value = "/device/{serialId}", method = RequestMethod.DELETE)
-	public ResponseObject delDevice(@PathVariable(required = true) String serialId) {
-		ResponseObject res = new ResponseObject();
-		try {
-			ResponseObject resDevice = feignDeviceClient.delDevice(serialId);
-			if (resDevice.getStatus() == ResponseEnum.SelectSuccess.getStatus()) {
-				feignUserClient.deleteUserDeviceBySerialId(serialId);
-			} else {
-				res.setStatus(ResponseEnum.MicroServiceUnConnection.getStatus());
-				res.setMessage(ResponseEnum.MicroServiceUnConnection.getMsg());
-				return res;
-			}
-			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
-			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-			res.setStatus(ResponseEnum.RequestTimeout.getStatus());
-			res.setMessage(ResponseEnum.RequestTimeout.getMsg());
-		}
-		return res;
-	}
-
-	// delete scene
-	@SuppressWarnings({ "rawtypes" })
-	@ApiOperation(value = "delete  scene", httpMethod = "DELETE", produces = "application/json")
-	@ApiResponse(code = 200, message = "SelectSuccess", response = ResponseObject.class)
-	@RequestMapping(value = "/scene/{sceneNumber}", method = RequestMethod.DELETE)
-	public ResponseObject delScene(@PathVariable(required = true) Integer sceneNumber) {
-		ResponseObject res = new ResponseObject();
-		try {
-			ResponseObject resScene = feignSceneClient.deleteScene(sceneNumber);
-			if (resScene.getStatus() == ResponseEnum.SelectSuccess.getStatus()) {
-				feignUserClient.deleteUserSceneBySceneNumber(sceneNumber);
-			} else {
-				res.setStatus(ResponseEnum.MicroServiceUnConnection.getStatus());
-				res.setMessage(ResponseEnum.MicroServiceUnConnection.getMsg());
-				return res;
-			}
-			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
-			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-			res.setStatus(ResponseEnum.RequestTimeout.getStatus());
-			res.setMessage(ResponseEnum.RequestTimeout.getMsg());
-		}
-		return res;
-	}
-
+ 
 	// query obox by page
 	@ApiOperation(value = "get obox by user and page,the pageIndex default value is 0,the pageSize defalt value is 10", httpMethod = "GET", produces = "application/json")
 	@ApiResponse(code = 200, message = "SelectSuccess", response = ResponseObject.class)
@@ -790,6 +739,12 @@ public class FacadeController {
 					res.setMessage(ResponseEnum.RequestParamError.getMsg());
 					return res;
 				}
+				boolean setWrite = cmdCache.setWrite(oboxSerialId);
+				if(setWrite){
+					res.setStatus(ResponseEnum.SendOboxTimeOut.getStatus());
+					res.setMessage(ResponseEnum.SendOboxTimeOut.getMsg());
+					return res;
+				}
 				ResponseObject<OboxResp> addLocalSceneRes = feignAliClient.addLocalScene(sceneName, oboxSerialId,
 						sceneGroup);
 				if (addLocalSceneRes == null || addLocalSceneRes.getStatus() != ResponseEnum.AddSuccess.getStatus()
@@ -844,7 +799,7 @@ public class FacadeController {
 					}
 					feignAliClient.addLocalSceneCondition(oboxSceneNumber, oboxRes.getData().getOboxSerialId(),
 							sceneConditionDTOs);
-					TimeUnit.MILLISECONDS.sleep(300);
+					TimeUnit.MILLISECONDS.sleep(1500);
 				}
 				List<SceneActionDTO> tActionDTOs = sceneDTO.getActions();
 				List<SceneActionDTO> nodeActionDTOs = new ArrayList<SceneActionDTO>();
@@ -2315,7 +2270,7 @@ public class FacadeController {
 		return res;
 	}
 
-	@ApiOperation(value = "enable/disable scene", httpMethod = "PUT", produces = "application/json")
+	@ApiOperation(value = "queryUserOperationHistory", httpMethod = "GET", produces = "application/json")
 	@ApiResponse(code = 200, message = "SelectSuccess", response = ResponseObject.class)
 	@RequestMapping(value = "/queryUserOperationHistory/{serialId}/{type}/{fromDate}/{toDate}/{startIndex}/{countIndex}", method = RequestMethod.GET)
 	public ResponseObject<Map<String, Object>> queryUserOperationHistory(
@@ -2582,7 +2537,75 @@ public class FacadeController {
 		}
 		return res;
 	}
-
+	@ApiOperation(value = "modifyDeviceName", httpMethod = "PUT", produces = "application/json")
+	@ApiResponse(code = 200, message = "SelectSuccess", response = ResponseObject.class)
+	@RequestMapping(value = "/modifyDeviceName/{serialId}/{name}", method = RequestMethod.PUT)
+	public ResponseObject<Map<String, Object>> modifyDeviceName(
+			@PathVariable(value = "serialId") String serialId, @PathVariable(value = "name") String name) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			ResponseObject<TOboxDeviceConfig> deviceRes = feignDeviceClient.getDevice(serialId);
+			if(deviceRes==null||deviceRes.getData()==null){
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			} 
+			TOboxDeviceConfig tOboxDeviceConfig = deviceRes.getData();
+			ResponseObject<TObox> oboxRes = feignOboxClient.getObox(tOboxDeviceConfig.getOboxSerialId());
+			if(oboxRes==null||oboxRes.getData()==null){
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			} 
+			feignAliClient.modifyDeviceName(tOboxDeviceConfig.getOboxSerialId(),name,tOboxDeviceConfig.getDeviceRfAddr());
+			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+			map.put("name", name);
+			map.put("serialId", serialId);
+			map.put("operate_type", "01");
+			res.setData(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	@ApiOperation(value = "deleteDevice", httpMethod = "DELETE", produces = "application/json")
+	@ApiResponse(code = 200, message = "SelectSuccess", response = ResponseObject.class)
+	@RequestMapping(value = "/deleteDevice/{serialId}", method = RequestMethod.DELETE)
+	public ResponseObject<Map<String, Object>> deleteDevice(
+			@PathVariable(value = "serialId") String serialId) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			ResponseObject<TOboxDeviceConfig> deviceRes = feignDeviceClient.getDevice(serialId);
+			if(deviceRes==null||deviceRes.getData()==null){
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			} 
+			TOboxDeviceConfig tOboxDeviceConfig = deviceRes.getData();
+			ResponseObject<TObox> oboxRes = feignOboxClient.getObox(tOboxDeviceConfig.getOboxSerialId());
+			if(oboxRes==null||oboxRes.getData()==null){
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			} 
+			feignAliClient.deleteDevice(tOboxDeviceConfig.getOboxSerialId(),tOboxDeviceConfig.getDeviceRfAddr(),tOboxDeviceConfig.getDeviceId());
+			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+ 			map.put("serialId", serialId);
+			map.put("operate_type", "00");
+			res.setData(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
 	/**
 	 * @param sceneConditionDTOs
 	 * @param oboxSerialId

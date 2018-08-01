@@ -249,6 +249,23 @@ public class HystrixFeignAli2Fallback extends BasicHystrixFeignFallback implemen
 		return serverError();
 	}
 
-	 
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignAliClient#modifyDeviceName(java.lang.String, java.lang.String, java.lang.String)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<OboxResp> modifyDeviceName(String oboxSerialId, String name, String address) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
 
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignAliClient#deleteDevice(java.lang.String, java.lang.String, java.lang.String)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<OboxResp> deleteDevice(String oboxSerialId, String address, String deviceName) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
 }

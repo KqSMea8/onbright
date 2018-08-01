@@ -13,6 +13,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bright.apollo.common.entity.TScene;
 import com.bright.apollo.enums.CMDEnum;
 import com.bright.apollo.enums.SceneTypeEnum;
 import com.bright.apollo.request.OboxDTO;
@@ -20,6 +21,7 @@ import com.bright.apollo.request.RequestParam;
 import com.bright.apollo.request.SceneDTO;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
+import com.bright.apollo.tool.NumberHelper;
 import com.zz.common.exception.AppException;
 import com.zz.common.util.ObjectUtils;
 
@@ -35,7 +37,8 @@ public class CommonController {
 	private Logger logger = Logger.getLogger(getClass());
 	@Autowired
 	private FacadeController facadeController;
-
+	@Autowired
+	private SceneController sceneController;
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping("/common")
 	public ResponseObject common(HttpServletRequest request, HttpServletResponse response)
@@ -168,9 +171,45 @@ public class CommonController {
 			} else if ((sceneDTO.getSceneNumber() == null || sceneDTO.getSceneNumber().intValue() == 0)
 					&& (sceneDTO.getSceneType().equals(SceneTypeEnum.local.getValue()))) {
 				return facadeController.addLocalScene(sceneDTO);
+			}else if(sceneDTO.getSceneNumber() != null && sceneDTO.getSceneNumber().intValue() != 0){
+				ResponseObject<TScene> sceneRes = sceneController.getSceneBySceneNumber(sceneDTO.getSceneNumber());
+				if(sceneRes!=null&&sceneRes.getData()!=null){
+					if(sceneRes.getData().getSceneType().equals(SceneTypeEnum.server.getValue())){
+						return facadeController.modifyServerScene(sceneDTO);
+					}else{
+						return facadeController.modifyLocalScene(sceneDTO);
+					}
+				}
 			}
-			// add modify
-
+		}else if (CMDEnum.setting_sc_info.toString().equals(cmdEnum.toString())) {
+			String sceneNumber = requestParam.getValue("scene_number");
+			String sceneStatus = requestParam.getValue("scene_status");
+			if(!StringUtils.isEmpty(sceneNumber)&&StringUtils.isEmpty(sceneStatus)&&
+					NumberHelper.isNumeric(sceneNumber)
+					){
+				if(sceneStatus.equals("03")){
+					return facadeController.deleteScene(Integer.parseInt(sceneNumber));
+				}else if(sceneStatus.equals("02")){
+					return facadeController.excuteScene(Integer.parseInt(sceneNumber));
+				}else if(sceneStatus.equals("01") || sceneStatus.equals("00")){
+					return facadeController.enableScene(Integer.parseInt(sceneNumber),sceneStatus);
+				}else if(sceneStatus.equals("10") || sceneStatus.equals("11")
+				|| sceneStatus.equals("12") || sceneStatus.equals("13")){
+					/*tScene.setMsgAlter(Integer.parseInt(sceneStatus.substring(1)));
+					SceneBusiness.updateScene(tScene);*/
+				}
+			} 
+		}else if (CMDEnum.modify_device.toString().equals(cmdEnum.toString())) {
+			String device_serial_id = requestParam.getValue("serialId");
+			String operate_type = requestParam.getValue("operate_type");
+			String name = requestParam.getValue("name");
+			if(!StringUtils.isEmpty(requestParam)){
+				if (operate_type.equals("00")) {
+					return facadeController.deleteDevice(device_serial_id);
+				}else if (operate_type.equals("01")) {
+					return facadeController.modifyDeviceName(device_serial_id, name);
+				}
+			}
 		}
 		res = new ResponseObject();
 		res.setStatus(ResponseEnum.RequestParamError.getStatus());

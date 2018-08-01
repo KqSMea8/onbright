@@ -22,4 +22,19 @@ public class CmdCache {
 	public void delLocalSceneInfo(String sceneName,String oboxSerialId,String sceneGroup,int oboxSceneNumber) {
 		redisBussines.delete(sceneName+oboxSerialId+sceneGroup+oboxSceneNumber);
 	}
+	/**  
+	 * @param oboxSerialId  
+	 * @Description:  
+	 */
+	public boolean setWrite(String oboxSerialId) {
+		boolean keyExist = redisBussines.isKeyExist("write"+oboxSerialId);
+		if(keyExist)
+			return !keyExist;
+		synchronized ("write"+oboxSerialId) {
+			if(redisBussines.isKeyExist("write"+oboxSerialId))
+				return false;
+			redisBussines.setValueWithExpire("write"+oboxSerialId, "write",60l);
+			return true;
+		}
+	}
 }

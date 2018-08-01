@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bright.apollo.common.entity.TObox;
+import com.bright.apollo.common.entity.TScene;
 import com.bright.apollo.feign.FeignOboxClient;
 import com.bright.apollo.feign.FeignSceneClient;
 import com.bright.apollo.response.ResponseEnum;
@@ -35,22 +36,22 @@ public class SceneController {
 	@Autowired
 	private FeignOboxClient feignOboxClient;
 
+ 
 	@RequestMapping(value = "/{sceneNumber}", method = RequestMethod.GET)
 	@ApiOperation(value = "get Scene by sceneNumber", httpMethod = "GET", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
-	public ResponseObject<SceneInfo> getScene(@PathVariable Integer sceneNumber) {
-		ResponseObject<SceneInfo> res = null;
+	public ResponseObject<TScene> getSceneBySceneNumber(@PathVariable Integer sceneNumber) {
+		ResponseObject<TScene> res = null;
 		try {
-			return feignSceneClient.getScene(sceneNumber);
+			return feignSceneClient.getSceneBySceneNumber(sceneNumber);
 		} catch (Exception e) {
 			e.printStackTrace();
-			res = new ResponseObject<SceneInfo>();
+			res = new ResponseObject<TScene>();
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
-
 	@RequestMapping(value = "/{sceneNumber}", method = RequestMethod.PUT)
 	@ApiOperation(value = "update Scene", httpMethod = "PUT", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)

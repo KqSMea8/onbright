@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bright.apollo.cache.CmdCache;
 import com.bright.apollo.common.dto.OboxResp;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.enums.CMDEnum;
@@ -38,7 +39,8 @@ public class AliServerController {
 	private OboxDeviceConfigService oboxDeviceConfigService;
 	@Autowired
 	private SceneActionThreadPool sceneActionThreadPool;
-
+	@Autowired
+	private CmdCache cmdCache;
 	// for search new device
 	private static String timeout = "30";
 
@@ -385,8 +387,8 @@ public class AliServerController {
 			@PathVariable(required = true, value = "oboxSerialId") String oboxSerialId) {
 		ResponseObject res = new ResponseObject();
 		try {
-			new Thread(new sceneAction(nodeActionDTOs, sceneNumber, oboxSerialId, oboxDeviceConfigService, topicServer))
-					.start();
+			new Thread(new sceneAction(nodeActionDTOs, sceneNumber, oboxSerialId, oboxDeviceConfigService, topicServer,
+					cmdCache)).start();
 			res.setStatus(ResponseEnum.AddSuccess.getStatus());
 			res.setMessage(ResponseEnum.AddSuccess.getMsg());
 		} catch (Exception e) {
@@ -395,6 +397,67 @@ public class AliServerController {
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
+	}
+
+	/**
+	 * @param oboxSerialId
+	 * @param name
+	 * @Description:
+	 */
+	@RequestMapping(value = "/modifyDeviceName/{oboxSerialId}/{name}/{address}", method = RequestMethod.PUT)
+	ResponseObject<OboxResp> modifyDeviceName(@PathVariable(value = "oboxSerialId") String oboxSerialId,
+			@PathVariable(value = "name") String name, @PathVariable(value = "address") String address) {
+		ResponseObject<OboxResp> res = new ResponseObject<OboxResp>();
+		try {
+			byte[] bodyBytes = new byte[24];
+			byte[] oboxSerialIdBytes = ByteHelper.hexStringToBytes(oboxSerialId);
+			System.arraycopy(oboxSerialIdBytes, 0, bodyBytes, 1, oboxSerialIdBytes.length);
+			bodyBytes[6] = 0x00;
+			bodyBytes[7] = (byte) Integer.parseInt(address, 16);
+			bodyBytes[0] = 0x02;
+			String newName = ByteHelper.bytesToHexString(name.getBytes("UTF-8"));
+			byte[] namebytes = ByteHelper.hexStringToBytes(newName);
+			System.arraycopy(namebytes, 0, bodyBytes, 8, namebytes.length);
+			topicServer.request(CMDEnum.modify_device, bodyBytes, oboxSerialId);
+			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+		} catch (Exception e) {
+			e.printStackTrace();
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	/**
+	 * @param oboxSerialId
+	 * @param deviceRfAddr
+	 * @Description:
+	 */
+	@RequestMapping(value = "/deleteDevice/{oboxSerialId}/{address}/{deviceName}", method = RequestMethod.PUT)
+	ResponseObject<OboxResp> deleteDevice(@PathVariable(value = "oboxSerialId") String oboxSerialId,
+			@PathVariable(value = "address") String address,
+			@PathVariable(value = "deviceName") String deviceName) {
+		ResponseObject<OboxResp> res = new ResponseObject<OboxResp>();
+		try {
+			byte[] bodyBytes = new byte[24];
+			byte[] oboxSerialIdBytes = ByteHelper.hexStringToBytes(oboxSerialId);
+			System.arraycopy(oboxSerialIdBytes, 0, bodyBytes, 1, oboxSerialIdBytes.length);
+			bodyBytes[6] = 0x00;
+			bodyBytes[7] = (byte) Integer.parseInt(address, 16);
+			bodyBytes[0] = 0x00;
+			byte [] namebytes = ByteHelper.stringToAsciiBytes(deviceName, deviceName.length());
+			System.arraycopy(namebytes, 0, bodyBytes, 8, namebytes.length);
+			topicServer.request(CMDEnum.modify_device, bodyBytes, oboxSerialId);
+			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
+		} catch (Exception e) {
+			e.printStackTrace();
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+
 	}
 
 	static class sceneAction implements Runnable {
@@ -408,16 +471,19 @@ public class AliServerController {
 		private TopicServer topicServer;
 
 		private OboxDeviceConfigService oboxDeviceConfigService;
-		
- 		public sceneAction(List<SceneActionDTO> lists, int sceneNumber, String oboxSerialId,
-				OboxDeviceConfigService oboxDeviceConfigService, TopicServer topicServer) {
+
+		private CmdCache cmdCache;
+
+		public sceneAction(List<SceneActionDTO> lists, int sceneNumber, String oboxSerialId,
+				OboxDeviceConfigService oboxDeviceConfigService, TopicServer topicServer, CmdCache cmdCache) {
 			// TODO Auto-generated constructor stub
 			this.lists = lists;
 			this.sceneNumber = sceneNumber;
 			this.oboxSerialId = oboxSerialId;
 			this.oboxDeviceConfigService = oboxDeviceConfigService;
 			this.topicServer = topicServer;
- 		}
+			this.cmdCache = cmdCache;
+		}
 
 		@Override
 		public void run() {
@@ -585,7 +651,8 @@ public class AliServerController {
 					// topicServer.pubTopic(CMDEnum.setting_sc_info, comBytes,
 					// oboxSerialId);
 					topicServer.request(CMDEnum.setting_sc_info, comBytes, oboxSerialId);
-					TimeUnit.MILLISECONDS.sleep(150);
+					TimeUnit.MILLISECONDS.sleep(500);
+					cmdCache.deleteWrite(oboxSerialId);
 					// CMDMessageService.send(tObox, CMDEnum.setting_sc_info,
 					// comBytes);
 				}

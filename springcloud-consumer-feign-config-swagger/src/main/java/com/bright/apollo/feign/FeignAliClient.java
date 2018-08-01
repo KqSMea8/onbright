@@ -213,25 +213,45 @@ public interface FeignAliClient {
 			@PathVariable(value = "sceneName") String sceneName,
 			@PathVariable(value = "oboxSerialId") String oboxSerialId);
 
-	/**  
-	 * @param sceneNumber  
-	 * @Description:  
+	/**
+	 * @param sceneNumber
+	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/aliScene/addSceneAction/{sceneNumber}", method = RequestMethod.POST)
-	ResponseObject addSceneAction(@PathVariable(value = "sceneNumber")  Integer sceneNumber);
+	ResponseObject addSceneAction(@PathVariable(value = "sceneNumber") Integer sceneNumber);
 
-	/**  
+	/**
 	 * @param oboxSceneNumber
 	 * @param sceneName
 	 * @param oboxSerialId
-	 * @param sceneStatus  
-	 * @Description:  
+	 * @param sceneStatus
+	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/aliScene/enableLocalScene/{oboxSceneNumber}/{sceneName}/{oboxSerialId}/{sceneStatus}", method = RequestMethod.PUT)
 	ResponseObject excuteLocalScene(@PathVariable(value = "oboxSceneNumber") Integer oboxSceneNumber,
-			@PathVariable(value = "sceneName") String sceneName,@PathVariable(value = "oboxSerialId") String oboxSerialId,
-			@PathVariable(value = "sceneStatus") String sceneStatus
-			);
+			@PathVariable(value = "sceneName") String sceneName,
+			@PathVariable(value = "oboxSerialId") String oboxSerialId,
+			@PathVariable(value = "sceneStatus") String sceneStatus);
+
+	/**
+	 * @param oboxSerialId
+	 * @param name
+	 * @param address
+	 * @Description:
+	 */
+	@RequestMapping(value = "/aliService/modifyDeviceName/{oboxSerialId}/{name}/{address}", method = RequestMethod.PUT)
+	ResponseObject<OboxResp> modifyDeviceName(@PathVariable(value = "oboxSerialId") String oboxSerialId,
+			@PathVariable(value = "name") String name, @PathVariable(value = "address") String address);
+
+	/**
+	 * @param oboxSerialId
+	 * @param deviceRfAddr
+	 * @Description:
+	 */
+	@RequestMapping(value = "/aliService/deleteDevice/{oboxSerialId}/{address}/{deviceName}", method = RequestMethod.PUT)
+	ResponseObject<OboxResp> deleteDevice(@PathVariable(value = "oboxSerialId") String oboxSerialId,
+			@PathVariable(value = "address") String address,
+			@PathVariable(value = "deviceName") String deviceName);
 }
