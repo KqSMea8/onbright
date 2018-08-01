@@ -844,6 +844,7 @@ public class FacadeController {
 					}
 					feignAliClient.addLocalSceneCondition(oboxSceneNumber, oboxRes.getData().getOboxSerialId(),
 							sceneConditionDTOs);
+					TimeUnit.MILLISECONDS.sleep(300);
 				}
 				List<SceneActionDTO> tActionDTOs = sceneDTO.getActions();
 				List<SceneActionDTO> nodeActionDTOs = new ArrayList<SceneActionDTO>();

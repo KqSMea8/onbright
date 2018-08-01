@@ -1,7 +1,10 @@
 package com.bright.apollo.tool;
 
+import java.io.UnsupportedEncodingException;
+
 import com.bright.apollo.enums.CMDEnum;
 import com.zz.common.util.ByteUtils;
+
 
 public class StringUtils {
     public static String bytes2String(CMDEnum cmd, byte [] data,int packageLength,String head){
@@ -32,4 +35,17 @@ public class StringUtils {
 
         return head + ByteHelper.bytesToHexString(out);
     }
+    public static void main(String[] args) throws UnsupportedEncodingException {
+    	byte[] bodyBytes = new byte[21];
+		bodyBytes[0] = 0x01;
+		bodyBytes[1] = 0x11;
+		bodyBytes[2] = 0x00;
+		String newName = ByteHelper.bytesToHexString("234657".getBytes("UTF-8"));
+		byte[] namebytes = ByteHelper.hexStringToBytes(newName);
+		System.arraycopy(namebytes, 0, bodyBytes, 3, namebytes.length);
+
+ 			byte[] groupbytes = ByteHelper.hexStringToBytes("00");
+			System.arraycopy(groupbytes, 0, bodyBytes, 19, groupbytes.length);
+     	bytes2String(CMDEnum.setting_sc_info, bodyBytes, 64, "38383838");
+	}
 }

@@ -1,8 +1,8 @@
 package com.bright.apollo.controller;
 
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +38,7 @@ public class AliServerController {
 	private OboxDeviceConfigService oboxDeviceConfigService;
 	@Autowired
 	private SceneActionThreadPool sceneActionThreadPool;
+
 	// for search new device
 	private static String timeout = "30";
 
@@ -51,7 +52,7 @@ public class AliServerController {
 			topicServer.request(cmd, inMsgByte, deviceSerial);
 			res.setStatus(ResponseEnum.AddSuccess.getStatus());
 			res.setMessage(ResponseEnum.AddSuccess.getMsg());
- 		} catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
@@ -73,7 +74,7 @@ public class AliServerController {
 			topicServer.request(CMDEnum.release_all_devices, bodyBytes, serialId);
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
- 		} catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
@@ -268,10 +269,12 @@ public class AliServerController {
 			bodyBytes[5] = 0x00;
 			bodyBytes[6] = (byte) Integer.parseInt(rfAddr, 16);
 			System.arraycopy(stateBytes, 0, bodyBytes, 7, stateBytes.length);
-			topicServer.request(CMDEnum.setting_node_status, bodyBytes, oboxSerialId);
+			topicServer.pubTopic(CMDEnum.setting_node_status, bodyBytes, oboxSerialId);
+			// topicServer.request(CMDEnum.setting_node_status, bodyBytes,
+			// oboxSerialId);
 			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
 			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
- 		} catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
@@ -302,11 +305,11 @@ public class AliServerController {
 				byte[] groupbytes = ByteHelper.hexStringToBytes(sceneGroup);
 				System.arraycopy(groupbytes, 0, bodyBytes, 19, groupbytes.length);
 			}
- 			Future<OboxResp> future = topicServer.request(CMDEnum.setting_sc_info, bodyBytes, oboxSerialId);
+			Future<OboxResp> future = topicServer.request(CMDEnum.setting_sc_info, bodyBytes, oboxSerialId);
 			res.setStatus(ResponseEnum.AddSuccess.getStatus());
 			res.setMessage(ResponseEnum.AddSuccess.getMsg());
 			res.setData(future.get());
- 		} catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
@@ -355,6 +358,8 @@ public class AliServerController {
 				}
 				comBytes[1] = (byte) choice;
 				comBytes[4] = (byte) condType;
+				// topicServer.pubTopic(CMDEnum.setting_sc_info, comBytes,
+				// oboxSerialId);
 				topicServer.request(CMDEnum.setting_sc_info, comBytes, oboxSerialId);
 			}
 			res.setStatus(ResponseEnum.AddSuccess.getStatus());
@@ -403,8 +408,8 @@ public class AliServerController {
 		private TopicServer topicServer;
 
 		private OboxDeviceConfigService oboxDeviceConfigService;
-
-		public sceneAction(List<SceneActionDTO> lists, int sceneNumber, String oboxSerialId,
+		
+ 		public sceneAction(List<SceneActionDTO> lists, int sceneNumber, String oboxSerialId,
 				OboxDeviceConfigService oboxDeviceConfigService, TopicServer topicServer) {
 			// TODO Auto-generated constructor stub
 			this.lists = lists;
@@ -412,7 +417,7 @@ public class AliServerController {
 			this.oboxSerialId = oboxSerialId;
 			this.oboxDeviceConfigService = oboxDeviceConfigService;
 			this.topicServer = topicServer;
-		}
+ 		}
 
 		@Override
 		public void run() {
@@ -577,7 +582,10 @@ public class AliServerController {
 					}
 
 					// TopicService topicService = TopicService.getInstance();
+					// topicServer.pubTopic(CMDEnum.setting_sc_info, comBytes,
+					// oboxSerialId);
 					topicServer.request(CMDEnum.setting_sc_info, comBytes, oboxSerialId);
+					TimeUnit.MILLISECONDS.sleep(150);
 					// CMDMessageService.send(tObox, CMDEnum.setting_sc_info,
 					// comBytes);
 				}

@@ -67,7 +67,7 @@ public interface TSceneMapper extends BaseMapper<TScene, TSceneExample, Integer>
 			+ "obox_scene_number = #{oboxSceneNumber},\n" + "scene_status = #{sceneStatus},\n"
 			+ "scene_type = #{sceneType},\n" + "msg_alter = #{msgAlter},\n" + "last_op_time = #{lastOpTime},\n"
 			+ "scene_run = #{sceneRun},\n" + "license = #{license},\n" + "alter_need = #{alterNeed},\n"
-			+ "scene_group = #{sceneGroup}" + "where scene_number = #{sceneNumber}")
+			+ "scene_group = #{sceneGroup}" + " where scene_number = #{sceneNumber}")
 	@Options(useGeneratedKeys = true, keyProperty = "scene_number", keyColumn = "scene_number")
 	int updateScene(TScene scene);
 
