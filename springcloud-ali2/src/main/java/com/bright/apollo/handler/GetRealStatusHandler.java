@@ -1,6 +1,7 @@
 package com.bright.apollo.handler;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.bright.apollo.bean.Message;
 import com.bright.apollo.common.entity.TObox;
@@ -10,11 +11,11 @@ import com.bright.apollo.session.ClientSession;
 
 public class GetRealStatusHandler extends BasicHandler {
 
-    private Logger log = Logger.getLogger(GetRealStatusHandler.class);
+	private static final Logger logger = LoggerFactory.getLogger(GetRealStatusHandler.class);
     @Override
     public Message<String> process(ClientSession clientSession, Message<String> msg) throws Exception {
-        log.info("=======GetRealStatusHandler start=========");
-        log.info("========msg=======:"+msg.toString());
+        logger.info("=======GetRealStatusHandler start=========");
+        logger.info("========msg=======:"+msg.toString());
         String data = msg.getData();
         String oboxSerialId = data.substring(0, 10);
         String state = data.substring(14,28);
@@ -26,7 +27,7 @@ public class GetRealStatusHandler extends BasicHandler {
         if(tObox!=null&&tOboxDeviceConfig!=null){
             updateDeviceState(tOboxDeviceConfig, state);
         }
-        log.info("=======GetRealStatusHandler end=========");
+        logger.info("=======GetRealStatusHandler end=========");
         return null;
     }
     private void updateDeviceState(TOboxDeviceConfig config,String state){

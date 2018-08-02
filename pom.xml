@@ -13,7 +13,7 @@
 		<thirdpart-version>0.0.1-SNAPSHOT</thirdpart-version>
 		<tool-version>0.0.1-SNAPSHOT</tool-version>
 		<service-impl-version>0.0.1-SNAPSHOT</service-impl-version>
-        <!--<mqtt-version>0.0.1-SNAPSHOT</mqtt-version>-->
+		<!--<mqtt-version>0.0.1-SNAPSHOT</mqtt-version> -->
 		<jersey-version>1.19</jersey-version>
 		<quartz-version>2.2.3</quartz-version>
 	</properties>
@@ -64,6 +64,14 @@
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>springloaded</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 	</dependencies>
 </project>

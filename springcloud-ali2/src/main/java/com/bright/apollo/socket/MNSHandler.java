@@ -1,6 +1,7 @@
 package com.bright.apollo.socket;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +20,7 @@ import com.bright.apollo.enums.ALIDevTypeEnum;
  */
 @Component
 public class MNSHandler {
-	Logger logger = Logger.getLogger(MNSHandler.class);
+	private static final Logger logger = LoggerFactory.getLogger(MNSHandler.class);
 	private static final String accessKeyId = "LTAIBE0b86xFi9q5";// LTAImm6aizjagsfp
 	private static final String accessKeySecret = "Ym9F1CNAgwhbxt5Sk1Qki1nr6w6e3v";// zNdZ9RuwSU7RG2Lkoon9i2hbVx3gsm
 	private static final String endPoint = "http://1563722132092243.mns.cn-shanghai.aliyuncs.com/";// http(s)://1563722132092243.mns.cn-hangzhou.aliyuncs.com/

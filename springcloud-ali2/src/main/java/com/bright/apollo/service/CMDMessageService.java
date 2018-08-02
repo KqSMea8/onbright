@@ -1,5 +1,14 @@
 package com.bright.apollo.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.bright.apollo.cache.CMDMsgCache;
 import com.bright.apollo.common.dto.OboxResp;
 import com.bright.apollo.common.entity.TObox;
@@ -12,18 +21,11 @@ import com.bright.apollo.tool.EncDecHelper;
 import com.zz.common.util.ByteUtils;
 import com.zz.common.util.PropertiesUtils;
 import com.zz.common.util.StringUtils;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @Component
 public class CMDMessageService {
 
-    private static Logger log = Logger.getLogger(CMDMessageService.class);
+	private static Logger logger = LoggerFactory.getLogger(CMDMessageService.class);
 
     private static final int packageLength = 64;
 
@@ -46,7 +48,7 @@ public class CMDMessageService {
 
         ClientSession clientSession = sessionManager.getClientSession(obox.getOboxSerialId());
         if (clientSession == null) {
-            log.info(String.format("obox_serial_id %s isn't online!", obox.getOboxSerialId()));
+            logger.info(String.format("obox_serial_id %s isn't online!", obox.getOboxSerialId()));
             return new OboxResp(OboxResp.Type.not_online);
         }
 
@@ -78,7 +80,7 @@ public class CMDMessageService {
         out [62] = sumBytes[2];
         out [63] = sumBytes[3];
 
-        log.info("send obox:"+obox.getOboxSerialId() + " : " + ByteHelper.bytesToHexString(out));
+        logger.info("send obox:"+obox.getOboxSerialId() + " : " + ByteHelper.bytesToHexString(out));
 
 
         byte [] decodeOut = new byte [68];
@@ -131,7 +133,7 @@ public class CMDMessageService {
         ClientSession clientSession = sessionManager.getClientSession(obox.getOboxSerialId());
         List<String> replyList = new ArrayList<String>();
         if (clientSession == null) {
-            log.info(String.format("obox_serial_id %s isn't online!", obox.getOboxSerialId()));
+            logger.info(String.format("obox_serial_id %s isn't online!", obox.getOboxSerialId()));
             return replyList;
         }
         byte [] out = new byte [packageLength];
@@ -161,7 +163,7 @@ public class CMDMessageService {
         out [62] = sumBytes[2];
         out [63] = sumBytes[3];
 
-        log.info("send obox:"+obox.getOboxSerialId() + " : " + ByteHelper.bytesToHexString(out));
+        logger.info("send obox:"+obox.getOboxSerialId() + " : " + ByteHelper.bytesToHexString(out));
 
         byte [] decodeOut = new byte [68];
 
@@ -268,7 +270,7 @@ public class CMDMessageService {
     public OboxResp sendToSession(ClientSession clientSession, TObox obox, CMDEnum cmd, byte [] data, long max_waitting_time,int RFControl) {
 
         if (clientSession == null) {
-            log.info(String.format("client session is null!", obox.getOboxSerialId()));
+            logger.info(String.format("client session is null!", obox.getOboxSerialId()));
             return new OboxResp(OboxResp.Type.not_online);
         }
         byte [] out = new byte [packageLength];
@@ -298,7 +300,7 @@ public class CMDMessageService {
         out [62] = sumBytes[2];
         out [63] = sumBytes[3];
 
-        log.info("send obox:"+obox.getOboxSerialId() + " : " + ByteHelper.bytesToHexString(out));
+        logger.info("send obox:"+obox.getOboxSerialId() + " : " + ByteHelper.bytesToHexString(out));
 
         byte [] decodeOut = new byte [68];
 
@@ -354,7 +356,7 @@ public class CMDMessageService {
 
         ClientSession clientSession = sessionManager.getClientSession(obox.getOboxSerialId());
         if (clientSession == null) {
-            log.info(String.format("obox_serial_id %s isn't online!", obox.getOboxSerialId()));
+            logger.info(String.format("obox_serial_id %s isn't online!", obox.getOboxSerialId()));
             return new OboxResp(OboxResp.Type.not_online);
         }
         byte [] out = new byte [packageLength];
@@ -380,7 +382,7 @@ public class CMDMessageService {
         out [62] = sumBytes[2];
         out [63] = sumBytes[3];
 
-        log.info("send obox:"+obox.getOboxSerialId() + " : " + ByteHelper.bytesToHexString(out));
+        logger.info("send obox:"+obox.getOboxSerialId() + " : " + ByteHelper.bytesToHexString(out));
 
 //        if (clientSession.getAES() == 1) {
 //            byte [] pwdBytes = ByteHelper.stringToAsciiBytes(obox.getOboxPwd(), 8);
@@ -416,7 +418,7 @@ public class CMDMessageService {
 //    public static OboxResp sendToCamera(ClientSession clientSession, TCamera camera, CMDEnum cmd, byte [] data, long max_waitting_time) {
 //
 //        if (clientSession == null) {
-//            log.info(String.format("client session is null!", camera.getMacAddr()));
+//            logger.info(String.format("client session is null!", camera.getMacAddr()));
 //            return new OboxResp(Type.not_online);
 //        }
 //        byte [] out = new byte [data.length + 1];
@@ -431,7 +433,7 @@ public class CMDMessageService {
 //        // 结束符
 //
 //
-////		log.info("Send before encode :" + ByteHelper.bytesToHexString(out));
+////		logger.info("Send before encode :" + ByteHelper.bytesToHexString(out));
 //
 ////		byte [] pwdBytes = ByteHelper.stringToAsciiBytes(obox.getOboxPwd(), 8);
 ////		byte [] randomByte = ByteHelper.hexStringToBytes(clientSession.getRandom());

@@ -2,7 +2,8 @@ package com.bright.apollo.handler;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.bright.apollo.bean.Message;
 import com.bright.apollo.common.entity.TObox;
@@ -11,12 +12,7 @@ import com.bright.apollo.common.entity.TScene;
 import com.bright.apollo.session.ClientSession;
 
 public class ReleaseCMDHandler extends BasicHandler {
-
-    private Logger log = Logger.getLogger(ReleaseCMDHandler.class);
-
- 
-
-
+	//private static Logger logger = LoggerFactory.getLogger(ReleaseCMDHandler.class);
     @Override
     public Message<String> process(ClientSession clientSession, Message<String> msg) throws Exception {
         String data = msg.getData();

@@ -1,15 +1,16 @@
 package com.bright.apollo.session;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.bright.apollo.bean.PushExceptionMsg;
 import com.bright.apollo.bean.PushMessage;
 import com.bright.apollo.bean.PushSystemMsg;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 @Component
 public class PushConcreteObs implements BasicPushObserver {
-    private static Logger log = Logger.getLogger(PushConcreteObs.class);
+	private static final Logger logger = LoggerFactory.getLogger(PushConcreteObs.class);
 
     @Autowired
     private PushExceptionPool pushExceptionPool;
@@ -22,14 +23,14 @@ public class PushConcreteObs implements BasicPushObserver {
         if (clientSession != null ) {
             clientSession.process(message);
         }else {
-            log.info("===OboxStatusConcreteObs clientSession is null===");
+            logger.info("===OboxStatusConcreteObs clientSession is null===");
         }
 
     }
 
     @Override
     public void update(PushExceptionMsg message, PushSystemMsg msg) {
-        log.info("===Push Exception Msg===");
+        logger.info("===Push Exception Msg===");
         pushExceptionPool.handlerMsg(message,msg);
     }
 }

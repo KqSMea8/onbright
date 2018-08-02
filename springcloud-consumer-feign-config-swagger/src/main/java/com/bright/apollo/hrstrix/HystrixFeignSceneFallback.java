@@ -2,7 +2,8 @@ package com.bright.apollo.hrstrix;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.bright.apollo.common.entity.TScene;
@@ -14,7 +15,7 @@ import com.bright.apollo.response.SceneInfo;
 
 @Component
 public class HystrixFeignSceneFallback extends BasicHystrixFeignFallback implements FeignSceneClient {
-	private Logger logger = Logger.getLogger(getClass());
+	private static final Logger logger = LoggerFactory.getLogger(HystrixFeignSceneFallback.class);
 
 	/*
 	 * (non-Javadoc)

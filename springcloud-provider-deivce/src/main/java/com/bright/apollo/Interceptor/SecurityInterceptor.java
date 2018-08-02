@@ -1,11 +1,14 @@
 package com.bright.apollo.Interceptor;
 
-import org.apache.log4j.Logger;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import com.bright.apollo.controller.DeviceController;
 
 /**  
  *@Title:  
@@ -15,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
  *@Version:1.1.0  
  */
 public class SecurityInterceptor implements HandlerInterceptor  {
-	private Logger logger = Logger.getLogger(getClass());
+	//private static final Logger logger = LoggerFactory.getLogger(SecurityInterceptor.class);
 	/* (non-Javadoc)  
 	 * @see org.springframework.web.servlet.HandlerInterceptor#preHandle(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, java.lang.Object)  
 	 */

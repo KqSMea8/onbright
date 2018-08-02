@@ -1,5 +1,15 @@
 package com.bright.apollo.handler;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
+
 import com.bright.apollo.bean.Message;
 import com.bright.apollo.cache.AliDevCache;
 import com.bright.apollo.cache.CmdCache;
@@ -30,18 +40,10 @@ import com.bright.apollo.session.SessionManager;
 import com.bright.apollo.tool.ByteHelper;
 import com.bright.apollo.tool.EncDecHelper;
 import com.zz.common.util.StringUtils;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Component;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Component
 public class CMDHandlerManager {
-    private Logger logger = Logger.getLogger(CMDHandlerManager.class);
+	private static final Logger logger = LoggerFactory.getLogger(CMDHandlerManager.class);
 
     @Autowired
     @Lazy

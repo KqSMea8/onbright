@@ -1,6 +1,7 @@
 package com.bright.apollo.hrstrix;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.bright.apollo.feign.FeignQuartzClient;
@@ -15,7 +16,7 @@ import com.bright.apollo.response.ResponseObject;
  */
 @Component
 public class HystrixFeignQuartzFallback extends BasicHystrixFeignFallback implements FeignQuartzClient {
-	private Logger logger = Logger.getLogger(getClass());
+	private static final Logger logger = LoggerFactory.getLogger(HystrixFeignQuartzFallback.class);
 
 	/* (non-Javadoc)  
 	 * @see com.bright.apollo.feign.FeignQuartzClient#addJob(java.lang.Integer, java.lang.String, java.lang.Integer, java.lang.String)  

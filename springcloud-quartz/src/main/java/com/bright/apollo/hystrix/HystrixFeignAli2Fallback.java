@@ -1,6 +1,7 @@
 package com.bright.apollo.hystrix;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.bright.apollo.feign.FeignAliClient;
@@ -15,7 +16,7 @@ import com.bright.apollo.response.ResponseObject;
  */
 @Component
 public class HystrixFeignAli2Fallback extends BasicHystrixFeignFallback implements FeignAliClient{
-	private Logger logger = Logger.getLogger(getClass());
+	private static final Logger logger = LoggerFactory.getLogger(HystrixFeignAli2Fallback.class);
 	/* (non-Javadoc)  
 	 * @see com.bright.apollo.feign.FeignAliClient#addSceneAction(java.lang.Integer)  
 	 */

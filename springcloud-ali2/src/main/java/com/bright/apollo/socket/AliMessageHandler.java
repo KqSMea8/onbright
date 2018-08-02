@@ -4,8 +4,9 @@ import java.util.Calendar;
 import java.util.TimeZone;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.log4j.Logger;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -35,7 +36,7 @@ import com.google.gson.internal.LinkedTreeMap;
  */
 @Component
 public class AliMessageHandler {
-	Logger logger = Logger.getLogger(AliMessageHandler.class);
+	private static final Logger logger = LoggerFactory.getLogger(AliMessageHandler.class);
 	private static Gson gson = new Gson();
 
 	@Autowired

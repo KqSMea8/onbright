@@ -2,7 +2,8 @@ package com.bright.apollo.handler;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.bright.apollo.bean.Message;
 import com.bright.apollo.common.entity.TDeviceChannel;
@@ -14,9 +15,7 @@ import com.bright.apollo.session.ClientSession;
 import com.bright.apollo.tool.ByteHelper;
  
 public class SearchResultHandler extends BasicHandler {
-
-    private Logger log = Logger.getLogger(ControlPWCMDHandler.class);
-
+	private static Logger logger = LoggerFactory.getLogger(SearchResultHandler.class);
 	@Override
     public Message<String> process(ClientSession clientSession, Message<String> msg) throws Exception {
         byte [] bodyBytes = ByteHelper.hexStringToBytes(msg.getData());
@@ -180,7 +179,7 @@ public class SearchResultHandler extends BasicHandler {
 
             }
         } catch (Exception e) {
-            log.error(e.getMessage());
+        	logger.error(e.getMessage());
         }
         return null;
     }

@@ -1,5 +1,3 @@
-server:
-  port: 8899
 spring:
   application:
     name: springcloud-ali2
@@ -16,7 +14,7 @@ spring:
       fail-fast: true
       username: root
       password: booszy
-      profile: csdn
+      profile: pro
 eureka:
   client:
     serviceUrl:
@@ -24,6 +22,7 @@ eureka:
   instance:
     prefer-ip-address: true
     instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${spring.application.instance_id:${server.port}}
+    appname: springcloud-ali2
 management:
   security:
     enabled: false
@@ -36,10 +35,6 @@ type-aliases-package: com.bright.apollo.common.entity.*
 logging:
   level:
     com.bright.apollo.dao : debug
-  pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss} - [%thread] %-5level %logger{36} - %msg%n"
-    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
-  file: /usr/local/onbrightLog/aliProject%d{yyyy-MM-dd  HH:mm:ss}.log
 redis:
     database: 0
     host: 47.96.100.153

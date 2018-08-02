@@ -1,5 +1,13 @@
 package com.bright.apollo.handler;
 
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.bright.apollo.bean.Message;
 import com.bright.apollo.bean.PushMessage;
 import com.bright.apollo.common.entity.TObox;
@@ -13,15 +21,9 @@ import com.bright.apollo.service.UserService;
 import com.bright.apollo.session.ClientSession;
 import com.bright.apollo.session.PushObserverManager;
 import com.bright.apollo.session.SessionManager;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.ConcurrentSkipListSet;
 
 public class FilterCMDHandler extends BasicHandler {
-    private Logger log = Logger.getLogger(FilterCMDHandler.class);
+	private static final Logger logger = LoggerFactory.getLogger(FilterCMDHandler.class);
     @Autowired
     private SessionManager sessionManager;
     @Autowired

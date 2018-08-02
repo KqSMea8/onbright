@@ -5,7 +5,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,7 +26,7 @@ import com.zz.common.util.StringUtils;
 
 @Component
 public class PushUtil {
-    private static final Logger log = Logger.getLogger(PushUtil.class);
+	private static final Logger logger = LoggerFactory.getLogger(PushUtil.class);
     private static Set<CMDEnum> cmdSet = new HashSet<CMDEnum>();
 
     @Autowired
@@ -130,7 +131,7 @@ public class PushUtil {
                     return;
                 }
             }
-            log.info("===after requestParam remove :" + request);
+            logger.info("===after requestParam remove :" + request);
             ForwordSeverChange(accessToken, respJsonObject, request, cmdEnum,
                     appkey);
         }

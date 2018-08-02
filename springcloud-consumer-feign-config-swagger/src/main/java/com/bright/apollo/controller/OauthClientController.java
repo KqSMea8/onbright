@@ -1,6 +1,7 @@
 package com.bright.apollo.controller;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +29,7 @@ import io.swagger.annotations.ApiResponse;
 @RequestMapping("oauthclient")
 public class OauthClientController {
 
-	Logger logger = Logger.getLogger(OauthClientController.class);
+	private static final Logger logger = LoggerFactory.getLogger(OauthClientController.class);
 	
 	@Autowired
 	private FeignUserClient feignUserClient;

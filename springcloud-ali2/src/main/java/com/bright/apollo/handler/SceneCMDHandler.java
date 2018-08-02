@@ -2,7 +2,8 @@ package com.bright.apollo.handler;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.bright.apollo.bean.Message;
 import com.bright.apollo.common.entity.TObox;
@@ -16,25 +17,23 @@ import com.bright.apollo.tool.ByteHelper;
 
 public class SceneCMDHandler extends BasicHandler{
 
-    private Logger log = Logger.getLogger(SceneCMDHandler.class);
-
+	private static Logger logger = LoggerFactory.getLogger(SceneCMDHandler.class);
     @Override
     public Message<String> process(ClientSession clientSession, Message<String> msg) throws Exception {
-        // TODO Auto-generated method stub
         String data = msg.getData();
         String isSuccess = data.substring(0, 2);
 
         TObox dbObox = oboxService.queryOboxsByOboxSerialId(clientSession.getUid());
         if (dbObox == null) {
-            log.error(String.format("not found %s obox!", clientSession.getUid()));
+            logger.error(String.format("not found %s obox!", clientSession.getUid()));
             return null;
         }
 
         if ("01".equals(isSuccess)) {
             int operte_type = Integer.parseInt(data.substring(4, 6), 16) & 0x0f;
             int scene_number = Integer.parseInt(data.substring(6, 8), 16);
-            log.info("====operte_type:"+operte_type);
-            log.info("====scene_number:"+scene_number);
+            logger.info("====operte_type:"+operte_type);
+            logger.info("====scene_number:"+scene_number);
             if ("01".equals(data.substring(2, 4))) {
                 //scene info
                 String scene_id	= ByteHelper.fromHexAscii(data.substring(8, 40));
@@ -44,12 +43,12 @@ public class SceneCMDHandler extends BasicHandler{
 
                 if (operte_type == 0) {
                     //delete scene
-                    log.info("====delete scene====");
+                    logger.info("====delete scene====");
                     //scene = sceneService.getTSceneByOboxSerialIdAndSceneNumber(dbObox.getOboxSerialId(), scene_number);
                     scene = sceneService.getTSceneByOboxSerialIdAndOboxSceneNumber(dbObox.getOboxSerialId(), scene_number);
 //                    scene = OboxBusiness.querySceneBySNumber(dbObox.getOboxSerialId(), scene_number);
                     if (scene == null) {
-                        log.error(String.format("not found scene_number %s in obox!", scene_number));
+                        logger.error(String.format("not found scene_number %s in obox!", scene_number));
                         return null;
                     }
                     sceneService.deleteSceneBySceneNum(scene.getSceneNumber());
@@ -71,7 +70,7 @@ public class SceneCMDHandler extends BasicHandler{
 
                 }else if (operte_type == 1) {
                     //add scene
-                    log.info("====add scene====");
+                    logger.info("====add scene====");
                     scene = sceneService.getTSceneByOboxSerialIdAndOboxSceneNumber(dbObox.getOboxSerialId(), scene_number);
                     if (scene != null) {
 //                        SceneBusiness.deleteUserScene(scene.getSceneNumber());
@@ -101,10 +100,10 @@ public class SceneCMDHandler extends BasicHandler{
 
                 }else if (operte_type == 2) {
                     //modify scene
-                    log.info("====modify scene====");
+                    logger.info("====modify scene====");
                     scene = sceneService.getTSceneByOboxSerialIdAndSceneNumber(dbObox.getOboxSerialId(), scene_number);
                     if (scene == null) {
-                        log.error(String.format("not found scene_number %s in obox!", scene_number));
+                        logger.error(String.format("not found scene_number %s in obox!", scene_number));
                         return null;
                     }
                     if (sceneStatus == 2) {
@@ -150,7 +149,7 @@ public class SceneCMDHandler extends BasicHandler{
                 int condType = Integer.parseInt(data.substring(10, 12), 16);
                 TScene scene = sceneService.getTSceneByOboxSerialIdAndOboxSceneNumber(dbObox.getOboxSerialId(), scene_number);
                 if (scene == null) {
-                    log.error(String.format("not found scene_number %s in obox!", scene_number));
+                    logger.error(String.format("not found scene_number %s in obox!", scene_number));
                     return null;
                 }
                 sceneConditionService.deleteSceneConditionBySceneNumberAndGroup(scene.getSceneNumber(), index-1);
@@ -187,7 +186,7 @@ public class SceneCMDHandler extends BasicHandler{
                 //scene action
                 TScene scene = sceneService.getTSceneByOboxSerialIdAndOboxSceneNumber(dbObox.getOboxSerialId(), scene_number);
                 if (scene == null) {
-                    log.error(String.format("not found scene_number %s in obox!", scene_number));
+                    logger.error(String.format("not found scene_number %s in obox!", scene_number));
                     return null;
                 }
 

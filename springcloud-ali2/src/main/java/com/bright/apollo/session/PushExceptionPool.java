@@ -1,5 +1,16 @@
 package com.bright.apollo.session;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.alibaba.fastjson.JSON;
 import com.bright.apollo.bean.PushExceptionMsg;
 import com.bright.apollo.bean.PushSystemMsg;
@@ -12,15 +23,6 @@ import com.bright.apollo.service.OboxDeviceConfigService;
 import com.bright.apollo.service.SceneService;
 import com.bright.apollo.service.UserService;
 import com.zz.common.util.StringUtils;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 @Component
 public class PushExceptionPool {
@@ -36,7 +38,7 @@ public class PushExceptionPool {
 
     private static ExecutorService executor;
 
-    private static final Logger log = Logger.getLogger(PushExceptionPool.class);
+    private static final Logger logger = LoggerFactory.getLogger(PushExceptionPool.class);
 
     public PushExceptionPool() {
 
@@ -64,7 +66,7 @@ public class PushExceptionPool {
             try {
                 Set<String> set = new HashSet<String>();
                 if(systemMsg!=null){
-                    log.info("===systemMsg===:" + JSON.toJSON(systemMsg));
+                    logger.info("===systemMsg===:" + JSON.toJSON(systemMsg));
                     if(systemMsg.getType().intValue()==SystemEnum.system.getValue()&&
                             systemMsg.getChildType().intValue()==SystemEnum.scene.getValue()
                             ){
@@ -72,11 +74,11 @@ public class PushExceptionPool {
 //                        TScene tScene = SceneBusiness.querySceneBySceneNumber(systemMsg
 //                                .getId());
                         if (tScene == null) {
-                            log.warn("===PushException tScene not exist===");
+                            logger.warn("===PushException tScene not exist===");
                             return;
                         }
                         if (!addRoot(set, tScene.getLicense())) {
-                            log.warn("===PushException root not exist===");
+                            logger.warn("===PushException root not exist===");
                         }
                         List<TUser> tUserList = userService.getUsersBySceneNumber(tScene.getSceneNumber());
 //                        List<TUser> tUserList = UserBusiness
@@ -86,9 +88,9 @@ public class PushExceptionPool {
                     }
                     return;
                 }
-                log.info("===msg===:" + JSON.toJSON(msg));
+                logger.info("===msg===:" + JSON.toJSON(msg));
                 if (msg == null || msg.getId() == null) {
-                    log.warn("===PushException error data===");
+                    logger.warn("===PushException error data===");
                     return;
                 }
                 if (msg.getType().intValue() != ExceptionEnum.securityscene
@@ -101,14 +103,14 @@ public class PushExceptionPool {
 //                    if ((tOboxDeviceConfig == null || tOboxDeviceConfig
 //                            .getLicense() == null)
 //                            && (tYSCamera == null || tYSCamera.getLicense() == null)) {
-//                        log.warn("===PushException device not exist===");
+//                        logger.warn("===PushException device not exist===");
 //                        return;
 //                    }
 //                    if (tOboxDeviceConfig!=null&&!addRoot(set, tOboxDeviceConfig.getLicense())
 //                            && StringUtils.isEmpty(msg.getUrl())) {
-//                        log.warn("===PushException root not exist===");
+//                        logger.warn("===PushException root not exist===");
 //                    } else if (tYSCamera!=null&&!addRoot(set, tYSCamera.getLicense())) {
-//                        log.warn("===PushException root not exist===");
+//                        logger.warn("===PushException root not exist===");
 //                    }
 
                     if (StringUtils.isEmpty(msg.getUrl())) {
@@ -147,11 +149,11 @@ public class PushExceptionPool {
 //                    TScene tScene = SceneBusiness.querySceneBySceneNumber(msg
 //                            .getId());
                     if (tScene == null) {
-                        log.warn("===PushException tScene not exist===");
+                        logger.warn("===PushException tScene not exist===");
                         return;
                     }
                     if (!addRoot(set, tScene.getLicense())) {
-                        log.warn("===PushException root not exist===");
+                        logger.warn("===PushException root not exist===");
                     }
                     List<TUser> tUserList = userService.getUsersBySceneNumber(tScene.getSceneNumber());
 //                    List<TUser> tUserList = UserBusiness
@@ -160,14 +162,14 @@ public class PushExceptionPool {
                             tScene.getSceneName(), null, tUserList,null);
                 }
             } catch (Exception e) {
-                log.error(e.getMessage(), e);
+                logger.error(e.getMessage(), e);
             }
 
         }
 
         private void addOrUpdateDeviceState(String deviceState,
                                             TOboxDeviceConfig tOboxDeviceConfig) throws Exception {
-//            log.info("===add device status===:"
+//            logger.info("===add device status===:"
 //                    + tOboxDeviceConfig.getDeviceSerialId() + " deviceState:"
 //                    + deviceState);
 //            if(StringUtils.isEmpty(deviceState))
@@ -225,7 +227,7 @@ public class PushExceptionPool {
 //            Iterator<String> iterator = set.iterator();
 //            TSystem tSystem=new TSystem(systemMsg.getType(),
 //                    systemMsg.getChildType(),  relevancyId,name);
-//            log.info("===tSystem===:" + JSON.toJSONString(tSystem));
+//            logger.info("===tSystem===:" + JSON.toJSONString(tSystem));
 //            int systemId = MsgBussiness.addSystem(tSystem);
 //            long sendTime = new Date().getTime();
 //            //	String time = DateHelper.formatDate(sendTime, DateHelper.FORMATALL);
@@ -234,7 +236,7 @@ public class PushExceptionPool {
 //                TUser tUser = UserBusiness.queryUserById(Integer
 //                        .parseInt(userId));
 //                if (StringUtils.isEmpty(systemMsg.getContent())) {
-//                    log.warn("===PushException couldn't build content===");
+//                    logger.warn("===PushException couldn't build content===");
 //                    return;
 //                }
 //                TMsg tMsg = new TMsg(MsgEnum.system.getValue(),
@@ -254,7 +256,7 @@ public class PushExceptionPool {
 //
 //            int exceptionId = ExceptionBussiness.addException(tException);
 //            long sendTime = new Date().getTime();
-//            log.info("===tException===:" +sendTime+"====:" +JSON.toJSONString(tException));
+//            logger.info("===tException===:" +sendTime+"====:" +JSON.toJSONString(tException));
 //            String time = DateHelper.formatDate(sendTime, DateHelper.FORMATALL);
 //            while (iterator.hasNext()) {
 //                String userId = iterator.next();
@@ -263,7 +265,7 @@ public class PushExceptionPool {
 //                String content = buildContent(msg, tUser.getUserName(), time,
 //                        name);
 //                if (StringUtils.isEmpty(content)) {
-//                    log.warn("===PushException couldn't build content===");
+//                    logger.warn("===PushException couldn't build content===");
 //                    return;
 //                }
 //                TMsg tMsg = new TMsg(MsgEnum.exception.getValue(),
