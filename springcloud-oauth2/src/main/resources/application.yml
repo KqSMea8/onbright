@@ -2,7 +2,7 @@ server:
   port: 8815
 #contextPath: /uaa
   ssl:
-    key-store: E:\keys\.keystore
+    key-store: /.keystore
     key-store-password: 123456
     key-store-type: JKS
 spring:
@@ -23,7 +23,7 @@ endpoints:
 redis:
     database: 0
     host: 47.96.100.153
-    port: 6379
+    port: 6389
     timeout: 30000
     pool:
       # 连接池最大连接数（使用负值表示没有限制）
