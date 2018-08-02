@@ -6,18 +6,11 @@ import java.io.InputStreamReader;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.After;
-import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -35,7 +28,7 @@ import com.google.gson.Gson;
 @Order(1)
 @Component*/
 public class WebLogAspect {
-	private Logger logger = Logger.getLogger(getClass());
+	private static final Logger logger = LoggerFactory.getLogger(WebLogAspect.class);
  
 	@Pointcut("execution(public * com.bright.apollo.controller..*.*(..))")
 	public void webLog() {

@@ -2,6 +2,8 @@ package com.bright.apollo.config;
 
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,7 +35,7 @@ import com.bright.apollo.service.impl.UserDetailsServiceImpl;
 @EnableAuthorizationServer
 public class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
 
-	 
+	private static final Logger logger = LoggerFactory.getLogger(AuthorizationServerConfiguration.class);
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -70,7 +72,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     }
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-        System.out.println("====== AuthorizationServerEndpointsConfigurer endpoints =====");
+    	logger.info("====== AuthorizationServerEndpointsConfigurer endpoints =====");
         endpoints.tokenStore(redisTokenStore())
                 .authorizationCodeServices(new InMemoryAuthorizationCodeServices())
 //                .userDetailsService(userDetailsService)
@@ -89,7 +91,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         DefaultTokenServices tokenServices = new DefaultTokenServices();
         tokenServices.setTokenStore(redisTokenStore());
         tokenServices.setSupportRefreshToken(true);
-        System.out.println(" ======================================= defaultTokenServices ====================== ");
+        logger.info(" ======================================= defaultTokenServices ====================== ");
 
 //        tokenServices.setClientDetailsService(clientDetails());
 

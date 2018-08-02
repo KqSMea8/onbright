@@ -1,5 +1,14 @@
 package com.bright.apollo.handler;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.bright.apollo.cache.AliDevCache;
 import com.bright.apollo.common.entity.TAliDevice;
 import com.bright.apollo.common.entity.TAliDeviceUS;
@@ -8,17 +17,10 @@ import com.bright.apollo.enums.AliRegionEnum;
 import com.bright.apollo.enums.Command;
 import com.bright.apollo.service.AliDeviceService;
 import com.zz.common.util.StringUtils;
-import org.apache.log4j.Logger;
-import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Component
 public class CommandHandler {
-    private static Logger log = Logger.getLogger(CommandHandler.class);
+	private static final Logger logger = LoggerFactory.getLogger(CommandHandler.class);
 
     @Autowired
     private AliDevCache aliDevCache;
@@ -38,7 +40,7 @@ public class CommandHandler {
 
     public void process(String ProductKey,String DeviceName, String aString) {
         try {
-            log.info("======topic msg=====:key:"+ProductKey+" device:"+DeviceName+" payload"+aString);
+            logger.info("======topic msg=====:key:"+ProductKey+" device:"+DeviceName+" payload"+aString);
 
             JSONObject object = new JSONObject(aString);
             if (StringUtils.isEmpty(object.getString("command"))) {
@@ -46,7 +48,7 @@ public class CommandHandler {
             }
             AliBaseHandler handler = cmdHandlers.get(object.getString("command"));
             if (handler == null) {
-                log.error("not exist this cmd : " + object.getString("command"));
+                logger.error("not exist this cmd : " + object.getString("command"));
                 return;
             }
 

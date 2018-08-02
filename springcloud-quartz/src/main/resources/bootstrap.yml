@@ -11,7 +11,7 @@ spring:
       fail-fast: true
       username: root
       password: booszy
-      profile: csdn
+      profile: pro
   jpa:
     hibernate:
       ddl-auto: none

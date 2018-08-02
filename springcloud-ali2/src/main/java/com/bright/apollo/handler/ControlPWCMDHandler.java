@@ -1,6 +1,9 @@
 package com.bright.apollo.handler;
 
-import org.apache.log4j.Logger;
+ 
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.bright.apollo.bean.Message;
 import com.bright.apollo.common.entity.TObox;
@@ -8,7 +11,7 @@ import com.bright.apollo.session.ClientSession;
 
 public class ControlPWCMDHandler extends BasicHandler {
 
-    private Logger log = Logger.getLogger(ControlPWCMDHandler.class);
+	private static final Logger logger = LoggerFactory.getLogger(ControlPWCMDHandler.class);
  
 
     @Override
@@ -20,7 +23,7 @@ public class ControlPWCMDHandler extends BasicHandler {
         if ("01".equals(isSuccess)) {
             TObox obox = oboxService.queryOboxsByOboxSerialId(clientSession.getUid());
             if (obox == null) {
-                log.error(String.format("not found %s obox!", clientSession.getUid()));
+                logger.error(String.format("not found %s obox!", clientSession.getUid()));
                 return null;
             }
 

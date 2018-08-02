@@ -4,7 +4,8 @@ import java.util.List;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,7 +33,7 @@ import com.zz.common.util.StringUtils;
 @RestController
 @RequestMapping("aliService")
 public class AliServerController {
-	private Logger logger = Logger.getLogger(getClass());
+	private static final Logger logger = LoggerFactory.getLogger(AliServerController.class);
 	@Autowired
 	private TopicServer topicServer;
 	@Autowired
@@ -55,7 +56,7 @@ public class AliServerController {
 			res.setStatus(ResponseEnum.AddSuccess.getStatus());
 			res.setMessage(ResponseEnum.AddSuccess.getMsg());
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("===error msg:"+e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
@@ -77,7 +78,7 @@ public class AliServerController {
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("===error msg:"+e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
@@ -94,7 +95,7 @@ public class AliServerController {
 			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
 			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("===error msg:"+e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
@@ -132,7 +133,7 @@ public class AliServerController {
 			res.setStatus(ResponseEnum.AddSuccess.getStatus());
 			res.setMessage(ResponseEnum.AddSuccess.getMsg());
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("===error msg:"+e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
@@ -176,7 +177,7 @@ public class AliServerController {
 			res.setStatus(ResponseEnum.AddSuccess.getStatus());
 			res.setMessage(ResponseEnum.AddSuccess.getMsg());
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("===error msg:"+e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
@@ -221,7 +222,7 @@ public class AliServerController {
 			res.setStatus(ResponseEnum.AddSuccess.getStatus());
 			res.setMessage(ResponseEnum.AddSuccess.getMsg());
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("===error msg:"+e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
@@ -244,7 +245,7 @@ public class AliServerController {
 			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
 			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("===error msg:"+e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
@@ -277,7 +278,7 @@ public class AliServerController {
 			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
 			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("===error msg:"+e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
@@ -312,7 +313,7 @@ public class AliServerController {
 			res.setMessage(ResponseEnum.AddSuccess.getMsg());
 			res.setData(future.get());
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("===error msg:"+e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
@@ -367,7 +368,7 @@ public class AliServerController {
 			res.setStatus(ResponseEnum.AddSuccess.getStatus());
 			res.setMessage(ResponseEnum.AddSuccess.getMsg());
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("===error msg:"+e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
@@ -392,7 +393,7 @@ public class AliServerController {
 			res.setStatus(ResponseEnum.AddSuccess.getStatus());
 			res.setMessage(ResponseEnum.AddSuccess.getMsg());
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("===error msg:"+e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
@@ -422,7 +423,7 @@ public class AliServerController {
 			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
 			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("===error msg:"+e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
@@ -452,7 +453,7 @@ public class AliServerController {
 			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
 			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("===error msg:"+e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
@@ -658,7 +659,7 @@ public class AliServerController {
 				}
 			} catch (Exception e) {
 				// TODO: handle exception
-				e.printStackTrace();
+				logger.error("===error msg:"+e.getMessage());
 			}
 		}
 

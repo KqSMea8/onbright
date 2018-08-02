@@ -1,11 +1,13 @@
 package com.bright.apollo.listener;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
+import com.bright.apollo.handler.SearchResultHandler;
 import com.bright.apollo.socket.MNSHandler;
 
 /**  
@@ -17,8 +19,8 @@ import com.bright.apollo.socket.MNSHandler;
  */
 @Component
 public class MNSCommandLineRunner implements CommandLineRunner{
-	Logger logger = Logger.getLogger(MNSCommandLineRunner.class);
-	@Autowired
+	private static Logger logger = LoggerFactory.getLogger(MNSCommandLineRunner.class);
+ 	@Autowired
 	@Lazy
     private MNSHandler mnshandler;
 

@@ -3,16 +3,18 @@ package com.bright.apollo.job;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.bright.apollo.common.entity.TCreateTableLog;
 import com.bright.apollo.common.entity.TCreateTableSql;
 import com.bright.apollo.constant.SubTableConstant;
 import com.bright.apollo.feign.FeignUserClient;
+import com.bright.apollo.hystrix.HystrixFeignUserFallback;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.tool.DateHelper;
@@ -27,22 +29,22 @@ import com.zz.common.util.StringUtils;
  * @Version:1.1.0
  */
 public class CreateTableJob implements Job {
-	private static final Logger log = Logger.getLogger(CreateTableJob.class);
+	private static final Logger logger = LoggerFactory.getLogger(CreateTableJob.class);
 	@Autowired(required = true)
 	private FeignUserClient feignUserClient;
 
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
-		log.info("====execute start====");
+		logger.info("====execute start====");
 		try {
 			String nowMonth = DateHelper.formatDate(new Date().getTime(), DateHelper.FORMATMONTH);
 			String nextMonth = DateHelper.formatDate(DateHelper.getTomorrow(), DateHelper.FORMATMONTH);
 			if (!nowMonth.equals(nextMonth)) {
-				log.info("====create t_device_status====");
+				logger.info("====create t_device_status====");
 				createTable(SubTableConstant.T_DEVICE_STATUS, SubTableConstant.T_DEVICE_STATUS_SUFFIX, nextMonth, "");
-				log.info("====create t_user_operation====");
+				logger.info("====create t_user_operation====");
 				createTable(SubTableConstant.T_USER_OPERATION, SubTableConstant.T_USER_OPERATION_SUFFIX, nextMonth, "");
-				log.info("====create t_device_status_merge====");
+				logger.info("====create t_device_status_merge====");
 				feignUserClient.dropTable(SubTableConstant.T_DEVICE_STATUS_MERGE);
 				// CreateTableLogBussiness
 				// .dropTable(SubTableConstant.T_DEVICE_STATUS_MERGE);
@@ -64,10 +66,10 @@ public class CreateTableJob implements Job {
 				}
 			}
 		} catch (Exception e) {
-			log.error("===create table error===");
+			logger.error("===create table error===");
 			e.printStackTrace();
 		}
-		log.info("====execute end====");
+		logger.info("====execute end====");
 	}
 
 	private void createTable(String tableName, String suffix, String nextMonth, String auxiliary) throws AppException {

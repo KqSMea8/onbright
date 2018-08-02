@@ -3,7 +3,8 @@ package com.bright.apollo.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -32,7 +33,7 @@ import com.bright.apollo.service.SceneService;
 @RequestMapping("scene")
 @RestController
 public class SceneController {
-	private Logger logger = Logger.getLogger(getClass());
+	private static final Logger logger = LoggerFactory.getLogger(SceneController.class);
 
 	@Autowired
 	private SceneService sceneService;

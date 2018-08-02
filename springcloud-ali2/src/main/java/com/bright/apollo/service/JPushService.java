@@ -1,5 +1,10 @@
 package com.bright.apollo.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.zz.common.util.StringUtils;
+
 import cn.jpush.api.JPushClient;
 //import cn.jpush.api.common.APIConnectionException;
 //import cn.jpush.api.common.APIRequestException;
@@ -12,11 +17,9 @@ import cn.jpush.api.push.model.audience.AudienceTarget;
 import cn.jpush.api.push.model.notification.AndroidNotification;
 import cn.jpush.api.push.model.notification.IosNotification;
 import cn.jpush.api.push.model.notification.Notification;
-import com.zz.common.util.StringUtils;
-import org.apache.log4j.Logger;
 
 public class JPushService {
-    protected static final Logger LOG = Logger.getLogger(JPushService.class);
+	private static final Logger logger = LoggerFactory.getLogger(JPushService.class);
 
     private static final String appKey ="LTAIBE0b86xFi9q5";
     private static final String masterSecret = "Ym9F1CNAgwhbxt5Sk1Qki1nr6w6e3v";
@@ -36,13 +39,13 @@ public class JPushService {
         PushPayload payload = buildPushObject_all_all_alert(content, tag,url);
 
         try {
-            LOG.info("jpush content==>>> " + content);
+            logger.info("jpush content==>>> " + content);
             PushResult result = jpushClient.sendPush(payload);
-            LOG.info("Got result - " + result);
+            logger.info("Got result - " + result);
 
 
         } catch (Exception e) {
-            LOG.error("Connection error. Should retry later. ", e);
+            logger.error("Connection error. Should retry later. ", e);
 
         }
     }
@@ -56,13 +59,13 @@ public class JPushService {
         PushPayload payload = buildPushObject_all_all_alert(content);
 
         try {
-            LOG.info("jpush content==>>> " + content);
+            logger.info("jpush content==>>> " + content);
             PushResult result = jpushClient.sendPush(payload);
-            LOG.info("Got result - " + result);
+            logger.info("Got result - " + result);
 
 
         } catch (Exception e) {
-            LOG.error("Connection error. Should retry later. ", e);
+            logger.error("Connection error. Should retry later. ", e);
 
         }
     }
@@ -77,12 +80,12 @@ public class JPushService {
         PushPayload payload = buildPushObjectMessageWithExtras(content, tag);
 
         try {
-            LOG.info("jpush content==>>> " + content);
+            logger.info("jpush content==>>> " + content);
             PushResult result = jpushClient.sendPush(payload);
-            LOG.info("Got result - " + result);
+            logger.info("Got result - " + result);
 
         } catch (Exception e) {
-            LOG.error("Connection error. Should retry later. ", e);
+            logger.error("Connection error. Should retry later. ", e);
 
         }
     }

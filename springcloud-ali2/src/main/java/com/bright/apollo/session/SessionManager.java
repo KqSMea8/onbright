@@ -1,25 +1,28 @@
 package com.bright.apollo.session;
 
-import com.bright.apollo.bean.PushMessage;
-import com.bright.apollo.common.entity.TObox;
-import com.bright.apollo.enums.PushMessageType;
-import com.bright.apollo.listener.SessionCloseListener;
-import com.bright.apollo.service.OboxService;
-import com.zz.common.util.StringUtils;
-import io.netty.channel.Channel;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.bright.apollo.bean.PushMessage;
+import com.bright.apollo.common.entity.TObox;
+import com.bright.apollo.enums.PushMessageType;
+import com.bright.apollo.listener.SessionCloseListener;
+import com.bright.apollo.service.OboxService;
+import com.zz.common.util.StringUtils;
+
+import io.netty.channel.Channel;
+
 @Component
 public class SessionManager {
-    private static final Logger log = Logger.getLogger(SessionManager.class);
+	private static final Logger logger = LoggerFactory.getLogger(SessionManager.class);
 
     private Map<Integer, ClientSession> preAuthenticatedSessions = new ConcurrentHashMap<Integer, ClientSession>();
 
@@ -127,9 +130,9 @@ public class SessionManager {
      * 删除session
      */
     public void removeClientSession(ClientSession clientSession) {
-        log.info("===uid===:"+clientSession.getUid());
+        logger.info("===uid===:"+clientSession.getUid());
         if(!StringUtils.isEmpty(clientSession.getAppKey())){
-            log.info("===appkey===:"+clientSession.getAppKey());
+            logger.info("===appkey===:"+clientSession.getAppKey());
         }
         preAuthenticatedSessions.remove(clientSession.getChannel().hashCode());
 
@@ -149,14 +152,14 @@ public class SessionManager {
         @Override
         public void onSessionClose(Object handback) {
             try {
-                log.info("====ClientSessionListener onSessionClose===");
+                logger.info("====ClientSessionListener onSessionClose===");
                 ClientSession clientSession = (ClientSession) handback;
 
                 TObox obox = oboxService.queryOboxsByOboxSerialId(clientSession.getUid());
 //                OboxBusiness.queryOboxsByOboxSerialId();
                 if(obox!=null){
-                    log.info("====ClientSessionListener UserIdSet===:"+clientSession.getUserIdSet());
-                    log.info("====ClientSessionListener obox===:"+obox.getOboxSerialId());
+                    logger.info("====ClientSessionListener UserIdSet===:"+clientSession.getUserIdSet());
+                    logger.info("====ClientSessionListener obox===:"+obox.getOboxSerialId());
                     if(!clientSession.getUserIdSet().isEmpty()){
                         Set<String> userIdSet = clientSession.getUserIdSet();
                         PushMessage pushMessage=new PushMessage();
@@ -165,9 +168,9 @@ public class SessionManager {
                         pushMessage.setOnLine(false);
                         Iterator<String> it = userIdSet.iterator();
                         while (it.hasNext()) {
-                            log.info("====ClientSessionListener userIdSet===");
+                            logger.info("====ClientSessionListener userIdSet===");
                             String key = it.next();
-                            log.info("===clientsession key===:"+key);
+                            logger.info("===clientsession key===:"+key);
                             ClientSession pushSession =  SessionManager.getInstance()
                                     .getClientSessionBySessionKey(key);
                             pushObserverManager.sendMessage(pushMessage, pushSession);
@@ -178,15 +181,15 @@ public class SessionManager {
                     oboxService.update(obox);
 //                    OboxBusiness.updateObox(obox);
                 }else {
-                    log.info("====ClientSessionListener obox is null===");
+                    logger.info("====ClientSessionListener obox is null===");
                 }
                 removeClientSession(clientSession);
                 if (clientSession.getStatus() != Session.STATUS_CLOSED) {
 
                 }
-                log.info("close session, close type : " + clientSession.getCloseEnum());
+                logger.info("close session, close type : " + clientSession.getCloseEnum());
             } catch (Exception e) {
-                log.error(e.getMessage(), e);
+                logger.error(e.getMessage(), e);
             } finally {
 
             }

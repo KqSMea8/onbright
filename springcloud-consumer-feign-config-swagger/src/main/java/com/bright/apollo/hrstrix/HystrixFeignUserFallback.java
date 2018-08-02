@@ -2,7 +2,8 @@ package com.bright.apollo.hrstrix;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.bright.apollo.common.entity.OauthClientDetails;
@@ -24,7 +25,7 @@ import com.bright.apollo.response.ResponseObject;
  */
 @Component
 public class HystrixFeignUserFallback extends BasicHystrixFeignFallback implements FeignUserClient  {
-	private Logger logger = Logger.getLogger(getClass());
+	private static final Logger logger = LoggerFactory.getLogger(HystrixFeignUserFallback.class);
 	/* (non-Javadoc)  
 	 * @see com.bright.apollo.feign.FeignUserClient#register(java.lang.String)  
 	 */

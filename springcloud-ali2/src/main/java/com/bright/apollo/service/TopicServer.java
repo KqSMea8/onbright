@@ -4,8 +4,9 @@ import java.util.concurrent.Future;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
@@ -36,7 +37,7 @@ import com.bright.apollo.handler.CMDHandlerManager;
 @Component
 public class TopicServer {
 
-	private Logger logger = Logger.getLogger(TopicServer.class);
+	private static final Logger logger = LoggerFactory.getLogger(TopicServer.class);
 
 	private static final int packageLength = 64;
 	private static final String head = "38383838";

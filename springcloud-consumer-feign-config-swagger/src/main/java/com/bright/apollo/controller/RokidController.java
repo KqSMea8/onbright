@@ -1,8 +1,39 @@
 package com.bright.apollo.controller;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.ServletInputStream;
+import javax.servlet.http.HttpServletRequest;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.common.entity.TUser;
-import com.bright.apollo.common.rokid.*;
+import com.bright.apollo.common.rokid.RokidAuth;
+import com.bright.apollo.common.rokid.RokidConstants;
+import com.bright.apollo.common.rokid.RokidDate;
+import com.bright.apollo.common.rokid.RokidExeAction;
+import com.bright.apollo.common.rokid.RokidLedAction;
+import com.bright.apollo.common.rokid.RokidLedDate;
+import com.bright.apollo.common.rokid.RokidLedState;
+import com.bright.apollo.common.rokid.RokidRequest;
+import com.bright.apollo.common.rokid.RokidSwitchAction;
+import com.bright.apollo.common.rokid.RokidSwitchDate;
+import com.bright.apollo.common.rokid.RokidSwitchState;
 import com.bright.apollo.config.NumberHelper;
 import com.bright.apollo.config.VerificationCollection;
 import com.bright.apollo.enums.DeviceTypeEnum;
@@ -17,17 +48,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.zz.common.util.ObjectUtils;
 import com.zz.common.util.StringUtils;
+
 import io.swagger.annotations.Api;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
-import org.springframework.web.bind.annotation.*;
-import javax.servlet.ServletInputStream;
-import javax.servlet.http.HttpServletRequest;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.*;
 
 /**  
  *@Title:  
@@ -40,8 +62,7 @@ import java.util.*;
 @RequestMapping("rokid")
 @RestController
 public class RokidController {
-	Logger logger = Logger.getLogger(RokidController.class);
-
+	private static final Logger logger = LoggerFactory.getLogger(RokidController.class);
  	@Autowired
 	private FeignDeviceClient feignDeviceClient;
 

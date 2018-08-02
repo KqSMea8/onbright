@@ -1,6 +1,7 @@
 package com.bright.apollo.handler;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.bright.apollo.bean.Message;
 import com.bright.apollo.common.entity.TObox;
@@ -8,9 +9,6 @@ import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.session.ClientSession;
 
 public class NodeChannelHandler extends BasicHandler  {
-
-    private Logger log = Logger.getLogger(NodeChannelHandler.class);
- 
 
     @Override
     public Message<String> process(ClientSession clientSession, Message<String> msg) throws Exception {

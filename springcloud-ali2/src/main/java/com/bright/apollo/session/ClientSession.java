@@ -1,22 +1,25 @@
 package com.bright.apollo.session;
 
+import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.alibaba.fastjson.JSON;
 import com.bright.apollo.bean.Message;
 import com.bright.apollo.bean.PushMessage;
 import com.bright.apollo.listener.SessionCloseListener;
 import com.bright.apollo.util.Constants;
+
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
-import io.netty.util.CharsetUtil;
-import org.apache.log4j.Logger;
 import io.netty.channel.Channel;
-import java.util.Set;
-import java.util.concurrent.ConcurrentSkipListSet;
+import io.netty.util.CharsetUtil;
 
 public class ClientSession implements Session {
 
-    private Logger log = Logger
-            .getLogger(ClientSession.class);
+	private static final Logger logger = LoggerFactory.getLogger(ClientSession.class);
 
     private Channel channel;
 
@@ -153,7 +156,7 @@ public class ClientSession implements Session {
                 return true;
             }
         } catch (Exception e) {
-            log.error(e.getMessage());
+            logger.error(e.getMessage());
         }
         return false;
     }
@@ -167,14 +170,14 @@ public class ClientSession implements Session {
                 channel.writeAndFlush("STR"+JSON.toJSONString(msg)+"END").sync();
                 return true;
             } else {
-                log.info("===channel can not use===");
-                log.info("===clientsession appkey===:" + getAppKey());
-                log.info("===clientsession uid===:" + getUid());
-                log.info("===clientsession channel===:"
+                logger.info("===channel can not use===");
+                logger.info("===clientsession appkey===:" + getAppKey());
+                logger.info("===clientsession uid===:" + getUid());
+                logger.info("===clientsession channel===:"
                         + getChannel().hashCode());
             }
         } catch (Exception e) {
-            log.error("channel  error "+e.getMessage());
+            logger.error("channel  error "+e.getMessage());
         }
         return false;
     }
@@ -190,7 +193,7 @@ public class ClientSession implements Session {
                 return true;
             }
         } catch (Exception e) {
-            log.error(e.getMessage());
+            logger.error(e.getMessage());
         }
         return false;
     }

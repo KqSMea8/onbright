@@ -1,22 +1,24 @@
 package com.bright.apollo.session;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.bright.apollo.bean.Message;
 import com.bright.apollo.enums.CMDEnum;
 import com.bright.apollo.handler.BasicHandler;
 import com.google.gson.JsonObject;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 @Component
 public class PushThreadPool {
     private static ExecutorService executor;
 
 
-    private static final Logger log = Logger.getLogger(PushThreadPool.class);
+    private static final Logger logger = LoggerFactory.getLogger(PushThreadPool.class);
 
     @Autowired
     private PushUtil pushUtil;
@@ -53,7 +55,7 @@ public class PushThreadPool {
             try {
                 filterCMDHandler.process(clientSession, msg);
             } catch (Exception e) {
-                log.error("===filterCMDHandler.process error===", e);
+                logger.error("===filterCMDHandler.process error===", e);
             }
         }
     }
@@ -78,7 +80,7 @@ public class PushThreadPool {
                 pushUtil.filterForwordSeverChange(requestParam, cmdEnum,
                         accessToken, respJsonObject);
             } catch (Exception e) {
-                log.error("===filterCMDHandler.process error===", e);
+                logger.error("===filterCMDHandler.process error===", e);
             }
         }
     }

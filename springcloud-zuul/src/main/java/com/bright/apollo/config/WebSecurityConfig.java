@@ -10,6 +10,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -32,7 +34,7 @@ import com.bright.apollo.service.impl.UserDetailsServiceImpl;
 @Order(10)
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
-
+	private static final Logger logger = LoggerFactory.getLogger(WebSecurityConfig.class);
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
@@ -71,21 +73,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 
         @Override
         public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-            System.out.println("This is a filter before UsernamePasswordAuthenticationFilter.");
+            logger.info("This is a filter before UsernamePasswordAuthenticationFilter.");
             HttpServletRequest request = (HttpServletRequest)servletRequest;
             String redirect_uri = request.getParameter("redirect_uri");
             String state = request.getParameter("state");
-            System.out.println(request.getRequestURI());
+            logger.info(request.getRequestURI());
             if(redirect_uri!=null){
             	redirect_uri = URLDecoder.decode(redirect_uri, "UTF-8");
             	redirect_uri += "&"+state;
-            	System.out.println(redirect_uri);
+            	logger.info(redirect_uri);
             	request.setAttribute("redirect_uri", redirect_uri);
             }
             Enumeration<String> m = request.getParameterNames();
             while(m.hasMoreElements()){
             	String element = m.nextElement();
-            	System.out.println("params ------ "+element+" ------ "+request.getParameter(element));
+            	logger.info("params ------ "+element+" ------ "+request.getParameter(element));
             }
             
             // 继续调用 Filter 链

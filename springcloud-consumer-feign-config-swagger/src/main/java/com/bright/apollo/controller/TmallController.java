@@ -1,15 +1,19 @@
 package com.bright.apollo.controller;
 
 
-import com.bright.apollo.common.entity.TOboxDeviceConfig;
-import com.bright.apollo.common.entity.TUser;
-import com.bright.apollo.feign.FeignDeviceClient;
-import com.bright.apollo.feign.FeignOboxClient;
-import com.bright.apollo.feign.FeignUserClient;
-import com.bright.apollo.redis.RedisBussines;
-import com.bright.apollo.response.ResponseObject;
-import com.bright.apollo.transition.TMallDeviceAdapter;
-import com.bright.apollo.transition.TMallTemplate;
+import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
@@ -26,25 +30,25 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
-import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
-import org.springframework.web.bind.annotation.*;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
-import java.util.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.bright.apollo.common.entity.TOboxDeviceConfig;
+import com.bright.apollo.feign.FeignDeviceClient;
+import com.bright.apollo.feign.FeignUserClient;
+import com.bright.apollo.redis.RedisBussines;
+import com.bright.apollo.response.ResponseObject;
+import com.bright.apollo.transition.TMallDeviceAdapter;
+import com.bright.apollo.transition.TMallTemplate;
 
 /**  
  *@Title:  
@@ -57,7 +61,7 @@ import java.util.*;
 @RequestMapping("tmall")
 @RestController
 public class TmallController {
-	Logger logger = Logger.getLogger(TmallController.class);
+	private static final Logger logger = LoggerFactory.getLogger(TmallController.class);
 
 	@Autowired
 	private RedisBussines redisBussines;

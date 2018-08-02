@@ -11,7 +11,8 @@ import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -84,7 +85,7 @@ import io.swagger.annotations.ApiResponse;
 public class FacadeController {
 	private final long max_waitting_time=15000l;
 	 
-	private Logger logger = Logger.getLogger(getClass());
+	private static final Logger logger = LoggerFactory.getLogger(FacadeController.class);
 	@Autowired
 	private FeignOboxClient feignOboxClient;
 	@Autowired

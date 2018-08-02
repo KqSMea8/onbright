@@ -2,7 +2,8 @@ package com.bright.apollo.controller;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,7 +33,7 @@ import com.bright.apollo.service.OboxDeviceConfigService;
 @RequestMapping("device")
 @RestController
 public class DeviceController {
-	private Logger logger = Logger.getLogger(getClass());
+	private static final Logger logger = LoggerFactory.getLogger(DeviceController.class);
 	@Autowired
 	private DeviceService deviceService;
 
