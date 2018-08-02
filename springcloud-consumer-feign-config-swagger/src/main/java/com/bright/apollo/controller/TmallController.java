@@ -94,8 +94,8 @@ public class TmallController {
 		Map<String,Object> payload = (Map<String,Object>) requestMap.get("payload");
 		String accessToken = (String)payload.get("accessToken");
 		logger.info(" ===== accessToken ====== "+accessToken);
-		OAuth2Authentication defaultOAuth2AccessToken = redisBussines.getObject("auth:"+accessToken,OAuth2Authentication.class);
-		logger.info(" ===== redisToken ====== "+defaultOAuth2AccessToken);
+//		OAuth2Authentication defaultOAuth2AccessToken = redisBussines.getObject("auth:"+accessToken,OAuth2Authentication.class);
+//		logger.info(" ===== redisToken ====== "+defaultOAuth2AccessToken);
 
 		if(requestHeaderMap.get("namespace").equals("AliGenie.Iot.Device.Discovery")){//天猫精灵发现设备
 
@@ -104,11 +104,11 @@ public class TmallController {
 			headerMap.put("messageId",requestHeaderMap.get("messageId"));
 			headerMap.put("payLoadVersion","1");
 			map.put("header",headerMap);
-			User user = (User) defaultOAuth2AccessToken.getPrincipal();
+//			User user = (User) defaultOAuth2AccessToken.getPrincipal();
 //			ResponseObject<TUser> userResponseObject = feignUserClient.getUser(user.getUsername());
 //			TUser tUser = userResponseObject.getData();
 
-			logger.info(" ====== username ====== "+user.getUsername());
+//			logger.info(" ====== username ====== "+user.getUsername());
 
 			ResponseObject<List<TOboxDeviceConfig>> responseObject = feignDeviceClient.getOboxDeviceConfigByUserId(429);
 			List<TOboxDeviceConfig> oboxDeviceConfigList = responseObject.getData();
@@ -265,7 +265,7 @@ public class TmallController {
 	private void templateControl(String name,String deviceId,List<NameValuePair> nvps,HttpPost httpPost,CloseableHttpClient httpClient) throws IOException {
 		if(name.equals("TurnOn")&&deviceId.equals("34ea34cf2e63")){
 			nvps.add(new BasicNameValuePair("CMD", "set_group"));
-			nvps.add(new BasicNameValuePair("access_token", "a7994eef-0260-4862-a732-b62e9984dc7c"));
+			nvps.add(new BasicNameValuePair("access_token", "adf4e8f4-c3a1-4c01-813e-d6681d6ebe16"));
 			nvps.add(new BasicNameValuePair("operate_type", "06"));
 			nvps.add(new BasicNameValuePair("group_id", "104"));
 			nvps.add(new BasicNameValuePair("group_state", "ff000000000002"));
@@ -275,7 +275,7 @@ public class TmallController {
 		}
 		if(name.equals("TurnOff")&&deviceId.equals("34ea34cf2e63")){
 			nvps.add(new BasicNameValuePair("CMD", "set_group"));
-			nvps.add(new BasicNameValuePair("access_token", "a7994eef-0260-4862-a732-b62e9984dc7c"));
+			nvps.add(new BasicNameValuePair("access_token", "adf4e8f4-c3a1-4c01-813e-d6681d6ebe16"));
 			nvps.add(new BasicNameValuePair("operate_type", "06"));
 			nvps.add(new BasicNameValuePair("group_id", "104"));
 			nvps.add(new BasicNameValuePair("group_state", "00000000000002"));
@@ -285,7 +285,7 @@ public class TmallController {
 		}
 		if(name.equals("TurnOn")&&deviceId.equals("34ea34cf2e61")){
 			nvps.add(new BasicNameValuePair("CMD", "set_group"));
-			nvps.add(new BasicNameValuePair("access_token", "a7994eef-0260-4862-a732-b62e9984dc7c"));
+			nvps.add(new BasicNameValuePair("access_token", "adf4e8f4-c3a1-4c01-813e-d6681d6ebe16"));
 			nvps.add(new BasicNameValuePair("operate_type", "06"));
 			nvps.add(new BasicNameValuePair("group_id", "105"));
 			nvps.add(new BasicNameValuePair("group_state", "ff000000000002"));
@@ -295,7 +295,7 @@ public class TmallController {
 		}
 		if(name.equals("TurnOff")&&deviceId.equals("34ea34cf2e61")){
 			nvps.add(new BasicNameValuePair("CMD", "set_group"));
-			nvps.add(new BasicNameValuePair("access_token", "a7994eef-0260-4862-a732-b62e9984dc7c"));
+			nvps.add(new BasicNameValuePair("access_token", "adf4e8f4-c3a1-4c01-813e-d6681d6ebe16"));
 			nvps.add(new BasicNameValuePair("operate_type", "06"));
 			nvps.add(new BasicNameValuePair("group_id", "105"));
 			nvps.add(new BasicNameValuePair("group_state", "00000000000002"));
@@ -305,7 +305,7 @@ public class TmallController {
 		}
 		if(name.equals("TurnOn")&&deviceId.equals("34ea34cf2e69")){
 			nvps.add(new BasicNameValuePair("CMD", "setting_node_status"));
-			nvps.add(new BasicNameValuePair("access_token", "a7994eef-0260-4862-a732-b62e9984dc7c"));
+			nvps.add(new BasicNameValuePair("access_token", "adf4e8f4-c3a1-4c01-813e-d6681d6ebe16"));
 			nvps.add(new BasicNameValuePair("serialId", "185f010000"));
 			nvps.add(new BasicNameValuePair("status", "02000000000000"));
 			nvps.add(new BasicNameValuePair("appkey", "00000000-2898-fa39-a85f-89320033c587"));
@@ -314,7 +314,7 @@ public class TmallController {
 		}
 		if(name.equals("TurnOff")&&deviceId.equals("34ea34cf2e69")){
 			nvps.add(new BasicNameValuePair("CMD", "setting_node_status"));
-			nvps.add(new BasicNameValuePair("access_token", "a7994eef-0260-4862-a732-b62e9984dc7c"));
+			nvps.add(new BasicNameValuePair("access_token", "adf4e8f4-c3a1-4c01-813e-d6681d6ebe16"));
 			nvps.add(new BasicNameValuePair("serialId", "185f010000"));
 			nvps.add(new BasicNameValuePair("status", "00000000000000"));
 			nvps.add(new BasicNameValuePair("appkey", "00000000-2898-fa39-a85f-89320033c587"));
