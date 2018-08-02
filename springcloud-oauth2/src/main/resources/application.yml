@@ -2,7 +2,7 @@ server:
   port: 8815
 #contextPath: /uaa
   ssl:
-    key-store: /.keystore
+    key-store: /root/.keystore
     key-store-password: 123456
     key-store-type: JKS
 spring:
