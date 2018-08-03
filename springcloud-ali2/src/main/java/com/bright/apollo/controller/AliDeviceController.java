@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.bright.apollo.mqtt.MqttGateWay;
+//import com.bright.apollo.mqtt.MqttGateWay;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,8 +41,8 @@ public class AliDeviceController {
 	@Autowired
 	private CMDMessageService cMDMessageService;
 
-	@Autowired
-	private MqttGateWay mqttGateWay;
+//	@Autowired
+//	private MqttGateWay mqttGateWay;
 
 	@RequestMapping(value = "/registAliDev/{type}", method = RequestMethod.GET)
 	public ResponseObject<AliDevInfo> registAliDev(@PathVariable(required = true, value = "type") String type,
@@ -220,10 +220,10 @@ public class AliDeviceController {
 		return res;
 	}
 
-	@RequestMapping(value = "/testMqtt", method = RequestMethod.GET)
-	public String testMqtt(){
-		mqttGateWay.sendToMqtt("topic1","test mqtt");
-		return "";
-	}
+//	@RequestMapping(value = "/testMqtt", method = RequestMethod.GET)
+//	public String testMqtt(){
+//		mqttGateWay.sendToMqtt("topic1","test mqtt");
+//		return "";
+//	}
 
 }
