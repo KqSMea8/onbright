@@ -23,3 +23,5 @@ security:
   user:
     name: root
     password: booszy
+logging:
+  config: classpath:logback-config.xml
