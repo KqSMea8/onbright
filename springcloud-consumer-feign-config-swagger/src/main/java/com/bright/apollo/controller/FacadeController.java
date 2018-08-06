@@ -54,12 +54,14 @@ import com.bright.apollo.feign.FeignOboxClient;
 import com.bright.apollo.feign.FeignQuartzClient;
 import com.bright.apollo.feign.FeignSceneClient;
 import com.bright.apollo.feign.FeignUserClient;
+import com.bright.apollo.request.IntelligentOpenRecordDTO;
 import com.bright.apollo.request.OboxDTO;
 import com.bright.apollo.request.SceneActionDTO;
 import com.bright.apollo.request.SceneConditionDTO;
 import com.bright.apollo.request.SceneDTO;
 import com.bright.apollo.response.AliDevInfo;
 import com.bright.apollo.response.DevcieCount;
+import com.bright.apollo.response.IntelligentOpenRecordItemDTO;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.response.SceneInfo;
@@ -2629,6 +2631,175 @@ public class FacadeController {
 		}
 		return false;
 	}
+	/**
+	 * @param serialId
+	 * @return
+	 * @Description:
+	 */
+	@ApiOperation(value = "query_intelligent_fingerHome", httpMethod = "GET", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/getIntelligentFingerHome/{serialId}", method = RequestMethod.GET)
+	public ResponseObject<Map<String, Object>> getIntelligentFingerHome(String serialId) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
+					.getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+ 			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+ 			if(resUser==null||resUser.getData()==null||resUser.getStatus()!=ResponseEnum.SelectSuccess.getStatus()){
+ 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+ 			}
+			ResponseObject<TOboxDeviceConfig> deviceConfigRes = feignDeviceClient.getDevice(serialId);
+			if (deviceConfigRes == null || deviceConfigRes.getData() == null
+					|| !deviceConfigRes.getData().getDeviceType().equals(DeviceTypeEnum.doorlock.getValue())
+					|| !deviceConfigRes.getData().getDeviceChildType().equals(DeviceTypeEnum.capacity_finger.getValue())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}  
+			TOboxDeviceConfig deviceConfig = deviceConfigRes.getData();
+			ResponseObject<TObox> oboxRes = feignOboxClient.getOboxByUserAndoboxSerialId(resUser.getData().getId(), deviceConfig.getOboxSerialId());
+			if(oboxRes==null||oboxRes.getData()==null||oboxRes.getStatus()!=ResponseEnum.SelectSuccess.getStatus()){
+ 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+ 			}
+			ResponseObject<Integer> countRes = feignDeviceClient.countFingerAuth(serialId);
+			if(countRes==null||countRes.getStatus()!=ResponseEnum.SelectSuccess
+					.getStatus()){
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			Map<String, Object>map=new HashMap<String, Object>();
+			map.put("isAuth", countRes.getData()==null?0:countRes.getData().intValue());//0不存在，大于0存在
+			map.put("onLine", (new Date().getTime()-deviceConfig.getLastOpTime().getTime())/((60*60*1000))>24?false:true);
+			String state = "00";
+			//上锁 、虚掩、开锁
+			if(deviceConfig.getDeviceState().length()>=6)
+				state = deviceConfig.getDeviceState().substring(2, 4);
+			if(state.equals("c6")){
+				String type = deviceConfig.getDeviceState().substring(4,6);
+				if(Integer.parseInt(type, 16)==5)
+					map.put("type", 5);
+				else if(Integer.parseInt(type, 16)==7)
+					map.put("type", 7);
+				else if(Integer.parseInt(type, 16)==8)
+					map.put("type", 8);
+			}else{
+				map.put("type", 5);
+			}
+			//电量
+			String byteToBit = ByteHelper.byteToBit(ByteHelper.hexStringToBytes(deviceConfig.getDeviceState().substring(0,2))[0]);
+			map.put("betty", byteToBit.substring(7, 8).equals("1")?Integer.valueOf(byteToBit.substring(0, 7)+"0",2).intValue():Integer.valueOf(byteToBit, 2).intValue());
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+			res.setData(map);
+		} catch (Exception e) {
+			logger.error("===error msg:"+e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	/**  
+	 * @param serialId
+	 * @return  
+	 * @Description:  
+	 */
+	@ApiOperation(value = "query_intelligent_openRecord", httpMethod = "GET", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/getIntelligentFingerOpenRecord/{serialId}", method = RequestMethod.GET)
+	public ResponseObject<List<IntelligentOpenRecordItemDTO>> getIntelligentFingerOpenRecord(String serialId) {
+		ResponseObject<List<IntelligentOpenRecordItemDTO>> res = new ResponseObject<List<IntelligentOpenRecordItemDTO>>();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
+					.getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+ 			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+ 			if(resUser==null||resUser.getData()==null||resUser.getStatus()!=ResponseEnum.SelectSuccess.getStatus()){
+ 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+ 			}
+			ResponseObject<TOboxDeviceConfig> deviceConfigRes = feignDeviceClient.getDevice(serialId);
+			if (deviceConfigRes == null || deviceConfigRes.getData() == null
+					|| !deviceConfigRes.getData().getDeviceType().equals(DeviceTypeEnum.doorlock.getValue())
+					|| !deviceConfigRes.getData().getDeviceChildType().equals(DeviceTypeEnum.capacity_finger.getValue())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}  
+			TOboxDeviceConfig deviceConfig = deviceConfigRes.getData();
+			ResponseObject<TObox> oboxRes = feignOboxClient.getOboxByUserAndoboxSerialId(resUser.getData().getId(), deviceConfig.getOboxSerialId());
+			if(oboxRes==null||oboxRes.getData()==null||oboxRes.getStatus()!=ResponseEnum.SelectSuccess.getStatus()){
+ 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+ 			}
+			//add timeStamp
+			ResponseObject<List<IntelligentOpenRecordDTO>>openRes = feignDeviceClient
+					.queryIntelligentOpenRecordByDate(serialId, DateHelper.formatDate(new Date().getTime(), DateHelper.FORMATALL),
+							DateHelper.formatDate(DateHelper.getMonthEnd(), DateHelper.FORMATALL));
+			long startTime=DateHelper.endOfTodDay();
+			List<IntelligentOpenRecordItemDTO>items=init(startTime);
+			if(openRes!=null&&openRes.getData()!=null&&openRes.getData().size()>0){
+				for(IntelligentOpenRecordDTO dto:openRes.getData()){
+					handlerDTO(dto,items,startTime);
+				}
+			}
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+			res.setData(items);
+		} catch (Exception e) {
+			logger.error("===error msg:"+e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	/**  
+	 * @param dto
+	 * @param items
+	 * @param startTime  
+	 * @Description:  
+	 */
+	private void handlerDTO(IntelligentOpenRecordDTO dto, List<IntelligentOpenRecordItemDTO> items, long startTime) {
+ 
+		if(dto.getTimeStamp()<=startTime){
+			int temp=(int) ((startTime-dto.getTimeStamp())/(24*60*60*1000));
+			if(temp<=30){
+				dto.setOpenTime(DateHelper.formatDate(dto.getTimeStamp(), DateHelper.FORMATHOUR));
+				items.get(temp).getList().add(dto);
+			}
+		}
+	}
+
+	/**  
+	 * @param startTime
+	 * @return  
+	 * @Description:  
+	 */
+	private List<IntelligentOpenRecordItemDTO> init(long startTime) {
+		List<IntelligentOpenRecordItemDTO>items=new ArrayList<IntelligentOpenRecordItemDTO>();
+		for(long i=0;i<30;i++){
+			IntelligentOpenRecordItemDTO item=new IntelligentOpenRecordItemDTO();
+			item.setDateline(DateHelper.formatDate(startTime-i*24*60*60*1000, DateHelper.FORMAT));
+			item.setList(new ArrayList<IntelligentOpenRecordDTO>());
+			items.add(item);
+		}
+		return items;
+	}
 
 	private String extractPathFromPattern(final HttpServletRequest request) {
 		String path = (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
@@ -2642,4 +2813,6 @@ public class FacadeController {
 
 		return ctime;
 	}
+
+	
 }

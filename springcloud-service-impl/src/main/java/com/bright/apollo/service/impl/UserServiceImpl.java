@@ -8,11 +8,8 @@ import org.springframework.stereotype.Service;
 //import com.bright.apollo.business.UserBusiness;
 import com.bright.apollo.common.entity.TUser;
 import com.bright.apollo.common.entity.TUserDevice;
-import com.bright.apollo.common.entity.TUserExample;
 import com.bright.apollo.common.entity.TUserObox;
-import com.bright.apollo.common.entity.TUserOboxExample;
 import com.bright.apollo.common.entity.TUserScene;
-import com.bright.apollo.common.entity.TUserSceneExample;
 //import org.springframework.beans.factory.annotation.Autowired;
 import com.bright.apollo.dao.user.mapper.TUserDeviceMapper;
 import com.bright.apollo.dao.user.mapper.TUserMapper;
@@ -52,45 +49,7 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private TUserSceneMapper tUserSceneMapper;
 	
-	@Override
-	@Deprecated
-	public <T, E> T handlerExample(E e) {
-		List<T> selectByExample = handlerExampleToList(e);
-		if (selectByExample != null && selectByExample.size() > 0)
-			return selectByExample.get(0);
-		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.bright.apollo.service.base.BasicService#handlerExampleToList(com.
-	 * bright.apollo.business.base.BasicBusiness, java.lang.Object)
-	 */
-	@SuppressWarnings({ "unchecked" })
-	@Override
-	@Deprecated
-	public <T, E> List<T> handlerExampleToList(E e) {
-//		return userBusiness.selectByExample(e);
-		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.bright.apollo.service.base.BasicService#queryTById(java.lang.Object)
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	@Deprecated
-	public <T> T queryTById(T t) {
-//		if (t != null)
-//			return (T) userBusiness.selectByPrimaryKey(t);
-		return null;
-	}
-
+	 
 	@Override
 	public TUser queryUserByName(String name) {
 		return	userMapper.getUserByUserName(name);
@@ -138,22 +97,7 @@ public class UserServiceImpl implements UserService {
 		return 0;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.bright.apollo.service.UserService#deleteUserById(com.bright.apollo.
-	 * common.entity.TUser)
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	@Deprecated
-	public int deleteUserById(Integer userId) {
-		TUserExample example = new TUserExample();
-		example.or().andIdEqualTo(userId);
-//		return userBusiness.deleteByExample(example);
-		return 0;
-	}
+ 
 
 	/* (non-Javadoc)  
 	 * @see com.bright.apollo.service.UserService#getListOfUserObox(java.lang.Integer, java.lang.Integer)  
@@ -249,19 +193,7 @@ public class UserServiceImpl implements UserService {
 		return 0;
 	}
 
-	/* (non-Javadoc)  
-	 * @see com.bright.apollo.service.UserService#queryUserOboxByUserId(java.lang.Integer)  
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	@Deprecated
-	public List<TUserObox> queryUserOboxByUserId(Integer id) {
-		TUserOboxExample example=new TUserOboxExample();
-		example.or().andUserIdEqualTo(id);
-		example.setOrderByClause("order by last_op_time desc");
-//		return userBusiness.selectByExample(example);
-		return null;
-	}
+	 
 
 	/* (non-Javadoc)  
 	 * @see com.bright.apollo.service.UserService#queryUserDeviceByUserId(java.lang.Integer)  
@@ -274,19 +206,7 @@ public class UserServiceImpl implements UserService {
 		return null;
 	}
 
-	/* (non-Javadoc)  
-	 * @see com.bright.apollo.service.UserService#queryUserSceneByUserId(java.lang.Integer)  
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	@Deprecated
-	public List<TUserScene> queryUserSceneByUserId(Integer id) {
-		TUserSceneExample example=new TUserSceneExample();
-		example.or().andUserIdEqualTo(id);
-		example.setOrderByClause("order by last_op_time desc");
-//		return userBusiness.selectByExample(example);
-		return null;
-	}
+ 
 
 	@Override
 	public TUser getUserByUserId(int id) {
@@ -343,6 +263,33 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<TUserDevice> getListOfUserDeviceByUserId(Integer userId) {
 		return userDeviceMapper.getListOfUserDeviceByUserId(userId);
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.UserService#deleteUserById(java.lang.Integer)  
+	 */
+	@Override
+	public int deleteUserById(Integer userId) {
+		// TODO Auto-generated method stub  
+		return 0;
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.UserService#queryUserOboxByUserId(java.lang.Integer)  
+	 */
+	@Override
+	public List<TUserObox> queryUserOboxByUserId(Integer id) {
+		// TODO Auto-generated method stub  
+		return null;
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.UserService#queryUserSceneByUserId(java.lang.Integer)  
+	 */
+	@Override
+	public List<TUserScene> queryUserSceneByUserId(Integer id) {
+		// TODO Auto-generated method stub  
+		return null;
 	}
 
 

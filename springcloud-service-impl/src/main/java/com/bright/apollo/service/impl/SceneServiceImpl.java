@@ -8,9 +8,7 @@ import org.springframework.stereotype.Service;
 //import com.bright.apollo.business.SceneBusiness;
 import com.bright.apollo.common.entity.TScene;
 import com.bright.apollo.common.entity.TSceneAction;
-import com.bright.apollo.common.entity.TSceneActionExample;
 import com.bright.apollo.common.entity.TSceneCondition;
-import com.bright.apollo.common.entity.TSceneConditionExample;
 import com.bright.apollo.dao.scene.mapper.TSceneActionMapper;
 import com.bright.apollo.dao.scene.mapper.TSceneConditionMapper;
 import com.bright.apollo.dao.scene.mapper.TSceneMapper;
@@ -174,8 +172,7 @@ public class SceneServiceImpl implements SceneService {
 	@Override
 	@Deprecated
 	public List<TSceneAction> queryActionsBySceneNumber(Integer sceneNumber) {
-		TSceneActionExample example = new TSceneActionExample();
-		example.or().andSceneNumberEqualTo(sceneNumber);
+	 
 		// return sceneBusiness.selectByExample(example);
 		return null;
 	}
@@ -191,8 +188,7 @@ public class SceneServiceImpl implements SceneService {
 	@Override
 	@Deprecated
 	public List<TSceneCondition> queryConditionsBySceneNumber(Integer sceneNumber) {
-		TSceneConditionExample example = new TSceneConditionExample();
-		example.or().andSceneNumberEqualTo(sceneNumber);
+ 
 		// return sceneBusiness.selectByExample(example);
 		return null;
 	}

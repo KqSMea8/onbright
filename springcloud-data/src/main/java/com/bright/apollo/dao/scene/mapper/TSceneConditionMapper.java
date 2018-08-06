@@ -13,12 +13,10 @@ import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
 
 import com.bright.apollo.common.entity.TSceneCondition;
-import com.bright.apollo.common.entity.TSceneConditionExample;
-import com.bright.apollo.dao.mapper.base.BaseMapper;
 
 @Mapper
 @Component
-public interface TSceneConditionMapper extends BaseMapper<TSceneCondition, TSceneConditionExample, Integer> {
+public interface TSceneConditionMapper{
 
 	/**
 	 * @param list

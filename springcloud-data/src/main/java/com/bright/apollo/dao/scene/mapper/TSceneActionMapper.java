@@ -14,12 +14,10 @@ import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Component;
 
 import com.bright.apollo.common.entity.TSceneAction;
-import com.bright.apollo.common.entity.TSceneActionExample;
-import com.bright.apollo.dao.mapper.base.BaseMapper;
 
 @Mapper
 @Component
-public interface TSceneActionMapper extends BaseMapper<TSceneAction, TSceneActionExample, Integer> {
+public interface TSceneActionMapper  {
 
 	/**  
 	 * @param list  

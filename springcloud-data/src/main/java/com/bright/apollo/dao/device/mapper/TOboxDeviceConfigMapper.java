@@ -15,14 +15,12 @@ import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Component;
 
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
-import com.bright.apollo.common.entity.TOboxDeviceConfigExample;
 import com.bright.apollo.dao.device.sqlProvider.OboxDeviceConfigSqlProvider;
-import com.bright.apollo.dao.mapper.base.BaseMapper;
  
 
 @Mapper
 @Component
-public interface TOboxDeviceConfigMapper extends BaseMapper<TOboxDeviceConfig, TOboxDeviceConfigExample, Integer> {
+public interface TOboxDeviceConfigMapper   {
 
 	/**
 	 * @param device

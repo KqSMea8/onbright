@@ -5,8 +5,6 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
-import com.bright.apollo.common.entity.TOboxDeviceConfigExample;
-import com.bright.apollo.common.entity.TYSCamera;
 import com.bright.apollo.service.DeviceService;
 
 /**
@@ -74,9 +72,7 @@ public class DeviceServiceImpl implements DeviceService {
 	@Override
 	@Deprecated
 	public TOboxDeviceConfig queryDeviceBySerialId(String serialId) {
-		TOboxDeviceConfigExample example=new TOboxDeviceConfigExample();
-		example.or().andDeviceSerialIdEqualTo(serialId);
-		return handlerExample(example);
+  		return null;
 	}
 
 	/* (non-Javadoc)  
@@ -108,9 +104,7 @@ public class DeviceServiceImpl implements DeviceService {
 	@Override
 	@Deprecated
 	public void deleteDeviceBySerialId(String serialId) {
-		TOboxDeviceConfigExample example=new TOboxDeviceConfigExample();
-		example.or().andDeviceSerialIdEqualTo(serialId);
-//		deviceBusiness.deleteByExample(example);
+ //		deviceBusiness.deleteByExample(example);
 	}
 
 	/* (non-Javadoc)  

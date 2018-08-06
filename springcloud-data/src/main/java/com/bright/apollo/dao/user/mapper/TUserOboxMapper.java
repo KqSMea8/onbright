@@ -1,16 +1,21 @@
 package com.bright.apollo.dao.user.mapper;
 
-import com.bright.apollo.common.entity.TUserObox;
-import com.bright.apollo.common.entity.TUserOboxExample;
-import com.bright.apollo.dao.mapper.base.BaseMapper;
-import org.apache.ibatis.annotations.*;
+import java.util.List;
+
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import com.bright.apollo.common.entity.TUserObox;
 
 @Mapper
 @Component
-public interface TUserOboxMapper extends BaseMapper<TUserObox, TUserOboxExample, Integer> {
+public interface TUserOboxMapper {
 
 	/**  
 	 * @param wxUserId

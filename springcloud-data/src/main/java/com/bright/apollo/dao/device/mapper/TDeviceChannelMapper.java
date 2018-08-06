@@ -10,12 +10,10 @@ import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Component;
 
 import com.bright.apollo.common.entity.TDeviceChannel;
-import com.bright.apollo.common.entity.TDeviceChannelExample;
-import com.bright.apollo.dao.mapper.base.BaseMapper;
 
 @Mapper
 @Component
-public interface TDeviceChannelMapper extends BaseMapper<TDeviceChannel, TDeviceChannelExample, Integer> {
+public interface TDeviceChannelMapper   {
 
     @Delete("delete from t_device_channel where device_id = #{deviceId}")
     void deleteDeviceChannel(@Param("deviceId") int deviceId);

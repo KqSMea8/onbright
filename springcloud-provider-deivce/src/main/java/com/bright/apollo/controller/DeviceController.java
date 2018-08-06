@@ -18,6 +18,7 @@ import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.service.CameraService;
 import com.bright.apollo.service.DeviceService;
+import com.bright.apollo.service.IntelligentFingerService;
 import com.bright.apollo.service.NvrService;
 import com.bright.apollo.service.OboxDeviceConfigService;
 
@@ -46,6 +47,7 @@ public class DeviceController {
 	@Autowired
 	private NvrService nvrService;
 
+	
 	// find deivce by serial_id
 	@RequestMapping(value = "/{serialId}", method = RequestMethod.GET)
 	public ResponseObject<TOboxDeviceConfig> getDevice(
@@ -352,4 +354,5 @@ public class DeviceController {
 		}
 		return res;
 	}
+	
 }

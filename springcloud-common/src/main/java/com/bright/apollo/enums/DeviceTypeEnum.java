@@ -74,7 +74,9 @@ public enum DeviceTypeEnum {
     //门锁
     doorlock("15") ,
     //门锁子类
-    doorlock_child("02")
+    doorlock_child("02"),
+    
+    capacity_finger("03")
     ;
 
     private String value;

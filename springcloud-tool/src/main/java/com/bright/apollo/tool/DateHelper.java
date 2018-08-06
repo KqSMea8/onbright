@@ -11,9 +11,12 @@ import java.util.Date;
  */
 public class DateHelper {
 	public final static String FORMATALL="yyyy-MM-dd HH:mm:ss";
+	public final static String FORMATHOUR="HH:mm:ss";
 	public final static String FORMAT="yyyy-MM-dd";
 	public final static String FORMATMONTH="yyyy_MM";
 	public final static String FORMATNOSIGN="yyyyMMdd";
+	public final static String FORMATNWITHPOINT="yyyy.MM.dd";
+	public final static String FORMATNALLWITHPOINT="yyyy,MM,dd,HH,mm";
 	public static long startOfTodDay() {
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -68,6 +71,15 @@ public class DateHelper {
 		Date date=calendar.getTime();
 		return date.getTime()-24*60*60*1000 ;
 	}
+	public static long getMonthEnd() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.HOUR_OF_DAY, 23);
+		calendar.set(Calendar.MINUTE, 59);
+		calendar.set(Calendar.SECOND, 59);
+		calendar.set(Calendar.MILLISECOND, 0);
+		Date date=calendar.getTime();
+		return date.getTime()-30*24*60*60*1000l ;
+	}
 	public static long getTomorrow() {
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(Calendar.HOUR_OF_DAY, 23);
@@ -82,6 +94,6 @@ public class DateHelper {
 		return dateFormater.format(new Date(time));
 	}
 	public static void main(String[] args) {
-		System.out.println(formatDate(getWeekdayStart(),FORMATALL ));
+		System.out.println((new Date().getTime()-getTomorrow())/(60*60*1000));
 	}
 }

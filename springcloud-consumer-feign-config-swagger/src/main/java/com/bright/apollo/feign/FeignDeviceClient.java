@@ -12,6 +12,7 @@ import com.bright.apollo.common.entity.TNvr;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.common.entity.TYSCamera;
 import com.bright.apollo.hrstrix.HystrixFeignDeviceFallback;
+import com.bright.apollo.request.IntelligentOpenRecordDTO;
 import com.bright.apollo.response.ResponseObject;
 
 /**
@@ -149,5 +150,25 @@ public interface FeignDeviceClient {
 	@RequestMapping(value = "/device/getDeviceByUserAndSerialId/{userId}/{serialID}", method = RequestMethod.GET)
 	ResponseObject<TOboxDeviceConfig> getDeviceByUserAndSerialId(@PathVariable(value = "userId") Integer userId,
 			@PathVariable(value = "serialID") String serialID);
+
+	/**
+	 * @param serialId
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/intelligentFinger/countFingerAuth/{serialId}", method = RequestMethod.GET)
+	ResponseObject<Integer> countFingerAuth(@PathVariable(value = "serialId") String serialId);
+
+	/**
+	 * @param serialId
+	 * @param end
+	 * @param start
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/intelligentFinger/queryIntelligentOpenRecordByDate/{serialId}/{end}/{start}", method = RequestMethod.GET)
+	ResponseObject<List<IntelligentOpenRecordDTO>> queryIntelligentOpenRecordByDate(
+			@PathVariable(value = "serialId") String serialId, @PathVariable(value = "end") String end,
+			@PathVariable(value = "start") String start);
 
 }

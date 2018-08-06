@@ -15,7 +15,7 @@ import com.bright.apollo.service.base.BasicService;
  *@Since:2018年3月8日  
  *@Version:1.1.0  
  */
-public interface UserService extends BasicService{
+public interface UserService {
 
 	/**  
 	 * @param name
