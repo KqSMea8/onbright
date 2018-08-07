@@ -56,7 +56,7 @@ public class RedisBussines {
 
    
     public void setValueWithExpire(String key, Object value, long time){
-        redisTemplate.opsForValue().set(key, value.toString());
+    	redisTemplate.opsForValue().set(key, value.toString());
         if(time > 0){
             redisTemplate.expire(key, time, TimeUnit.SECONDS);
         }

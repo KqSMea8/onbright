@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TIntelligentFingerRemoteUser implements Serializable{
     /**  
@@ -27,6 +28,7 @@ public class TIntelligentFingerRemoteUser implements Serializable{
      *
      * @mbg.generated Mon Aug 06 10:56:24 CST 2018
      */
+    @JsonProperty(value="userSerialId")
     private Integer userSerialid;
 
     /**
@@ -45,6 +47,7 @@ public class TIntelligentFingerRemoteUser implements Serializable{
      *
      * @mbg.generated Mon Aug 06 10:56:24 CST 2018
      */
+    @JsonProperty(value="serialId")
     private String serialid;
 
     /**
@@ -108,6 +111,7 @@ public class TIntelligentFingerRemoteUser implements Serializable{
      *
      * @mbg.generated Mon Aug 06 10:56:24 CST 2018
      */
+    @JsonProperty(value="isEnd")
     private Integer isend;
 
     /**
@@ -117,6 +121,7 @@ public class TIntelligentFingerRemoteUser implements Serializable{
      *
      * @mbg.generated Mon Aug 06 10:56:24 CST 2018
      */
+    @JsonProperty(value="isMax")
     private Integer ismax;
 
     /**

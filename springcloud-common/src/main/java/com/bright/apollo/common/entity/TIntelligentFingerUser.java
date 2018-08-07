@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TIntelligentFingerUser implements Serializable{
     /**  
@@ -54,6 +55,7 @@ public class TIntelligentFingerUser implements Serializable{
      *
      * @mbg.generated Mon Aug 06 10:56:24 CST 2018
      */
+    @JsonProperty(value="exist")
     private Integer existForce;
 
     /**

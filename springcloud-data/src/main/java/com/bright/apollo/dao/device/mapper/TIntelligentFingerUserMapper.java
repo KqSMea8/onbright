@@ -1,0 +1,69 @@
+package com.bright.apollo.dao.device.mapper;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
+import org.springframework.stereotype.Component;
+
+import com.bright.apollo.common.entity.TIntelligentFingerUser;
+import com.bright.apollo.request.IntelligentUserDTO;
+
+/**  
+ *@Title:  
+ *@Description:  
+ *@Author:JettyLiu
+ *@Since:2018年8月7日  
+ *@Version:1.1.0  
+ */
+@Mapper
+@Component
+public interface TIntelligentFingerUserMapper {
+
+	/**  
+	 * @param serialId
+	 * @return  
+	 * @Description:  
+	 */
+	@Select("select count(*) from t_intelligent_finger_user where serialId=#{serialId}")
+	Integer queryCountIntelligentUserBySerialId(@Param("serialId")String serialId);
+
+	/**  
+	 * @param serialId
+	 * @return  
+	 * @Description:  
+	 */
+	@Select("SELECT nick_name,identity,mobile,pin,exist_force from t_intelligent_finger_user  where serialId=#{serialId} order by last_op_time desc ")
+	List<TIntelligentFingerUser> queryIntelligentUserBySerialId(@Param("serialId")String serialId);
+
+	/**  
+	 * @param serialId
+	 * @param pin
+	 * @return  
+	 * @Description:  
+	 */
+	@Select("select * from t_intelligent_finger_user where serialId=#{serialId} and pin=#{pin}")
+	@Results(value = { @Result(property = "id", column = "id"),
+			@Result(property = "serialid", column = "serialId"),
+			@Result(property = "lastOpTime", column = "last_op_time"),
+			@Result(property = "mobile", column = "mobile"),
+			@Result(property = "existForce", column = "exist_force"),
+			@Result(property = "pin", column = "pin"),
+			@Result(property = "identity", column = "identity"),
+			@Result(property = "deviceSerialId", column = "device_serial_id") })
+	TIntelligentFingerUser queryIntelligentFingerUserBySerialIdAndPin(@Param("serialId")String serialId,@Param("pin") String pin);
+
+	/**  
+	 * @param fingerUser  
+	 * @Description:  
+	 */
+	@Update("update t_intelligent_finger_user set mobile= #{mobile}" + ",nick_name= #{nickName }"
+			+ ",exist_force= #{existForce}" + ",identity= #{identity}"
+			+ " where  id = #{id}")
+	void updatentelligentFingerUser(TIntelligentFingerUser fingerUser);
+
+}

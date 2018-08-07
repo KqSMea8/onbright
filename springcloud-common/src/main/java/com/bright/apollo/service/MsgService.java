@@ -28,5 +28,12 @@ public interface MsgService {
 
 	String sendCode(int code, String phone);
 
+	/**  
+	 * @param mobile
+	 * @param validateCode  
+	 * @Description:  
+	 */
+	String sendCode(String mobile, String validateCode);
+
 	 
 }

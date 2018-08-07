@@ -6,10 +6,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import com.bright.apollo.common.entity.TIntelligentFingerAuth;
+import com.bright.apollo.common.entity.TIntelligentFingerRemoteUser;
+import com.bright.apollo.common.entity.TIntelligentFingerUser;
 import com.bright.apollo.common.entity.TNvr;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.common.entity.TYSCamera;
 import com.bright.apollo.feign.FeignDeviceClient;
+import com.bright.apollo.request.IntelligentFingerWarnDTO;
+import com.bright.apollo.request.IntelligentOpenRecordDTO;
 import com.bright.apollo.response.ResponseObject;
 
 /**
@@ -148,6 +153,7 @@ public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implem
 	/* (non-Javadoc)  
 	 * @see com.bright.apollo.feign.FeignDeviceClient#getDeviceTypeByUser(java.lang.Integer)  
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public ResponseObject<List<TOboxDeviceConfig>> getDeviceTypeByUser(Integer userId) {
 		logger.warn("===device server is break===");
@@ -157,6 +163,7 @@ public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implem
 	/* (non-Javadoc)  
 	 * @see com.bright.apollo.feign.FeignDeviceClient#getDevciesByUserIdAndType(java.lang.Integer, java.lang.String)  
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public ResponseObject<List<TOboxDeviceConfig>> getDevciesByUserIdAndType(Integer userId, String deviceType) {
 		logger.warn("===device server is break===");
@@ -179,6 +186,120 @@ public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implem
 	@SuppressWarnings("unchecked")
 	@Override
 	public ResponseObject<TOboxDeviceConfig> getDeviceByUserAndSerialId(Integer userId, String serialID) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#countFingerAuth(java.lang.String)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<Integer> countFingerAuth(String serialId) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#queryIntelligentOpenRecordByDate(java.lang.String, java.lang.String, java.lang.String)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<List<IntelligentOpenRecordDTO>> queryIntelligentOpenRecordByDate(String serialId, String end,
+			String start) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#getCountIntelligentWarnBySerialId(java.lang.String)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<Integer> getCountIntelligentWarnBySerialId(String serialId) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#getIntelligentWarnByDate(java.lang.String, java.lang.String, java.lang.String)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<List<IntelligentFingerWarnDTO>> getIntelligentWarnByDate(String serialId, String end,
+			String start) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#getCountIntelligentUserBySerialId(java.lang.String)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<Integer> getCountIntelligentUserBySerialId(String serialId) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#getIntelligentUserBySerialId(java.lang.String)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<List<TIntelligentFingerUser>> getIntelligentUserBySerialId(String serialId) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#getIntelligentFingerUserBySerialIdAndPin(java.lang.String, java.lang.String)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<TIntelligentFingerUser> getIntelligentFingerUserBySerialIdAndPin(String serialId,
+			String pin) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#updatentelligentFingerUser(com.bright.apollo.common.entity.TIntelligentFingerUser)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject updatentelligentFingerUser(TIntelligentFingerUser fingerUser) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#getIntelligentAuthBySerialId(java.lang.String)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<TIntelligentFingerAuth> getIntelligentAuthBySerialId(String serialId) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#addIntelligentFingerAuth(com.bright.apollo.common.entity.TIntelligentFingerAuth)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject addIntelligentFingerAuth(TIntelligentFingerAuth auth) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#getIntelligentFingerRemoteUsersBySerialId(java.lang.String)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<List<TIntelligentFingerRemoteUser>> getIntelligentFingerRemoteUsersBySerialId(
+			String serialId) {
 		logger.warn("===device server is break===");
 		return serverError();
 	}

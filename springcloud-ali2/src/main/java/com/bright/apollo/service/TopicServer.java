@@ -127,7 +127,7 @@ public class TopicServer {
 	@Async
 	public void pubTopic(CMDEnum cmd, byte[] data, String deviceSerial) throws Exception {
 		logger.info(" ====== pubTopic start ====== ");
-		String mString = com.bright.apollo.tool.StringUtils.bytes2String(cmd, data, packageLength, head);
+		String mString = com.bright.apollo.util.StringUtils.bytes2String(cmd, data, packageLength, head);
 		// String mString = "";
 		PubRequest request = new PubRequest();
 		String productKey = AliDevCache.getProductKey(deviceSerial);
@@ -171,7 +171,7 @@ public class TopicServer {
 	public void pubTopic(CMDEnum cmd, byte[] data, String productKey, String deviceName, AliRegionEnum eAliRegionEnum)
 			throws Exception {
 		logger.info(" ====== pubTopic start ====== ");
-		String mString = com.bright.apollo.tool.StringUtils.bytes2String(cmd, data, packageLength, head);
+		String mString = com.bright.apollo.util.StringUtils.bytes2String(cmd, data, packageLength, head);
 		logger.info(" pub mStr: " + mString);
 		PubRequest request = new PubRequest();
 		request.setProductKey(productKey);
@@ -238,7 +238,7 @@ public class TopicServer {
 	@Async
 	public Future<OboxResp> request(CMDEnum cmd, byte[] data, String deviceSerial) throws Exception {
 		logger.info(" ====== request start ====== ");
-		String mString = com.bright.apollo.tool.StringUtils.bytes2String(cmd, data, packageLength, head);
+		String mString = com.bright.apollo.util.StringUtils.bytes2String(cmd, data, packageLength, head);
 		logger.info(" request mStr: " + mString);
 		RRpcRequest rrpcRequest = new RRpcRequest();
 		// 设备所属产品的Key
