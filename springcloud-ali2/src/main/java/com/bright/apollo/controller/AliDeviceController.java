@@ -5,8 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-//import com.bright.apollo.mqtt.MqttGateWay;
+import com.bright.apollo.service.TopicServer;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,9 +42,9 @@ public class AliDeviceController {
 	private AliService aliService;
 	@Autowired
 	private CMDMessageService cMDMessageService;
+	@Autowired
+	private TopicServer topServer;
 
-//	@Autowired
-//	private MqttGateWay mqttGateWay;
 
 	@RequestMapping(value = "/registAliDev/{type}", method = RequestMethod.GET)
 	public ResponseObject<AliDevInfo> registAliDev(@PathVariable(required = true, value = "type") String type,
@@ -220,10 +222,43 @@ public class AliDeviceController {
 		return res;
 	}
 
-//	@RequestMapping(value = "/testMqtt", method = RequestMethod.GET)
-//	public String testMqtt(){
-//		mqttGateWay.sendToMqtt("topic1","test mqtt");
-//		return "";
-//	}
+	@RequestMapping(value = "/sendlearn", method = RequestMethod.POST)
+	ResponseObject<List<Map<String, String>>> sendLearn2IR(@RequestBody(required = true)  Object object) {
+		ResponseObject<List<Map<String, String>>> res = new ResponseObject<List<Map<String, String>>>();
+		Map<String,Object> requestMap = (Map<String, Object>) object;
+		try {
+			topServer.pubIRTopic(null,null,(String)requestMap.get("deviceId"),requestMap.toString());
+			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+		} catch (Exception e) {
+			e.printStackTrace();
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+
+	//进入学习
+	@RequestMapping(value = "/learncode", method = RequestMethod.POST)
+	ResponseObject<List<Map<String, String>>> learnCode(@RequestBody(required = true)  Object object) {
+		ResponseObject<List<Map<String, String>>> res = new ResponseObject<List<Map<String, String>>>();
+		Map<String,Object> requestMap = (Map<String, Object>) object;
+		try {
+			String brandId = (String)requestMap.get("brandId");//品牌ID
+			String deviceId = (String)requestMap.get("deviceId");//设备ID
+			aliDevCache.setKey("ir_"+deviceId,brandId,30000);
+			topServer.pubIRTopic(null,null,deviceId,requestMap.toString());
+			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+		} catch (Exception e) {
+			e.printStackTrace();
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+
 
 }

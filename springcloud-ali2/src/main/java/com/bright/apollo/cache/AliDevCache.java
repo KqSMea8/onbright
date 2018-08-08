@@ -83,6 +83,14 @@ public class AliDevCache {
 		return redisBussines.get(oboxInfoKey(productKey, deviceName));
 	}
 
+	public void setKey(String key,String value,long time){
+		redisBussines.setValueWithExpire(key,value,time);
+	}
+
+	public String getValue(String key){
+		return redisBussines.get(key);
+	}
+
 
 	private static String aliDevAvailableKey(String productKey, String deviceName) {
 		return "available_" + productKey + "_" + deviceName;

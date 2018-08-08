@@ -1,15 +1,14 @@
 package com.bright.apollo.socket;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.aliyun.mns.client.CloudAccount;
 import com.aliyun.mns.client.CloudQueue;
 import com.aliyun.mns.client.MNSClient;
 import com.aliyun.mns.model.Message;
 import com.bright.apollo.enums.ALIDevTypeEnum;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * @Title:
@@ -19,18 +18,18 @@ import com.bright.apollo.enums.ALIDevTypeEnum;
  * @Version:1.1.0
  */
 @Component
-public class MNSHandler {
-	private static final Logger logger = LoggerFactory.getLogger(MNSHandler.class);
+public class WIFIHandler {
+	private static final Logger logger = LoggerFactory.getLogger(WIFIHandler.class);
 	private static final String accessKeyId = "LTAIBE0b86xFi9q5";// LTAImm6aizjagsfp
 	private static final String accessKeySecret = "Ym9F1CNAgwhbxt5Sk1Qki1nr6w6e3v";// zNdZ9RuwSU7RG2Lkoon9i2hbVx3gsm
-	private static final String endPoint = "http://1563722132092243.mns.cn-shanghai.aliyuncs.com/";// http(s)://1563722132092243.mns.cn-hangzhou.aliyuncs.com/
-	private static final String queueStr = "aliyun-iot-" + ALIDevTypeEnum.OBOX.getSouthChinaName();
+	private static final String endPoint = "http://1563722132092243.mns.cn-hangzhou.aliyuncs.com/";// http(s)://1563722132092243.mns.cn-hangzhou.aliyuncs.com/
+	private static final String queueStr = "aliyun-iot-" + ALIDevTypeEnum.DEVICE.getSouthChinaName();
 	private static CloudQueue queue;
 
 	@Autowired
 	private AliMessageHandler aliMessageHandler;
 
-	public MNSHandler() {
+	public WIFIHandler() {
 		CloudAccount account = new CloudAccount(accessKeyId, accessKeySecret, endPoint);
 		MNSClient client = account.getMNSClient();
 		queue = client.getQueueRef(queueStr);
@@ -41,7 +40,7 @@ public class MNSHandler {
 	 * @Description:
 	 */
 	public void handler() {
-		logger.info("====== MNSHandler handler ======");
+		logger.info("====== WIFIHandler handler ======");
 		while (true) {
 			try {
 				Message popMessage = queue.popMessage(5);

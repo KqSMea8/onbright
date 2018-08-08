@@ -4,7 +4,9 @@ import com.bright.apollo.common.entity.TAliDeviceConfig;
 import com.bright.apollo.dao.device.mapper.AliDeviceConfigMapper;
 import com.bright.apollo.service.AliDeviceConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class AliDeviceConfigServiceImpl implements AliDeviceConfigService {
 
     @Autowired

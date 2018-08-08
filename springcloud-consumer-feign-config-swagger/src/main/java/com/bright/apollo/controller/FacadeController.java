@@ -3546,6 +3546,37 @@ public class FacadeController {
 		return ctime;
 	}
 
+
+//	@ApiOperation(value = "sendLearn2IR", httpMethod = "POST", produces = "application/json")
+//	@ApiResponse(code = 200, message = "SelectSuccess", response = ResponseObject.class)
+	@RequestMapping(value = "/sendlearn", method = RequestMethod.POST)
+	public ResponseObject<List<Map<String, String>>> sendLearn2IR(@RequestBody(required = true) Object object) {
+		ResponseObject<List<Map<String, String>>> res = new ResponseObject<List<Map<String, String>>>();
+		Map<String, Object> requestMap = (Map<String, Object>) object;
+		try {
+			ResponseObject<TObox> oboxRes = feignOboxClient.getObox((String) requestMap.get("deviceId"));
+			if (oboxRes == null || oboxRes.getData() == null) {
+				res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
+				res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
+			} else {
+				ResponseObject<List<Map<String, String>>> resList = feignAliClient
+						.sendLearn2IR(object);
+				if (resList != null && resList.getStatus() == ResponseEnum.UpdateSuccess.getStatus()) {
+					res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+					res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+					res.setData(resList.getData());
+				} else {
+					res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+					res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
 	/**
 	 * @param sceneConditionDTOs
 	 * @param oboxSerialId

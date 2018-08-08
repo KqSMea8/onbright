@@ -270,4 +270,10 @@ public class HystrixFeignAli2Fallback extends BasicHystrixFeignFallback implemen
 		logger.warn("===ali server is break===");
 		return serverError();
 	}
+
+	@Override
+	public ResponseObject<List<Map<String, String>>> sendLearn2IR(Object object) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
 }
