@@ -42,4 +42,12 @@ public interface TIntelligentDFingerRemoteUserMapper {
 			@Result(property = "lastOpTime", column = "last_op_time")})
 	List<TIntelligentFingerRemoteUser> queryIntelligentFingerRemoteUsersBySerialId(@Param("serialId") String serialId);
 
+	/**  
+	 * @param serialId
+	 * @return  
+	 * @Description:  
+	 */
+	@Select("select * from t_intelligent_finger_remote_user a where a.serialId=#{serialId} order by user_serialId desc")
+	List<TIntelligentFingerRemoteUser> queryTIntelligentFingerRemoteUsersBySerialId(@Param("serialId")String serialId);
+
 }

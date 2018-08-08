@@ -2,6 +2,7 @@ package com.bright.apollo.service;
 
 import java.util.List;
 
+import com.bright.apollo.common.entity.TIntelligentFingerAbandonRemoteUser;
 import com.bright.apollo.common.entity.TIntelligentFingerAuth;
 import com.bright.apollo.common.entity.TIntelligentFingerRemoteUser;
 import com.bright.apollo.common.entity.TIntelligentFingerUser;
@@ -96,6 +97,26 @@ public interface IntelligentFingerService {
 	 * @Description:  
 	 */
 	List<TIntelligentFingerRemoteUser> queryIntelligentFingerRemoteUsersBySerialId(String serialId);
+
+	/**  
+	 * @param serialId
+	 * @return  
+	 * @Description:  
+	 */
+	List<TIntelligentFingerAbandonRemoteUser> queryTIntelligentFingerAbandonRemoteUsersBySerialId(String serialId);
+
+	/**  
+	 * @param id  
+	 * @Description:  
+	 */
+	void delIntelligentFingerAbandonRemoteUserById(Integer id);
+
+	/**  
+	 * @param serialId
+	 * @return  
+	 * @Description:  
+	 */
+	List<TIntelligentFingerRemoteUser> queryTIntelligentFingerRemoteUsersBySerialId(String serialId);
 
  
  

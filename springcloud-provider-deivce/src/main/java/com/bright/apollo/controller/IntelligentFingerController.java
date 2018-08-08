@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bright.apollo.common.entity.TIntelligentFingerAbandonRemoteUser;
 import com.bright.apollo.common.entity.TIntelligentFingerAuth;
 import com.bright.apollo.common.entity.TIntelligentFingerRemoteUser;
 import com.bright.apollo.common.entity.TIntelligentFingerUser;
@@ -246,7 +247,64 @@ public class IntelligentFingerController {
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
-	
 	}
-
+	/**  
+	 * @param serialId
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/getIntelligentFingerRemoteUsersBySerialId/{serialId}", method = RequestMethod.GET)
+	ResponseObject<List<TIntelligentFingerAbandonRemoteUser>> getTIntelligentFingerAbandonRemoteUsersBySerialId(
+			@PathVariable(value = "serialId")String serialId){
+		ResponseObject<List<TIntelligentFingerAbandonRemoteUser>> res = new ResponseObject<List<TIntelligentFingerAbandonRemoteUser>>();
+		try {
+			res.setData(intelligentFingerService.queryTIntelligentFingerAbandonRemoteUsersBySerialId(serialId));
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	/**  
+	 * @param id  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/delIntelligentFingerAbandonRemoteUserById/{id}", method = RequestMethod.DELETE)
+	ResponseObject delIntelligentFingerAbandonRemoteUserById(@PathVariable(value = "id")Integer id){
+		ResponseObject res = new ResponseObject();
+		try {
+			intelligentFingerService.delIntelligentFingerAbandonRemoteUserById(id);
+			//res.setData(intelligentFingerService.queryTIntelligentFingerAbandonRemoteUsersBySerialId(serialId));
+			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	/**  
+	 * @param serialId
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/getTIntelligentFingerRemoteUsersBySerialId/{serialId}", method = RequestMethod.GET)
+	ResponseObject<List<TIntelligentFingerRemoteUser>> getTIntelligentFingerRemoteUsersBySerialId(@PathVariable(value = "serialId")String serialId){
+		ResponseObject<List<TIntelligentFingerRemoteUser>> res = new ResponseObject<List<TIntelligentFingerRemoteUser>>();
+		try {
+ 			res.setData(intelligentFingerService.queryTIntelligentFingerRemoteUsersBySerialId(serialId));
+			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
 }

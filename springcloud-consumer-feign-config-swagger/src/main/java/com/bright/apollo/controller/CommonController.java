@@ -1,6 +1,7 @@
 package com.bright.apollo.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,6 +42,7 @@ public class CommonController {
 	private SceneController sceneController;
 	@Autowired
 	private DeviceController deviceController;
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping("/common")
 	public ResponseObject common(HttpServletRequest request, HttpServletResponse response)
@@ -173,117 +175,132 @@ public class CommonController {
 			} else if ((sceneDTO.getSceneNumber() == null || sceneDTO.getSceneNumber().intValue() == 0)
 					&& (sceneDTO.getSceneType().equals(SceneTypeEnum.local.getValue()))) {
 				return facadeController.addLocalScene(sceneDTO);
-			}else if(sceneDTO.getSceneNumber() != null && sceneDTO.getSceneNumber().intValue() != 0){
+			} else if (sceneDTO.getSceneNumber() != null && sceneDTO.getSceneNumber().intValue() != 0) {
 				ResponseObject<TScene> sceneRes = sceneController.getSceneBySceneNumber(sceneDTO.getSceneNumber());
-				if(sceneRes!=null&&sceneRes.getData()!=null){
-					if(sceneRes.getData().getSceneType().equals(SceneTypeEnum.server.getValue())){
+				if (sceneRes != null && sceneRes.getData() != null) {
+					if (sceneRes.getData().getSceneType().equals(SceneTypeEnum.server.getValue())) {
 						return facadeController.modifyServerScene(sceneDTO);
-					}else{
+					} else {
 						return facadeController.modifyLocalScene(sceneDTO);
 					}
 				}
 			}
-		}else if (CMDEnum.setting_sc_info.toString().equals(cmdEnum.toString())) {
+		} else if (CMDEnum.setting_sc_info.toString().equals(cmdEnum.toString())) {
 			String sceneNumber = requestParam.getValue("scene_number");
 			String sceneStatus = requestParam.getValue("scene_status");
-			if(!StringUtils.isEmpty(sceneNumber)&&StringUtils.isEmpty(sceneStatus)&&
-					NumberHelper.isNumeric(sceneNumber)
-					){
-				if(sceneStatus.equals("03")){
+			if (!StringUtils.isEmpty(sceneNumber) && StringUtils.isEmpty(sceneStatus)
+					&& NumberHelper.isNumeric(sceneNumber)) {
+				if (sceneStatus.equals("03")) {
 					return facadeController.deleteScene(Integer.parseInt(sceneNumber));
-				}else if(sceneStatus.equals("02")){
+				} else if (sceneStatus.equals("02")) {
 					return facadeController.excuteScene(Integer.parseInt(sceneNumber));
-				}else if(sceneStatus.equals("01") || sceneStatus.equals("00")){
-					return facadeController.enableScene(Integer.parseInt(sceneNumber),sceneStatus);
-				}else if(sceneStatus.equals("10") || sceneStatus.equals("11")
-				|| sceneStatus.equals("12") || sceneStatus.equals("13")){
-					/*tScene.setMsgAlter(Integer.parseInt(sceneStatus.substring(1)));
-					SceneBusiness.updateScene(tScene);*/
+				} else if (sceneStatus.equals("01") || sceneStatus.equals("00")) {
+					return facadeController.enableScene(Integer.parseInt(sceneNumber), sceneStatus);
+				} else if (sceneStatus.equals("10") || sceneStatus.equals("11") || sceneStatus.equals("12")
+						|| sceneStatus.equals("13")) {
+					/*
+					 * tScene.setMsgAlter(Integer.parseInt(sceneStatus.substring
+					 * (1))); SceneBusiness.updateScene(tScene);
+					 */
 				}
-			} 
-		}else if (CMDEnum.modify_device.toString().equals(cmdEnum.toString())) {
+			}
+		} else if (CMDEnum.modify_device.toString().equals(cmdEnum.toString())) {
 			String device_serial_id = requestParam.getValue("serialId");
 			String operate_type = requestParam.getValue("operate_type");
 			String name = requestParam.getValue("name");
-			if(!StringUtils.isEmpty(requestParam)){
+			if (!StringUtils.isEmpty(requestParam)) {
 				if (operate_type.equals("00")) {
 					return facadeController.deleteDevice(device_serial_id);
-				}else if (operate_type.equals("01")) {
+				} else if (operate_type.equals("01")) {
 					return facadeController.modifyDeviceName(device_serial_id, name);
 				}
 			}
-		}else if (CMDEnum.query_intelligent_fingerHome.toString().equals(cmdEnum.toString())) {
+		} else if (CMDEnum.query_intelligent_fingerHome.toString().equals(cmdEnum.toString())) {
 			String serialId = requestParam.getValue("serialId");
-			if(!StringUtils.isEmpty(serialId)){
+			if (!StringUtils.isEmpty(serialId)) {
 				return facadeController.getIntelligentFingerHome(serialId);
 			}
-		}else if (CMDEnum.query_intelligent_openRecord.toString().equals(cmdEnum.toString())) {
+		} else if (CMDEnum.query_intelligent_openRecord.toString().equals(cmdEnum.toString())) {
 			String serialId = requestParam.getValue("serialId");
-			if(!StringUtils.isEmpty(serialId)){
+			if (!StringUtils.isEmpty(serialId)) {
 				return facadeController.getIntelligentFingerOpenRecord(serialId);
 			}
-		}else if (CMDEnum.query_intelligent_warningRecord.toString().equals(cmdEnum.toString())) {
+		} else if (CMDEnum.query_intelligent_warningRecord.toString().equals(cmdEnum.toString())) {
 			String serialId = requestParam.getValue("serialId");
-			if(!StringUtils.isEmpty(serialId)){
+			if (!StringUtils.isEmpty(serialId)) {
 				return facadeController.getIntelligentFingerWarnRecord(serialId);
 			}
-		}else if (CMDEnum.query_intelligent_useringRecord.toString().equals(cmdEnum.toString())) {
+		} else if (CMDEnum.query_intelligent_useringRecord.toString().equals(cmdEnum.toString())) {
 			String serialId = requestParam.getValue("serialId");
-			if(!StringUtils.isEmpty(serialId)){
+			if (!StringUtils.isEmpty(serialId)) {
 				return facadeController.getIntelligentUseringRecord(serialId);
 			}
-		}else if (CMDEnum.edit_intelligent_user.toString().equals(cmdEnum.toString())) {
+		} else if (CMDEnum.edit_intelligent_user.toString().equals(cmdEnum.toString())) {
 			String serialId = requestParam.getValue("serialId");
 			String pin = requestParam.getValue("pin");
 			String nickName = requestParam.getValue("nickName");
 			String mobile = requestParam.getValue("mobile");
 			String validateCode = requestParam.getValue("validateCode");
-			if(!StringUtils.isEmpty(serialId) &&!StringUtils.isEmpty(pin)){
-				return facadeController.updateIntelligentUser(serialId,pin,nickName,mobile,validateCode);
+			if (!StringUtils.isEmpty(serialId) && !StringUtils.isEmpty(pin)) {
+				return facadeController.updateIntelligentUser(serialId, pin, nickName, mobile, validateCode);
 			}
-		}else if (CMDEnum.send_intelligent_validateCode.toString().equals(cmdEnum.toString())) {
+		} else if (CMDEnum.send_intelligent_validateCode.toString().equals(cmdEnum.toString())) {
 			String serialId = requestParam.getValue("serialId");
 			String pin = requestParam.getValue("pin");
 			String mobile = requestParam.getValue("mobile");
-			if(!StringUtils.isEmpty(serialId) &&!StringUtils.isEmpty(pin)){
-				return facadeController.sendIntelligentValidateCode(serialId,pin,mobile);
+			if (!StringUtils.isEmpty(serialId) && !StringUtils.isEmpty(pin)) {
+				return facadeController.sendIntelligentValidateCode(serialId, pin, mobile);
 			}
-		}else if (CMDEnum.add_intelligent_authPwd.toString().equals(cmdEnum.toString())) {
+		} else if (CMDEnum.add_intelligent_authPwd.toString().equals(cmdEnum.toString())) {
 			String serialId = requestParam.getValue("serialId");
 			String pwd = requestParam.getValue("pwd");
-			if(!StringUtils.isEmpty(serialId) &&!StringUtils.isEmpty(pwd)){
-				return facadeController.addIntelligentAuthPwd(serialId,pwd);
+			if (!StringUtils.isEmpty(serialId) && !StringUtils.isEmpty(pwd)) {
+				return facadeController.addIntelligentAuthPwd(serialId, pwd);
 			}
-		}else if (CMDEnum.query_intelligent_authPwd.toString().equals(cmdEnum.toString())) {
+		} else if (CMDEnum.query_intelligent_authPwd.toString().equals(cmdEnum.toString())) {
 			String serialId = requestParam.getValue("serialId");
 			String pwd = requestParam.getValue("pwd");
-			if(!StringUtils.isEmpty(serialId) &&!StringUtils.isEmpty(pwd)){
-				return facadeController.getIntelligentAuthPwd(serialId,pwd);
+			if (!StringUtils.isEmpty(serialId) && !StringUtils.isEmpty(pwd)) {
+				return facadeController.getIntelligentAuthPwd(serialId, pwd);
 			}
-		}else if (CMDEnum.query_intelligent_remote_unLocking.toString().equals(cmdEnum.toString())) {
+		} else if (CMDEnum.query_intelligent_remote_unLocking.toString().equals(cmdEnum.toString())) {
 			String serialId = requestParam.getValue("serialId");
 			String authToken = requestParam.getValue("authToken");
-			if(!StringUtils.isEmpty(serialId) &&!StringUtils.isEmpty(authToken)){
-				return facadeController.getIntelligentRemoteUnLocking(serialId,authToken);
+			if (!StringUtils.isEmpty(serialId) && !StringUtils.isEmpty(authToken)) {
+				return facadeController.getIntelligentRemoteUnLocking(serialId, authToken);
 			}
-		}else if (CMDEnum.add_intelligent_remote_user.toString().equals(cmdEnum.toString())) {
-			
-		}else if (CMDEnum.del_intelligent_remote_user.toString().equals(cmdEnum.toString())) {
-			
-		}else if (CMDEnum.reset_intelligent_pwd.toString().equals(cmdEnum.toString())) {
-			
-		}else if (CMDEnum.query_intelligent_push_list.toString().equals(cmdEnum.toString())) {
-			
-		}else if (CMDEnum.modify_intelligent_remote_user.toString().equals(cmdEnum.toString())) {
-			
-		}else if (CMDEnum.modify_intelligent_push.toString().equals(cmdEnum.toString())) {
-			
-		}else if (CMDEnum.send_remote_pwd.toString().equals(cmdEnum.toString())) {
-			
-		}else if (CMDEnum.reset_intelligent_pwd_by_code.toString().equals(cmdEnum.toString())) {
-			
-		}else if (CMDEnum.del_all_intelligent_remote_user.toString().equals(cmdEnum.toString())) {
-			
+		} else if (CMDEnum.add_intelligent_remote_user.toString().equals(cmdEnum.toString())) {
+			String serialId = requestParam.getValue("serialId");
+			String authToken = requestParam.getValue("authToken");
+			String nickName = requestParam.getValue("nickName");
+			String startTime = requestParam.getValue("startTime");
+			String endTime = requestParam.getValue("endTime");
+			String times = requestParam.getValue("times");
+			String mobile = requestParam.getValue("mobile");
+			String isMax = requestParam.getValue("isMax");
+			if (!StringUtils.isEmpty(serialId) && !StringUtils.isEmpty(authToken) && !StringUtils.isEmpty(nickName)
+					&& !StringUtils.isEmpty(startTime) && !StringUtils.isEmpty(endTime)
+					&& NumberHelper.isNumeric(startTime) && NumberHelper.isNumeric(endTime) && startTime.length() == 13
+					&& endTime.length() == 13 && Long.parseLong(endTime) > Long.parseLong(startTime)
+					&& Long.parseLong(endTime) > new Date().getTime()) {
+				return facadeController.addIntelligentRemoteUser(serialId, authToken,nickName,startTime,endTime,times,mobile,isMax);
+			}
+		} else if (CMDEnum.del_intelligent_remote_user.toString().equals(cmdEnum.toString())) {
+
+		} else if (CMDEnum.reset_intelligent_pwd.toString().equals(cmdEnum.toString())) {
+
+		} else if (CMDEnum.query_intelligent_push_list.toString().equals(cmdEnum.toString())) {
+
+		} else if (CMDEnum.modify_intelligent_remote_user.toString().equals(cmdEnum.toString())) {
+
+		} else if (CMDEnum.modify_intelligent_push.toString().equals(cmdEnum.toString())) {
+
+		} else if (CMDEnum.send_remote_pwd.toString().equals(cmdEnum.toString())) {
+
+		} else if (CMDEnum.reset_intelligent_pwd_by_code.toString().equals(cmdEnum.toString())) {
+
+		} else if (CMDEnum.del_all_intelligent_remote_user.toString().equals(cmdEnum.toString())) {
+
 		}
 		res = new ResponseObject();
 		res.setStatus(ResponseEnum.RequestParamError.getStatus());

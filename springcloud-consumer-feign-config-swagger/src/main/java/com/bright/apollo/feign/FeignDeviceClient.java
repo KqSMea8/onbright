@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.bright.apollo.common.entity.TIntelligentFingerAbandonRemoteUser;
 import com.bright.apollo.common.entity.TIntelligentFingerAuth;
 import com.bright.apollo.common.entity.TIntelligentFingerRemoteUser;
 import com.bright.apollo.common.entity.TIntelligentFingerUser;
@@ -252,6 +253,31 @@ public interface FeignDeviceClient {
 	 */
 	@RequestMapping(value = "/intelligentFinger/getIntelligentFingerRemoteUsersBySerialId/{serialId}", method = RequestMethod.GET)
 	ResponseObject<List<TIntelligentFingerRemoteUser>> getIntelligentFingerRemoteUsersBySerialId(@PathVariable(value = "serialId")String serialId);
+
+	/**  
+	 * @param serialId
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/intelligentFinger/getIntelligentFingerRemoteUsersBySerialId/{serialId}", method = RequestMethod.GET)
+	ResponseObject<List<TIntelligentFingerAbandonRemoteUser>> getTIntelligentFingerAbandonRemoteUsersBySerialId(
+			@PathVariable(value = "serialId")String serialId);
+
+	/**  
+	 * @param id  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/intelligentFinger/delIntelligentFingerAbandonRemoteUserById/{id}", method = RequestMethod.DELETE)
+	ResponseObject delIntelligentFingerAbandonRemoteUserById(@PathVariable(value = "id")Integer id);
+
+	/**  
+	 * @param serialId
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/intelligentFinger/getTIntelligentFingerRemoteUsersBySerialId/{serialId}", method = RequestMethod.GET)
+	ResponseObject<List<TIntelligentFingerRemoteUser>> getTIntelligentFingerRemoteUsersBySerialId(@PathVariable(value = "serialId")String serialId);
 
  
 }
