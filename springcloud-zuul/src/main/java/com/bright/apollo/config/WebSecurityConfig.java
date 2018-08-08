@@ -58,7 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
             .authorizeRequests().antMatchers("/health", "/css/**","/oauth/**","/uaa/**").permitAll()
             .and()
             .formLogin().loginPage("/login")
-            .successForwardUrl("/aouth2/sendRedirect")
+//            .successForwardUrl("/aouth2/sendRedirect")
             .permitAll();
 //            .and()
 //            .addFilterBefore(new BeforeLoginFilter(), UsernamePasswordAuthenticationFilter.class);

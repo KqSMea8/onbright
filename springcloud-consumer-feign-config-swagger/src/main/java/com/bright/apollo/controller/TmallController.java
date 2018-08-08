@@ -14,6 +14,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import com.bright.apollo.common.entity.TUser;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
@@ -94,8 +95,8 @@ public class TmallController {
 		Map<String,Object> payload = (Map<String,Object>) requestMap.get("payload");
 		String accessToken = (String)payload.get("accessToken");
 		logger.info(" ===== accessToken ====== "+accessToken);
-//		OAuth2Authentication defaultOAuth2AccessToken = redisBussines.getObject("auth:"+accessToken,OAuth2Authentication.class);
-//		logger.info(" ===== redisToken ====== "+defaultOAuth2AccessToken);
+		OAuth2Authentication defaultOAuth2AccessToken = redisBussines.getObject("auth:"+accessToken,OAuth2Authentication.class);
+		logger.info(" ===== redisToken ====== "+defaultOAuth2AccessToken);
 
 		if(requestHeaderMap.get("namespace").equals("AliGenie.Iot.Device.Discovery")){//天猫精灵发现设备
 
@@ -104,13 +105,14 @@ public class TmallController {
 			headerMap.put("messageId",requestHeaderMap.get("messageId"));
 			headerMap.put("payLoadVersion","1");
 			map.put("header",headerMap);
-//			User user = (User) defaultOAuth2AccessToken.getPrincipal();
-//			ResponseObject<TUser> userResponseObject = feignUserClient.getUser(user.getUsername());
-//			TUser tUser = userResponseObject.getData();
+			User user = (User) defaultOAuth2AccessToken.getPrincipal();
+			ResponseObject<TUser> userResponseObject = feignUserClient.getUser(user.getUsername());
+			TUser tUser = userResponseObject.getData();
 
-//			logger.info(" ====== username ====== "+user.getUsername());
+			logger.info(" ====== username ====== "+user.getUsername());
 
-			ResponseObject<List<TOboxDeviceConfig>> responseObject = feignDeviceClient.getOboxDeviceConfigByUserId(429);
+			logger.info(" ====== userId ====== "+tUser.getId());
+			ResponseObject<List<TOboxDeviceConfig>> responseObject = feignDeviceClient.getOboxDeviceConfigByUserId(tUser.getId());
 			List<TOboxDeviceConfig> oboxDeviceConfigList = responseObject.getData();
 			JSONArray jsonArray = new JSONArray();
 			JSONObject extensionsMap = new JSONObject();
