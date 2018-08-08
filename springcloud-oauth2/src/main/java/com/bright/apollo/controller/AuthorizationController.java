@@ -1,4 +1,4 @@
-package com.bright.apollo.controller;
+/*package com.bright.apollo.controller;
 
 import java.io.IOException;
 import java.net.URLDecoder;
@@ -236,3 +236,4 @@ public class AuthorizationController {
     }
 
 }
+*/

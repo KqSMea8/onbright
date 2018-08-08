@@ -1,4 +1,4 @@
-package com.bright.apollo.controller;
+/*package com.bright.apollo.controller;
 
 import com.alibaba.fastjson.JSONReader;
 import com.bright.apollo.redis.RedisBussines;
@@ -146,3 +146,4 @@ public class CodeRedirectController {
 
 
 }
+*/
