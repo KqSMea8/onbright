@@ -59,9 +59,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
             .and()
             .formLogin().loginPage("/login")
             .successForwardUrl("/aouth2/sendRedirect")
-            .permitAll()
-            .and()
-            .addFilterBefore(new BeforeLoginFilter(), UsernamePasswordAuthenticationFilter.class);
+            .permitAll();
+//            .and()
+//            .addFilterBefore(new BeforeLoginFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override
@@ -69,31 +69,31 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
         web.ignoring().antMatchers("/favor.ioc","/authorization/*");
     }
     
-    public class BeforeLoginFilter extends GenericFilterBean {
-
-        @Override
-        public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-            logger.info("This is a filter before UsernamePasswordAuthenticationFilter.");
-            HttpServletRequest request = (HttpServletRequest)servletRequest;
-            String redirect_uri = request.getParameter("redirect_uri");
-            String state = request.getParameter("state");
-            logger.info(request.getRequestURI());
-            if(redirect_uri!=null){
-            	redirect_uri = URLDecoder.decode(redirect_uri, "UTF-8");
-            	redirect_uri += "&"+state;
-            	logger.info(redirect_uri);
-            	request.setAttribute("redirect_uri", redirect_uri);
-            }
-            Enumeration<String> m = request.getParameterNames();
-            while(m.hasMoreElements()){
-            	String element = m.nextElement();
-            	logger.info("params ------ "+element+" ------ "+request.getParameter(element));
-            }
-            
-            // 继续调用 Filter 链
-            filterChain.doFilter(servletRequest, servletResponse);
-        }
-    }
+//    public class BeforeLoginFilter extends GenericFilterBean {
+//
+//        @Override
+//        public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+//            logger.info("This is a filter before UsernamePasswordAuthenticationFilter.");
+//            HttpServletRequest request = (HttpServletRequest)servletRequest;
+//            String redirect_uri = request.getParameter("redirect_uri");
+//            String state = request.getParameter("state");
+//            logger.info(request.getRequestURI());
+//            if(redirect_uri!=null){
+//            	redirect_uri = URLDecoder.decode(redirect_uri, "UTF-8");
+//            	redirect_uri += "&"+state;
+//            	logger.info(redirect_uri);
+//            	request.setAttribute("redirect_uri", redirect_uri);
+//            }
+//            Enumeration<String> m = request.getParameterNames();
+//            while(m.hasMoreElements()){
+//            	String element = m.nextElement();
+//            	logger.info("params ------ "+element+" ------ "+request.getParameter(element));
+//            }
+//
+//            // 继续调用 Filter 链
+//            filterChain.doFilter(servletRequest, servletResponse);
+//        }
+//    }
     
 
 }

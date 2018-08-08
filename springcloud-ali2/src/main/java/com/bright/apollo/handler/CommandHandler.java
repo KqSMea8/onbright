@@ -3,6 +3,8 @@ package com.bright.apollo.handler;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.bright.apollo.service.TopicServer;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +29,8 @@ public class CommandHandler {
 
     @Autowired
     private AliDeviceService aliDeviceService;
+
+
 
     private static Map<String, AliBaseHandler> cmdHandlers = new HashMap<String, AliBaseHandler>();
 

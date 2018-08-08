@@ -1,5 +1,6 @@
 package com.bright.apollo.listener;
 
+import com.bright.apollo.socket.WIFIHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,15 +25,35 @@ public class MNSCommandLineRunner implements CommandLineRunner{
 	@Lazy
     private MNSHandler mnshandler;
 
+	@Autowired
+	private WIFIHandler irhandler;
+
 	/* (non-Javadoc)  
 	 * @see org.springframework.boot.CommandLineRunner#run(java.lang.String[])  
 	 */
 	@Override
 	public void run(String... args) throws Exception {
 		logger.info("===MNSCommandLineRunner start===");
- 		mnshandler.handler();
-	
-		
+		Thread irThread = new Thread(new RunIRHandler());
+		Thread mnsThread = new Thread(new RunMNSHandler());
+		irThread.start();
+		mnsThread.start();
+	}
+
+	class RunIRHandler implements Runnable{
+
+		@Override
+		public void run() {
+			irhandler.handler();
+		}
+	}
+
+	class RunMNSHandler implements Runnable{
+
+		@Override
+		public void run() {
+			mnshandler.handler();
+		}
 	}
 	 
 }

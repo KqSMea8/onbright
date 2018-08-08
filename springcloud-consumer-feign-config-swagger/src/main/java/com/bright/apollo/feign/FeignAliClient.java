@@ -254,4 +254,12 @@ public interface FeignAliClient {
 	ResponseObject<OboxResp> deleteDevice(@PathVariable(value = "oboxSerialId") String oboxSerialId,
 			@PathVariable(value = "address") String address,
 			@PathVariable(value = "deviceName") String deviceName);
+
+	/**
+	 * 红外进入学习码
+	 * @param object
+	 * @return
+	 */
+	@RequestMapping(value = "/aliDevice/sendlearn", method = RequestMethod.POST)
+	ResponseObject<List<Map<String, String>>> sendLearn2IR(@RequestBody(required = true) Object object);
 }

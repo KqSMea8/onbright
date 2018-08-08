@@ -190,6 +190,36 @@ public class TopicServer {
 
 	}
 
+	public void pubIRTopic(CMDEnum cmd, byte[] data, String deviceSerial,String message) throws Exception {
+		logger.info(" ====== pubIRTopic start ====== ");
+		String mString = null;
+		if(data != null){
+			mString = com.bright.apollo.tool.StringUtils.bytes2String(cmd, data, packageLength, head);
+		}
+
+		PubRequest request = new PubRequest();
+		String productKey = AliDevCache.getProductKey(deviceSerial);
+		String deviceName = AliDevCache.getDeviceName(deviceSerial);
+		String region = AliDevCache.getProductRegion(deviceSerial);
+		if (StringUtils.isEmpty(productKey)) {
+			TAliDevice device = aliDeviceService.getAliDeviceBySerializeId(deviceSerial);
+			region = setCache(device, deviceSerial);
+		}
+		request.setProductKey(productKey);
+		if(mString !=null){
+			request.setMessageContent(Base64.encodeBase64String(mString.getBytes()));
+		}else{
+			request.setMessageContent(message);
+		}
+
+		request.setTopicFullName("/" + productKey + "/" + deviceName + "/set");
+		request.setQos(0); // QoS0 设备在线时发送 ，QoS1 设备不在线时，能在IOT HUB 上保存7天，上线后发送
+		PubResponse response = null;
+		sendRequest(request, region, response);
+
+		logger.info(" ====== pubIRTopic end ====== ");
+	}
+
 	public JSONObject requestDev(JSONObject object, String deviceSerial) throws Exception {
 		logger.info(" ====== requestDev start ====== ");
 		RRpcRequest rrpcRequest = new RRpcRequest();
