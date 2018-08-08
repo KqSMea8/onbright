@@ -14,12 +14,10 @@ import org.springframework.stereotype.Component;
 
 import com.bright.apollo.common.entity.TUser;
 import com.bright.apollo.common.entity.TUserDevice;
-import com.bright.apollo.common.entity.TUserDeviceExample;
-import com.bright.apollo.dao.mapper.base.BaseMapper;
 
 @Mapper
 @Component
-public interface TUserDeviceMapper extends BaseMapper<TUserDevice, TUserDeviceExample, Integer> {
+public interface TUserDeviceMapper  {
 
 	/**  
 	 * @param wxUserId

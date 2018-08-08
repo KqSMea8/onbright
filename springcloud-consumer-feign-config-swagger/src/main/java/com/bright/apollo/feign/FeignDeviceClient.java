@@ -8,10 +8,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.bright.apollo.common.entity.TIntelligentFingerAuth;
+import com.bright.apollo.common.entity.TIntelligentFingerRemoteUser;
+import com.bright.apollo.common.entity.TIntelligentFingerUser;
 import com.bright.apollo.common.entity.TNvr;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.common.entity.TYSCamera;
 import com.bright.apollo.hrstrix.HystrixFeignDeviceFallback;
+import com.bright.apollo.request.IntelligentFingerWarnDTO;
+import com.bright.apollo.request.IntelligentOpenRecordDTO;
 import com.bright.apollo.response.ResponseObject;
 
 /**
@@ -150,4 +155,103 @@ public interface FeignDeviceClient {
 	ResponseObject<TOboxDeviceConfig> getDeviceByUserAndSerialId(@PathVariable(value = "userId") Integer userId,
 			@PathVariable(value = "serialID") String serialID);
 
+	/**
+	 * @param serialId
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/intelligentFinger/countFingerAuth/{serialId}", method = RequestMethod.GET)
+	ResponseObject<Integer> countFingerAuth(@PathVariable(value = "serialId") String serialId);
+
+	/**
+	 * @param serialId
+	 * @param end
+	 * @param start
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/intelligentFinger/queryIntelligentOpenRecordByDate/{serialId}/{end}/{start}", method = RequestMethod.GET)
+	ResponseObject<List<IntelligentOpenRecordDTO>> queryIntelligentOpenRecordByDate(
+			@PathVariable(value = "serialId") String serialId, @PathVariable(value = "end") String end,
+			@PathVariable(value = "start") String start);
+
+	/**
+	 * @param serialId
+	 * @Description:
+	 */
+	@RequestMapping(value = "/intelligentFinger/getCountIntelligentWarnBySerialId/{serialId}", method = RequestMethod.GET)
+	ResponseObject<Integer> getCountIntelligentWarnBySerialId(@PathVariable(value = "serialId") String serialId);
+
+	/**
+	 * @param serialId
+	 * @param end
+	 * @param start
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/intelligentFinger/getIntelligentWarnByDate/{serialId}/{end}/{start}", method = RequestMethod.GET)
+	ResponseObject<List<IntelligentFingerWarnDTO>> getIntelligentWarnByDate(
+			@PathVariable(value = "serialId") String serialId, @PathVariable(value = "end") String end,
+			@PathVariable(value = "start") String start);
+
+	/**
+	 * @param serialId
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/intelligentFinger/getCountIntelligentUserBySerialId/{serialId}", method = RequestMethod.GET)
+	ResponseObject<Integer> getCountIntelligentUserBySerialId(@PathVariable(value = "serialId") String serialId);
+
+	/**
+	 * @param serialId
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/intelligentFinger/getIntelligentUserBySerialId/{serialId}", method = RequestMethod.GET)
+	ResponseObject<List<TIntelligentFingerUser>> getIntelligentUserBySerialId(
+			@PathVariable(value = "serialId") String serialId);
+
+	/**
+	 * @param serialId
+	 * @param pin
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/intelligentFinger/getIntelligentFingerUserBySerialIdAndPin/{serialId}/{pin}", method = RequestMethod.GET)
+	ResponseObject<TIntelligentFingerUser> getIntelligentFingerUserBySerialIdAndPin(
+			@PathVariable(value = "serialId") String serialId, @PathVariable(value = "pin") String pin);
+
+	/**  
+	 * @param fingerUser  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/intelligentFinger/updatentelligentFingerUser", method = RequestMethod.PUT)
+	ResponseObject updatentelligentFingerUser(@RequestBody TIntelligentFingerUser fingerUser);
+
+	/**  
+	 * @param serialId
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/intelligentFinger/getIntelligentAuthBySerialId/{serialId}", method = RequestMethod.GET)
+	ResponseObject<TIntelligentFingerAuth> getIntelligentAuthBySerialId(@PathVariable(value = "serialId")String serialId);
+
+	/**  
+	 * @param auth  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/intelligentFinger/addIntelligentFingerAuth", method = RequestMethod.POST)
+	ResponseObject addIntelligentFingerAuth(@RequestBody TIntelligentFingerAuth auth);
+
+	/**  
+	 * @param serialId
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/intelligentFinger/getIntelligentFingerRemoteUsersBySerialId/{serialId}", method = RequestMethod.GET)
+	ResponseObject<List<TIntelligentFingerRemoteUser>> getIntelligentFingerRemoteUsersBySerialId(@PathVariable(value = "serialId")String serialId);
+
+ 
 }

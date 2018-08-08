@@ -39,6 +39,8 @@ public class CommonController {
 	private FacadeController facadeController;
 	@Autowired
 	private SceneController sceneController;
+	@Autowired
+	private DeviceController deviceController;
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping("/common")
 	public ResponseObject common(HttpServletRequest request, HttpServletResponse response)
@@ -210,6 +212,78 @@ public class CommonController {
 					return facadeController.modifyDeviceName(device_serial_id, name);
 				}
 			}
+		}else if (CMDEnum.query_intelligent_fingerHome.toString().equals(cmdEnum.toString())) {
+			String serialId = requestParam.getValue("serialId");
+			if(!StringUtils.isEmpty(serialId)){
+				return facadeController.getIntelligentFingerHome(serialId);
+			}
+		}else if (CMDEnum.query_intelligent_openRecord.toString().equals(cmdEnum.toString())) {
+			String serialId = requestParam.getValue("serialId");
+			if(!StringUtils.isEmpty(serialId)){
+				return facadeController.getIntelligentFingerOpenRecord(serialId);
+			}
+		}else if (CMDEnum.query_intelligent_warningRecord.toString().equals(cmdEnum.toString())) {
+			String serialId = requestParam.getValue("serialId");
+			if(!StringUtils.isEmpty(serialId)){
+				return facadeController.getIntelligentFingerWarnRecord(serialId);
+			}
+		}else if (CMDEnum.query_intelligent_useringRecord.toString().equals(cmdEnum.toString())) {
+			String serialId = requestParam.getValue("serialId");
+			if(!StringUtils.isEmpty(serialId)){
+				return facadeController.getIntelligentUseringRecord(serialId);
+			}
+		}else if (CMDEnum.edit_intelligent_user.toString().equals(cmdEnum.toString())) {
+			String serialId = requestParam.getValue("serialId");
+			String pin = requestParam.getValue("pin");
+			String nickName = requestParam.getValue("nickName");
+			String mobile = requestParam.getValue("mobile");
+			String validateCode = requestParam.getValue("validateCode");
+			if(!StringUtils.isEmpty(serialId) &&!StringUtils.isEmpty(pin)){
+				return facadeController.updateIntelligentUser(serialId,pin,nickName,mobile,validateCode);
+			}
+		}else if (CMDEnum.send_intelligent_validateCode.toString().equals(cmdEnum.toString())) {
+			String serialId = requestParam.getValue("serialId");
+			String pin = requestParam.getValue("pin");
+			String mobile = requestParam.getValue("mobile");
+			if(!StringUtils.isEmpty(serialId) &&!StringUtils.isEmpty(pin)){
+				return facadeController.sendIntelligentValidateCode(serialId,pin,mobile);
+			}
+		}else if (CMDEnum.add_intelligent_authPwd.toString().equals(cmdEnum.toString())) {
+			String serialId = requestParam.getValue("serialId");
+			String pwd = requestParam.getValue("pwd");
+			if(!StringUtils.isEmpty(serialId) &&!StringUtils.isEmpty(pwd)){
+				return facadeController.addIntelligentAuthPwd(serialId,pwd);
+			}
+		}else if (CMDEnum.query_intelligent_authPwd.toString().equals(cmdEnum.toString())) {
+			String serialId = requestParam.getValue("serialId");
+			String pwd = requestParam.getValue("pwd");
+			if(!StringUtils.isEmpty(serialId) &&!StringUtils.isEmpty(pwd)){
+				return facadeController.getIntelligentAuthPwd(serialId,pwd);
+			}
+		}else if (CMDEnum.query_intelligent_remote_unLocking.toString().equals(cmdEnum.toString())) {
+			String serialId = requestParam.getValue("serialId");
+			String authToken = requestParam.getValue("authToken");
+			if(!StringUtils.isEmpty(serialId) &&!StringUtils.isEmpty(authToken)){
+				return facadeController.getIntelligentRemoteUnLocking(serialId,authToken);
+			}
+		}else if (CMDEnum.add_intelligent_remote_user.toString().equals(cmdEnum.toString())) {
+			
+		}else if (CMDEnum.del_intelligent_remote_user.toString().equals(cmdEnum.toString())) {
+			
+		}else if (CMDEnum.reset_intelligent_pwd.toString().equals(cmdEnum.toString())) {
+			
+		}else if (CMDEnum.query_intelligent_push_list.toString().equals(cmdEnum.toString())) {
+			
+		}else if (CMDEnum.modify_intelligent_remote_user.toString().equals(cmdEnum.toString())) {
+			
+		}else if (CMDEnum.modify_intelligent_push.toString().equals(cmdEnum.toString())) {
+			
+		}else if (CMDEnum.send_remote_pwd.toString().equals(cmdEnum.toString())) {
+			
+		}else if (CMDEnum.reset_intelligent_pwd_by_code.toString().equals(cmdEnum.toString())) {
+			
+		}else if (CMDEnum.del_all_intelligent_remote_user.toString().equals(cmdEnum.toString())) {
+			
 		}
 		res = new ResponseObject();
 		res.setStatus(ResponseEnum.RequestParamError.getStatus());

@@ -10,12 +10,10 @@ import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
 
 import com.bright.apollo.common.entity.TUserScene;
-import com.bright.apollo.common.entity.TUserSceneExample;
-import com.bright.apollo.dao.mapper.base.BaseMapper;
 
 @Mapper
 @Component
-public interface TUserSceneMapper extends BaseMapper<TUserScene, TUserSceneExample, Integer> {
+public interface TUserSceneMapper {
 
     @Delete("delete from t_user_scene where scene_number = #{sceneNumber}")
     void deleteUserSceneBySceneNum(@Param("sceneNumber") int sceneNumber);

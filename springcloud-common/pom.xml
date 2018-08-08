@@ -24,5 +24,10 @@
 			<version>2.2.4</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.bright.apollo</groupId>
+			<artifactId>springcloud-tool</artifactId>
+			<version>${tool-version}</version>
+		</dependency>
 	</dependencies>
 </project>

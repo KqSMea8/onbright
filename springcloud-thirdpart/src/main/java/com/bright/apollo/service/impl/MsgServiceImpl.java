@@ -142,6 +142,25 @@ public class MsgServiceImpl implements MsgService {
 		return textEntity;
 	}
 
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.MsgService#sendCode(java.lang.String, java.lang.String)  
+	 */
+	@Override
+	public String sendCode(String mobile, String validateCode) {
+		Client client = Client.create();
+		client.addFilter(new HTTPBasicAuthFilter("api", appKey));
+		WebResource webResource = client.resource("http://sms-api.luosimao.com/v1/send.json");
+		MultivaluedMapImpl formData = new MultivaluedMapImpl();
+
+		formData.add("mobile",mobile);
+		formData.add("message", "the code is "+validateCode+"【昂宝电子】");
+		
+		ClientResponse response = webResource.type(MediaType.APPLICATION_FORM_URLENCODED).post(ClientResponse.class,formData);
+		String textEntity = response.getEntity(String.class);
+		
+		return textEntity;
+	}
+
  
 
 }

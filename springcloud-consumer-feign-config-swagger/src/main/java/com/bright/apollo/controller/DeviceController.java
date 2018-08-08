@@ -1,5 +1,7 @@
 package com.bright.apollo.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
+import com.bright.apollo.enums.DeviceTypeEnum;
 import com.bright.apollo.feign.FeignDeviceClient;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
@@ -16,42 +19,44 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 
-/**  
- *@Title:  
- *@Description:  
- *@Author:JettyLiu
- *@Since:2018年3月16日  
- *@Version:1.1.0  
+/**
+ * @Title:
+ * @Description:
+ * @Author:JettyLiu
+ * @Since:2018年3月16日
+ * @Version:1.1.0
  */
 @Api("device Controller")
 @RequestMapping("device")
 @RestController
 public class DeviceController {
- 	@Autowired
+	@Autowired
 	private FeignDeviceClient feignDeviceClient;
+
 	@ApiOperation(value = "get deivcie by device serialId", httpMethod = "GET", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/{serialId}", method = RequestMethod.GET)
 	public ResponseObject<TOboxDeviceConfig> getDevice(@PathVariable(required = true) String serialId) {
 		ResponseObject<TOboxDeviceConfig> res = null;
 		try {
- 			return feignDeviceClient.getDevice(serialId);
- 		} catch (Exception e) {
+			return feignDeviceClient.getDevice(serialId);
+		} catch (Exception e) {
 			e.printStackTrace();
-			res=new ResponseObject<TOboxDeviceConfig>();
- 			res.setStatus(ResponseEnum.Error.getStatus());
+			res = new ResponseObject<TOboxDeviceConfig>();
+			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
- 	@ApiOperation(value = "update deivcie by device serialId", httpMethod = "PUT", produces = "application/json")
+
+	@ApiOperation(value = "update deivcie by device serialId", httpMethod = "PUT", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/{serialId}", method = RequestMethod.PUT)
 	public ResponseObject<TOboxDeviceConfig> updateDevice(@PathVariable(required = true) String serialId,
 			@RequestBody(required = true) TOboxDeviceConfig device) {
 		ResponseObject<TOboxDeviceConfig> res = new ResponseObject<TOboxDeviceConfig>();
 		try {
-			res = feignDeviceClient.updateDevice(serialId,device);
+			res = feignDeviceClient.updateDevice(serialId, device);
 		} catch (Exception e) {
 			e.printStackTrace();
 			res.setStatus(ResponseEnum.Error.getStatus());
@@ -59,22 +64,24 @@ public class DeviceController {
 		}
 		return res;
 	}
+
 	@ApiOperation(value = "add device", httpMethod = "POST", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/{serialId}", method = RequestMethod.POST)
 	public ResponseObject<TOboxDeviceConfig> addDevice(@PathVariable(required = true) String serialId,
 			@RequestBody(required = true) TOboxDeviceConfig device) {
 		ResponseObject<TOboxDeviceConfig> res = null;
-		try { 
-			return feignDeviceClient.addDevice(serialId,device);
+		try {
+			return feignDeviceClient.addDevice(serialId, device);
 		} catch (Exception e) {
 			e.printStackTrace();
-			res=new ResponseObject<TOboxDeviceConfig>();
+			res = new ResponseObject<TOboxDeviceConfig>();
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
+
 	@SuppressWarnings("rawtypes")
 	@ApiOperation(value = "del device", httpMethod = "DELETE", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
@@ -85,10 +92,12 @@ public class DeviceController {
 			return feignDeviceClient.delDevice(serialId);
 		} catch (Exception e) {
 			e.printStackTrace();
-			res=new ResponseObject();
- 			res.setStatus(ResponseEnum.Error.getStatus());
+			res = new ResponseObject();
+			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
+
+	
 }

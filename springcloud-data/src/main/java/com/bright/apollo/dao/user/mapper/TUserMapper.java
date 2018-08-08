@@ -1,17 +1,19 @@
 package com.bright.apollo.dao.user.mapper;
 
-import org.apache.ibatis.annotations.*;
+import java.util.List;
 
-import com.bright.apollo.common.entity.TUser;
-import com.bright.apollo.common.entity.TUserExample;
-import com.bright.apollo.dao.mapper.base.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import com.bright.apollo.common.entity.TUser;
 
 @Mapper
 @Component
-public interface TUserMapper extends BaseMapper<TUser, TUserExample, Integer> {
+public interface TUserMapper{
 
     @Select("select * from t_user where id=#{id}")
     @Results(value = {

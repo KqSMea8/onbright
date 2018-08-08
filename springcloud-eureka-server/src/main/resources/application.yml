@@ -15,7 +15,7 @@ eureka:
 #    eviction-interval-timer-in-ms: 60000 #同上
 security:
   basic:
-    enabled: true
+    enabled: false
   user:
     name: root
     password: booszy

@@ -1,12 +1,22 @@
-/*package com.bright.apollo.tool;
+package com.bright.apollo.util;
 
 import java.io.UnsupportedEncodingException;
 
 import com.bright.apollo.enums.CMDEnum;
+import com.bright.apollo.tool.ByteHelper;
 import com.zz.common.util.ByteUtils;
 
+ 
 
+/**  
+ *@Title:  
+ *@Description:  
+ *@Author:JettyLiu
+ *@Since:2018年8月7日  
+ *@Version:1.1.0  
+ */
 public class StringUtils {
+
     public static String bytes2String(CMDEnum cmd, byte [] data,int packageLength,String head){
         byte [] out = new byte [packageLength];
         out[0] = 0x00;
@@ -48,5 +58,5 @@ public class StringUtils {
 			System.arraycopy(groupbytes, 0, bodyBytes, 19, groupbytes.length);
      	bytes2String(CMDEnum.setting_sc_info, bodyBytes, 64, "38383838");
 	}
+
 }
-*/

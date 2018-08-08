@@ -57,7 +57,17 @@
 			<artifactId>springcloud-tool</artifactId>
 			<version>${tool-version}</version>
 		</dependency>
- 
+		<dependency>
+			<groupId>com.bright.apollo</groupId>
+			<artifactId>springcloud-common</artifactId>
+			<version>${common-version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.bright.apollo</groupId>
+					<artifactId>springcloud-tool</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-jdbc</artifactId>
@@ -67,6 +77,6 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		 
+
 	</dependencies>
 </project>
