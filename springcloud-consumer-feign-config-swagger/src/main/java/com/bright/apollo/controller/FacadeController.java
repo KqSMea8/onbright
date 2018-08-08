@@ -3420,16 +3420,15 @@ public class FacadeController {
 		return ctime;
 	}
 
-<<<<<<< HEAD
 
 //	@ApiOperation(value = "sendLearn2IR", httpMethod = "POST", produces = "application/json")
 //	@ApiResponse(code = 200, message = "SelectSuccess", response = ResponseObject.class)
 	@RequestMapping(value = "/sendlearn", method = RequestMethod.POST)
 	public ResponseObject<List<Map<String, String>>> sendLearn2IR(@RequestBody(required = true) Object object) {
 		ResponseObject<List<Map<String, String>>> res = new ResponseObject<List<Map<String, String>>>();
-		Map<String,Object> requestMap = (Map<String, Object>) object;
+		Map<String, Object> requestMap = (Map<String, Object>) object;
 		try {
-			ResponseObject<TObox> oboxRes = feignOboxClient.getObox((String)requestMap.get("deviceId"));
+			ResponseObject<TObox> oboxRes = feignOboxClient.getObox((String) requestMap.get("deviceId"));
 			if (oboxRes == null || oboxRes.getData() == null) {
 				res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
 				res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
@@ -3451,7 +3450,7 @@ public class FacadeController {
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
-=======
+	}
 	/**
 	 * @param sceneConditionDTOs
 	 * @param oboxSerialId
@@ -3473,6 +3472,5 @@ public class FacadeController {
 			}
 		}
 		return false;
->>>>>>> 25096baabc06cfb75235fe8291fbed6104c7e30f
 	}
 }

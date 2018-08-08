@@ -194,7 +194,7 @@ public class TopicServer {
 		logger.info(" ====== pubIRTopic start ====== ");
 		String mString = null;
 		if(data != null){
-			mString = com.bright.apollo.tool.StringUtils.bytes2String(cmd, data, packageLength, head);
+			mString = com.bright.apollo.util.StringUtils.bytes2String(cmd, data, packageLength, head);
 		}
 
 		PubRequest request = new PubRequest();
