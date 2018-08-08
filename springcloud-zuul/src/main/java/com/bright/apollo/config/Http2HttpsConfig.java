@@ -36,7 +36,7 @@ public class Http2HttpsConfig {
         connector.setScheme("http");
         connector.setPort(8443);
         connector.setSecure(false);
-        connector.setRedirectPort(8815);
+        connector.setRedirectPort(8401);
         return connector;
     }
 }

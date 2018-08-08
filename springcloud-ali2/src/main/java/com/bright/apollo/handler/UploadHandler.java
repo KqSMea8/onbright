@@ -30,11 +30,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class UploadHandler extends AliBaseHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(UploadHandler.class);
+//    private static final Logger logger = LoggerFactory.getLogger(UploadHandler.class);
 
     @Autowired
     private AliDeviceConfigService aliDeviceConfigService;
@@ -81,11 +82,11 @@ public class UploadHandler extends AliBaseHandler {
 
     private JSONObject ali2IR(String deviceSerialId, JSONObject object) throws Exception {
 
-        logger.info(" ======= UploadHandler ali2IR start ====== ");
+//        logger.info(" ======= UploadHandler ali2IR start ====== ");
 
         JSONArray jsonArray = null;
         jsonArray = object.getJSONArray("value");
-        logger.info("UploadHandler jsonArray ====== "+ jsonArray);
+//        logger.info("UploadHandler jsonArray ====== "+ jsonArray);
         String bId = aliDevCache.getValue("ir_"+deviceSerialId);//品牌ID
         TYaoKongYunBrand yaoKongYunBrand = yaoKongYunService.getYaoKongYunByTId(Integer.valueOf(bId));
 
@@ -111,7 +112,7 @@ public class UploadHandler extends AliBaseHandler {
             nvps.add(new BasicNameValuePair("t", String.valueOf(yaoKongYunBrand.getDeviceType())));
             httpPost.setEntity(new UrlEncodedFormEntity(nvps));
             CloseableHttpResponse closeableHttpResponse = httpClient.execute(httpPost);
-            logger.info("UploadHandler closeableHttpResponse ====== "+ closeableHttpResponse);
+//            logger.info("UploadHandler closeableHttpResponse ====== "+ closeableHttpResponse);
 
             return getStateJson("3");
         }else if(functionId==4){//遥控器学习码
@@ -132,7 +133,11 @@ public class UploadHandler extends AliBaseHandler {
         String[] values = new String[1];
         values[0] = valueObject.toString();
         jsonObject.put("value",values);
-        logger.info(" ======= UploadHandler getStateJson ====== "+jsonObject);
+//        logger.info(" ======= UploadHandler getStateJson ====== "+jsonObject);
         return jsonObject;
     }
+//    public static void main(String[] args) {
+//        UploadHandler handler = new UploadHandler();
+//        handler.process("123456",new JSONObject());
+//    }
 }
