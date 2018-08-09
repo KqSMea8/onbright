@@ -49,6 +49,8 @@ public class IntelligentFingerRemoteUserDTO implements Serializable{
  
 	private java.lang.String timeLeft;
 	public IntelligentFingerRemoteUserDTO(TIntelligentFingerRemoteUser user) {
+		if(user==null)
+			return;
 		setIsMax(user.getIsmax());
 		setId(user.getId());
 		setSerialId(user.getSerialid());

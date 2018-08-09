@@ -7,9 +7,11 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.UpdateProvider;
 import org.springframework.stereotype.Component;
 
 import com.bright.apollo.common.entity.TIntelligentFingerAuth;
+import com.bright.apollo.dao.device.sqlProvider.TIntelligentFingerAuthDynaSqlProvider;
 
 /**  
  *@Title:  
@@ -50,5 +52,12 @@ public interface TIntelligentFingerAuthMapper {
 	@Insert("insert into t_intelligent_finger_auth(serialId," + "pwd) values(#{serialid},#{pwd})")
 	@Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
 	int addIntelligentFingerAuth(TIntelligentFingerAuth auth);
+
+	/**  
+	 * @param fingerAuth  
+	 * @Description:  
+	 */
+	@UpdateProvider(type=TIntelligentFingerAuthDynaSqlProvider.class,method="updateTintelligentFingerAuth")
+	void updateTintelligentFingerAuth(TIntelligentFingerAuth fingerAuth);
 
 }

@@ -26,12 +26,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.HandlerMapping;
+
 import com.bright.apollo.cache.CmdCache;
 import com.bright.apollo.common.dto.OboxResp;
 import com.bright.apollo.common.dto.OboxResp.Type;
 import com.bright.apollo.common.entity.TCreateTableLog;
 import com.bright.apollo.common.entity.TIntelligentFingerAbandonRemoteUser;
 import com.bright.apollo.common.entity.TIntelligentFingerAuth;
+import com.bright.apollo.common.entity.TIntelligentFingerPush;
 import com.bright.apollo.common.entity.TIntelligentFingerRemoteUser;
 import com.bright.apollo.common.entity.TIntelligentFingerUser;
 import com.bright.apollo.common.entity.TNvr;
@@ -49,6 +51,7 @@ import com.bright.apollo.common.entity.TYSCamera;
 import com.bright.apollo.constant.SubTableConstant;
 import com.bright.apollo.enums.ConditionTypeEnum;
 import com.bright.apollo.enums.DeviceTypeEnum;
+import com.bright.apollo.enums.IntelligentMaxEnum;
 import com.bright.apollo.enums.NodeTypeEnum;
 import com.bright.apollo.enums.RemoteUserEnum;
 import com.bright.apollo.enums.SceneTypeEnum;
@@ -66,6 +69,7 @@ import com.bright.apollo.request.OboxDTO;
 import com.bright.apollo.request.SceneActionDTO;
 import com.bright.apollo.request.SceneConditionDTO;
 import com.bright.apollo.request.SceneDTO;
+import com.bright.apollo.request.TIntelligentFingerPushDTO;
 import com.bright.apollo.response.AliDevInfo;
 import com.bright.apollo.response.DevcieCount;
 import com.bright.apollo.response.IntelligentOpenRecordItemDTO;
@@ -76,8 +80,7 @@ import com.bright.apollo.service.MsgService;
 import com.bright.apollo.tool.ByteHelper;
 import com.bright.apollo.tool.DateHelper;
 import com.bright.apollo.tool.MobileUtil;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.bright.apollo.tool.NumberHelper;
 import com.google.gson.JsonObject;
 import com.zz.common.util.MD5;
 
@@ -3274,6 +3277,12 @@ public class FacadeController {
 			String authToken) {
 		ResponseObject<List<IntelligentFingerRemoteUserDTO>> res = new ResponseObject<List<IntelligentFingerRemoteUserDTO>>();
 		try {
+			String intelligentSerialId = cmdCache.getIntelligentSerialId(authToken);
+			if (StringUtils.isEmpty(intelligentSerialId) || !intelligentSerialId.equals(serialId)) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
 			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			if (StringUtils.isEmpty(principal.getUsername())) {
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
@@ -3346,7 +3355,7 @@ public class FacadeController {
 	 * @return
 	 * @Description:
 	 */
-	@ApiOperation(value = "query_intelligent_authPwd", httpMethod = "POST", produces = "application/json")
+	@ApiOperation(value = "addIntelligentRemoteUser", httpMethod = "POST", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/getIntelligentAuthPwd/{serialId}/{authToken}/{nickName}/{startTime}/{endTime}", method = RequestMethod.POST)
 	public ResponseObject<Map<String, Object>> addIntelligentRemoteUser(@PathVariable("serialId") String serialId,
@@ -3357,6 +3366,12 @@ public class FacadeController {
 			@RequestParam(value = "isMax", required = false) String isMax) {
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		try {
+			String intelligentSerialId = cmdCache.getIntelligentSerialId(authToken);
+			if (StringUtils.isEmpty(intelligentSerialId) || !intelligentSerialId.equals(serialId)) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
 			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			if (StringUtils.isEmpty(principal.getUsername())) {
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
@@ -3402,8 +3417,9 @@ public class FacadeController {
 				userSerialId = abandonRemoteUsers.get(0).getUserSerialid().intValue();
 				feignDeviceClient.delIntelligentFingerAbandonRemoteUserById(abandonRemoteUsers.get(0).getId());
 			} else {
-				ResponseObject<List<TIntelligentFingerRemoteUser>> remoteUserRes = feignDeviceClient.getTIntelligentFingerRemoteUsersBySerialId(serialId);
-				if(remoteUserRes==null||remoteUserRes.getStatus()!=ResponseEnum.SelectSuccess.getStatus()){
+				ResponseObject<List<TIntelligentFingerRemoteUser>> remoteUserRes = feignDeviceClient
+						.getTIntelligentFingerRemoteUsersBySerialId(serialId);
+				if (remoteUserRes == null || remoteUserRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
 					res.setStatus(ResponseEnum.RequestParamError.getStatus());
 					res.setMessage(ResponseEnum.RequestParamError.getMsg());
 					return res;
@@ -3415,42 +3431,657 @@ public class FacadeController {
 						res.setStatus(ResponseEnum.RequestParamError.getStatus());
 						res.setMessage(ResponseEnum.RequestParamError.getMsg());
 						return res;
-					}else if (userSerialId < 10) {
+					} else if (userSerialId < 10) {
 						userSerialId = 10;
 					}
 				} else {
 					userSerialId = 10;
 				}
 			}
-		/*	String randomNum = (int) ((Math.random() * 9 + 1) * 10000) + "";
-			ByteHelper.sendMessageToObox(RemoteUserEnum.add.getValue(), obox, clientSession, tOboxDeviceConfig, startTime,
-					endTime, times, userSerialId, randomNum);
+			String randomNum = (int) ((Math.random() * 9 + 1) * 10000) + "";
+			feignAliClient.sendMessageToFinger(RemoteUserEnum.add.getValue(), oboxRes.getData(), deviceConfig,
+					startTime, endTime, times, userSerialId, randomNum);
 			TIntelligentFingerRemoteUser fingerRemoteUser = null;
 			if (StringUtils.isEmpty(isMax) || Integer.parseInt(isMax) == IntelligentMaxEnum.MIN.getValue()) {
-				fingerRemoteUser = new TIntelligentFingerRemoteUser(userSerialId, nickName, startTime, endTime,
-						mobile == null ? "" : mobile, Integer.parseInt(times), serialId, randomNum);
+				fingerRemoteUser = new TIntelligentFingerRemoteUser(userSerialId, mobile == null ? "" : mobile,
+						serialId, nickName, startTime, endTime, Integer.parseInt(times), randomNum);
 			} else {
-				fingerRemoteUser = new TIntelligentFingerRemoteUser(userSerialId, nickName, startTime, endTime,
-						mobile == null ? "" : mobile, 1, serialId, randomNum, IntelligentMaxEnum.MAX.getValue());
+				fingerRemoteUser = new TIntelligentFingerRemoteUser(userSerialId, mobile == null ? "" : mobile,
+						serialId, nickName, startTime, endTime, 1, randomNum, IntelligentMaxEnum.MAX.getValue());
 			}
-
-			int fingerRemoteUserId = UserBusiness.addTIntelligentFingerRemoteUser(fingerRemoteUser);
-			TIntelligentFingerRemoteUser remoteUser = UserBusiness
-					.queryTIntelligentFingerRemoteUserById(fingerRemoteUserId);
+			ResponseObject<Integer> ingerRemoteUserRes = feignDeviceClient
+					.addTIntelligentFingerRemoteUser(fingerRemoteUser);
+			if (ingerRemoteUserRes == null || ingerRemoteUserRes.getStatus() != ResponseEnum.AddSuccess.getStatus()) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			int fingerRemoteUserId = ingerRemoteUserRes.getData();
+			ResponseObject<TIntelligentFingerRemoteUser> remoteUserRes = feignDeviceClient
+					.getIntelligentFingerRemoteUserById(fingerRemoteUserId);
+			if (remoteUserRes == null || remoteUserRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
 			// 创建一个定时器
-			new QuartzService().startRemoteOpenTaskSchedule(fingerRemoteUserId, endTime, serialId);
+			feignQuartzClient.addRemoteOpenTaskSchedule(fingerRemoteUserId, endTime, serialId);
 			// 返回参数待测试
-			JsonObject respJsonObject = respRight();
-			Gson g2 = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-			respJsonObject.addProperty("authCode", "62" + userSerialId + "" + randomNum);
-			respJsonObject.add("remoteUser", g2.toJsonTree(new IntelligentFingerRemoteUserDTO(remoteUser)));
-			return respJsonObject;*/
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("authCode", "62" + userSerialId + "" + randomNum);
+			map.put("remoteUser", new IntelligentFingerRemoteUserDTO(remoteUserRes.getData()));
+			res.setData(map);
+			res.setStatus(ResponseEnum.AddSuccess.getStatus());
+			res.setMessage(ResponseEnum.AddSuccess.getMsg());
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
+	}
+
+	/**
+	 * @param id
+	 * @param serialId
+	 * @param authToken
+	 * @return
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@ApiOperation(value = "addIntelligentRemoteUser", httpMethod = "DELETE", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/delIntelligentRemoteUser/{id}/{serialId}/{authToken}", method = RequestMethod.DELETE)
+	public ResponseObject delIntelligentRemoteUser(@PathVariable("id") Integer id,
+			@PathVariable("serialId") String serialId, @PathVariable("authToken") String authToken) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		try {
+			String intelligentSerialId = cmdCache.getIntelligentSerialId(authToken);
+			if (StringUtils.isEmpty(intelligentSerialId) || !intelligentSerialId.equals(serialId)) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getData() == null
+					|| resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TOboxDeviceConfig> deviceConfigRes = feignDeviceClient.getDevice(serialId);
+			if (deviceConfigRes == null || deviceConfigRes.getData() == null
+					|| !deviceConfigRes.getData().getDeviceType().equals(DeviceTypeEnum.doorlock.getValue())
+					|| !deviceConfigRes.getData().getDeviceChildType()
+							.equals(DeviceTypeEnum.capacity_finger.getValue())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			TOboxDeviceConfig deviceConfig = deviceConfigRes.getData();
+			ResponseObject<TObox> oboxRes = feignOboxClient.getOboxByUserAndoboxSerialId(resUser.getData().getId(),
+					deviceConfig.getOboxSerialId());
+			if (oboxRes == null || oboxRes.getData() == null
+					|| oboxRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TIntelligentFingerRemoteUser> remoteUserRes = feignDeviceClient
+					.getIntelligentFingerRemoteUserById(id);
+			if (remoteUserRes == null || remoteUserRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| remoteUserRes.getData() == null) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			feignDeviceClient.delTIntelligentFingerRemoteUserById(remoteUserRes.getData().getId());
+			feignAliClient.sendMessageToFinger(RemoteUserEnum.del.getValue(), oboxRes.getData(),
+					deviceConfigRes.getData(), remoteUserRes.getData().getStartTime(),
+					remoteUserRes.getData().getEndTime(), remoteUserRes.getData().getTimes().intValue()
+							- remoteUserRes.getData().getUseTimes().intValue() + "",
+					remoteUserRes.getData().getUserSerialid(), remoteUserRes.getData().getPwd());
+			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	/**
+	 * @param serialId
+	 * @param oldPwd
+	 * @param newPwd
+	 * @return
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@ApiOperation(value = "addIntelligentRemoteUser", httpMethod = "PUT", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/updateIntelligentPwd/{serialId}/{oldPwd}/{newPwd}", method = RequestMethod.PUT)
+	public ResponseObject updateIntelligentPwd(@PathVariable("serialId") String serialId,
+			@PathVariable("oldPwd") String oldPwd, @PathVariable("newPwd") String newPwd) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getData() == null
+					|| resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TOboxDeviceConfig> deviceConfigRes = feignDeviceClient.getDevice(serialId);
+			if (deviceConfigRes == null || deviceConfigRes.getData() == null
+					|| !deviceConfigRes.getData().getDeviceType().equals(DeviceTypeEnum.doorlock.getValue())
+					|| !deviceConfigRes.getData().getDeviceChildType()
+							.equals(DeviceTypeEnum.capacity_finger.getValue())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			TOboxDeviceConfig deviceConfig = deviceConfigRes.getData();
+			ResponseObject<TObox> oboxRes = feignOboxClient.getOboxByUserAndoboxSerialId(resUser.getData().getId(),
+					deviceConfig.getOboxSerialId());
+			if (oboxRes == null || oboxRes.getData() == null
+					|| oboxRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TIntelligentFingerAuth> authRes = feignDeviceClient.getIntelligentAuthBySerialId(serialId);
+			if (authRes == null || authRes.getData() == null
+					|| authRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| !MD5.MD5generator(oldPwd + salt).equals(authRes.getData().getPwd())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			TIntelligentFingerAuth fingerAuth = authRes.getData();
+			fingerAuth.setPwd(MD5.MD5generator(newPwd + salt));
+			feignDeviceClient.updateTintelligentFingerAuth(fingerAuth);
+			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	/**
+	 * @param serialId
+	 * @return
+	 * @Description:
+	 */
+	@ApiOperation(value = "query_intelligent_push_list", httpMethod = "GET", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/getIntelligentPushList/{serialId}", method = RequestMethod.GET)
+	public ResponseObject<Map<String, Object>> getIntelligentPushList(@PathVariable("serialId") String serialId) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getData() == null
+					|| resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TOboxDeviceConfig> deviceConfigRes = feignDeviceClient.getDevice(serialId);
+			if (deviceConfigRes == null || deviceConfigRes.getData() == null
+					|| !deviceConfigRes.getData().getDeviceType().equals(DeviceTypeEnum.doorlock.getValue())
+					|| !deviceConfigRes.getData().getDeviceChildType()
+							.equals(DeviceTypeEnum.capacity_finger.getValue())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			TOboxDeviceConfig deviceConfig = deviceConfigRes.getData();
+			ResponseObject<TObox> oboxRes = feignOboxClient.getOboxByUserAndoboxSerialId(resUser.getData().getId(),
+					deviceConfig.getOboxSerialId());
+			if (oboxRes == null || oboxRes.getData() == null
+					|| oboxRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<List<TIntelligentFingerPush>> pushRes = feignDeviceClient
+					.getTIntelligentFingerPushsBySerialId(serialId);
+			if (pushRes == null || pushRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			Map<String, Object> map = new HashMap<String, Object>();
+			List<TIntelligentFingerPush> list = pushRes.getData();
+			if (list == null || list.size() == 0) {
+				map.put("mobile", "");
+			} else {
+				map.put("mobile", list.get(0).getMobile());
+			}
+			map.put("list", pushToDTO(list));
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	/**
+	 * @param serialId
+	 * @param id
+	 * @param authToken
+	 * @param nickName
+	 * @param startTime
+	 * @param endTime
+	 * @param times
+	 * @param mobile
+	 * @param isMax
+	 * @return
+	 * @Description:
+	 */
+	@ApiOperation(value = "modify_intelligent_remote_user", httpMethod = "PUT", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/updateIntelligentRemoteUser/{serialId}/{id}/{authToken}/{nickName}/{startTime}/{endTime}", method = RequestMethod.PUT)
+	public ResponseObject<Map<String, Object>> updateIntelligentRemoteUser(
+			@PathVariable(value = "serialId") String serialId, @PathVariable(value = "id") int id,
+			@PathVariable(value = "authToken") String authToken, @PathVariable(value = "nickName") String nickName,
+			@PathVariable(value = "startTime") long startTime, @PathVariable(value = "endTime") long endTime,
+			@RequestParam(value = "times", required = false) String times,
+			@RequestParam(value = "mobile", required = false) String mobile,
+			@RequestParam(value = "isMax", required = false) String isMax) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		try {
+			String intelligentSerialId = cmdCache.getIntelligentSerialId(authToken);
+			if (StringUtils.isEmpty(intelligentSerialId) || !intelligentSerialId.equals(serialId)) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			if (startTime >= endTime || endTime <= new Date().getTime()) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			if (!StringUtils.isEmpty(mobile) && !MobileUtil.checkMobile(mobile)) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			if (!StringUtils.isEmpty(isMax) && (!NumberHelper.isNumeric(isMax) || StringUtils.isEmpty(times)
+					|| !NumberHelper.isNumeric(times))) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getData() == null
+					|| resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TOboxDeviceConfig> deviceConfigRes = feignDeviceClient.getDevice(serialId);
+			if (deviceConfigRes == null || deviceConfigRes.getData() == null
+					|| !deviceConfigRes.getData().getDeviceType().equals(DeviceTypeEnum.doorlock.getValue())
+					|| !deviceConfigRes.getData().getDeviceChildType()
+							.equals(DeviceTypeEnum.capacity_finger.getValue())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			TOboxDeviceConfig deviceConfig = deviceConfigRes.getData();
+			ResponseObject<TObox> oboxRes = feignOboxClient.getOboxByUserAndoboxSerialId(resUser.getData().getId(),
+					deviceConfig.getOboxSerialId());
+			if (oboxRes == null || oboxRes.getData() == null
+					|| oboxRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			// 判断远程用户
+			ResponseObject<TIntelligentFingerRemoteUser> remoteRes = feignDeviceClient
+					.getIntelligentFingerRemoteUserById(id);
+			if (remoteRes == null || remoteRes.getData() == null
+					|| remoteRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			TIntelligentFingerRemoteUser fingerRemoteUser = remoteRes.getData();
+			String randomNum = (int) ((Math.random() * 9 + 1) * 10000) + "";
+			// pin 要改变
+			if (fingerRemoteUser.getIsend() == 0) {
+				feignAliClient.sendMessageToFinger(RemoteUserEnum.update.getValue(), oboxRes.getData(), deviceConfig,
+						startTime + "", endTime + "", times, fingerRemoteUser.getUserSerialid(), randomNum);
+			} else {
+				ResponseObject<List<TIntelligentFingerAbandonRemoteUser>> abandonRemoteUsersRes = feignDeviceClient
+						.getTIntelligentFingerAbandonRemoteUsersBySerialId(deviceConfig.getDeviceSerialId());
+				if (abandonRemoteUsersRes == null
+						|| abandonRemoteUsersRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
+					res.setStatus(ResponseEnum.RequestParamError.getStatus());
+					res.setMessage(ResponseEnum.RequestParamError.getMsg());
+					return res;
+				}
+				List<TIntelligentFingerAbandonRemoteUser> abandonRemoteUsers = abandonRemoteUsersRes.getData();
+				if (abandonRemoteUsers != null && abandonRemoteUsers.size() > 0) {
+					fingerRemoteUser.setUserSerialid(abandonRemoteUsers.get(0).getUserSerialid().intValue());
+					feignDeviceClient.delIntelligentFingerAbandonRemoteUserById(abandonRemoteUsers.get(0).getId());
+				} else {
+					ResponseObject<List<TIntelligentFingerRemoteUser>> remoteUsersRes = feignDeviceClient
+							.getTIntelligentFingerRemoteUsersBySerialId(deviceConfig.getDeviceSerialId());
+					if (remoteUsersRes == null
+							|| remoteUsersRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
+						res.setStatus(ResponseEnum.RequestParamError.getStatus());
+						res.setMessage(ResponseEnum.RequestParamError.getMsg());
+						return res;
+					}
+					List<TIntelligentFingerRemoteUser> remoteUsers = remoteUsersRes.getData();
+					if (remoteUsers != null && remoteUsers.size() > 0) {
+						if ((remoteUsers.get(0).getUserSerialid() + 1) >= 100) {
+							res.setStatus(ResponseEnum.RequestParamError.getStatus());
+							res.setMessage(ResponseEnum.RequestParamError.getMsg());
+							return res;
+						} else if ((remoteUsers.get(0).getUserSerialid() + 1) < 10) {
+							fingerRemoteUser.setUserSerialid(10);
+						} else {
+							fingerRemoteUser.setUserSerialid(remoteUsers.get(0).getUserSerialid() + 1);
+						}
+					} else {
+						fingerRemoteUser.setUserSerialid(10);
+					}
+				}
+			}
+			if (StringUtils.isEmpty(isMax) || Integer.parseInt(isMax) == IntelligentMaxEnum.MIN.getValue()) {
+				fingerRemoteUser.setTimes(Integer.parseInt(times));
+				fingerRemoteUser.setIsmax(IntelligentMaxEnum.MIN.getValue());
+			} else {
+				fingerRemoteUser.setTimes(1);
+				fingerRemoteUser.setIsmax(IntelligentMaxEnum.MAX.getValue());
+			}
+			long time = new Date().getTime();
+			if (time < startTime) {
+				fingerRemoteUser.setIsend(-1);
+			} else if (time > endTime) {
+				fingerRemoteUser.setIsend(1);
+			} else {
+				fingerRemoteUser.setIsend(0);
+			}
+			fingerRemoteUser.setNickName(nickName);
+			fingerRemoteUser.setPwd(randomNum);
+			fingerRemoteUser.setStartTime(startTime + "");
+			fingerRemoteUser.setEndTime(endTime + "");
+			fingerRemoteUser.setTimes(Integer.parseInt(times));
+			fingerRemoteUser.setUseTimes(0);
+			fingerRemoteUser.setMobile(mobile == null ? "" : mobile);
+			feignDeviceClient.updateTIntelligentFingerRemoteUser(fingerRemoteUser);
+			// 创建一个定时器
+			feignQuartzClient.addRemoteOpenTaskSchedule(fingerRemoteUser.getId(), endTime + "", serialId);
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("pwd", "62" + fingerRemoteUser.getUserSerialid() + randomNum);
+			map.put("remoteUser", new IntelligentFingerRemoteUserDTO(fingerRemoteUser));
+			res.setData(map);
+			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	/**
+	 * @param serialId
+	 * @param pin
+	 * @param authToken
+	 * @param mobile
+	 * @return
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@ApiOperation(value = "modify_intelligent_remote_user", httpMethod = "PUT", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/updateIntelligentRemoteUser/{serialId}/{pin}/{authToken}/{mobile}", method = RequestMethod.PUT)
+	public ResponseObject sendRemotePwd(@PathVariable(value = "serialId") String serialId,
+			@PathVariable(value = "pin") String pin, @PathVariable(value = "authToken") String authToken,
+			@PathVariable(value = "mobile") String mobile) {
+		ResponseObject res = new ResponseObject();
+		try {
+			String intelligentSerialId = cmdCache.getIntelligentSerialId(authToken);
+			if (StringUtils.isEmpty(intelligentSerialId) || !intelligentSerialId.equals(serialId)) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			if (!MobileUtil.checkMobile(mobile)) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getData() == null
+					|| resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TOboxDeviceConfig> deviceConfigRes = feignDeviceClient.getDevice(serialId);
+			if (deviceConfigRes == null || deviceConfigRes.getData() == null
+					|| !deviceConfigRes.getData().getDeviceType().equals(DeviceTypeEnum.doorlock.getValue())
+					|| !deviceConfigRes.getData().getDeviceChildType()
+							.equals(DeviceTypeEnum.capacity_finger.getValue())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			TOboxDeviceConfig deviceConfig = deviceConfigRes.getData();
+			ResponseObject<TObox> oboxRes = feignOboxClient.getOboxByUserAndoboxSerialId(resUser.getData().getId(),
+					deviceConfig.getOboxSerialId());
+			if (oboxRes == null || oboxRes.getData() == null
+					|| oboxRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TIntelligentFingerRemoteUser> remoteRes = feignDeviceClient
+					.getTIntelligentFingerRemoteUserBySerialIdAndPin(serialId, Integer.parseInt(pin));
+			if (remoteRes == null || remoteRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| remoteRes.getData() == null) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			TIntelligentFingerRemoteUser remoteUser = remoteRes.getData();
+			msgService.sendNotice(mobile, "你的临时授权码是：" + remoteUser.getPwd());
+			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	/**
+	 * @param serialId
+	 * @param appkey
+	 * @param pwd
+	 * @param code
+	 * @return
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@ApiOperation(value = "modify_intelligent_remote_user", httpMethod = "PUT", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/resetIntelligentPwdByCode/{serialId}/{appkey}/{pwd}/{code}", method = RequestMethod.PUT)
+	public ResponseObject resetIntelligentPwdByCode(@PathVariable(value = "serialId") String serialId,
+			@PathVariable(value = "appkey") String appkey, @PathVariable(value = "pwd") String pwd,
+			@PathVariable(value = "code") String code) {
+		ResponseObject res = new ResponseObject();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getData() == null
+					|| resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TOboxDeviceConfig> deviceConfigRes = feignDeviceClient.getDevice(serialId);
+			if (deviceConfigRes == null || deviceConfigRes.getData() == null
+					|| !deviceConfigRes.getData().getDeviceType().equals(DeviceTypeEnum.doorlock.getValue())
+					|| !deviceConfigRes.getData().getDeviceChildType()
+							.equals(DeviceTypeEnum.capacity_finger.getValue())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			TOboxDeviceConfig deviceConfig = deviceConfigRes.getData();
+			ResponseObject<TObox> oboxRes = feignOboxClient.getOboxByUserAndoboxSerialId(resUser.getData().getId(),
+					deviceConfig.getOboxSerialId());
+			if (oboxRes == null || oboxRes.getData() == null
+					|| oboxRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			cmdCache.createIntelligentForgetPwdKey(serialId, sessionKey(resUser.getData().getId(), appkey));
+			cmdCache.createIntelligentForgetPwd(sessionKey(resUser.getData().getId(), appkey), pwd);
+			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	/**
+	 * @param serialId
+	 * @param mobile
+	 * @param pushinfo
+	 * @return
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@ApiOperation(value = "modify_intelligent_remote_user", httpMethod = "PUT", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/updateIntelligentRemoteUser/{serialId}/{mobile}", method = RequestMethod.PUT)
+	public ResponseObject updateIntelligentRemoteUser(@PathVariable(value = "serialId") String serialId,
+			@PathVariable(value = "mobile") String mobile,
+			@RequestParam(value = "pushinfo") List<TIntelligentFingerPushDTO> pushinfo) {
+		ResponseObject res = new ResponseObject();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getData() == null
+					|| resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TOboxDeviceConfig> deviceConfigRes = feignDeviceClient.getDevice(serialId);
+			if (deviceConfigRes == null || deviceConfigRes.getData() == null
+					|| !deviceConfigRes.getData().getDeviceType().equals(DeviceTypeEnum.doorlock.getValue())
+					|| !deviceConfigRes.getData().getDeviceChildType()
+							.equals(DeviceTypeEnum.capacity_finger.getValue())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			TOboxDeviceConfig deviceConfig = deviceConfigRes.getData();
+			ResponseObject<TObox> oboxRes = feignOboxClient.getOboxByUserAndoboxSerialId(resUser.getData().getId(),
+					deviceConfig.getOboxSerialId());
+			if (oboxRes == null || oboxRes.getData() == null
+					|| oboxRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			feignDeviceClient.updateTIntelligentFingerPushMobileBySerialId(mobile, serialId);
+			for (int i = 0; i < pushinfo.size(); i++) {
+				TIntelligentFingerPushDTO dto = pushinfo.get(i);
+				feignDeviceClient.updateTIntelligentFingerPushEnableBySerialIdAndValue(dto.getEnable(),
+						serialId, dto.getValue());
+  			}
+			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	public String sessionKey(int uid, String appKey) {
+		if (!StringUtils.isEmpty(appKey))
+			return appKey + "#" + uid;
+		return "#" + uid;
+	}
+
+	/**
+	 * @param list
+	 * @return
+	 * @Description:
+	 */
+	private List<TIntelligentFingerPushDTO> pushToDTO(List<TIntelligentFingerPush> list) {
+		if (list == null)
+			return null;
+		List<TIntelligentFingerPushDTO> dtos = new ArrayList<TIntelligentFingerPushDTO>();
+		for (TIntelligentFingerPush push : list) {
+			dtos.add(new TIntelligentFingerPushDTO(push));
+		}
+		return dtos;
 	}
 
 	/**
@@ -3546,9 +4177,10 @@ public class FacadeController {
 		return ctime;
 	}
 
-
-//	@ApiOperation(value = "sendLearn2IR", httpMethod = "POST", produces = "application/json")
-//	@ApiResponse(code = 200, message = "SelectSuccess", response = ResponseObject.class)
+	// @ApiOperation(value = "sendLearn2IR", httpMethod = "POST", produces =
+	// "application/json")
+	// @ApiResponse(code = 200, message = "SelectSuccess", response =
+	// ResponseObject.class)
 	@RequestMapping(value = "/sendlearn", method = RequestMethod.POST)
 	public ResponseObject<List<Map<String, String>>> sendLearn2IR(@RequestBody(required = true) Object object) {
 		ResponseObject<List<Map<String, String>>> res = new ResponseObject<List<Map<String, String>>>();
@@ -3559,8 +4191,7 @@ public class FacadeController {
 				res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
 				res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
 			} else {
-				ResponseObject<List<Map<String, String>>> resList = feignAliClient
-						.sendLearn2IR(object);
+				ResponseObject<List<Map<String, String>>> resList = feignAliClient.sendLearn2IR(object);
 				if (resList != null && resList.getStatus() == ResponseEnum.UpdateSuccess.getStatus()) {
 					res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 					res.setMessage(ResponseEnum.SelectSuccess.getMsg());
@@ -3577,6 +4208,7 @@ public class FacadeController {
 		}
 		return res;
 	}
+
 	/**
 	 * @param sceneConditionDTOs
 	 * @param oboxSerialId

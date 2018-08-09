@@ -71,4 +71,29 @@ public class CmdCache {
  		return uuid;
 	
 	}
+	/**  
+	 * @param authToken  
+	 * @Description:  
+	 */
+	public String getIntelligentSerialId(String authToken) {
+		return redisBussines.get(authToken);
+		
+	}
+	/**  
+	 * @param serialId
+	 * @param sessionKey  
+	 * @Description:  
+	 */
+	public void createIntelligentForgetPwdKey(String serialId, String sessionKey) {
+		redisBussines.setValueWithExpire(String.valueOf(serialId)+"_sk", sessionKey, token_time);
+ 	}
+	/**  
+	 * @param sessionKey
+	 * @param pwd  
+	 * @Description:  
+	 */
+	public void createIntelligentForgetPwd(String sessionKey, String pwd) {
+		redisBussines.setValueWithExpire(String.valueOf(sessionKey)+"_sp", pwd, token_time);
+		
+	}
 }

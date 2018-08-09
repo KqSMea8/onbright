@@ -20,36 +20,46 @@ import com.bright.apollo.response.ResponseObject;
 public interface FeignQuartzClient {
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/quartz/addJob/{sceneNumber}/{sceneName}/{group}", method = RequestMethod.POST, produces = "application/json")
-    public ResponseObject addJob(
-    		@PathVariable(value="sceneNumber",required=true) Integer sceneNumber,
-    		@PathVariable(value="sceneName",required=true) String sceneName,
-    		@PathVariable(value="group",required=true) Integer group,
-    		@RequestParam(value="cronString",required=true) String cronString
-    		);
+	public ResponseObject addJob(@PathVariable(value = "sceneNumber", required = true) Integer sceneNumber,
+			@PathVariable(value = "sceneName", required = true) String sceneName,
+			@PathVariable(value = "group", required = true) Integer group,
+			@RequestParam(value = "cronString", required = true) String cronString);
 
-	/**  
-	 * @param jobName  
-	 * @Description:  
+	/**
+	 * @param jobName
+	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/quartz/deleteJob/{jobName}", method = RequestMethod.DELETE, produces = "application/json")
-	public ResponseObject deleteJob(@PathVariable(value="jobName",required=true) String jobName);
+	public ResponseObject deleteJob(@PathVariable(value = "jobName", required = true) String jobName);
 
-	/**  
-	 * @param jobName  
-	 * @Description:  
+	/**
+	 * @param jobName
+	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/quartz/pauseJob/{jobName}", method = RequestMethod.PUT, produces = "application/json")
-	public ResponseObject pauseJob(@PathVariable(value="jobName",required=true) String jobName);
+	public ResponseObject pauseJob(@PathVariable(value = "jobName", required = true) String jobName);
 
-	/**  
-	 * @param jobName  
-	 * @Description:  
+	/**
+	 * @param jobName
+	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/quartz/resumeJob/{jobName}", method = RequestMethod.PUT, produces = "application/json")
-	public ResponseObject resumeJob(@PathVariable(value="jobName",required=true) String jobName);
+	public ResponseObject resumeJob(@PathVariable(value = "jobName", required = true) String jobName);
 
- 
+	/**
+	 * @param fingerRemoteUserId
+	 * @param endTime
+	 * @param serialId
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/quartz/addRemoteOpenTaskSchedule/{fingerRemoteUserId}/{endTime}/{serialId}", method = RequestMethod.POST, produces = "application/json")
+	public ResponseObject addRemoteOpenTaskSchedule(
+			@PathVariable(value = "fingerRemoteUserId", required = true) int fingerRemoteUserId,
+			@PathVariable(value = "endTime", required = true) String endTime,
+			@PathVariable(value = "serialId", required = true) String serialId);
+
 }

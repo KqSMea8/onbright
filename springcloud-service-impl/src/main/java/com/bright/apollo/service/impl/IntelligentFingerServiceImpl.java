@@ -7,11 +7,13 @@ import org.springframework.stereotype.Service;
 
 import com.bright.apollo.common.entity.TIntelligentFingerAbandonRemoteUser;
 import com.bright.apollo.common.entity.TIntelligentFingerAuth;
+import com.bright.apollo.common.entity.TIntelligentFingerPush;
 import com.bright.apollo.common.entity.TIntelligentFingerRemoteUser;
 import com.bright.apollo.common.entity.TIntelligentFingerUser;
-import com.bright.apollo.dao.device.mapper.TIntelligentDFingerRemoteUserMapper;
 import com.bright.apollo.dao.device.mapper.TIntelligentFingerAbandonRemoteUserMapper;
 import com.bright.apollo.dao.device.mapper.TIntelligentFingerAuthMapper;
+import com.bright.apollo.dao.device.mapper.TIntelligentFingerPushMapper;
+import com.bright.apollo.dao.device.mapper.TIntelligentFingerRemoteUserMapper;
 import com.bright.apollo.dao.device.mapper.TIntelligentFingerUserMapper;
 import com.bright.apollo.dao.device.mapper.TIntelligentFingerWarnMapper;
 import com.bright.apollo.dao.device.mapper.TintelligentFingerRecordMapper;
@@ -38,9 +40,11 @@ public class IntelligentFingerServiceImpl implements IntelligentFingerService{
 	@Autowired
 	private TIntelligentFingerUserMapper userMapper;
 	@Autowired
-	private TIntelligentDFingerRemoteUserMapper remoteMapper;
+	private TIntelligentFingerRemoteUserMapper remoteMapper;
 	@Autowired
 	private TIntelligentFingerAbandonRemoteUserMapper abandonMapper;
+	@Autowired
+	private TIntelligentFingerPushMapper pushMapper;
 	/* (non-Javadoc)  
 	 * @see com.bright.apollo.service.IntelligentFingerService#countFingerAuth(java.lang.String)  
 	 */
@@ -143,5 +147,82 @@ public class IntelligentFingerServiceImpl implements IntelligentFingerService{
 	 
 		return remoteMapper.queryTIntelligentFingerRemoteUsersBySerialId(serialId);
 	}
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.IntelligentFingerService#addTIntelligentFingerRemoteUser(com.bright.apollo.common.entity.TIntelligentFingerRemoteUser)  
+	 */
+	@Override
+	public Integer addTIntelligentFingerRemoteUser(TIntelligentFingerRemoteUser fingerRemoteUser) {
+ 		return remoteMapper.addTIntelligentFingerRemoteUser(fingerRemoteUser);
+	}
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.IntelligentFingerService#queryTintelligentFingerRemoteUserById(int)  
+	 */
+	@Override
+	public TIntelligentFingerRemoteUser queryTintelligentFingerRemoteUserById(int id) {
+ 		return remoteMapper.queryTintelligentFingerRemoteUserById(id);
+	}
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.IntelligentFingerService#updateTintelligentFingerRemoteUser(com.bright.apollo.common.entity.TIntelligentFingerRemoteUser)  
+	 */
+	@Override
+	public void updateTintelligentFingerRemoteUser(TIntelligentFingerRemoteUser fingerRemoteUser) {
+		remoteMapper.updateTintelligentFingerRemoteUser(fingerRemoteUser);
+		
+	}
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.IntelligentFingerService#addIntelligentFingerAbandonRemoteUser(com.bright.apollo.common.entity.TIntelligentFingerAbandonRemoteUser)  
+	 */
+	@Override
+	public Integer addIntelligentFingerAbandonRemoteUser(TIntelligentFingerAbandonRemoteUser abandonRemoteUser) {  
+		return abandonMapper.addIntelligentFingerAbandonRemoteUser(abandonRemoteUser);
+	}
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.IntelligentFingerService#delTIntelligentFingerRemoteUserById(int)  
+	 */
+	@Override
+	public void delTIntelligentFingerRemoteUserById(int id) {
+		  remoteMapper.delTIntelligentFingerRemoteUserById(id);
+		
+	}
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.IntelligentFingerService#updateTintelligentFingerAuth(com.bright.apollo.common.entity.TIntelligentFingerAuth)  
+	 */
+	@Override
+	public void updateTintelligentFingerAuth(TIntelligentFingerAuth fingerAuth) {
+		authMapper.updateTintelligentFingerAuth(fingerAuth);
+		
+	}
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.IntelligentFingerService#queryTIntelligentFingerPushsBySerialId(java.lang.String)  
+	 */
+	@Override
+	public List<TIntelligentFingerPush> queryTIntelligentFingerPushsBySerialId(String serialId) {
+		 
+		return pushMapper.queryTIntelligentFingerPushsBySerialId(serialId);
+	}
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.IntelligentFingerService#queryTIntelligentFingerRemoteUserBySerialIdAndPin(java.lang.String, int)  
+	 */
+	@Override
+	public TIntelligentFingerRemoteUser queryTIntelligentFingerRemoteUserBySerialIdAndPin(String serialId, int pin) {
+		return remoteMapper.queryTIntelligentFingerRemoteUserBySerialIdAndPin(serialId,pin);
+	}
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.IntelligentFingerService#updateTIntelligentFingerPushMobileBySerialId(java.lang.String, java.lang.String)  
+	 */
+	@Override
+	public void updateTIntelligentFingerPushMobileBySerialId(String mobile, String serialId) {
+		pushMapper.updateTIntelligentFingerPushMobileBySerialId(mobile,serialId);
+		
+	}
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.IntelligentFingerService#updateTIntelligentFingerPushEnableBySerialIdAndValue(java.lang.Integer, java.lang.String, java.lang.Integer)  
+	 */
+	@Override
+	public void updateTIntelligentFingerPushEnableBySerialIdAndValue(Integer enable, String serialId, Integer value) {
+		pushMapper.updateTIntelligentFingerPushEnableBySerialIdAndValue(enable,serialId,value);
+		
+	}
+ 
  
 }

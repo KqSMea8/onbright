@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.bright.apollo.common.dto.OboxResp;
 import com.bright.apollo.common.entity.TObox;
+import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.controller.UserController;
 import com.bright.apollo.enums.CMDEnum;
 import com.bright.apollo.feign.FeignAliClient;
@@ -273,6 +274,16 @@ public class HystrixFeignAli2Fallback extends BasicHystrixFeignFallback implemen
 
 	@Override
 	public ResponseObject<List<Map<String, String>>> sendLearn2IR(Object object) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignAliClient#sendMessageToFinger(java.lang.String, com.bright.apollo.common.entity.TObox, com.bright.apollo.common.entity.TOboxDeviceConfig, java.lang.String, java.lang.String, java.lang.String, java.lang.Integer, java.lang.String)  
+	 */
+	@Override
+	public ResponseObject<OboxResp> sendMessageToFinger(String operation, TObox obox, TOboxDeviceConfig deviceConfig,
+			String startTime, String endTime, String times, Integer userSerialId, String randomNum) {
 		logger.warn("===ali server is break===");
 		return serverError();
 	}

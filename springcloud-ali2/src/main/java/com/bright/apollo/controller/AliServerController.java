@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bright.apollo.cache.CmdCache;
 import com.bright.apollo.common.dto.OboxResp;
+import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.enums.CMDEnum;
 import com.bright.apollo.enums.NodeTypeEnum;
@@ -24,10 +25,13 @@ import com.bright.apollo.request.SceneActionDTO;
 import com.bright.apollo.request.SceneConditionDTO;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
+import com.bright.apollo.service.CMDMessageService;
 import com.bright.apollo.service.OboxDeviceConfigService;
 import com.bright.apollo.service.TopicServer;
 import com.bright.apollo.session.SceneActionThreadPool;
 import com.bright.apollo.tool.ByteHelper;
+import com.bright.apollo.tool.DateHelper;
+import com.bright.apollo.tool.EncDecHelper;
 import com.zz.common.util.StringUtils;
 
 @RestController
@@ -42,9 +46,10 @@ public class AliServerController {
 	private SceneActionThreadPool sceneActionThreadPool;
 	@Autowired
 	private CmdCache cmdCache;
+	@Autowired
+	private EncDecHelper helper;
 	// for search new device
 	private static String timeout = "30";
-
 	@RequestMapping(value = "/toAli", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseObject<OboxResp> toAliService(@PathVariable(value = "cmd") CMDEnum cmd,
@@ -460,7 +465,112 @@ public class AliServerController {
 		return res;
 
 	}
-
+	/**
+	 * @param operation
+	 * @param data
+	 * @param deviceConfig
+	 * @param startTime
+	 * @param endTime
+	 * @param times
+	 * @param userSerialId
+	 * @param randomNum
+	 * @Description:
+	 */
+	@RequestMapping(value = "/sendMessageToFinger/{operation}/{startTime}/{endTime}/{times}/{userSerialId}/{randomNum}", method = RequestMethod.POST)
+	ResponseObject<OboxResp> sendMessageToFinger(@PathVariable(value = "operation") String operation, @RequestParam(required = true,value="obox")TObox obox,
+			@RequestParam(required = true,value="deviceConfig")TOboxDeviceConfig deviceConfig, @PathVariable(value = "startTime") String startTime,
+			@PathVariable(value = "endTime") String endTime, @PathVariable(value = "times") String times,
+			@PathVariable(value = "userSerialId") Integer userSerialId,
+			@PathVariable(value = "randomNum") String randomNum){
+		ResponseObject<OboxResp> res = new ResponseObject<OboxResp>();
+		try {
+			byte[] buildBytes = buildBytes(operation, obox,
+					deviceConfig, startTime, endTime, times, userSerialId, randomNum);
+			topicServer.request(CMDEnum.set_finger_remote_user, buildBytes, obox.getOboxSerialId());
+			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:"+e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	/**  
+	 * @param type
+	 * @param obox
+	 * @param deviceConfig
+	 * @param startTime
+	 * @param endTime
+	 * @param times
+	 * @param userSerialId
+	 * @param randomNum  
+	 * @Description:  
+	 */
+	private byte[] buildBytes(String type,TObox obox,  TOboxDeviceConfig oboxDeviceConfig,
+			String startTime, String endTime, String times, Integer userSerialId, String randomNum){
+		byte[] bodyBytes = new byte[32];
+		byte[] oboxSerildIdBytes = ByteHelper.hexStringToBytes(oboxDeviceConfig.getOboxSerialId());
+		System.arraycopy(oboxSerildIdBytes, 0, bodyBytes, 0, oboxSerildIdBytes.length);
+		bodyBytes[5] = 0x00;
+		bodyBytes[6] = (byte) Integer.parseInt(oboxDeviceConfig.getDeviceRfAddr(), 16);
+		byte[] setType = ByteHelper.hexStringToBytes(type);
+		//设置类型
+		System.arraycopy(setType, 0, bodyBytes, 7, setType.length);
+		if(type.equals("04")){
+			return bodyBytes;
+		}
+		byte[] msgType=ByteHelper.hexStringToBytes("01");
+		//消息类型
+		System.arraycopy(msgType, 0, bodyBytes, 8, msgType.length);
+		bodyBytes[9] = (byte) Integer.parseInt(Integer.toHexString(userSerialId), 16);		
+		// 加密字符串
+		String pin=Integer.toHexString(userSerialId);
+		if(Integer.toHexString(userSerialId).length()<=1){
+			pin=0+Integer.toHexString(userSerialId);
+		}
+		byte[] pwdBytes = ByteHelper.stringToAsciiBytes("62" + userSerialId+"" + randomNum, 16);
+ 		byte[] hexStringToBytes =ByteHelper.stringToAsciiBytes("smart_doorlock", 64);
+  		byte[] hexStringToBytes2 = ByteHelper.hexStringToBytes(pin);
+ 		byte[] hexStringToBytes3 = ByteHelper.hexStringToBytes(oboxDeviceConfig.getDeviceRfAddr());
+ 		System.arraycopy(hexStringToBytes2, 0, hexStringToBytes, "smart_doorlock".toCharArray().length, hexStringToBytes2.length);
+ 		System.arraycopy(hexStringToBytes3, 0, hexStringToBytes, "smart_doorlock".toCharArray().length+hexStringToBytes2.length, hexStringToBytes3.length);
+ 		
+ 		//out 64bytes ,pwdBytes 8bytes
+		//AES_DATA_ENC_DEC
+ 		logger.info("随机数:"+ByteHelper.byteArryToHexString(pwdBytes));
+ 		logger.info("加密前:"+ByteHelper.byteArryToHexString(hexStringToBytes));
+		helper.AES_DATA_ENC_DEC(hexStringToBytes, pwdBytes,0);		 
+		logger.info("加密后:"+ByteHelper.byteArryToHexString(hexStringToBytes));
+		System.arraycopy(hexStringToBytes, 0, bodyBytes, 10, 10);
+		byte[] msgType2 = ByteHelper.hexStringToBytes("02");
+		System.arraycopy(msgType2, 0, bodyBytes, 20, msgType2.length);
+		bodyBytes[21] = (byte) Integer.parseInt(Integer.toHexString(userSerialId), 16);
+		// 时间
+		String startDate = DateHelper.formatDate(Long.parseLong(startTime), DateHelper.FORMATNALLWITHPOINT);
+		byte[] startByte = ByteHelper.handleDate(startDate);
+		System.arraycopy(startByte, 0, bodyBytes, 22, startByte.length);
+		String endDate = DateHelper.formatDate(Long.parseLong(endTime), DateHelper.FORMATNALLWITHPOINT);
+		byte[] endByte = ByteHelper.handleDate(endDate);
+		System.arraycopy(endByte, 0, bodyBytes, 26, endByte.length);
+		//byte[] timesByte = ByteHelper.int2byte(Integer.parseInt(times));
+		String hexString = null;
+		if(Integer.parseInt(times)>=0)
+			hexString = Integer.toHexString(Integer.parseInt(times));
+		else//无线次数
+			hexString = Integer.toHexString(1);
+		if(hexString.length()%2!=0){
+			hexString="0"+hexString;
+		}
+		byte[] timesByte = ByteHelper.hexStringToBytes(hexString);
+		System.arraycopy(timesByte, 0, bodyBytes, 30, timesByte.length);
+		if(timesByte.length==1){
+			bodyBytes[31] = 0x00;
+		}
+		
+		return bodyBytes;
+	
+	}
 	static class sceneAction implements Runnable {
 
 		private List<SceneActionDTO> lists;
@@ -664,4 +774,5 @@ public class AliServerController {
 		}
 
 	}
+	
 }
