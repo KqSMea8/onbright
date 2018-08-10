@@ -1948,7 +1948,7 @@ public class FacadeController {
 
 			return feignAliClient.registAliDev(type, zone);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("===error msg:"+e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
