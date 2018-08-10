@@ -1978,6 +1978,7 @@ public class FacadeController {
 					if(resDevices.getData()==null||resDevices.getData().size()<=0){
 						res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 						res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+						res.setData(tCounts);
 						return res;
 					}
 					List<TOboxDeviceConfig> list = resDevices.getData();

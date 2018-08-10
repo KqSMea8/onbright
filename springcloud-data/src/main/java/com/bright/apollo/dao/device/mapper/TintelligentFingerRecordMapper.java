@@ -2,14 +2,19 @@ package com.bright.apollo.dao.device.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectKey;
 import org.springframework.stereotype.Component;
 
+import com.bright.apollo.common.entity.TIntelligentFingerRecord;
+import com.bright.apollo.dao.device.sqlProvider.TIntelligentFingerRecordDynaSqlProvider;
 import com.bright.apollo.request.IntelligentOpenRecordDTO;
 
 /**
@@ -38,5 +43,23 @@ public interface TintelligentFingerRecordMapper {
 			@Result(property = "operation",column = "operation")})
 	List<IntelligentOpenRecordDTO> queryIntelligentOpenRecordByDate(@Param(value = "serialId") String serialId,
 			@Param(value="end")String end, @Param(value="start")String start);
+
+	/**  
+	 * @param fingerRecord
+	 * @return  
+	 * @Description:  
+	 */
+	@SelectKey(statement = "select LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = int.class)
+	@InsertProvider(type=TIntelligentFingerRecordDynaSqlProvider.class,method="addIntelligentFingerRecord")
+	@Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
+	int addIntelligentFingerRecord(TIntelligentFingerRecord fingerRecord);
+
+	/**  
+	 * @param serialId
+	 * @param fingerUserId  
+	 * @Description:  
+	 */
+	@Delete("delete from t_intelligent_finger_record where finger_user_id=#{fingerUserId} and serialId=#{serialId}")
+	void deleteIntelligentFingerRecordBySerialIdAndFingerUserId(@Param(value="serialId")String serialId,@Param(value="fingerUserId") Integer fingerUserId);
 
 }

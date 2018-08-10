@@ -2,13 +2,19 @@ package com.bright.apollo.dao.device.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectKey;
 import org.springframework.stereotype.Component;
 
+import com.bright.apollo.common.entity.TIntelligentFingerWarn;
+import com.bright.apollo.dao.device.sqlProvider.IntelligentFingerRemoteUserDynaSqlProvider;
+import com.bright.apollo.dao.device.sqlProvider.IntelligentFingerWarnDynaSqlProvider;
 import com.bright.apollo.request.IntelligentFingerWarnDTO;
 
 /**  
@@ -43,5 +49,15 @@ public interface TIntelligentFingerWarnMapper {
 			@Result(property = "timeStamp",column = "timeStamp"),
 			@Result(property = "operation",column = "operation")})
 	List<IntelligentFingerWarnDTO> queryIntelligentWarnByDate(String serialId, String end, String start);
+
+	/**  
+	 * @param fingerWarn
+	 * @return  
+	 * @Description:  
+	 */
+	@SelectKey(statement = "select LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = int.class)
+	@InsertProvider(type=IntelligentFingerWarnDynaSqlProvider.class,method="addTIntelligentFingerWarn")
+	@Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
+	int addTIntelligentFingerWarn(TIntelligentFingerWarn fingerWarn);
 
 }

@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Component;
@@ -47,5 +49,22 @@ public interface TIntelligentFingerPushMapper {
 	@Update("update t_intelligent_finger_push set `enable`=#{enable}  where serialId =#{serialId} and `value`=#{value}")
 	void updateTIntelligentFingerPushEnableBySerialIdAndValue(@Param("enable") Integer enable,
 			@Param("serialId") String serialId, @Param("value") Integer value);
+
+	/**  
+	 * @param serialId
+	 * @param cmd
+	 * @return  
+	 * @Description:  
+	 */
+	@Select("select * from t_intelligent_finger_push a where a.serialId=#{serialId} and a.cmd=#{cmd}")
+	@Results(value = { 
+			@Result(property = "mobile", column = "mobile"),
+			@Result(property = "id", column = "id"),
+			@Result(property = "serialid", column = "serialId"),
+			@Result(property = "cmd", column = "cmd"),
+			@Result(property = "value", column = "value"),
+			@Result(property = "enable", column = "enable"),
+			@Result(property = "lastOpTime", column = "last_op_time")})
+	TIntelligentFingerPush queryTIntelligentFingerPushBySerialIdAndCmd(@Param("serialId")String serialId, @Param("cmd")String cmd);
 
 }

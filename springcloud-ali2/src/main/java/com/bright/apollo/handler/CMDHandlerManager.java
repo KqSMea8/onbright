@@ -24,6 +24,7 @@ import com.bright.apollo.service.CMDMessageService;
 import com.bright.apollo.service.DeviceChannelService;
 import com.bright.apollo.service.DeviceService;
 import com.bright.apollo.service.IntelligentFingerService;
+import com.bright.apollo.service.MsgService;
 import com.bright.apollo.service.OboxDeviceConfigService;
 import com.bright.apollo.service.OboxService;
 import com.bright.apollo.service.SceneActionService;
@@ -105,6 +106,9 @@ public class CMDHandlerManager {
     private IntelligentFingerService intelligentFingerService;
     @Autowired
     private FingerUtil fingerUtil;
+    
+    @Autowired
+    private MsgService msgService;
     private static Map<String, BasicHandler> cmdHandlers = new HashMap<String, BasicHandler>();
 
     static {
@@ -418,6 +422,7 @@ public class CMDHandlerManager {
 
                 //inject the obj to the handler
                 if(handler.getOboxService()==null){
+                	handler.setMsgService(msgService);
                 	handler.setTopicServer(topServer);
                 	handler.setFingerUtil(fingerUtil);
                 	handler.setIntelligentFingerService(intelligentFingerService);
