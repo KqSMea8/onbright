@@ -254,7 +254,7 @@ public class IntelligentFingerController {
 	 * @return  
 	 * @Description:  
 	 */
-	@RequestMapping(value = "/getIntelligentFingerRemoteUsersBySerialId/{serialId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/getTIntelligentFingerAbandonRemoteUsersBySerialId/{serialId}", method = RequestMethod.GET)
 	ResponseObject<List<TIntelligentFingerAbandonRemoteUser>> getTIntelligentFingerAbandonRemoteUsersBySerialId(
 			@PathVariable(value = "serialId")String serialId){
 		ResponseObject<List<TIntelligentFingerAbandonRemoteUser>> res = new ResponseObject<List<TIntelligentFingerAbandonRemoteUser>>();

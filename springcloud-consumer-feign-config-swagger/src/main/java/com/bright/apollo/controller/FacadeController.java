@@ -1974,7 +1974,12 @@ public class FacadeController {
 				ResponseObject<List<TOboxDeviceConfig>> resDevices = feignDeviceClient
 						.getDeviceTypeByUser(resUser.getData().getId());
 				if (resDevices != null && resDevices.getStatus() == ResponseEnum.SelectSuccess.getStatus()
-						&& resDevices.getData() != null) {
+						 ) {
+					if(resDevices.getData()==null||resDevices.getData().size()<=0){
+						res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+						res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+						return res;
+					}
 					List<TOboxDeviceConfig> list = resDevices.getData();
 					for (TOboxDeviceConfig tOboxDeviceConfig : list) {
 						ResponseObject<List<TOboxDeviceConfig>> deviceConfigs = feignDeviceClient
@@ -4046,7 +4051,7 @@ public class FacadeController {
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
 				return res;
-			}
+			}  
 			feignDeviceClient.updateTIntelligentFingerPushMobileBySerialId(mobile, serialId);
 			for (int i = 0; i < pushinfo.size(); i++) {
 				TIntelligentFingerPushDTO dto = pushinfo.get(i);

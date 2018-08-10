@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import com.bright.apollo.common.entity.TIntelligentFingerAbandonRemoteUser;
 import com.bright.apollo.dao.device.sqlProvider.IntelligentFingerRemoteUserDynaSqlProvider;
+import com.bright.apollo.dao.device.sqlProvider.IntelligentFingerabandonRemoteUserDynaSqlProvider;
 
 /**
  * @Title:
@@ -47,7 +48,7 @@ public interface TIntelligentFingerAbandonRemoteUserMapper {
 	 * @Description:  
 	 */
 	@SelectKey(statement = "select LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = int.class)
-	@InsertProvider(type=IntelligentFingerRemoteUserDynaSqlProvider.class,method="addIntelligentFingerAbandonRemoteUser")
+	@InsertProvider(type=IntelligentFingerabandonRemoteUserDynaSqlProvider.class,method="addIntelligentFingerAbandonRemoteUser")
 	@Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
 	Integer addIntelligentFingerAbandonRemoteUser(TIntelligentFingerAbandonRemoteUser abandonRemoteUser);
 

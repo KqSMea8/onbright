@@ -1,7 +1,5 @@
 package com.bright.apollo.dao.device.sqlProvider;
 
-import java.util.Map;
-
 import org.apache.ibatis.jdbc.SQL;
 import org.springframework.util.StringUtils;
 

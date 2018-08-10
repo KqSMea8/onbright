@@ -4,8 +4,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.bright.apollo.bean.Message;
 import com.bright.apollo.common.entity.TObox;
@@ -19,22 +19,13 @@ import com.bright.apollo.enums.DeviceTypeEnum;
 import com.bright.apollo.enums.NodeTypeEnum;
 import com.bright.apollo.enums.SceneTypeEnum;
 import com.bright.apollo.service.JPushService;
-import com.bright.apollo.service.OboxDeviceConfigService;
-import com.bright.apollo.service.OboxService;
-import com.bright.apollo.service.SceneActionService;
-import com.bright.apollo.service.SceneConditionService;
-import com.bright.apollo.service.SceneService;
-import com.bright.apollo.service.UserSceneService;
-import com.bright.apollo.service.UserService;
 import com.bright.apollo.session.ClientSession;
-import com.bright.apollo.session.SceneActionThreadPool;
-import com.bright.apollo.session.SessionManager;
 import com.bright.apollo.tool.ByteHelper;
 import com.zz.common.util.DateTime;
 
 public class SensorCMDHandler extends BasicHandler {
 
-    private final Logger log = Logger.getLogger(SensorCMDHandler.class);
+	private static final Logger log = LoggerFactory.getLogger(SensorCMDHandler.class);
 
     @Override
     public Message<String> process(ClientSession clientSession, Message<String> msg) throws Exception {
