@@ -58,7 +58,7 @@ public class CommonController {
 			throws AppException, UnsupportedEncodingException {
 		ResponseObject res = null;
 		request.setCharacterEncoding("UTF-8");
-		printRequest(request);
+	//	printRequest(request);
 		String CMD = request.getParameter("CMD");
 		RequestParam requestParam = new RequestParam(request.getParameterMap());
 		if (StringUtils.isEmpty(CMD)) {
