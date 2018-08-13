@@ -28,50 +28,37 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+@Component
 public class UploadHandler extends AliBaseHandler {
 
-//    private static final Logger logger = LoggerFactory.getLogger(UploadHandler.class);
-
-    @Autowired
-    private AliDeviceConfigService aliDeviceConfigService;
-
-    @Autowired
-    private YaoKongYunConfig yaoKongYunConfig;
-
-    @Autowired
-    private AliDevCache aliDevCache;
-
-    @Autowired
-    private YaoKongYunService yaoKongYunService;
-
-    @Autowired
-    private TopicServer topicServer;
+    private static final Logger logger = LoggerFactory.getLogger(UploadHandler.class);
 
     @Override
     public void process(String deviceSerialId, JSONObject object) {
         // TODO Auto-generated method stub
         JSONObject jsonObject = null;
         try{
-            TAliDeviceConfig tAliDeviceConfig = aliDeviceConfigService.getAliDeviceConfigBySerializeId(deviceSerialId);
-            if (tAliDeviceConfig != null) {
-                if (!StringUtils.isEmpty(object.getString("value"))) {
-                    tAliDeviceConfig.setState(object.getString("value"));
-                    aliDeviceConfigService.update(tAliDeviceConfig);
-                }
-
-            }
+//            TAliDeviceConfig tAliDeviceConfig = aliDeviceConfigService.getAliDeviceConfigBySerializeId(deviceSerialId);
+//            if (tAliDeviceConfig != null) {
+//                if (!StringUtils.isEmpty(object.getString("value"))) {
+//                    tAliDeviceConfig.setState(object.getString("value"));
+//                    aliDeviceConfigService.update(tAliDeviceConfig);
+//                }
+//
+//            }
             jsonObject = ali2IR(deviceSerialId,object);
-            topicServer.pubIRTopic(null,null,deviceSerialId,jsonObject.toString());
+            topicServer.pubIRTopic(null,null,deviceSerialId,jsonObject);
         }catch (Exception e){
             jsonObject = new JSONObject();
             try {
                 jsonObject.put("respCode","10001");
-                topicServer.pubIRTopic(null,null,deviceSerialId,jsonObject.toString());
+                topicServer.pubIRTopic(null,null,deviceSerialId,jsonObject);
             } catch (Exception e1) {
                 e1.printStackTrace();
             }
@@ -82,12 +69,16 @@ public class UploadHandler extends AliBaseHandler {
 
     private JSONObject ali2IR(String deviceSerialId, JSONObject object) throws Exception {
 
-//        logger.info(" ======= UploadHandler ali2IR start ====== ");
+        logger.info(" ======= UploadHandler ali2IR start ====== ");
 
         JSONArray jsonArray = null;
         jsonArray = object.getJSONArray("value");
-//        logger.info("UploadHandler jsonArray ====== "+ jsonArray);
+        logger.info("UploadHandler jsonArray ====== "+ jsonArray);
+        logger.info("aliDevCache ====== "+aliDevCache);
         String bId = aliDevCache.getValue("ir_"+deviceSerialId);//品牌ID
+        if(bId==null||bId.equals("")){
+            bId = "544";
+        }
         TYaoKongYunBrand yaoKongYunBrand = yaoKongYunService.getYaoKongYunByTId(Integer.valueOf(bId));
 
         Integer functionId = Integer.valueOf(jsonArray.getString(0));
@@ -112,7 +103,7 @@ public class UploadHandler extends AliBaseHandler {
             nvps.add(new BasicNameValuePair("t", String.valueOf(yaoKongYunBrand.getDeviceType())));
             httpPost.setEntity(new UrlEncodedFormEntity(nvps));
             CloseableHttpResponse closeableHttpResponse = httpClient.execute(httpPost);
-//            logger.info("UploadHandler closeableHttpResponse ====== "+ closeableHttpResponse);
+            logger.info("UploadHandler closeableHttpResponse ====== "+ closeableHttpResponse);
 
             return getStateJson("3");
         }else if(functionId==4){//遥控器学习码
@@ -133,11 +124,8 @@ public class UploadHandler extends AliBaseHandler {
         String[] values = new String[1];
         values[0] = valueObject.toString();
         jsonObject.put("value",values);
-//        logger.info(" ======= UploadHandler getStateJson ====== "+jsonObject);
+        logger.info(" ======= UploadHandler getStateJson ====== "+jsonObject);
         return jsonObject;
     }
-//    public static void main(String[] args) {
-//        UploadHandler handler = new UploadHandler();
-//        handler.process("123456",new JSONObject());
-//    }
+
 }

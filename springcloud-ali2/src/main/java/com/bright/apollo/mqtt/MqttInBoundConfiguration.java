@@ -17,7 +17,7 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
 import org.springframework.messaging.MessagingException;
 
-//@Configuration
+@Configuration
 public class MqttInBoundConfiguration {
 
     @Autowired
@@ -49,7 +49,7 @@ public class MqttInBoundConfiguration {
 
             @Override
             public void handleMessage(Message<?> message) throws MessagingException {
-                System.out.println(message.getPayload());
+                System.out.println("receive ------ "+message.getPayload());
             }
 
         };

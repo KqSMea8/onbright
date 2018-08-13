@@ -5,10 +5,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.bright.apollo.mqtt.MqttGateWay;
+import com.bright.apollo.mqtt.MqttInBoundConfiguration;
+import com.bright.apollo.mqtt.MqttOutBoundConfiguration;
 import com.bright.apollo.service.TopicServer;
+import com.bright.apollo.util.SpringContextUtil;
+import org.apache.activemq.command.ActiveMQTopic;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.integration.mqtt.core.MqttPahoClientFactory;
+import org.springframework.integration.mqtt.inbound.MqttPahoMessageDrivenChannelAdapter;
+import org.springframework.integration.mqtt.outbound.MqttPahoMessageHandler;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -45,7 +56,35 @@ public class AliDeviceController {
 	@Autowired
 	private TopicServer topServer;
 
+	@Autowired
+	private MqttGateWay mqttGateWay;
 
+	@Autowired
+	private SpringContextUtil springContextUtil;
+
+	@RequestMapping(value = "/sendToMqtt", method = RequestMethod.GET)
+	public String testMqtt() {
+
+		MqttPahoMessageHandler mqttPahoMessageHandler = springContextUtil.getBean(MqttPahoMessageHandler.class);
+		MqttPahoMessageDrivenChannelAdapter adapter = springContextUtil.getBean(MqttPahoMessageDrivenChannelAdapter.class);
+		MqttPahoClientFactory mqttPahoClientFactory = springContextUtil.getBean(MqttPahoClientFactory.class);
+//		System.out.println("getBean ------ "+mqttPahoMessageHandler);
+//		mqttPahoMessageHandler.setDefaultTopic("topic222222222222");
+		MqttPahoMessageHandler mqttPahoMessageHandler2 =
+				new MqttPahoMessageHandler("123123",mqttPahoClientFactory);
+//		mqttPahoMessageHandler.setAsync(true);
+//		mqttPahoMessageHandler.setDefaultTopic("topic12");
+		ApplicationContext applicationContext = springContextUtil.getContext();
+		DefaultListableBeanFactory defaultListableBeanFactory = (DefaultListableBeanFactory )applicationContext.getAutowireCapableBeanFactory();
+		BeanDefinitionBuilder allBuilder = BeanDefinitionBuilder.genericBeanDefinition(ActiveMQTopic.class);
+		allBuilder.addConstructorArgValue("TOPIC.ALL");
+		defaultListableBeanFactory.registerBeanDefinition("TOPIC.ALL",allBuilder.getRawBeanDefinition());
+		defaultListableBeanFactory.registerSingleton("mqttPahoMessageHandler2",mqttPahoMessageHandler2);
+//		adapter.addTopic("topic222222222222",1);
+		mqttGateWay.sendToMqtt("topic222222222222","12312312qqqqqq3");
+
+		return "";
+	}
 	@RequestMapping(value = "/registAliDev/{type}", method = RequestMethod.GET)
 	public ResponseObject<AliDevInfo> registAliDev(@PathVariable(required = true, value = "type") String type,
 			@RequestParam(required = false, value = "zone") String zone) {
@@ -227,7 +266,7 @@ public class AliDeviceController {
 		ResponseObject<List<Map<String, String>>> res = new ResponseObject<List<Map<String, String>>>();
 		Map<String,Object> requestMap = (Map<String, Object>) object;
 		try {
-			topServer.pubIRTopic(null,null,(String)requestMap.get("deviceId"),requestMap.toString());
+			topServer.pubIRTopic(null,null,(String)requestMap.get("deviceId"),requestMap);
 			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
 			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
 		} catch (Exception e) {

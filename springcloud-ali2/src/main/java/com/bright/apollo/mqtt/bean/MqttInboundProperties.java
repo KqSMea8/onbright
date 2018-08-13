@@ -8,11 +8,11 @@ public class MqttInboundProperties {
     private String topics;
 
     public MqttInboundProperties(){
-        System.out.println("MqttInboundProperties  url "+url);
-        System.out.println("MqttInboundProperties  userName "+userName);
-        System.out.println("MqttInboundProperties  passWord "+passWord);
-        System.out.println("MqttInboundProperties  clientId "+clientId);
-        System.out.println("MqttInboundProperties  topics "+topics);
+//        System.out.println("MqttInboundProperties  url "+url);
+//        System.out.println("MqttInboundProperties  userName "+userName);
+//        System.out.println("MqttInboundProperties  passWord "+passWord);
+//        System.out.println("MqttInboundProperties  clientId "+clientId);
+//        System.out.println("MqttInboundProperties  topics "+topics);
     }
 
     public String getUrl() {

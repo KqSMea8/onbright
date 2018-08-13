@@ -15,6 +15,7 @@ spring:
       username: root
       password: booszy
       profile: pro
+
 eureka:
   client:
     serviceUrl:
@@ -60,7 +61,7 @@ com:
     inbound:
           url: tcp://127.0.0.1:1883
           clientId: aliInbound
-          topics: topic1
+          topics: topic1,topic23
     outbound:
           url: tcp://127.0.0.1:1883
           clientId: aliOutbound

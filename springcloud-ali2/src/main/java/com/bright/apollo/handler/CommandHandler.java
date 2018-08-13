@@ -30,17 +30,23 @@ public class CommandHandler {
     @Autowired
     private AliDeviceService aliDeviceService;
 
+    @Autowired
+    private UploadHandler uploadHandler;
 
-
-    private static Map<String, AliBaseHandler> cmdHandlers = new HashMap<String, AliBaseHandler>();
-
-    static {
-        cmdHandlers.put(AliCmdTypeEnum.UPLOAD.getCmd(), new UploadHandler());
+    public CommandHandler(){
+        cmdHandlers = new HashMap<String, AliBaseHandler>();
+        cmdHandlers.put(AliCmdTypeEnum.UPLOAD.getCmd(), uploadHandler);
     }
 
-    public static AliBaseHandler getCMDHandler(Command cmd) {
-        return cmdHandlers.get(cmd);
-    }
+    private Map<String, AliBaseHandler> cmdHandlers;
+
+//    static {
+//        cmdHandlers.put(AliCmdTypeEnum.UPLOAD.getCmd(), new UploadHandler());
+//    }
+
+//    public static AliBaseHandler getCMDHandler(Command cmd) {
+//        return cmdHandlers.get(cmd);
+//    }
 
     public void process(String ProductKey,String DeviceName, String aString) {
         try {

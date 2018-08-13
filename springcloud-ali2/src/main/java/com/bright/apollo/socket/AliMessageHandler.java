@@ -194,6 +194,7 @@ public class AliMessageHandler {
 				String topic = (String) map.get("topic");
 				String[] topicArray = topic.split("/");
 				logger.info("topic:" + topic + " PopMessage Body: " + aString); // 获取原始消息
+				logger.info("topic:" + topic + " PopMessage Body length : " + aString.length()); // 获取原始消息长度
 				if (ALIDevTypeEnum.getTypebyValue(topicArray[1]).equals(ALIDevTypeEnum.OBOX)) {
 
 					 cmdHandlerManager.processTopic(topicArray[1],topicArray[2],aString);

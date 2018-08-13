@@ -38,11 +38,12 @@ public class AliDevCache {
 	}
 
 	public void saveDevInfo(String productKey, String obox_serial_id, String deviceName, AliRegionEnum eAliRegionEnum) {
+		redisBussines.delete(aliDevAvailableKey(productKey, deviceName));
 		redisBussines.setValueWithExpire(productInfoKey(obox_serial_id), productKey, dev_control_time);
 		redisBussines.setValueWithExpire(devInfoKey(obox_serial_id), deviceName, dev_control_time);
 		redisBussines.setValueWithExpire(regionInfoKey(obox_serial_id), eAliRegionEnum.name(), dev_control_time);
 		redisBussines.setValueWithExpire(oboxInfoKey(productKey, deviceName), obox_serial_id, dev_control_time);
-		redisBussines.delete(aliDevAvailableKey(productKey, deviceName));
+
 	}
 
 	public void DelDevInfo(String obox_serial_id) {
