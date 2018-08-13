@@ -61,12 +61,11 @@
 			<groupId>com.bright.apollo</groupId>
 			<artifactId>springcloud-common</artifactId>
 			<version>${common-version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>com.bright.apollo</groupId>
-					<artifactId>springcloud-tool</artifactId>
-				</exclusion>
-			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.bright.apollo</groupId>
+			<artifactId>springcloud-service-impl</artifactId>
+			<version>${service-impl-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

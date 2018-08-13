@@ -22,6 +22,9 @@ import com.bright.apollo.enums.Command;
 import com.bright.apollo.service.AliDeviceService;
 import com.bright.apollo.service.CMDMessageService;
 import com.bright.apollo.service.DeviceChannelService;
+import com.bright.apollo.service.DeviceService;
+import com.bright.apollo.service.IntelligentFingerService;
+import com.bright.apollo.service.MsgService;
 import com.bright.apollo.service.OboxDeviceConfigService;
 import com.bright.apollo.service.OboxService;
 import com.bright.apollo.service.SceneActionService;
@@ -39,6 +42,7 @@ import com.bright.apollo.session.SceneActionThreadPool;
 import com.bright.apollo.session.SessionManager;
 import com.bright.apollo.tool.ByteHelper;
 import com.bright.apollo.tool.EncDecHelper;
+import com.bright.apollo.util.FingerUtil;
 import com.zz.common.util.StringUtils;
 
 @Component
@@ -98,6 +102,13 @@ public class CMDHandlerManager {
     private SessionManager sessionManager;
     @Autowired
     private CmdCache cmdCache;
+    @Autowired
+    private IntelligentFingerService intelligentFingerService;
+    @Autowired
+    private FingerUtil fingerUtil;
+    
+    @Autowired
+    private MsgService msgService;
     private static Map<String, BasicHandler> cmdHandlers = new HashMap<String, BasicHandler>();
 
     static {
@@ -168,7 +179,7 @@ public class CMDHandlerManager {
          */
         cmdHandlers.put(Command.SCENE.getValue(), new SceneCMDHandler());
 
-        cmdHandlers.put(Command.setStatus.getValue(), new SetStatusHandler());
+        cmdHandlers.put(Command.SETSTATUS.getValue(), new SetStatusHandler());
 
         cmdHandlers.put(Command.SETRELEASE.getValue(), new SetReleaseHandler());
 
@@ -193,6 +204,11 @@ public class CMDHandlerManager {
  //       cmdHandlers.put(Command.FILTER.getValue(), new FilterCMDHandler());
 
 //        cmdHandlers.put(Command.IRUP.getValue(), new IRUploadHandler());//红外上传学习码
+        
+        cmdHandlers.put(Command.TIMEREPORT.getValue(), new TimeReportHandler());
+		cmdHandlers.put(Command.FINGEREMOTE.getValue(), new FingerRemoteHandler());
+		//远程开锁
+		//cmdHandlers.put(Command.REMOTEOPEN.getValue(), new RemoteOpenHandler());
 
     }
 
@@ -406,6 +422,10 @@ public class CMDHandlerManager {
 
                 //inject the obj to the handler
                 if(handler.getOboxService()==null){
+                	handler.setMsgService(msgService);
+                	handler.setTopicServer(topServer);
+                	handler.setFingerUtil(fingerUtil);
+                	handler.setIntelligentFingerService(intelligentFingerService);
                 	handler.setUserOperationService(userOperationService);
                 	handler.setUserService(userService);
                 	handler.setSceneActionThreadPool(sceneActionThreadPool);

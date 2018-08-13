@@ -8,9 +8,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -24,9 +27,9 @@ import com.google.gson.Gson;
  * @Since:2018年3月10日
  * @Version:1.1.0
  */
-/*@Aspect
+@Aspect
 @Order(1)
-@Component*/
+@Component
 public class WebLogAspect {
 	private static final Logger logger = LoggerFactory.getLogger(WebLogAspect.class);
  

@@ -424,5 +424,23 @@ public class ByteHelper {
                 + (byte) ((b >> 3) & 0x1) + (byte) ((b >> 2) & 0x1)  
                 + (byte) ((b >> 1) & 0x1) + (byte) ((b >> 0) & 0x1);  
     }
+	//date 时间  yyyy.MM.dd.HH.mm
+		public static byte[] handleDate(String date) {
+			StringBuffer sb = new StringBuffer();
+			byte[] bodyBytes = new byte[4];
+			String[] split = date.split(",");
+			int year = Integer.parseInt(split[0]);
+			int hightbit = year - 2018;
+			int month = Integer.parseInt(split[1]);
+			sb.append(Integer.toHexString(hightbit)).append(Integer.toHexString(month));
+			byte[] yearMonthBytes = ByteHelper.hexStringToBytes(sb.toString());
+			System.arraycopy(yearMonthBytes, 0, bodyBytes, 0, yearMonthBytes.length);
+			//(byte) Integer.parseInt(Integer.toHexString(userSerialId), 16);	
+	 		bodyBytes[1] = (byte) Integer.parseInt(Integer.toHexString(Integer.parseInt(split[2])), 16);
+			bodyBytes[2] = (byte) Integer.parseInt(Integer.toHexString(Integer.parseInt(split[3])), 16);
+			bodyBytes[3] = (byte) Integer.parseInt(Integer.toHexString(Integer.parseInt(split[4])), 16);
+			return bodyBytes;
+		}
+	 
 
 }

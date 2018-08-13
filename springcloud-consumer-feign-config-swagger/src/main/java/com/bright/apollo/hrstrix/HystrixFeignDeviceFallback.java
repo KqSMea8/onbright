@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.bright.apollo.common.entity.TIntelligentFingerAbandonRemoteUser;
 import com.bright.apollo.common.entity.TIntelligentFingerAuth;
+import com.bright.apollo.common.entity.TIntelligentFingerPush;
 import com.bright.apollo.common.entity.TIntelligentFingerRemoteUser;
 import com.bright.apollo.common.entity.TIntelligentFingerUser;
 import com.bright.apollo.common.entity.TNvr;
@@ -29,7 +30,7 @@ import com.bright.apollo.response.ResponseObject;
 public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implements FeignDeviceClient {
 	private static final Logger logger = LoggerFactory.getLogger(HystrixFeignDeviceFallback.class);
 
-	/*
+	/* 
 	 * (non-Javadoc)
 	 * 
 	 * @see
@@ -332,6 +333,97 @@ public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implem
 	@Override
 	public ResponseObject<List<TIntelligentFingerRemoteUser>> getTIntelligentFingerRemoteUsersBySerialId(
 			String serialId) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#addTIntelligentFingerRemoteUser(com.bright.apollo.common.entity.TIntelligentFingerRemoteUser)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<Integer> addTIntelligentFingerRemoteUser(TIntelligentFingerRemoteUser fingerRemoteUser) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#getIntelligentFingerRemoteUserById(int)  
+	 */
+	@Override
+	public ResponseObject<TIntelligentFingerRemoteUser> getIntelligentFingerRemoteUserById(int fingerRemoteUserId) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#delTIntelligentFingerRemoteUserById(int)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject delTIntelligentFingerRemoteUserById(int id) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#updateTintelligentFingerAuth(com.bright.apollo.common.entity.TIntelligentFingerAuth)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject updateTintelligentFingerAuth(TIntelligentFingerAuth fingerAuth) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#getTIntelligentFingerPushsBySerialId(java.lang.String)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<List<TIntelligentFingerPush>> getTIntelligentFingerPushsBySerialId(String serialId) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#updateTIntelligentFingerRemoteUser(com.bright.apollo.common.entity.TIntelligentFingerRemoteUser)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject updateTIntelligentFingerRemoteUser(TIntelligentFingerRemoteUser fingerRemoteUser) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#getTIntelligentFingerRemoteUserBySerialIdAndPin(java.lang.String, int)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<TIntelligentFingerRemoteUser> getTIntelligentFingerRemoteUserBySerialIdAndPin(String serialId,
+			int pin) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#updateTIntelligentFingerPushMobileBySerialId(java.lang.String, java.lang.String)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject updateTIntelligentFingerPushMobileBySerialId(String mobile, String serialId) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#updateTIntelligentFingerPushEnableBySerialIdAndValue(java.lang.Integer, java.lang.String, java.lang.Integer)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject updateTIntelligentFingerPushEnableBySerialIdAndValue(Integer enable, String serialId,
+			Integer value) {
 		logger.warn("===device server is break===");
 		return serverError();
 	}

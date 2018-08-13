@@ -57,5 +57,15 @@ public class HystrixFeignQuartzFallback extends BasicHystrixFeignFallback implem
 		logger.warn("===quartz server is break===");
 		return serverError();
 	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignQuartzClient#addRemoteOpenTaskSchedule(int, java.lang.String, java.lang.String)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject addRemoteOpenTaskSchedule(int fingerRemoteUserId, String endTime, String serialId) {
+		logger.warn("===quartz server is break===");
+		return serverError();
+	}
  
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bright.apollo.common.entity.TIntelligentFingerAbandonRemoteUser;
 import com.bright.apollo.common.entity.TIntelligentFingerAuth;
+import com.bright.apollo.common.entity.TIntelligentFingerPush;
 import com.bright.apollo.common.entity.TIntelligentFingerRemoteUser;
 import com.bright.apollo.common.entity.TIntelligentFingerUser;
 import com.bright.apollo.request.IntelligentFingerWarnDTO;
@@ -253,7 +254,7 @@ public class IntelligentFingerController {
 	 * @return  
 	 * @Description:  
 	 */
-	@RequestMapping(value = "/getIntelligentFingerRemoteUsersBySerialId/{serialId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/getTIntelligentFingerAbandonRemoteUsersBySerialId/{serialId}", method = RequestMethod.GET)
 	ResponseObject<List<TIntelligentFingerAbandonRemoteUser>> getTIntelligentFingerAbandonRemoteUsersBySerialId(
 			@PathVariable(value = "serialId")String serialId){
 		ResponseObject<List<TIntelligentFingerAbandonRemoteUser>> res = new ResponseObject<List<TIntelligentFingerAbandonRemoteUser>>();
@@ -307,4 +308,192 @@ public class IntelligentFingerController {
 		}
 		return res;
 	}
+	/**  
+	 * @param fingerRemoteUser
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/addTIntelligentFingerRemoteUser", method = RequestMethod.POST)
+	ResponseObject<Integer> addTIntelligentFingerRemoteUser(@RequestBody(required=true) TIntelligentFingerRemoteUser fingerRemoteUser){
+		ResponseObject<Integer> res = new ResponseObject<Integer>();
+		try {
+ 			res.setData(intelligentFingerService.addTIntelligentFingerRemoteUser(fingerRemoteUser));
+			res.setStatus(ResponseEnum.AddSuccess.getStatus());
+			res.setMessage(ResponseEnum.AddSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	/**  
+	 * @param fingerRemoteUserId
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/getIntelligentFingerRemoteUserById/{fingerRemoteUserId}", method = RequestMethod.GET)
+	ResponseObject<TIntelligentFingerRemoteUser> getIntelligentFingerRemoteUserById(@PathVariable(value = "fingerRemoteUserId")int fingerRemoteUserId){
+		ResponseObject<TIntelligentFingerRemoteUser> res = new ResponseObject<TIntelligentFingerRemoteUser>();
+		try {
+ 			res.setData(intelligentFingerService.queryTintelligentFingerRemoteUserById(fingerRemoteUserId));
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	/**  
+	 * @param id  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/delTIntelligentFingerRemoteUserById/{id}", method = RequestMethod.DELETE)
+	ResponseObject delTIntelligentFingerRemoteUserById(@PathVariable(value = "id")int id){
+		ResponseObject res = new ResponseObject();
+		try {
+			intelligentFingerService.delTIntelligentFingerRemoteUserById(id);
+			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	/**  
+	 * @param fingerAuth  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/updateTintelligentFingerAuth", method = RequestMethod.PUT)
+	ResponseObject updateTintelligentFingerAuth(@RequestBody TIntelligentFingerAuth fingerAuth){
+		ResponseObject res = new ResponseObject();
+		try {
+			intelligentFingerService.updateTintelligentFingerAuth(fingerAuth);
+			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	/**
+	 * @param serialId
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/getTIntelligentFingerPushsBySerialId/{serialId}", method = RequestMethod.GET)
+	ResponseObject<List<TIntelligentFingerPush>> getTIntelligentFingerPushsBySerialId(
+			@PathVariable(value = "serialId") String serialId){
+		ResponseObject<List<TIntelligentFingerPush>> res = new ResponseObject<List<TIntelligentFingerPush>>();
+		try {
+			res.setData(intelligentFingerService.queryTIntelligentFingerPushsBySerialId(serialId));
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	
+	}
+	/**  
+	 * @param fingerRemoteUser  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/updateTIntelligentFingerRemoteUser", method = RequestMethod.PUT)
+	ResponseObject updateTIntelligentFingerRemoteUser(@RequestBody TIntelligentFingerRemoteUser fingerRemoteUser){
+		ResponseObject res = new ResponseObject();
+		try {
+			intelligentFingerService.updateTintelligentFingerRemoteUser(fingerRemoteUser);
+			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;	
+	}
+	/**  
+	 * @param serialId
+	 * @param pin
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/getTIntelligentFingerRemoteUserBySerialIdAndPin/{serialId}/{pin}", method = RequestMethod.GET)
+	ResponseObject<TIntelligentFingerRemoteUser> getTIntelligentFingerRemoteUserBySerialIdAndPin(
+			@PathVariable(value="serialId")String serialId,
+			@PathVariable(value="pin")int pin){
+		ResponseObject<TIntelligentFingerRemoteUser> res = new ResponseObject<TIntelligentFingerRemoteUser>();
+		try {
+			res.setData(intelligentFingerService.queryTIntelligentFingerRemoteUserBySerialIdAndPin(serialId,pin));
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;	
+	
+	}
+	/**
+	 * @param mobile
+	 * @param serialId
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/updateTIntelligentFingerPushMobileBySerialId/{mobile}/{serialId}", method = RequestMethod.PUT)
+	ResponseObject updateTIntelligentFingerPushMobileBySerialId(@PathVariable(value = "mobile") String mobile,
+			@PathVariable(value = "serialId") String serialId){
+		ResponseObject res = new ResponseObject();
+		try {
+			intelligentFingerService.updateTIntelligentFingerPushMobileBySerialId(mobile,serialId);
+			//res.setData(intelligentFingerService.queryTIntelligentFingerRemoteUserBySerialIdAndPin(serialId,pin));
+			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;	
+	}
+	/**  
+	 * @param enable
+	 * @param serialId
+	 * @param value  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/updateTIntelligentFingerPushEnableBySerialIdAndValue/{enable}/{serialId}/{value}", method = RequestMethod.PUT)
+	ResponseObject updateTIntelligentFingerPushEnableBySerialIdAndValue(
+			@PathVariable(value = "enable")Integer enable, 
+			@PathVariable(value = "serialId")String serialId,
+			@PathVariable(value = "value")Integer value){
+		ResponseObject res = new ResponseObject();
+		try {
+			intelligentFingerService.updateTIntelligentFingerPushEnableBySerialIdAndValue(enable,serialId,value);
+			//res.setData(intelligentFingerService.queryTIntelligentFingerRemoteUserBySerialIdAndPin(serialId,pin));
+			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;	
+	
+	}
 }
+

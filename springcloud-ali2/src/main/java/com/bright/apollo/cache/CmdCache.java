@@ -26,4 +26,21 @@ public class CmdCache {
 	public void deleteWrite(String oboxSerialId) {
 		redisBussines.delete("write"+oboxSerialId);
 	}
+	/**  
+	 * @param deviceSerialId
+	 * @return  
+	 * @Description:  
+	 */
+	public String getIntelligentForgetPwdKey(String serialId) {
+		 
+		return redisBussines.get(String.valueOf(serialId)+"_sk");
+	}
+	/**  
+	 * @param key
+	 * @return  
+	 * @Description:  
+	 */
+	public String getIntelligentForgetPwd(String key) {
+		return redisBussines.get(String.valueOf(key)+"_sp");
+	}
 }

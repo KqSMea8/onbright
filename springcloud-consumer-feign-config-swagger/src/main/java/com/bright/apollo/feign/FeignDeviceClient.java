@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.bright.apollo.common.entity.TIntelligentFingerAbandonRemoteUser;
 import com.bright.apollo.common.entity.TIntelligentFingerAuth;
+import com.bright.apollo.common.entity.TIntelligentFingerPush;
 import com.bright.apollo.common.entity.TIntelligentFingerRemoteUser;
 import com.bright.apollo.common.entity.TIntelligentFingerUser;
 import com.bright.apollo.common.entity.TNvr;
@@ -222,62 +223,149 @@ public interface FeignDeviceClient {
 	ResponseObject<TIntelligentFingerUser> getIntelligentFingerUserBySerialIdAndPin(
 			@PathVariable(value = "serialId") String serialId, @PathVariable(value = "pin") String pin);
 
-	/**  
-	 * @param fingerUser  
-	 * @Description:  
+	/**
+	 * @param fingerUser
+	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/intelligentFinger/updatentelligentFingerUser", method = RequestMethod.PUT)
 	ResponseObject updatentelligentFingerUser(@RequestBody TIntelligentFingerUser fingerUser);
 
-	/**  
+	/**
 	 * @param serialId
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
 	@RequestMapping(value = "/intelligentFinger/getIntelligentAuthBySerialId/{serialId}", method = RequestMethod.GET)
-	ResponseObject<TIntelligentFingerAuth> getIntelligentAuthBySerialId(@PathVariable(value = "serialId")String serialId);
+	ResponseObject<TIntelligentFingerAuth> getIntelligentAuthBySerialId(
+			@PathVariable(value = "serialId") String serialId);
 
-	/**  
-	 * @param auth  
-	 * @Description:  
+	/**
+	 * @param auth
+	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/intelligentFinger/addIntelligentFingerAuth", method = RequestMethod.POST)
 	ResponseObject addIntelligentFingerAuth(@RequestBody TIntelligentFingerAuth auth);
 
-	/**  
+	/**
 	 * @param serialId
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
 	@RequestMapping(value = "/intelligentFinger/getIntelligentFingerRemoteUsersBySerialId/{serialId}", method = RequestMethod.GET)
-	ResponseObject<List<TIntelligentFingerRemoteUser>> getIntelligentFingerRemoteUsersBySerialId(@PathVariable(value = "serialId")String serialId);
+	ResponseObject<List<TIntelligentFingerRemoteUser>> getIntelligentFingerRemoteUsersBySerialId(
+			@PathVariable(value = "serialId") String serialId);
 
-	/**  
+	/**
 	 * @param serialId
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
 	@RequestMapping(value = "/intelligentFinger/getIntelligentFingerRemoteUsersBySerialId/{serialId}", method = RequestMethod.GET)
 	ResponseObject<List<TIntelligentFingerAbandonRemoteUser>> getTIntelligentFingerAbandonRemoteUsersBySerialId(
-			@PathVariable(value = "serialId")String serialId);
+			@PathVariable(value = "serialId") String serialId);
 
-	/**  
-	 * @param id  
-	 * @Description:  
+	/**
+	 * @param id
+	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/intelligentFinger/delIntelligentFingerAbandonRemoteUserById/{id}", method = RequestMethod.DELETE)
-	ResponseObject delIntelligentFingerAbandonRemoteUserById(@PathVariable(value = "id")Integer id);
+	ResponseObject delIntelligentFingerAbandonRemoteUserById(@PathVariable(value = "id") Integer id);
 
-	/**  
+	/**
 	 * @param serialId
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
 	@RequestMapping(value = "/intelligentFinger/getTIntelligentFingerRemoteUsersBySerialId/{serialId}", method = RequestMethod.GET)
-	ResponseObject<List<TIntelligentFingerRemoteUser>> getTIntelligentFingerRemoteUsersBySerialId(@PathVariable(value = "serialId")String serialId);
+	ResponseObject<List<TIntelligentFingerRemoteUser>> getTIntelligentFingerRemoteUsersBySerialId(
+			@PathVariable(value = "serialId") String serialId);
 
- 
+	/**
+	 * @param fingerRemoteUser
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/intelligentFinger/addTIntelligentFingerRemoteUser", method = RequestMethod.POST)
+	ResponseObject<Integer> addTIntelligentFingerRemoteUser(
+			@RequestBody(required = true) TIntelligentFingerRemoteUser fingerRemoteUser);
+
+	/**
+	 * @param fingerRemoteUserId
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/intelligentFinger/getIntelligentFingerRemoteUserById/{fingerRemoteUserId}", method = RequestMethod.GET)
+	ResponseObject<TIntelligentFingerRemoteUser> getIntelligentFingerRemoteUserById(
+			@PathVariable(value = "fingerRemoteUserId") int fingerRemoteUserId);
+
+	/**
+	 * @param id
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/intelligentFinger/delTIntelligentFingerRemoteUserById/{id}", method = RequestMethod.DELETE)
+	ResponseObject delTIntelligentFingerRemoteUserById(@PathVariable(value = "id") int id);
+
+	/**
+	 * @param fingerAuth
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/intelligentFinger/updateTintelligentFingerAuth", method = RequestMethod.PUT)
+	ResponseObject updateTintelligentFingerAuth(@RequestBody TIntelligentFingerAuth fingerAuth);
+
+	/**
+	 * @param serialId
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/intelligentFinger/getTIntelligentFingerPushsBySerialId/{serialId}", method = RequestMethod.GET)
+	ResponseObject<List<TIntelligentFingerPush>> getTIntelligentFingerPushsBySerialId(
+			@PathVariable(value = "serialId") String serialId);
+
+	/**
+	 * @param fingerRemoteUser
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/intelligentFinger/updateTIntelligentFingerRemoteUser", method = RequestMethod.PUT)
+	ResponseObject updateTIntelligentFingerRemoteUser(@RequestBody TIntelligentFingerRemoteUser fingerRemoteUser);
+
+	/**
+	 * @param serialId
+	 * @param pin
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/intelligentFinger/getTIntelligentFingerRemoteUserBySerialIdAndPin/{serialId}/{pin}", method = RequestMethod.GET)
+	ResponseObject<TIntelligentFingerRemoteUser> getTIntelligentFingerRemoteUserBySerialIdAndPin(
+			@PathVariable(value = "serialId") String serialId, @PathVariable(value = "pin") int pin);
+
+	
+	/**
+	 * @param mobile
+	 * @param serialId
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/intelligentFinger/updateTIntelligentFingerPushMobileBySerialId/{mobile}/{serialId}", method = RequestMethod.PUT)
+	ResponseObject updateTIntelligentFingerPushMobileBySerialId(@PathVariable(value = "mobile") String mobile,
+			@PathVariable(value = "serialId") String serialId);
+
+	/**  
+	 * @param enable
+	 * @param serialId
+	 * @param value  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/intelligentFinger/updateTIntelligentFingerPushEnableBySerialIdAndValue/{enable}/{serialId}/{value}", method = RequestMethod.PUT)
+	ResponseObject updateTIntelligentFingerPushEnableBySerialIdAndValue(
+			@PathVariable(value = "enable")Integer enable, 
+			@PathVariable(value = "serialId")String serialId,
+			@PathVariable(value = "value")Integer value);
+
 }

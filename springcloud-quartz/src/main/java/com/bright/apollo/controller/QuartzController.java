@@ -89,4 +89,29 @@ public class QuartzController {
 		}
 		return res;
 	}
+	/**
+	 * @param fingerRemoteUserId
+	 * @param endTime
+	 * @param serialId
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/addRemoteOpenTaskSchedule/{fingerRemoteUserId}/{endTime}/{serialId}", method = RequestMethod.POST, produces = "application/json")
+	public ResponseObject addRemoteOpenTaskSchedule(
+			@PathVariable(value = "fingerRemoteUserId", required = true) int fingerRemoteUserId,
+			@PathVariable(value = "endTime", required = true) String endTime,
+			@PathVariable(value = "serialId", required = true) String serialId){
+		ResponseObject res=new ResponseObject();
+		try {
+			quartzService.startRemoteOpenTaskSchedule(fingerRemoteUserId, endTime, serialId);
+			res.setStatus(ResponseEnum.AddSuccess.getStatus());
+			res.setMessage(ResponseEnum.AddSuccess.getMsg());
+		} catch (Exception e) {
+			log.error("===error msg:"+e.getMessage());
+			res.setStatus(ResponseEnum.RequestTimeout.getStatus());
+			res.setMessage(ResponseEnum.RequestTimeout.getMsg());
+		}
+		return res;
+	
+	}
 }

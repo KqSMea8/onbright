@@ -1,12 +1,15 @@
 package com.bright.apollo.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +23,18 @@ import com.bright.apollo.enums.SceneTypeEnum;
 import com.bright.apollo.request.OboxDTO;
 import com.bright.apollo.request.RequestParam;
 import com.bright.apollo.request.SceneDTO;
+import com.bright.apollo.request.TIntelligentFingerPushDTO;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
+import com.bright.apollo.tool.MobileUtil;
 import com.bright.apollo.tool.NumberHelper;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.zz.common.exception.AppException;
 import com.zz.common.util.ObjectUtils;
-
+ 
 /**
  * @Title:
  * @Description: for old api
@@ -49,7 +58,7 @@ public class CommonController {
 			throws AppException, UnsupportedEncodingException {
 		ResponseObject res = null;
 		request.setCharacterEncoding("UTF-8");
-		printRequest(request);
+	//	printRequest(request);
 		String CMD = request.getParameter("CMD");
 		RequestParam requestParam = new RequestParam(request.getParameterMap());
 		if (StringUtils.isEmpty(CMD)) {
@@ -283,25 +292,82 @@ public class CommonController {
 					&& NumberHelper.isNumeric(startTime) && NumberHelper.isNumeric(endTime) && startTime.length() == 13
 					&& endTime.length() == 13 && Long.parseLong(endTime) > Long.parseLong(startTime)
 					&& Long.parseLong(endTime) > new Date().getTime()) {
-				return facadeController.addIntelligentRemoteUser(serialId, authToken,nickName,startTime,endTime,times,mobile,isMax);
+				return facadeController.addIntelligentRemoteUser(serialId, authToken, nickName, startTime, endTime,
+						times, mobile, isMax);
 			}
 		} else if (CMDEnum.del_intelligent_remote_user.toString().equals(cmdEnum.toString())) {
-
+			String serialId = requestParam.getValue("serialId");
+			String id = requestParam.getValue("id");
+			String authToken = requestParam.getValue("authToken");
+			if (!StringUtils.isEmpty(id) && !StringUtils.isEmpty(authToken) && !StringUtils.isEmpty(serialId)) {
+				return facadeController.delIntelligentRemoteUser(Integer.parseInt(id), serialId, authToken);
+			}
 		} else if (CMDEnum.reset_intelligent_pwd.toString().equals(cmdEnum.toString())) {
-
+			String serialId = requestParam.getValue("serialId");
+			String oldPwd = requestParam.getValue("oldPwd");
+			String newPwd = requestParam.getValue("newPwd");
+			if (!StringUtils.isEmpty(serialId) && !StringUtils.isEmpty(oldPwd) && !StringUtils.isEmpty(newPwd)) {
+				return facadeController.updateIntelligentPwd(serialId, oldPwd, newPwd);
+			}
 		} else if (CMDEnum.query_intelligent_push_list.toString().equals(cmdEnum.toString())) {
-
+			String serialId = requestParam.getValue("serialId");
+			if (!StringUtils.isEmpty(serialId)) {
+				return facadeController.getIntelligentPushList(serialId);
+			}
 		} else if (CMDEnum.modify_intelligent_remote_user.toString().equals(cmdEnum.toString())) {
-
+			String serialId = requestParam.getValue("serialId");
+			String id = requestParam.getValue("id");
+			String authToken = requestParam.getValue("authToken");
+			String nickName = requestParam.getValue("nickName");
+			String startTime = requestParam.getValue("startTime");
+			String endTime = requestParam.getValue("endTime");
+			String times = requestParam.getValue("times");
+			String mobile = requestParam.getValue("mobile");
+			String isMax = requestParam.getValue("isMax");
+			if (!StringUtils.isEmpty(serialId) && !StringUtils.isEmpty(authToken) && StringUtils.isEmpty(id)
+					&& NumberHelper.isNumeric(id) && !StringUtils.isEmpty(nickName) && !StringUtils.isEmpty(startTime)
+					&& NumberHelper.isNumeric(startTime)
+					&& (!StringUtils.isEmpty(endTime) && NumberHelper.isNumeric(endTime))) {
+				return facadeController.updateIntelligentRemoteUser(serialId, Integer.parseInt(id), authToken, nickName,
+						Long.parseLong(startTime), Long.parseLong(endTime), times, mobile, isMax);
+			}
 		} else if (CMDEnum.modify_intelligent_push.toString().equals(cmdEnum.toString())) {
-
+			// modify
+			String serialId = requestParam.getValue("serialId");
+			String mobile = requestParam.getValue("mobile");
+			String pushInfo = requestParam.getValue("pushInfo");
+			if (StringUtils.isEmpty(serialId) || StringUtils.isEmpty(mobile) || StringUtils.isEmpty(pushInfo)
+					|| !MobileUtil.checkMobile(mobile)) {
+			}else{
+				return facadeController.updateIntelligentRemoteUser(serialId,mobile,getObjectList(pushInfo, TIntelligentFingerPushDTO.class));
+			}
 		} else if (CMDEnum.send_remote_pwd.toString().equals(cmdEnum.toString())) {
-
+			String serialId = requestParam.getValue("serialId");
+			String pin = requestParam.getValue("pin");
+			String authToken = requestParam.getValue("authToken");
+			String mobile = requestParam.getValue("mobile");
+			if (StringUtils.isEmpty(serialId) || StringUtils.isEmpty(authToken) || StringUtils.isEmpty(mobile)
+					|| !MobileUtil.checkMobile(mobile) || StringUtils.isEmpty(pin)) {
+			} else {
+				return facadeController.sendRemotePwd(serialId, pin, authToken, mobile);
+			}
 		} else if (CMDEnum.reset_intelligent_pwd_by_code.toString().equals(cmdEnum.toString())) {
-
-		} else if (CMDEnum.del_all_intelligent_remote_user.toString().equals(cmdEnum.toString())) {
-
-		}
+			String serialId = requestParam.getValue("serialId");
+			String appkey = requestParam.getValue("appkey");
+			String pwd = requestParam.getValue("pwd");
+			String code = requestParam.getValue("code");
+			if (StringUtils.isEmpty(serialId) || StringUtils.isEmpty(appkey) || StringUtils.isEmpty(pwd)
+					|| StringUtils.isEmpty(code)) {
+			} else {
+				return facadeController.resetIntelligentPwdByCode(serialId, appkey, pwd, code);
+			}
+		} /*
+			 * else if
+			 * (CMDEnum.del_all_intelligent_remote_user.toString().equals(
+			 * cmdEnum.toString())) {
+			 * 
+			 * }
+			 */
 		res = new ResponseObject();
 		res.setStatus(ResponseEnum.RequestParamError.getStatus());
 		res.setMessage(ResponseEnum.RequestParamError.getMsg());
@@ -316,4 +382,17 @@ public class CommonController {
 		}
 		logger.debug("============RECV REQUEST PARAMS END=============");
 	}
+	private static <T> List<T> getObjectList(String jsonString,Class<T> cls){  
+        List<T> list = new ArrayList<T>();  
+        try {  
+            Gson gson = new Gson();  
+            JsonArray arry = new JsonParser().parse(jsonString).getAsJsonArray();  
+            for (JsonElement jsonElement : arry) {  
+                list.add(gson.fromJson(jsonElement, cls));  
+            }  
+        } catch (Exception e) {  
+            e.printStackTrace();  
+        }  
+        return list;  
+    }
 }

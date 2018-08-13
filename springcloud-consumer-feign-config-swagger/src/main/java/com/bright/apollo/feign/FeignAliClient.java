@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bright.apollo.common.dto.OboxResp;
 import com.bright.apollo.common.entity.TObox;
+import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.enums.CMDEnum;
 import com.bright.apollo.hrstrix.HystrixFeignAli2Fallback;
 import com.bright.apollo.request.SceneActionDTO;
@@ -252,14 +253,33 @@ public interface FeignAliClient {
 	 */
 	@RequestMapping(value = "/aliService/deleteDevice/{oboxSerialId}/{address}/{deviceName}", method = RequestMethod.PUT)
 	ResponseObject<OboxResp> deleteDevice(@PathVariable(value = "oboxSerialId") String oboxSerialId,
-			@PathVariable(value = "address") String address,
-			@PathVariable(value = "deviceName") String deviceName);
+			@PathVariable(value = "address") String address, @PathVariable(value = "deviceName") String deviceName);
 
 	/**
 	 * 红外进入学习码
+	 * 
 	 * @param object
 	 * @return
 	 */
 	@RequestMapping(value = "/aliDevice/sendlearn", method = RequestMethod.POST)
 	ResponseObject<List<Map<String, String>>> sendLearn2IR(@RequestBody(required = true) Object object);
+
+	/**
+	 * @param operation
+	 * @param data
+	 * @param deviceConfig
+	 * @param startTime
+	 * @param endTime
+	 * @param times
+	 * @param userSerialId
+	 * @param randomNum
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/aliService/sendMessageToFinger/{operation}/{startTime}/{endTime}/{times}/{userSerialId}/{randomNum}", method = RequestMethod.POST)
+	ResponseObject<OboxResp> sendMessageToFinger(@PathVariable(value = "operation") String operation, @RequestParam(required = true,value="obox")TObox obox,
+			@RequestParam(required = true,value="deviceConfig")TOboxDeviceConfig deviceConfig, @PathVariable(value = "startTime") String startTime,
+			@PathVariable(value = "endTime") String endTime, @PathVariable(value = "times") String times,
+			@PathVariable(value = "userSerialId") Integer userSerialId,
+			@PathVariable(value = "randomNum") String randomNum);
 }

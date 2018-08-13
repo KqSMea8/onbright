@@ -288,4 +288,3 @@ public class HystrixFeignUserFallback extends BasicHystrixFeignFallback implemen
 		return res;
 	}
 }
-

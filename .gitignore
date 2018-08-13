@@ -60,3 +60,4 @@ target/
 log/
 */*.factorypath
 */*.prefs
+springcloud-zuul/src/main/resources/bootstrap.yml

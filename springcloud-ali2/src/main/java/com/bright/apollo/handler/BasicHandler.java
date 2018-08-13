@@ -11,11 +11,14 @@ import com.bright.apollo.common.entity.TScene;
 import com.bright.apollo.common.entity.TSceneCondition;
 import com.bright.apollo.service.CMDMessageService;
 import com.bright.apollo.service.DeviceChannelService;
+import com.bright.apollo.service.IntelligentFingerService;
+import com.bright.apollo.service.MsgService;
 import com.bright.apollo.service.OboxDeviceConfigService;
 import com.bright.apollo.service.OboxService;
 import com.bright.apollo.service.SceneActionService;
 import com.bright.apollo.service.SceneConditionService;
 import com.bright.apollo.service.SceneService;
+import com.bright.apollo.service.TopicServer;
 import com.bright.apollo.service.UserDeviceService;
 import com.bright.apollo.service.UserOboxService;
 import com.bright.apollo.service.UserOperationService;
@@ -24,6 +27,7 @@ import com.bright.apollo.service.UserService;
 import com.bright.apollo.session.ClientSession;
 import com.bright.apollo.session.SceneActionThreadPool;
 import com.bright.apollo.session.SessionManager;
+import com.bright.apollo.util.FingerUtil;
 
 @Component
 public abstract class BasicHandler {
@@ -57,6 +61,14 @@ public abstract class BasicHandler {
 	protected CmdCache cmdCache;
 	
 	protected SessionManager sessionManager;
+	
+	protected IntelligentFingerService intelligentFingerService;
+	
+	protected FingerUtil fingerUtil;
+	
+	protected TopicServer topicServer; 
+	
+	protected MsgService msgService;
 	public abstract Message<String> process(ClientSession clientSession, Message<String> msg) throws Exception;
 
 	protected void deleteSceneNumber(List<TScene> scenes, TObox tObox) {
@@ -198,5 +210,37 @@ public abstract class BasicHandler {
 	public void setCmdCache(CmdCache cmdCache) {
 		this.cmdCache = cmdCache;
 	}
-	
+
+	public IntelligentFingerService getIntelligentFingerService() {
+		return intelligentFingerService;
+	}
+
+	public void setIntelligentFingerService(IntelligentFingerService intelligentFingerService) {
+		this.intelligentFingerService = intelligentFingerService;
+	}
+
+	public FingerUtil getFingerUtil() {
+		return fingerUtil;
+	}
+
+	public void setFingerUtil(FingerUtil fingerUtil) {
+		this.fingerUtil = fingerUtil;
+	}
+
+	public TopicServer getTopicServer() {
+		return topicServer;
+	}
+
+	public void setTopicServer(TopicServer topicServer) {
+		this.topicServer = topicServer;
+	}
+
+	public MsgService getMsgService() {
+		return msgService;
+	}
+
+	public void setMsgService(MsgService msgService) {
+		this.msgService = msgService;
+	}
+
 }

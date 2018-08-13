@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bright.apollo.cache.CmdCache;
 import com.bright.apollo.common.dto.OboxResp;
+import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.enums.CMDEnum;
 import com.bright.apollo.enums.NodeTypeEnum;
@@ -28,6 +29,7 @@ import com.bright.apollo.service.OboxDeviceConfigService;
 import com.bright.apollo.service.TopicServer;
 import com.bright.apollo.session.SceneActionThreadPool;
 import com.bright.apollo.tool.ByteHelper;
+import com.bright.apollo.util.FingerUtil;
 import com.zz.common.util.StringUtils;
 
 @RestController
@@ -42,9 +44,10 @@ public class AliServerController {
 	private SceneActionThreadPool sceneActionThreadPool;
 	@Autowired
 	private CmdCache cmdCache;
+	@Autowired
+	private FingerUtil fingerUtil;
 	// for search new device
 	private static String timeout = "30";
-
 	@RequestMapping(value = "/toAli", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseObject<OboxResp> toAliService(@PathVariable(value = "cmd") CMDEnum cmd,
@@ -460,7 +463,38 @@ public class AliServerController {
 		return res;
 
 	}
-
+	/**
+	 * @param operation
+	 * @param data
+	 * @param deviceConfig
+	 * @param startTime
+	 * @param endTime
+	 * @param times
+	 * @param userSerialId
+	 * @param randomNum
+	 * @Description:
+	 */
+	@RequestMapping(value = "/sendMessageToFinger/{operation}/{startTime}/{endTime}/{times}/{userSerialId}/{randomNum}", method = RequestMethod.POST)
+	ResponseObject<OboxResp> sendMessageToFinger(@PathVariable(value = "operation") String operation, @RequestParam(required = true,value="obox")TObox obox,
+			@RequestParam(required = true,value="deviceConfig")TOboxDeviceConfig deviceConfig, @PathVariable(value = "startTime") String startTime,
+			@PathVariable(value = "endTime") String endTime, @PathVariable(value = "times") String times,
+			@PathVariable(value = "userSerialId") Integer userSerialId,
+			@PathVariable(value = "randomNum") String randomNum){
+		ResponseObject<OboxResp> res = new ResponseObject<OboxResp>();
+		try {
+			byte[] buildBytes = fingerUtil.buildBytes(operation, obox,
+					deviceConfig, startTime, endTime, times, userSerialId, randomNum);
+			topicServer.request(CMDEnum.set_finger_remote_user, buildBytes, obox.getOboxSerialId());
+			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:"+e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	
 	static class sceneAction implements Runnable {
 
 		private List<SceneActionDTO> lists;
@@ -664,4 +698,5 @@ public class AliServerController {
 		}
 
 	}
+	
 }

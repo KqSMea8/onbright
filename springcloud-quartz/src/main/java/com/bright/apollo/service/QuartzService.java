@@ -16,8 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Service;
 
+import com.bright.apollo.job.RemoteUserOpenJob;
 import com.bright.apollo.job.TimeJob;
 import com.bright.apollo.tool.ByteHelper;
+import com.bright.apollo.tool.DateHelper;
+import com.zz.common.util.MD5;
 
 /**
  * @Title:
@@ -31,6 +34,7 @@ public class QuartzService {
 	private static final Logger log = LoggerFactory.getLogger(QuartzService.class);
 	private static String SERVER_JOB_GROUP_NAME = "OBJobGroup";
 	private static String SERVER_TRIGGER_GROUP_NAME = "OBTriggerGroup";
+	private static String SERVER_REMOTE_OPEN_TASK = "RemoteOpen";
 	@Autowired
 	private SchedulerFactoryBean schedulerFactory;
 	/**
@@ -110,5 +114,67 @@ public class QuartzService {
 			log.error("===error msg:" + e.getMessage());
  			throw new RuntimeException(e);
 		}
+	}
+	/**  
+	 * @param fingerRemoteUserId
+	 * @param endTime
+	 * @param serialId  
+	 * @Description:  
+	 */
+	public void startRemoteOpenTaskSchedule(int fingerRemoteUserId, String endTime, String serialId) {
+		// 得到默认的调度器
+		Scheduler scheduler = schedulerFactory.getScheduler();
+		JobDetail jobDetail = JobBuilder
+				.newJob(RemoteUserOpenJob.class)
+				.withIdentity(
+						MD5.MD5generator16Bit(fingerRemoteUserId+serialId),
+						SERVER_REMOTE_OPEN_TASK).build();
+		JobDataMap jobDataMap = jobDetail.getJobDataMap();
+		jobDataMap.put("fingerRemoteUserId", String.format("%d", fingerRemoteUserId));
+		jobDataMap.put("serialId", String.format("%s", serialId));
+		String rightConString =Date2Cron(endTime);
+		try {
+			CronTrigger cronTrigger = TriggerBuilder
+					.newTrigger()
+					.withIdentity(
+							String.format("%d", fingerRemoteUserId) + "_"
+									+ String.format("%s", serialId),
+							SERVER_TRIGGER_GROUP_NAME)
+					.withSchedule(
+							CronScheduleBuilder.cronSchedule(rightConString))
+					.build();
+			scheduler.scheduleJob(jobDetail, cronTrigger);
+			scheduler.start();
+		} catch (Exception e) {
+			log.info("===the quartz job exist===");
+			log.error("message:"+e.getMessage());
+		}
+ 	}
+	/**  
+	 * @param endTime
+	 * @return  
+	 * @Description:  
+	 */
+	private String Date2Cron(String endTime) {
+		//1528283520000
+		//2018,06,06,19,12
+		String formatDate = DateHelper.formatDate(Long.parseLong(endTime), DateHelper.FORMATNALLWITHPOINT);
+		String[] split = formatDate.split(",");
+		if(split==null||split.length<=0)
+			return null;
+		StringBuffer sb=new StringBuffer();
+		sb.append("0 ");
+		//yyyy.MM.dd.HH.mm
+		//0 15 10 15 5 2018
+		for(int i=split.length-1;i>=0;i--){
+			if(i!=0){
+				if(i==1)
+					sb.append(split[i]).append(" ").append("? ");
+				else
+					sb.append(split[i]).append(" ");
+			}else
+				sb.append(split[i]);
+		}
+		return sb.toString();
 	}
 }
