@@ -309,7 +309,7 @@ public class UserController {
 		return res;
 	}
 
-	@RequestMapping(value = "/getUserDevcieByUserIdAndSerialId/{userId}/{oboxSerialId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/getUserDevcieByUserIdAndSerialId/{userId}/{deviceSerialId}", method = RequestMethod.GET)
 	public ResponseObject<TUserDevice> getUserDevcieByUserIdAndSerialId(
 			@PathVariable(required = true, value = "userId") Integer userId,
 			@PathVariable(required = true, value = "deviceSerialId") String deviceSerialId) {

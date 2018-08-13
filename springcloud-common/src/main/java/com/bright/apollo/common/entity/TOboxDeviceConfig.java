@@ -33,8 +33,7 @@ public class TOboxDeviceConfig implements Serializable{
      *
      * @mbg.generated Wed Mar 14 16:07:21 CST 2018
      */
-    @JsonProperty(value="obox_id")
-    private Integer oboxId;
+     private Integer oboxId;
 
     /**
      *
@@ -70,7 +69,6 @@ public class TOboxDeviceConfig implements Serializable{
      * @mbg.generated Wed Mar 14 16:07:21 CST 2018
      */
     
-    @JsonProperty(value="device_type")
     @Expose
 	@SerializedName("device_type")
     private String deviceType;

@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -68,7 +69,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/favor.ioc","/authorization/*");
     }
-    
+     
     public class BeforeLoginFilter extends GenericFilterBean {
 
         @Override

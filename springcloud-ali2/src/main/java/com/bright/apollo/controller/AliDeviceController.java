@@ -7,6 +7,8 @@ import java.util.Map;
 
 import com.bright.apollo.service.TopicServer;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.util.StringUtils;
@@ -44,11 +46,12 @@ public class AliDeviceController {
 	private CMDMessageService cMDMessageService;
 	@Autowired
 	private TopicServer topServer;
-
+	private static final Logger logger = LoggerFactory.getLogger(AliDeviceController.class);
 
 	@RequestMapping(value = "/registAliDev/{type}", method = RequestMethod.GET)
 	public ResponseObject<AliDevInfo> registAliDev(@PathVariable(required = true, value = "type") String type,
 			@RequestParam(required = false, value = "zone") String zone) {
+		logger.info("===start registAliDev===");
 		ResponseObject<AliDevInfo> res = new ResponseObject<AliDevInfo>();
 		try {
 			AliDevInfo aliDevInfo = new AliDevInfo();
@@ -153,7 +156,7 @@ public class AliDeviceController {
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 			res.setData(aliDevInfo);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("===error msg:"+e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
