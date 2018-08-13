@@ -27,9 +27,9 @@ import com.google.gson.Gson;
  * @Since:2018年3月10日
  * @Version:1.1.0
  */
-@Aspect
-@Order(1)
-@Component
+//@Aspect
+//@Order(1)
+//@Component
 public class WebLogAspect {
 	private static final Logger logger = LoggerFactory.getLogger(WebLogAspect.class);
  

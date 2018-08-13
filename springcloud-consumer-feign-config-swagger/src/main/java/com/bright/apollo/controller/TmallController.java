@@ -125,18 +125,21 @@ public class TmallController {
 				adapter = adapter.onbright2TMall();
 				logger.info("====== adapter ====== "+adapter);
 				JSONObject devices = new JSONObject();
-				devices.put("deviceId",adapter.getDeviceId());
-				devices.put("deviceName",adapter.getDeviceName());
-				devices.put("deviceType",adapter.getDeviceType());
-				devices.put("zone",adapter.getZone());
-				devices.put("brand",adapter.getBrand());
-				devices.put("model",adapter.getModel());
-				devices.put("icon",adapter.getIcon());
-				devices.put("properties",adapter.getProperties());
-				devices.put("actions",adapter.getAction());
-				devices.put("extensions",extensionsMap);
-				list.add(devices);
-				System.out.println("list ====== "+list);
+				if(adapter !=null&&!adapter.equals("")){
+					devices.put("deviceId",adapter.getDeviceId());
+					devices.put("deviceName",adapter.getDeviceName());
+					devices.put("deviceType",adapter.getDeviceType());
+					devices.put("zone",adapter.getZone());
+					devices.put("brand",adapter.getBrand());
+					devices.put("model",adapter.getModel());
+					devices.put("icon",adapter.getIcon());
+					devices.put("properties",adapter.getProperties());
+					devices.put("actions",adapter.getAction());
+					devices.put("extensions",extensionsMap);
+					list.add(devices);
+					System.out.println("list ====== "+list);
+				}
+
 			}
 			templateScan(list);//展示使用(日后可删除)
 			jsonArray.put(list);
