@@ -17,7 +17,7 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
 import org.springframework.messaging.MessagingException;
 
-@Configuration
+//@Configuration
 public class MqttInBoundConfiguration {
 
     @Autowired
