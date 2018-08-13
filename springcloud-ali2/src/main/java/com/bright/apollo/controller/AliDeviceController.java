@@ -63,7 +63,7 @@ public class AliDeviceController {
 
 	@Autowired
 	private SpringContextUtil springContextUtil;
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(AliDeviceController.class);
 
 	@RequestMapping(value = "/sendToMqtt", method = RequestMethod.GET)
