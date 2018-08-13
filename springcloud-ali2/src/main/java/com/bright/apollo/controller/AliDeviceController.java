@@ -57,16 +57,14 @@ public class AliDeviceController {
 	private CMDMessageService cMDMessageService;
 	@Autowired
 	private TopicServer topServer;
-<<<<<<< HEAD
 
 	@Autowired
 	private MqttGateWay mqttGateWay;
 
 	@Autowired
 	private SpringContextUtil springContextUtil;
-=======
+	
 	private static final Logger logger = LoggerFactory.getLogger(AliDeviceController.class);
->>>>>>> 53bbb0f8aa491367087c8030514b8eba3363065d
 
 	@RequestMapping(value = "/sendToMqtt", method = RequestMethod.GET)
 	public String testMqtt() {
