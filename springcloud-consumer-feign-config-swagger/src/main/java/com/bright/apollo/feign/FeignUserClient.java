@@ -130,7 +130,7 @@ public interface FeignUserClient {
 	 * @return
 	 * @Description:
 	 */
-	@RequestMapping(value = "/user/getUserDevcieByUserIdAndSerialId/{userId}/{oboxSerialId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/user/getUserDevcieByUserIdAndSerialId/{userId}/{deviceSerialId}", method = RequestMethod.GET)
 	public ResponseObject<TUserDevice> getUserDevcieByUserIdAndSerialId(
 			@PathVariable(required = true, value = "userId") Integer userId,
 			@PathVariable(required = true, value = "deviceSerialId") String deviceSerialId);

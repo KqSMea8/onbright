@@ -46,4 +46,8 @@ datasource:
     type: com.alibaba.druid.pool.DruidDataSource
 logging:
   level:
+<<<<<<< HEAD
     com.bright.apollo.feign.FeignDeviceClient: DEBUG
+=======
+    com.bright.apollo.feign.FeignAliClient: DEBUG
+>>>>>>> 53bbb0f8aa491367087c8030514b8eba3363065d

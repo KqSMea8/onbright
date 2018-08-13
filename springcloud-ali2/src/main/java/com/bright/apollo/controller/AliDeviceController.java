@@ -12,6 +12,8 @@ import com.bright.apollo.service.TopicServer;
 import com.bright.apollo.util.SpringContextUtil;
 import org.apache.activemq.command.ActiveMQTopic;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
@@ -55,12 +57,16 @@ public class AliDeviceController {
 	private CMDMessageService cMDMessageService;
 	@Autowired
 	private TopicServer topServer;
+<<<<<<< HEAD
 
 	@Autowired
 	private MqttGateWay mqttGateWay;
 
 	@Autowired
 	private SpringContextUtil springContextUtil;
+=======
+	private static final Logger logger = LoggerFactory.getLogger(AliDeviceController.class);
+>>>>>>> 53bbb0f8aa491367087c8030514b8eba3363065d
 
 	@RequestMapping(value = "/sendToMqtt", method = RequestMethod.GET)
 	public String testMqtt() {
@@ -88,6 +94,7 @@ public class AliDeviceController {
 	@RequestMapping(value = "/registAliDev/{type}", method = RequestMethod.GET)
 	public ResponseObject<AliDevInfo> registAliDev(@PathVariable(required = true, value = "type") String type,
 			@RequestParam(required = false, value = "zone") String zone) {
+		logger.info("===start registAliDev===");
 		ResponseObject<AliDevInfo> res = new ResponseObject<AliDevInfo>();
 		try {
 			AliDevInfo aliDevInfo = new AliDevInfo();
@@ -192,7 +199,7 @@ public class AliDeviceController {
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 			res.setData(aliDevInfo);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("===error msg:"+e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
