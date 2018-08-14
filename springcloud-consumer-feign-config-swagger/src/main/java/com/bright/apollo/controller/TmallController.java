@@ -145,6 +145,11 @@ public class TmallController {
 			jsonArray.put(list);
 			playloadMap.put("devices",list);
 			map.put("payload",playloadMap);
+			headerMap.put("namespace","AliGenie.Iot.Device.Discovery");
+			headerMap.put("name","DiscoveryDevicesResponse");
+			headerMap.put("messageId",requestHeaderMap.get("messageId"));
+			headerMap.put("payLoadVersion","1");
+			map.put("header",headerMap);
 		}else if(requestHeaderMap.get("namespace").equals("AliGenie.Iot.Device.Control")){//天猫精灵控制设备
 			try {
 				enableSSl();
