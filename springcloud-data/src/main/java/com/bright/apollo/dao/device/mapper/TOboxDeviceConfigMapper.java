@@ -162,7 +162,7 @@ public interface TOboxDeviceConfigMapper   {
 			@Result(property = "deviceSerialId", column = "device_serial_id"),
 			@Result(property = "deviceRfAddr", column = "device_rf_addr"),
 			@Result(property = "groupAddr", column = "group_addr"),
-			@Result(property = "oboxSerialId", column = " obox_serial_id") })
+			@Result(property = "oboxSerialId", column = "obox_serial_id") })
 	List<TOboxDeviceConfig> getOboxDeviceConfigByUserId(@Param("userId") Integer userId);
 
 	/**
@@ -181,7 +181,7 @@ public interface TOboxDeviceConfigMapper   {
 			@Result(property = "deviceSerialId", column = "device_serial_id"),
 			@Result(property = "deviceRfAddr", column = "device_rf_addr"),
 			@Result(property = "groupAddr", column = "group_addr"),
-			@Result(property = "oboxSerialId", column = " obox_serial_id") })
+			@Result(property = "oboxSerialId", column = "obox_serial_id") })
 	List<TOboxDeviceConfig> getOboxDeviceConfigByOboxSerialId(@Param("oboxSerialId") String oboxSerialId);
 
 	/**
@@ -203,7 +203,7 @@ public interface TOboxDeviceConfigMapper   {
 			@Result(property = "deviceSerialId", column = "device_serial_id"),
 			@Result(property = "deviceRfAddr", column = "device_rf_addr"),
 			@Result(property = "groupAddr", column = "group_addr"),
-			@Result(property = "oboxSerialId", column = " obox_serial_id") })
+			@Result(property = "oboxSerialId", column = "obox_serial_id") })
 	List<TOboxDeviceConfig> getDeviceTypeByUser(@Param("userId") Integer userId);
 
 	/**
@@ -249,7 +249,7 @@ public interface TOboxDeviceConfigMapper   {
 			@Result(property = "deviceSerialId", column = "device_serial_id"),
 			@Result(property = "deviceRfAddr", column = "device_rf_addr"),
 			@Result(property = "groupAddr", column = "group_addr"),
-			@Result(property = "oboxSerialId", column = " obox_serial_id") })
+			@Result(property = "oboxSerialId", column = "obox_serial_id") })
 	TOboxDeviceConfig getDeviceByUserAndSerialId(@Param("userId") Integer userId, @Param("serialID") String serialID);
 
 	/**  
