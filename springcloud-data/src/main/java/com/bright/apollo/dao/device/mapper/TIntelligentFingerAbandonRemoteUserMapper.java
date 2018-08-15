@@ -52,4 +52,12 @@ public interface TIntelligentFingerAbandonRemoteUserMapper {
 	@Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
 	Integer addIntelligentFingerAbandonRemoteUser(TIntelligentFingerAbandonRemoteUser abandonRemoteUser);
 
+	/**  
+	 * @param serialId
+	 * @param pin  
+	 * @Description:  
+	 */
+	@Delete("delete from t_intelligent_finger_abandon_remote_user where serialId=#{serialId} and user_serialId=#{pin}")
+	void delIntelligentFingerAbandonRemoteUserBySerialIdAndPin(@Param("serialId")String serialId, @Param("pin")Integer pin);
+
 }

@@ -270,6 +270,7 @@ public interface FeignDeviceClient {
 	 * @param id
 	 * @Description:
 	 */
+	@Deprecated
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/intelligentFinger/delIntelligentFingerAbandonRemoteUserById/{id}", method = RequestMethod.DELETE)
 	ResponseObject delIntelligentFingerAbandonRemoteUserById(@PathVariable(value = "id") Integer id);
@@ -367,5 +368,16 @@ public interface FeignDeviceClient {
 			@PathVariable(value = "enable")Integer enable, 
 			@PathVariable(value = "serialId")String serialId,
 			@PathVariable(value = "value")Integer value);
+
+	/**  
+	 * @param serialid
+	 * @param userSerialid  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/intelligentFinger/delIntelligentFingerAbandonRemoteUserBySerialIdAndPin/{serialId}/{pin}", method = RequestMethod.PUT)
+	ResponseObject delIntelligentFingerAbandonRemoteUserBySerialIdAndPin(
+			@PathVariable(value = "serialId")String serialId,
+			@PathVariable(value = "pin")Integer pin);
 
 }

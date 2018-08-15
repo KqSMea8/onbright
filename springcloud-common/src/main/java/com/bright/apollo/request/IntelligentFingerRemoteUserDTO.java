@@ -6,6 +6,7 @@ import java.util.Date;
 import org.springframework.util.StringUtils;
 
 import com.bright.apollo.common.entity.TIntelligentFingerRemoteUser;
+import com.bright.apollo.tool.Base64Util;
 import com.bright.apollo.tool.DateHelper;
  
 /**  
@@ -61,9 +62,9 @@ public class IntelligentFingerRemoteUserDTO implements Serializable{
 		setUseTimes(user.getUseTimes());
 		setMobile(user.getMobile());
 		if(user.getUserSerialid()<10){
-			setPwd("620"+user.getUserSerialid()+user.getPwd());
+			setPwd("620"+user.getUserSerialid()+Base64Util.base64Decrypt(user.getPwd()));
 		}else{
-			setPwd("62"+user.getUserSerialid()+user.getPwd());
+			setPwd("62"+user.getUserSerialid()+Base64Util.base64Decrypt(user.getPwd()));
 		}
 		if(StringUtils.isEmpty(user.getNickName())){
 			setNickName( user.getUserSerialid()+"");

@@ -2720,10 +2720,9 @@ public class FacadeController {
 			// 电量
 			String byteToBit = ByteHelper
 					.byteToBit(ByteHelper.hexStringToBytes(deviceConfig.getDeviceState().substring(0, 2))[0]);
-			map.put("betty",
-					byteToBit.substring(7, 8).equals("1")
-							? Integer.valueOf(byteToBit.substring(0, 7) + "0", 2).intValue()
-							: Integer.valueOf(byteToBit, 2).intValue());
+			//电量
+			//if(byteToBit.substring(7, 8).equals("1"))
+			map.put("betty", Integer.valueOf("0"+byteToBit.substring(1, 7),2).intValue()+"");
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 			res.setData(map);
@@ -2791,13 +2790,28 @@ public class FacadeController {
 			}
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
-			res.setData(items);
+			res.setData(delEmptyItems(items));
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
+	}
+
+	/**  
+	 * @param items
+	 * @return  
+	 * @Description:  
+	 */
+	private List<IntelligentOpenRecordItemDTO> delEmptyItems(List<IntelligentOpenRecordItemDTO> items) {
+		List<IntelligentOpenRecordItemDTO> list=new ArrayList<IntelligentOpenRecordItemDTO>();
+		for(IntelligentOpenRecordItemDTO item:items){
+			if(item.getList()!=null&&item.getList().size()>0){
+				list.add(item);
+			}
+		}
+		return list;
 	}
 
 	/**
@@ -2875,13 +2889,28 @@ public class FacadeController {
 			}
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
-			res.setData(items);
+			res.setData(delEmptyWarnItems(items));
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
+	}
+
+	/**  
+	 * @param items
+	 * @return  
+	 * @Description:  
+	 */
+	private List<IntelligentFingerWarnItemDTO> delEmptyWarnItems(List<IntelligentFingerWarnItemDTO> items) {
+		List<IntelligentFingerWarnItemDTO> list=new ArrayList<IntelligentFingerWarnItemDTO>();
+		for(IntelligentFingerWarnItemDTO item:items){
+			if(item!=null&&item.getList()!=null&&item.getList().size()>0){
+				list.add(item);
+			}
+		}
+		return list;
 	}
 
 	/**
@@ -3421,7 +3450,8 @@ public class FacadeController {
 			Integer userSerialId;
 			if (abandonRemoteUsers != null && abandonRemoteUsers.size() > 0) {
 				userSerialId = abandonRemoteUsers.get(0).getUserSerialid().intValue();
-				feignDeviceClient.delIntelligentFingerAbandonRemoteUserById(abandonRemoteUsers.get(0).getId());
+				feignDeviceClient.delIntelligentFingerAbandonRemoteUserBySerialIdAndPin(abandonRemoteUsers.get(0).getSerialid(),abandonRemoteUsers.get(0).getUserSerialid());
+				//feignDeviceClient.delIntelligentFingerAbandonRemoteUserById(abandonRemoteUsers.get(0).getId());
 			} else {
 				ResponseObject<List<TIntelligentFingerRemoteUser>> remoteUserRes = feignDeviceClient
 						.getTIntelligentFingerRemoteUsersBySerialId(serialId);
@@ -3802,7 +3832,8 @@ public class FacadeController {
 				List<TIntelligentFingerAbandonRemoteUser> abandonRemoteUsers = abandonRemoteUsersRes.getData();
 				if (abandonRemoteUsers != null && abandonRemoteUsers.size() > 0) {
 					fingerRemoteUser.setUserSerialid(abandonRemoteUsers.get(0).getUserSerialid().intValue());
-					feignDeviceClient.delIntelligentFingerAbandonRemoteUserById(abandonRemoteUsers.get(0).getId());
+					feignDeviceClient.delIntelligentFingerAbandonRemoteUserBySerialIdAndPin(abandonRemoteUsers.get(0).getSerialid(),abandonRemoteUsers.get(0).getUserSerialid());
+					//feignDeviceClient.delIntelligentFingerAbandonRemoteUserById(abandonRemoteUsers.get(0).getId());
 				} else {
 					ResponseObject<List<TIntelligentFingerRemoteUser>> remoteUsersRes = feignDeviceClient
 							.getTIntelligentFingerRemoteUsersBySerialId(deviceConfig.getDeviceSerialId());
