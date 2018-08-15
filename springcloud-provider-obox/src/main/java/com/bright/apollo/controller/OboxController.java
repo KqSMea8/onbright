@@ -59,7 +59,7 @@ public class OboxController {
 			@RequestBody(required = true) TObox obox) {
 		ResponseObject<TObox> res = new ResponseObject<TObox>();
 		try {
-			if (oboxService.queryOboxBySerialId(serialId) == null) {
+			if (oboxService.queryOboxsByOboxSerialId(serialId) == null) {
 				res.setStatus(ResponseEnum.ObjExist.getStatus());
 				res.setMessage(ResponseEnum.ObjExist.getMsg());
 			} else {
