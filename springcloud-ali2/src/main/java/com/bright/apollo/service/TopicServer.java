@@ -1,9 +1,14 @@
 package com.bright.apollo.service;
 
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Future;
 
+import com.alibaba.druid.support.json.JSONUtils;
+import com.google.gson.Gson;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -190,7 +195,7 @@ public class TopicServer {
 
 	}
 
-	public void pubIRTopic(CMDEnum cmd, byte[] data, String deviceSerial,String message) throws Exception {
+	public void pubIRTopic(CMDEnum cmd, byte[] data, String deviceSerial,Object jsonMap) throws Exception {
 		logger.info(" ====== pubIRTopic start ====== ");
 		String mString = null;
 		if(data != null){
@@ -198,21 +203,33 @@ public class TopicServer {
 		}
 
 		PubRequest request = new PubRequest();
-		String productKey = AliDevCache.getProductKey(deviceSerial);
-		String deviceName = AliDevCache.getDeviceName(deviceSerial);
-		String region = AliDevCache.getProductRegion(deviceSerial);
+//		String productKey = AliDevCache.getProductKey(deviceSerial);
+//		String deviceName = AliDevCache.getDeviceName(deviceSerial);
+		String productKey = "b1eakXpQ1WU";
+		String deviceName = "WIFIIR";
+//		String region = AliDevCache.getProductRegion(deviceSerial);
+		String region = AliRegionEnum.SOURTHCHINA.getValue();
 		if (StringUtils.isEmpty(productKey)) {
 			TAliDevice device = aliDeviceService.getAliDeviceBySerializeId(deviceSerial);
 			region = setCache(device, deviceSerial);
 		}
 		request.setProductKey(productKey);
+		Map<String,Object> m = (Map<String,Object>)jsonMap;
+		List jsonArray = (List)m.get("value");
+		Map<String,Object> datasMap = (Map<String,Object>)jsonArray.get(0);
+		String datas = (String)datasMap.get("data");
+		logger.info("datas length  ------ "+ datas.length());
+		String jsonObject = new Gson().toJson(jsonMap);
+//		String jsonObject = JSONUtils.toJSONString(jsonMap);
+		logger.info("jsonObject ======= "+jsonObject);
+
 		if(mString !=null){
 			request.setMessageContent(Base64.encodeBase64String(mString.getBytes()));
 		}else{
-			request.setMessageContent(message);
+			request.setMessageContent(Base64.encodeBase64String(jsonObject.getBytes()));
 		}
 
-		request.setTopicFullName("/" + productKey + "/" + deviceName + "/set");
+		request.setTopicFullName("/" + productKey + "/" + deviceName + "/get");
 		request.setQos(0); // QoS0 设备在线时发送 ，QoS1 设备不在线时，能在IOT HUB 上保存7天，上线后发送
 		PubResponse response = null;
 		sendRequest(request, region, response);

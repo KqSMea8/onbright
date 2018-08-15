@@ -5,7 +5,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 @Component
-@PropertySource("classpath:application.yml")
+@PropertySource("classpath:bootstrap.yml")
 @ConfigurationProperties(prefix = "com.mqtt")
 public class MqttProperties {
 

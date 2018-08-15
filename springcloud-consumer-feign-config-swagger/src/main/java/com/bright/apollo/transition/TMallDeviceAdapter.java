@@ -2,6 +2,7 @@ package com.bright.apollo.transition;
 
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.enums.ColorEnum;
+import com.bright.apollo.tool.ByteHelper;
 import com.zz.common.util.ArrayUtils;
 import org.json.JSONArray;
 
@@ -279,13 +280,16 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                 }else if(("light_"+attribute).equals(propertyArr[0])){
                     if(attribute.equals("brightnessStep")){
                         Integer val = Integer.valueOf(value);
-                        value = String.valueOf(val*255/100);
+                        value =  ByteHelper.int2HexString(val*255/100);
                         deviceState = changeState(deviceState,value);
                     }else if(attribute.equals("brightness")){
                         if(value.equals("max")){
-                            value = "255";
+                            value = "ff";
+                        }else if(value.equals("min")){
+                            value = "00";
                         }else{
-                            value = "0";
+                            Integer val = Integer.valueOf(value);
+                            value =  ByteHelper.int2HexString(val*255/100);
                         }
                         deviceState = changeState(deviceState,value);
                     }else if(attribute.equals("color")){

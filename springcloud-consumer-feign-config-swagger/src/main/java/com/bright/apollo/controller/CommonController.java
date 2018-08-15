@@ -77,15 +77,20 @@ public class CommonController {
 		if (CMDEnum.regist_aliDev.toString().equals(cmdEnum.toString()))
 			return facadeController.registAliDev(requestParam.getValue("type"), requestParam.getValue("zone"));
 		else if (CMDEnum.add_obox.toString().equals(cmdEnum.toString())) {
+			logger.info(" ------ add obox begin ------ ");
+			logger.info(" ------ requestParam.getValue('obox') ------ "+requestParam.getValue("obox"));
 			ResponseObject addObox = facadeController
 					.addObox((OboxDTO) ObjectUtils.fromJsonToObject(requestParam.getValue("obox"), OboxDTO.class));
+			logger.info("addObox obj  ------"+addObox.getData());
 			if (addObox != null && addObox.getStatus() < 300) {
 				Map<String, Object> map = new HashMap<String, Object>();
 				map.put("obox_serial_id",
 						((OboxDTO) ObjectUtils.fromJsonToObject(requestParam.getValue("obox"), OboxDTO.class))
 								.getOboxSerialId());
 				addObox.setData(map);
+				logger.info("map  ------"+map);
 			}
+			logger.info(" ------ add obox end ------ ");
 			return addObox;
 		} else if (CMDEnum.query_device_count.toString().equals(cmdEnum.toString())) {
 			ResponseObject queryDevcieCount = facadeController.queryDevcieCount();

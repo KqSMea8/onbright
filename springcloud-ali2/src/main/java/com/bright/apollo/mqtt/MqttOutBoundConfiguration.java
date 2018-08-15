@@ -6,8 +6,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.integration.channel.DirectChannel;
-import org.springframework.integration.dsl.IntegrationFlow;
-import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.mqtt.core.DefaultMqttPahoClientFactory;
 import org.springframework.integration.mqtt.core.MqttPahoClientFactory;
 import org.springframework.integration.mqtt.outbound.MqttPahoMessageHandler;
@@ -37,7 +35,7 @@ public class MqttOutBoundConfiguration {
     }
 
 
-    @Bean
+    @Bean(name = "mqttPahoMessageHandler")
     @ServiceActivator(inputChannel = "outChannel")
     public MessageHandler mqttOutbound(){
         MqttPahoMessageHandler mqttPahoMessageHandler =
@@ -46,5 +44,6 @@ public class MqttOutBoundConfiguration {
         mqttPahoMessageHandler.setDefaultTopic("topic1");
         return mqttPahoMessageHandler;
     }
+
 
 }

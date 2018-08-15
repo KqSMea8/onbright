@@ -49,7 +49,7 @@ public class MqttInBoundConfiguration {
 
             @Override
             public void handleMessage(Message<?> message) throws MessagingException {
-                System.out.println(message.getPayload());
+                System.out.println("receive ------ "+message.getPayload());
             }
 
         };
