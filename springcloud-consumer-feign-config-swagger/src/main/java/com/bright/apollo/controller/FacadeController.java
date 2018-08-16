@@ -495,7 +495,7 @@ public class FacadeController {
 				// search device by user
 				ResponseObject<OboxResp> releaseObox = feignAliClient.scanByInitiative(oboxSerialId, deviceType,
 						deviceChildType, serialId, countOfDevice);
-				if (releaseObox != null && releaseObox.getStatus() == ResponseEnum.SelectSuccess.getStatus()
+				if (releaseObox != null && releaseObox.getStatus() == ResponseEnum.AddSuccess.getStatus()
 						) {
 					res.setStatus(ResponseEnum.AddSuccess.getStatus());
 					res.setMessage(ResponseEnum.AddSuccess.getMsg());
