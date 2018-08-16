@@ -55,13 +55,14 @@ public class UploadHandler extends AliBaseHandler {
             jsonObject = ali2IR(deviceSerialId,object);
             topicServer.pubIRTopic(null,null,deviceSerialId,jsonObject);
         }catch (Exception e){
-            jsonObject = new JSONObject();
-            try {
-                jsonObject.put("respCode","10001");
-                topicServer.pubIRTopic(null,null,deviceSerialId,jsonObject);
-            } catch (Exception e1) {
-                e1.printStackTrace();
-            }
+            e.printStackTrace();
+//            jsonObject = new JSONObject();
+//            try {
+//                jsonObject.put("respCode","10001");
+//                topicServer.pubIRTopic(null,null,deviceSerialId,jsonObject);
+//            } catch (Exception e1) {
+//                e1.printStackTrace();
+//            }
 
         }
 
@@ -77,11 +78,17 @@ public class UploadHandler extends AliBaseHandler {
         logger.info("aliDevCache ====== "+aliDevCache);
         String bId = aliDevCache.getValue("ir_"+deviceSerialId);//品牌ID
         if(bId==null||bId.equals("")){
-            bId = "544";
+            bId = "478";
         }
-        TYaoKongYunBrand yaoKongYunBrand = yaoKongYunService.getYaoKongYunByTId(Integer.valueOf(bId));
-
-        Integer functionId = Integer.valueOf(jsonArray.getString(0));
+        List<TYaoKongYunBrand> yaoKongYunBrandList = yaoKongYunService.getYaoKongYunByTId(Integer.valueOf(bId));
+        TYaoKongYunBrand yaoKongYunBrand = null;
+        if(yaoKongYunBrandList !=null){
+            yaoKongYunBrand = yaoKongYunBrandList.get(0);
+        }else{
+            yaoKongYunBrand = new TYaoKongYunBrand();
+        }
+        JSONObject js = jsonArray.getJSONObject(0);
+        Integer functionId = Integer.valueOf(js.get("functionId").toString());
         if(functionId==3){//下载测试码
             RequestConfig requestConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD_STRICT).build();
             HttpPost httpPost =new HttpPost(yaoKongYunConfig.getUrlPrefix());

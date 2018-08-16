@@ -5,6 +5,8 @@ import com.bright.apollo.common.entity.TYaoKongYunBrand;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Mapper
 @Repository
 public interface YaoKongYunMapper {
@@ -17,6 +19,6 @@ public interface YaoKongYunMapper {
             @Result(property = "deviceType",column = "device_type"),
             @Result(property = "common",column = "common")
     })
-    TYaoKongYunBrand getYaoKongYunByTId(@Param("tId") Integer tId);
+    List<TYaoKongYunBrand> getYaoKongYunByTId(@Param("tId") Integer tId);
 
 }

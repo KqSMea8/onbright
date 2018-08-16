@@ -214,8 +214,14 @@ public class TopicServer {
 			region = setCache(device, deviceSerial);
 		}
 		request.setProductKey(productKey);
-		Map<String,Object> m = (Map<String,Object>)jsonMap;
-		List jsonArray = (List)m.get("value");
+		List jsonArray = null;
+		if(jsonMap instanceof Map){
+			jsonArray = (List)((Map<String,Object>)jsonMap).get("value");
+		}else if(jsonMap instanceof JSONObject){
+			jsonArray = (List)((JSONObject) jsonMap).get("value");
+		}
+
+
 		Map<String,Object> datasMap = (Map<String,Object>)jsonArray.get(0);
 		String datas = (String)datasMap.get("data");
 		logger.info("datas length  ------ "+ datas.length());

@@ -35,7 +35,7 @@ public class CommandHandler {
 
     public CommandHandler(){
         cmdHandlers = new HashMap<String, AliBaseHandler>();
-        cmdHandlers.put(AliCmdTypeEnum.UPLOAD.getCmd(), uploadHandler);
+
     }
 
     private Map<String, AliBaseHandler> cmdHandlers;
@@ -50,6 +50,10 @@ public class CommandHandler {
 
     public void process(String ProductKey,String DeviceName, String aString) {
         try {
+            if(cmdHandlers.get(AliCmdTypeEnum.UPLOAD.getCmd())==null){
+                cmdHandlers.put(AliCmdTypeEnum.UPLOAD.getCmd(), uploadHandler);
+            }
+
             logger.info("======topic msg=====:key:"+ProductKey+" device:"+DeviceName+" payload"+aString);
 
             JSONObject object = new JSONObject(aString);

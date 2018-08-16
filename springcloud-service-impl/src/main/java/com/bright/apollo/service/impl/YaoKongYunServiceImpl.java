@@ -7,6 +7,8 @@ import com.bright.apollo.service.YaoKongYunService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class YaoKongYunServiceImpl implements YaoKongYunService {
 
@@ -14,7 +16,7 @@ public class YaoKongYunServiceImpl implements YaoKongYunService {
     private YaoKongYunMapper yaoKongYunMapper;
 
     @Override
-    public TYaoKongYunBrand getYaoKongYunByTId(Integer tId) {
+    public List<TYaoKongYunBrand> getYaoKongYunByTId(Integer tId) {
         return yaoKongYunMapper.getYaoKongYunByTId(tId);
     }
 }

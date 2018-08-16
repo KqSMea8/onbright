@@ -3,8 +3,10 @@ package com.bright.apollo.service;
 import com.bright.apollo.common.entity.TAliDeviceConfig;
 import com.bright.apollo.common.entity.TYaoKongYunBrand;
 
+import java.util.List;
+
 public interface YaoKongYunService {
 
-    TYaoKongYunBrand getYaoKongYunByTId(Integer tId);
+    List<TYaoKongYunBrand> getYaoKongYunByTId(Integer tId);
 
 }
