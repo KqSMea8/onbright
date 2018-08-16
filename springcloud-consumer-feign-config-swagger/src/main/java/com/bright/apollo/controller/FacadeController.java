@@ -468,9 +468,10 @@ public class FacadeController {
 			} else {
 				UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
 						.getPrincipal();
-				if (principal.getUsername() != null && !principal.getUsername().equals("")) {
+				if (StringUtils.isEmpty(principal.getUsername())) {
 					res.setStatus(ResponseEnum.RequestParamError.getStatus());
 					res.setMessage(ResponseEnum.RequestParamError.getMsg());
+					return res;
 				}
 				int countOfDevice = 0;
 				ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
@@ -479,7 +480,7 @@ public class FacadeController {
 					ResponseObject<List<TOboxDeviceConfig>> resDevice = feignDeviceClient
 							.getOboxDeviceConfigByUserId(tUser.getId());
 					if (resDevice == null || resDevice.getStatus() != ResponseEnum.SelectSuccess.getStatus()
-							|| resDevice.getData() != null) {
+							|| resDevice.getData() == null) {
 						res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
 						res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
 						return res;
@@ -495,24 +496,9 @@ public class FacadeController {
 				ResponseObject<OboxResp> releaseObox = feignAliClient.scanByInitiative(oboxSerialId, deviceType,
 						deviceChildType, serialId, countOfDevice);
 				if (releaseObox != null && releaseObox.getStatus() == ResponseEnum.SelectSuccess.getStatus()
-						&& releaseObox.getData() != null) {
-					OboxResp oboxResp = releaseObox.getData();
-					if (oboxResp.getType() != Type.success) {
-						if (oboxResp.getType() == Type.obox_process_failure
-								|| oboxResp.getType() == Type.socket_write_error) {
-							res.setStatus(ResponseEnum.SendOboxFail.getStatus());
-							res.setMessage(ResponseEnum.SendOboxFail.getMsg());
-						} else if (oboxResp.getType() == Type.reply_timeout) {
-							res.setStatus(ResponseEnum.SendOboxTimeOut.getStatus());
-							res.setMessage(ResponseEnum.SendOboxTimeOut.getMsg());
-						} else {
-							res.setStatus(ResponseEnum.SendOboxUnKnowFail.getStatus());
-							res.setMessage(ResponseEnum.SendOboxUnKnowFail.getMsg());
-						}
-					} else {
-						res.setStatus(ResponseEnum.AddSuccess.getStatus());
-						res.setMessage(ResponseEnum.AddSuccess.getMsg());
-					}
+						) {
+					res.setStatus(ResponseEnum.AddSuccess.getStatus());
+					res.setMessage(ResponseEnum.AddSuccess.getMsg());
 				} else {
 					res.setStatus(ResponseEnum.SendOboxError.getStatus());
 					res.setMessage(ResponseEnum.SendOboxError.getMsg());
@@ -2719,11 +2705,10 @@ public class FacadeController {
 				map.put("type", 5);
 			}
 			// 电量
-			String byteToBit = ByteHelper
-					.byteToBit(ByteHelper.hexStringToBytes(deviceConfig.getDeviceState().substring(0, 2))[0]);
+			String betty = deviceConfig.getDeviceState().substring(0, 2);
 			//电量
 			//if(byteToBit.substring(7, 8).equals("1"))
-			map.put("betty", Integer.valueOf("0"+byteToBit.substring(1, 7),2).intValue()+"");
+			map.put("betty",Integer.parseInt(betty,16)>=128?(Integer.parseInt(betty,16)-128):Integer.parseInt(betty,16));
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 			res.setData(map);
