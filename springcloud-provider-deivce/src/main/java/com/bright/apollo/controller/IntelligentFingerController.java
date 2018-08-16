@@ -493,6 +493,24 @@ public class IntelligentFingerController {
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;	
+	}
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/delIntelligentFingerAbandonRemoteUserBySerialIdAndPin/{serialId}/{pin}", method = RequestMethod.PUT)
+	ResponseObject delIntelligentFingerAbandonRemoteUserBySerialIdAndPin(
+			@PathVariable(value = "serialId")String serialId,
+			@PathVariable(value = "pin")Integer pin){
+		ResponseObject res = new ResponseObject();
+		try {
+			intelligentFingerService.delIntelligentFingerAbandonRemoteUserBySerialIdAndPin(serialId,pin);
+			//res.setData(intelligentFingerService.queryTIntelligentFingerRemoteUserBySerialIdAndPin(serialId,pin));
+			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;	
 	
 	}
 }

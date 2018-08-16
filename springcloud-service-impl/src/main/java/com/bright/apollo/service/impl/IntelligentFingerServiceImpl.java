@@ -22,6 +22,9 @@ import com.bright.apollo.dao.device.mapper.TintelligentFingerRecordMapper;
 import com.bright.apollo.request.IntelligentFingerWarnDTO;
 import com.bright.apollo.request.IntelligentOpenRecordDTO;
 import com.bright.apollo.service.IntelligentFingerService;
+import com.bright.apollo.tool.Base64Util;
+import com.bright.apollo.tool.NumberHelper;
+import com.zz.common.util.StringUtils;
 
 /**  
  *@Title:  
@@ -154,6 +157,8 @@ public class IntelligentFingerServiceImpl implements IntelligentFingerService{
 	 */
 	@Override
 	public Integer addTIntelligentFingerRemoteUser(TIntelligentFingerRemoteUser fingerRemoteUser) {
+		if(fingerRemoteUser!=null&&!StringUtils.isEmpty(fingerRemoteUser.getPwd()))
+			fingerRemoteUser.setPwd(Base64Util.base64Encrypt(fingerRemoteUser.getPwd().getBytes()));
  		return remoteMapper.addTIntelligentFingerRemoteUser(fingerRemoteUser);
 	}
 	/* (non-Javadoc)  
@@ -161,13 +166,18 @@ public class IntelligentFingerServiceImpl implements IntelligentFingerService{
 	 */
 	@Override
 	public TIntelligentFingerRemoteUser queryTintelligentFingerRemoteUserById(int id) {
- 		return remoteMapper.queryTintelligentFingerRemoteUserById(id);
+ 		TIntelligentFingerRemoteUser user = remoteMapper.queryTintelligentFingerRemoteUserById(id);
+ 		if(user!=null&&!StringUtils.isEmpty(user.getPwd()))
+ 			user.setPwd(Base64Util.base64Decrypt(user.getPwd()));
+ 		return user;
 	}
 	/* (non-Javadoc)  
 	 * @see com.bright.apollo.service.IntelligentFingerService#updateTintelligentFingerRemoteUser(com.bright.apollo.common.entity.TIntelligentFingerRemoteUser)  
 	 */
 	@Override
 	public void updateTintelligentFingerRemoteUser(TIntelligentFingerRemoteUser fingerRemoteUser) {
+		if(fingerRemoteUser!=null&&!StringUtils.isEmpty(fingerRemoteUser.getPwd())&&NumberHelper.isNumeric(fingerRemoteUser.getPwd()))
+			fingerRemoteUser.setPwd(Base64Util.base64Encrypt(fingerRemoteUser.getPwd().getBytes()));
 		remoteMapper.updateTintelligentFingerRemoteUser(fingerRemoteUser);
 		
 	}
@@ -207,7 +217,10 @@ public class IntelligentFingerServiceImpl implements IntelligentFingerService{
 	 */
 	@Override
 	public TIntelligentFingerRemoteUser queryTIntelligentFingerRemoteUserBySerialIdAndPin(String serialId, int pin) {
-		return remoteMapper.queryTIntelligentFingerRemoteUserBySerialIdAndPin(serialId,pin);
+		TIntelligentFingerRemoteUser user = remoteMapper.queryTIntelligentFingerRemoteUserBySerialIdAndPin(serialId,pin);
+		if(user!=null&&!StringUtils.isEmpty(user.getPwd()))
+			user.setPwd(Base64Util.base64Decrypt(user.getPwd()));
+		return user;
 	}
 	/* (non-Javadoc)  
 	 * @see com.bright.apollo.service.IntelligentFingerService#updateTIntelligentFingerPushMobileBySerialId(java.lang.String, java.lang.String)  
@@ -270,6 +283,14 @@ public class IntelligentFingerServiceImpl implements IntelligentFingerService{
 	@Override
 	public int addTIntelligentFingerWarn(TIntelligentFingerWarn fingerWarn) {
 		return warnMapper.addTIntelligentFingerWarn(fingerWarn);
+	}
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.IntelligentFingerService#delIntelligentFingerAbandonRemoteUserBySerialIdAndPin(java.lang.String, java.lang.Integer)  
+	 */
+	@Override
+	public void delIntelligentFingerAbandonRemoteUserBySerialIdAndPin(String serialId, Integer pin) {
+		abandonMapper.delIntelligentFingerAbandonRemoteUserBySerialIdAndPin(serialId,pin);
+		
 	}
  
 }

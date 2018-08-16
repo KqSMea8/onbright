@@ -38,6 +38,8 @@ public interface TOboxMapper extends BaseMapper<TObox, TOboxExample, Integer> {
 	 * @Description:  
 	 */
 	int queryCountOboxByUserId(Integer userId);
+	
+	@Select("select * from t_obox where obox_serial_id = #{oboxSerialId} ")
 	@Results(value = {
             @Result(column="id"   ,property="id"),
             @Result(column="obox_name" ,  property="oboxName"),
@@ -53,7 +55,6 @@ public interface TOboxMapper extends BaseMapper<TObox, TOboxExample, Integer> {
             @Result(column="obox_control" ,  property="oboxControl"),
             @Result(column="obox_serial_id" ,  property="oboxSerialId")
     })
-	@Select("select * from t_obox where obox_serial_id = #{oboxSerialId} ")
 	TObox queryOboxsByOboxSerialId(@Param("oboxSerialId") String oboxSerialId) throws Exception;
 
 	@Update("update t_obox set obox_name = #{oboxName},\n" +

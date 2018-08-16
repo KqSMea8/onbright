@@ -22,6 +22,7 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import com.google.common.base.Stopwatch;
 import com.google.gson.Gson;
 
 /**
@@ -31,70 +32,53 @@ import com.google.gson.Gson;
  * @Since:2018年3月10日
  * @Version:1.1.0
  */
-//@Aspect
-//@Order(1)
-//@Component
+@Aspect
+@Configuration
 public class WebLogAspect {
 	private static final Logger logger = LoggerFactory.getLogger(WebLogAspect.class);
 
-	@Pointcut("execution(public * com.bright.apollo.controller..*.*(..))")
+	@Pointcut("execution(public * com.bright.apollo.controller.CommonController.*(..))")
 	public void webLog() {
 	}
 
 	@Around("webLog()")
 	public Object doAround(ProceedingJoinPoint pjp) throws Throwable {
 		RequestAttributes ra = RequestContextHolder.getRequestAttributes();
-		ServletRequestAttributes sra = (ServletRequestAttributes) ra;
-		HttpServletRequest request = sra.getRequest();
-
-		String url = request.getRequestURL().toString();
-		String method = request.getMethod();
-		String uri = request.getRequestURI();
-		String queryString = request.getQueryString();
-		Object[] args = pjp.getArgs();
-		String params = "";
-		Gson gson = new Gson();
-		// 获取请求参数集合并进行遍历拼接
-		if (args.length > 0) {
-			if ("POST".equals(method)) {
-				Object object = args[0];
-				Map map = getKeyAndValue(object);
-				params = gson.toJson(map);
-			} else if ("GET".equals(method)) {
-				params = queryString;
-			}
-		}
-		logger.info("请求开始===地址:" + url);
-		logger.info("请求开始===类型:" + method);
-		logger.info("请求开始===参数:" + params);
-
-		// result的值就是被拦截方法的返回值
-		Object result = pjp.proceed();
-		
-		logger.info("请求结束===返回值:" + gson.toJson(result));
-		return result;
+        ServletRequestAttributes sra = (ServletRequestAttributes) ra;
+        if(sra!=null){
+        	HttpServletRequest request = sra.getRequest();
+        	if(request!=null){
+        		printRequest(request);
+                printRequsetBody(request);
+        	}
+        }
+        // result的值就是被拦截方法的返回值
+        Object result = pjp.proceed();
+        Gson gson = new Gson();
+        logger.info("请求结束，controller的返回值是 " + gson.toJson(result));
+        return result;
 	}
-    public static Map<String, Object> getKeyAndValue(Object obj) {
-        Map<String, Object> map = new HashMap<String, Object>();
-        // 得到类对象
-        Class userCla = (Class) obj.getClass();
-        /* 得到类中的所有属性集合 */
-        Field[] fs = userCla.getDeclaredFields();
-        for (int i = 0; i < fs.length; i++) {
-            Field f = fs[i];
-            f.setAccessible(true); // 设置些属性是可以访问的
-            Object val = new Object();
-            try {
-                val = f.get(obj);
-                // 得到此属性的值
-                map.put(f.getName(), val);// 设置键值
-            } catch (IllegalArgumentException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
- 
-            }
-        return map;
-    }
+	public void printRequest(HttpServletRequest request) {
+		logger.info("=============RECV REQUEST PARAMS START=============");
+		logger.info("URL="+request.getRequestURL());
+		for (String name : request.getParameterMap().keySet()) {
+			logger.info("name=" + name + ";value=" + request.getParameter(name));
+		}
+		logger.info("============RECV REQUEST PARAMS END=============");
+	}
+	public String printRequsetBody(HttpServletRequest request) throws Exception {
+		logger.info("=============RECV REQUEST BODY START=============");
+		logger.info("URL="+request.getRequestURL());
+		request.setCharacterEncoding("UTF-8");
+		BufferedReader br = new BufferedReader(new InputStreamReader((ServletInputStream) request.getInputStream(), "utf-8"));
+		StringBuffer sb = new StringBuffer("");
+		String temp;
+		while ((temp = br.readLine()) != null) { 
+		  sb.append(temp);
+		}
+		br.close();
+		logger.info("request param:" + sb.toString());
+		logger.info("============RECV REQUEST BODY END=============");
+		return sb.toString();
+	}
 }

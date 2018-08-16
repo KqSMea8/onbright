@@ -428,6 +428,16 @@ public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implem
 		return serverError();
 	}
 
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#delIntelligentFingerAbandonRemoteUserBySerialIdAndPin(java.lang.String, java.lang.Integer)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject delIntelligentFingerAbandonRemoteUserBySerialIdAndPin(String serialId, Integer pin) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
  
 	 
 

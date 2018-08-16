@@ -71,6 +71,7 @@ public class TOboxDeviceConfig implements Serializable{
     
     @Expose
 	@SerializedName("device_type")
+    @JsonProperty(value="device_type")
     private String deviceType;
 
     /**

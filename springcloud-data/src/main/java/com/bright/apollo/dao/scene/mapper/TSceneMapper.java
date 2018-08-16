@@ -37,6 +37,16 @@ public interface TSceneMapper{
 	int queryCountSceneByUserId(Integer userId);
 
 	@Select("select * from t_scene where obox_serial_id=#{oboxSerialId}")
+	@Results(value = { @Result(column = "scene_name", property = "sceneName"),
+			@Result(column = "scene_number", property = "sceneNumber"),
+			@Result(column = "obox_serial_id", property = "oboxSerialId"),
+			@Result(column = "obox_scene_number", property = "oboxSceneNumber"),
+			@Result(column = "last_op_time", property = "lastOpTime"),
+			@Result(column = "scene_status", property = "sceneStatus"),
+			@Result(column = "scene_type", property = "sceneType"),
+			@Result(column = "msg_alter", property = "msgAlter"), @Result(column = "scene_run", property = "sceneRun"),
+			@Result(column = "license", property = "license"), @Result(column = "alter_need", property = "alterNeed"),
+			@Result(column = "scene_group", property = "sceneGroup") })
 	List<TScene> getSceneByOboxSerialId(@Param("oboxSerialId") String oboxSerialId);
 
 	@Delete("delete from t_scene where scene_number = #{sceneNumber}")

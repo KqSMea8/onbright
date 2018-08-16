@@ -228,6 +228,13 @@ public interface IntelligentFingerService {
 	 */
 	int addTIntelligentFingerWarn(TIntelligentFingerWarn fingerWarn);
 
+	/**  
+	 * @param serialId
+	 * @param pin  
+	 * @Description:  
+	 */
+	void delIntelligentFingerAbandonRemoteUserBySerialIdAndPin(String serialId, Integer pin);
+
  
 
  

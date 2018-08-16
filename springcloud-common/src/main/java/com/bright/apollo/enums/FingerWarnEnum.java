@@ -9,13 +9,14 @@ package com.bright.apollo.enums;
  *@Version:1.1.0  
  */
 public enum FingerWarnEnum {
-
 	/*（１）撬门；
 	（２）胁迫报警；
 	（３）多次验证失败；
 	（4）有人反锁（默认disable）；
 	（5）门虚掩超过10秒（默认disable）；
-	（6）电量低于10%。*/
+	（6）电量低于10%。
+	 (7) 反锁解除
+	*/
 	//撬门
 	jimmy("c500","撬门",1),
 	//胁迫
@@ -26,6 +27,8 @@ public enum FingerWarnEnum {
 	overdoor("c607","门虚掩超过10秒",4),
 	
 	back_lock("c604","有人反锁",5),
+	
+	back_lock_relieve("c609","反锁解除",7),
 	
 	low_betty("c507","电量低于10%",6);
 	
@@ -63,6 +66,5 @@ public enum FingerWarnEnum {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
 
 }

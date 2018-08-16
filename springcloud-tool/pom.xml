@@ -1,41 +1,45 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>com.bright.apollo</groupId>
-    <artifactId>springcloud-multi</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-  </parent>
-  <artifactId>springcloud-tool</artifactId>
- <dependencies>
- 	<dependency>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.bright.apollo</groupId>
+		<artifactId>springcloud-multi</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>springcloud-tool</artifactId>
+	<dependencies>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 			<scope>provided</scope>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.codehaus.jackson/jackson-mapper-asl -->
-        <dependency>
-            <groupId>org.codehaus.jackson</groupId>
-            <artifactId>jackson-mapper-asl</artifactId>
-            <version>1.9.13</version>
-        </dependency>
-     <!--    <dependency>
-            <groupId>com.bright.apollo</groupId>
-            <artifactId>springcloud-common</artifactId>
-            <version>${common-version}</version>
-        </dependency> -->
-        <dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>1.9.13</version>
+		</dependency>
+		<!-- <dependency> <groupId>com.bright.apollo</groupId> <artifactId>springcloud-common</artifactId> 
+			<version>${common-version}</version> </dependency> -->
+		<dependency>
 			<groupId>com.zz</groupId>
 			<artifactId>basic-common</artifactId>
 			<version>1.0.5-RELEASE</version>
 			<scope>system</scope>
 			<systemPath>${project.basedir}/src/main/lib/basic-common-1.0.5-RELEASE.jar</systemPath>
 		</dependency>
-         <dependency>
-             <groupId>jna</groupId>
-             <artifactId>jna</artifactId>
-             <version>4.1.0</version>
-             <scope>system</scope>
-             <systemPath>${project.basedir}/src/main/lib/jna-4.1.0.jar</systemPath>
-         </dependency>
- </dependencies>
+		<dependency>
+			<groupId>jna</groupId>
+			<artifactId>jna</artifactId>
+			<version>4.1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/lib/jna-4.1.0.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.10</version>
+		</dependency>
+
+	</dependencies>
 </project>
