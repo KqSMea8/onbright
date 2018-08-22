@@ -199,7 +199,7 @@ public class CommonController {
 					}
 				}
 			}
-		} else if (CMDEnum.setting_sc_info.toString().equals(cmdEnum.toString())) {
+		} else if (CMDEnum.execute_sc.toString().equals(cmdEnum.toString())) {
 			String sceneNumber = requestParam.getValue("scene_number");
 			String sceneStatus = requestParam.getValue("scene_status");
 			if (!StringUtils.isEmpty(sceneNumber) && StringUtils.isEmpty(sceneStatus)

@@ -449,7 +449,7 @@ public class AliServerController {
 			System.arraycopy(oboxSerialIdBytes, 0, bodyBytes, 1, oboxSerialIdBytes.length);
 			bodyBytes[6] = 0x00;
 			bodyBytes[7] = (byte) Integer.parseInt(address, 16);
-			bodyBytes[0] = 0x00;
+			bodyBytes[0] = 0x04;
 			byte [] namebytes = ByteHelper.stringToAsciiBytes(deviceName, deviceName.length());
 			System.arraycopy(namebytes, 0, bodyBytes, 8, namebytes.length);
 			topicServer.request(CMDEnum.modify_device, bodyBytes, oboxSerialId);
