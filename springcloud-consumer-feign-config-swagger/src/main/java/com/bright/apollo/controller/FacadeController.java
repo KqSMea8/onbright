@@ -2114,12 +2114,12 @@ public class FacadeController {
 								oboxRes.getData().getOboxSerialId());
 					}
 				}
-				// feignUserClient.deleteUserSceneBySceneNumber(sceneNumber);
+				 feignUserClient.deleteUserSceneBySceneNumber(sceneNumber);
 				// SceneBusiness.deleteUserScene(tScene.getSceneNumber());
-				// feignSceneClient.deleteSceneActionsBySceneNumber(sceneNumber);
+				 feignSceneClient.deleteSceneActionsBySceneNumber(sceneNumber);
 				// SceneBusiness.deleteSceneActionsBySceneNumber(tScene
 				// .getSceneNumber());
-				// feignSceneClient.deleteScene(sceneNumber);
+				 feignSceneClient.deleteScene(sceneNumber);
 				// SceneBusiness.deleteSceneBySceneNumber(tScene.getSceneNumber());
 				// SceneBusiness.deleteSceneLocationBySceneNumber(tScene
 				// .getSceneNumber());
@@ -2129,10 +2129,12 @@ public class FacadeController {
 				map.put("scene_number", scene.getSceneNumber());
 				// jsonObject.addProperty("scene_number",
 				// tScene.getSceneNumber());
-				map.put("obox_scene_number", scene.getOboxSceneNumber());
+				if(!StringUtils.isEmpty(scene.getOboxSceneNumber()))
+					map.put("obox_scene_number", scene.getOboxSceneNumber());
 				// jsonObject.addProperty("obox_scene_number",
 				// tScene.getOboxSceneNumber());
-				map.put("obox_serial_id", scene.getOboxSerialId());
+				if(!StringUtils.isEmpty(scene.getOboxSerialId()))
+					map.put("obox_serial_id", scene.getOboxSerialId());
 				// jsonObject.addProperty("obox_serial_id",
 				// tScene.getOboxSerialId());
 				// jsonObject.addProperty("scene_status", sceneStatus);

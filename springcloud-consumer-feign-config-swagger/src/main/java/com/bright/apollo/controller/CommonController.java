@@ -202,7 +202,7 @@ public class CommonController {
 		} else if (CMDEnum.execute_sc.toString().equals(cmdEnum.toString())) {
 			String sceneNumber = requestParam.getValue("scene_number");
 			String sceneStatus = requestParam.getValue("scene_status");
-			if (!StringUtils.isEmpty(sceneNumber) && StringUtils.isEmpty(sceneStatus)
+			if (!StringUtils.isEmpty(sceneNumber) && !StringUtils.isEmpty(sceneStatus)
 					&& NumberHelper.isNumeric(sceneNumber)) {
 				if (sceneStatus.equals("03")) {
 					return facadeController.deleteScene(Integer.parseInt(sceneNumber));
