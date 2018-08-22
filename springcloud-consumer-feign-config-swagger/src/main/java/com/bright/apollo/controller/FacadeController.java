@@ -433,6 +433,7 @@ public class FacadeController {
 					 */
 					res.setStatus(ResponseEnum.AddSuccess.getStatus());
 					res.setMessage(ResponseEnum.AddSuccess.getMsg());
+					//res.setData(null);
 					// }
 				} else {
 					res.setStatus(ResponseEnum.SendOboxError.getStatus());

@@ -26,16 +26,6 @@ import com.bright.apollo.response.ResponseObject;
 @Component
 public class HystrixFeignUserFallback extends BasicHystrixFeignFallback implements FeignUserClient  {
 	private static final Logger logger = LoggerFactory.getLogger(HystrixFeignUserFallback.class);
-	/* (non-Javadoc)  
-	 * @see com.bright.apollo.feign.FeignUserClient#register(java.lang.String)  
-	 */
-	@SuppressWarnings("rawtypes")
-	@Override
-	public ResponseObject register(String mobile) {
-		logger.warn("===user server is break===");
-		ResponseObject res = serverError();
-		return res;
-	}
 
 	/* (non-Javadoc)  
 	 * @see com.bright.apollo.feign.FeignUserClient#forget(java.lang.String)  
@@ -238,6 +228,28 @@ public class HystrixFeignUserFallback extends BasicHystrixFeignFallback implemen
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public ResponseObject<List<TUserOperation>> queryUserOperation(String name, String serialId) {
+		logger.warn("===user server is break===");
+		ResponseObject res = serverError();
+		return res;
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignUserClient#register(java.lang.String, java.lang.String)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject register(String mobile, Integer code,String pwd) {
+		logger.warn("===user server is break===");
+		ResponseObject res = serverError();
+		return res;
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignUserClient#sendCodeToMobile(java.lang.String)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject sendCodeToMobile(String mobile) {
 		logger.warn("===user server is break===");
 		ResponseObject res = serverError();
 		return res;

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bright.apollo.feign.FeignUserClient;
@@ -32,13 +33,14 @@ public class UserController {
 	private FeignUserClient feignUserClient;
 
 	@SuppressWarnings("rawtypes")
-	@ApiOperation(value = "register user", httpMethod = "GET", produces = "application/json")
+	@ApiOperation(value = "register user", httpMethod = "POST", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
-	@GetMapping("/register/{mobile}")
-	public ResponseObject register(@PathVariable String mobile) {
+	@RequestMapping(value = "/register/{mobile}/{code}/{pwd}", method = RequestMethod.POST)
+	public ResponseObject register(@PathVariable String mobile,
+			@PathVariable Integer code,@PathVariable String pwd) {
 		ResponseObject res = null;
 		try {
-			res = feignUserClient.register(mobile);
+			res = feignUserClient.register(mobile,code,pwd);
 			return res;
 		} catch (Exception e) {
 			logger.error(e.getMessage());
@@ -48,7 +50,23 @@ public class UserController {
 			return res;
 		}
 	}
-
+	@SuppressWarnings("rawtypes")
+	@ApiOperation(value = "send", httpMethod = "GET", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@GetMapping("/sendCodeToMobile/{mobile}")
+	public ResponseObject register(@PathVariable String mobile) {
+		ResponseObject res = null;
+		try {
+			res = feignUserClient.sendCodeToMobile(mobile);
+			return res;
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res = new ResponseObject();
+			res.setStatus(ResponseEnum.RequestTimeout.getStatus());
+			res.setMessage(ResponseEnum.RequestTimeout.getMsg());
+			return res;
+		}
+	}
 	@SuppressWarnings("rawtypes")
 	@ApiOperation(value = "forget password", httpMethod = "GET", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)

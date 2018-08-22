@@ -30,8 +30,11 @@ import com.bright.apollo.response.ResponseObject;
 public interface FeignUserClient {
 
 	@SuppressWarnings("rawtypes")
-	@GetMapping("/user/register/{mobile}")
-	public ResponseObject register(@PathVariable(value = "mobile") String mobile);
+	@GetMapping("/user/register/{mobile}/{code}/{pwd}")
+	public ResponseObject register(@PathVariable(value = "mobile") String mobile,
+			@PathVariable(value = "code") Integer code,
+			@PathVariable(value = "pwd") String pwd
+			);
 
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/user/forget/{mobile}", method = RequestMethod.GET)
@@ -204,5 +207,13 @@ public interface FeignUserClient {
 	@RequestMapping(value = "/user/queryUserOperation/{name}/{serialId}", method = RequestMethod.GET)
 	public ResponseObject<List<TUserOperation>> queryUserOperation(@PathVariable(required = true, value = "name")String name,
 			@PathVariable(required = true, value = "serialId")String serialId);
+
+	/**  
+	 * @param mobile
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/user/sendCodeToMobile/{mobile}", method = RequestMethod.GET)
+	public ResponseObject sendCodeToMobile(@PathVariable(required = true, value = "mobile")String mobile);
 
 }

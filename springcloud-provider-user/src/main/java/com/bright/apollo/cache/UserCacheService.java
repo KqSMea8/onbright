@@ -19,7 +19,7 @@ public class UserCacheService {
 
 	@Autowired
 	private RedisBussines redisBussines;
-	public String getStatus(String mobile) {
+	public String getCode(String mobile) {
 		String reply = (String) redisBussines.get("Code__"+mobile);
 		return reply;
 	}

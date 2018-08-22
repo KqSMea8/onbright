@@ -292,5 +292,13 @@ public class UserServiceImpl implements UserService {
 		return null;
 	}
 
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.UserService#addUser(java.lang.String, java.lang.String)  
+	 */
+	@Override
+	public int addUser(String mobile, String pwd) {
+ 		return userMapper.addUser(mobile,pwd);
+	}
+
 
 }

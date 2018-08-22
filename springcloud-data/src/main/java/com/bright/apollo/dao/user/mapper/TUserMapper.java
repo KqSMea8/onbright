@@ -2,6 +2,7 @@ package com.bright.apollo.dao.user.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
@@ -33,4 +34,13 @@ public interface TUserMapper{
 
     @Select("select * from t_user where open_id=#{openId}")
     TUser getUserByOpenId(@Param("openId") String openId);
+
+	/**  
+	 * @param mobile
+	 * @param pwd
+	 * @return  
+	 * @Description:  
+	 */
+    @Insert("insert into t_user (user_name,password) values(#{mobile},#{pwd})")
+	int addUser(@Param("mobile")String mobile,@Param("pwd") String pwd);
 }

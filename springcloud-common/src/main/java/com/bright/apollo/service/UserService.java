@@ -174,4 +174,11 @@ public interface UserService {
 	 * @Description:  
 	 */
 	List<TUserDevice> getListOfUserDeviceByUserId(Integer userId);
+
+	/**  
+	 * @param mobile
+	 * @param pwd  
+	 * @Description:  
+	 */
+	int addUser(String mobile, String pwd);
 }

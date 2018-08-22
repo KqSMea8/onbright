@@ -35,6 +35,7 @@ import com.bright.apollo.service.UserSceneService;
 import com.bright.apollo.service.UserService;
 import com.bright.apollo.service.WxService;
 import com.bright.apollo.tool.HttpUtil;
+import com.bright.apollo.tool.NumberHelper;
 import com.bright.apollo.tool.RandomUtil;
 import com.bright.apollo.tool.Verify;
 
@@ -70,8 +71,8 @@ public class UserController {
 	@Autowired
 	private UserSceneService userSceneService;
 	@SuppressWarnings("rawtypes")
-	@GetMapping("/register/{mobile}")
-	public ResponseObject register(@PathVariable String mobile) {
+	@GetMapping("/sendCodeToMobile/{mobile}")
+	public ResponseObject sendCodeToMobile(@PathVariable String mobile) {
 		ResponseObject res = new ResponseObject();
 		try {
 			if (!Verify.checkCellphone(mobile)) {
@@ -91,13 +92,48 @@ public class UserController {
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {
-			logger.error(e.getMessage());
+			logger.error("===error msg:"+e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
-
+	@SuppressWarnings("rawtypes")
+	@GetMapping("/register/{mobile}/{code}/{pwd}")
+	public ResponseObject register(@PathVariable String mobile,
+			@PathVariable Integer code,@PathVariable String pwd
+			) {
+		ResponseObject res = new ResponseObject();
+		try {
+			if (!Verify.checkCellphone(mobile)) {
+				res.setStatus(ResponseEnum.ErrorMobile.getStatus());
+				res.setMessage(ResponseEnum.ErrorMobile.getMsg());
+				return res;
+			}
+			TUser tUser = userService.queryUserByName(mobile);
+			if (tUser != null) {
+				res.setStatus(ResponseEnum.ExistMobile.getStatus());
+				res.setMessage(ResponseEnum.ExistMobile.getMsg());
+				return res;
+			}
+			String saveCode = userCacheService.getCode(mobile); 
+			if(!NumberHelper.isNumeric(saveCode)||
+					Integer.parseInt(saveCode)!=code
+					){
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			userService.addUser(mobile,pwd);
+			res.setStatus(ResponseEnum.AddSuccess.getStatus());
+			res.setMessage(ResponseEnum.AddSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:"+e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = "/wxLogin", method = RequestMethod.POST)
 	public ResponseObject wxLogin(@RequestParam String code) {
