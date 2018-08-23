@@ -214,6 +214,7 @@ public interface FeignUserClient {
 	 * @return  
 	 * @Description:  
 	 */
+	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/user/sendCodeToMobile/{mobile}", method = RequestMethod.GET)
 	public ResponseObject sendCodeToMobile(@PathVariable(required = true, value = "mobile")String mobile);
 
@@ -224,4 +225,11 @@ public interface FeignUserClient {
 	 */
 	@RequestMapping(value = "/user/wxLogin/{code}", method = RequestMethod.GET)
 	public ResponseObject<Map<String, Object>> wxLogin(@PathVariable(required = true, value = "code")Integer code);
+
+	/**  
+	 * @param serialId  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/user/getUserDeviceExceptRoot/{serialId}", method = RequestMethod.GET)
+	public ResponseObject<List<TUserDevice>> getUserDeviceExceptRoot(@PathVariable(required = true, value = "serialId")String serialId);
 }

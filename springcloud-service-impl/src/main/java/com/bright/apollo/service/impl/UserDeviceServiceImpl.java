@@ -1,5 +1,7 @@
 package com.bright.apollo.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,5 +34,13 @@ public class UserDeviceServiceImpl implements UserDeviceService {
 	@Override
 	public TUserDevice getUserDeviceByUserIdAndSerialId(Integer userId, String device_serial_id) {
 		return userDeviceMapper.getUserDeviceByUserIdAndSerialId(userId,device_serial_id);
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.UserDeviceService#getUserDevicesBySerialId(java.lang.String)  
+	 */
+	@Override
+	public List<TUserDevice> getUserDevicesBySerialId(String serialId) {
+ 		return userDeviceMapper.queryUserDevicesBySerialId(serialId);
 	}
 }

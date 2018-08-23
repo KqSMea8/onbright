@@ -37,11 +37,12 @@ public class UserController {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@ApiOperation(value = "wx login", httpMethod = "POST", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
-	@RequestMapping(value = "/wxLogin/{code}", method = RequestMethod.POST)
+	@RequestMapping(value = "/wxLogin/{code}/{mobile}/{pwd}", method = RequestMethod.POST)
 	public ResponseObject<Map<String, Object>> wxLogin(@PathVariable Integer code) {
 		ResponseObject<Map<String, Object>> res = null;
 		try {
 			res = feignUserClient.wxLogin(code);
+			
 		} catch (Exception e) {
 			logger.error("===error msg:"+e.getMessage());
 			res = new ResponseObject();
