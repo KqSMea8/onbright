@@ -15,6 +15,7 @@ import com.bright.apollo.service.IntelligentFingerService;
 import com.bright.apollo.service.MsgService;
 import com.bright.apollo.service.OboxDeviceConfigService;
 import com.bright.apollo.service.OboxService;
+import com.bright.apollo.service.PushService;
 import com.bright.apollo.service.SceneActionService;
 import com.bright.apollo.service.SceneConditionService;
 import com.bright.apollo.service.SceneService;
@@ -32,6 +33,8 @@ import com.bright.apollo.util.FingerUtil;
 @Component
 public abstract class BasicHandler {
 	 
+	protected PushService pushservice;
+	
 	protected UserOperationService userOperationService;
 	
 	protected SceneService sceneService;
@@ -241,6 +244,14 @@ public abstract class BasicHandler {
 
 	public void setMsgService(MsgService msgService) {
 		this.msgService = msgService;
+	}
+
+	public PushService getPushservice() {
+		return pushservice;
+	}
+
+	public void setPushservice(PushService pushservice) {
+		this.pushservice = pushservice;
 	}
 
 }

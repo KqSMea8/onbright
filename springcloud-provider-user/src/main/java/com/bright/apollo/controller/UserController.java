@@ -1,6 +1,8 @@
 package com.bright.apollo.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -23,6 +25,9 @@ import com.bright.apollo.common.entity.TUserObox;
 import com.bright.apollo.common.entity.TUserOperation;
 import com.bright.apollo.common.entity.TUserScene;
 import com.bright.apollo.constant.Constant;
+import com.bright.apollo.constant.WxConstant;
+import com.bright.apollo.http.HttpRequester;
+import com.bright.apollo.http.HttpRespons;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.service.CreateTableLogService;
@@ -70,6 +75,7 @@ public class UserController {
 	private CreateTableSqlService createTableSqlService;
 	@Autowired
 	private UserSceneService userSceneService;
+
 	@SuppressWarnings("rawtypes")
 	@GetMapping("/sendCodeToMobile/{mobile}")
 	public ResponseObject sendCodeToMobile(@PathVariable String mobile) {
@@ -92,17 +98,16 @@ public class UserController {
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {
-			logger.error("===error msg:"+e.getMessage());
+			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
+
 	@SuppressWarnings("rawtypes")
 	@GetMapping("/register/{mobile}/{code}/{pwd}")
-	public ResponseObject register(@PathVariable String mobile,
-			@PathVariable Integer code,@PathVariable String pwd
-			) {
+	public ResponseObject register(@PathVariable String mobile, @PathVariable Integer code, @PathVariable String pwd) {
 		ResponseObject res = new ResponseObject();
 		try {
 			if (!Verify.checkCellphone(mobile)) {
@@ -116,24 +121,23 @@ public class UserController {
 				res.setMessage(ResponseEnum.ExistMobile.getMsg());
 				return res;
 			}
-			String saveCode = userCacheService.getCode(mobile); 
-			if(!NumberHelper.isNumeric(saveCode)||
-					Integer.parseInt(saveCode)!=code
-					){
+			String saveCode = userCacheService.getCode(mobile);
+			if (!NumberHelper.isNumeric(saveCode) || Integer.parseInt(saveCode) != code) {
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
 				return res;
 			}
-			userService.addUser(mobile,pwd);
+			userService.addUser(mobile, pwd);
 			res.setStatus(ResponseEnum.AddSuccess.getStatus());
 			res.setMessage(ResponseEnum.AddSuccess.getMsg());
 		} catch (Exception e) {
-			logger.error("===error msg:"+e.getMessage());
+			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = "/wxLogin", method = RequestMethod.POST)
 	public ResponseObject wxLogin(@RequestParam String code) {
@@ -547,7 +551,7 @@ public class UserController {
 		ResponseObject res = new ResponseObject();
 		try {
 			userSceneService.deleteUserSceneBySceneNum(sceneNumber);
-			//createTableLogService.addCreateTableLog(tCreateTableLog);
+			// createTableLogService.addCreateTableLog(tCreateTableLog);
 			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
 			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
 		} catch (Exception e) {
@@ -556,7 +560,29 @@ public class UserController {
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
-	
 	}
 
+	/**
+	 * @param code
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/wxLogin/{code}", method = RequestMethod.GET)
+	public ResponseObject<Map<String, Object>> wxLogin(@PathVariable(required = true, value = "code") Integer code) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		try {
+			Map<String,Object> param=new HashMap<String, Object>();
+			param.put("appid", WxConstant.WXAPPID);
+			param.put("secret", WxConstant.WXSECRET);
+			param.put("js_code", code);
+			param.put("grant_type", WxConstant.WXGRANTTYPE);
+			HttpRequester requestWX = new HttpRequester();
+			HttpRespons hr = requestWX.sendPost(WxConstant.WXURL, param);
+		} catch (Exception e) {
+			logger.error("===error msg:"+e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
 }

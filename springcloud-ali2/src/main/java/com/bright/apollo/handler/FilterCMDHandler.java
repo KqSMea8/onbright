@@ -6,39 +6,21 @@ import java.util.concurrent.ConcurrentSkipListSet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.bright.apollo.bean.Message;
-import com.bright.apollo.bean.PushMessage;
+import com.bright.apollo.common.entity.PushMessage;
 import com.bright.apollo.common.entity.TObox;
-import com.bright.apollo.common.entity.TUser;
 import com.bright.apollo.common.entity.TUserObox;
 import com.bright.apollo.enums.Command;
 import com.bright.apollo.enums.PushMessageType;
-import com.bright.apollo.service.OboxService;
-import com.bright.apollo.service.UserOboxService;
-import com.bright.apollo.service.UserService;
 import com.bright.apollo.session.ClientSession;
-import com.bright.apollo.session.PushObserverManager;
-import com.bright.apollo.session.SessionManager;
 
 public class FilterCMDHandler extends BasicHandler {
 	private static final Logger logger = LoggerFactory.getLogger(FilterCMDHandler.class);
-    @Autowired
-    private SessionManager sessionManager;
-    @Autowired
-    private PushObserverManager pushObserverManager;
+   
 
     private static Set<String> releaseCMD = new ConcurrentSkipListSet<String>();
 
-    @Autowired
-    private OboxService oboxService;
-
-    @Autowired
-    private UserOboxService userOboxService;
-
-    @Autowired
-    private UserService userService;
 
     static {
         //the cmd who can send message to app
@@ -62,8 +44,22 @@ public class FilterCMDHandler extends BasicHandler {
     @Override
     public Message<String> process(ClientSession clientSession, Message<String> msg) throws Exception {
         if (msg.getCmd()!=null&&!msg.getCmd().equals("")&& releaseCMD.contains(msg.getCmd())) {
-//            sessionManager = SessionManager.getInstance();
-            TObox tObox = oboxService.queryOboxsByOboxSerialId(clientSession.getUid());
+        	logger.info("===trans cmd:"+msg.getCmd()+"===trans data:"+msg.getData());
+        	TObox tObox = oboxService.queryOboxsByOboxSerialId(clientSession.getUid());
+        	Set<Integer> setuser;
+        	if(tObox!=null){
+            	  PushMessage message = new PushMessage();
+            	  message.setType(PushMessageType.OBOX_TRANS.getValue());
+            	  message.setData(msg.getData());
+            	  message.setCmd(msg.getCmd());
+            	  message.setSerialId(clientSession.getUid());
+            	  List<TUserObox> list = userOboxService.getUserOboxBySerialId(tObox.getOboxSerialId());
+            	  setuser=new ConcurrentSkipListSet<Integer>();
+            	  for(TUserObox userobox:list){
+            		  setuser.add(userobox.getUserId());
+            	  }
+            	  
+            }
 //            if (tObox.getLicense() != null) {
 //                if (tObox.getLicense() != 0) {
 //                    TUser user = UserBusiness.queryUserByLicense(tObox.getLicense());
@@ -81,7 +77,7 @@ public class FilterCMDHandler extends BasicHandler {
 //                    }
 //                }
 //            }
-            List<TUserObox> list = userOboxService.getUserOboxBySerialId(tObox.getOboxSerialId());
+           /* List<TUserObox> list = userOboxService.getUserOboxBySerialId(tObox.getOboxSerialId());
             for (TUserObox tUserObox : list) {
 
                 TUser user = userService.getUserByUserId(tUserObox.getUserId());
@@ -96,7 +92,7 @@ public class FilterCMDHandler extends BasicHandler {
                         pushObserverManager.sendMessage(message, pushSession);
                     }
                 }
-            }
+            }*/
 
         }
         return null;

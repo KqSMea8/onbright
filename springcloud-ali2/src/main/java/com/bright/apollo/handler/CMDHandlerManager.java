@@ -226,7 +226,7 @@ public class CMDHandlerManager {
             ClientSession client = new ClientSession();
 // 			client.setUid(DeviceName);
 //            String obox_serial_id = aliDevCache.getOboxSerialId(ProductKey, DeviceName);
-            String obox_serial_id = "";
+            String obox_serial_id = aliDevCache.getOboxSerialId(ProductKey, DeviceName);
             if (StringUtils.isEmpty(obox_serial_id)) {
                 //cashe time out or first time login
                 //different table query by region

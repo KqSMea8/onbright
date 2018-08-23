@@ -1,6 +1,7 @@
 package com.bright.apollo.feign;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -216,4 +217,11 @@ public interface FeignUserClient {
 	@RequestMapping(value = "/user/sendCodeToMobile/{mobile}", method = RequestMethod.GET)
 	public ResponseObject sendCodeToMobile(@PathVariable(required = true, value = "mobile")String mobile);
 
+	/**  
+	 * @param code
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/user/wxLogin/{code}", method = RequestMethod.GET)
+	public ResponseObject<Map<String, Object>> wxLogin(@PathVariable(required = true, value = "code")Integer code);
 }
