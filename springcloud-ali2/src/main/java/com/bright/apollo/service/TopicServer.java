@@ -195,7 +195,7 @@ public class TopicServer {
 
 	}
 
-	public void pubIRTopic(CMDEnum cmd, byte[] data, String deviceSerial,Object jsonMap) throws Exception {
+	public void pubIRTopic(CMDEnum cmd, byte[] data, String deviceSerial,Map<String, Object> jsonMap) throws Exception {
 		logger.info(" ====== pubIRTopic start ====== ");
 		String mString = null;
 		if(data != null){
@@ -215,14 +215,11 @@ public class TopicServer {
 		}
 		request.setProductKey(productKey);
 		List jsonArray = null;
+		Map<String,Object> datasMap = null;
 		if(jsonMap instanceof Map){
-			jsonArray = (List)((Map<String,Object>)jsonMap).get("value");
-		}else if(jsonMap instanceof JSONObject){
-			jsonArray = (List)((JSONObject) jsonMap).get("value");
+			datasMap = (Map<String, Object>) ((Map<String,Object>)jsonMap).get("value");
 		}
 
-
-		Map<String,Object> datasMap = (Map<String,Object>)jsonArray.get(0);
 		String datas = (String)datasMap.get("data");
 		logger.info("datas length  ------ "+ datas.length());
 		String jsonObject = new Gson().toJson(jsonMap);

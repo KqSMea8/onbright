@@ -201,7 +201,7 @@ public class CMDHandlerManager {
 
 //        cmdHandlers.put(Command.ERROR.getValue(), new ErrorHandler());
 
- //       cmdHandlers.put(Command.FILTER.getValue(), new FilterCMDHandler());
+        cmdHandlers.put(Command.FILTER.getValue(), new FilterCMDHandler());
 
 //        cmdHandlers.put(Command.IRUP.getValue(), new IRUploadHandler());//红外上传学习码
         

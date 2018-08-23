@@ -1,0 +1,7 @@
+2018-08-15 15:56:15,928 INFO (SpringApplication.java:597)- The following profiles are active: test
+2018-08-15 15:56:19,507 DEBUG (AbstractEmbeddedServletContainerFactory.java:177)- Code archive: E:\springcloud-multi\springcloud-zuul\target\classes
+2018-08-15 15:56:19,507 DEBUG (AbstractEmbeddedServletContainerFactory.java:156)- Code archive: E:\springcloud-multi\springcloud-zuul\target\classes
+2018-08-15 15:56:19,507 DEBUG (AbstractEmbeddedServletContainerFactory.java:80)- None of the document roots [src/main/webapp, public, static] point to a directory and will be ignored.
+2018-08-15 15:56:22,227 INFO (AuthorizationServerConfiguration.java:78)- ====== AuthorizationServerEndpointsConfigurer endpoints =====
+2018-08-15 15:56:22,241 INFO (AuthorizationServerConfiguration.java:97)-  ======================================= defaultTokenServices ====================== 
+2018-08-15 15:56:23,269 INFO (DefaultView.java:22)-  ====== addViewControllers ====== 

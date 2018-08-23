@@ -1,15 +1,15 @@
 package com.bright.apollo.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import com.bright.apollo.common.entity.*;
 import com.bright.apollo.mqtt.MqttGateWay;
 import com.bright.apollo.mqtt.MqttInBoundConfiguration;
 import com.bright.apollo.mqtt.MqttOutBoundConfiguration;
 import com.bright.apollo.service.TopicServer;
+import com.bright.apollo.service.YaoKongYunService;
 import com.bright.apollo.util.SpringContextUtil;
+import com.zz.common.util.MD5;
 import org.apache.activemq.command.ActiveMQTopic;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -31,9 +31,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bright.apollo.cache.AliDevCache;
-import com.bright.apollo.common.entity.TAliDevice;
-import com.bright.apollo.common.entity.TAliDeviceUS;
-import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.enums.ALIDevTypeEnum;
 import com.bright.apollo.enums.AliRegionEnum;
 import com.bright.apollo.response.AliDevInfo;
@@ -64,27 +61,14 @@ public class AliDeviceController {
 	@Autowired
 	private SpringContextUtil springContextUtil;
 
+	@Autowired
+	private YaoKongYunService yaoKongYunService;
+
 	private static final Logger logger = LoggerFactory.getLogger(AliDeviceController.class);
 
 	@RequestMapping(value = "/sendToMqtt", method = RequestMethod.GET)
 	public String testMqtt() {
 
-		MqttPahoMessageHandler mqttPahoMessageHandler = springContextUtil.getBean(MqttPahoMessageHandler.class);
-		MqttPahoMessageDrivenChannelAdapter adapter = springContextUtil.getBean(MqttPahoMessageDrivenChannelAdapter.class);
-		MqttPahoClientFactory mqttPahoClientFactory = springContextUtil.getBean(MqttPahoClientFactory.class);
-//		System.out.println("getBean ------ "+mqttPahoMessageHandler);
-//		mqttPahoMessageHandler.setDefaultTopic("topic222222222222");
-		MqttPahoMessageHandler mqttPahoMessageHandler2 =
-				new MqttPahoMessageHandler("123123",mqttPahoClientFactory);
-//		mqttPahoMessageHandler.setAsync(true);
-//		mqttPahoMessageHandler.setDefaultTopic("topic12");
-		ApplicationContext applicationContext = springContextUtil.getContext();
-		DefaultListableBeanFactory defaultListableBeanFactory = (DefaultListableBeanFactory )applicationContext.getAutowireCapableBeanFactory();
-		BeanDefinitionBuilder allBuilder = BeanDefinitionBuilder.genericBeanDefinition(ActiveMQTopic.class);
-		allBuilder.addConstructorArgValue("TOPIC.ALL");
-		defaultListableBeanFactory.registerBeanDefinition("TOPIC.ALL",allBuilder.getRawBeanDefinition());
-		defaultListableBeanFactory.registerSingleton("mqttPahoMessageHandler2",mqttPahoMessageHandler2);
-//		adapter.addTopic("topic222222222222",1);
 		mqttGateWay.sendToMqtt("topic222222222222","12312312qqqqqq3");
 
 		return "";
@@ -284,7 +268,7 @@ public class AliDeviceController {
 
 
 	//进入学习
-	@RequestMapping(value = "/learncode", method = RequestMethod.POST)
+	@RequestMapping(value = "/toLearn", method = RequestMethod.POST)
 	ResponseObject<List<Map<String, String>>> learnCode(@RequestBody(required = true)  Object object) {
 		ResponseObject<List<Map<String, String>>> res = new ResponseObject<List<Map<String, String>>>();
 		Map<String,Object> requestMap = (Map<String, Object>) object;
@@ -292,7 +276,7 @@ public class AliDeviceController {
 			String brandId = (String)requestMap.get("brandId");//品牌ID
 			String deviceId = (String)requestMap.get("deviceId");//设备ID
 			aliDevCache.setKey("ir_"+deviceId,brandId,30000);
-			topServer.pubIRTopic(null,null,deviceId,requestMap.toString());
+			topServer.pubIRTopic(null,null,deviceId,requestMap);
 			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
 			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
 		} catch (Exception e) {
@@ -304,5 +288,81 @@ public class AliDeviceController {
 	}
 
 
+	//修改/新增红外方案
+	@RequestMapping(value = "/modifyIR", method = RequestMethod.POST)
+	ResponseObject<List<Map<String, String>>> modifyIR(@RequestBody(required = true)  Object object) {
+		ResponseObject<List<Map<String, String>>> res = new ResponseObject<List<Map<String, String>>>();
+		Map<String,Object> requestMap = (Map<String, Object>) object;
+		try {
+			String serialId = (String)requestMap.get("serialId");//设备ID
+			Map<String,Object> irprogram = (Map<String,Object>)requestMap.get("ir_ program");//标准按键
+			//todo 更新套数
+			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+		} catch (Exception e) {
+			e.printStackTrace();
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+
+	//获取遥控器列表
+	@RequestMapping(value = "/modifyIR", method = RequestMethod.POST)
+	ResponseObject<List<Map<String, String>>> getIrList(@RequestBody(required = true)  Object object) {
+		ResponseObject<List<Map<String, String>>> res = new ResponseObject<List<Map<String, String>>>();
+		Map<String,Object> requestMap = (Map<String, Object>) object;
+		try {
+			String brandId = (String)requestMap.get("brandId");//品牌ID
+			String deviceType = (String)requestMap.get("deviceType");//设备类型
+			List<TYaoKongYunBrand> brandList = yaoKongYunService.getYaoKongYunByTIdAndDeviceType(brandId,deviceType);
+
+			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+		} catch (Exception e) {
+			e.printStackTrace();
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	private TYaokonyunDevice initYaoKongDevice(){
+		String ir_appId = aliDevCache.getValue("ir_appId");
+		TYaokonyunDevice yaokonyunDevice = null;
+//		if(!StringUtils.isEmpty(deviceId)){//已经用完50次,更新状态
+//			yaoKongYunService.updateYaoKongDevice(deviceId);
+//		}
+
+		if(StringUtils.isEmpty(ir_appId)){
+			yaokonyunDevice = getYaoKongDevice();
+		}else{
+			ir_appId.split(":");
+		}
+		return yaokonyunDevice;
+	}
+
+	public TYaokonyunDevice useTimesExpire(String deviceId){
+		yaoKongYunService.updateYaoKongDevice(deviceId);
+		return getYaoKongDevice();
+	}
+
+	private TYaokonyunDevice getYaoKongDevice(){
+		TYaokonyunDevice yaokonyunDevice = null;
+		yaokonyunDevice = yaoKongYunService.getYaoKongYunDevice();
+		if(yaokonyunDevice==null){
+			createYaoKongYunDevice();
+		}
+		aliDevCache.setKey("createYaoKonYun",yaokonyunDevice.getAppId()+":"+yaokonyunDevice.getDeviceId()+":"+yaokonyunDevice.getUseTime(),60 * 60 * 24 * 7);
+		return yaokonyunDevice;
+	}
+
+	private TYaokonyunDevice createYaoKongYunDevice(){
+		TYaokonyunDevice device = new TYaokonyunDevice();
+		device.setDeviceId(MD5.MD5generator(new Date().getTime()+""));
+		yaoKongYunService.addYaoKongDevice(device);
+		return yaoKongYunService.getYaoKongYunDevice();
+	}
 
 }

@@ -101,6 +101,7 @@ public class PushUtil {
                     }
                     TScene tScene = sceneService.getSceneBySceneNumber(Integer
                             .parseInt(sceneNumber));
+
 //                    TScene tScene = SceneBusiness
 //                            .querySceneBySceneNumber(Integer
 //                                    .parseInt(sceneNumber));

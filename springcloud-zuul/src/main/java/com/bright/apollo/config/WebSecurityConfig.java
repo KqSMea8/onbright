@@ -58,9 +58,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
             .requestMatchers().anyRequest().and()
             .authorizeRequests().antMatchers("/health", "/css/**","/oauth/**","/uaa/**").permitAll()
             .and()
-            .formLogin().loginPage("/login")
+            .formLogin().loginPage("/login").permitAll()
+            .and()
+            .addFilterAfter(new AfterLoginFilter(),UsernamePasswordAuthenticationFilter.class);
 //            .successForwardUrl("/aouth2/sendRedirect")
-            .permitAll();
+
 //            .and()
 //            .addFilterBefore(new BeforeLoginFilter(), UsernamePasswordAuthenticationFilter.class);
     }
@@ -68,6 +70,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/favor.ioc","/authorization/*");
+    }
+
+    public class AfterLoginFilter extends GenericFilterBean {
+
+        @Override
+        public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+            logger.info("This is a filter after UsernamePasswordAuthenticationFilter.");
+            HttpServletRequest request = (HttpServletRequest)servletRequest;
+
+            Enumeration<String> m = request.getParameterNames();
+            while(m.hasMoreElements()){
+                String element = m.nextElement();
+                logger.info("params ------ "+element+" ------ "+request.getParameter(element));
+            }
+
+            // 继续调用 Filter 链
+            filterChain.doFilter(servletRequest, servletResponse);
+        }
     }
      
     public class BeforeLoginFilter extends GenericFilterBean {

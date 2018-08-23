@@ -40,9 +40,6 @@ public class AliDeviceServiceImpl implements AliDeviceService {
 
     @Override
     public TAliDevice getAliDeviceByProductKeyAndDeviceName(String productKey, String deviceName) {
-        System.out.println("getAliUSDeviceByProductKeyAndDeviceName ------ productKey ------ "+ productKey);
-        System.out.println("getAliUSDeviceByProductKeyAndDeviceName ------ deviceName ------ "+ deviceName);
-        System.out.println("getAliUSDeviceByProductKeyAndDeviceName ------ mapper ------ "+ mapper);
         return mapper.getAliDeviceByProductKeyAndDeviceName(productKey,deviceName);
     }
 
