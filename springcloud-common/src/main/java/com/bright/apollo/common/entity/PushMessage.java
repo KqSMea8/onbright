@@ -1,8 +1,15 @@
-package com.bright.apollo.bean;
+package com.bright.apollo.common.entity;  
+  
+  
+/**  
+ *@Title:  
+ *@Description:  
+ *@Author:JettyLiu
+ *@Since:2018年8月23日  
+ *@Version:1.1.0  
+ */
+public class PushMessage {
 
-import java.io.Serializable;
-
-public class PushMessage implements Serializable {
     private static final long serialVersionUID = 1L;
     private byte type;
     private String token;
@@ -84,4 +91,5 @@ public class PushMessage implements Serializable {
                 + ", onLine=" + onLine + ", appkey=" + appkey + ", request="
                 + request + "}";
     }
+
 }

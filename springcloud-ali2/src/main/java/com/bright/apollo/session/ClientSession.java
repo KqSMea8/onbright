@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import com.alibaba.fastjson.JSON;
 import com.bright.apollo.bean.Message;
-import com.bright.apollo.bean.PushMessage;
+import com.bright.apollo.common.entity.PushMessage;
 import com.bright.apollo.listener.SessionCloseListener;
 import com.bright.apollo.util.Constants;
 

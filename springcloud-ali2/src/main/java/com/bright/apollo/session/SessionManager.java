@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.bright.apollo.bean.PushMessage;
+import com.bright.apollo.common.entity.PushMessage;
 import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.enums.PushMessageType;
 import com.bright.apollo.listener.SessionCloseListener;

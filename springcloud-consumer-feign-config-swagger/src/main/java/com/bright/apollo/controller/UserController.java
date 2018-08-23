@@ -1,5 +1,7 @@
 package com.bright.apollo.controller;
 
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,15 +34,31 @@ public class UserController {
 	@Autowired
 	private FeignUserClient feignUserClient;
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@ApiOperation(value = "wx login", httpMethod = "POST", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/wxLogin/{code}", method = RequestMethod.POST)
+	public ResponseObject<Map<String, Object>> wxLogin(@PathVariable Integer code) {
+		ResponseObject<Map<String, Object>> res = null;
+		try {
+			res = feignUserClient.wxLogin(code);
+		} catch (Exception e) {
+			logger.error("===error msg:"+e.getMessage());
+			res = new ResponseObject();
+			res.setStatus(ResponseEnum.RequestTimeout.getStatus());
+			res.setMessage(ResponseEnum.RequestTimeout.getMsg());
+		}
+		return res;
+	}
+
 	@SuppressWarnings("rawtypes")
 	@ApiOperation(value = "register user", httpMethod = "POST", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/register/{mobile}/{code}/{pwd}", method = RequestMethod.POST)
-	public ResponseObject register(@PathVariable String mobile,
-			@PathVariable Integer code,@PathVariable String pwd) {
+	public ResponseObject register(@PathVariable String mobile, @PathVariable Integer code, @PathVariable String pwd) {
 		ResponseObject res = null;
 		try {
-			res = feignUserClient.register(mobile,code,pwd);
+			res = feignUserClient.register(mobile, code, pwd);
 			return res;
 		} catch (Exception e) {
 			logger.error(e.getMessage());
@@ -50,6 +68,7 @@ public class UserController {
 			return res;
 		}
 	}
+
 	@SuppressWarnings("rawtypes")
 	@ApiOperation(value = "send", httpMethod = "GET", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
@@ -67,6 +86,7 @@ public class UserController {
 			return res;
 		}
 	}
+
 	@SuppressWarnings("rawtypes")
 	@ApiOperation(value = "forget password", httpMethod = "GET", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
@@ -84,7 +104,5 @@ public class UserController {
 			return res;
 		}
 	}
-
-	   
 
 }

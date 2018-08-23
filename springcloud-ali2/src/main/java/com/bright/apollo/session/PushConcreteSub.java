@@ -5,8 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.bright.apollo.bean.PushExceptionMsg;
-import com.bright.apollo.bean.PushMessage;
 import com.bright.apollo.bean.PushSystemMsg;
+import com.bright.apollo.common.entity.PushMessage;
 
 @Component
 public class PushConcreteSub extends BasicPushSub{

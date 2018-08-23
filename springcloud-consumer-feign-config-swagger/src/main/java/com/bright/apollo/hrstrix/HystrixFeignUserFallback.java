@@ -1,6 +1,7 @@
 package com.bright.apollo.hrstrix;
 
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -250,6 +251,17 @@ public class HystrixFeignUserFallback extends BasicHystrixFeignFallback implemen
 	@SuppressWarnings("rawtypes")
 	@Override
 	public ResponseObject sendCodeToMobile(String mobile) {
+		logger.warn("===user server is break===");
+		ResponseObject res = serverError();
+		return res;
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignUserClient#wxLogin(java.lang.Integer)  
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public ResponseObject<Map<String, Object>> wxLogin(Integer code) {
 		logger.warn("===user server is break===");
 		ResponseObject res = serverError();
 		return res;

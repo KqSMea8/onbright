@@ -201,7 +201,7 @@ public class CMDHandlerManager {
 
 //        cmdHandlers.put(Command.ERROR.getValue(), new ErrorHandler());
 
- //       cmdHandlers.put(Command.FILTER.getValue(), new FilterCMDHandler());
+        cmdHandlers.put(Command.FILTER.getValue(), new FilterCMDHandler());
 
 //        cmdHandlers.put(Command.IRUP.getValue(), new IRUploadHandler());//红外上传学习码
         
@@ -226,7 +226,7 @@ public class CMDHandlerManager {
             ClientSession client = new ClientSession();
 // 			client.setUid(DeviceName);
 //            String obox_serial_id = aliDevCache.getOboxSerialId(ProductKey, DeviceName);
-            String obox_serial_id = "";
+            String obox_serial_id = aliDevCache.getOboxSerialId(ProductKey, DeviceName);
             if (StringUtils.isEmpty(obox_serial_id)) {
                 //cashe time out or first time login
                 //different table query by region
