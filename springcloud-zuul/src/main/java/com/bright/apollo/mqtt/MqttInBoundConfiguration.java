@@ -3,6 +3,8 @@ package com.bright.apollo.mqtt;
 import com.bright.apollo.mqtt.bean.MqttProperties;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +20,8 @@ import org.springframework.messaging.MessagingException;
 
 @Configuration
 public class MqttInBoundConfiguration {
+
+    private static final Logger logger = LoggerFactory.getLogger(MessageHandler.class);
 
     @Autowired
     private MqttProperties mqttProperties;
@@ -48,6 +52,7 @@ public class MqttInBoundConfiguration {
 
             @Override
             public void handleMessage(Message<?> message) throws MessagingException {
+                logger.info("receive log ------ "+message.getPayload());
                 System.out.println("receive ------ "+message.getPayload());
             }
 
