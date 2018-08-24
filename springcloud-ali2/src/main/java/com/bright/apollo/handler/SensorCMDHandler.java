@@ -37,7 +37,9 @@ import com.bright.apollo.tool.ByteHelper;
 import com.zz.common.util.DateTime;
 import com.zz.common.util.MD5;
 import com.zz.common.util.StringUtils;
+import org.springframework.stereotype.Component;
 
+@Component
 public class SensorCMDHandler extends BasicHandler {
 	private static final String salt = "eqcs231@gfdgaqweqxaa4648}{";
 	private static final Logger log = LoggerFactory.getLogger(SensorCMDHandler.class);

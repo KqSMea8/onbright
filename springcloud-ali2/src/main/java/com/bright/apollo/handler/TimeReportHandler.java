@@ -4,6 +4,7 @@ import com.bright.apollo.bean.Message;
 import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.session.ClientSession;
+import org.springframework.stereotype.Component;
 
 /**  
  *@Title:  
@@ -12,6 +13,8 @@ import com.bright.apollo.session.ClientSession;
  *@Since:2018年8月10日  
  *@Version:1.1.0  
  */
+
+@Component
 public class TimeReportHandler extends BasicHandler {
 	  
 	/* (non-Javadoc)  

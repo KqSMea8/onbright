@@ -113,114 +113,196 @@ public class CMDHandlerManager {
     
     @Autowired
     private PushService pushservice;
-    private static Map<String, BasicHandler> cmdHandlers = new HashMap<String, BasicHandler>();
 
-    static {
-        /**
-         * version update
-         */
-        cmdHandlers.put(Command.VERSION.getValue(), new VersionCMDHandler());
+    private static Map<String, BasicHandler> cmdHandlers = null;
 
-        /**
-         * obox info set
-         */
-        cmdHandlers.put(Command.OBOXINFO.getValue(), new OBOXInfoCMDHanlder());
+    /**
+     * version update
+     */
+    @Autowired
+    private VersionCMDHandler versionCMDHandler;
 
-        /**
-         * heart beat
-         */
-//		cmdHandlers.put(Command.HEARTBEAT.getValue(), new HeartBeatCMDHandler());
+    /**
+     * obox info set
+     */
+    @Autowired
+    private OBOXInfoCMDHanlder oboxInfoCMDHanlder;
 
-        /**
-         * signal intensity for node channel
-         */
-        cmdHandlers.put(Command.CHANNEL.getValue(), new NodeChannelHandler());
+    /**
+     * signal intensity for node channel
+     */
+    @Autowired
+    private NodeChannelHandler nodeChannelHandler;
 
-        /**
-         * control PW set
-         */
-        cmdHandlers.put(Command.CONTROLPW.getValue(), new ControlPWCMDHandler());
+    /**
+     * control PW set
+     */
+    @Autowired
+    private ControlPWCMDHandler controlPWCMDHandler;
 
-        /**
-         * control PW reset not transfer
-         */
-//        cmdHandlers.put(Command.CONTROLPWRESET.getValue(), new ControlPWResetCMDHandler());
+    /**
+     * 处理obox搜索返回结果逻辑
+     */
+    @Autowired
+    private SearchResultHandler searchResultHandler;
 
-        /**
-         * 处理obox搜索返回结果逻辑
-         */
-        cmdHandlers.put(Command.SEARCH_RESULT.getValue(), new SearchResultHandler());
-        /**
-         * 处理传感器报警业务逻辑
-         */
-        cmdHandlers.put(Command.SENSOR.getValue(), new SensorCMDHandler());
+    /**
+     * 处理传感器报警业务逻辑
+     */
+    @Autowired
+    private SensorCMDHandler sensorCMDHandler;
 
-        cmdHandlers.put(Command.DRONEHEARTBEAT.getValue(), new DroneHeartBeatHandler());
+    @Autowired
+    private DroneHeartBeatHandler droneHeartBeatHandler;
 
-        /**
-         * release all device
-         */
-        cmdHandlers.put(Command.RELEASE.getValue(), new ReleaseCMDHandler());
+    /**
+     * release all device
+     */
+    @Autowired
+    private ReleaseCMDHandler releaseCMDHandler;
 
-        cmdHandlers.put(Command.NODERELEASE.getValue(), new NodeReleaseCMDHandler());
+    @Autowired
+    private NodeReleaseCMDHandler nodeReleaseCMDHandler;
 
-        /**
-         * node change
-         */
-        cmdHandlers.put(Command.NODECHANGE.getValue(), new UpdateNodeNameCMDHandler());
+    /**
+     * node change
+     */
+    @Autowired
+    private UpdateNodeNameCMDHandler updateNodeNameCMDHandler;
 
-        /**
-         * group change
-         */
-//        cmdHandlers.put(Command.GROUPCHANGE.getValue(), new GroupCMDHandler());
+    /**
+     * node status
+     */
+    @Autowired
+    private NodeStatusCMDHandler nodeStatusCMDHandler;
 
-        /**
-         * node status
-         */
-        cmdHandlers.put(Command.NODESTATUS.getValue(), new NodeStatusCMDHandler());
-        /**
-         * scene set
-         */
-        cmdHandlers.put(Command.SCENE.getValue(), new SceneCMDHandler());
+    /**
+     * scene set
+     */
+    @Autowired
+    private SceneCMDHandler sceneCMDHandler;
 
-        cmdHandlers.put(Command.SETSTATUS.getValue(), new SetStatusHandler());
+    @Autowired
+    private SetStatusHandler setStatusHandler;
 
-        cmdHandlers.put(Command.SETRELEASE.getValue(), new SetReleaseHandler());
+    @Autowired
+    private SetReleaseHandler setReleaseHandler;
 
-        cmdHandlers.put(Command.SEARCH.getValue(), new SetSearchHandler());
+    @Autowired
+    private SetSearchHandler setSearchHandler;
 
-        cmdHandlers.put(Command.NODESET.getValue(), new SetNodeHandler());
+    @Autowired
+    private SetNodeHandler setNodeHandler;
 
-        cmdHandlers.put(Command.REMOVEOBOX.getValue(), new RemoveOBOXHandler());
+    @Autowired
+    private RemoveOBOXHandler removeOBOXHandler;
 
-        cmdHandlers.put(Command.REMOVEOBOXRESP.getValue(), new DeleteOBOXHandler());
+    @Autowired
+    private DeleteOBOXHandler deleteOBOXHandler;
 
-        cmdHandlers.put(Command.SETCHANNEL.getValue(), new SetChannelHandler());
+    @Autowired
+    private SetChannelHandler setChannelHandler;
 
-//        cmdHandlers.put(Command.REMOTERCHANNEL.getValue(), new RemoterChannelHandler());
-//
-//        cmdHandlers.put(Command.REMOTERBUTTON.getValue(), new RemoterButtonHandler());
+    @Autowired
+    private GetRealStatusHandler getRealStatusHandler;
 
-        cmdHandlers.put(Command.GETSTATUS.getValue(), new GetRealStatusHandler());
+    @Autowired
+    private FilterCMDHandler filterCMDHandler;
 
-//        cmdHandlers.put(Command.ERROR.getValue(), new ErrorHandler());
+    @Autowired
+    private TimeReportHandler timeReportHandler;
 
-        cmdHandlers.put(Command.FILTER.getValue(), new FilterCMDHandler());
+    @Autowired
+    private FingerRemoteHandler fingerRemoteHandler;
 
-//        cmdHandlers.put(Command.IRUP.getValue(), new IRUploadHandler());//红外上传学习码
-        
-        cmdHandlers.put(Command.TIMEREPORT.getValue(), new TimeReportHandler());
-		cmdHandlers.put(Command.FINGEREMOTE.getValue(), new FingerRemoteHandler());
-		//远程开锁
-		//cmdHandlers.put(Command.REMOTEOPEN.getValue(), new RemoteOpenHandler());
-
+    public CMDHandlerManager(){
+        cmdHandlers = new HashMap<String, BasicHandler>();
     }
+
 
     public static BasicHandler getCMDHandler(Command cmd) {
         return cmdHandlers.get(cmd);
     }
+
+    private void init(){
+        if(cmdHandlers.get(Command.VERSION.getValue()) == null){
+            cmdHandlers.put(Command.VERSION.getValue(), versionCMDHandler);
+        }
+        if(cmdHandlers.get(Command.OBOXINFO.getValue()) ==null){
+            cmdHandlers.put(Command.OBOXINFO.getValue(),oboxInfoCMDHanlder);
+        }
+        if(cmdHandlers.get(Command.CHANNEL.getValue())==null){
+            cmdHandlers.put(Command.CHANNEL.getValue(),  nodeChannelHandler);
+        }
+        if(cmdHandlers.get(Command.CONTROLPW.getValue()) == null){
+            cmdHandlers.put(Command.CONTROLPW.getValue(),  controlPWCMDHandler);
+        }
+        if(cmdHandlers.get(Command.SEARCH_RESULT.getValue())==null){
+            cmdHandlers.put(Command.SEARCH_RESULT.getValue(), searchResultHandler);
+        }
+        if(cmdHandlers.get(Command.SENSOR.getValue()) == null){
+            cmdHandlers.put(Command.SENSOR.getValue(), sensorCMDHandler);
+        }
+        if(cmdHandlers.get(Command.DRONEHEARTBEAT.getValue()) == null){
+            cmdHandlers.put(Command.DRONEHEARTBEAT.getValue(),droneHeartBeatHandler);
+        }
+        if(cmdHandlers.get(Command.RELEASE.getValue()) == null){
+            cmdHandlers.put(Command.RELEASE.getValue(), releaseCMDHandler);
+        }
+        if(cmdHandlers.get(Command.NODERELEASE.getValue()) == null){
+            cmdHandlers.put(Command.NODERELEASE.getValue(), nodeReleaseCMDHandler);
+        }
+        if(cmdHandlers.get(Command.NODECHANGE.getValue()) == null){
+            cmdHandlers.put(Command.NODECHANGE.getValue(), updateNodeNameCMDHandler);
+        }
+        if(cmdHandlers.get(Command.NODESTATUS.getValue()) == null){
+            cmdHandlers.put(Command.NODESTATUS.getValue(), nodeStatusCMDHandler);
+        }
+        if(cmdHandlers.get(Command.SCENE.getValue()) == null){
+            cmdHandlers.put(Command.SCENE.getValue(), sceneCMDHandler);
+        }
+        if(cmdHandlers.get(Command.SETSTATUS.getValue()) == null){
+            cmdHandlers.put(Command.SETSTATUS.getValue(), setStatusHandler);
+        }
+        if(cmdHandlers.get(Command.SETRELEASE.getValue()) == null){
+            cmdHandlers.put(Command.SETRELEASE.getValue(), setReleaseHandler);
+        }
+        if(cmdHandlers.get(Command.SEARCH.getValue()) == null){
+            cmdHandlers.put(Command.SEARCH.getValue(), setSearchHandler);
+        }
+        if(cmdHandlers.get(Command.NODESET.getValue()) == null){
+            cmdHandlers.put(Command.NODESET.getValue(), setNodeHandler);
+        }
+        if(cmdHandlers.get(Command.NODESET.getValue()) == null){
+            cmdHandlers.put(Command.NODESET.getValue(), setNodeHandler);
+        }
+        if(cmdHandlers.get(Command.REMOVEOBOX.getValue()) == null){
+            cmdHandlers.put(Command.REMOVEOBOX.getValue(), removeOBOXHandler);
+        }
+        if(cmdHandlers.get(Command.REMOVEOBOXRESP.getValue()) == null){
+            cmdHandlers.put(Command.REMOVEOBOXRESP.getValue(), deleteOBOXHandler);
+        }
+        if(cmdHandlers.get(Command.SETCHANNEL.getValue()) == null){
+            cmdHandlers.put(Command.SETCHANNEL.getValue(), setChannelHandler);
+        }
+        if(cmdHandlers.get(Command.GETSTATUS.getValue()) == null){
+            cmdHandlers.put(Command.GETSTATUS.getValue(), getRealStatusHandler);
+        }
+        if(cmdHandlers.get(Command.FILTER.getValue()) == null){
+            cmdHandlers.put(Command.FILTER.getValue(), filterCMDHandler);
+        }
+        if(cmdHandlers.get(Command.TIMEREPORT.getValue()) == null){
+            cmdHandlers.put(Command.TIMEREPORT.getValue(), timeReportHandler);
+        }
+        if(cmdHandlers.get(Command.FINGEREMOTE.getValue()) == null){
+            cmdHandlers.put(Command.FINGEREMOTE.getValue(), fingerRemoteHandler);
+        }
+
+    }
+
     @Async
     public void processTopic(String ProductKey,String DeviceName,String inMsg){
+        init();
         try {
             logger.info("======topic msg=====:key:"+ProductKey+" device:"+DeviceName+" payload:"+inMsg);
             if (inMsg.length() != 136) {

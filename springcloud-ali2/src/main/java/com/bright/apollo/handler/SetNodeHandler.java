@@ -6,7 +6,9 @@ import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.enums.CMDEnum;
 import com.bright.apollo.session.ClientSession;
 import com.bright.apollo.tool.ByteHelper;
+import org.springframework.stereotype.Component;
 
+@Component
 public class SetNodeHandler extends BasicHandler{
  
     @Override

@@ -11,6 +11,7 @@ import com.bright.apollo.enums.CMDEnum;
 import com.bright.apollo.enums.DeviceTypeEnum;
 import com.bright.apollo.enums.RemoteUserEnum;
 import com.bright.apollo.session.ClientSession;
+import org.springframework.stereotype.Component;
 
 /**
  * @Title:
@@ -19,6 +20,7 @@ import com.bright.apollo.session.ClientSession;
  * @Since:2018年8月10日
  * @Version:1.1.0
  */
+@Component
 public class FingerRemoteHandler extends BasicHandler {
 	private static final Logger log = LoggerFactory.getLogger(FingerRemoteHandler.class);
 	/*

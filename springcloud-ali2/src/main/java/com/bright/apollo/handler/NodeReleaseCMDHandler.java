@@ -6,7 +6,9 @@ import com.bright.apollo.bean.Message;
 import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.common.entity.TScene;
 import com.bright.apollo.session.ClientSession;
+import org.springframework.stereotype.Component;
 
+@Component
 public class NodeReleaseCMDHandler extends BasicHandler{
 
     @Override

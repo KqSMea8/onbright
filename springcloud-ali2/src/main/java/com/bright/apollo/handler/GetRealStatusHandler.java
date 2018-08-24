@@ -8,7 +8,9 @@ import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.enums.DeviceTypeEnum;
 import com.bright.apollo.session.ClientSession;
+import org.springframework.stereotype.Component;
 
+@Component
 public class GetRealStatusHandler extends BasicHandler {
 
 	private static final Logger logger = LoggerFactory.getLogger(GetRealStatusHandler.class);

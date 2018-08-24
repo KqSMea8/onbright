@@ -10,7 +10,9 @@ import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.common.entity.TScene;
 import com.bright.apollo.session.ClientSession;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ReleaseCMDHandler extends BasicHandler {
 	//private static Logger logger = LoggerFactory.getLogger(ReleaseCMDHandler.class);
     @Override

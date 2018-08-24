@@ -7,7 +7,9 @@ import com.bright.apollo.bean.Message;
 import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.session.ClientSession;
+import org.springframework.stereotype.Component;
 
+@Component
 public class NodeChannelHandler extends BasicHandler  {
 
     @Override

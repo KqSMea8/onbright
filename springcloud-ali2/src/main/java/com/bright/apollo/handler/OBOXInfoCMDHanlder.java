@@ -7,7 +7,9 @@ import com.bright.apollo.bean.Message;
 import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.session.ClientSession;
 import com.bright.apollo.tool.ByteHelper;
+import org.springframework.stereotype.Component;
 
+@Component
 public class OBOXInfoCMDHanlder extends BasicHandler{
 
 	private static Logger logger = LoggerFactory.getLogger(OBOXInfoCMDHanlder.class);

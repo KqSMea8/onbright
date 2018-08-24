@@ -13,7 +13,10 @@ import com.bright.apollo.common.entity.TUserDevice;
 import com.bright.apollo.common.entity.TUserObox;
 import com.bright.apollo.session.ClientSession;
 import com.bright.apollo.tool.ByteHelper;
- 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
 public class SearchResultHandler extends BasicHandler {
 	private static Logger logger = LoggerFactory.getLogger(SearchResultHandler.class);
 	@Override

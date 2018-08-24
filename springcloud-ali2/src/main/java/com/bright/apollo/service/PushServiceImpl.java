@@ -30,11 +30,12 @@ public class PushServiceImpl implements PushService {
             sendStr.append("STR"+JSON.toJSONString(message)+"END");
         }
         Iterator<Integer> iterator = users.iterator();
-        StringBuilder appKeyUserId = new StringBuilder();
+        String appKeyUserId = "";
         while (iterator.hasNext()){
-            appKeyUserId.append(redisBussines.get("appkey_userId"+iterator.next()));
+            Integer uId = iterator.next();
+            appKeyUserId = redisBussines.get("appkey_userId"+uId);
             logger.info(" ====== appKeyUserId ====== "+appKeyUserId);
-            if(!appKeyUserId.equals("")){
+            if(appKeyUserId !=null&& !appKeyUserId.equals("")){
                 mqttGateWay.sendToMqtt("ob-smart\\"+appKeyUserId,sendStr.toString());
             }
         }

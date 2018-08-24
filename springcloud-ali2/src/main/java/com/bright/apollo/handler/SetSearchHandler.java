@@ -8,7 +8,9 @@ import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.enums.CMDEnum;
 import com.bright.apollo.session.ClientSession;
+import org.springframework.stereotype.Component;
 
+@Component
 public class SetSearchHandler extends BasicHandler {
  
 

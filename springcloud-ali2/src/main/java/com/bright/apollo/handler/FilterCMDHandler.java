@@ -14,7 +14,9 @@ import com.bright.apollo.common.entity.TUserObox;
 import com.bright.apollo.enums.Command;
 import com.bright.apollo.enums.PushMessageType;
 import com.bright.apollo.session.ClientSession;
+import org.springframework.stereotype.Component;
 
+@Component
 public class FilterCMDHandler extends BasicHandler {
 	private static final Logger logger = LoggerFactory.getLogger(FilterCMDHandler.class);
    

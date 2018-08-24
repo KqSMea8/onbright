@@ -7,7 +7,9 @@ import com.bright.apollo.service.OboxDeviceConfigService;
 import com.bright.apollo.service.OboxService;
 import com.bright.apollo.session.ClientSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class VersionCMDHandler extends BasicHandler {
  
 

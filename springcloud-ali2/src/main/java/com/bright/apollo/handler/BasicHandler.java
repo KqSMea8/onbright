@@ -2,6 +2,7 @@ package com.bright.apollo.handler;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.bright.apollo.bean.Message;
@@ -32,46 +33,49 @@ import com.bright.apollo.util.FingerUtil;
 
 @Component
 public abstract class BasicHandler {
-	 
+	@Autowired
 	protected PushService pushservice;
-	
+	@Autowired
 	protected UserOperationService userOperationService;
-	
+	@Autowired
 	protected SceneService sceneService;
-	
+	@Autowired
 	protected SceneActionThreadPool sceneActionThreadPool;
-	 
+	@Autowired
 	protected SceneConditionService sceneConditionService;
-
-	protected UserService userService; 
-	
+	@Autowired
+	protected UserService userService;
+	@Autowired
 	protected UserSceneService userSceneService;
-	
+	@Autowired
 	protected SceneActionService sceneActionService;
-
+	@Autowired
 	protected OboxService oboxService;
-
+	@Autowired
 	protected OboxDeviceConfigService oboxDeviceConfigService;
-
+	@Autowired
 	protected UserDeviceService userDeviceService;
-
+	@Autowired
 	protected DeviceChannelService deviceChannelService;
-
+	@Autowired
 	protected UserOboxService userOboxService;
-	
+	@Autowired
 	protected CMDMessageService cmdMessageService;
 	
 	protected CmdCache cmdCache;
-	
+	@Autowired
 	protected SessionManager sessionManager;
-	
+
+	@Autowired
 	protected IntelligentFingerService intelligentFingerService;
 	
 	protected FingerUtil fingerUtil;
-	
-	protected TopicServer topicServer; 
-	
+
+	protected TopicServer topicServer;
+
+	@Autowired
 	protected MsgService msgService;
+
 	public abstract Message<String> process(ClientSession clientSession, Message<String> msg) throws Exception;
 
 	protected void deleteSceneNumber(List<TScene> scenes, TObox tObox) {

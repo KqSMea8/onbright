@@ -8,7 +8,9 @@ import org.slf4j.LoggerFactory;
 import com.bright.apollo.bean.Message;
 import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.session.ClientSession;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ControlPWCMDHandler extends BasicHandler {
 
 	private static final Logger logger = LoggerFactory.getLogger(ControlPWCMDHandler.class);

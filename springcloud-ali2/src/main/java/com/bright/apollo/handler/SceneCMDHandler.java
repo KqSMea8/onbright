@@ -14,7 +14,9 @@ import com.bright.apollo.common.entity.TSceneCondition;
 import com.bright.apollo.enums.NodeTypeEnum;
 import com.bright.apollo.session.ClientSession;
 import com.bright.apollo.tool.ByteHelper;
+import org.springframework.stereotype.Component;
 
+@Component
 public class SceneCMDHandler extends BasicHandler{
 
 	private static Logger logger = LoggerFactory.getLogger(SceneCMDHandler.class);

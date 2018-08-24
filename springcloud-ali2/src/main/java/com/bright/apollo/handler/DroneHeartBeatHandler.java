@@ -10,7 +10,9 @@ import com.bright.apollo.service.OboxService;
 import com.bright.apollo.session.ClientSession;
 import com.bright.apollo.tool.ByteHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class DroneHeartBeatHandler extends BasicHandler {
 
     @Autowired

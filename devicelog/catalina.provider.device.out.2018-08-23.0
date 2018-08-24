@@ -1,0 +1,448 @@
+2018-08-23 15:19:09,860 INFO (SpringApplication.java:597)- The following profiles are active: test
+2018-08-23 15:19:20,050 INFO (StartupInfoLogger.java:57)- Started DeviceApplication in 14.44 seconds (JVM running for 15.34)
+2018-08-23 15:25:28,363 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? group by todc.device_type 
+2018-08-23 15:25:28,387 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer)
+2018-08-23 15:25:28,429 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 5
+2018-08-23 15:25:28,490 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 15:25:28,491 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 01(String)
+2018-08-23 15:25:28,520 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 15:25:28,529 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 15:25:28,530 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 04(String)
+2018-08-23 15:25:28,559 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 15:25:28,568 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 15:25:28,568 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0b(String)
+2018-08-23 15:25:28,597 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 15:25:28,607 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 15:25:28,608 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0e(String)
+2018-08-23 15:25:28,636 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 15:25:28,645 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 15:25:28,646 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 15(String)
+2018-08-23 15:25:28,674 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 15:39:59,953 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? group by todc.device_type 
+2018-08-23 15:39:59,954 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer)
+2018-08-23 15:39:59,991 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 5
+2018-08-23 15:40:00,018 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 15:40:00,019 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 01(String)
+2018-08-23 15:40:00,047 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 15:40:00,056 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 15:40:00,057 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 04(String)
+2018-08-23 15:40:00,084 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 15:40:00,093 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 15:40:00,094 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0b(String)
+2018-08-23 15:40:00,122 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 15:40:00,130 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 15:40:00,130 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0e(String)
+2018-08-23 15:40:00,158 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 15:40:00,167 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 15:40:00,167 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 15(String)
+2018-08-23 15:40:00,195 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 15:48:13,185 INFO (SpringApplication.java:597)- The following profiles are active: test
+2018-08-23 15:48:22,829 INFO (StartupInfoLogger.java:57)- Started DeviceApplication in 14.563 seconds (JVM running for 15.26)
+2018-08-23 15:49:45,234 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? group by todc.device_type 
+2018-08-23 15:49:45,262 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer)
+2018-08-23 15:49:45,637 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 5
+2018-08-23 15:49:45,706 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 15:49:45,707 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 01(String)
+2018-08-23 15:49:45,736 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 15:49:45,748 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 15:49:45,749 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 04(String)
+2018-08-23 15:49:45,781 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 15:49:45,794 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 15:49:45,794 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0b(String)
+2018-08-23 15:49:45,823 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 15:49:45,833 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 15:49:45,833 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0e(String)
+2018-08-23 15:49:45,862 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 15:49:45,871 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 15:49:45,872 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 15(String)
+2018-08-23 15:49:45,900 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 16:46:40,175 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? group by todc.device_type 
+2018-08-23 16:46:40,178 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer)
+2018-08-23 16:46:40,215 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 5
+2018-08-23 16:46:40,247 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 16:46:40,248 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 01(String)
+2018-08-23 16:46:41,148 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 16:46:41,173 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 16:46:41,174 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 04(String)
+2018-08-23 16:46:41,219 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 16:46:41,245 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 16:46:41,247 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0b(String)
+2018-08-23 16:46:41,289 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 16:46:41,315 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 16:46:41,316 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0e(String)
+2018-08-23 16:46:41,354 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 16:46:41,382 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 16:46:41,383 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 15(String)
+2018-08-23 16:46:41,415 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 16:50:48,650 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? group by todc.device_type 
+2018-08-23 16:50:48,651 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer)
+2018-08-23 16:50:48,681 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 5
+2018-08-23 16:50:48,698 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 16:50:48,699 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 01(String)
+2018-08-23 16:50:48,728 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 16:50:48,745 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 16:50:48,746 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 04(String)
+2018-08-23 16:50:48,775 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 16:50:48,792 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 16:50:48,794 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0b(String)
+2018-08-23 16:50:48,826 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 16:50:48,854 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 16:50:48,854 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0e(String)
+2018-08-23 16:50:48,883 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 16:50:48,907 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 16:50:48,908 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 15(String)
+2018-08-23 16:50:48,936 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 16:50:49,560 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 16:50:49,560 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0e(String)
+2018-08-23 16:50:49,600 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 16:50:49,726 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 16:50:49,726 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 04(String)
+2018-08-23 16:50:49,764 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 16:50:49,824 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 16:50:49,825 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 15(String)
+2018-08-23 16:50:50,154 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 16:50:50,155 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 16:50:50,155 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 01(String)
+2018-08-23 16:50:50,185 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 16:50:50,185 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 16:50:50,186 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0b(String)
+2018-08-23 16:50:50,213 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 16:53:56,178 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? group by todc.device_type 
+2018-08-23 16:53:56,180 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer)
+2018-08-23 16:53:56,210 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 5
+2018-08-23 16:53:56,233 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 16:53:56,234 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 01(String)
+2018-08-23 16:53:56,571 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 16:53:56,597 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 16:53:56,598 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 04(String)
+2018-08-23 16:53:56,627 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 16:53:56,650 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 16:53:56,651 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0b(String)
+2018-08-23 16:53:56,679 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 16:53:56,702 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 16:53:56,703 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0e(String)
+2018-08-23 16:53:56,731 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 16:53:56,747 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 16:53:56,748 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 15(String)
+2018-08-23 16:53:56,776 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 16:54:39,682 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 16:54:39,683 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0e(String)
+2018-08-23 16:54:40,014 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 16:54:40,015 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 16:54:40,015 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 04(String)
+2018-08-23 16:54:40,016 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 16:54:40,017 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 01(String)
+2018-08-23 16:54:40,043 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 16:54:40,046 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 16:54:41,066 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 16:54:41,067 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 15(String)
+2018-08-23 16:54:41,104 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 16:54:43,409 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 16:54:43,409 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0b(String)
+2018-08-23 16:54:43,443 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 16:55:56,155 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? group by todc.device_type 
+2018-08-23 16:55:56,156 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer)
+2018-08-23 16:55:56,204 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 5
+2018-08-23 16:55:56,227 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 16:55:56,228 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 01(String)
+2018-08-23 16:55:56,262 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 16:55:56,278 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 16:55:56,278 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 04(String)
+2018-08-23 16:55:56,312 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 16:55:56,327 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 16:55:56,328 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0b(String)
+2018-08-23 16:55:56,361 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 16:55:56,377 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 16:55:56,377 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0e(String)
+2018-08-23 16:55:56,410 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 16:55:56,425 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 16:55:56,426 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 15(String)
+2018-08-23 16:55:56,459 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:01:28,377 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? group by todc.device_type 
+2018-08-23 17:01:28,379 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer)
+2018-08-23 17:01:28,428 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 5
+2018-08-23 17:01:28,450 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:01:28,451 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 01(String)
+2018-08-23 17:01:28,487 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:01:28,511 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:01:28,512 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 04(String)
+2018-08-23 17:01:28,545 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:01:28,561 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:01:28,561 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0b(String)
+2018-08-23 17:01:28,601 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:01:28,609 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:01:28,610 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0e(String)
+2018-08-23 17:01:28,645 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:01:28,653 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:01:28,653 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 15(String)
+2018-08-23 17:01:28,701 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:01:29,326 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:01:29,326 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 04(String)
+2018-08-23 17:01:29,359 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:01:29,654 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:01:29,654 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0b(String)
+2018-08-23 17:01:29,687 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:01:29,708 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:01:29,708 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 01(String)
+2018-08-23 17:01:29,737 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:01:29,874 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:01:29,875 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0e(String)
+2018-08-23 17:01:29,902 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:04:52,392 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? group by todc.device_type 
+2018-08-23 17:04:52,393 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer)
+2018-08-23 17:04:52,423 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 5
+2018-08-23 17:04:52,448 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:04:52,450 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 01(String)
+2018-08-23 17:04:52,478 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:04:52,490 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:04:52,490 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 04(String)
+2018-08-23 17:04:52,517 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:04:52,529 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:04:52,529 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0b(String)
+2018-08-23 17:04:52,557 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:04:52,568 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:04:52,568 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0e(String)
+2018-08-23 17:04:52,596 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:04:52,606 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:04:52,607 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 15(String)
+2018-08-23 17:04:52,934 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:04:53,400 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:04:53,400 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0e(String)
+2018-08-23 17:04:53,427 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:04:53,469 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:04:53,470 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 15(String)
+2018-08-23 17:04:53,497 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:04:53,535 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:04:53,535 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 04(String)
+2018-08-23 17:04:53,562 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:04:53,819 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:04:53,820 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 01(String)
+2018-08-23 17:04:53,848 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:04:54,445 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:04:54,446 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0b(String)
+2018-08-23 17:04:54,475 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:07:49,565 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? group by todc.device_type 
+2018-08-23 17:07:49,566 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer)
+2018-08-23 17:07:49,609 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 5
+2018-08-23 17:07:49,617 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:07:49,617 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 01(String)
+2018-08-23 17:07:49,668 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:07:49,690 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:07:49,691 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 04(String)
+2018-08-23 17:07:49,953 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:07:49,973 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:07:49,973 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0b(String)
+2018-08-23 17:07:50,023 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:07:50,046 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:07:50,047 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0e(String)
+2018-08-23 17:07:50,383 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:07:50,395 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:07:50,396 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 15(String)
+2018-08-23 17:07:50,426 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:07:51,761 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:07:51,762 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0e(String)
+2018-08-23 17:07:51,799 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:07:51,993 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:07:51,994 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 04(String)
+2018-08-23 17:07:52,022 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:07:52,756 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:07:52,756 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 01(String)
+2018-08-23 17:07:52,788 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:07:53,271 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:07:53,271 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0b(String)
+2018-08-23 17:07:53,303 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:07:53,327 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:07:53,328 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 15(String)
+2018-08-23 17:07:53,366 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:09:49,723 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? group by todc.device_type 
+2018-08-23 17:09:49,724 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer)
+2018-08-23 17:09:49,754 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 5
+2018-08-23 17:09:49,778 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:09:49,779 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 01(String)
+2018-08-23 17:09:49,808 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:09:49,829 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:09:49,830 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 04(String)
+2018-08-23 17:09:49,858 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:09:49,880 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:09:49,881 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0b(String)
+2018-08-23 17:09:49,909 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:09:49,932 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:09:49,933 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0e(String)
+2018-08-23 17:09:49,960 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:09:49,971 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:09:49,971 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 15(String)
+2018-08-23 17:09:49,998 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:09:50,532 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:09:50,532 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0e(String)
+2018-08-23 17:09:50,560 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:09:50,648 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:09:50,649 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 04(String)
+2018-08-23 17:09:50,678 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:09:50,956 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:09:50,956 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 15(String)
+2018-08-23 17:09:50,983 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:09:51,000 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:09:51,000 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 01(String)
+2018-08-23 17:09:51,028 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:09:51,045 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:09:51,045 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0b(String)
+2018-08-23 17:09:51,073 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:10:32,656 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? group by todc.device_type 
+2018-08-23 17:10:32,657 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer)
+2018-08-23 17:10:32,687 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 5
+2018-08-23 17:10:32,708 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:10:32,709 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 01(String)
+2018-08-23 17:10:32,740 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:10:32,763 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:10:32,764 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 04(String)
+2018-08-23 17:10:32,792 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:10:32,808 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:10:32,808 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0b(String)
+2018-08-23 17:10:32,846 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:10:32,861 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:10:32,862 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0e(String)
+2018-08-23 17:10:32,894 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:10:32,917 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:10:32,918 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 15(String)
+2018-08-23 17:10:32,946 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:10:33,374 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:10:33,375 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0e(String)
+2018-08-23 17:10:33,401 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:10:33,432 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:10:33,432 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 04(String)
+2018-08-23 17:10:33,465 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:10:33,629 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:10:33,630 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 15(String)
+2018-08-23 17:10:33,662 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:10:33,717 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:10:33,717 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 01(String)
+2018-08-23 17:10:33,735 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:10:33,735 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0b(String)
+2018-08-23 17:10:33,750 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:10:33,762 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:13:24,550 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? group by todc.device_type 
+2018-08-23 17:13:24,551 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer)
+2018-08-23 17:13:24,579 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 5
+2018-08-23 17:13:24,603 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:13:24,604 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 01(String)
+2018-08-23 17:13:24,636 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:13:24,655 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:13:24,655 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 04(String)
+2018-08-23 17:13:24,690 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:13:24,708 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:13:24,709 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0b(String)
+2018-08-23 17:13:24,737 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:13:24,756 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:13:24,757 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0e(String)
+2018-08-23 17:13:24,785 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:13:24,795 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:13:24,795 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 15(String)
+2018-08-23 17:13:24,827 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:13:25,323 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:13:25,323 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0e(String)
+2018-08-23 17:13:25,351 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:13:25,472 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:13:25,473 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 15(String)
+2018-08-23 17:13:25,505 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:13:25,539 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:13:25,539 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 04(String)
+2018-08-23 17:13:25,566 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:13:25,647 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:13:25,647 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 01(String)
+2018-08-23 17:13:25,674 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:13:25,751 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:13:25,752 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0b(String)
+2018-08-23 17:13:25,779 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:16:24,941 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? group by todc.device_type 
+2018-08-23 17:16:24,942 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer)
+2018-08-23 17:16:24,980 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 5
+2018-08-23 17:16:25,004 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:16:25,005 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 01(String)
+2018-08-23 17:16:25,033 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:16:25,053 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:16:25,054 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 04(String)
+2018-08-23 17:16:25,094 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:16:25,116 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:16:25,117 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0b(String)
+2018-08-23 17:16:25,446 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:16:25,467 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:16:25,468 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0e(String)
+2018-08-23 17:16:25,495 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:16:25,516 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:16:25,517 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 15(String)
+2018-08-23 17:16:25,552 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:16:27,696 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:16:27,697 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0e(String)
+2018-08-23 17:16:27,725 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:16:28,154 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:16:28,154 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 04(String)
+2018-08-23 17:16:28,183 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:16:28,207 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:16:28,208 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 01(String)
+2018-08-23 17:16:28,255 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:16:30,268 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:16:30,269 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0b(String)
+2018-08-23 17:16:30,304 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:23:04,437 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? group by todc.device_type 
+2018-08-23 17:23:04,438 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer)
+2018-08-23 17:23:04,473 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 5
+2018-08-23 17:23:04,490 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:23:04,490 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 01(String)
+2018-08-23 17:23:04,523 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:23:04,530 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:23:04,530 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 04(String)
+2018-08-23 17:23:04,562 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:23:04,570 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:23:04,570 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0b(String)
+2018-08-23 17:23:04,603 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:23:04,611 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:23:04,611 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0e(String)
+2018-08-23 17:23:04,644 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:23:04,651 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:23:04,651 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 15(String)
+2018-08-23 17:23:04,683 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:23:05,109 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:23:05,109 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0e(String)
+2018-08-23 17:23:05,142 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:23:05,192 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:23:05,192 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 04(String)
+2018-08-23 17:23:05,225 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:23:05,509 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:23:05,510 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 01(String)
+2018-08-23 17:23:05,543 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:23:06,628 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:23:06,629 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0b(String)
+2018-08-23 17:23:06,969 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:25:00,050 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? group by todc.device_type 
+2018-08-23 17:25:00,051 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer)
+2018-08-23 17:25:00,086 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 5
+2018-08-23 17:25:00,109 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:25:00,110 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 01(String)
+2018-08-23 17:25:00,144 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:25:00,157 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:25:00,158 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 04(String)
+2018-08-23 17:25:00,191 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:25:00,198 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:25:00,199 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0b(String)
+2018-08-23 17:25:00,231 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:25:00,239 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:25:00,239 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0e(String)
+2018-08-23 17:25:00,272 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:25:00,280 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:25:00,280 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 15(String)
+2018-08-23 17:25:00,313 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:25:01,135 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:25:01,136 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0e(String)
+2018-08-23 17:25:01,168 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:25:01,296 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:25:01,297 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 15(String)
+2018-08-23 17:25:01,329 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:25:01,338 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:25:01,338 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 04(String)
+2018-08-23 17:25:01,371 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:25:01,491 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:25:01,491 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 01(String)
+2018-08-23 17:25:01,523 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2
+2018-08-23 17:25:01,544 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_obox_device_config todc inner join t_user_device tud on todc.device_serial_id = tud.device_serial_id inner join t_user tu on tu.id = tud.user_id where tud.user_id = ? and todc.device_type=? 
+2018-08-23 17:25:01,544 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 429(Integer), 0b(String)
+2018-08-23 17:25:01,576 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 2

@@ -1,0 +1,244 @@
+2018-08-23 14:45:37,042 INFO (SpringApplication.java:597)- The following profiles are active: test
+2018-08-23 14:45:49,713 INFO (StartupInfoLogger.java:57)- Started UserApplication in 17.025 seconds (JVM running for 17.75)
+2018-08-23 15:14:39,641 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 15:14:39,672 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 15:14:39,726 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 15:18:43,277 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 15:18:43,278 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 15:18:43,310 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 15:25:28,107 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 15:25:28,109 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 15:25:28,142 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 15:39:59,874 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 15:39:59,875 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 15:39:59,908 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 15:47:51,115 INFO (SpringApplication.java:597)- The following profiles are active: test
+2018-08-23 15:48:02,145 INFO (StartupInfoLogger.java:57)- Started UserApplication in 16.691 seconds (JVM running for 17.405)
+2018-08-23 15:49:44,910 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 15:49:44,920 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 15:49:44,952 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 16:46:39,612 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 16:46:39,614 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 16:46:39,646 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 16:50:48,561 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 16:50:48,562 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 16:50:48,594 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 16:50:49,501 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 16:50:49,502 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 16:50:49,552 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 16:50:49,681 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 16:50:49,681 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 16:50:49,718 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 16:50:49,757 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 16:50:49,758 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 16:50:49,784 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 16:50:49,786 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 16:50:49,787 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 16:50:49,816 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 16:50:50,025 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 16:50:50,025 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 16:50:50,052 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 16:50:50,113 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 16:50:50,114 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 16:50:50,139 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 16:53:55,478 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 16:53:55,479 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 16:53:55,815 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 16:54:38,781 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 16:54:38,781 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 16:54:38,809 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 16:54:39,562 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 16:54:39,563 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 16:54:39,631 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 16:54:39,631 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 16:54:39,658 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 16:54:39,948 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 16:54:39,948 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 16:54:39,975 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 16:54:39,976 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 16:54:39,976 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 16:54:40,002 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 16:54:41,041 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 16:54:43,371 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 16:54:43,371 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 16:54:43,399 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 16:55:56,067 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 16:55:56,067 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 16:55:56,095 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:01:28,253 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:01:28,254 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:01:28,297 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:01:29,235 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:01:29,236 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:01:29,262 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:01:29,285 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:01:29,287 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:01:29,314 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:01:29,612 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:01:29,612 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:01:29,639 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:01:29,643 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:01:29,644 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:01:29,673 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:01:29,828 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:01:29,828 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:01:29,858 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:04:52,308 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:04:52,309 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:04:52,339 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:04:53,359 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:04:53,360 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:04:53,390 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:04:53,432 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:04:53,432 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:04:53,462 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:04:53,498 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:04:53,499 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:04:53,528 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:04:53,541 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:04:53,541 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:04:53,567 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:04:53,775 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:04:53,775 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:04:53,810 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:04:54,394 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:04:54,395 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:04:54,428 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:07:49,493 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:07:49,493 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:07:49,522 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:07:51,712 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:07:51,712 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:07:51,744 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:07:51,936 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:07:51,937 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:07:51,976 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:07:52,080 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:07:52,081 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:07:52,107 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:07:52,719 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:07:52,719 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:07:52,749 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:07:53,232 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:07:53,233 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:07:53,260 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:07:53,280 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:07:53,280 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:07:53,317 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:09:49,640 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:09:49,641 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:09:49,671 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:09:50,481 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:09:50,482 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:09:50,512 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:09:50,597 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:09:50,598 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:09:50,628 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:09:50,826 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:09:50,827 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:09:50,857 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:09:50,914 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:09:50,915 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:09:50,944 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:09:50,955 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:09:50,955 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:09:50,989 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:09:51,010 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:09:51,011 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:09:51,037 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:10:32,603 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:10:32,604 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:10:32,631 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:10:33,317 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:10:33,317 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:10:33,336 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:10:33,337 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:10:33,343 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:10:33,366 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:10:33,368 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:10:33,369 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:10:33,394 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:10:33,595 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:10:33,595 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:10:33,621 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:10:33,684 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:10:33,684 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:10:33,698 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:10:33,698 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:10:33,710 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:10:33,727 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:13:24,467 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:13:24,468 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:13:24,498 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:13:25,284 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:13:25,284 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:13:25,313 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:13:25,422 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:13:25,423 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:13:25,456 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:13:25,466 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:13:25,466 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:13:25,495 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:13:25,503 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:13:25,503 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:13:25,529 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:13:25,613 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:13:25,614 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:13:25,639 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:13:25,719 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:13:25,719 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:13:25,744 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:16:24,862 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:16:24,863 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:16:24,892 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:16:27,650 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:16:27,651 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:16:27,678 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:16:27,864 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:16:27,864 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:16:28,111 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:16:28,112 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:16:28,126 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:16:28,127 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:16:28,141 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:16:28,161 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:16:28,190 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:16:30,219 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:16:30,220 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:16:30,247 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:23:04,348 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:23:04,350 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:23:04,378 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:23:05,065 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:23:05,066 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:23:05,092 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:23:05,152 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:23:05,152 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:23:05,178 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:23:05,470 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:23:05,471 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:23:05,497 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:23:06,258 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:23:06,258 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:23:06,615 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:24:59,959 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:24:59,960 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:24:59,987 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:25:01,097 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:25:01,098 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:25:01,124 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:25:01,197 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:25:01,197 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:25:01,224 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:25:01,262 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:25:01,263 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:25:01,288 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:25:01,302 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:25:01,302 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:25:01,329 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:25:01,457 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:25:01,458 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:25:01,484 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-23 17:25:01,511 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-23 17:25:01,511 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-23 17:25:01,537 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1

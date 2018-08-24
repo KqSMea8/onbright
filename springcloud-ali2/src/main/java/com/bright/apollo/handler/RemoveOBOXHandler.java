@@ -5,7 +5,9 @@ import com.bright.apollo.common.dto.OboxResp;
 import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.enums.CMDEnum;
 import com.bright.apollo.session.ClientSession;
+import org.springframework.stereotype.Component;
 
+@Component
 public class RemoveOBOXHandler extends BasicHandler {
     @Override
     public Message<String> process(ClientSession clientSession, Message<String> msg) throws Exception {
