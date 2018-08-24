@@ -54,20 +54,23 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="PushService.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-common/src/main/java/com/bright/apollo/service/PushService.java">
+      <file leaf-file-name="PushServiceImpl.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/service/PushServiceImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="297">
-              <caret line="13" column="17" selection-start-line="13" selection-start-column="17" selection-end-line="13" selection-end-column="17" />
+            <state relative-caret-position="104">
+              <caret line="39" column="13" selection-start-line="39" selection-start-column="13" selection-end-line="39" selection-end-column="13" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PushServiceImpl.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/service/PushServiceImpl.java">
+      <file leaf-file-name="HttpUtil.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/springcloud-tool/src/main/java/com/bright/apollo/tool/HttpUtil.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="41">
-              <caret line="35" selection-start-line="35" selection-end-line="35" />
+            <state relative-caret-position="114">
+              <caret line="23" column="20" lean-forward="true" selection-start-line="23" selection-start-column="20" selection-end-line="23" selection-end-column="20" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -136,8 +139,8 @@
       <file leaf-file-name="CMDHandlerManager.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/handler/CMDHandlerManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="6698">
-              <caret line="531" column="38" selection-start-line="531" selection-start-column="32" selection-end-line="531" selection-end-column="38" />
+            <state relative-caret-position="96">
+              <caret line="536" column="22" lean-forward="true" selection-start-line="536" selection-start-column="22" selection-end-line="536" selection-end-column="22" />
               <folding>
                 <element signature="e#3799#3800#0" expanded="true" />
                 <element signature="e#3864#3865#0" expanded="true" />
@@ -149,11 +152,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="FilterCMDHandler.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/handler/FilterCMDHandler.java">
+      <file leaf-file-name="bootstrap.yml" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/springcloud-zuul/src/main/resources/bootstrap.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="945">
-              <caret line="49" selection-start-line="49" selection-end-line="49" />
+            <state relative-caret-position="139">
+              <caret line="59" column="31" lean-forward="true" selection-start-line="59" selection-start-column="31" selection-end-line="59" selection-end-column="31" />
             </state>
           </provider>
         </entry>
@@ -198,9 +201,9 @@
       <find>NodeStatusCMDHandler</find>
       <find>SceneCMDHandler</find>
       <find>6389</find>
-      <find>VersionCMDHandler</find>
       <find>redis</find>
       <find>120.</find>
+      <find>VersionCMDHandler</find>
     </findStrings>
     <replaceStrings>
       <replace>springcloud</replace>
@@ -263,10 +266,10 @@
         <option value="$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/handler/TimeReportHandler.java" />
         <option value="$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/handler/FingerRemoteHandler.java" />
         <option value="$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/handler/CMDHandlerManager.java" />
-        <option value="$PROJECT_DIR$/springcloud-zuul/src/main/resources/bootstrap.yml" />
         <option value="$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/handler/BasicHandler.java" />
         <option value="$PROJECT_DIR$/springcloud-redis/src/main/resources/application.yml" />
         <option value="$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/service/PushServiceImpl.java" />
+        <option value="$PROJECT_DIR$/springcloud-zuul/src/main/resources/bootstrap.yml" />
       </list>
     </option>
   </component>
@@ -887,12 +890,12 @@
       <workItem from="1532423823755" duration="4479000" />
       <workItem from="1532483592015" duration="141266000" />
       <workItem from="1533887392858" duration="47322000" />
-      <workItem from="1534320136585" duration="93269000" />
+      <workItem from="1534320136585" duration="94069000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="981434000" />
+    <option name="totallyTimeSpent" value="982234000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -918,7 +921,7 @@
       <window_info id="Structure" order="0" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="3" weight="0.25" />
       <window_info id="UI Designer" order="3" />
-      <window_info active="true" anchor="bottom" id="Debug" order="4" sideWeight="0.49838188" visible="true" weight="0.7060185" />
+      <window_info anchor="bottom" id="Debug" order="4" sideWeight="0.49838188" weight="0.7060185" />
       <window_info anchor="bottom" id="TODO" order="7" weight="0.3287037" />
       <window_info anchor="bottom" id="Messages" order="14" sideWeight="0.5234628" weight="0.47800925" />
       <window_info anchor="right" id="Palette&#9;" order="7" />
@@ -926,10 +929,10 @@
       <window_info anchor="bottom" id="Java Enterprise" order="10" weight="0.3298611" />
       <window_info anchor="right" id="Capture Analysis" order="5" />
       <window_info anchor="bottom" id="Version Control" order="12" sideWeight="0.49919093" weight="0.3298611" />
-      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.49919093" weight="0.5115741" />
+      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.49919093" visible="true" weight="0.5115741" />
       <window_info anchor="bottom" id="Spring" order="8" weight="0.3287037" />
       <window_info anchor="bottom" id="Terminal" order="9" weight="0.3298611" />
-      <window_info content_ui="combo" id="Project" order="7" weight="0.27346277" />
+      <window_info active="true" content_ui="combo" id="Project" order="7" visible="true" weight="0.27346277" />
       <window_info anchor="bottom" id="Bean Validation" order="15" sideWeight="0.50161815" side_tool="true" weight="0.6678241" />
       <window_info id="Web" order="5" side_tool="true" />
       <window_info anchor="bottom" id="Find" order="2" weight="0.32908458" />
@@ -942,42 +945,6 @@
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="right" id="Coverage" order="0" side_tool="true" weight="0.32928804" />
     </layout>
-    <layout-to-restore>
-      <window_info id="Designer" order="1" />
-      <window_info anchor="right" id="Palette" order="4" />
-      <window_info anchor="bottom" id="Spring" order="8" weight="0.3287037" />
-      <window_info id="Image Layers" order="2" />
-      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.49919093" weight="0.5115741" />
-      <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
-      <window_info anchor="right" id="Ant Build" order="3" weight="0.25" />
-      <window_info id="UI Designer" order="3" />
-      <window_info id="Favorites" order="4" side_tool="true" />
-      <window_info anchor="bottom" id="Database Changes" order="11" show_stripe_button="false" />
-      <window_info id="Capture Tool" order="6" />
-      <window_info anchor="right" id="Capture Analysis" order="5" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
-      <window_info anchor="bottom" id="Event Log" order="13" sideWeight="0.50161815" side_tool="true" weight="0.6678241" />
-      <window_info anchor="bottom" id="Messages" order="14" sideWeight="0.5234628" weight="0.47800925" />
-      <window_info anchor="bottom" id="TODO" order="7" weight="0.3287037" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.3907767" />
-      <window_info anchor="bottom" id="Java Enterprise" order="10" weight="0.3298611" />
-      <window_info anchor="bottom" id="Dependency Viewer" order="0" weight="0.32908458" />
-      <window_info anchor="bottom" id="Version Control" order="12" sideWeight="0.49919093" weight="0.3298611" />
-      <window_info anchor="right" id="Maven Projects" order="9" weight="0.32928804" />
-      <window_info anchor="bottom" id="Terminal" order="9" weight="0.3298611" />
-      <window_info anchor="bottom" id="Find" order="2" weight="0.32908458" />
-      <window_info content_ui="combo" id="Project" order="7" weight="0.27346277" />
-      <window_info anchor="right" id="Database" order="6" weight="0.32928804" />
-      <window_info anchor="bottom" id="Message" order="1" />
-      <window_info id="Web" order="5" side_tool="true" />
-      <window_info anchor="right" id="Palette&#9;" order="7" />
-      <window_info anchor="right" id="Theme Preview" order="8" />
-      <window_info id="Structure" order="0" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
-      <window_info anchor="right" id="Coverage" order="0" side_tool="true" weight="0.32928804" />
-      <window_info active="true" anchor="bottom" id="Debug" order="4" sideWeight="0.49838188" visible="true" weight="0.7060185" />
-      <window_info anchor="bottom" id="Bean Validation" order="15" sideWeight="0.50161815" side_tool="true" weight="0.6678241" />
-    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -1014,13 +981,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/springcloud-zuul/src/main/java/com/bright/apollo/mqtt/MqttInBoundConfiguration.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="58">
-          <caret line="28" selection-start-line="28" selection-end-line="28" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/controller/AliDeviceController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="169">
@@ -1222,13 +1182,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-zuul/src/main/resources/bootstrap.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="196">
-          <caret line="71" selection-start-line="71" selection-end-line="71" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-common/src/main/java/com/bright/apollo/service/UserOperationService.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="279">
@@ -1315,21 +1268,7 @@
     <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/handler/FilterCMDHandler.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="945">
-          <caret line="49" selection-start-line="49" selection-end-line="49" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/handler/CMDHandlerManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6698">
-          <caret line="531" column="38" selection-start-line="531" selection-start-column="32" selection-end-line="531" selection-end-column="38" />
-          <folding>
-            <element signature="e#3799#3800#0" expanded="true" />
-            <element signature="e#3864#3865#0" expanded="true" />
-            <element signature="e#7084#7085#0" expanded="true" />
-            <element signature="e#7127#7128#0" expanded="true" />
-            <element signature="e#9244#9252#0" expanded="true" />
-          </folding>
+          <caret line="54" selection-start-line="54" selection-end-line="54" />
         </state>
       </provider>
     </entry>
@@ -1381,11 +1320,42 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/service/PushServiceImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="41">
-          <caret line="35" selection-start-line="35" selection-end-line="35" />
+        <state relative-caret-position="104">
+          <caret line="39" column="13" selection-start-line="39" selection-start-column="13" selection-end-line="39" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-tool/src/main/java/com/bright/apollo/tool/HttpUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="114">
+          <caret line="23" column="20" lean-forward="true" selection-start-line="23" selection-start-column="20" selection-end-line="23" selection-end-column="20" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/handler/CMDHandlerManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="96">
+          <caret line="536" column="22" lean-forward="true" selection-start-line="536" selection-start-column="22" selection-end-line="536" selection-end-column="22" />
+          <folding>
+            <element signature="e#3799#3800#0" expanded="true" />
+            <element signature="e#3864#3865#0" expanded="true" />
+            <element signature="e#7084#7085#0" expanded="true" />
+            <element signature="e#7127#7128#0" expanded="true" />
+            <element signature="e#9244#9252#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-zuul/src/main/resources/bootstrap.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="139">
+          <caret line="59" column="31" lean-forward="true" selection-start-line="59" selection-start-column="31" selection-end-line="59" selection-end-column="31" />
         </state>
       </provider>
     </entry>
