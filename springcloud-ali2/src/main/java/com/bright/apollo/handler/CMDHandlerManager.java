@@ -329,10 +329,7 @@ public class CMDHandlerManager {
                     if (!tAliDeviceUS.getDeviceSerialId().equals("available")) {
                         client.setUid(tAliDeviceUS.getDeviceSerialId());
                         aliDevCache.saveDevInfo(tAliDeviceUS.getProductKey(), tAliDeviceUS.getDeviceSerialId(), tAliDeviceUS.getDeviceName(),AliRegionEnum.AMERICA);
-                    }else{
-                        return;
                     }
-
                 }
             }else {
                 client.setUid(obox_serial_id);

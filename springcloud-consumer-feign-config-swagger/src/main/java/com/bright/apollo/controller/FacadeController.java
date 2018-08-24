@@ -2290,7 +2290,7 @@ public class FacadeController {
 			@PathVariable(value = "countIndex", required = false) String countIndex) {
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		Map<String, Object> map = new HashMap<String, Object>();
-		try {/*
+		try {
 			map.put("type", type);
 			if (type.equals("00")) {
 				if (StringUtils.isEmpty(fromDate) || !NumberHelper.isNumeric(fromDate) || StringUtils.isEmpty(toDate)
@@ -2301,8 +2301,8 @@ public class FacadeController {
 					res.setMessage(ResponseEnum.RequestParamError.getMsg());
 					return res;
 				}
-				ResponseObject<List<TUserOperation>> userOperationRes = feignUserClient.getUserOperation(long,
-						toDate, serialId, startIndex, countIndex);
+				ResponseObject<List<TUserOperation>> userOperationRes = feignUserClient.getUserOperation(Long.parseLong(fromDate),
+						Long.parseLong(toDate), serialId, Integer.parseInt(startIndex), Integer.parseInt(countIndex));
 
 				List<TUserOperation> operations = null;
 				if (userOperationRes != null && userOperationRes.getData() != null
@@ -2323,46 +2323,38 @@ public class FacadeController {
 					return res;
 				}
 				List<JsonObject> list = new ArrayList<JsonObject>();
-				if ((toDate % fromDate) / 86400 > 0) {
-					for (int i = 1; i <= (toDate % fromDate) / 86400; i++) {
+				if ((Long.parseLong(toDate) % Long.parseLong(fromDate)) / 86400 > 0) {
+					for (int i = 1; i <= (Long.parseLong(toDate) % Long.parseLong(fromDate)) / 86400; i++) {
 						ResponseObject<List<TUserOperation>> userOperationRes = feignUserClient
-								.queryUserOperationByDate(fromDate + (i - 1) * 86400, fromDate + i * 86400, serialId);
-						
-						 * List<TUserOperation> operations =
-						 * UserBusiness.queryUserOperationByDate(from + (i - 1)
-						 * * 86400, from + i * 86400, serialId);
-						 
+								.queryUserOperationByDate(Long.parseLong(fromDate) + (i - 1) * 86400, Long.parseLong(fromDate) + i * 86400, serialId);
 						if (userOperationRes != null && userOperationRes.getData() != null
 								&& userOperationRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()
 								&& userOperationRes.getData().size() != 0) {
 							JsonObject object = new JsonObject();
-							object.addProperty("from_date", String.valueOf(fromDate + (i - 1) * 86400));
-							object.addProperty("to_date", String.valueOf(fromDate + i * 86400));
+							object.addProperty("from_date", String.valueOf(Long.parseLong(fromDate) + (i - 1) * 86400));
+							object.addProperty("to_date", String.valueOf(Long.parseLong(fromDate) + i * 86400));
 							object.addProperty("count", userOperationRes.getData().size());
 							list.add(object);
 						}
 					}
 					ResponseObject<List<TUserOperation>> userOperationRes = feignUserClient.queryUserOperationByDate(
-							fromDate + ((toDate % fromDate) / 86400) * 86400, toDate, serialId);
+							Long.parseLong(fromDate) + ((Long.parseLong(toDate) % Long.parseLong(fromDate)) / 86400) * 86400, Long.parseLong(toDate), serialId);
 					
-					 * List<TUserOperation> operations = UserBusiness
-					 * .queryUserOperationByDate(from + ((to % from) / 86400) *
-					 * 86400, to, serialId);
-					 
+			 
 					if (userOperationRes != null && userOperationRes.getData() != null
 							&& userOperationRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()
 							&& userOperationRes.getData().size() != 0) {
 						// if (operations.size() != 0) {
 						JsonObject object = new JsonObject();
 						object.addProperty("from_date",
-								String.valueOf(fromDate + ((toDate % fromDate) / 86400) * 86400));
+								String.valueOf(Long.parseLong(fromDate) + (((Long.parseLong(toDate) % Long.parseLong(fromDate)) / 86400) * 86400)));
 						object.addProperty("to_date", String.valueOf(toDate));
 						object.addProperty("count", userOperationRes.getData().size());
 						list.add(object);
 					}
 				} else {
 					ResponseObject<List<TUserOperation>> userOperationRes = feignUserClient
-							.queryUserOperationByDate(fromDate, toDate, serialId);
+							.queryUserOperationByDate(Long.parseLong(fromDate), Long.parseLong(toDate), serialId);
 					// List<TUserOperation> operations =
 					// UserBusiness.queryUserOperationByDate(from, to,
 					// serialId);
@@ -2381,15 +2373,18 @@ public class FacadeController {
 				map.put("history", list);
 				// jsonObject.add("history", g2.toJsonTree(list));
 			} else if (type.equals("02")) {
+				if (StringUtils.isEmpty(fromDate) || !NumberHelper.isNumeric(fromDate) || StringUtils.isEmpty(toDate)
+						|| !NumberHelper.isNumeric(toDate) /*|| StringUtils.isEmpty(startIndex)
+						|| !NumberHelper.isNumeric(startIndex) || StringUtils.isEmpty(countIndex)
+						|| !NumberHelper.isNumeric(countIndex)*/) {
+					res.setStatus(ResponseEnum.RequestParamError.getStatus());
+					res.setMessage(ResponseEnum.RequestParamError.getMsg());
+					return res;
+				}
 				List<JsonObject> list = new ArrayList<JsonObject>();
 				for (int i = 0; i < 7; i++) {
 					ResponseObject<List<TUserOperation>> userOperationRes = feignUserClient.queryUserOperationByDate(
-							fromDate + i * 24 * 60 * 60, fromDate + (i + 1) * 24 * 60 * 60, serialId);
-					
-					 * List<TUserOperation> operations =
-					 * UserBusiness.queryUserOperationByDate(from + i * 24 * 60
-					 * * 60, from + (i + 1) * 24 * 60 * 60, serialId);
-					 
+							Long.parseLong(fromDate) + i * 24 * 60 * 60, Long.parseLong(fromDate) + (i + 1) * 24 * 60 * 60, serialId);
 					float power = 0.0f;
 					List<TUserOperation> operations = null;
 					if (userOperationRes != null && userOperationRes.getData() != null
@@ -2449,27 +2444,13 @@ public class FacadeController {
 				map.put("history", list);
 				// jsonObject.add("history", g2.toJsonTree(list));
 			} else if (type.equals("03")) {
-				//
-				
-				 * if (StringUtils.isEmpty(fromDate)) { return
-				 * respError(ErrorEnum.request_param_invalid.getValue()); }
+			 
 				 
 				// TCount
 				List<JsonObject> list = new ArrayList<JsonObject>();
 				ResponseObject<List<TUserOperation>> userOperationRes = feignUserClient
 						.queryUserOperationByMonthDayList(SubTableConstant.T_USER_OPERATION_SUFFIX
 								+ DateHelper.formatDate(new Date().getTime(), DateHelper.FORMATMONTH));
-				
-				 * List<TUserOperation> days = UserBusiness
-				 * .queryUserOperationByMonthDayList(SubTableConstant.
-				 * T_USER_OPERATION_SUFFIX + DateHelper.formatDate(new
-				 * Date().getTime(), DateHelper.FORMATMONTH));
-				 
-				
-				 * if (days == null || days.size() <= 0) { // JsonObject object
-				 * = new JsonObject(); jsonObject.add("history",
-				 * g2.toJsonTree(null)); return jsonObject; }
-				 
 				if (userOperationRes != null && userOperationRes.getData() != null
 						&& userOperationRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()
 						&& userOperationRes.getData().size() != 0) {
@@ -2508,12 +2489,6 @@ public class FacadeController {
 				List<JsonObject> list = new ArrayList<JsonObject>();
 				ResponseObject<List<TCreateTableLog>> createTableLogRes = feignUserClient
 						.listCreateTableLogByNameWithLike(SubTableConstant.T_USER_OPERATION_SUFFIX);
-				
-				 * List<TCreateTableLog> tCreateTableLogs =
-				 * CreateTableLogBussiness
-				 * .listCreateTableLogByNameWithLike(SubTableConstant.
-				 * T_USER_OPERATION_SUFFIX);
-				 
 				int months = 12;
 				if (createTableLogRes != null && createTableLogRes.getData() != null
 						&& createTableLogRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()
@@ -2528,11 +2503,6 @@ public class FacadeController {
 					logger.info("===table name===:" + tCreateTableLogs.get(i).getName());
 					ResponseObject<List<TUserOperation>> operationRes = feignUserClient
 							.queryUserOperation(tCreateTableLogs.get(i).getName(), serialId);
-					
-					 * List<TUserOperation> operations =
-					 * UserBusiness.queryUserOperation(tCreateTableLogs.get(i).
-					 * getName(), serialId);
-					 
 					if (operationRes != null && operationRes.getData() != null
 							&& operationRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()
 							&& operationRes.getData().size() > 0) {
@@ -2565,7 +2535,7 @@ public class FacadeController {
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 			res.setData(map);
 			// return jsonObject;
-		*/} catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
