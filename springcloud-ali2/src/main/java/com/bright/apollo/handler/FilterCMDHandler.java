@@ -58,7 +58,7 @@ public class FilterCMDHandler extends BasicHandler {
             	  for(TUserObox userobox:list){
             		  setuser.add(userobox.getUserId());
             	  }
-            	  
+            	  pushservice.pushToApp(message, setuser);
             }
 //            if (tObox.getLicense() != null) {
 //                if (tObox.getLicense() != 0) {

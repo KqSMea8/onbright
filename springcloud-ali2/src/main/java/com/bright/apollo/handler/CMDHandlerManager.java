@@ -27,6 +27,7 @@ import com.bright.apollo.service.IntelligentFingerService;
 import com.bright.apollo.service.MsgService;
 import com.bright.apollo.service.OboxDeviceConfigService;
 import com.bright.apollo.service.OboxService;
+import com.bright.apollo.service.PushService;
 import com.bright.apollo.service.SceneActionService;
 import com.bright.apollo.service.SceneConditionService;
 import com.bright.apollo.service.SceneService;
@@ -109,6 +110,9 @@ public class CMDHandlerManager {
     
     @Autowired
     private MsgService msgService;
+    
+    @Autowired
+    private PushService pushservice;
     private static Map<String, BasicHandler> cmdHandlers = new HashMap<String, BasicHandler>();
 
     static {
@@ -441,6 +445,7 @@ public class CMDHandlerManager {
                 	handler.setCmdMessageService(cmdMessageService);
                 	handler.setSessionManager(sessionManager);
                 	handler.setCmdCache(cmdCache);
+                	handler.setPushservice(pushservice);
                 }
                 handler.process(client, msg);
                 
