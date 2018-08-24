@@ -1,5 +1,7 @@
 package com.bright.apollo.service;
 
+import java.util.List;
+
 import com.bright.apollo.common.entity.TUserDevice;
 
 public interface UserDeviceService {
@@ -19,4 +21,11 @@ int addUserDevice(TUserDevice tUserDevice);
  * @Description:  
  */
 TUserDevice getUserDeviceByUserIdAndSerialId(Integer userId, String device_serial_id);
+
+/**  
+ * @param serialId
+ * @return  
+ * @Description:  
+ */
+List<TUserDevice> getUserDevicesBySerialId(String serialId);
 }

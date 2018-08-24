@@ -366,13 +366,17 @@ public class CommonController {
 			} else {
 				return facadeController.resetIntelligentPwdByCode(serialId, appkey, pwd, code);
 			}
-		} /*
-			 * else if
-			 * (CMDEnum.del_all_intelligent_remote_user.toString().equals(
-			 * cmdEnum.toString())) {
-			 * 
-			 * }
-			 */
+		}else if(CMDEnum.query_fingerprint_user.toString().equals(cmdEnum.toString())) {
+			//String accessToken = requestParam.getValue(ACCESS_TOKEN);
+			String serialId = requestParam.getValue("serialId");
+			//String startIndex = requestParam.getValue("start");
+			//String countIndex = requestParam.getValue("count");
+			String type = requestParam.getValue("type");
+			if(!StringUtils.isEmpty(serialId)&&!StringUtils.isEmpty(type)){
+				if(type.equals("01"))
+					return facadeController.queryIntelligentUser(serialId);
+			}
+		}
 		res = new ResponseObject();
 		res.setStatus(ResponseEnum.RequestParamError.getStatus());
 		res.setMessage(ResponseEnum.RequestParamError.getMsg());

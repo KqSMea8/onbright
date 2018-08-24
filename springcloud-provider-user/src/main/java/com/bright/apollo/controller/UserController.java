@@ -585,4 +585,22 @@ public class UserController {
 		}
 		return res;
 	}
+	/**  
+	 * @param serialId  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/getUserDeviceExceptRoot/{serialId}", method = RequestMethod.GET)
+	public ResponseObject<List<TUserDevice>> getUserDeviceExceptRoot(@PathVariable(required = true, value = "serialId")String serialId){
+		ResponseObject<List<TUserDevice>> res=new ResponseObject<List<TUserDevice>>();
+		try {
+			res.setData(userDeviceService.getUserDevicesBySerialId(serialId));
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:"+e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
 }

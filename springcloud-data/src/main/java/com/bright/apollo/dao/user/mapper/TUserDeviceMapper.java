@@ -94,6 +94,22 @@ public interface TUserDeviceMapper  {
             @Result(property = "privilege",column = "privilege")
     })
 	TUserDevice getUserDeviceByUserIdAndSerialId(@Param("userId") Integer userId,@Param("device_serial_id") String device_serial_id);
+
+	/**  
+	 * @param serialId
+	 * @return  
+	 * @Description:  
+	 */
+	@Select(" select * from t_user_device " +
+			" where device_serial_id=#{serialId}")
+	@Results(value = {
+            @Result(property = "id",column = "id"),
+            @Result(property = "deviceSerialId",column = "device_serial_id"),
+            @Result(property = "lastOpTime",column = "last_op_time"),
+            @Result(property = "userId",column = "user_id"),
+            @Result(property = "privilege",column = "privilege")
+    })
+	List<TUserDevice> queryUserDevicesBySerialId(@Param("serialId")String serialId);
  
 
 }

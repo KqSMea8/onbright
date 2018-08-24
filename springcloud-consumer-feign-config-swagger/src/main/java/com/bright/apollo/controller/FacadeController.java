@@ -75,7 +75,7 @@ import com.bright.apollo.response.DevcieCount;
 import com.bright.apollo.response.IntelligentOpenRecordItemDTO;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
-import com.bright.apollo.response.SceneInfo;
+import com.bright.apollo.response.UserFingerDTO;
 import com.bright.apollo.service.MsgService;
 import com.bright.apollo.tool.ByteHelper;
 import com.bright.apollo.tool.DateHelper;
@@ -210,59 +210,53 @@ public class FacadeController {
 		return res;
 	}
 
-	// control scene
-	@SuppressWarnings({ "rawtypes" })
-	@ApiOperation(value = "control  scene,the scene must is a server scene ", httpMethod = "PUT", produces = "application/json")
-	@ApiResponse(code = 200, message = "SelectSuccess", response = ResponseObject.class)
-	@RequestMapping(value = "/scene/{sceneNumber}", method = RequestMethod.PUT)
-	public ResponseObject controlScene(@PathVariable(required = true, value = "sceneNumber") Integer sceneNumber) {
-		ResponseObject res = new ResponseObject();
-		try {
-			ResponseObject<SceneInfo> sceneRes = feignSceneClient.getScene(sceneNumber);
-			if (sceneRes == null || sceneRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()
-					|| sceneRes.getData() == null || sceneRes.getData().getScene() == null) {
-				res.setStatus(ResponseEnum.ServerError.getStatus());
-				res.setMessage(ResponseEnum.ServerError.getMsg());
-				return res;
-			} else {
-				TScene scene = sceneRes.getData().getScene();
-				if (!scene.getSceneType().equals(SceneTypeEnum.server.getValue())) {
-					res.setStatus(ResponseEnum.RequestParamError.getStatus());
-					res.setMessage(ResponseEnum.RequestParamError.getMsg());
-					return res;
-				}
-				if (scene.getSceneRun() == 0) {
-					// old code
-					scene.setSceneRun((byte) 1);
-					SceneInfo sceneInfo = sceneRes.getData();
-					sceneInfo.setScene(scene);
-					// rewrite
-					/*
-					 * ResponseObject updateScene =
-					 * feignSceneClient.updateScene(sceneNumber, sceneInfo); if
-					 * (updateScene == null || updateScene.getStatus() !=
-					 * ResponseEnum.SelectSuccess.getStatus()) {
-					 * res.setStatus(ResponseEnum.MicroServiceUnConnection.
-					 * getStatus());
-					 * res.setMessage(ResponseEnum.MicroServiceUnConnection.
-					 * getMsg()); return res; } ResponseObject resp =
-					 * feignAliClient.controlServerScene(sceneNumber); if (resp
-					 * != null && resp.getStatus() ==
-					 * ResponseEnum.SelectSuccess.getStatus()) { return resp; }
-					 * scene.setSceneRun((byte) 0); sceneInfo.setScene(scene);
-					 * 
-					 * feignSceneClient.updateScene(sceneNumber, sceneInfo);
-					 */
-				}
-			}
-
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-			res.setStatus(ResponseEnum.RequestTimeout.getStatus());
-			res.setMessage(ResponseEnum.RequestTimeout.getMsg());
-		}
-		return res;
-	}
+	/*
+	 * // control scene
+	 * 
+	 * @SuppressWarnings({ "rawtypes" })
+	 * 
+	 * @ApiOperation(value = "control  scene,the scene must is a server scene ",
+	 * httpMethod = "PUT", produces = "application/json")
+	 * 
+	 * @ApiResponse(code = 200, message = "SelectSuccess", response =
+	 * ResponseObject.class)
+	 * 
+	 * @RequestMapping(value = "/scene/{sceneNumber}", method =
+	 * RequestMethod.PUT) public ResponseObject
+	 * controlScene(@PathVariable(required = true, value = "sceneNumber")
+	 * Integer sceneNumber) { ResponseObject res = new ResponseObject(); try {
+	 * ResponseObject<SceneInfo> sceneRes =
+	 * feignSceneClient.getScene(sceneNumber); if (sceneRes == null ||
+	 * sceneRes.getStatus() != ResponseEnum.SelectSuccess.getStatus() ||
+	 * sceneRes.getData() == null || sceneRes.getData().getScene() == null) {
+	 * res.setStatus(ResponseEnum.ServerError.getStatus());
+	 * res.setMessage(ResponseEnum.ServerError.getMsg()); return res; } else {
+	 * TScene scene = sceneRes.getData().getScene(); if
+	 * (!scene.getSceneType().equals(SceneTypeEnum.server.getValue())) {
+	 * res.setStatus(ResponseEnum.RequestParamError.getStatus());
+	 * res.setMessage(ResponseEnum.RequestParamError.getMsg()); return res; } if
+	 * (scene.getSceneRun() == 0) { // old code scene.setSceneRun((byte) 1);
+	 * SceneInfo sceneInfo = sceneRes.getData(); sceneInfo.setScene(scene); //
+	 * rewrite
+	 * 
+	 * ResponseObject updateScene = feignSceneClient.updateScene(sceneNumber,
+	 * sceneInfo); if (updateScene == null || updateScene.getStatus() !=
+	 * ResponseEnum.SelectSuccess.getStatus()) {
+	 * res.setStatus(ResponseEnum.MicroServiceUnConnection. getStatus());
+	 * res.setMessage(ResponseEnum.MicroServiceUnConnection. getMsg()); return
+	 * res; } ResponseObject resp =
+	 * feignAliClient.controlServerScene(sceneNumber); if (resp != null &&
+	 * resp.getStatus() == ResponseEnum.SelectSuccess.getStatus()) { return
+	 * resp; } scene.setSceneRun((byte) 0); sceneInfo.setScene(scene);
+	 * 
+	 * feignSceneClient.updateScene(sceneNumber, sceneInfo);
+	 * 
+	 * } }
+	 * 
+	 * } catch (Exception e) { logger.error(e.getMessage());
+	 * res.setStatus(ResponseEnum.RequestTimeout.getStatus());
+	 * res.setMessage(ResponseEnum.RequestTimeout.getMsg()); } return res; }
+	 */
 
 	// ====================================search
 	// device==========================================
@@ -433,7 +427,7 @@ public class FacadeController {
 					 */
 					res.setStatus(ResponseEnum.AddSuccess.getStatus());
 					res.setMessage(ResponseEnum.AddSuccess.getMsg());
-					//res.setData(null);
+					// res.setData(null);
 					// }
 				} else {
 					res.setStatus(ResponseEnum.SendOboxError.getStatus());
@@ -496,8 +490,7 @@ public class FacadeController {
 				// search device by user
 				ResponseObject<OboxResp> releaseObox = feignAliClient.scanByInitiative(oboxSerialId, deviceType,
 						deviceChildType, serialId, countOfDevice);
-				if (releaseObox != null && releaseObox.getStatus() == ResponseEnum.AddSuccess.getStatus()
-						) {
+				if (releaseObox != null && releaseObox.getStatus() == ResponseEnum.AddSuccess.getStatus()) {
 					res.setStatus(ResponseEnum.AddSuccess.getStatus());
 					res.setMessage(ResponseEnum.AddSuccess.getMsg());
 				} else {
@@ -673,38 +666,38 @@ public class FacadeController {
 		return res;
 	}
 
-	@ApiOperation(value = "get scene by user and page,the pageIndex default value is 0,the pageSize defalt value is 10", httpMethod = "GET", produces = "application/json")
-	@ApiResponse(code = 200, message = "SelectSuccess", response = ResponseObject.class)
-	@RequestMapping(value = "/scene/{pageIndex}/{pageSize}", method = RequestMethod.GET)
-	public ResponseObject<List<SceneInfo>> getSceneByUserAndPage(@PathVariable Integer pageIndex,
-			@PathVariable Integer pageSize) {
-		ResponseObject<List<SceneInfo>> res = new ResponseObject<List<SceneInfo>>();
-		try {
-			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			if (principal.getUsername() != null && !principal.getUsername().equals("")) {
-				res.setStatus(ResponseEnum.RequestParamError.getStatus());
-				res.setMessage(ResponseEnum.RequestParamError.getMsg());
-			}
-			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
-			if (resUser.getStatus() == ResponseEnum.SelectSuccess.getStatus() && resUser.getData() != null) {
-				TUser tUser = resUser.getData();
-				if (pageIndex == null)
-					pageIndex = 0;
-				if (pageSize == null || pageSize <= 0)
-					pageSize = 10;
-				res = feignSceneClient.getSceneByUserAndPage(tUser.getId(), pageIndex, pageSize);
-			} else {
-				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
-				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
-			}
-
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-			res.setStatus(ResponseEnum.RequestTimeout.getStatus());
-			res.setMessage(ResponseEnum.RequestTimeout.getMsg());
-		}
-		return res;
-	}
+	/*
+	 * @ApiOperation(value =
+	 * "get scene by user and page,the pageIndex default value is 0,the pageSize defalt value is 10"
+	 * , httpMethod = "GET", produces = "application/json")
+	 * 
+	 * @ApiResponse(code = 200, message = "SelectSuccess", response =
+	 * ResponseObject.class)
+	 * 
+	 * @RequestMapping(value = "/scene/{pageIndex}/{pageSize}", method =
+	 * RequestMethod.GET) public ResponseObject<List<SceneInfo>>
+	 * getSceneByUserAndPage(@PathVariable Integer pageIndex,
+	 * 
+	 * @PathVariable Integer pageSize) { ResponseObject<List<SceneInfo>> res =
+	 * new ResponseObject<List<SceneInfo>>(); try { UserDetails principal =
+	 * (UserDetails)
+	 * SecurityContextHolder.getContext().getAuthentication().getPrincipal(); if
+	 * (principal.getUsername() != null && !principal.getUsername().equals(""))
+	 * { res.setStatus(ResponseEnum.RequestParamError.getStatus());
+	 * res.setMessage(ResponseEnum.RequestParamError.getMsg()); }
+	 * ResponseObject<TUser> resUser =
+	 * feignUserClient.getUser(principal.getUsername()); if (resUser.getStatus()
+	 * == ResponseEnum.SelectSuccess.getStatus() && resUser.getData() != null) {
+	 * TUser tUser = resUser.getData(); if (pageIndex == null) pageIndex = 0; if
+	 * (pageSize == null || pageSize <= 0) pageSize = 10; res =
+	 * feignSceneClient.getSceneByUserAndPage(tUser.getId(), pageIndex,
+	 * pageSize); } else { res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+	 * res.setMessage(ResponseEnum.UnKonwUser.getMsg()); }
+	 * 
+	 * } catch (Exception e) { logger.error(e.getMessage());
+	 * res.setStatus(ResponseEnum.RequestTimeout.getStatus());
+	 * res.setMessage(ResponseEnum.RequestTimeout.getMsg()); } return res; }
+	 */
 
 	// ======add local scene
 	@SuppressWarnings("rawtypes")
@@ -1845,9 +1838,9 @@ public class FacadeController {
 									 * tSceneAction.setActionID(tServerGroup.
 									 * getId());
 									 * tSceneAction.setNodeType(NodeTypeEnum.
-									 * group.getValue()); } }
-									 /*} */
-								}else if (node_type.equals(NodeTypeEnum.single.getValue())) {
+									 * group.getValue()); } } /*}
+									 */
+								} else if (node_type.equals(NodeTypeEnum.single.getValue())) {
 									ResponseObject<TOboxDeviceConfig> deviceRes = feignDeviceClient
 											.getDevice(sceneActionDTO.getDeviceSerialId());
 									// TOboxDeviceConfig tOboxDeviceConfig =
@@ -1919,7 +1912,7 @@ public class FacadeController {
 			res.setMessage(ResponseEnum.AddSuccess.getMsg());
 
 		} catch (Exception e) {
-			logger.error("===error msg:"+e.getMessage());
+			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
@@ -1936,7 +1929,7 @@ public class FacadeController {
 
 			return feignAliClient.registAliDev(type, zone);
 		} catch (Exception e) {
-			logger.error("===error msg:"+e.getMessage());
+			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
@@ -1961,9 +1954,8 @@ public class FacadeController {
 				logger.info("====userId:" + resUser.getData().getId() + "===userName:" + principal.getUsername());
 				ResponseObject<List<TOboxDeviceConfig>> resDevices = feignDeviceClient
 						.getDeviceTypeByUser(resUser.getData().getId());
-				if (resDevices != null && resDevices.getStatus() == ResponseEnum.SelectSuccess.getStatus()
-						 ) {
-					if(resDevices.getData()==null||resDevices.getData().size()<=0){
+				if (resDevices != null && resDevices.getStatus() == ResponseEnum.SelectSuccess.getStatus()) {
+					if (resDevices.getData() == null || resDevices.getData().size() <= 0) {
 						res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 						res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 						res.setData(tCounts);
@@ -2114,12 +2106,12 @@ public class FacadeController {
 								oboxRes.getData().getOboxSerialId());
 					}
 				}
-				 feignUserClient.deleteUserSceneBySceneNumber(sceneNumber);
+				feignUserClient.deleteUserSceneBySceneNumber(sceneNumber);
 				// SceneBusiness.deleteUserScene(tScene.getSceneNumber());
-				 feignSceneClient.deleteSceneActionsBySceneNumber(sceneNumber);
+				feignSceneClient.deleteSceneActionsBySceneNumber(sceneNumber);
 				// SceneBusiness.deleteSceneActionsBySceneNumber(tScene
 				// .getSceneNumber());
-				 feignSceneClient.deleteScene(sceneNumber);
+				feignSceneClient.deleteScene(sceneNumber);
 				// SceneBusiness.deleteSceneBySceneNumber(tScene.getSceneNumber());
 				// SceneBusiness.deleteSceneLocationBySceneNumber(tScene
 				// .getSceneNumber());
@@ -2129,11 +2121,11 @@ public class FacadeController {
 				map.put("scene_number", scene.getSceneNumber());
 				// jsonObject.addProperty("scene_number",
 				// tScene.getSceneNumber());
-				if(!StringUtils.isEmpty(scene.getOboxSceneNumber()))
+				if (!StringUtils.isEmpty(scene.getOboxSceneNumber()))
 					map.put("obox_scene_number", scene.getOboxSceneNumber());
 				// jsonObject.addProperty("obox_scene_number",
 				// tScene.getOboxSceneNumber());
-				if(!StringUtils.isEmpty(scene.getOboxSerialId()))
+				if (!StringUtils.isEmpty(scene.getOboxSerialId()))
 					map.put("obox_serial_id", scene.getOboxSerialId());
 				// jsonObject.addProperty("obox_serial_id",
 				// tScene.getOboxSerialId());
@@ -2709,9 +2701,10 @@ public class FacadeController {
 			}
 			// 电量
 			String betty = deviceConfig.getDeviceState().substring(0, 2);
-			//电量
-			//if(byteToBit.substring(7, 8).equals("1"))
-			map.put("betty",Integer.parseInt(betty,16)>=128?(Integer.parseInt(betty,16)-128):Integer.parseInt(betty,16));
+			// 电量
+			// if(byteToBit.substring(7, 8).equals("1"))
+			map.put("betty", Integer.parseInt(betty, 16) >= 128 ? (Integer.parseInt(betty, 16) - 128)
+					: Integer.parseInt(betty, 16));
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 			res.setData(map);
@@ -2788,15 +2781,15 @@ public class FacadeController {
 		return res;
 	}
 
-	/**  
+	/**
 	 * @param items
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
 	private List<IntelligentOpenRecordItemDTO> delEmptyItems(List<IntelligentOpenRecordItemDTO> items) {
-		List<IntelligentOpenRecordItemDTO> list=new ArrayList<IntelligentOpenRecordItemDTO>();
-		for(IntelligentOpenRecordItemDTO item:items){
-			if(item.getList()!=null&&item.getList().size()>0){
+		List<IntelligentOpenRecordItemDTO> list = new ArrayList<IntelligentOpenRecordItemDTO>();
+		for (IntelligentOpenRecordItemDTO item : items) {
+			if (item.getList() != null && item.getList().size() > 0) {
 				list.add(item);
 			}
 		}
@@ -2887,15 +2880,15 @@ public class FacadeController {
 		return res;
 	}
 
-	/**  
+	/**
 	 * @param items
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
 	private List<IntelligentFingerWarnItemDTO> delEmptyWarnItems(List<IntelligentFingerWarnItemDTO> items) {
-		List<IntelligentFingerWarnItemDTO> list=new ArrayList<IntelligentFingerWarnItemDTO>();
-		for(IntelligentFingerWarnItemDTO item:items){
-			if(item!=null&&item.getList()!=null&&item.getList().size()>0){
+		List<IntelligentFingerWarnItemDTO> list = new ArrayList<IntelligentFingerWarnItemDTO>();
+		for (IntelligentFingerWarnItemDTO item : items) {
+			if (item != null && item.getList() != null && item.getList().size() > 0) {
 				list.add(item);
 			}
 		}
@@ -3439,8 +3432,9 @@ public class FacadeController {
 			Integer userSerialId;
 			if (abandonRemoteUsers != null && abandonRemoteUsers.size() > 0) {
 				userSerialId = abandonRemoteUsers.get(0).getUserSerialid().intValue();
-				feignDeviceClient.delIntelligentFingerAbandonRemoteUserBySerialIdAndPin(abandonRemoteUsers.get(0).getSerialid(),abandonRemoteUsers.get(0).getUserSerialid());
-				//feignDeviceClient.delIntelligentFingerAbandonRemoteUserById(abandonRemoteUsers.get(0).getId());
+				feignDeviceClient.delIntelligentFingerAbandonRemoteUserBySerialIdAndPin(
+						abandonRemoteUsers.get(0).getSerialid(), abandonRemoteUsers.get(0).getUserSerialid());
+				// feignDeviceClient.delIntelligentFingerAbandonRemoteUserById(abandonRemoteUsers.get(0).getId());
 			} else {
 				ResponseObject<List<TIntelligentFingerRemoteUser>> remoteUserRes = feignDeviceClient
 						.getTIntelligentFingerRemoteUsersBySerialId(serialId);
@@ -3821,8 +3815,9 @@ public class FacadeController {
 				List<TIntelligentFingerAbandonRemoteUser> abandonRemoteUsers = abandonRemoteUsersRes.getData();
 				if (abandonRemoteUsers != null && abandonRemoteUsers.size() > 0) {
 					fingerRemoteUser.setUserSerialid(abandonRemoteUsers.get(0).getUserSerialid().intValue());
-					feignDeviceClient.delIntelligentFingerAbandonRemoteUserBySerialIdAndPin(abandonRemoteUsers.get(0).getSerialid(),abandonRemoteUsers.get(0).getUserSerialid());
-					//feignDeviceClient.delIntelligentFingerAbandonRemoteUserById(abandonRemoteUsers.get(0).getId());
+					feignDeviceClient.delIntelligentFingerAbandonRemoteUserBySerialIdAndPin(
+							abandonRemoteUsers.get(0).getSerialid(), abandonRemoteUsers.get(0).getUserSerialid());
+					// feignDeviceClient.delIntelligentFingerAbandonRemoteUserById(abandonRemoteUsers.get(0).getId());
 				} else {
 					ResponseObject<List<TIntelligentFingerRemoteUser>> remoteUsersRes = feignDeviceClient
 							.getTIntelligentFingerRemoteUsersBySerialId(deviceConfig.getDeviceSerialId());
@@ -4072,15 +4067,87 @@ public class FacadeController {
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
 				return res;
-			}  
+			}
 			feignDeviceClient.updateTIntelligentFingerPushMobileBySerialId(mobile, serialId);
 			for (int i = 0; i < pushinfo.size(); i++) {
 				TIntelligentFingerPushDTO dto = pushinfo.get(i);
-				feignDeviceClient.updateTIntelligentFingerPushEnableBySerialIdAndValue(dto.getEnable(),
-						serialId, dto.getValue());
-  			}
+				feignDeviceClient.updateTIntelligentFingerPushEnableBySerialIdAndValue(dto.getEnable(), serialId,
+						dto.getValue());
+			}
 			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
 			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	/**
+	 * @param serialId
+	 * @return
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@ApiOperation(value = "modify_intelligent_remote_user", httpMethod = "GET", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/queryIntelligentUser/{serialId}", method = RequestMethod.GET)
+	public ResponseObject<List<UserFingerDTO>> queryIntelligentUser(@PathVariable(value = "serialId") String serialId) {
+		ResponseObject<List<UserFingerDTO>> res = new ResponseObject<List<UserFingerDTO>>();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+			ResponseObject<TOboxDeviceConfig> deviceRes = feignDeviceClient.getDevice(serialId);
+			if (deviceRes == null || deviceRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| deviceRes.getData() == null
+					|| !deviceRes.getData().getDeviceChildType().equals(DeviceTypeEnum.capacity_finger.getValue())
+					|| !deviceRes.getData().getDeviceType().equals(DeviceTypeEnum.doorlock.getValue())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<List<TIntelligentFingerUser>> intelligentUserRes = feignDeviceClient.getIntelligentUserBySerialId(serialId);
+ 			if(intelligentUserRes==null||intelligentUserRes.getStatus()!=ResponseEnum.SelectSuccess.getStatus()
+ 					||intelligentUserRes.getData()==null){
+ 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+ 			}
+ 			ResponseObject<List<TUserDevice>> userDeviceRes =feignUserClient.getUserDeviceExceptRoot(serialId);
+ 			if(userDeviceRes==null||userDeviceRes.getStatus()!=ResponseEnum.SelectSuccess.getStatus()
+ 					||userDeviceRes.getData()==null){
+ 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+ 			}
+ 			List<TIntelligentFingerUser> list = intelligentUserRes.getData();
+ 			List<TUserDevice> userDevices = userDeviceRes.getData();
+ 			List<UserFingerDTO> tDtos = new ArrayList<UserFingerDTO>();
+ 			if(list!=null&&list.size()>0&&userDevices!=null&&userDevices.size()>0){
+ 				ResponseObject<TUser> userRes = feignUserClient.getUserById(userDevices.get(0).getUserId());
+ 				if(userRes!=null&&userRes.getData()!=null){
+					for(TIntelligentFingerUser fingerUser : list){
+						UserFingerDTO userFingerDTO = new UserFingerDTO(StringUtils.isEmpty(fingerUser.getNickName())?("用户"+fingerUser.getPin()):fingerUser.getNickName(),
+								fingerUser.getPin(), null);
+						tDtos.add(userFingerDTO);
+					}
+				}
+			}
+ 			res.setData(tDtos);
+ 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());

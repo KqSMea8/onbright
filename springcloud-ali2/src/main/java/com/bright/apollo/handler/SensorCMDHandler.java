@@ -402,9 +402,13 @@ public class SensorCMDHandler extends BasicHandler {
 							fingerRecord.setOperation(FingerOperationEnum.remote.getValue() + "");
 							fingerRecord.setFingerUserId(tIntelligentFingerRemoteUser.getUserSerialid());
 							fingerRecord.setSerialid(tOboxDeviceConfig.getDeviceSerialId());
-						} else {
+							fingerRecord.setNickName(StringUtils.isEmpty(tIntelligentFingerRemoteUser.getNickName())
+									? ("用户" + tIntelligentFingerRemoteUser.getUserSerialid())
+									: tIntelligentFingerRemoteUser.getNickName());
+							log.info("===add remote open :"+intelligentFingerService.addIntelligentFingerRecord(fingerRecord));
+						}  
 							return null;
-						}
+						
 					} else {
 						TIntelligentFingerUser intelligentFingerUser = intelligentFingerService
 								.queryIntelligentFingerUserBySerialIdAndPin(tOboxDeviceConfig.getDeviceSerialId(),
@@ -1681,10 +1685,10 @@ public class SensorCMDHandler extends BasicHandler {
 		return null;
 	}
 
-	/**  
+	/**
 	 * @param tOboxDeviceConfig
-	 * @param state  
-	 * @Description:  
+	 * @param state
+	 * @Description:
 	 */
 	private void handlerWarnOfFinger(TOboxDeviceConfig tOboxDeviceConfig, String state) {
 		String cmd = state.substring(2, 6);
@@ -1694,8 +1698,8 @@ public class SensorCMDHandler extends BasicHandler {
 			TIntelligentFingerWarn fingerWarn = new TIntelligentFingerWarn();
 			fingerWarn.setSerialid(tOboxDeviceConfig.getDeviceSerialId());
 			StringBuffer sb = new StringBuffer();
-			int doorPin = Integer.parseInt(state.substring(8, 10) + state.substring(6, 8), 16) ;
-			sb.append("您好，你的门锁"+tOboxDeviceConfig.getDeviceId()+"用户"+doorPin+"有警报:");
+			int doorPin = Integer.parseInt(state.substring(8, 10) + state.substring(6, 8), 16);
+			sb.append("您好，你的门锁" + tOboxDeviceConfig.getDeviceId() + "用户" + doorPin + "有警报:");
 			if (cmd.equals(FingerWarnEnum.jimmy.getCmd())) {
 				fingerWarn.setOperation(FingerWarnEnum.jimmy.getId() + "");
 				sb.append(FingerWarnEnum.jimmy.getValue());
@@ -1714,64 +1718,56 @@ public class SensorCMDHandler extends BasicHandler {
 			} else if (cmd.equals(FingerWarnEnum.low_betty.getCmd())) {
 				fingerWarn.setOperation(FingerWarnEnum.low_betty.getId() + "");
 				sb.append(FingerWarnEnum.low_betty.getValue());
-			}else if (cmd.equals(FingerWarnEnum.back_lock_relieve.getCmd())) {
+			} else if (cmd.equals(FingerWarnEnum.back_lock_relieve.getCmd())) {
 				fingerWarn.setOperation(FingerWarnEnum.back_lock_relieve.getId() + "");
 				sb.append(FingerWarnEnum.back_lock_relieve.getValue());
 			}
 			intelligentFingerService.addTIntelligentFingerWarn(fingerWarn);
-			if (fingerPush != null&&fingerPush.getEnable()==1)
+			if (fingerPush != null && fingerPush.getEnable() == 1)
 				msgService.sendNotice(fingerPush.getMobile(), sb.toString());
 		} catch (Exception e) {
-			log.error("===error msg:"+e.getMessage());
+			log.error("===error msg:" + e.getMessage());
 			e.printStackTrace();
 		}
 	}
 
-	/**  
+	/**
 	 * @param type
 	 * @param betty
 	 * @param doorPin
 	 * @param value
 	 * @param i
-	 * @param tOboxDeviceConfig  
-	 * @Description:  
+	 * @param tOboxDeviceConfig
+	 * @Description:
 	 */
 	private void addFignerLog(String type, String betty, String doorPin, String value, int i,
 			TOboxDeviceConfig tOboxDeviceConfig) {
-/*
-		TUserFingerLog tUserFingerLog = new TUserFingerLog();
-		tUserFingerLog.setPin(doorPin);
-		tUserFingerLog.setDeviceType(DeviceTypeEnum.doorlock.getValue());
-		tUserFingerLog.setSerialId(tOboxDeviceConfig.getDeviceSerialId());
-		tUserFingerLog.setType(type);
-		tUserFingerLog.setBetty(betty);
-		tUserFingerLog.setOperation(opernation);
-		TUSerDoorlock UserDoorlock = DoorlockBusiness.queryUserDoorlock(tOboxDeviceConfig.getDeviceSerialId(), doorPin);
-		if (userId > 0) {
-			tUserFingerLog.setUserId(userId);
-			TUser User = UserBusiness.queryUserById(userId);
-			tUserFingerLog.setName(User.getUserName());
-		} else if (UserDoorlock == null) {
-			// 未知用户
-			tUserFingerLog.setUserId(00);
-			tUserFingerLog.setName("未知用户");
-			UserDoorlock = new TUSerDoorlock();
-			UserDoorlock.setUserId(0);
-			UserDoorlock.setSerialId(tOboxDeviceConfig.getDeviceSerialId());
-			UserDoorlock.setType(type);
-			UserDoorlock.setPin(doorPin);
-			DoorlockBusiness.addUserDoorlock(UserDoorlock);
-		} else {
-			tUserFingerLog.setUserId(UserDoorlock.getUserId());
-			TUser User = UserBusiness.queryUserById(UserDoorlock.getUserId());
-			tUserFingerLog.setName("未知用户");
-			if (User != null)
-				tUserFingerLog.setName(User.getUserName());
-		}
-		log.info("====tUserFingerLog:" + tUserFingerLog.toString());
-		UserFingerLogBusiness.addUserFingerLog(tUserFingerLog);
-	*/
-		
+		/*
+		 * TUserFingerLog tUserFingerLog = new TUserFingerLog();
+		 * tUserFingerLog.setPin(doorPin);
+		 * tUserFingerLog.setDeviceType(DeviceTypeEnum.doorlock.getValue());
+		 * tUserFingerLog.setSerialId(tOboxDeviceConfig.getDeviceSerialId());
+		 * tUserFingerLog.setType(type); tUserFingerLog.setBetty(betty);
+		 * tUserFingerLog.setOperation(opernation); TUSerDoorlock UserDoorlock =
+		 * DoorlockBusiness.queryUserDoorlock(tOboxDeviceConfig.
+		 * getDeviceSerialId(), doorPin); if (userId > 0) {
+		 * tUserFingerLog.setUserId(userId); TUser User =
+		 * UserBusiness.queryUserById(userId);
+		 * tUserFingerLog.setName(User.getUserName()); } else if (UserDoorlock
+		 * == null) { // 未知用户 tUserFingerLog.setUserId(00);
+		 * tUserFingerLog.setName("未知用户"); UserDoorlock = new TUSerDoorlock();
+		 * UserDoorlock.setUserId(0);
+		 * UserDoorlock.setSerialId(tOboxDeviceConfig.getDeviceSerialId());
+		 * UserDoorlock.setType(type); UserDoorlock.setPin(doorPin);
+		 * DoorlockBusiness.addUserDoorlock(UserDoorlock); } else {
+		 * tUserFingerLog.setUserId(UserDoorlock.getUserId()); TUser User =
+		 * UserBusiness.queryUserById(UserDoorlock.getUserId());
+		 * tUserFingerLog.setName("未知用户"); if (User != null)
+		 * tUserFingerLog.setName(User.getUserName()); }
+		 * log.info("====tUserFingerLog:" + tUserFingerLog.toString());
+		 * UserFingerLogBusiness.addUserFingerLog(tUserFingerLog);
+		 */
+
 	}
 
 	public boolean defendScene(TScene tScene, int group) {
