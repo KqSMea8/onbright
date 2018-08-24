@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 import com.bright.apollo.bean.Message;
 import com.bright.apollo.common.entity.PushMessage;
@@ -45,6 +46,10 @@ public class FilterCMDHandler extends BasicHandler {
     public Message<String> process(ClientSession clientSession, Message<String> msg) throws Exception {
         if (msg.getCmd()!=null&&!msg.getCmd().equals("")&& releaseCMD.contains(msg.getCmd())) {
         	logger.info("===trans cmd:"+msg.getCmd()+"===trans data:"+msg.getData());
+        	if(StringUtils.isEmpty(clientSession.getUid())){
+        		logger.info("===filter the obox cmd the obox is null");
+        		return null;
+        	}
         	TObox tObox = oboxService.queryOboxsByOboxSerialId(clientSession.getUid());
         	Set<Integer> setuser;
         	if(tObox!=null){
