@@ -2284,21 +2284,26 @@ public class FacadeController {
 	@RequestMapping(value = "/queryUserOperationHistory/{serialId}/{type}/{fromDate}/{toDate}/{startIndex}/{countIndex}", method = RequestMethod.GET)
 	public ResponseObject<Map<String, Object>> queryUserOperationHistory(
 			@PathVariable(value = "serialId") String serialId, @PathVariable(value = "type") String type,
-			@PathVariable(value = "fromDate") Long fromDate, @PathVariable(value = "toDate") Long toDate,
-			@PathVariable(value = "startIndex") Integer startIndex,
-			@PathVariable(value = "countIndex") Integer countIndex) {
+			@PathVariable(value = "fromDate", required = false) String fromDate,
+			@PathVariable(value = "toDate", required = false) String toDate,
+			@PathVariable(value = "startIndex", required = false) String startIndex,
+			@PathVariable(value = "countIndex", required = false) String countIndex) {
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		Map<String, Object> map = new HashMap<String, Object>();
-		try {
+		try {/*
 			map.put("type", type);
 			if (type.equals("00")) {
-				ResponseObject<List<TUserOperation>> userOperationRes = feignUserClient.getUserOperation(fromDate,
+				if (StringUtils.isEmpty(fromDate) || !NumberHelper.isNumeric(fromDate) || StringUtils.isEmpty(toDate)
+						|| !NumberHelper.isNumeric(toDate) || StringUtils.isEmpty(startIndex)
+						|| !NumberHelper.isNumeric(startIndex) || StringUtils.isEmpty(countIndex)
+						|| !NumberHelper.isNumeric(countIndex)) {
+					res.setStatus(ResponseEnum.RequestParamError.getStatus());
+					res.setMessage(ResponseEnum.RequestParamError.getMsg());
+					return res;
+				}
+				ResponseObject<List<TUserOperation>> userOperationRes = feignUserClient.getUserOperation(long,
 						toDate, serialId, startIndex, countIndex);
-				/*
-				 * List<TUserOperation> operations =
-				 * UserBusiness.queryUserOperation( from, to, serialId,
-				 * Integer.parseInt(startIndex),
-				 */
+
 				List<TUserOperation> operations = null;
 				if (userOperationRes != null && userOperationRes.getData() != null
 						&& userOperationRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()) {
@@ -2309,16 +2314,24 @@ public class FacadeController {
 				}
 				map.put("history", operations);
 			} else if (type.equals("01")) {
+				if (StringUtils.isEmpty(fromDate) || !NumberHelper.isNumeric(fromDate) || StringUtils.isEmpty(toDate)
+						|| !NumberHelper.isNumeric(toDate) || StringUtils.isEmpty(startIndex)
+						|| !NumberHelper.isNumeric(startIndex) || StringUtils.isEmpty(countIndex)
+						|| !NumberHelper.isNumeric(countIndex)) {
+					res.setStatus(ResponseEnum.RequestParamError.getStatus());
+					res.setMessage(ResponseEnum.RequestParamError.getMsg());
+					return res;
+				}
 				List<JsonObject> list = new ArrayList<JsonObject>();
 				if ((toDate % fromDate) / 86400 > 0) {
 					for (int i = 1; i <= (toDate % fromDate) / 86400; i++) {
 						ResponseObject<List<TUserOperation>> userOperationRes = feignUserClient
 								.queryUserOperationByDate(fromDate + (i - 1) * 86400, fromDate + i * 86400, serialId);
-						/*
+						
 						 * List<TUserOperation> operations =
 						 * UserBusiness.queryUserOperationByDate(from + (i - 1)
 						 * * 86400, from + i * 86400, serialId);
-						 */
+						 
 						if (userOperationRes != null && userOperationRes.getData() != null
 								&& userOperationRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()
 								&& userOperationRes.getData().size() != 0) {
@@ -2331,11 +2344,11 @@ public class FacadeController {
 					}
 					ResponseObject<List<TUserOperation>> userOperationRes = feignUserClient.queryUserOperationByDate(
 							fromDate + ((toDate % fromDate) / 86400) * 86400, toDate, serialId);
-					/*
+					
 					 * List<TUserOperation> operations = UserBusiness
 					 * .queryUserOperationByDate(from + ((to % from) / 86400) *
 					 * 86400, to, serialId);
-					 */
+					 
 					if (userOperationRes != null && userOperationRes.getData() != null
 							&& userOperationRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()
 							&& userOperationRes.getData().size() != 0) {
@@ -2372,11 +2385,11 @@ public class FacadeController {
 				for (int i = 0; i < 7; i++) {
 					ResponseObject<List<TUserOperation>> userOperationRes = feignUserClient.queryUserOperationByDate(
 							fromDate + i * 24 * 60 * 60, fromDate + (i + 1) * 24 * 60 * 60, serialId);
-					/*
+					
 					 * List<TUserOperation> operations =
 					 * UserBusiness.queryUserOperationByDate(from + i * 24 * 60
 					 * * 60, from + (i + 1) * 24 * 60 * 60, serialId);
-					 */
+					 
 					float power = 0.0f;
 					List<TUserOperation> operations = null;
 					if (userOperationRes != null && userOperationRes.getData() != null
@@ -2437,26 +2450,26 @@ public class FacadeController {
 				// jsonObject.add("history", g2.toJsonTree(list));
 			} else if (type.equals("03")) {
 				//
-				/*
+				
 				 * if (StringUtils.isEmpty(fromDate)) { return
 				 * respError(ErrorEnum.request_param_invalid.getValue()); }
-				 */
+				 
 				// TCount
 				List<JsonObject> list = new ArrayList<JsonObject>();
 				ResponseObject<List<TUserOperation>> userOperationRes = feignUserClient
 						.queryUserOperationByMonthDayList(SubTableConstant.T_USER_OPERATION_SUFFIX
 								+ DateHelper.formatDate(new Date().getTime(), DateHelper.FORMATMONTH));
-				/*
+				
 				 * List<TUserOperation> days = UserBusiness
 				 * .queryUserOperationByMonthDayList(SubTableConstant.
 				 * T_USER_OPERATION_SUFFIX + DateHelper.formatDate(new
 				 * Date().getTime(), DateHelper.FORMATMONTH));
-				 */
-				/*
+				 
+				
 				 * if (days == null || days.size() <= 0) { // JsonObject object
 				 * = new JsonObject(); jsonObject.add("history",
 				 * g2.toJsonTree(null)); return jsonObject; }
-				 */
+				 
 				if (userOperationRes != null && userOperationRes.getData() != null
 						&& userOperationRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()
 						&& userOperationRes.getData().size() != 0) {
@@ -2495,12 +2508,12 @@ public class FacadeController {
 				List<JsonObject> list = new ArrayList<JsonObject>();
 				ResponseObject<List<TCreateTableLog>> createTableLogRes = feignUserClient
 						.listCreateTableLogByNameWithLike(SubTableConstant.T_USER_OPERATION_SUFFIX);
-				/*
+				
 				 * List<TCreateTableLog> tCreateTableLogs =
 				 * CreateTableLogBussiness
 				 * .listCreateTableLogByNameWithLike(SubTableConstant.
 				 * T_USER_OPERATION_SUFFIX);
-				 */
+				 
 				int months = 12;
 				if (createTableLogRes != null && createTableLogRes.getData() != null
 						&& createTableLogRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()
@@ -2515,11 +2528,11 @@ public class FacadeController {
 					logger.info("===table name===:" + tCreateTableLogs.get(i).getName());
 					ResponseObject<List<TUserOperation>> operationRes = feignUserClient
 							.queryUserOperation(tCreateTableLogs.get(i).getName(), serialId);
-					/*
+					
 					 * List<TUserOperation> operations =
 					 * UserBusiness.queryUserOperation(tCreateTableLogs.get(i).
 					 * getName(), serialId);
-					 */
+					 
 					if (operationRes != null && operationRes.getData() != null
 							&& operationRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()
 							&& operationRes.getData().size() > 0) {
@@ -2552,7 +2565,7 @@ public class FacadeController {
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 			res.setData(map);
 			// return jsonObject;
-		} catch (Exception e) {
+		*/} catch (Exception e) {
 			e.printStackTrace();
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
@@ -4118,35 +4131,36 @@ public class FacadeController {
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
 				return res;
 			}
-			ResponseObject<List<TIntelligentFingerUser>> intelligentUserRes = feignDeviceClient.getIntelligentUserBySerialId(serialId);
- 			if(intelligentUserRes==null||intelligentUserRes.getStatus()!=ResponseEnum.SelectSuccess.getStatus()
- 					||intelligentUserRes.getData()==null){
- 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+			ResponseObject<List<TIntelligentFingerUser>> intelligentUserRes = feignDeviceClient
+					.getIntelligentUserBySerialId(serialId);
+			if (intelligentUserRes == null || intelligentUserRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| intelligentUserRes.getData() == null) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
 				return res;
- 			}
- 			ResponseObject<List<TUserDevice>> userDeviceRes =feignUserClient.getUserDeviceExceptRoot(serialId);
- 			if(userDeviceRes==null||userDeviceRes.getStatus()!=ResponseEnum.SelectSuccess.getStatus()
- 					||userDeviceRes.getData()==null){
- 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+			}
+			ResponseObject<List<TUserDevice>> userDeviceRes = feignUserClient.getUserDeviceExceptRoot(serialId);
+			if (userDeviceRes == null || userDeviceRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| userDeviceRes.getData() == null) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
 				return res;
- 			}
- 			List<TIntelligentFingerUser> list = intelligentUserRes.getData();
- 			List<TUserDevice> userDevices = userDeviceRes.getData();
- 			List<UserFingerDTO> tDtos = new ArrayList<UserFingerDTO>();
- 			if(list!=null&&list.size()>0&&userDevices!=null&&userDevices.size()>0){
- 				ResponseObject<TUser> userRes = feignUserClient.getUserById(userDevices.get(0).getUserId());
- 				if(userRes!=null&&userRes.getData()!=null){
-					for(TIntelligentFingerUser fingerUser : list){
-						UserFingerDTO userFingerDTO = new UserFingerDTO(StringUtils.isEmpty(fingerUser.getNickName())?("用户"+fingerUser.getPin()):fingerUser.getNickName(),
-								fingerUser.getPin(), null);
+			}
+			List<TIntelligentFingerUser> list = intelligentUserRes.getData();
+			List<TUserDevice> userDevices = userDeviceRes.getData();
+			List<UserFingerDTO> tDtos = new ArrayList<UserFingerDTO>();
+			if (list != null && list.size() > 0 && userDevices != null && userDevices.size() > 0) {
+				ResponseObject<TUser> userRes = feignUserClient.getUserById(userDevices.get(0).getUserId());
+				if (userRes != null && userRes.getData() != null) {
+					for (TIntelligentFingerUser fingerUser : list) {
+						UserFingerDTO userFingerDTO = new UserFingerDTO(StringUtils.isEmpty(fingerUser.getNickName())
+								? ("用户" + fingerUser.getPin()) : fingerUser.getNickName(), fingerUser.getPin(), null);
 						tDtos.add(userFingerDTO);
 					}
 				}
 			}
- 			res.setData(tDtos);
- 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setData(tDtos);
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());

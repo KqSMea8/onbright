@@ -34,7 +34,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.zz.common.exception.AppException;
 import com.zz.common.util.ObjectUtils;
- 
+
 /**
  * @Title:
  * @Description: for old api
@@ -58,7 +58,7 @@ public class CommonController {
 			throws AppException, UnsupportedEncodingException {
 		ResponseObject res = null;
 		request.setCharacterEncoding("UTF-8");
-	//	printRequest(request);
+		// printRequest(request);
 		String CMD = request.getParameter("CMD");
 		RequestParam requestParam = new RequestParam(request.getParameterMap());
 		if (StringUtils.isEmpty(CMD)) {
@@ -78,17 +78,17 @@ public class CommonController {
 			return facadeController.registAliDev(requestParam.getValue("type"), requestParam.getValue("zone"));
 		else if (CMDEnum.add_obox.toString().equals(cmdEnum.toString())) {
 			logger.info(" ------ add obox begin ------ ");
-			logger.info(" ------ requestParam.getValue('obox') ------ "+requestParam.getValue("obox"));
+			logger.info(" ------ requestParam.getValue('obox') ------ " + requestParam.getValue("obox"));
 			ResponseObject addObox = facadeController
 					.addObox((OboxDTO) ObjectUtils.fromJsonToObject(requestParam.getValue("obox"), OboxDTO.class));
-			logger.info("addObox obj  ------"+addObox.getData());
+			logger.info("addObox obj  ------" + addObox.getData());
 			if (addObox != null && addObox.getStatus() < 300) {
 				Map<String, Object> map = new HashMap<String, Object>();
 				map.put("obox_serial_id",
 						((OboxDTO) ObjectUtils.fromJsonToObject(requestParam.getValue("obox"), OboxDTO.class))
 								.getOboxSerialId());
 				addObox.setData(map);
-				logger.info("map  ------"+map);
+				logger.info("map  ------" + map);
 			}
 			logger.info(" ------ add obox end ------ ");
 			return addObox;
@@ -343,8 +343,9 @@ public class CommonController {
 			String pushInfo = requestParam.getValue("pushInfo");
 			if (StringUtils.isEmpty(serialId) || StringUtils.isEmpty(mobile) || StringUtils.isEmpty(pushInfo)
 					|| !MobileUtil.checkMobile(mobile)) {
-			}else{
-				return facadeController.updateIntelligentRemoteUser(serialId,mobile,getObjectList(pushInfo, TIntelligentFingerPushDTO.class));
+			} else {
+				return facadeController.updateIntelligentRemoteUser(serialId, mobile,
+						getObjectList(pushInfo, TIntelligentFingerPushDTO.class));
 			}
 		} else if (CMDEnum.send_remote_pwd.toString().equals(cmdEnum.toString())) {
 			String serialId = requestParam.getValue("serialId");
@@ -366,15 +367,26 @@ public class CommonController {
 			} else {
 				return facadeController.resetIntelligentPwdByCode(serialId, appkey, pwd, code);
 			}
-		}else if(CMDEnum.query_fingerprint_user.toString().equals(cmdEnum.toString())) {
-			//String accessToken = requestParam.getValue(ACCESS_TOKEN);
+		} else if (CMDEnum.query_fingerprint_user.toString().equals(cmdEnum.toString())) {
+			// String accessToken = requestParam.getValue(ACCESS_TOKEN);
 			String serialId = requestParam.getValue("serialId");
-			//String startIndex = requestParam.getValue("start");
-			//String countIndex = requestParam.getValue("count");
+			// String startIndex = requestParam.getValue("start");
+			// String countIndex = requestParam.getValue("count");
 			String type = requestParam.getValue("type");
-			if(!StringUtils.isEmpty(serialId)&&!StringUtils.isEmpty(type)){
-				if(type.equals("01"))
+			if (!StringUtils.isEmpty(serialId) && !StringUtils.isEmpty(type)) {
+				if (type.equals("01"))
 					return facadeController.queryIntelligentUser(serialId);
+			}
+		} else if (CMDEnum.query_user_operation_history.toString().equals(cmdEnum.toString())) {
+			String serialId = requestParam.getValue("serialId");
+			String type = requestParam.getValue("type");
+			String fromDate = requestParam.getValue("from_date");
+			String toDate = requestParam.getValue("to_date");
+			String startIndex = requestParam.getValue("start_index");
+			String countIndex = requestParam.getValue("count");
+			if (!StringUtils.isEmpty(serialId) && !StringUtils.isEmpty(type)) {
+				return facadeController.queryUserOperationHistory(serialId, type, fromDate, toDate, startIndex,
+						countIndex);
 			}
 		}
 		res = new ResponseObject();
@@ -391,17 +403,18 @@ public class CommonController {
 		}
 		logger.debug("============RECV REQUEST PARAMS END=============");
 	}
-	private static <T> List<T> getObjectList(String jsonString,Class<T> cls){  
-        List<T> list = new ArrayList<T>();  
-        try {  
-            Gson gson = new Gson();  
-            JsonArray arry = new JsonParser().parse(jsonString).getAsJsonArray();  
-            for (JsonElement jsonElement : arry) {  
-                list.add(gson.fromJson(jsonElement, cls));  
-            }  
-        } catch (Exception e) {  
-            e.printStackTrace();  
-        }  
-        return list;  
-    }
+
+	private static <T> List<T> getObjectList(String jsonString, Class<T> cls) {
+		List<T> list = new ArrayList<T>();
+		try {
+			Gson gson = new Gson();
+			JsonArray arry = new JsonParser().parse(jsonString).getAsJsonArray();
+			for (JsonElement jsonElement : arry) {
+				list.add(gson.fromJson(jsonElement, cls));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
 }
