@@ -69,7 +69,7 @@ public class AliDeviceController {
 	@RequestMapping(value = "/sendToMqtt", method = RequestMethod.GET)
 	public String testMqtt() {
 
-		mqttGateWay.sendToMqtt("topic222222222222","12312312qqqqqq3");
+		mqttGateWay.sendToMqtt("ob-smart\\F1640B28-33A6-4A19-BB49-91A24E76EBF7","12312312qqqqqq3");
 
 		return "";
 	}
@@ -309,7 +309,7 @@ public class AliDeviceController {
 
 
 	//获取遥控器列表
-	@RequestMapping(value = "/modifyIR", method = RequestMethod.POST)
+	@RequestMapping(value = "/getIrList", method = RequestMethod.POST)
 	ResponseObject<List<Map<String, String>>> getIrList(@RequestBody(required = true)  Object object) {
 		ResponseObject<List<Map<String, String>>> res = new ResponseObject<List<Map<String, String>>>();
 		Map<String,Object> requestMap = (Map<String, Object>) object;
