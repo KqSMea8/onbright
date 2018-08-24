@@ -59,3 +59,13 @@ server:
       key-store: /root/.keystore
       key-store-password: 123456
       key-store-type: JKS
+com:
+  mqtt:
+    inbound:
+        url: tcp://127.0.0.1:1883
+        clientId: aliInbound
+        topics: topic1,ob-smart\F1640B28-33A6-4A19-BB49-91A24E76EBF7
+    outbound:
+          url: tcp://127.0.0.1:1883
+          clientId: aliOutbound
+          topics: topic1

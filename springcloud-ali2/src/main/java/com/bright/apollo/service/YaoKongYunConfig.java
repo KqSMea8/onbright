@@ -30,7 +30,7 @@ public class YaoKongYunConfig {
     public YaoKongYunConfig(){
         this.appId = "15027861733449";
         this.deviceId = "";
-        this.urlPrefix = "http://api.yaokongyun.cn/open/m2.php?";
+        this.urlPrefix = "http://api.yaokongyun.cn/open/m2.php";
     }
 
     public String getAppId() {

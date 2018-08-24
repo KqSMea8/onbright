@@ -33,6 +33,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class UploadHandler extends AliBaseHandler {
@@ -42,7 +43,7 @@ public class UploadHandler extends AliBaseHandler {
     @Override
     public void process(String deviceSerialId, JSONObject object) {
         // TODO Auto-generated method stub
-        JSONObject jsonObject = null;
+        Map<String,Object> jsonObject = null;
         try{
 //            TAliDeviceConfig tAliDeviceConfig = aliDeviceConfigService.getAliDeviceConfigBySerializeId(deviceSerialId);
 //            if (tAliDeviceConfig != null) {
@@ -68,7 +69,7 @@ public class UploadHandler extends AliBaseHandler {
 
     }
 
-    private JSONObject ali2IR(String deviceSerialId, JSONObject object) throws Exception {
+    private Map<String,Object> ali2IR(String deviceSerialId, JSONObject object) throws Exception {
 
         logger.info(" ======= UploadHandler ali2IR start ====== ");
 
@@ -104,7 +105,8 @@ public class UploadHandler extends AliBaseHandler {
             nvps.add(new BasicNameValuePair("c", "m"));
             nvps.add(new BasicNameValuePair("appid", yaoKongYunConfig.getAppId()));
             nvps.add(new BasicNameValuePair("f", yaoKongYunConfig.getDeviceId()));
-            nvps.add(new BasicNameValuePair("r", jsonArray.getString(1)));
+            String data = (String)js.get("data");
+            nvps.add(new BasicNameValuePair("r", data));
             nvps.add(new BasicNameValuePair("zip", "1"));
             nvps.add(new BasicNameValuePair("bid", String.valueOf(yaoKongYunBrand.getbId())));
             nvps.add(new BasicNameValuePair("t", String.valueOf(yaoKongYunBrand.getDeviceType())));
@@ -122,15 +124,13 @@ public class UploadHandler extends AliBaseHandler {
         return null;
     }
 
-    private JSONObject getStateJson(String functionId) throws JSONException {
-        JSONObject jsonObject = new JSONObject();
-        JSONObject valueObject = new JSONObject();
+    private Map<String,Object> getStateJson(String functionId) throws JSONException {
+        Map<String,Object> jsonObject = new HashMap<String, Object>();
+        Map<String,Object> valueObject = new HashMap<String, Object>();
         jsonObject.put("respCode","200");
         valueObject.put("functionId",functionId);
         valueObject.put("data","true");
-        String[] values = new String[1];
-        values[0] = valueObject.toString();
-        jsonObject.put("value",values);
+        jsonObject.put("value",valueObject);
         logger.info(" ======= UploadHandler getStateJson ====== "+jsonObject);
         return jsonObject;
     }

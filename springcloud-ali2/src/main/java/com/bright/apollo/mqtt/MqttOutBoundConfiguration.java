@@ -12,7 +12,7 @@ import org.springframework.integration.mqtt.outbound.MqttPahoMessageHandler;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
 
-//@Configuration
+@Configuration
 public class MqttOutBoundConfiguration {
 
     @Autowired
