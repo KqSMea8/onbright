@@ -22,7 +22,6 @@ import com.bright.apollo.enums.Command;
 import com.bright.apollo.service.AliDeviceService;
 import com.bright.apollo.service.CMDMessageService;
 import com.bright.apollo.service.DeviceChannelService;
-import com.bright.apollo.service.DeviceService;
 import com.bright.apollo.service.IntelligentFingerService;
 import com.bright.apollo.service.MsgService;
 import com.bright.apollo.service.OboxDeviceConfigService;
@@ -214,7 +213,7 @@ public class CMDHandlerManager {
 
     @Autowired
     private FingerRemoteHandler fingerRemoteHandler;
-
+     
     public CMDHandlerManager(){
         cmdHandlers = new HashMap<String, BasicHandler>();
     }
@@ -225,7 +224,14 @@ public class CMDHandlerManager {
     }
 
     private void init(){
-        if(cmdHandlers.get(Command.VERSION.getValue()) == null){
+    	//cmdHandlers.put(Command.ERROR.getValue(), new ErrorHandler());
+    	
+    	//push to app 
+    	//cmdHandlers.put(Command.GROUPCHANGE.getValue(), new GroupCMDHandler());
+    	//cmdHandlers.put(Command.REMOTERCHANNEL.getValue(), new RemoterChannelHandler());
+		//cmdHandlers.put(Command.REMOTERBUTTON.getValue(), new RemoterButtonHandler());
+    	
+		if(cmdHandlers.get(Command.VERSION.getValue()) == null){
             cmdHandlers.put(Command.VERSION.getValue(), versionCMDHandler);
         }
         if(cmdHandlers.get(Command.OBOXINFO.getValue()) ==null){
@@ -503,7 +509,7 @@ public class CMDHandlerManager {
                     }
                 }
 
-                //inject the obj to the handler
+              /*  //inject the obj to the handler
                 if(handler.getOboxService()==null){
                 	handler.setMsgService(msgService);
                 	handler.setTopicServer(topServer);
@@ -525,7 +531,7 @@ public class CMDHandlerManager {
                 	handler.setSessionManager(sessionManager);
                 	handler.setCmdCache(cmdCache);
                 	handler.setPushservice(pushservice);
-                }
+                }*/
                 handler.process(client, msg);
                 
 //				Message<String> replyMsg =

@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Service;
 
+import com.bright.apollo.job.CreateTableJob;
 import com.bright.apollo.job.RemoteUserOpenJob;
 import com.bright.apollo.job.TimeJob;
 import com.bright.apollo.tool.ByteHelper;
@@ -37,6 +38,7 @@ public class QuartzService {
 	private static String SERVER_REMOTE_OPEN_TASK = "RemoteOpen";
 	@Autowired
 	private SchedulerFactoryBean schedulerFactory;
+
 	/**
 	 * 开始一个cronTrigger()调度
 	 */
@@ -54,7 +56,7 @@ public class QuartzService {
 			log.info("====cronString:" + cronString);
 			String rightConString = ByteHelper.timeString2Cron(cronString);
 			log.info("====rightConString:" + rightConString);
-			//String rightConString = cronString;
+			// String rightConString = cronString;
 			// 作业的触发器
 			CronTrigger cronTrigger = TriggerBuilder.newTrigger()
 					.withIdentity(String.format("%d", sceneNumber) + "_" + String.format("%d", group),
@@ -70,111 +72,128 @@ public class QuartzService {
 
 		}
 	}
-	/**  
-	 * @param jobName  
-	 * @Description:  
+
+	/**
+	 * @param jobName
+	 * @Description:
 	 */
 	public void deleteJob(String jobName) {
 		try {
 			Scheduler scheduler = schedulerFactory.getScheduler();
-			scheduler.pauseTrigger(new TriggerKey(jobName,
-					SERVER_TRIGGER_GROUP_NAME));
-			scheduler.unscheduleJob(new TriggerKey(jobName,
-					SERVER_TRIGGER_GROUP_NAME));
+			scheduler.pauseTrigger(new TriggerKey(jobName, SERVER_TRIGGER_GROUP_NAME));
+			scheduler.unscheduleJob(new TriggerKey(jobName, SERVER_TRIGGER_GROUP_NAME));
 			scheduler.deleteJob(new JobKey(jobName, SERVER_JOB_GROUP_NAME));
 		} catch (Exception e) {
 			log.error("===error msg:" + e.getMessage());
 			throw new RuntimeException(e);
 		}
 	}
-	/**  
-	 * @param jobName  
-	 * @Description:  
+
+	/**
+	 * @param jobName
+	 * @Description:
 	 */
 	public void pauseJob(String jobName) {
 		try {
 			Scheduler scheduler = schedulerFactory.getScheduler();
-			scheduler.pauseTrigger(new TriggerKey(jobName,
-					SERVER_TRIGGER_GROUP_NAME));
+			scheduler.pauseTrigger(new TriggerKey(jobName, SERVER_TRIGGER_GROUP_NAME));
 		} catch (Exception e) {
 			log.error("===error msg:" + e.getMessage());
- 			throw new RuntimeException(e);
+			throw new RuntimeException(e);
 		}
 	}
-	/**  
-	 * @param jobName  
-	 * @Description:  
+
+	/**
+	 * @param jobName
+	 * @Description:
 	 */
 	public void resumeJob(String jobName) {
 		try {
 			Scheduler scheduler = schedulerFactory.getScheduler();
-			scheduler.resumeTrigger(new TriggerKey(jobName,
-					SERVER_TRIGGER_GROUP_NAME));
+			scheduler.resumeTrigger(new TriggerKey(jobName, SERVER_TRIGGER_GROUP_NAME));
 		} catch (Exception e) {
 			log.error("===error msg:" + e.getMessage());
- 			throw new RuntimeException(e);
+			throw new RuntimeException(e);
 		}
 	}
-	/**  
+
+	/**
 	 * @param fingerRemoteUserId
 	 * @param endTime
-	 * @param serialId  
-	 * @Description:  
+	 * @param serialId
+	 * @Description:
 	 */
 	public void startRemoteOpenTaskSchedule(int fingerRemoteUserId, String endTime, String serialId) {
 		// 得到默认的调度器
 		Scheduler scheduler = schedulerFactory.getScheduler();
-		JobDetail jobDetail = JobBuilder
-				.newJob(RemoteUserOpenJob.class)
-				.withIdentity(
-						MD5.MD5generator16Bit(fingerRemoteUserId+serialId),
-						SERVER_REMOTE_OPEN_TASK).build();
+		JobDetail jobDetail = JobBuilder.newJob(RemoteUserOpenJob.class)
+				.withIdentity(MD5.MD5generator16Bit(fingerRemoteUserId + serialId), SERVER_REMOTE_OPEN_TASK).build();
 		JobDataMap jobDataMap = jobDetail.getJobDataMap();
 		jobDataMap.put("fingerRemoteUserId", String.format("%d", fingerRemoteUserId));
 		jobDataMap.put("serialId", String.format("%s", serialId));
-		String rightConString =Date2Cron(endTime);
+		String rightConString = Date2Cron(endTime);
 		try {
-			CronTrigger cronTrigger = TriggerBuilder
-					.newTrigger()
-					.withIdentity(
-							String.format("%d", fingerRemoteUserId) + "_"
-									+ String.format("%s", serialId),
+			CronTrigger cronTrigger = TriggerBuilder.newTrigger()
+					.withIdentity(String.format("%d", fingerRemoteUserId) + "_" + String.format("%s", serialId),
 							SERVER_TRIGGER_GROUP_NAME)
-					.withSchedule(
-							CronScheduleBuilder.cronSchedule(rightConString))
-					.build();
+					.withSchedule(CronScheduleBuilder.cronSchedule(rightConString)).build();
 			scheduler.scheduleJob(jobDetail, cronTrigger);
 			scheduler.start();
 		} catch (Exception e) {
 			log.info("===the quartz job exist===");
-			log.error("message:"+e.getMessage());
+			log.error("message:" + e.getMessage());
 		}
- 	}
-	/**  
+	}
+
+	/**
+	 * 
+	 * @Description:
+	 */
+	public void startScheduleByCreateTable() {
+		try {
+			Scheduler scheduler = schedulerFactory.getScheduler();
+			JobDetail jobDetail = JobBuilder.newJob(CreateTableJob.class)
+					.withIdentity("CreateTableJob", Scheduler.DEFAULT_GROUP).build();
+			String cronExpression = "0 55 23 L * ?"; // 每个月的最后一天
+			CronTrigger cronTrigger = TriggerBuilder.newTrigger()
+					.withIdentity("CreateTableJob", Scheduler.DEFAULT_GROUP)
+					.withSchedule(CronScheduleBuilder.cronSchedule(cronExpression)).build();
+			if (!scheduler.checkExists(jobDetail.getKey())) {
+				scheduler.scheduleJob(jobDetail, cronTrigger);
+				scheduler.start();
+			}
+		} catch (SchedulerException e) {
+			log.info("===the quartz job exist===");
+			log.error("message:" + e.getMessage());
+		}
+	}
+
+	/**
 	 * @param endTime
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
 	private String Date2Cron(String endTime) {
-		//1528283520000
-		//2018,06,06,19,12
+		// 1528283520000
+		// 2018,06,06,19,12
 		String formatDate = DateHelper.formatDate(Long.parseLong(endTime), DateHelper.FORMATNALLWITHPOINT);
 		String[] split = formatDate.split(",");
-		if(split==null||split.length<=0)
+		if (split == null || split.length <= 0)
 			return null;
-		StringBuffer sb=new StringBuffer();
+		StringBuffer sb = new StringBuffer();
 		sb.append("0 ");
-		//yyyy.MM.dd.HH.mm
-		//0 15 10 15 5 2018
-		for(int i=split.length-1;i>=0;i--){
-			if(i!=0){
-				if(i==1)
+		// yyyy.MM.dd.HH.mm
+		// 0 15 10 15 5 2018
+		for (int i = split.length - 1; i >= 0; i--) {
+			if (i != 0) {
+				if (i == 1)
 					sb.append(split[i]).append(" ").append("? ");
 				else
 					sb.append(split[i]).append(" ");
-			}else
+			} else
 				sb.append(split[i]);
 		}
 		return sb.toString();
 	}
+
 }

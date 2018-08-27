@@ -775,6 +775,7 @@ public class FacadeController {
 					} catch (Exception e) {
 					}
 				}
+				cmdCache.delWrite(oboxSerialId);
 				if (StringUtils.isEmpty(reply)) {
 					res.setStatus(ResponseEnum.SendOboxTimeOut.getStatus());
 					res.setMessage(ResponseEnum.SendOboxTimeOut.getMsg());
@@ -883,7 +884,7 @@ public class FacadeController {
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("===error msg:"+e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
@@ -2106,16 +2107,10 @@ public class FacadeController {
 								oboxRes.getData().getOboxSerialId());
 					}
 				}
-				feignUserClient.deleteUserSceneBySceneNumber(sceneNumber);
-				// SceneBusiness.deleteUserScene(tScene.getSceneNumber());
-				feignSceneClient.deleteSceneActionsBySceneNumber(sceneNumber);
-				// SceneBusiness.deleteSceneActionsBySceneNumber(tScene
-				// .getSceneNumber());
-				feignSceneClient.deleteScene(sceneNumber);
-				// SceneBusiness.deleteSceneBySceneNumber(tScene.getSceneNumber());
-				// SceneBusiness.deleteSceneLocationBySceneNumber(tScene
-				// .getSceneNumber());
-				res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+			//	feignUserClient.deleteUserSceneBySceneNumber(sceneNumber);
+ 			//	feignSceneClient.deleteSceneActionsBySceneNumber(sceneNumber);
+ 			//	feignSceneClient.deleteScene(sceneNumber);
+ 				res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
 				res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
 				// JsonObject jsonObject = respRight();
 				map.put("scene_number", scene.getSceneNumber());

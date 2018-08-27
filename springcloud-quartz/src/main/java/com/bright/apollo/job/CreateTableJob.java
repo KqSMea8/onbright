@@ -14,7 +14,6 @@ import com.bright.apollo.common.entity.TCreateTableLog;
 import com.bright.apollo.common.entity.TCreateTableSql;
 import com.bright.apollo.constant.SubTableConstant;
 import com.bright.apollo.feign.FeignUserClient;
-import com.bright.apollo.hystrix.HystrixFeignUserFallback;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.tool.DateHelper;

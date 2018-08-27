@@ -757,7 +757,7 @@ public class SensorCMDHandler extends BasicHandler {
 				if (isEnvironment == 1)
 					continue;
 				else if (isEnvironment == 2) {
-					byte[] hexStringToBytes = ByteHelper.hexStringToBytes(tOboxDeviceConfig.getDeviceState());
+					byte[] hexStringToBytes = ByteHelper.hexStringToBytes(state);
 					int byte2int = ByteHelper.byte2int(hexStringToBytes);
 					byte[] int2byte = ByteHelper.int2byte(byte2int << 4);
 					state = ByteHelper.bytesToHexString(int2byte);

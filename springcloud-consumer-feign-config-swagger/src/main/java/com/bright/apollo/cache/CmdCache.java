@@ -32,12 +32,23 @@ public class CmdCache {
 	public boolean setWrite(String oboxSerialId) {
 		boolean keyExist = redisBussines.isKeyExist("write"+oboxSerialId);
 		if(keyExist)
-			return !keyExist;
+			return keyExist;
 		synchronized ("write"+oboxSerialId) {
 			if(redisBussines.isKeyExist("write"+oboxSerialId))
-				return false;
+				return true;
 			redisBussines.setValueWithExpire("write"+oboxSerialId, "write",60l);
-			return true;
+			return false;
+		}
+	}
+	/**  
+	 * @param oboxSerialId  
+	 * @Description:  
+	 */
+	public void delWrite(String oboxSerialId) {
+		try {
+			if(redisBussines.isKeyExist("write"+oboxSerialId))
+				redisBussines.delete("write"+oboxSerialId);
+		} catch (Exception e) {
 		}
 	}
 	/**  
@@ -96,4 +107,5 @@ public class CmdCache {
 		redisBussines.setValueWithExpire(String.valueOf(sessionKey)+"_sp", pwd, token_time);
 		
 	}
+	
 }

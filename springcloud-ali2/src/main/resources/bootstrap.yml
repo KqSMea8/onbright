@@ -33,9 +33,7 @@ endpoints:
     enabled: true
 mybatis:
 type-aliases-package: com.bright.apollo.common.entity.*
-logging:
-  level:
-    com.bright.apollo.dao : debug
+
 redis:
     database: 0
     host: 47.96.100.153

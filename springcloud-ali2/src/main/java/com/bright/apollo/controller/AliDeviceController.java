@@ -53,6 +53,7 @@ public class AliDeviceController {
 	@Autowired
 	private CMDMessageService cMDMessageService;
 	@Autowired
+	@Lazy
 	private TopicServer topServer;
 
 	@Autowired

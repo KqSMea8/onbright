@@ -54,14 +54,7 @@ public class SceneCMDHandler extends BasicHandler{
                         return null;
                     }
                     sceneService.deleteSceneBySceneNum(scene.getSceneNumber());
-                    //sceneService.getTSceneByOboxSerialIdAndSceneNumber(dbObox.getOboxSerialId(), scene.getOboxSceneNumber());
-//                    OboxBusiness.delOboxScene(dbObox.getOboxSerialId(), scene.getOboxSceneNumber());
-                    List<TSceneCondition> tSceneConditions =sceneConditionService.getSceneConditionBySceneNum(scene.getSceneNumber());
-//                    List<TSceneCondition> tSceneConditions = SceneBusiness.querySceneConditionsBySceneNumber(scene.getSceneNumber());
-                    if (tSceneConditions != null) {
-                        sceneConditionService.deleteSceneConditionBySceneNum(scene.getSceneNumber());
-//                        SceneBusiness.deleteSceneConditionBySceneNumber(scene.getSceneNumber());
-                    }
+                    sceneConditionService.deleteSceneConditionBySceneNum(scene.getSceneNumber());
                     userSceneService.deleteUserSceneBySceneNum(scene.getSceneNumber());
                     sceneActionService.deleteSceneActionBySceneNumber(scene.getSceneNumber());
                    // sceneService.deleteSceneActionBySceneNumber(scene.getSceneNumber());

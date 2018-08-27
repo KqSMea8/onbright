@@ -2,10 +2,9 @@ package com.bright.apollo.common.entity;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
   
 /**  
  *@Title:  
@@ -15,6 +14,7 @@ import com.google.gson.annotations.SerializedName;
  *@Version:1.1.0  
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties({"deviceType","deviceChildType","deviceSerialId","id"})
 public class TUserOperation implements Serializable{
 
     /**  
@@ -34,8 +34,6 @@ public class TUserOperation implements Serializable{
 	@JsonProperty("device_serial_id")
 	private java.lang.String deviceSerialId;//remark:;length:10; not null,default:null
 	
-	@Expose
-	@SerializedName("device_status")
 	@JsonProperty("device_state")
 	private java.lang.String deviceState;//remark:;length:128; not null,default:null
 	
@@ -43,12 +41,10 @@ public class TUserOperation implements Serializable{
 	@JsonProperty("last_op_time")
 	private java.util.Date lastOpTime;//remark:;length:19; not null,default:CURRENT_TIMESTAMPs
 	
-	@Expose
-	@SerializedName("time")
+	@JsonProperty("time")
  	private long time;
 	
-	@Expose
-	@SerializedName("day")
+	@JsonProperty("day")
 	private String day;
 	
 	public java.lang.String getDeviceSerialId() {

@@ -61,16 +61,16 @@ public abstract class BasicHandler {
 	protected UserOboxService userOboxService;
 	@Autowired
 	protected CMDMessageService cmdMessageService;
-	
+	@Autowired
 	protected CmdCache cmdCache;
 	@Autowired
 	protected SessionManager sessionManager;
 
 	@Autowired
 	protected IntelligentFingerService intelligentFingerService;
-	
+	@Autowired
 	protected FingerUtil fingerUtil;
-
+	@Autowired
 	protected TopicServer topicServer;
 
 	@Autowired
