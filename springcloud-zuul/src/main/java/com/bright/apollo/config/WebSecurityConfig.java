@@ -18,9 +18,9 @@ import com.bright.apollo.tool.NumberHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.integration.mqtt.inbound.MqttPahoMessageDrivenChannelAdapter;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -55,6 +55,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 
     @Autowired
     private MqttGateWay mqttGateWay;
+
+    @Autowired
+    private MqttPahoMessageDrivenChannelAdapter adapter;
 
   /*  @Bean
     public PasswordEncoder passwordEncoder() {
@@ -118,12 +121,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
             String appKeyUserId = redisBussines.get("appkey_userId"+userId);
             if(appKeyUserId==null||StringUtils.isEmpty(appKeyUserId)){
                 redisBussines.setValueWithExpire("appkey_userId"+userId,appKey,60 * 60 * 24 * 7);
-            }else if(!appKeyUserId.equals(appKey)){
+            }else if(appKeyUserId !=null && appKey!=null && !appKeyUserId.equals(appKey)){
                 redisBussines.setValueWithExpire("appkey_userId"+userId,appKeyUserId+":"+appKey,60 * 60 * 24 * 7);
             }
             appKeyUserId = redisBussines.get("appkey_userId"+userId);
             logger.info("------ appKeyUserId -----"+appKeyUserId);
-            mqttGateWay.sendToMqtt("ob-smart\\"+appKeyUserId,"create topic /ob-smart/"+appKeyUserId);
+            String topicName = "ob-smart\\"+appKeyUserId;
+            boolean isExists = false;
+            if(appKeyUserId != null){
+//                mqttGateWay.sendToMqtt("ob-smart\\"+appKeyUserId,"");
+                String[] topics = adapter.getTopic();
+                for(int i=0;i<topics.length;i++){
+                    if(topics[i].equals(topicName)){
+                        isExists = true;
+                    }
+                }
+                if(isExists==false){
+                    adapter.addTopic("ob-smart\\"+appKeyUserId,1);
+                }
+
+            }
+
             // 继续调用 Filter 链
             filterChain.doFilter(servletRequest, servletResponse);
         }

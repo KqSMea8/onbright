@@ -32,7 +32,7 @@ public class MqttInBoundConfiguration {
     }
 
     @Bean
-    public MessageProducerSupport inbound(){
+    public MqttPahoMessageDrivenChannelAdapter inbound(){
         String[] topics = mqttProperties.getInbound().getTopics().split(",");
         MqttPahoMessageDrivenChannelAdapter adapter
                 = new MqttPahoMessageDrivenChannelAdapter(mqttProperties.getInbound().getUrl(),mqttProperties.getInbound().getClientId(),topics);
