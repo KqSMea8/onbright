@@ -35,9 +35,13 @@ public class PushServiceImpl implements PushService {
             Integer uId = iterator.next();
             appKeyUserId = redisBussines.get("appkey_userId"+uId);
             logger.info(" ====== appKeyUserId ====== "+appKeyUserId);
-            if(appKeyUserId !=null&& !appKeyUserId.equals("")){
-                mqttGateWay.sendToMqtt("ob-smart."+appKeyUserId,sendStr.toString());
+            String [] appKeyUserIdArr = appKeyUserId.split(":");
+            for(int i=0;i<appKeyUserIdArr.length;i++){
+                if(appKeyUserIdArr[i] !=null&& !appKeyUserIdArr[i].equals("")){
+                    mqttGateWay.sendToMqtt("ob-smart."+appKeyUserIdArr[i],sendStr.toString());
+                }
             }
+
         }
 
     }
