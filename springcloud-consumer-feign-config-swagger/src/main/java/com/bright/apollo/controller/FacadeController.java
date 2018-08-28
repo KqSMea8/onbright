@@ -1,6 +1,5 @@
 package com.bright.apollo.controller;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -9,14 +8,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.util.AntPathMatcher;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,12 +21,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.HandlerMapping;
 
 import com.bright.apollo.cache.CmdCache;
 import com.bright.apollo.common.dto.OboxResp;
 import com.bright.apollo.common.dto.OboxResp.Type;
 import com.bright.apollo.common.entity.TCreateTableLog;
+import com.bright.apollo.common.entity.TDeviceStatus;
 import com.bright.apollo.common.entity.TIntelligentFingerAbandonRemoteUser;
 import com.bright.apollo.common.entity.TIntelligentFingerAuth;
 import com.bright.apollo.common.entity.TIntelligentFingerPush;
@@ -72,16 +68,17 @@ import com.bright.apollo.request.SceneDTO;
 import com.bright.apollo.request.TIntelligentFingerPushDTO;
 import com.bright.apollo.response.AliDevInfo;
 import com.bright.apollo.response.DevcieCount;
+import com.bright.apollo.response.DeviceStatusDTO;
 import com.bright.apollo.response.IntelligentOpenRecordItemDTO;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
+import com.bright.apollo.response.TUserOperationDTO;
 import com.bright.apollo.response.UserFingerDTO;
 import com.bright.apollo.service.MsgService;
 import com.bright.apollo.tool.ByteHelper;
 import com.bright.apollo.tool.DateHelper;
 import com.bright.apollo.tool.MobileUtil;
 import com.bright.apollo.tool.NumberHelper;
-import com.google.gson.JsonObject;
 import com.zz.common.util.MD5;
 
 import io.swagger.annotations.Api;
@@ -99,10 +96,7 @@ import io.swagger.annotations.ApiResponse;
 @Api("facade Controller")
 @RestController
 @RequestMapping("facade")
-public class FacadeController {
-	public static String salt = "eqcs231@gfdgaqweqxaa4648}{";
-	private final long max_waitting_time = 15000l;
-
+public class FacadeController extends BaseController {
 	private static final Logger logger = LoggerFactory.getLogger(FacadeController.class);
 	@Autowired
 	private FeignOboxClient feignOboxClient;
@@ -884,7 +878,7 @@ public class FacadeController {
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
 			}
 		} catch (Exception e) {
-			logger.error("===error msg:"+e.getMessage());
+			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
@@ -2107,10 +2101,10 @@ public class FacadeController {
 								oboxRes.getData().getOboxSerialId());
 					}
 				}
-			//	feignUserClient.deleteUserSceneBySceneNumber(sceneNumber);
- 			//	feignSceneClient.deleteSceneActionsBySceneNumber(sceneNumber);
- 			//	feignSceneClient.deleteScene(sceneNumber);
- 				res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+				// feignUserClient.deleteUserSceneBySceneNumber(sceneNumber);
+				// feignSceneClient.deleteSceneActionsBySceneNumber(sceneNumber);
+				// feignSceneClient.deleteScene(sceneNumber);
+				res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
 				res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
 				// JsonObject jsonObject = respRight();
 				map.put("scene_number", scene.getSceneNumber());
@@ -2296,15 +2290,16 @@ public class FacadeController {
 					res.setMessage(ResponseEnum.RequestParamError.getMsg());
 					return res;
 				}
-				ResponseObject<List<TUserOperation>> userOperationRes = feignUserClient.getUserOperation(Long.parseLong(fromDate),
-						Long.parseLong(toDate), serialId, Integer.parseInt(startIndex), Integer.parseInt(countIndex));
+				ResponseObject<List<TUserOperation>> userOperationRes = feignUserClient.getUserOperation(
+						Long.parseLong(fromDate), Long.parseLong(toDate), serialId, Integer.parseInt(startIndex),
+						Integer.parseInt(countIndex));
 
-				List<TUserOperation> operations = null;
+				List<TUserOperationDTO> operations = null;
 				if (userOperationRes != null && userOperationRes.getData() != null
 						&& userOperationRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()) {
-					operations = userOperationRes.getData();
-					for (TUserOperation tUserOperation : operations) {
-						tUserOperation.setTime(tUserOperation.getLastOpTime().getTime() / 1000);
+					operations = new ArrayList<TUserOperationDTO>();
+					for (TUserOperation tUserOperation : userOperationRes.getData()) {
+						operations.add(new TUserOperationDTO(tUserOperation));
 					}
 				}
 				map.put("history", operations);
@@ -2317,34 +2312,36 @@ public class FacadeController {
 					res.setMessage(ResponseEnum.RequestParamError.getMsg());
 					return res;
 				}
-				List<JsonObject> list = new ArrayList<JsonObject>();
+				List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 				if ((Long.parseLong(toDate) % Long.parseLong(fromDate)) / 86400 > 0) {
 					for (int i = 1; i <= (Long.parseLong(toDate) % Long.parseLong(fromDate)) / 86400; i++) {
 						ResponseObject<List<TUserOperation>> userOperationRes = feignUserClient
-								.queryUserOperationByDate(Long.parseLong(fromDate) + (i - 1) * 86400, Long.parseLong(fromDate) + i * 86400, serialId);
+								.queryUserOperationByDate(Long.parseLong(fromDate) + (i - 1) * 86400,
+										Long.parseLong(fromDate) + i * 86400, serialId);
 						if (userOperationRes != null && userOperationRes.getData() != null
 								&& userOperationRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()
 								&& userOperationRes.getData().size() != 0) {
-							JsonObject object = new JsonObject();
-							object.addProperty("from_date", String.valueOf(Long.parseLong(fromDate) + (i - 1) * 86400));
-							object.addProperty("to_date", String.valueOf(Long.parseLong(fromDate) + i * 86400));
-							object.addProperty("count", userOperationRes.getData().size());
+							Map<String, Object> object = new HashMap<String, Object>();
+							object.put("from_date", String.valueOf(Long.parseLong(fromDate) + (i - 1) * 86400));
+							object.put("to_date", String.valueOf(Long.parseLong(fromDate) + i * 86400));
+							object.put("count", userOperationRes.getData().size());
 							list.add(object);
 						}
 					}
 					ResponseObject<List<TUserOperation>> userOperationRes = feignUserClient.queryUserOperationByDate(
-							Long.parseLong(fromDate) + ((Long.parseLong(toDate) % Long.parseLong(fromDate)) / 86400) * 86400, Long.parseLong(toDate), serialId);
-					
-			 
+							Long.parseLong(fromDate)
+									+ ((Long.parseLong(toDate) % Long.parseLong(fromDate)) / 86400) * 86400,
+							Long.parseLong(toDate), serialId);
+
 					if (userOperationRes != null && userOperationRes.getData() != null
 							&& userOperationRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()
 							&& userOperationRes.getData().size() != 0) {
 						// if (operations.size() != 0) {
-						JsonObject object = new JsonObject();
-						object.addProperty("from_date",
-								String.valueOf(Long.parseLong(fromDate) + (((Long.parseLong(toDate) % Long.parseLong(fromDate)) / 86400) * 86400)));
-						object.addProperty("to_date", String.valueOf(toDate));
-						object.addProperty("count", userOperationRes.getData().size());
+						Map<String, Object> object = new HashMap<String, Object>();
+						object.put("from_date", String.valueOf(Long.parseLong(fromDate)
+								+ (((Long.parseLong(toDate) % Long.parseLong(fromDate)) / 86400) * 86400)));
+						object.put("to_date", String.valueOf(toDate));
+						object.put("count", userOperationRes.getData().size());
 						list.add(object);
 					}
 				} else {
@@ -2357,10 +2354,10 @@ public class FacadeController {
 							&& userOperationRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()
 							&& userOperationRes.getData().size() != 0) {
 						// if (operations.size() != 0) {
-						JsonObject object = new JsonObject();
-						object.addProperty("from_date", String.valueOf(fromDate));
-						object.addProperty("to_date", String.valueOf(toDate));
-						object.addProperty("count", userOperationRes.getData().size());
+						Map<String, Object> object = new HashMap<String, Object>();
+						object.put("from_date", String.valueOf(fromDate));
+						object.put("to_date", String.valueOf(toDate));
+						object.put("count", userOperationRes.getData().size());
 						list.add(object);
 					}
 				}
@@ -2369,17 +2366,22 @@ public class FacadeController {
 				// jsonObject.add("history", g2.toJsonTree(list));
 			} else if (type.equals("02")) {
 				if (StringUtils.isEmpty(fromDate) || !NumberHelper.isNumeric(fromDate) || StringUtils.isEmpty(toDate)
-						|| !NumberHelper.isNumeric(toDate) /*|| StringUtils.isEmpty(startIndex)
-						|| !NumberHelper.isNumeric(startIndex) || StringUtils.isEmpty(countIndex)
-						|| !NumberHelper.isNumeric(countIndex)*/) {
+						|| !NumberHelper.isNumeric(
+								toDate) /*
+										 * || StringUtils.isEmpty(startIndex) ||
+										 * !NumberHelper.isNumeric(startIndex)
+										 * || StringUtils.isEmpty(countIndex) ||
+										 * !NumberHelper.isNumeric(countIndex)
+										 */) {
 					res.setStatus(ResponseEnum.RequestParamError.getStatus());
 					res.setMessage(ResponseEnum.RequestParamError.getMsg());
 					return res;
 				}
-				List<JsonObject> list = new ArrayList<JsonObject>();
+				List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 				for (int i = 0; i < 7; i++) {
 					ResponseObject<List<TUserOperation>> userOperationRes = feignUserClient.queryUserOperationByDate(
-							Long.parseLong(fromDate) + i * 24 * 60 * 60, Long.parseLong(fromDate) + (i + 1) * 24 * 60 * 60, serialId);
+							Long.parseLong(fromDate) + i * 24 * 60 * 60,
+							Long.parseLong(fromDate) + (i + 1) * 24 * 60 * 60, serialId);
 					float power = 0.0f;
 					List<TUserOperation> operations = null;
 					if (userOperationRes != null && userOperationRes.getData() != null
@@ -2430,19 +2432,17 @@ public class FacadeController {
 							}
 						}
 					}
-					JsonObject object = new JsonObject();
-					object.addProperty("day", fromDate + i * 24 * 60 * 60);
-					object.addProperty("power", String.valueOf(power));
-					object.addProperty("count", operations == null ? 0 : operations.size());
+					Map<String, Object> object = new HashMap<String, Object>();
+					object.put("day", fromDate + i * 24 * 60 * 60);
+					object.put("power", String.valueOf(power));
+					object.put("count", operations == null ? 0 : operations.size());
 					list.add(object);
 				}
 				map.put("history", list);
 				// jsonObject.add("history", g2.toJsonTree(list));
 			} else if (type.equals("03")) {
-			 
-				 
 				// TCount
-				List<JsonObject> list = new ArrayList<JsonObject>();
+				List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 				ResponseObject<List<TUserOperation>> userOperationRes = feignUserClient
 						.queryUserOperationByMonthDayList(SubTableConstant.T_USER_OPERATION_SUFFIX
 								+ DateHelper.formatDate(new Date().getTime(), DateHelper.FORMATMONTH));
@@ -2470,18 +2470,18 @@ public class FacadeController {
 								}
 
 							}
-							JsonObject object = new JsonObject();
-							object.addProperty("day", operations.get(0).getLastOpTime().getTime() / 1000);
-							object.addProperty("power", ByteHelper.int2HexString(power));
-							object.addProperty("count", operations.size());
+							Map<String, Object> object = new HashMap<String, Object>();
+							object.put("day", operations.get(0).getLastOpTime().getTime() / 1000);
+							object.put("power", ByteHelper.int2HexString(power));
+							object.put("count", operations.size());
 							list.add(object);
 						}
 					}
-					map.put("history", list);
 					// jsonObject.add("history", g2.toJsonTree(list));
 				}
+				map.put("history", list);
 			} else if (type.equals("04")) {
-				List<JsonObject> list = new ArrayList<JsonObject>();
+				List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 				ResponseObject<List<TCreateTableLog>> createTableLogRes = feignUserClient
 						.listCreateTableLogByNameWithLike(SubTableConstant.T_USER_OPERATION_SUFFIX);
 				int months = 12;
@@ -2511,14 +2511,13 @@ public class FacadeController {
 							}
 
 						}
-						JsonObject object = new JsonObject();
-						object.addProperty("day", operations.get(0).getLastOpTime().getTime() / 1000);
-						object.addProperty("power", ByteHelper.int2HexString(power));
-						object.addProperty("count", operations.size());
+						Map<String, Object> object = new HashMap<String, Object>();
+						object.put("day", operations.get(0).getLastOpTime().getTime() / 1000);
+						object.put("power", ByteHelper.int2HexString(power));
+						object.put("count", operations.size());
 						list.add(object);
 					}
 				}
-				// jsonObject.add("history", g2.toJsonTree(list));
 				map.put("history", list);
 			} else {
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
@@ -2529,9 +2528,8 @@ public class FacadeController {
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 			res.setData(map);
-			// return jsonObject;
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
@@ -4067,7 +4065,6 @@ public class FacadeController {
 	 * @return
 	 * @Description:
 	 */
-	@SuppressWarnings("rawtypes")
 	@ApiOperation(value = "modify_intelligent_remote_user", httpMethod = "GET", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/queryIntelligentUser/{serialId}", method = RequestMethod.GET)
@@ -4135,118 +4132,204 @@ public class FacadeController {
 		return res;
 	}
 
-	public String sessionKey(int uid, String appKey) {
-		if (!StringUtils.isEmpty(appKey))
-			return appKey + "#" + uid;
-		return "#" + uid;
-	}
-
 	/**
-	 * @param list
+	 * @param serialId
+	 * @param type
+	 * @param start
+	 * @param count
+	 * @param from
+	 * @param to
 	 * @return
 	 * @Description:
 	 */
-	private List<TIntelligentFingerPushDTO> pushToDTO(List<TIntelligentFingerPush> list) {
-		if (list == null)
-			return null;
-		List<TIntelligentFingerPushDTO> dtos = new ArrayList<TIntelligentFingerPushDTO>();
-		for (TIntelligentFingerPush push : list) {
-			dtos.add(new TIntelligentFingerPushDTO(push));
-		}
-		return dtos;
-	}
-
-	/**
-	 * @param data
-	 * @return
-	 * @Description:
-	 */
-	private List<IntelligentFingerRemoteUserDTO> transformToDTO(List<TIntelligentFingerRemoteUser> list) {
-		List<IntelligentFingerRemoteUserDTO> dtos = new ArrayList<IntelligentFingerRemoteUserDTO>();
-		for (TIntelligentFingerRemoteUser user : list) {
-			dtos.add(new IntelligentFingerRemoteUserDTO(user));
-		}
-		return dtos;
-	}
-
-	/**
-	 * @param dto
-	 * @param items
-	 * @param startTime
-	 * @Description:
-	 */
-	private void handlerWarnDTO(IntelligentFingerWarnDTO dto, List<IntelligentFingerWarnItemDTO> items,
-			long startTime) {
-		if (dto.getTimeStamp() <= startTime) {
-			int temp = (int) ((startTime - dto.getTimeStamp()) / (24 * 60 * 60 * 1000));
-			if (temp <= 30) {
-				dto.setWarnTime(DateHelper.formatDate(dto.getTimeStamp(), DateHelper.FORMATHOUR));
-				items.get(temp).getList().add(dto);
+	@ApiOperation(value = "queryDeviceStatusHistory", httpMethod = "GET", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/queryDeviceStatusHistory/{serialId}/{type}/{start}/{count}/{from}/{to}", method = RequestMethod.GET)
+	public ResponseObject<Map<String, Object>> queryDeviceStatusHistory(
+			@PathVariable(value = "serialId", required = true) String serialId,
+			@PathVariable(value = "type", required = true) String type,
+			@PathVariable(value = "start", required = false) String start,
+			@PathVariable(value = "count", required = false) String count,
+			@PathVariable(value = "from", required = false) String from,
+			@PathVariable(value = "to", required = false) String to) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
 			}
-		}
-	}
-
-	/**
-	 * @param startTime
-	 * @return
-	 * @Description:
-	 */
-	private List<IntelligentFingerWarnItemDTO> initWarnRecord(long startTime) {
-		List<IntelligentFingerWarnItemDTO> items = new ArrayList<IntelligentFingerWarnItemDTO>();
-		for (long i = 0; i < 30; i++) {
-			IntelligentFingerWarnItemDTO item = new IntelligentFingerWarnItemDTO();
-			item.setDateline(DateHelper.formatDate(startTime - i * 24 * 60 * 60 * 1000, DateHelper.FORMAT));
-			item.setList(new ArrayList<IntelligentFingerWarnDTO>());
-			items.add(item);
-		}
-		return items;
-	}
-
-	/**
-	 * @param dto
-	 * @param items
-	 * @param startTime
-	 * @Description:
-	 */
-	private void handlerDTO(IntelligentOpenRecordDTO dto, List<IntelligentOpenRecordItemDTO> items, long startTime) {
-
-		if (dto.getTimeStamp() <= startTime) {
-			int temp = (int) ((startTime - dto.getTimeStamp()) / (24 * 60 * 60 * 1000));
-			if (temp <= 30) {
-				dto.setOpenTime(DateHelper.formatDate(dto.getTimeStamp(), DateHelper.FORMATHOUR));
-				items.get(temp).getList().add(dto);
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
 			}
+			ResponseObject<TOboxDeviceConfig> deviceRes = feignDeviceClient.getDevice(serialId);
+			if (deviceRes == null || deviceRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| deviceRes.getData() == null) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			TOboxDeviceConfig deviceConfig = deviceRes.getData();
+			boolean isEnviron = isEnvironmentalSensor(deviceConfig);
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("type", type);
+			if (type.equals("00")) {
+				if (StringUtils.isEmpty(start) || StringUtils.isEmpty(count)) {
+					res.setStatus(ResponseEnum.RequestParamError.getStatus());
+					res.setMessage(ResponseEnum.RequestParamError.getMsg());
+					return res;
+				}
+				List<DeviceStatusDTO> tDeviceStatusDTOs = new ArrayList<DeviceStatusDTO>();
+				ResponseObject<List<TDeviceStatus>> deviceStatusRes = feignDeviceClient.getDeviceStatusByCount(serialId,
+						Integer.parseInt(start), Integer.parseInt(count));
+				if (deviceStatusRes == null || deviceStatusRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+						|| deviceStatusRes.getData() == null) {
+					res.setStatus(ResponseEnum.RequestParamError.getStatus());
+					res.setMessage(ResponseEnum.RequestParamError.getMsg());
+					return res;
+				}
+				List<TDeviceStatus> tDeviceStatus = deviceStatusRes.getData();
+				for (TDeviceStatus tDeviceStatus2 : tDeviceStatus) {
+					DeviceStatusDTO deviceStatusDTO = new DeviceStatusDTO();
+					deviceStatusDTO.setStatus(tDeviceStatus2.getDeviceState());
+					deviceStatusDTO.setTime(tDeviceStatus2.getLastOpTime().getTime() / 1000);
+					tDeviceStatusDTOs.add(deviceStatusDTO);
+				}
+				map.put("history", tDeviceStatusDTOs);
+			} else if (type.equals("01")) {
+				if (StringUtils.isEmpty(from) || StringUtils.isEmpty(to) || deviceConfig == null) {
+					res.setStatus(ResponseEnum.RequestParamError.getStatus());
+					res.setMessage(ResponseEnum.RequestParamError.getMsg());
+					return res;
+				}
+				List<DeviceStatusDTO> tDeviceStatusDTOs = new ArrayList<DeviceStatusDTO>();
+				java.util.Date fromDt = new Date(Long.parseLong(from) * 1000);
+				java.util.Date toDt = new Date(Long.parseLong(to) * 1000);
+				ResponseObject<List<TDeviceStatus>> deviceStatusRes = feignDeviceClient.getDeviceStatusByData(serialId,
+						Long.parseLong(from), Long.parseLong(to));
+				if (deviceStatusRes == null || deviceStatusRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+						|| deviceStatusRes.getData() == null) {
+					res.setStatus(ResponseEnum.RequestParamError.getStatus());
+					res.setMessage(ResponseEnum.RequestParamError.getMsg());
+					return res;
+				}
+				List<TDeviceStatus> tDeviceStatus = deviceStatusRes.getData();
+				if (!tDeviceStatus.isEmpty()) {
+					for (int i = 0; i < tDeviceStatus.size(); i++) {
+						DeviceStatusDTO deviceStatusDTO = new DeviceStatusDTO();
+						deviceStatusDTO.setStatus(tDeviceStatus.get(i).getDeviceState());
+						deviceStatusDTO.setTime(tDeviceStatus.get(i).getLastOpTime().getTime() / 1000);
+						tDeviceStatusDTOs.add(deviceStatusDTO);
+					}
+				}
+				map.put("history", tDeviceStatusDTOs);
+			} else if (type.equals("02")) {
+				if (StringUtils.isEmpty(from) || StringUtils.isEmpty(to) || deviceConfig == null) {
+					res.setStatus(ResponseEnum.RequestParamError.getStatus());
+					res.setMessage(ResponseEnum.RequestParamError.getMsg());
+					return res;
+				}
+				List<DeviceStatusDTO> tDeviceStatusDTOs = new ArrayList<DeviceStatusDTO>();
+				java.util.Date fromDt = new Date(Long.parseLong(from) * 1000);
+				java.util.Date toDt = new Date(Long.parseLong(to) * 1000);
+				long diff = getDistanceTimes(fromDt, toDt);
+				for (long i = 0; i <= diff; i++) {
+					ResponseObject<List<TDeviceStatus>> deviceStatusRes = feignDeviceClient
+							.getDeviceStatusByDataNoGroup(serialId, Long.parseLong(from) + i * 24 * 60 * 60,
+									Long.parseLong(from) + (i + 1) * 24 * 60 * 60);
+					if (deviceStatusRes == null || deviceStatusRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+							|| deviceStatusRes.getData() == null) {
+						res.setStatus(ResponseEnum.RequestParamError.getStatus());
+						res.setMessage(ResponseEnum.RequestParamError.getMsg());
+						return res;
+					}
+					List<TDeviceStatus> tDeviceStatus = deviceStatusRes.getData();
+					if (deviceConfig.getDeviceType().equals(DeviceTypeEnum.sensor.getValue())) {
+						if (tDeviceStatus.isEmpty()) {
+							if (tDeviceStatusDTOs.isEmpty()) {
+								DeviceStatusDTO tDeviceStatusDTO = handlerDeviceStatusDTO(
+										Long.parseLong(from) + i * 24 * 60 * 60, deviceConfig, null, isEnviron);
+								tDeviceStatusDTOs.add(tDeviceStatusDTO);
+							} else {
+								DeviceStatusDTO dto = tDeviceStatusDTOs.get(tDeviceStatusDTOs.size() - 1);
+								DeviceStatusDTO tDeviceStatusDTO = new DeviceStatusDTO();
+								tDeviceStatusDTO.setStatus(dto.getStatus());
+								tDeviceStatusDTO.setTime(Long.parseLong(from) + i * 24 * 60 * 60);
+								tDeviceStatusDTOs.add(tDeviceStatusDTO);
+							}
+						} else {
+							DeviceStatusDTO tDeviceStatusDTO = new DeviceStatusDTO();
+							if (deviceConfig.getDeviceChildType().equals(DeviceTypeEnum.sensor_temp_humidity.getValue())) {
+								int tempCount = 0;
+								int humiCount = 0;
+								for (TDeviceStatus tDeviceStatus2 : tDeviceStatus) {
+									tempCount += Integer.parseInt(tDeviceStatus2.getDeviceState().substring(2, 4), 16);
+									humiCount += Integer.parseInt(tDeviceStatus2.getDeviceState().substring(6, 8), 16);
+								}
+								tempCount = tempCount / tDeviceStatus.size();
+								humiCount = humiCount / tDeviceStatus.size();
+								tDeviceStatusDTO.setStatus("ff" + ByteHelper.int2HexString(tempCount) + "ff"
+										+ ByteHelper.int2HexString(humiCount) + "000000");
+							} else if (isEnviron) {
+								int TVOC = 0;
+								int PM = 0;
+								int CO = 0;
+								int TEMPERATURE = 0;
+								int HUMIDITY = 0;
+								int CO2 = 0;
+								for (TDeviceStatus tDeviceStatus2 : tDeviceStatus) {
+									TVOC += Integer.parseInt(tDeviceStatus2.getDeviceState().substring(0, 4), 16);
+									PM += Integer.parseInt(tDeviceStatus2.getDeviceState().substring(4, 8), 16);
+									CO += Integer.parseInt(tDeviceStatus2.getDeviceState().substring(8, 12), 16);
+									TEMPERATURE += Integer.parseInt(tDeviceStatus2.getDeviceState().substring(12, 16),
+											16);
+									HUMIDITY += Integer.parseInt(tDeviceStatus2.getDeviceState().substring(16, 20), 16);
+									CO2 += Integer.parseInt(tDeviceStatus2.getDeviceState().substring(20, 24), 16);
+								}
+								TVOC = TVOC / tDeviceStatus.size();
+								PM = PM / tDeviceStatus.size();
+								CO = CO / tDeviceStatus.size();
+								TEMPERATURE = TEMPERATURE / tDeviceStatus.size();
+								HUMIDITY = HUMIDITY / tDeviceStatus.size();
+								CO2 = CO2 / tDeviceStatus.size();
+								tDeviceStatusDTO.setStatus(ByteHelper.int2HexString(TVOC) + ByteHelper.int2HexString(PM)
+										+ ByteHelper.int2HexString(CO) + ByteHelper.int2HexString(TEMPERATURE)
+										+ ByteHelper.int2HexString(HUMIDITY) + ByteHelper.int2HexString(CO2));
+							} else {
+								int lightCount = 0;
+								for (TDeviceStatus tDeviceStatus2 : tDeviceStatus) {
+									lightCount += Integer.parseInt(tDeviceStatus2.getDeviceState().substring(2, 4), 16);
+								}
+								lightCount = lightCount / tDeviceStatus.size();
+								tDeviceStatusDTO.setStatus("ff" + ByteHelper.int2HexString(lightCount) + "0000000000");
+							}
+
+							tDeviceStatusDTO.setTime(Long.parseLong(from) + i * 24 * 60 * 60);
+							tDeviceStatusDTOs.add(tDeviceStatusDTO);
+						}
+
+					}
+				}
+				map.put("history", tDeviceStatusDTOs);
+			}else{
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			res.setData(map);
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
 		}
-	}
-
-	/**
-	 * @param startTime
-	 * @return
-	 * @Description:
-	 */
-	private List<IntelligentOpenRecordItemDTO> init(long startTime) {
-		List<IntelligentOpenRecordItemDTO> items = new ArrayList<IntelligentOpenRecordItemDTO>();
-		for (long i = 0; i < 30; i++) {
-			IntelligentOpenRecordItemDTO item = new IntelligentOpenRecordItemDTO();
-			item.setDateline(DateHelper.formatDate(startTime - i * 24 * 60 * 60 * 1000, DateHelper.FORMAT));
-			item.setList(new ArrayList<IntelligentOpenRecordDTO>());
-			items.add(item);
-		}
-		return items;
-	}
-
-	private String extractPathFromPattern(final HttpServletRequest request) {
-		String path = (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
-		String bestMatchPattern = (String) request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE);
-		return new AntPathMatcher().extractPathWithinPattern(bestMatchPattern, path);
-	}
-
-	private static String dateToString(java.util.Date time) {
-		SimpleDateFormat formatter;
-		formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String ctime = formatter.format(time);
-
-		return ctime;
+		return res;
 	}
 
 	// @ApiOperation(value = "sendLearn2IR", httpMethod = "POST", produces =
@@ -4279,29 +4362,6 @@ public class FacadeController {
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
-	}
-
-	/**
-	 * @param sceneConditionDTOs
-	 * @param oboxSerialId
-	 * @return
-	 * @Description:
-	 */
-	private boolean isNotCommonObox(List<List<SceneConditionDTO>> sceneConditionDTOs, String oboxSerialId) {
-		for (int i = 0; i < sceneConditionDTOs.size(); i++) {
-			List<SceneConditionDTO> list = sceneConditionDTOs.get(i);
-			if (list != null && list.size() > 0) {
-				for (SceneConditionDTO conditionDTO : list) {
-					if (conditionDTO.getConditionType().equals(ConditionTypeEnum.device.getValue())
-							&& !conditionDTO.getOboxSerialId().equals(oboxSerialId)) {
-						if (!conditionDTO.getOboxSerialId().equals(oboxSerialId))
-							return true;
-					}
-
-				}
-			}
-		}
-		return false;
 	}
 
 }

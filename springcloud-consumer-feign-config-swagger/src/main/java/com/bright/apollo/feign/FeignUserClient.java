@@ -162,7 +162,7 @@ public interface FeignUserClient {
 	 * @return
 	 * @Description:
 	 */
-	@RequestMapping(value = "/user/getUserOperation/{from}/{to}/{serialId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/user/queryUserOperationByDate/{from}/{to}/{serialId}", method = RequestMethod.GET)
 	public ResponseObject<List<TUserOperation>> queryUserOperationByDate(
 			@PathVariable(required = true, value = "from") long from,
 			@PathVariable(required = true, value = "to") long to,

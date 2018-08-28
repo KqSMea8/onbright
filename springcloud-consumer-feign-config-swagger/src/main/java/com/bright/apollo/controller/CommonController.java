@@ -388,6 +388,18 @@ public class CommonController {
 				return facadeController.queryUserOperationHistory(serialId, type, fromDate, toDate, startIndex,
 						countIndex);
 			}
+		} else if (CMDEnum.query_device_status_history.toString().equals(cmdEnum.toString())) {
+			String serialId = requestParam.getValue("serialId");
+			String type = requestParam.getValue("type");
+			//00
+			String start = requestParam.getValue("start");
+			String count = requestParam.getValue("count");
+			//01
+			String from = requestParam.getValue("from_data");
+			String to = requestParam.getValue("to_data");
+			if (!StringUtils.isEmpty(serialId) && !StringUtils.isEmpty(type)) {
+				return facadeController.queryDeviceStatusHistory(serialId,type,start,count,from,to);
+			}
 		}
 		res = new ResponseObject();
 		res.setStatus(ResponseEnum.RequestParamError.getStatus());

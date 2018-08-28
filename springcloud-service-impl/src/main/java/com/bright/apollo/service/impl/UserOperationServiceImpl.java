@@ -26,7 +26,6 @@ public class UserOperationServiceImpl implements UserOperationService{
 	@Override
 	public List<TUserOperation> getUserOperation(Long fromDate, Long toDate, String serialId, Integer startIndex,
 			Integer countIndex) {
-		// TODO Auto-generated method stub  
 		return userOperationMapper.getUserOperation(fromDate,toDate,serialId,startIndex,countIndex);
 	}
 	/* (non-Javadoc)  
@@ -59,6 +58,13 @@ public class UserOperationServiceImpl implements UserOperationService{
 	public int addUserOperation(TUserOperation tUserOperation) {
 		 
 		return userOperationMapper.addUserOperation(tUserOperation);
+	}
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.UserOperationService#queryUserOperationByDate(long, long, java.lang.String)  
+	 */
+	@Override
+	public List<TUserOperation> queryUserOperationByDate(long from, long to, String serialId) {
+		return userOperationMapper.getUserOperationByDate(from,to,serialId);
 	}
 
 }

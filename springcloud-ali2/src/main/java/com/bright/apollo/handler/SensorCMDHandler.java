@@ -730,6 +730,7 @@ public class SensorCMDHandler extends BasicHandler {
 		// .getDeviceSerialId());
 		log.info("====DeviceSerialId:" + tOboxDeviceConfig.getDeviceSerialId());
 		if (tSceneConditions != null) {
+			state=data.substring(16, 32);
 			for (TSceneCondition tSceneCondition : tSceneConditions) {
 				// status match
 				log.info("====status match====scene_number:" + tSceneCondition.getSceneNumber());
@@ -742,18 +743,6 @@ public class SensorCMDHandler extends BasicHandler {
 				}
 				boolean stateMacth = false;
 				String cond = tSceneCondition.getCond();
-				// condition match
-				// if (isDoor) {
-				// // 开门
-				// log.info("===condition match
-				// start===tSceneCondition.getCondition():"
-				// + tSceneCondition.getCondition()
-				// + "====doorPin:" + doorPin);
-				// // int pin = Integer.parseInt(doorPin, 16);
-				// if (!tSceneCondition.getCondition().equals(doorPin))
-				// continue;
-				// stateMacth = true;
-				// } else {
 				if (isEnvironment == 1)
 					continue;
 				else if (isEnvironment == 2) {

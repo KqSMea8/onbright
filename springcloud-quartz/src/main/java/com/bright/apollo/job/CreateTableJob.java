@@ -84,11 +84,9 @@ public class CreateTableJob implements Job {
 	}
 
 	public  String getCreateTableSql(String name, String suffix, String auxiliary) {
-		//TCreateTableSql tCreateTableSql = null;
 		try {
 			ResponseObject<TCreateTableSql> sqlRes = feignUserClient.queryTCreateTableSqlByprefix(name);
 			if(sqlRes!=null&&sqlRes.getData()!=null&&sqlRes.getStatus()==ResponseEnum.SelectSuccess.getStatus()&& !StringUtils.isEmpty(sqlRes.getData().getSuffix())){
-			//if (tCreateTableSql != null && !StringUtils.isEmpty(tCreateTableSql.getSuffix())) {
 				if (StringUtils.isEmpty(suffix)) {
 					return new StringBuilder("CREATE TABLE ").append(name).append(sqlRes.getData().getSuffix())
 							.append(auxiliary).toString();

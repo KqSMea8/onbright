@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bright.apollo.common.entity.TDeviceStatus;
 import com.bright.apollo.common.entity.TNvr;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.common.entity.TYSCamera;
@@ -18,7 +19,7 @@ import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.service.CameraService;
 import com.bright.apollo.service.DeviceService;
-import com.bright.apollo.service.IntelligentFingerService;
+import com.bright.apollo.service.DeviceStatusService;
 import com.bright.apollo.service.NvrService;
 import com.bright.apollo.service.OboxDeviceConfigService;
 
@@ -47,7 +48,8 @@ public class DeviceController {
 	@Autowired
 	private NvrService nvrService;
 
-	
+	@Autowired
+	private DeviceStatusService deviceStatusService;
 	// find deivce by serial_id
 	@RequestMapping(value = "/{serialId}", method = RequestMethod.GET)
 	public ResponseObject<TOboxDeviceConfig> getDevice(
@@ -348,11 +350,76 @@ public class DeviceController {
 			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
 			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
  		} catch (Exception e) {
-			logger.error(e.getMessage());
+ 			logger.error("===error msg:"+e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
-	
+	/**
+	 * @param serialId
+	 * @param start
+	 * @param count
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/getDeviceStatusByCount/{serialId}/{start}/{count}", method = RequestMethod.GET)
+	ResponseObject<List<TDeviceStatus>> getDeviceStatusByCount(@PathVariable(value = "serialId") String serialId,
+			@PathVariable(value = "start") int start, @PathVariable(value = "count") int count){
+		ResponseObject<List<TDeviceStatus>> res = new ResponseObject<List<TDeviceStatus>>();
+		try {
+			res.setData(deviceStatusService.queryDeviceStatusByCount(serialId,start,count));
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+ 		} catch (Exception e) {
+			logger.error("===error msg:"+e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	/**
+	 * @param serialId
+	 * @param from
+	 * @param to
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/getDeviceStatusByData/{serialId}/{from}/{to}", method = RequestMethod.GET)
+	ResponseObject<List<TDeviceStatus>> getDeviceStatusByData(@PathVariable(value = "serialId") String serialId,
+			@PathVariable(value = "from") long from, @PathVariable(value = "to") long to){
+		ResponseObject<List<TDeviceStatus>> res = new ResponseObject<List<TDeviceStatus>>();
+		try {
+			res.setData(deviceStatusService.queryDeviceStatusByData(serialId,from,to));
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+ 		} catch (Exception e) {
+			logger.error("===error msg:"+e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	/**
+	 * @param serialId
+	 * @param from
+	 * @param to
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/device/getDeviceStatusByDataNoGroup/{serialId}/{from}/{to}", method = RequestMethod.GET)
+	ResponseObject<List<TDeviceStatus>> getDeviceStatusByDataNoGroup(@PathVariable(value = "serialId") String serialId,
+			@PathVariable(value = "from") long from, @PathVariable(value = "to") long to){
+		ResponseObject<List<TDeviceStatus>> res = new ResponseObject<List<TDeviceStatus>>();
+		try {
+			res.setData(deviceStatusService.queryDeviceStatusByDataNoGroup(serialId,from,to));
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+ 		} catch (Exception e) {
+			logger.error("===error msg:"+e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
 }
