@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.util.Iterator;
 import java.util.Set;
@@ -34,14 +35,15 @@ public class PushServiceImpl implements PushService {
         while (iterator.hasNext()){
             Integer uId = iterator.next();
             appKeyUserId = redisBussines.get("appkey_userId"+uId);
-            logger.info(" ====== appKeyUserId ====== "+appKeyUserId);
-            String [] appKeyUserIdArr = appKeyUserId.split(":");
-            for(int i=0;i<appKeyUserIdArr.length;i++){
-                if(appKeyUserIdArr[i] !=null&& !appKeyUserIdArr[i].equals("")){
-                    mqttGateWay.sendToMqtt("ob-smart."+appKeyUserIdArr[i],sendStr.toString());
+            if(!StringUtils.isEmpty(appKeyUserId)){
+                logger.info(" ====== appKeyUserId ====== "+appKeyUserId);
+                String [] appKeyUserIdArr = appKeyUserId.split(":");
+                for(int i=0;i<appKeyUserIdArr.length;i++){
+                    if(appKeyUserIdArr[i] !=null&& !appKeyUserIdArr[i].equals("")){
+                        mqttGateWay.sendToMqtt("ob-smart."+appKeyUserIdArr[i],sendStr.toString());
+                    }
                 }
             }
-
         }
 
     }

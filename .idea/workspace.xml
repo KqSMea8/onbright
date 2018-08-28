@@ -63,11 +63,20 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="bootstrap.yml" pinned="false" current-in-tab="true">
+      <file leaf-file-name="bootstrap.yml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/springcloud-zuul/src/main/resources/bootstrap.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="81">
-              <caret line="59" column="31" lean-forward="true" selection-start-line="59" selection-start-column="31" selection-end-line="59" selection-end-column="31" />
+            <state relative-caret-position="178">
+              <caret line="64" column="28" selection-start-line="64" selection-start-column="19" selection-end-line="64" selection-end-column="28" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="bootstrap.yml" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/resources/bootstrap.yml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="301">
+              <caret line="63" column="30" selection-start-line="63" selection-start-column="30" selection-end-line="63" selection-end-column="30" />
             </state>
           </provider>
         </entry>
@@ -102,20 +111,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="FacadeController.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/FacadeController.java">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file leaf-file-name="CMDHandlerManager.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/handler/CMDHandlerManager.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2561">
-              <caret line="436" column="39" selection-start-line="436" selection-start-column="39" selection-end-line="436" selection-end-column="39" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="WebSecurityConfig.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/springcloud-zuul/src/main/java/com/bright/apollo/config/WebSecurityConfig.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -131,8 +126,8 @@
       <file leaf-file-name="PushServiceImpl.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/service/PushServiceImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="139">
-              <caret line="36" selection-start-line="36" selection-end-line="36" />
+            <state relative-caret-position="253">
+              <caret line="46" selection-start-line="46" selection-end-line="46" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -209,7 +204,6 @@
         <option value="$PROJECT_DIR$/springcloud-zuul/src/main/java/com/bright/apollo/mqtt/bean/MqttInboundProperties.java" />
         <option value="$PROJECT_DIR$/springcloud-zuul/src/main/java/com/bright/apollo/mqtt/bean/MqttProperties.java" />
         <option value="$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/controller/AliDeviceController.java" />
-        <option value="$PROJECT_DIR$/springcloud-ali2/src/main/resources/bootstrap.yml" />
         <option value="$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/mqtt/MqttPropertiesConfiguration.java" />
         <option value="$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/mqtt/bean/MqttProperties.java" />
         <option value="$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/mqtt/MqttInBoundConfiguration.java" />
@@ -249,6 +243,7 @@
         <option value="$PROJECT_DIR$/springcloud-zuul/src/main/java/com/bright/apollo/config/WebSecurityConfig.java" />
         <option value="$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/service/PushServiceImpl.java" />
         <option value="$PROJECT_DIR$/springcloud-zuul/src/main/resources/bootstrap.yml" />
+        <option value="$PROJECT_DIR$/springcloud-ali2/src/main/resources/bootstrap.yml" />
       </list>
     </option>
   </component>
@@ -869,12 +864,12 @@
       <workItem from="1532423823755" duration="4479000" />
       <workItem from="1532483592015" duration="141266000" />
       <workItem from="1533887392858" duration="47322000" />
-      <workItem from="1534320136585" duration="131782000" />
+      <workItem from="1534320136585" duration="133253000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1019947000" />
+    <option name="totallyTimeSpent" value="1021418000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -900,7 +895,7 @@
       <window_info id="Structure" order="0" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="3" weight="0.25" />
       <window_info id="UI Designer" order="3" />
-      <window_info active="true" anchor="bottom" id="Debug" order="4" sideWeight="0.49838188" visible="true" weight="0.45833334" />
+      <window_info anchor="bottom" id="Debug" order="4" sideWeight="0.49838188" weight="0.6261574" />
       <window_info anchor="bottom" id="TODO" order="7" weight="0.3287037" />
       <window_info anchor="bottom" id="Messages" order="14" sideWeight="0.5234628" weight="0.47800925" />
       <window_info anchor="right" id="Palette&#9;" order="7" />
@@ -908,7 +903,7 @@
       <window_info anchor="bottom" id="Java Enterprise" order="10" weight="0.3298611" />
       <window_info anchor="right" id="Capture Analysis" order="5" />
       <window_info anchor="bottom" id="Version Control" order="12" sideWeight="0.49919093" weight="0.3298611" />
-      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.49838188" weight="0.5115741" />
+      <window_info active="true" anchor="bottom" id="Run" order="3" sideWeight="0.49838188" visible="true" weight="0.5115741" />
       <window_info anchor="bottom" id="Spring" order="8" weight="0.3287037" />
       <window_info anchor="bottom" id="Terminal" order="9" weight="0.3298611" />
       <window_info content_ui="combo" id="Project" order="7" weight="0.27346277" />
@@ -948,7 +943,7 @@
       <window_info anchor="right" id="Maven Projects" order="9" weight="0.32928804" />
       <window_info anchor="bottom" id="Terminal" order="9" weight="0.3298611" />
       <window_info anchor="bottom" id="Find" order="2" weight="0.32908458" />
-      <window_info active="true" content_ui="combo" id="Project" order="7" visible="true" weight="0.27346277" />
+      <window_info content_ui="combo" id="Project" order="7" visible="true" weight="0.27346277" />
       <window_info anchor="right" id="Database" order="6" weight="0.32928804" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info id="Web" order="5" side_tool="true" />
@@ -957,7 +952,7 @@
       <window_info id="Structure" order="0" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="right" id="Coverage" order="0" side_tool="true" weight="0.32928804" />
-      <window_info anchor="bottom" id="Debug" order="4" sideWeight="0.49838188" visible="true" weight="0.46064815" />
+      <window_info active="true" anchor="bottom" id="Debug" order="4" sideWeight="0.49838188" visible="true" weight="0.6261574" />
       <window_info anchor="bottom" id="Bean Validation" order="15" sideWeight="0.50161815" side_tool="true" weight="0.6678241" />
     </layout-to-restore>
   </component>
@@ -1311,23 +1306,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/resources/bootstrap.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-422">
-          <caret line="40" column="4" selection-start-line="40" selection-start-column="4" selection-end-line="41" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-zuul/src/main/java/com/bright/apollo/mqtt/MqttGateWay.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="12" selection-start-line="12" selection-end-line="12" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/service/TopicServer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="625">
@@ -1344,8 +1322,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/service/PushServiceImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="139">
-          <caret line="36" selection-start-line="36" selection-end-line="36" />
+        <state relative-caret-position="253">
+          <caret line="46" selection-start-line="46" selection-end-line="46" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-zuul/src/main/java/com/bright/apollo/mqtt/MqttGateWay.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="12" selection-start-line="12" selection-end-line="12" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1354,8 +1342,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-zuul/src/main/resources/bootstrap.yml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="81">
-          <caret line="59" column="31" lean-forward="true" selection-start-line="59" selection-start-column="31" selection-end-line="59" selection-end-column="31" />
+        <state relative-caret-position="178">
+          <caret line="64" column="28" selection-start-line="64" selection-start-column="19" selection-end-line="64" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/resources/bootstrap.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="301">
+          <caret line="63" column="30" selection-start-line="63" selection-start-column="30" selection-end-line="63" selection-end-column="30" />
         </state>
       </provider>
     </entry>
