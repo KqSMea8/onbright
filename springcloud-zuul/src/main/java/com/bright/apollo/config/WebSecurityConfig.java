@@ -125,21 +125,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                 redisBussines.setValueWithExpire("appkey_userId"+userId,appKeyUserId+":"+appKey,60 * 60 * 24 * 7);
             }
             appKeyUserId = redisBussines.get("appkey_userId"+userId);
+            String[] appkeyUserIdArr = appKeyUserId.split(":");
             logger.info("------ appKeyUserId -----"+appKeyUserId);
-            String topicName = "ob-smart\\"+appKeyUserId;
+            String topicName = "";
             boolean isExists = false;
             if(appKeyUserId != null){
-//                mqttGateWay.sendToMqtt("ob-smart\\"+appKeyUserId,"");
                 String[] topics = adapter.getTopic();
-                for(int i=0;i<topics.length;i++){
-                    if(topics[i].equals(topicName)){
-                        isExists = true;
+                for(int i=0;i<appkeyUserIdArr.length;i++){
+                    topicName = "ob-smart\\"+appkeyUserIdArr[i];
+                    for(int j=0;j<topics.length;j++){
+                        if(topics[j].equals(topicName)){
+                            isExists=true;
+                        }
+                    }
+                    if(isExists==false){
+                        logger.info("create topic ");
+                        adapter.addTopic("ob-smart\\"+appKeyUserId,1);
                     }
                 }
-                if(isExists==false){
-                    adapter.addTopic("ob-smart\\"+appKeyUserId,1);
-                }
-
             }
 
             // 继续调用 Filter 链
