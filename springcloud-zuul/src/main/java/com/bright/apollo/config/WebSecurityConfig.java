@@ -132,15 +132,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
             if(appKeyUserId != null){
                 String[] topics = adapter.getTopic();
                 for(int i=0;i<appkeyUserIdArr.length;i++){
-                    topicName = "ob-smart\\"+appkeyUserIdArr[i];
+                    topicName = "ob-smart."+appkeyUserIdArr[i];
                     for(int j=0;j<topics.length;j++){
                         if(topics[j].equals(topicName)){
                             isExists=true;
                         }
                     }
                     if(isExists==false){
-                        logger.info("create topic ");
-                        adapter.addTopic("ob-smart\\"+appKeyUserId,1);
+                        logger.info(" ======= create topic ======= ");
+                        System.out.println(" ======= create topic ======= ");
+                        adapter.addTopic("ob-smart."+appKeyUserId,1);
                     }
                 }
             }

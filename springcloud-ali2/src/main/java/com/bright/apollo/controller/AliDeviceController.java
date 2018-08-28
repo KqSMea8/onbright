@@ -70,7 +70,7 @@ public class AliDeviceController {
 	@RequestMapping(value = "/sendToMqtt", method = RequestMethod.GET)
 	public String testMqtt() {
 
-		mqttGateWay.sendToMqtt("ob-smart\\F1640B28-33A6-4A19-BB49-91A24E76EBF7","12312312qqqqqq3");
+//		mqttGateWay.sendToMqtt("ob-smart\\F1640B28-33A6-4A19-BB49-91A24E76EBF7","12312312qqqqqq3");
 
 		return "";
 	}
