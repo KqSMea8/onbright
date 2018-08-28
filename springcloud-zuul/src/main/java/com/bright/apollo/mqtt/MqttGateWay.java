@@ -10,6 +10,4 @@ import org.springframework.stereotype.Component;
 public interface MqttGateWay {
 //    void sendToMqtt(String msg);
     void sendToMqtt(@Header(MqttHeaders.TOPIC) String topic, String payload);
-
-    void createTopic(@Header(MqttHeaders.TOPIC) String topic);
 }
