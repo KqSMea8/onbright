@@ -122,7 +122,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
             if(appKeyUserId==null||StringUtils.isEmpty(appKeyUserId)){
                 redisBussines.setValueWithExpire("appkey_userId"+userId,appKey,60 * 60 * 24 * 7);
             }else if(appKeyUserId !=null && appKey!=null && !appKeyUserId.equals(appKey)){
-                redisBussines.setValueWithExpire("appkey_userId"+userId,appKeyUserId+":"+appKey,60 * 60 * 24 * 7);
+//                redisBussines.setValueWithExpire("appkey_userId"+userId,appKeyUserId+":"+appKey,60 * 60 * 24 * 7);
             }
             appKeyUserId = redisBussines.get("appkey_userId"+userId);
             String[] appkeyUserIdArr = appKeyUserId.split(":");
@@ -131,19 +131,33 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
             boolean isExists = false;
             if(appKeyUserId != null){
                 String[] topics = adapter.getTopic();
-                for(int i=0;i<appkeyUserIdArr.length;i++){
-                    topicName = "ob-smart."+appkeyUserIdArr[i];
-                    for(int j=0;j<topics.length;j++){
+                for(int j=0;j<topics.length;j++){
                         if(topics[j].equals(topicName)){
                             isExists=true;
                         }
-                    }
-                    if(isExists==false){
-                        logger.info(" ======= create topic ======= ");
-                        System.out.println(" ======= create topic ======= ");
+                }
+                if(isExists==false){
+                    logger.info(" ======= create topic ======= ");
+                    System.out.println(" ======= create topic ======= ");
+                    try{
                         adapter.addTopic("ob-smart."+appKeyUserId,1);
+                    }catch (Exception e){
+                        logger.info("====== create topic exception ====== "+e.getMessage());
                     }
                 }
+//                for(int i=0;i<appkeyUserIdArr.length;i++){
+//                    topicName = "ob-smart."+appkeyUserIdArr[i];
+//                    for(int j=0;j<topics.length;j++){
+//                        if(topics[j].equals(topicName)){
+//                            isExists=true;
+//                        }
+//                    }
+//                    if(isExists==false){
+//                        logger.info(" ======= create topic ======= ");
+//                        System.out.println(" ======= create topic ======= ");
+//                        adapter.addTopic("ob-smart."+appKeyUserId,1);
+//                    }
+//                }
             }
 
             // 继续调用 Filter 链
