@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import com.bright.apollo.common.entity.TDeviceStatus;
 import com.bright.apollo.common.entity.TIntelligentFingerAbandonRemoteUser;
 import com.bright.apollo.common.entity.TIntelligentFingerAuth;
 import com.bright.apollo.common.entity.TIntelligentFingerPush;
@@ -438,7 +439,33 @@ public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implem
 		return serverError();
 	}
 
- 
-	 
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#getDeviceStatusByCount(java.lang.String, int, int)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<List<TDeviceStatus>> getDeviceStatusByCount(String serialId, int start, int count) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
 
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#getDeviceStatusByData(java.lang.String, long, long)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<List<TDeviceStatus>> getDeviceStatusByData(String serialId, long from, long to) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#getDeviceStatusByDataNoGroup(java.lang.String, long, long)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<List<TDeviceStatus>> getDeviceStatusByDataNoGroup(String serialId, long from, long to) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
 }

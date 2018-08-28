@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.bright.apollo.common.entity.TDeviceStatus;
 import com.bright.apollo.common.entity.TIntelligentFingerAbandonRemoteUser;
 import com.bright.apollo.common.entity.TIntelligentFingerAuth;
 import com.bright.apollo.common.entity.TIntelligentFingerPush;
@@ -345,7 +346,6 @@ public interface FeignDeviceClient {
 	ResponseObject<TIntelligentFingerRemoteUser> getTIntelligentFingerRemoteUserBySerialIdAndPin(
 			@PathVariable(value = "serialId") String serialId, @PathVariable(value = "pin") int pin);
 
-	
 	/**
 	 * @param mobile
 	 * @param serialId
@@ -356,28 +356,58 @@ public interface FeignDeviceClient {
 	ResponseObject updateTIntelligentFingerPushMobileBySerialId(@PathVariable(value = "mobile") String mobile,
 			@PathVariable(value = "serialId") String serialId);
 
-	/**  
+	/**
 	 * @param enable
 	 * @param serialId
-	 * @param value  
-	 * @Description:  
+	 * @param value
+	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/intelligentFinger/updateTIntelligentFingerPushEnableBySerialIdAndValue/{enable}/{serialId}/{value}", method = RequestMethod.PUT)
-	ResponseObject updateTIntelligentFingerPushEnableBySerialIdAndValue(
-			@PathVariable(value = "enable")Integer enable, 
-			@PathVariable(value = "serialId")String serialId,
-			@PathVariable(value = "value")Integer value);
+	ResponseObject updateTIntelligentFingerPushEnableBySerialIdAndValue(@PathVariable(value = "enable") Integer enable,
+			@PathVariable(value = "serialId") String serialId, @PathVariable(value = "value") Integer value);
 
-	/**  
+	/**
 	 * @param serialid
-	 * @param userSerialid  
-	 * @Description:  
+	 * @param userSerialid
+	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/intelligentFinger/delIntelligentFingerAbandonRemoteUserBySerialIdAndPin/{serialId}/{pin}", method = RequestMethod.PUT)
 	ResponseObject delIntelligentFingerAbandonRemoteUserBySerialIdAndPin(
-			@PathVariable(value = "serialId")String serialId,
-			@PathVariable(value = "pin")Integer pin);
+			@PathVariable(value = "serialId") String serialId, @PathVariable(value = "pin") Integer pin);
+
+	/**
+	 * @param serialId
+	 * @param start
+	 * @param count
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/device/getDeviceStatusByCount/{serialId}/{start}/{count}", method = RequestMethod.GET)
+	ResponseObject<List<TDeviceStatus>> getDeviceStatusByCount(@PathVariable(value = "serialId") String serialId,
+			@PathVariable(value = "start") int start, @PathVariable(value = "count") int count);
+
+	/**
+	 * @param serialId
+	 * @param from
+	 * @param to
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/device/getDeviceStatusByData/{serialId}/{from}/{to}", method = RequestMethod.GET)
+	ResponseObject<List<TDeviceStatus>> getDeviceStatusByData(@PathVariable(value = "serialId") String serialId,
+			@PathVariable(value = "from") long from, @PathVariable(value = "to") long to);
+
+	/**
+	 * @param serialId
+	 * @param from
+	 * @param to
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/device/getDeviceStatusByDataNoGroup/{serialId}/{from}/{to}", method = RequestMethod.GET)
+	ResponseObject<List<TDeviceStatus>> getDeviceStatusByDataNoGroup(@PathVariable(value = "serialId") String serialId,
+			@PathVariable(value = "from") long from, @PathVariable(value = "to") long to);
 
 }

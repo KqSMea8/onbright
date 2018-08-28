@@ -106,4 +106,24 @@ public interface TUserOperationMapper {
 			+ "device_child_type) values(#{deviceSerialId},#{deviceState},#{deviceType},#{deviceChildType})")
 	@Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
 	int addUserOperation(TUserOperation tUserOperation);
+
+	/**
+	 * @param from
+	 * @param to
+	 * @param serialId
+	 * @return
+	 * @Description:
+	 */
+	@Select("select last_op_time,device_serial_id,device_state,device_type,"
+			+ "device_child_type from t_user_operation where device_serial_id = #{serialId} "
+			+ "and last_op_time>=from_unixtime(#{from}) "
+			+ "and last_op_time<=from_unixtime(#{to})  order by id desc")
+	@Results(value = { @Result(property = "id", column = "id"),
+			@Result(property = "lastOpTime", column = "last_op_time"),
+			@Result(property = "deviceType", column = "device_type"),
+			@Result(property = "deviceChildType", column = "device_child_type"),
+			@Result(property = "deviceSerialId", column = "device_serial_id"),
+			@Result(property = "deviceState", column = "device_state"), @Result(property = "day", column = "day") })
+	List<TUserOperation> getUserOperationByDate(@Param("from") long from, @Param("to") long to,
+			@Param("serialId") String serialId);
 }

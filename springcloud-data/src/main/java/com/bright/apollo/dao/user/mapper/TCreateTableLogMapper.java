@@ -48,7 +48,8 @@ public interface TCreateTableLogMapper {
 	 * @param createTableSql  
 	 * @Description:  
 	 */
-	void createTable(String createTableSql);
+	@Update(value="${createTableSql}")
+	void createTable(@Param("createTableSql")String createTableSql);
 
 	/**  
 	 * @param tCreateTableLog

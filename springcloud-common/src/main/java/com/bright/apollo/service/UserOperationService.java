@@ -55,4 +55,13 @@ public interface UserOperationService {
 	 */
 	int addUserOperation(TUserOperation tUserOperation);
 
+	/**  
+	 * @param from
+	 * @param to
+	 * @param serialId
+	 * @return  
+	 * @Description:  
+	 */
+	List<TUserOperation> queryUserOperationByDate(long from, long to, String serialId);
+
 }

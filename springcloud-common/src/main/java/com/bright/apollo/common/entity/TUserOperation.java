@@ -2,6 +2,8 @@ package com.bright.apollo.common.entity;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -14,14 +16,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  *@Version:1.1.0  
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties({"deviceType","deviceChildType","deviceSerialId","id"})
+//@JsonIgnoreProperties({"deviceType","deviceChildType","deviceSerialId","id"})
 public class TUserOperation implements Serializable{
 
     /**  
 	 *   
 	 */
 	private static final long serialVersionUID = -9118246422832525513L;
- 
+	
 	private java.lang.Integer id;//remark:;length:10; not null,default:null
 	
 	@JsonProperty("device_type")
@@ -30,20 +32,18 @@ public class TUserOperation implements Serializable{
 	@JsonProperty("device_child_type")
 	private java.lang.String deviceChildType;
 	
-	
 	@JsonProperty("device_serial_id")
 	private java.lang.String deviceSerialId;//remark:;length:10; not null,default:null
 	
 	@JsonProperty("device_state")
 	private java.lang.String deviceState;//remark:;length:128; not null,default:null
 	
-
 	@JsonProperty("last_op_time")
 	private java.util.Date lastOpTime;//remark:;length:19; not null,default:CURRENT_TIMESTAMPs
 	
-	@JsonProperty("time")
+	/*@JsonProperty("time")
  	private long time;
-	
+	*/
 	@JsonProperty("day")
 	private String day;
 	
@@ -95,14 +95,14 @@ public class TUserOperation implements Serializable{
 		this.deviceType = deviceType;
 	}
 	
-	public long getTime() {
+	/*public long getTime() {
 		return time;
 	}
 	
 	public void setTime(long time) {
 		this.time = time;
 	}
-
+*/
 	public String getDay() {
 		return day;
 	}

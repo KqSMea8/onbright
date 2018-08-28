@@ -434,7 +434,7 @@ public class UserController {
 		return res;
 	}
 
-	@RequestMapping(value = "/user/listCreateTableLogByNameWithLike/{tUserOperationSuffix}", method = RequestMethod.GET)
+	@RequestMapping(value = "/listCreateTableLogByNameWithLike/{tUserOperationSuffix}", method = RequestMethod.GET)
 	public ResponseObject<List<TCreateTableLog>> listCreateTableLogByNameWithLike(
 			@PathVariable(required = true, value = "tUserOperationSuffix") String tUserOperationSuffix) {
 		ResponseObject<List<TCreateTableLog>> res = new ResponseObject<List<TCreateTableLog>>();
@@ -602,5 +602,30 @@ public class UserController {
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
+	}
+	/**
+	 * @param from
+	 * @param to
+	 * @param serialId
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/queryUserOperationByDate/{from}/{to}/{serialId}", method = RequestMethod.GET)
+	public ResponseObject<List<TUserOperation>> queryUserOperationByDate(
+			@PathVariable(required = true, value = "from") long from,
+			@PathVariable(required = true, value = "to") long to,
+			@PathVariable(required = true, value = "serialId") String serialId){
+		ResponseObject<List<TUserOperation>> res=new ResponseObject<List<TUserOperation>>();
+		try {
+			res.setData(userOperationService.queryUserOperationByDate(from,to,serialId));
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:"+e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	
 	}
 }
