@@ -59,10 +59,10 @@ public interface TOboxDeviceConfigMapper   {
 			@Result(property = "oboxSerialId", column = "obox_serial_id") })
 	TOboxDeviceConfig queryOboxConfigByAddr(@Param("oboxId") int oboxId, @Param("address") String address);
 
-	@Update("update t_obox_device_config set obox_id= #{oboxId }" + ",device_id= #{deviceId }"
-			+ ",device_state= #{deviceState}" + ",device_type= #{deviceType }"
-			+ ",device_child_type= #{deviceChildType }" + ",device_version= #{deviceVersion}"
-			+ ",last_op_time= #{lastOpTime}" + ",device_serial_id= #{deviceSerialId}"
+	@Update("update t_obox_device_config set obox_id= #{oboxId}" + ",device_id= #{deviceId}"
+			+ ",device_state= #{deviceState}" + ",device_type= #{deviceType}"
+			+ ",device_child_type= #{deviceChildType}" + ",device_version= #{deviceVersion}"
+			+ ",device_serial_id= #{deviceSerialId}"
 			+ ",device_rf_addr= #{deviceRfAddr}" + ",group_addr= #{groupAddr}" + ",obox_serial_id= #{oboxSerialId}"
 			+ ",online= #{online} where device_type = #{deviceType} and id = #{id}")
 	void updateTOboxDeviceConfig(TOboxDeviceConfig tOboxDeviceConfig);
