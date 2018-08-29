@@ -54,15 +54,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="MsgReceiver.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/service/MsgReceiver.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1421">
-              <caret line="102" column="59" selection-start-line="102" selection-start-column="49" selection-end-line="102" selection-end-column="59" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="MNService.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/socket/MNService.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -84,11 +75,20 @@
       <file leaf-file-name="WebLogAspect.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/aop/WebLogAspect.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="211">
-              <caret line="114" selection-start-line="114" selection-end-line="114" />
+            <state relative-caret-position="292">
+              <caret line="117" column="92" selection-start-line="117" selection-start-column="92" selection-end-line="117" selection-end-column="92" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="HystrixFeignSceneFallback.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/springcloud-quartz/src/main/java/com/bright/apollo/hystrix/HystrixFeignSceneFallback.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="141">
+              <caret line="33" column="26" selection-start-line="33" selection-start-column="26" selection-end-line="33" selection-end-column="26" />
             </state>
           </provider>
         </entry>
@@ -135,12 +135,8 @@
       <file leaf-file-name="MqttInBoundConfiguration.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/mqtt/MqttInBoundConfiguration.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="422">
-              <caret line="44" selection-start-line="44" selection-end-line="57" selection-end-column="6" />
-              <folding>
-                <element signature="e#1817#2192#0" expanded="true" />
-                <element signature="e#2191#2192#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="206">
+              <caret line="44" selection-start-line="44" selection-start-column="2" selection-end-line="57" selection-end-column="8" />
             </state>
           </provider>
         </entry>
@@ -167,7 +163,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>RemoveOBOXHandler</find>
       <find>DeleteOBOXHandler</find>
       <find>SetChannelHandler</find>
       <find>GetRealStatusHandler</find>
@@ -197,6 +192,7 @@
       <find>F1640B28-33A6-4A19-BB49-91A24E76EBF7</find>
       <find>======= create topic =======</find>
       <find>deleteMessage</find>
+      <find>receive log</find>
     </findStrings>
     <replaceStrings>
       <replace>springcloud</replace>
@@ -259,9 +255,9 @@
         <option value="$PROJECT_DIR$/springcloud-zuul/src/main/resources/bootstrap.yml" />
         <option value="$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/service/PushServiceImpl.java" />
         <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/resources/bootstrap.yml" />
-        <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/mqtt/MqttInBoundConfiguration.java" />
         <option value="$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/mqtt/MqttInBoundConfiguration.java" />
         <option value="$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/socket/MNSHandler.java" />
+        <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/mqtt/MqttInBoundConfiguration.java" />
         <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/aop/WebLogAspect.java" />
       </list>
     </option>
@@ -948,12 +944,12 @@
       <workItem from="1532423823755" duration="4479000" />
       <workItem from="1532483592015" duration="141266000" />
       <workItem from="1533887392858" duration="47322000" />
-      <workItem from="1534320136585" duration="156213000" />
+      <workItem from="1534320136585" duration="156894000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1044378000" />
+    <option name="totallyTimeSpent" value="1045059000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -966,6 +962,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1296" height="1000" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="4" />
       <window_info anchor="bottom" id="Event Log" order="13" sideWeight="0.50161815" side_tool="true" weight="0.5115741" />
@@ -978,7 +975,7 @@
       <window_info id="Structure" order="0" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="3" weight="0.25" />
       <window_info id="UI Designer" order="3" />
-      <window_info active="true" anchor="bottom" id="Debug" order="4" sideWeight="0.49838188" visible="true" weight="0.6006944" />
+      <window_info anchor="bottom" id="Debug" order="4" sideWeight="0.49838188" weight="0.6006944" />
       <window_info anchor="bottom" id="TODO" order="7" weight="0.3287037" />
       <window_info anchor="bottom" id="Messages" order="14" sideWeight="0.5234628" weight="0.47800925" />
       <window_info anchor="right" id="Palette&#9;" order="7" />
@@ -1026,7 +1023,7 @@
       <window_info anchor="right" id="Maven Projects" order="9" weight="0.32928804" />
       <window_info anchor="bottom" id="Terminal" order="9" weight="0.3298611" />
       <window_info anchor="bottom" id="Find" order="2" weight="0.32908458" />
-      <window_info active="true" content_ui="combo" id="Project" order="7" visible="true" weight="0.28640777" />
+      <window_info content_ui="combo" id="Project" order="7" weight="0.28640777" />
       <window_info anchor="right" id="Database" order="6" weight="0.32928804" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info id="Web" order="5" side_tool="true" />
@@ -1035,7 +1032,7 @@
       <window_info id="Structure" order="0" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="right" id="Coverage" order="0" side_tool="true" weight="0.32928804" />
-      <window_info anchor="bottom" id="Debug" order="4" sideWeight="0.49838188" visible="true" weight="0.6006944" />
+      <window_info active="true" anchor="bottom" id="Debug" order="4" sideWeight="0.49838188" visible="true" weight="0.6006944" />
       <window_info anchor="bottom" id="Bean Validation" order="15" sideWeight="0.50161815" side_tool="true" weight="0.6678241" />
     </layout-to-restore>
   </component>
@@ -1066,18 +1063,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/springcloud-zuul/src/main/java/com/bright/apollo/mqtt/bean/SpringContextUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="104">
-          <caret line="22" selection-start-line="22" selection-end-line="22" />
-          <folding>
-            <element signature="e#706#707#0" expanded="true" />
-            <element signature="e#749#750#0" expanded="true" />
-            <element signature="e#794#795#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/integration/spring-integration-mqtt/4.3.11.RELEASE/spring-integration-mqtt-4.3.11.RELEASE.jar!/org/springframework/integration/mqtt/inbound/AbstractMqttMessageDrivenChannelAdapter.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="189">
@@ -1341,27 +1326,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/mqtt/MqttInBoundConfiguration.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="422">
-          <caret line="44" selection-start-line="44" selection-end-line="57" selection-end-column="6" />
-          <folding>
-            <element signature="e#1817#2192#0" expanded="true" />
-            <element signature="e#2191#2192#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/service/PushServiceImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-347">
-          <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/mqtt/MqttInBoundConfiguration.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="98">
@@ -1397,10 +1361,34 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-quartz/src/main/java/com/bright/apollo/hystrix/HystrixFeignSceneFallback.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="141">
+          <caret line="33" column="26" selection-start-line="33" selection-start-column="26" selection-end-line="33" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/mqtt/MqttInBoundConfiguration.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="206">
+          <caret line="44" selection-start-line="44" selection-start-column="2" selection-end-line="57" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/service/PushServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-347">
+          <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/aop/WebLogAspect.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="211">
-          <caret line="114" selection-start-line="114" selection-end-line="114" />
+        <state relative-caret-position="292">
+          <caret line="117" column="92" selection-start-line="117" selection-start-column="92" selection-end-line="117" selection-end-column="92" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

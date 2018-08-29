@@ -115,7 +115,7 @@ public class WebLogAspect {
                 String[] appKeyUserIdArr = appKeyUserId.split(":");
                 for(int i=0;i<appKeyUserIdArr.length;i++){
                     if(!appKey.equals(appKeyUserIdArr[i])){
-                        redisBussines.setValueWithExpire("appkey_userId"+userId,appKeyUserIdArr+":"+appKey,60 * 60 * 24 * 7);
+                        redisBussines.setValueWithExpire("appkey_userId"+userId,appKeyUserId+":"+appKey,60 * 60 * 24 * 7);
                     }
                 }
 
