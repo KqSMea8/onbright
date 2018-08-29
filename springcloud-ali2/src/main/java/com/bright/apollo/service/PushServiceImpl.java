@@ -38,7 +38,7 @@ public class PushServiceImpl implements PushService {
             Integer uId = iterator.next();
             appKeyUserId = redisBussines.get("appkey_userId"+uId);
             if(!StringUtils.isEmpty(appKeyUserId)){
-                logger.info(" ====== appKeyUserIds ====== "+appKeyUserId);
+//                logger.info(" ====== appKeyUserIds ====== "+appKeyUserId);
                 String [] appKeyUserIdArr = appKeyUserId.split(":");
                 for(int i=0;i<appKeyUserIdArr.length;i++){
                     if(appKeyUserIdArr[i] !=null&& !appKeyUserIdArr[i].equals("")){

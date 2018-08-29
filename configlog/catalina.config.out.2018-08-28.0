@@ -1,0 +1,2 @@
+2018-08-28 15:58:04,683 INFO (SpringApplication.java:593)- No active profile set, falling back to default profiles: default
+2018-08-28 15:58:08,478 INFO (StartupInfoLogger.java:57)- Started ConfigServerApplication in 4.898 seconds (JVM running for 5.752)

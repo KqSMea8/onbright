@@ -121,7 +121,7 @@
 
 
 		<!-- mqtt begin-->
-		<dependency>
+		<!--<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-integration</artifactId>
 		</dependency>
@@ -141,7 +141,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-activemq</artifactId>
-		</dependency>
+		</dependency>-->
 		<!-- mqtt end-->
 	</dependencies>
 	<build>

@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.integration.mqtt.inbound.MqttPahoMessageDrivenChannelAdapter;
+//import org.springframework.integration.mqtt.inbound.MqttPahoMessageDrivenChannelAdapter;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Component;
@@ -57,8 +57,8 @@ public class WebLogAspect {
     private FeignUserClient feignUserClient;
 
 
-    @Autowired
-    private MqttPahoMessageDrivenChannelAdapter adapter;
+//    @Autowired
+//    private MqttPahoMessageDrivenChannelAdapter adapter;
 
 	@Pointcut("execution(public * com.bright.apollo.controller.CommonController.*(..))")
 	public void webLog() {
@@ -124,26 +124,25 @@ public class WebLogAspect {
             String[] appkeyUserIdArr = appKeyUserId.split(":");
             String topicName = "";
             boolean isExists = false;
-            if(appKeyUserId != null){
-                for(int i=0;i<appkeyUserIdArr.length;i++){
-                    String[] topics = adapter.getTopic();
-                    topicName = "ob-smart."+appkeyUserIdArr[i];
-                    for(int j=0;j<topics.length;j++){
-                        if(topics[j].equals(topicName)){
-                            isExists=true;
-                        }
-                    }
-                    if(isExists==false){
-                        logger.info(" ======= create topic ======= ");
-                        try{
-                            adapter.addTopic("ob-smart."+appkeyUserIdArr[i],1);
-                        }catch (Exception e){
-                            logger.info("====== create topic exception ====== "+e.getMessage());
-                        }
-                    }
-                    isExists=false;
-                }
-            }
+//            if(appKeyUserId != null){
+//                for(int i=0;i<appkeyUserIdArr.length;i++){
+//                    String[] topics = adapter.getTopic();
+//                    topicName = "ob-smart-"+appkeyUserIdArr[i];
+//                    for(int j=0;j<topics.length;j++){
+//                        if(topics[j].equals(topicName)){
+//                            isExists=true;
+//                        }
+//                    }
+//                    if(isExists==false){
+//                        try{
+//                            adapter.addTopic("ob-smart-"+appkeyUserIdArr[i],1);
+//                        }catch (Exception e){
+//                            logger.info("====== create topic exception ====== "+e.getMessage());
+//                        }
+//                    }
+//                    isExists=false;
+//                }
+//            }
         }
     }
 
