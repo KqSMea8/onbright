@@ -494,7 +494,29 @@ public class AliServerController {
 		}
 		return res;
 	}
+	@RequestMapping(value = "/getRealNodeStatus", method = RequestMethod.PUT)
+	ResponseObject<OboxResp> getRealNodeStatus(@RequestBody TOboxDeviceConfig deviceConfig){
+		ResponseObject<OboxResp> res = new ResponseObject<OboxResp>();
+		try {
+			byte[] sendbodyBytes = new byte[7];
+			byte[] oboxSerialByte = ByteHelper
+					.hexStringToBytes(deviceConfig.getOboxSerialId());
+			sendbodyBytes[6] = (byte) Integer.parseInt(
+					deviceConfig.getDeviceRfAddr(), 16);
+			System.arraycopy(oboxSerialByte, 0, sendbodyBytes, 0,
+					oboxSerialByte.length);
+			Future<OboxResp> request = topicServer.request(CMDEnum.query_node_real_status, sendbodyBytes, deviceConfig.getOboxSerialId());
+			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+			res.setData(request.get());
+		} catch (Exception e) {
+			logger.error("===error msg:"+e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
 	
+	}
 	static class sceneAction implements Runnable {
 
 		private List<SceneActionDTO> lists;

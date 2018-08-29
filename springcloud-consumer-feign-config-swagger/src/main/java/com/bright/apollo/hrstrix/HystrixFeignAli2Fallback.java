@@ -287,4 +287,13 @@ public class HystrixFeignAli2Fallback extends BasicHystrixFeignFallback implemen
 		logger.warn("===ali server is break===");
 		return serverError();
 	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignAliClient#getRealNodeStatus(com.bright.apollo.common.entity.TOboxDeviceConfig)  
+	 */
+	@Override
+	public ResponseObject<OboxResp> getRealNodeStatus(TOboxDeviceConfig deviceConfig) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
 }

@@ -47,6 +47,7 @@ import com.bright.apollo.common.entity.TYSCamera;
 import com.bright.apollo.constant.SubTableConstant;
 import com.bright.apollo.enums.ConditionTypeEnum;
 import com.bright.apollo.enums.DeviceTypeEnum;
+import com.bright.apollo.enums.ErrorEnum;
 import com.bright.apollo.enums.IntelligentMaxEnum;
 import com.bright.apollo.enums.NodeTypeEnum;
 import com.bright.apollo.enums.RemoteUserEnum;
@@ -2126,7 +2127,7 @@ public class FacadeController extends BaseController {
 				res.setData(map);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("===error msg:"+e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
@@ -4403,6 +4404,69 @@ public class FacadeController extends BaseController {
 			res.setData(map);
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:"+e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	/**  
+	 * @param serialId
+	 * @return  
+	 * @Description:  
+	 */
+	@ApiOperation(value = "getStatus", httpMethod = "GET", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/queryNodeStatus/{serialId}", method = RequestMethod.GET)
+	public ResponseObject<Map<String, Object>> queryNodeStatus(@PathVariable(value="serialId")String serialId) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+			ResponseObject<TOboxDeviceConfig> deviceRes = feignDeviceClient.getDevice(serialId);
+			if (deviceRes == null || deviceRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| deviceRes.getData() == null) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			TOboxDeviceConfig deviceConfig = deviceRes.getData();
+			ResponseObject<TObox> oboxRes = feignOboxClient.getObox(deviceConfig.getOboxSerialId());
+			if (oboxRes == null || oboxRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| oboxRes.getData() == null) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			TObox obox = oboxRes.getData();
+			ResponseObject<OboxResp> realNodeStatus = feignAliClient.getRealNodeStatus(deviceConfig);
+			Map<String, Object>map=new HashMap<String, Object>();
+			if(realNodeStatus!=null&&realNodeStatus.getData()!=null){
+				OboxResp oboxResp = realNodeStatus.getData();
+				if(oboxResp.getType().equals(OboxResp.Type.success)){
+					map.put("status", oboxResp.getDate().substring(14, 34));
+					res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+					res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+					res.setData(map);
+					return res;
+				}
+			}
+			res.setStatus(ResponseEnum.SendOboxTimeOut.getStatus());
+			res.setMessage(ResponseEnum.SendOboxTimeOut.getMsg());
+			
 		} catch (Exception e) {
 			logger.error("===error msg:"+e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
