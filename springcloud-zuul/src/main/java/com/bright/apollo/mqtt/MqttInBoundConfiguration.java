@@ -52,6 +52,7 @@ public class MqttInBoundConfiguration {
 
             @Override
             public void handleMessage(Message<?> message) throws MessagingException {
+                logger.info("header ------- "+ message.getHeaders());
                 logger.info("receive log ------ "+message.getPayload());
                 System.out.println("receive ------ "+message.getPayload());
             }
