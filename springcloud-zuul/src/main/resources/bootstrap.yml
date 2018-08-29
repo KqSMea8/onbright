@@ -55,8 +55,8 @@ datasource:
     type: com.alibaba.druid.pool.DruidDataSource
 server:
    ssl:
-      key-store: E:\keys\.keystore
-#      key-store: /root/.keystore
+#      key-store: E:\keys\.keystore
+      key-store: /root/.keystore
       key-store-password: 123456
       key-store-type: JKS
 #com:
