@@ -400,6 +400,12 @@ public class CommonController {
 			if (!StringUtils.isEmpty(serialId) && !StringUtils.isEmpty(type)) {
 				return facadeController.queryDeviceStatusHistory(serialId,type,start,count,from,to);
 			}
+		}else if (CMDEnum.get_status.toString().equals(cmdEnum.toString())) {
+			String nodeString = requestParam.getValue("nodes");
+			if (!StringUtils.isEmpty(nodeString)) {
+				List<String> mList = (List<String>)ObjectUtils.fromJsonToObject(nodeString, List.class);
+				return facadeController.queryStatus(mList);
+			}
 		}
 		res = new ResponseObject();
 		res.setStatus(ResponseEnum.RequestParamError.getStatus());

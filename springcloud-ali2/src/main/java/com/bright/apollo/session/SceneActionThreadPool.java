@@ -182,7 +182,7 @@ public class SceneActionThreadPool {
 //                                    .getActionID());
 //                            TopicService topicService = TopicService.getInstance();
                             if (topicServer != null) {
-                                topicServer.request(CMDEnum.setting_node_status, bodyBytes, oboxDeviceConfig
+                                topicServer.pubTopic(CMDEnum.setting_node_status, bodyBytes, oboxDeviceConfig
                                         .getOboxSerialId());
                             }
                         }
