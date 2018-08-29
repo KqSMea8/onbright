@@ -68,6 +68,11 @@
 			<version>${service-impl-version}</version>
 		</dependency>
 		<dependency>
+			<groupId>com.bright.apollo</groupId>
+			<artifactId>springcloud-data</artifactId>
+			<version>${data-version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-jdbc</artifactId>
 		</dependency>
