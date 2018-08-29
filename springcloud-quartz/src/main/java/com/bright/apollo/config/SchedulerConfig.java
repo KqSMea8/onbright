@@ -16,8 +16,6 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 
 import com.bright.apollo.spring.AutowiringSpringBeanJobFactory;
 
-import liquibase.integration.spring.SpringLiquibase;
-
 /**  
  *@Title:  
  *@Description:  

@@ -93,6 +93,7 @@ public class CommonController {
 			logger.info(" ------ add obox end ------ ");
 			return addObox;
 		} else if (CMDEnum.query_device_count.toString().equals(cmdEnum.toString())) {
+			logger.info("===query_device_count===");
 			ResponseObject queryDevcieCount = facadeController.queryDevcieCount();
 			if (queryDevcieCount != null && queryDevcieCount.getData() != null) {
 				Map<String, Object> map = new HashMap<String, Object>();
