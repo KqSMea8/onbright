@@ -42,19 +42,19 @@ public class MqttInBoundConfiguration {
 
 
 
-//    @Bean
-//    @ServiceActivator(inputChannel = "mqttInputChannel")
-//    public MessageHandler handler() {
-//        return new MessageHandler() {
-//
-//            @Override
-//            public void handleMessage(Message<?> message) throws MessagingException {
-//                logger.info("header ------- "+ message.getHeaders());
-//                logger.info("receive log ------ "+message.getPayload());
-//                System.out.println("receive ------ "+message.getPayload());
-//            }
-//
-//        };
-//    };
+    @Bean
+    @ServiceActivator(inputChannel = "mqttInputChannel")
+    public MessageHandler handler() {
+        return new MessageHandler() {
+
+            @Override
+            public void handleMessage(Message<?> message) throws MessagingException {
+                logger.info("header ------- "+ message.getHeaders());
+                logger.info("receive log ------ "+message.getPayload());
+                System.out.println("receive ------ "+message.getPayload());
+            }
+
+        };
+    };
 
 }
