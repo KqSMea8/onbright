@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.bright.apollo.common.entity.TIntelligentFingerAbandonRemoteUser;
+import com.bright.apollo.common.entity.TIntelligentFingerRemoteUser;
 import com.bright.apollo.common.entity.TNvr;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.common.entity.TYSCamera;
@@ -153,5 +155,27 @@ public interface FeignDeviceClient {
 	ResponseObject<TOboxDeviceConfig> getDeviceByUserAndSerialId(@PathVariable(value = "userId") Integer userId,
 			@PathVariable(value = "serialID") String serialID);
 
+	/**
+	 * @param fingerRemoteUser
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/intelligentFinger/updateTIntelligentFingerRemoteUser", method = RequestMethod.PUT)
+	ResponseObject updateTIntelligentFingerRemoteUser(@RequestBody TIntelligentFingerRemoteUser fingerRemoteUser);
+	/**
+	 * @param fingerRemoteUserId
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/intelligentFinger/getIntelligentFingerRemoteUserById/{fingerRemoteUserId}", method = RequestMethod.GET)
+	ResponseObject<TIntelligentFingerRemoteUser> getIntelligentFingerRemoteUserById(
+			@PathVariable(value = "fingerRemoteUserId") int fingerRemoteUserId);
 
+	/**  
+	 * @param abandonRemoteUser  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/intelligentFinger/addIntelligentFingerAbandonRemoteUser", method = RequestMethod.POST)
+	ResponseObject addIntelligentFingerAbandonRemoteUser(@RequestBody TIntelligentFingerAbandonRemoteUser abandonRemoteUser);
 }

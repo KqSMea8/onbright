@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.bright.apollo.common.entity.TIntelligentFingerAbandonRemoteUser;
 import com.bright.apollo.common.entity.TIntelligentFingerRemoteUser;
+import com.bright.apollo.feign.FeignDeviceClient;
+import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.service.IntelligentFingerService;
 import com.bright.apollo.tool.NumberHelper;
 
@@ -27,7 +29,7 @@ public class RemoteUserOpenJob implements Job {
 
 	private static final Logger logger = LoggerFactory.getLogger(RemoteUserOpenJob.class);
 	@Autowired
-	private IntelligentFingerService intelligentFingerService;
+	private FeignDeviceClient feignDeviceClient;
 	
 	/*
 	 * (non-Javadoc)
@@ -42,14 +44,15 @@ public class RemoteUserOpenJob implements Job {
 			String serialId = dataMap.getString("serialId");
 			logger.info("===fingerRemoteUserId:" + fingerRemoteUserId + "===serialId:" + serialId);
 			if (NumberHelper.isNumeric(fingerRemoteUserId)) {
-				TIntelligentFingerRemoteUser fingerRemoteUser =intelligentFingerService.queryTintelligentFingerRemoteUserById(Integer.parseInt(fingerRemoteUserId));
-  				if(fingerRemoteUser!=null){
+				ResponseObject<TIntelligentFingerRemoteUser> fingerRemoteUserRes = feignDeviceClient.getIntelligentFingerRemoteUserById(Integer.parseInt(fingerRemoteUserId));
+  				if(fingerRemoteUserRes!=null&&fingerRemoteUserRes.getData()!=null){
+  					TIntelligentFingerRemoteUser fingerRemoteUser =fingerRemoteUserRes.getData();
 					fingerRemoteUser.setIsend(1);
-					intelligentFingerService.updateTintelligentFingerRemoteUser(fingerRemoteUser);
+					feignDeviceClient.updateTIntelligentFingerRemoteUser(fingerRemoteUser);
 					TIntelligentFingerAbandonRemoteUser abandonRemoteUser = new TIntelligentFingerAbandonRemoteUser();
 					abandonRemoteUser.setSerialid(serialId);
 					abandonRemoteUser.setUserSerialid(fingerRemoteUser.getUserSerialid());
-					intelligentFingerService.addIntelligentFingerAbandonRemoteUser(abandonRemoteUser);
+					feignDeviceClient.addIntelligentFingerAbandonRemoteUser(abandonRemoteUser);
 				}
 			}
 		} catch (Exception e) {

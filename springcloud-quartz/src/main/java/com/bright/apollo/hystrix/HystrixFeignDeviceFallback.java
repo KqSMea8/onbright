@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import com.bright.apollo.common.entity.TIntelligentFingerAbandonRemoteUser;
+import com.bright.apollo.common.entity.TIntelligentFingerRemoteUser;
 import com.bright.apollo.common.entity.TNvr;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.common.entity.TYSCamera;
@@ -179,6 +181,33 @@ public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implem
 	@SuppressWarnings("unchecked")
 	@Override
 	public ResponseObject<TOboxDeviceConfig> getDeviceByUserAndSerialId(Integer userId, String serialID) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#updateTIntelligentFingerRemoteUser(com.bright.apollo.common.entity.TIntelligentFingerRemoteUser)  
+	 */
+	@Override
+	public ResponseObject updateTIntelligentFingerRemoteUser(TIntelligentFingerRemoteUser fingerRemoteUser) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#getIntelligentFingerRemoteUserById(int)  
+	 */
+	@Override
+	public ResponseObject<TIntelligentFingerRemoteUser> getIntelligentFingerRemoteUserById(int fingerRemoteUserId) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#addIntelligentFingerAbandonRemoteUser(com.bright.apollo.common.entity.TIntelligentFingerAbandonRemoteUser)  
+	 */
+	@Override
+	public ResponseObject addIntelligentFingerAbandonRemoteUser(TIntelligentFingerAbandonRemoteUser abandonRemoteUser) {
 		logger.warn("===device server is break===");
 		return serverError();
 	}
