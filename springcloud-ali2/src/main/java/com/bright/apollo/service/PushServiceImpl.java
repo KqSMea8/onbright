@@ -29,6 +29,7 @@ public class PushServiceImpl implements PushService {
         StringBuilder sendStr = new StringBuilder();
         if(message!=null){
             sendStr.append("STR"+JSON.toJSONString(message)+"END");
+            mqttGateWay.sendToMqtt("ob-smart.67A5AA91-880A-48F8-93C2-D91A2D32EEF3",sendStr.toString());
         }
         Iterator<Integer> iterator = users.iterator();
         String appKeyUserId = "";
