@@ -55,17 +55,17 @@ datasource:
     type: com.alibaba.druid.pool.DruidDataSource
 server:
    ssl:
-#      key-store: E:\keys\.keystore
-      key-store: /root/.keystore
+      key-store: E:\keys\.keystore
+#      key-store: /root/.keystore
       key-store-password: 123456
       key-store-type: JKS
-com:
-  mqtt:
-    inbound:
-        url: tcp://127.0.0.1:1883
-        clientId: aliInbound
-        topics: topic1,ob-smart.67A5AA91-880A-48F8-93C2-D91A2D32EEF3
-    outbound:
-          url: tcp://127.0.0.1:1883
-          clientId: aliOutbound
-          topics: topic1
+#com:
+#  mqtt:
+#    inbound:
+#        url: tcp://127.0.0.1:1883
+#        clientId: aliInbound
+#        topics: topic1,ob-smart.67A5AA91-880A-48F8-93C2-D91A2D32EEF3
+#    outbound:
+#          url: tcp://127.0.0.1:1883
+#          clientId: aliOutbound
+#          topics: topic1

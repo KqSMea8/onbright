@@ -32,6 +32,7 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,7 +84,7 @@ public class TmallController {
 //	@ApiOperation(value = "get deivcie by device serialId", httpMethod = "GET", produces = "application/json")
 //	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/tmallCmd", method = RequestMethod.POST,produces = "application/json ;charset=UTF-8")
-	public Object tmallCmd(@RequestBody Object object) throws IOException {
+	public Object tmallCmd(@RequestBody Object object) throws Exception {
 
 		logger.info("====== messageID ======"+object);
 		Map<String,Object> requestMap = (Map<String, Object>) object;
@@ -206,7 +207,7 @@ public class TmallController {
 		return map.toString();
 	}
 
-	private void templateScan(List<JSONObject> list ){
+	private void templateScan(List<JSONObject> list ) throws JSONException {
 		JSONArray jsonArray = new JSONArray();
 		JSONArray propertiesJsonArray = new JSONArray();
 		JSONObject propertiesMap = new JSONObject();
