@@ -29,7 +29,8 @@ public class PushServiceImpl implements PushService {
         StringBuilder sendStr = new StringBuilder();
         if(message!=null){
             sendStr.append("STR"+JSON.toJSONString(message)+"END");
-//            mqttGateWay.sendToMqtt("ob-smart.67A5AA91-880A-48F8-93C2-D91A2D32EEF3",sendStr.toString());
+            mqttGateWay.sendToMqtt("ob-smart.67A5AA91-880A-48F8-93C2-D91A2D32EEF3","STR===test67A5AA91-880A-48F8-93C2-D91A2D32EEF3===END");
+            mqttGateWay.sendToMqtt("ob-smart.22DDBCF6-E304-4AD9-B9A2-13C4ED915A30","STR===22DDBCF6-E304-4AD9-B9A2-13C4ED915A30===END");
         }
         Iterator<Integer> iterator = users.iterator();
         String appKeyUserId = "";
@@ -40,8 +41,8 @@ public class PushServiceImpl implements PushService {
                 logger.info(" ====== appKeyUserIds ====== "+appKeyUserId);
                 String [] appKeyUserIdArr = appKeyUserId.split(":");
                 for(int i=0;i<appKeyUserIdArr.length;i++){
-                    logger.info(" ====== appKeyUserId ====== "+appKeyUserIdArr[i]);
                     if(appKeyUserIdArr[i] !=null&& !appKeyUserIdArr[i].equals("")){
+                        logger.info(" ====== appKeyUserId ====== "+appKeyUserIdArr[i]);
                         mqttGateWay.sendToMqtt("ob-smart."+appKeyUserIdArr[i],sendStr.toString());
                     }
                 }
