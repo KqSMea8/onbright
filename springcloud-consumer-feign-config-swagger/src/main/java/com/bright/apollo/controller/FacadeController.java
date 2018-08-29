@@ -1365,7 +1365,7 @@ public class FacadeController extends BaseController {
 				return res;
 			}
 			TScene tScene = sceneRes.getData();
-			ResponseObject<TObox> oboxRes = feignOboxClient.getOboxByUserAndoboxSerialId(resUser.getData().getId(),
+			ResponseObject<TObox> oboxRes = feignOboxClient.getObox(
 					oboxSerialId);
 			// TObox tObox = queryOboxByWeight(tUser, oboxSerialId);
 			if (oboxRes == null || oboxRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()
