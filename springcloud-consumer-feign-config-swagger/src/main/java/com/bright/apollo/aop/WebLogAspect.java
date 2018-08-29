@@ -77,7 +77,11 @@ public class WebLogAspect {
         	if(request!=null){
         		printRequest(request);
                 printRequsetBody(request);
-                mqttFilter(request);
+                try{
+                    mqttFilter(request);
+                }catch (Exception e){
+
+                }
         	}
         }
         // result的值就是被拦截方法的返回值
