@@ -57,8 +57,8 @@
       <file leaf-file-name="WebLogAspect.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/aop/WebLogAspect.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="328">
-              <caret line="151" column="4" selection-start-line="151" selection-start-column="4" selection-end-line="151" selection-end-column="4" />
+            <state relative-caret-position="733">
+              <caret line="111" selection-start-line="111" selection-end-line="111" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -1040,12 +1040,12 @@
       <workItem from="1532423823755" duration="4479000" />
       <workItem from="1532483592015" duration="141266000" />
       <workItem from="1533887392858" duration="47322000" />
-      <workItem from="1534320136585" duration="151274000" />
+      <workItem from="1534320136585" duration="151355000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1039439000" />
+    <option name="totallyTimeSpent" value="1039520000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1488,8 +1488,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/aop/WebLogAspect.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="328">
-          <caret line="151" column="4" selection-start-line="151" selection-start-column="4" selection-end-line="151" selection-end-column="4" />
+        <state relative-caret-position="733">
+          <caret line="111" selection-start-line="111" selection-end-line="111" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

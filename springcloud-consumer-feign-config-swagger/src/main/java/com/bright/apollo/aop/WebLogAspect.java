@@ -109,26 +109,21 @@ public class WebLogAspect {
                 redisBussines.setValueWithExpire("appkey_userId"+userId,appKey,60 * 60 * 24 * 7);
             }else if(appKeyUserId !=null && appKey!=null && !appKeyUserId.equals(appKey)){
                 String[] appKeyUserIdArr = appKeyUserId.split(":");
-                logger.info("redis appKeyUserId "+appKeyUserId);
-                logger.info(" appKey "+appKey);
                 for(int i=0;i<appKeyUserIdArr.length;i++){
                     if(!appKey.equals(appKeyUserIdArr[i])){
                         redisBussines.setValueWithExpire("appkey_userId"+userId,appKeyUserIdArr[i]+":"+appKey,60 * 60 * 24 * 7);
                     }
                 }
-                logger.info("------ appKeyUserId ======= "+redisBussines.get("appkey_userId"+userId));
 
             }
             appKeyUserId = redisBussines.get("appkey_userId"+userId);
             String[] appkeyUserIdArr = appKeyUserId.split(":");
-            logger.info("------ appKeyUserId -----"+appKeyUserId);
             String topicName = "";
             boolean isExists = false;
             if(appKeyUserId != null){
                 for(int i=0;i<appkeyUserIdArr.length;i++){
                     String[] topics = adapter.getTopic();
                     topicName = "ob-smart."+appkeyUserIdArr[i];
-                    logger.info(" ====== topicName ======"+topicName);
                     for(int j=0;j<topics.length;j++){
                         if(topics[j].equals(topicName)){
                             isExists=true;
