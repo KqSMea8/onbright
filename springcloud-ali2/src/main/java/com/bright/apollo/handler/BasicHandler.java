@@ -12,6 +12,7 @@ import com.bright.apollo.common.entity.TScene;
 import com.bright.apollo.common.entity.TSceneCondition;
 import com.bright.apollo.service.CMDMessageService;
 import com.bright.apollo.service.DeviceChannelService;
+import com.bright.apollo.service.DeviceStatusService;
 import com.bright.apollo.service.IntelligentFingerService;
 import com.bright.apollo.service.MsgService;
 import com.bright.apollo.service.OboxDeviceConfigService;
@@ -75,7 +76,8 @@ public abstract class BasicHandler {
 
 	@Autowired
 	protected MsgService msgService;
-
+	@Autowired
+	protected DeviceStatusService deviceStatusService;
 	public abstract Message<String> process(ClientSession clientSession, Message<String> msg) throws Exception;
 
 	protected void deleteSceneNumber(List<TScene> scenes, TObox tObox) {

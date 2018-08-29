@@ -407,6 +407,11 @@ public class CommonController {
 				List<String> mList = (List<String>)ObjectUtils.fromJsonToObject(nodeString, List.class);
 				return facadeController.queryStatus(mList);
 			}
+		}else if (CMDEnum.query_node_real_status.toString().equals(cmdEnum.toString())) {
+			String serialId = requestParam.getValue("serialId");
+			if (!StringUtils.isEmpty(serialId)) {
+ 				return facadeController.queryNodeStatus(serialId);
+			}
 		}
 		res = new ResponseObject();
 		res.setStatus(ResponseEnum.RequestParamError.getStatus());

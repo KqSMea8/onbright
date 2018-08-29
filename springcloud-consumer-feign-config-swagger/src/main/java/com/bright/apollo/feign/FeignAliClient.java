@@ -282,4 +282,11 @@ public interface FeignAliClient {
 			@PathVariable(value = "endTime") String endTime, @PathVariable(value = "times") String times,
 			@PathVariable(value = "userSerialId") Integer userSerialId,
 			@PathVariable(value = "randomNum") String randomNum);
+
+	/**  
+	 * @param deviceConfig  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/aliService/getRealNodeStatus", method = RequestMethod.PUT)
+	ResponseObject<OboxResp> getRealNodeStatus(@RequestBody TOboxDeviceConfig deviceConfig);
 }
