@@ -214,10 +214,7 @@ public class CommonController {
 					return facadeController.enableScene(Integer.parseInt(sceneNumber), sceneStatus);
 				} else if (sceneStatus.equals("10") || sceneStatus.equals("11") || sceneStatus.equals("12")
 						|| sceneStatus.equals("13")) {
-					/*
-					 * tScene.setMsgAlter(Integer.parseInt(sceneStatus.substring
-					 * (1))); SceneBusiness.updateScene(tScene);
-					 */
+					 return sceneController.updateSceneSendSetting(Integer.parseInt(sceneNumber),sceneStatus);
 				}
 			}
 		} else if (CMDEnum.modify_device.toString().equals(cmdEnum.toString())) {

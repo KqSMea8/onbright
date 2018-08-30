@@ -1,5 +1,8 @@
 package com.bright.apollo.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +18,7 @@ import com.bright.apollo.feign.FeignSceneClient;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.response.SceneInfo;
+import com.google.gson.JsonObject;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -135,7 +139,49 @@ public class SceneController {
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
-
+	}
+	/**  
+	 * @param sceneNumber
+	 * @param sceneStatus
+	 * @return  
+	 * @Description:  
+	 */
+	@ApiOperation(value = "add servr scene ", httpMethod = "PUT", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/updateSceneSendSetting/{sceneNumber}/{sceneStatus}", method = RequestMethod.PUT)
+	public ResponseObject<Map<String, Object>> updateSceneSendSetting(
+			@PathVariable(value="sceneNumber")Integer sceneNumber,@PathVariable(value="sceneStatus") String sceneStatus) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String,Object>>();
+		try {
+			Map<String, Object>map=new HashMap<String, Object>();
+			ResponseObject<TScene> sceneRes = feignSceneClient.getSceneBySceneNumber(sceneNumber);
+			if(sceneRes==null||sceneRes.getStatus()!=ResponseEnum.SelectSuccess.getStatus()
+					||sceneRes.getData()==null
+					){
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			TScene scene = sceneRes.getData();
+			scene.setMessageAlter((byte)Integer.parseInt(sceneStatus.substring(1)));
+			feignSceneClient.updateScene(scene);
+			map.put("scene_number", scene.getSceneNumber());
+			map.put("scene_type", scene.getSceneType());
+			String oboxSerialId = scene.getOboxSerialId();
+			if(StringUtils.isEmpty(oboxSerialId))
+				oboxSerialId=null;
+			map.put("obox_scene_number", scene.getOboxSceneNumber());
+			map.put("obox_serial_id",oboxSerialId);
+			map.put("scene_status", sceneStatus);
+			res.setData(map);
+			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+ 		} catch (Exception e) {
+			e.printStackTrace();
+ 			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
 	}
 
 	
