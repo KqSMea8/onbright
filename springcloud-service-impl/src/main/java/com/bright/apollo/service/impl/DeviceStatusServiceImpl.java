@@ -28,7 +28,7 @@ public class DeviceStatusServiceImpl implements DeviceStatusService{
 	 */
 	@Override
 	public List<TDeviceStatus> queryDeviceStatusByCount(String serialId, int start, int count) {
-		return mapper.queryDeviceStatusByCount(SubTableConstant.T_DEVICE_STATUS_MERGE,serialId,start,count);
+		return mapper.queryDeviceStatusByCount(serialId,start,count);
 	}
 	/* (non-Javadoc)  
 	 * @see com.bright.apollo.service.DeviceStatusService#queryDeviceStatusByData(java.lang.String, long, long)  
