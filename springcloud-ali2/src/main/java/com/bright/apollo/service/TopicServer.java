@@ -133,9 +133,8 @@ public class TopicServer {
 
 	@Async
 	public void pubTopic(CMDEnum cmd, byte[] data, String deviceSerial) throws Exception {
-		logger.info(" ====== pubTopic start ====== ");
-		String mString = com.bright.apollo.util.StringUtils.bytes2String(cmd, data, packageLength, head);
-		// String mString = "";
+ 		String mString = com.bright.apollo.util.StringUtils.bytes2String(cmd, data, packageLength, head);
+		logger.info(" ====== pubTopic msg:"+mString);
 		PubRequest request = new PubRequest();
 		String productKey = AliDevCache.getProductKey(deviceSerial);
 		String deviceName = AliDevCache.getDeviceName(deviceSerial);
@@ -150,7 +149,7 @@ public class TopicServer {
 		request.setQos(0); // QoS0 设备在线时发送 ，QoS1 设备不在线时，能在IOT HUB 上保存7天，上线后发送
 		PubResponse response = null;
 		sendRequest(request, region, response);
-
+		
 		logger.info(" ====== pubTopic end ====== ");
 	}
 	public void pubTopicDev(JSONObject object, String productKey, String deviceName, AliRegionEnum eAliRegionEnum)
@@ -289,9 +288,8 @@ public class TopicServer {
 
 	@Async
 	public Future<OboxResp> request(CMDEnum cmd, byte[] data, String deviceSerial) throws Exception {
-		logger.info(" ====== request start ====== ");
 		String mString = com.bright.apollo.util.StringUtils.bytes2String(cmd, data, packageLength, head);
-		logger.info(" request mStr: " + mString);
+		logger.info("===RPC mStr:" + mString);
 		RRpcRequest rrpcRequest = new RRpcRequest();
 		// 设备所属产品的Key
 		String productKey = AliDevCache.getProductKey(deviceSerial);
