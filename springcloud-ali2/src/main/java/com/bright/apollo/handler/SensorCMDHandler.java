@@ -6,8 +6,9 @@ import java.util.TimeZone;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.stereotype.Component;
 import com.bright.apollo.bean.Message;
+import com.bright.apollo.common.entity.TDeviceStatus;
 import com.bright.apollo.common.entity.TIntelligentFingerAbandonRemoteUser;
 import com.bright.apollo.common.entity.TIntelligentFingerAuth;
 import com.bright.apollo.common.entity.TIntelligentFingerPush;
@@ -34,10 +35,10 @@ import com.bright.apollo.enums.SceneTypeEnum;
 import com.bright.apollo.service.JPushService;
 import com.bright.apollo.session.ClientSession;
 import com.bright.apollo.tool.ByteHelper;
+import com.zz.common.exception.AppException;
 import com.zz.common.util.DateTime;
 import com.zz.common.util.MD5;
 import com.zz.common.util.StringUtils;
-import org.springframework.stereotype.Component;
 
 @Component
 public class SensorCMDHandler extends BasicHandler {
@@ -2442,4 +2443,11 @@ public class SensorCMDHandler extends BasicHandler {
 			e.printStackTrace();
 		}
 	}
+	/*private void addOrUpdateDeviceState(String state, TOboxDeviceConfig tOboxDeviceConfig) throws AppException {
+		log.info("===add device status===:" + tOboxDeviceConfig.getDeviceSerialId());
+		TDeviceStatus tDeviceStatus = new TDeviceStatus();
+		tDeviceStatus.setDeviceSerialId(tOboxDeviceConfig.getDeviceSerialId());
+		tDeviceStatus.setDeviceState(state);
+		deviceStatusService.addDeviceStatus(tDeviceStatus);
+ 	}*/
 }

@@ -1,5 +1,6 @@
 package com.bright.apollo.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import com.bright.apollo.common.entity.TDeviceStatus;
 import com.bright.apollo.constant.SubTableConstant;
 import com.bright.apollo.dao.device.mapper.TDeviceStatusServiceMapper;
 import com.bright.apollo.service.DeviceStatusService;
+import com.bright.apollo.tool.DateHelper;
 /**  
  *@Title:  
  *@Description:  
@@ -41,6 +43,14 @@ public class DeviceStatusServiceImpl implements DeviceStatusService{
 	@Override
 	public List<TDeviceStatus> queryDeviceStatusByDataNoGroup(String serialId, long from, long to) {
  		return mapper.queryDeviceStatusByDataNoGroup(serialId,from,to);
+	}
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.DeviceStatusService#addDeviceStatus(com.bright.apollo.common.entity.TDeviceStatus)  
+	 */
+	@Override
+	public void addDeviceStatus(TDeviceStatus tDeviceStatus) {
+		 
+		mapper.addDeviceStatus(tDeviceStatus);
 	}
 
 }

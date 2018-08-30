@@ -184,7 +184,7 @@ public class NodeStatusCMDHandler extends BasicHandler{
 		tDeviceStatus.setDeviceSerialId(tOboxDeviceConfig
 				.getDeviceSerialId());
 		tDeviceStatus.setDeviceState(state);
-		//deviceStatusService.addDeviceStatus(tDeviceStatus);
+		deviceStatusService.addDeviceStatus(tDeviceStatus);
 		//DeviceBusiness.addDeviceStatus(tDeviceStatus);
 	}
 }
