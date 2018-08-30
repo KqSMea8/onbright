@@ -113,7 +113,7 @@ public class TmallController {
 			logger.info(" ====== username ====== "+user.getUsername());
 
 			logger.info(" ====== userId ====== "+tUser.getId());
-			ResponseObject<List<TOboxDeviceConfig>> responseObject = feignDeviceClient.getOboxDeviceConfigByUserId(tUser.getId());
+			ResponseObject<List<TOboxDeviceConfig>> responseObject = feignDeviceClient.getOboxDeviceConfigByUserId(429);//tUser.getId()
 			List<TOboxDeviceConfig> oboxDeviceConfigList = responseObject.getData();
 			JSONArray jsonArray = new JSONArray();
 			JSONObject extensionsMap = new JSONObject();

@@ -33,20 +33,24 @@ public class PushServiceImpl implements PushService {
 //            mqttGateWay.sendToMqtt("ob-smart.22DDBCF6-E304-4AD9-B9A2-13C4ED915A30","STR===22DDBCF6-E304-4AD9-B9A2-13C4ED915A30===END");
         }
         Iterator<Integer> iterator = users.iterator();
-        String appKeyUserId = "";
+        String tokenUserIdVal = "";
         while (iterator.hasNext()){
             Integer uId = iterator.next();
-            appKeyUserId = redisBussines.get("appkey_userId"+uId);
-            if(!StringUtils.isEmpty(appKeyUserId)){
-//                logger.info(" ====== appKeyUserIds ====== "+appKeyUserId);
-                String [] appKeyUserIdArr = appKeyUserId.split(":");
-                for(int i=0;i<appKeyUserIdArr.length;i++){
-                    if(appKeyUserIdArr[i] !=null&& !appKeyUserIdArr[i].equals("")){
-                        logger.info(" ====== appKeyUserId ====== "+appKeyUserIdArr[i]);
-                        mqttGateWay.sendToMqtt("ob-smart."+appKeyUserIdArr[i],sendStr.toString());
-                    }
-                }
+            String accessToken = (String)redisBussines.getObject("token_userId_"+uId);
+            logger.info("====== accessToken ====== "+accessToken +" ====== userId ====== "+uId);
+            if(!StringUtils.isEmpty(accessToken)){
+                mqttGateWay.sendToMqtt("ob-smart."+accessToken,sendStr.toString());
             }
+
+//            appKeyUserId = redisBussines.get("appkey_userId"+uId);
+//            if(!StringUtils.isEmpty(appKeyUserId)){
+//                String [] appKeyUserIdArr = appKeyUserId.split(":");
+//                for(int i=0;i<appKeyUserIdArr.length;i++){
+//                    if(appKeyUserIdArr[i] !=null&& !appKeyUserIdArr[i].equals("")){
+//                        mqttGateWay.sendToMqtt("ob-smart."+appKeyUserIdArr[i],sendStr.toString());
+//                    }
+//                }
+//            }
         }
 
     }

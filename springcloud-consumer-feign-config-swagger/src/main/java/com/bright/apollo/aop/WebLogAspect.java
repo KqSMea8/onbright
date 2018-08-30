@@ -2,39 +2,28 @@ package com.bright.apollo.aop;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
-
 import com.bright.apollo.common.entity.TUser;
 import com.bright.apollo.feign.FeignUserClient;
 import com.bright.apollo.redis.RedisBussines;
 import com.bright.apollo.response.ResponseObject;
-import com.bright.apollo.service.UserService;
 import com.bright.apollo.tool.NumberHelper;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
-//import org.springframework.integration.mqtt.inbound.MqttPahoMessageDrivenChannelAdapter;
+import org.springframework.integration.mqtt.inbound.MqttPahoMessageDrivenChannelAdapter;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
-import com.google.common.base.Stopwatch;
 import com.google.gson.Gson;
 
 /**
@@ -57,8 +46,8 @@ public class WebLogAspect {
     private FeignUserClient feignUserClient;
 
 
-//    @Autowired
-//    private MqttPahoMessageDrivenChannelAdapter adapter;
+    @Autowired
+    private MqttPahoMessageDrivenChannelAdapter adapter;
 
 	@Pointcut("execution(public * com.bright.apollo.controller.CommonController.*(..))")
 	public void webLog() {
@@ -94,12 +83,12 @@ public class WebLogAspect {
     public void mqttFilter(HttpServletRequest request) {
         String appKey = request.getParameter("appkey");
         String accessToken = request.getParameter("access_token");
-        if(!StringUtils.isEmpty(appKey)&&!StringUtils.isEmpty(accessToken)){//非第三方登录
+        String topicName = "";
+        if(!StringUtils.isEmpty(accessToken)){
             OAuth2Authentication defaultOAuth2AccessToken = redisBussines.getObject("auth:"+accessToken,OAuth2Authentication.class);
             User user = (User)defaultOAuth2AccessToken.getPrincipal();
             String userName = user.getUsername();
-//                userDetailsService.loadUserByUsername(user.getUsername());
-            TUser tUser =null;
+            TUser tUser = null;
             if(NumberHelper.isNumeric(userName)){
                 ResponseObject<TUser> response = feignUserClient.getUser(userName);
                 tUser = response.getData();
@@ -108,26 +97,50 @@ public class WebLogAspect {
                 tUser = response.getData();
             }
             Integer userId = tUser.getId();
-            String appKeyUserId = redisBussines.get("appkey_userId"+userId);
-            if(appKeyUserId==null||StringUtils.isEmpty(appKeyUserId)){
-                redisBussines.setValueWithExpire("appkey_userId"+userId,appKey,60 * 60 * 24 * 7);
-            }else if(appKeyUserId !=null && appKey!=null && !appKeyUserId.equals(appKey)){
-                String[] appKeyUserIdArr = appKeyUserId.split(":");
-                for(int i=0;i<appKeyUserIdArr.length;i++){
-                    if(!appKey.equals(appKeyUserIdArr[i])){
-                        redisBussines.setValueWithExpire("appkey_userId"+userId,appKeyUserId+":"+appKey,60 * 60 * 24 * 7);
-                    }
+            redisBussines.setValueWithExpire("token_userId_"+userId,accessToken,60 * 60 * 24 * 7);
+            logger.info(" ====== accessToken ======= "+accessToken);
+            logger.info(" ====== token_userId ======= "+redisBussines.getObject("token_userId_"+userId));
+            String[] topics = adapter.getTopic();
+            topicName = "ob-smart."+accessToken;
+            for(int i=0;i<topics.length;i++){
+                if(!topicName.equals(topics[i])){
+                    logger.info("====== create topic ====== "+topicName);
+                    adapter.addTopic(topicName,1);
                 }
-
             }
-            appKeyUserId = redisBussines.get("appkey_userId"+userId);
-            String[] appkeyUserIdArr = appKeyUserId.split(":");
-            String topicName = "";
-            boolean isExists = false;
+        }
+//        if(!StringUtils.isEmpty(appKey)&&!StringUtils.isEmpty(accessToken)){
+//            OAuth2Authentication defaultOAuth2AccessToken = redisBussines.getObject("auth:"+accessToken,OAuth2Authentication.class);
+//            User user = (User)defaultOAuth2AccessToken.getPrincipal();
+//            String userName = user.getUsername();
+//            TUser tUser =null;
+//            if(NumberHelper.isNumeric(userName)){
+//                ResponseObject<TUser> response = feignUserClient.getUser(userName);
+//                tUser = response.getData();
+//            }else{
+//                ResponseObject<TUser> response = feignUserClient.getUserById(Integer.valueOf(userName));
+//                tUser = response.getData();
+//            }
+//            Integer userId = tUser.getId();
+//            String appKeyUserId = redisBussines.get("appkey_userId"+userId);
+//            if(appKeyUserId==null||StringUtils.isEmpty(appKeyUserId)){
+//                redisBussines.setValueWithExpire("appkey_userId"+userId,appKey,60 * 60 * 24 * 7);
+//            }else if(appKeyUserId !=null && appKey!=null && !appKeyUserId.equals(appKey)){
+//                String[] appKeyUserIdArr = appKeyUserId.split(":");
+//                for(int i=0;i<appKeyUserIdArr.length;i++){
+//                    if(!appKey.equals(appKeyUserIdArr[i])){
+//                        redisBussines.setValueWithExpire("appkey_userId"+userId,appKeyUserId+":"+appKey,60 * 60 * 24 * 7);
+//                    }
+//                }
+//            }
+//            appKeyUserId = redisBussines.get("appkey_userId"+userId);
+//            String[] appkeyUserIdArr = appKeyUserId.split(":");
+//            String topicName = "";
+//            boolean isExists = false;
 //            if(appKeyUserId != null){
 //                for(int i=0;i<appkeyUserIdArr.length;i++){
 //                    String[] topics = adapter.getTopic();
-//                    topicName = "ob-smart-"+appkeyUserIdArr[i];
+//                    topicName = "ob-smart."+appkeyUserIdArr[i];
 //                    for(int j=0;j<topics.length;j++){
 //                        if(topics[j].equals(topicName)){
 //                            isExists=true;
@@ -135,7 +148,7 @@ public class WebLogAspect {
 //                    }
 //                    if(isExists==false){
 //                        try{
-//                            adapter.addTopic("ob-smart-"+appkeyUserIdArr[i],1);
+//                            adapter.addTopic("ob-smart."+appkeyUserIdArr[i],1);
 //                        }catch (Exception e){
 //                            logger.info("====== create topic exception ====== "+e.getMessage());
 //                        }
@@ -143,7 +156,7 @@ public class WebLogAspect {
 //                    isExists=false;
 //                }
 //            }
-        }
+//        }
     }
 
 //	@Before("mqttController()")
