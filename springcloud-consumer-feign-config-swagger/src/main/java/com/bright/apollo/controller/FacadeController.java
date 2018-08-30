@@ -4682,7 +4682,8 @@ public class FacadeController extends BaseController {
 					scenes.add(sceneDTO);
 				}
 			}
-			res.setData(scenes);
+			if(!scenes.isEmpty())
+				res.setData(scenes);
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {
