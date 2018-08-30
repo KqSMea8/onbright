@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
@@ -194,6 +195,7 @@ public class SceneActionThreadPool {
 							byte[] sBytes = ByteHelper.hexStringToBytes(tSceneAction.getAction());
 							System.arraycopy(sBytes, 0, bodyBytes, 7, sBytes.length);
 							if (topicServer != null) {
+								TimeUnit.MILLISECONDS.sleep(100);
 								topicServer.pubTopic(CMDEnum.setting_node_status, bodyBytes,
 										oboxDeviceConfig.getOboxSerialId());
 							}
