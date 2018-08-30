@@ -43,4 +43,23 @@ public interface TUserMapper{
 	 */
     @Insert("insert into t_user (user_name,password) values(#{mobile},#{pwd})")
 	int addUser(@Param("mobile")String mobile,@Param("pwd") String pwd);
+
+	/**  
+	 * @param sceneNumber
+	 * @return  
+	 * @Description:  
+	 */
+    @Select("select a.*,"
+    		+ " from t_user a ,t_user_scene b where b.scene_number=#{sceneNumber} and"
+    		+ " b.user_id=a.user_id")
+    @Results(value = {
+            @Result(property = "userName",column = "user_name"),
+            @Result(property = "id",column = "id"),
+            @Result(property = "nickname",column = "nickname"),
+            @Result(property = "headimgurl",column = "headimgurl"),
+            @Result(property = "password",column = "password"),
+            @Result(property = "openId",column = "open_id"),
+            @Result(property = "lastOpTime",column = "last_op_time")
+    })
+    List<TUser> queryUserBySceneNumber(@Param("sceneNumber") Integer sceneNumber);
 }

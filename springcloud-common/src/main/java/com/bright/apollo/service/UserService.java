@@ -181,4 +181,11 @@ public interface UserService {
 	 * @Description:  
 	 */
 	int addUser(String mobile, String pwd);
+
+	/**  
+	 * @param sceneNumber
+	 * @return  
+	 * @Description:  
+	 */
+	List<TUser> queryUserBySceneNumber(Integer sceneNumber);
 }

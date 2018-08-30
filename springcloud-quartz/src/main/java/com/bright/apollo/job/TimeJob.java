@@ -9,6 +9,7 @@ import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.common.entity.TScene;
@@ -19,7 +20,7 @@ import com.bright.apollo.feign.FeignDeviceClient;
 import com.bright.apollo.feign.FeignSceneClient;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
-import com.zz.common.util.StringUtils;
+ 
 
 /**
  * @Title:
