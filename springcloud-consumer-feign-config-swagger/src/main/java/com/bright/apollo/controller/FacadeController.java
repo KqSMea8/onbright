@@ -4481,9 +4481,9 @@ public class FacadeController extends BaseController {
 	@ApiOperation(value = "queryScenes", httpMethod = "GET", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/queryScenes/{start}/{count}", method = RequestMethod.GET)
-	public ResponseObject<List<SceneDTO>> queryScenes(@PathVariable(value = "start", required = false) String start,
+	public ResponseObject<Map<String, Object>> queryScenes(@PathVariable(value = "start", required = false) String start,
 			@PathVariable(value = "count", required = false) String count) {
-		ResponseObject<List<SceneDTO>> res = new ResponseObject<List<SceneDTO>>();
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		try {
 			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			if (StringUtils.isEmpty(principal.getUsername())) {
@@ -4682,8 +4682,11 @@ public class FacadeController extends BaseController {
 					scenes.add(sceneDTO);
 				}
 			}
-			if(!scenes.isEmpty())
-				res.setData(scenes);
+			if(!scenes.isEmpty()){
+				Map<String, Object> map=new HashMap<String, Object>();
+				map.put("scenes", scenes);
+				res.setData(map);
+			}
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {
