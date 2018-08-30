@@ -1,0 +1,2 @@
+2018-08-29 18:22:34,846 INFO (SpringApplication.java:597)- The following profiles are active: test
+2018-08-29 18:22:46,393 INFO (StartupInfoLogger.java:57)- Started UserApplication in 15.84 seconds (JVM running for 16.428)

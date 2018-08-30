@@ -47,7 +47,7 @@ public class MNSHandler {
 				Message popMessage = queue.popMessage(5);
 				if (popMessage != null) {
 					logger.info("======popMessage:" + popMessage);
-//					queue.deleteMessage(popMessage.getReceiptHandle());
+					queue.deleteMessage(popMessage.getReceiptHandle());
 					// handler message
 					aliMessageHandler.handler(popMessage);
 				}
