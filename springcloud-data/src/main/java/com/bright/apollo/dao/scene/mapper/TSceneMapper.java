@@ -18,7 +18,7 @@ import com.bright.apollo.common.entity.TScene;
 
 @Mapper
 @Component
-public interface TSceneMapper{
+public interface TSceneMapper {
 
 	/**
 	 * @param userId
@@ -114,4 +114,47 @@ public interface TSceneMapper{
 			@Result(column = "scene_group", property = "sceneGroup") })
 	TScene getTSceneByOboxSerialIdAndOboxSceneNumber(@Param("oboxSerialId") String oboxSerialId,
 			@Param("oboxSceneNumber") Integer oboxSceneNumber);
+
+	/**
+	 * @param userId
+	 * @return
+	 * @Description:
+	 */
+	@Select("SELECT a.* FROM t_scene a WHERE  EXISTS (SELECT 1 "
+			+ "From t_user_scene b WHERE a.scene_number=b.scene_number and b.user_id=#{userId})"
+			+ " order by a.scene_number desc")
+	@Results(value = { @Result(column = "scene_name", property = "sceneName"),
+			@Result(column = "scene_number", property = "sceneNumber"),
+			@Result(column = "obox_serial_id", property = "oboxSerialId"),
+			@Result(column = "obox_scene_number", property = "oboxSceneNumber"),
+			@Result(column = "last_op_time", property = "lastOpTime"),
+			@Result(column = "scene_status", property = "sceneStatus"),
+			@Result(column = "scene_type", property = "sceneType"),
+			@Result(column = "msg_alter", property = "msgAlter"), @Result(column = "scene_run", property = "sceneRun"),
+			@Result(column = "license", property = "license"), @Result(column = "alter_need", property = "alterNeed"),
+			@Result(column = "scene_group", property = "sceneGroup") })
+	List<TScene> getSceneByUserId(@Param("userId") Integer userId);
+
+	/**
+	 * @param userId
+	 * @param start
+	 * @param count
+	 * @return
+	 * @Description:
+	 */
+	@Select("SELECT a.* FROM t_scene a WHERE  EXISTS (SELECT 1 "
+			+ "From t_user_scene b WHERE a.scene_number=b.scene_number and b.user_id=#{userId})"
+			+ " order by a.scene_number desc limit #{start},#{count}")
+	@Results(value = { @Result(column = "scene_name", property = "sceneName"),
+			@Result(column = "scene_number", property = "sceneNumber"),
+			@Result(column = "obox_serial_id", property = "oboxSerialId"),
+			@Result(column = "obox_scene_number", property = "oboxSceneNumber"),
+			@Result(column = "last_op_time", property = "lastOpTime"),
+			@Result(column = "scene_status", property = "sceneStatus"),
+			@Result(column = "scene_type", property = "sceneType"),
+			@Result(column = "msg_alter", property = "msgAlter"), @Result(column = "scene_run", property = "sceneRun"),
+			@Result(column = "license", property = "license"), @Result(column = "alter_need", property = "alterNeed"),
+			@Result(column = "scene_group", property = "sceneGroup") })
+	List<TScene> getSceneByUserIdAndPage(@Param("userId") Integer userId, @Param("start") int start,
+			@Param("count") int count);
 }

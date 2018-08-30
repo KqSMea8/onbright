@@ -219,4 +219,24 @@ public interface FeignSceneClient {
 	ResponseObject deleteSceneActionBySceneNumberAndActionId(@PathVariable(value = "sceneNumber") Integer sceneNumber,
 			@PathVariable(value = "actionId") String actionId);
 
+	/**  
+	 * @param userId
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/scene/getSceneByUserId/{userId}", method = RequestMethod.GET)
+	ResponseObject<List<TScene>> getSceneByUserId(@PathVariable(value = "userId")Integer userId);
+
+	/**  
+	 * @param userId
+	 * @param start
+	 * @param count
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/scene/getSceneByUserIdAndPage/{userId}/{start}/{count}", method = RequestMethod.GET)
+	ResponseObject<List<TScene>> getSceneByUserIdAndPage(@PathVariable(value = "userId")Integer userId,
+			@PathVariable(value = "start")int start, 
+			@PathVariable(value = "count")int count);
+
 }

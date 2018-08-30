@@ -47,7 +47,6 @@ import com.bright.apollo.common.entity.TYSCamera;
 import com.bright.apollo.constant.SubTableConstant;
 import com.bright.apollo.enums.ConditionTypeEnum;
 import com.bright.apollo.enums.DeviceTypeEnum;
-import com.bright.apollo.enums.ErrorEnum;
 import com.bright.apollo.enums.IntelligentMaxEnum;
 import com.bright.apollo.enums.NodeTypeEnum;
 import com.bright.apollo.enums.RemoteUserEnum;
@@ -1269,13 +1268,12 @@ public class FacadeController extends BaseController {
 							// if (!StringUtils.isEmpty(tSceneCondition
 							// .getCondition())) {
 							if (!StringUtils.isEmpty(tSceneCondition.getCond())) {
-								/*
-								 * quartzService .startSchedule(
-								 * tScene.getSceneNumber(), sceneName,
-								 * tSceneCondition .getCond(), tSceneCondition
-								 * .getConditionGroup());
-								 */
-								feignQuartzClient.addJob(tScene.getSceneNumber(), sceneName,
+								logger.info("===sceneNumber:" + tScene.getSceneNumber() + "===sceneName:"
+										+ (StringUtils.isEmpty(sceneName) ? tScene.getSceneName() : sceneName)
+										+ "===condgroup:" + tSceneCondition.getConditionGroup() + "===" + "cond:"
+										+ tSceneCondition.getCond());
+								feignQuartzClient.addJob(tScene.getSceneNumber(),
+										(StringUtils.isEmpty(sceneName) ? tScene.getSceneName() : sceneName),
 										tSceneCondition.getConditionGroup(), tSceneCondition.getCond());
 							}
 						} else if (sceneConditionDTO.getConditionType().equals(ConditionTypeEnum.quartz.getValue())) {
@@ -1366,8 +1364,7 @@ public class FacadeController extends BaseController {
 				return res;
 			}
 			TScene tScene = sceneRes.getData();
-			ResponseObject<TObox> oboxRes = feignOboxClient.getObox(
-					oboxSerialId);
+			ResponseObject<TObox> oboxRes = feignOboxClient.getObox(oboxSerialId);
 			// TObox tObox = queryOboxByWeight(tUser, oboxSerialId);
 			if (oboxRes == null || oboxRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()
 					|| oboxRes.getData() == null) {
@@ -1997,7 +1994,7 @@ public class FacadeController extends BaseController {
 				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
 			}
 		} catch (Exception e) {
-			logger.error("===error msg:"+e.getMessage());
+			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
@@ -2127,7 +2124,7 @@ public class FacadeController extends BaseController {
 				res.setData(map);
 			}
 		} catch (Exception e) {
-			logger.error("===error msg:"+e.getMessage());
+			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
@@ -4377,7 +4374,7 @@ public class FacadeController extends BaseController {
 	public ResponseObject<Map<String, Object>> queryStatus(@RequestBody List<String> mList) {
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		try {
-			Map<String, Object> map=new HashMap<String, Object>();
+			Map<String, Object> map = new HashMap<String, Object>();
 			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			if (StringUtils.isEmpty(principal.getUsername())) {
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
@@ -4393,10 +4390,10 @@ public class FacadeController extends BaseController {
 			}
 			List<TOboxDeviceConfig> replyList = new ArrayList<TOboxDeviceConfig>();
 			for (String serialID : mList) {
-				ResponseObject<TOboxDeviceConfig> deviceRes = feignDeviceClient.getDeviceByUserAndSerialId(resUser.getData().getId(), serialID);
-				if(deviceRes!=null&&deviceRes.getStatus()==ResponseEnum.SelectSuccess.getStatus()
-						&&deviceRes.getData()!=null
-						){
+				ResponseObject<TOboxDeviceConfig> deviceRes = feignDeviceClient
+						.getDeviceByUserAndSerialId(resUser.getData().getId(), serialID);
+				if (deviceRes != null && deviceRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()
+						&& deviceRes.getData() != null) {
 					replyList.add(deviceRes.getData());
 				}
 			}
@@ -4405,22 +4402,22 @@ public class FacadeController extends BaseController {
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {
-			logger.error("===error msg:"+e.getMessage());
+			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
 
-	/**  
+	/**
 	 * @param serialId
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
 	@ApiOperation(value = "getStatus", httpMethod = "GET", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/queryNodeStatus/{serialId}", method = RequestMethod.GET)
-	public ResponseObject<Map<String, Object>> queryNodeStatus(@PathVariable(value="serialId")String serialId) {
+	public ResponseObject<Map<String, Object>> queryNodeStatus(@PathVariable(value = "serialId") String serialId) {
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		try {
 			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -4453,10 +4450,10 @@ public class FacadeController extends BaseController {
 			}
 			TObox obox = oboxRes.getData();
 			ResponseObject<OboxResp> realNodeStatus = feignAliClient.getRealNodeStatus(deviceConfig);
-			Map<String, Object>map=new HashMap<String, Object>();
-			if(realNodeStatus!=null&&realNodeStatus.getData()!=null){
+			Map<String, Object> map = new HashMap<String, Object>();
+			if (realNodeStatus != null && realNodeStatus.getData() != null) {
 				OboxResp oboxResp = realNodeStatus.getData();
-				if(oboxResp.getType().equals(OboxResp.Type.success)){
+				if (oboxResp.getType().equals(OboxResp.Type.success)) {
 					map.put("status", oboxResp.getDate().substring(14, 34));
 					res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 					res.setMessage(ResponseEnum.SelectSuccess.getMsg());
@@ -4466,13 +4463,283 @@ public class FacadeController extends BaseController {
 			}
 			res.setStatus(ResponseEnum.SendOboxTimeOut.getStatus());
 			res.setMessage(ResponseEnum.SendOboxTimeOut.getMsg());
-			
+
 		} catch (Exception e) {
-			logger.error("===error msg:"+e.getMessage());
+			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
 
+	/**
+	 * @param start
+	 * @param count
+	 * @return
+	 * @Description:
+	 */
+	@ApiOperation(value = "queryScenes", httpMethod = "GET", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/queryScenes/{start}/{count}", method = RequestMethod.GET)
+	public ResponseObject<List<SceneDTO>> queryScenes(@PathVariable(value = "start", required = false) String start,
+			@PathVariable(value = "count", required = false) String count) {
+		ResponseObject<List<SceneDTO>> res = new ResponseObject<List<SceneDTO>>();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+			List<TScene> tScenes = null;
+			List<SceneDTO> scenes = new ArrayList<SceneDTO>();
+			ResponseObject<List<TScene>> tScenesRes = null;
+			if (StringUtils.isEmpty(start) || StringUtils.isEmpty(count) || !NumberHelper.isNumeric(start)
+					|| !NumberHelper.isNumeric(count)) {
+				tScenesRes = feignSceneClient.getSceneByUserId(resUser.getData().getId());
+			} else {
+				tScenesRes = feignSceneClient.getSceneByUserIdAndPage(resUser.getData().getId(),
+						Integer.parseInt(start), Integer.parseInt(count));
+			}
+			if (tScenesRes == null || tScenesRes.getData() == null
+					|| tScenesRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			tScenes = tScenesRes.getData();
+			if (tScenes != null) {
+				for (TScene tScene : tScenes) {
+					SceneDTO sceneDTO = new SceneDTO(tScene);
+					List<List<SceneConditionDTO>> conditions = new ArrayList<List<SceneConditionDTO>>();
+					ResponseObject<List<TSceneCondition>> tSceneConditionsRes = feignSceneClient
+							.getSceneConditionsBySceneNumber(tScene.getSceneNumber());
+					if (tSceneConditionsRes == null || tSceneConditionsRes.getData() == null
+							|| tSceneConditionsRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
+						res.setStatus(ResponseEnum.RequestParamError.getStatus());
+						res.setMessage(ResponseEnum.RequestParamError.getMsg());
+						return res;
+					}
+					List<TSceneCondition> tSceneConditions = tSceneConditionsRes.getData();
+					for (int i = 0; i < 3; i++) {
+						List<SceneConditionDTO> tConditionDTOs = new ArrayList<SceneConditionDTO>();
+						for (TSceneCondition tSceneCondition : tSceneConditions) {
+							if (tSceneCondition.getConditionGroup() == i) {
+								SceneConditionDTO sceneConditionDTO = new SceneConditionDTO();
+								sceneConditionDTO.setCondition(tSceneCondition.getCond());
+								sceneConditionDTO.setConditionType(ConditionTypeEnum.time.getValue());
+								if (tSceneCondition.getSerialid() != null) {
+									// node condition
+									ResponseObject<TOboxDeviceConfig> deviceRes = feignDeviceClient
+											.getDevice(tSceneCondition.getSerialid());
+									TOboxDeviceConfig tOboxDeviceConfig = null;
+									if (deviceRes != null
+											|| deviceRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()) {
+										tOboxDeviceConfig = deviceRes.getData();
+									}
+									if (tOboxDeviceConfig != null) {
+										sceneConditionDTO.setConditionID(tOboxDeviceConfig.getDeviceId());
+										sceneConditionDTO.setDeviceRfAddr(tOboxDeviceConfig.getDeviceRfAddr());
+										sceneConditionDTO.setDeviceSerialId(tOboxDeviceConfig.getDeviceSerialId());
+										sceneConditionDTO.setOboxSerialId(tOboxDeviceConfig.getOboxSerialId());
+										sceneConditionDTO.setDeviceChildType(tOboxDeviceConfig.getDeviceChildType());
+										sceneConditionDTO.setDeviceType(tOboxDeviceConfig.getDeviceType());
+										if (tOboxDeviceConfig.getDeviceType()
+												.equals(DeviceTypeEnum.doorlock.getValue()))
+											sceneConditionDTO
+													.setConditionType(ConditionTypeEnum.fingerprint.getValue());
+										else
+											sceneConditionDTO.setConditionType(ConditionTypeEnum.device.getValue());
+									} else {
+										/*
+										 * TRemoter tRemoter =
+										 * DeviceBusiness.queryRemoter(
+										 * tSceneCondition.getSerialId()); if
+										 * (tRemoter != null) {
+										 * sceneConditionDTO.setDeviceSerialId(
+										 * tRemoter.getRemoter());
+										 * sceneConditionDTO.setConditionType(
+										 * ConditionTypeEnum.remoter.getValue())
+										 * ; }else { TFingerprint tFingerprint =
+										 * FingerprintBusiness.queryFingerPrint(
+										 * tSceneCondition.getSerialId()); if
+										 * (tFingerprint != null) {
+										 * sceneConditionDTO.setDeviceSerialId(
+										 * tFingerprint.getSerialId());
+										 * sceneConditionDTO.setConditionType(
+										 * ConditionTypeEnum.fingerprint.
+										 * getValue()); } }
+										 */}
+								} else {
+									// time condition
+								}
+								tConditionDTOs.add(sceneConditionDTO);
+							}
+						}
+						conditions.add(tConditionDTOs);
+					}
+					sceneDTO.setConditions(conditions);
+					List<SceneActionDTO> tActionDTOs = new ArrayList<SceneActionDTO>();
+					List<TSceneAction> tSceneActions = null;
+					ResponseObject<List<TSceneAction>> sceneActionsRes = feignSceneClient
+							.getSceneActionsBySceneNumber(tScene.getSceneNumber());
+					if (sceneActionsRes != null
+							|| sceneActionsRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()) {
+						tSceneActions = sceneActionsRes.getData();
+					}
+					if (tSceneActions != null) {
+						for (TSceneAction tSceneAction : tSceneActions) {
+							if (tSceneAction.getNodeType().equals(NodeTypeEnum.single.getValue())) {
+								TOboxDeviceConfig tOboxDeviceConfig = null;
+								ResponseObject<TOboxDeviceConfig> deviceRes = feignDeviceClient
+										.getDevice(tSceneAction.getActionid());
+								if (deviceRes != null
+										|| deviceRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()) {
+									tOboxDeviceConfig = deviceRes.getData();
+								}
+								if (tOboxDeviceConfig != null) {
+									SceneActionDTO sceneActionDTO = new SceneActionDTO();
+									sceneActionDTO.setAction(tSceneAction.getAction());
+									sceneActionDTO.setActionName(tOboxDeviceConfig.getDeviceId());
+									sceneActionDTO.setDeviceRfAddr(tOboxDeviceConfig.getDeviceRfAddr());
+									sceneActionDTO.setDeviceSerialId(tOboxDeviceConfig.getDeviceSerialId());
+									sceneActionDTO.setOboxSerialId(tOboxDeviceConfig.getOboxSerialId());
+									sceneActionDTO.setDeviceChildType(tOboxDeviceConfig.getDeviceChildType());
+									sceneActionDTO.setDeviceType(tOboxDeviceConfig.getDeviceType());
+									sceneActionDTO.setNodeType(NodeTypeEnum.single.getValue());
+									tActionDTOs.add(sceneActionDTO);
+								}
+							} else if (tSceneAction.getNodeType().equals(NodeTypeEnum.group.getValue())) {
+								/*
+								 * TServerGroup tServerGroup =
+								 * DeviceBusiness.querySererGroupById(
+								 * tSceneAction.getActionID()); if (tServerGroup
+								 * != null) { SceneActionDTO sceneActionDTO =
+								 * new SceneActionDTO();
+								 * sceneActionDTO.setAction(tSceneAction.
+								 * getAction());
+								 * sceneActionDTO.setActionName(tServerGroup.
+								 * getGroupName());
+								 * sceneActionDTO.setDeviceChildType(
+								 * tServerGroup.getGroupChildType());
+								 * sceneActionDTO.setDeviceType(tServerGroup.
+								 * getGroupType());
+								 * sceneActionDTO.setGroupId(String.valueOf(
+								 * tServerGroup.getId()));
+								 * sceneActionDTO.setNodeType(NodeTypeEnum.group
+								 * .getValue()); if
+								 * (tServerGroup.getGroupStyle().equals("00")) {
+								 * //local TServerOboxGroup tServerOboxGroup =
+								 * DeviceBusiness.queryOBOXGroupByServerID(
+								 * tServerGroup.getId()); if (tServerOboxGroup
+								 * != null) { sceneActionDTO.setOboxSerialId(
+								 * tServerOboxGroup.getOboxSerialId());
+								 * sceneActionDTO.setOboxGroupAddr(
+								 * tServerOboxGroup.getGroupAddr()); } }
+								 * tActionDTOs.add(sceneActionDTO); }
+								 */} else if (tSceneAction.getNodeType().equals(NodeTypeEnum.camera.getValue())) {
+								/*
+								 * TYSCamera tysCamera =
+								 * CameraBusiness.queryYSCameraById(tSceneAction
+								 * .getActionID()); if (tysCamera != null) {
+								 * SceneActionDTO sceneActionDTO = new
+								 * SceneActionDTO();
+								 * sceneActionDTO.setDeviceSerialId(tysCamera.
+								 * getDeviceSerial());
+								 * sceneActionDTO.setAction(tSceneAction.
+								 * getAction());
+								 * sceneActionDTO.setNodeType(NodeTypeEnum.
+								 * camera.getValue());
+								 * tActionDTOs.add(sceneActionDTO); }
+								 */} else if (tSceneAction.getNodeType().equals(NodeTypeEnum.status.getValue())) {
+								TScene scene = null;
+								ResponseObject<TScene> sceneRes = feignSceneClient
+										.getSceneBySceneNumber(NumberHelper.isNumeric(tSceneAction.getActionid())
+												? Integer.parseInt(tSceneAction.getActionid()) : 0);
+								if (sceneRes != null
+										|| sceneRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()) {
+									scene = sceneRes.getData();
+								}
+								if (scene != null) {
+									SceneActionDTO sceneActionDTO = new SceneActionDTO();
+									sceneActionDTO.setAction(tSceneAction.getAction());
+									sceneActionDTO.setSceneNumber(Integer.parseInt(tSceneAction.getActionid()));
+									sceneActionDTO.setActionName(scene.getSceneName());
+									sceneActionDTO.setNodeType(NodeTypeEnum.status.getValue());
+									tActionDTOs.add(sceneActionDTO);
+								}
+							}
+						}
+					}
+					sceneDTO.setActions(tActionDTOs);
+					scenes.add(sceneDTO);
+				}
+			}
+			res.setData(scenes);
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	/**
+	 * @param oboxSceneNumber
+	 * @param oboxSerialId
+	 * @return
+	 * @Description:
+	 */
+	@ApiOperation(value = "queryScenes", httpMethod = "GET", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/querySceneNumberByAddr/{oboxSceneNumber}/{oboxSerialId}", method = RequestMethod.GET)
+	public ResponseObject<Map<String, Object>> querySceneNumberByAddr(
+			@PathVariable(value = "oboxSceneNumber") String oboxSceneNumber,
+			@PathVariable(value = "oboxSerialId") String oboxSerialId) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+			ResponseObject<TScene> sceneRes = feignSceneClient.getScenesByOboxSerialIdAndOboxSceneNumber(oboxSerialId, Integer.parseInt(oboxSceneNumber));
+			if (sceneRes == null||sceneRes.getStatus()!=ResponseEnum.SelectSuccess.getStatus()||
+					sceneRes.getData()==null
+					) {
+				logger.error("===oboxSerialId:" + oboxSerialId + " ===oboxSceneNumber:"
+						+ oboxSceneNumber);
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			Map<String, Object> map=new HashMap<String, Object>();
+			map.put("scene_number", sceneRes.getData().getSceneNumber());
+			res.setData(map);
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
 }

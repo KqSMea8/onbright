@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bright.apollo.common.entity.TScene;
 import com.bright.apollo.enums.CMDEnum;
+import com.bright.apollo.enums.ErrorEnum;
 import com.bright.apollo.enums.SceneTypeEnum;
 import com.bright.apollo.request.OboxDTO;
 import com.bright.apollo.request.RequestParam;
@@ -392,25 +393,38 @@ public class CommonController {
 		} else if (CMDEnum.query_device_status_history.toString().equals(cmdEnum.toString())) {
 			String serialId = requestParam.getValue("serialId");
 			String type = requestParam.getValue("type");
-			//00
+			// 00
 			String start = requestParam.getValue("start");
 			String count = requestParam.getValue("count");
-			//01
+			// 01
 			String from = requestParam.getValue("from_data");
 			String to = requestParam.getValue("to_data");
 			if (!StringUtils.isEmpty(serialId) && !StringUtils.isEmpty(type)) {
-				return facadeController.queryDeviceStatusHistory(serialId,type,start,count,from,to);
+				return facadeController.queryDeviceStatusHistory(serialId, type, start, count, from, to);
 			}
-		}else if (CMDEnum.get_status.toString().equals(cmdEnum.toString())) {
+		} else if (CMDEnum.get_status.toString().equals(cmdEnum.toString())) {
 			String nodeString = requestParam.getValue("nodes");
 			if (!StringUtils.isEmpty(nodeString)) {
-				List<String> mList = (List<String>)ObjectUtils.fromJsonToObject(nodeString, List.class);
+				List<String> mList = (List<String>) ObjectUtils.fromJsonToObject(nodeString, List.class);
 				return facadeController.queryStatus(mList);
 			}
-		}else if (CMDEnum.query_node_real_status.toString().equals(cmdEnum.toString())) {
+		} else if (CMDEnum.query_node_real_status.toString().equals(cmdEnum.toString())) {
 			String serialId = requestParam.getValue("serialId");
 			if (!StringUtils.isEmpty(serialId)) {
- 				return facadeController.queryNodeStatus(serialId);
+				return facadeController.queryNodeStatus(serialId);
+			}
+		} else if (CMDEnum.query_scenes.toString().equals(cmdEnum.toString())) {
+			String start = requestParam.getValue("start");
+			String count = requestParam.getValue("count");
+			return facadeController.queryScenes(start, count);
+		} else if (CMDEnum.query_scenenumber_by_addr.toString().equals(cmdEnum.toString())) {
+			String oboxSceneNumber = requestParam.getValue("obox_scene_number");
+			String oboxSerialId = requestParam.getValue("obox_serial_id");
+			if (!StringUtils.isEmpty(oboxSceneNumber)
+					&& !StringUtils.isEmpty(oboxSerialId)
+					&& NumberHelper.isNumeric(oboxSceneNumber)
+					&& Integer.parseInt(oboxSceneNumber)>0) {
+				return facadeController.querySceneNumberByAddr(oboxSceneNumber,oboxSerialId);
 			}
 		}
 		res = new ResponseObject();

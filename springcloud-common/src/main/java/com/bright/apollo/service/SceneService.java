@@ -166,5 +166,21 @@ public interface SceneService extends BasicService{
 	 * @Description:  
 	 */
 	public TScene getTSceneByOboxSerialIdAndOboxSceneNumber(String oboxSerialId, Integer oboxSceneNumber);
+
+	/**  
+	 * @param userId
+	 * @return  
+	 * @Description:  
+	 */
+	public List<TScene> getSceneByUserId(Integer userId);
+
+	/**  
+	 * @param userId
+	 * @param start
+	 * @param count
+	 * @return  
+	 * @Description:  
+	 */
+	public List<TScene> getSceneByUserIdAndPage(Integer userId, int start, int count);
  
 }

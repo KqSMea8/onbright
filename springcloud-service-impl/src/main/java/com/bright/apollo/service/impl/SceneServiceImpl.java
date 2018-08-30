@@ -411,4 +411,22 @@ public class SceneServiceImpl implements SceneService {
 		return sceneMapper.getTSceneByOboxSerialIdAndOboxSceneNumber(oboxSerialId,oboxSceneNumber);
 	}
 
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.SceneService#getSceneByUserId(java.lang.Integer)  
+	 */
+	@Override
+	public List<TScene> getSceneByUserId(Integer userId) {
+  
+		return sceneMapper.getSceneByUserId(userId);
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.SceneService#getSceneByUserIdAndPage(java.lang.Integer, int, int)  
+	 */
+	@Override
+	public List<TScene> getSceneByUserIdAndPage(Integer userId, int start, int count) {
+		 
+		return sceneMapper.getSceneByUserIdAndPage(userId,start,count);
+	}
+
 }

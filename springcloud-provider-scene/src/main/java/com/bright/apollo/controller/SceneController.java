@@ -580,6 +580,50 @@ public class SceneController {
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
-
+	}
+	/**  
+	 * @param userId
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/getSceneByUserId/{userId}", method = RequestMethod.GET)
+	ResponseObject<List<TScene>> getSceneByUserId(@PathVariable(value = "userId")Integer userId){
+		ResponseObject<List<TScene>> res = new ResponseObject<List<TScene>>();
+		try {
+			res.setData(sceneService.getSceneByUserId(userId));
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+ 		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("===getSceneConditionsBySceneNumberAndConditionGroup error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	/**  
+	 * @param userId
+	 * @param start
+	 * @param count
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/getSceneByUserIdAndPage/{userId}/{start}/{count}", method = RequestMethod.GET)
+	ResponseObject<List<TScene>> getSceneByUserIdAndPage(@PathVariable(value = "userId")Integer userId,
+			@PathVariable(value = "start")int start, 
+			@PathVariable(value = "count")int count){
+		ResponseObject<List<TScene>> res = new ResponseObject<List<TScene>>();
+		try {
+			res.setData(sceneService.getSceneByUserIdAndPage(userId,start,count));
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+ 		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("===getSceneConditionsBySceneNumberAndConditionGroup error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	
 	}
 }

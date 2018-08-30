@@ -293,6 +293,22 @@ public class SceneDTO  implements Serializable{
 		return "SceneDTO [actions=" + actions + ", conditions=" + conditions
 				+ "]";
 	}
-	
+	public SceneDTO(TScene scene) {
+		setOboxSerialId(scene.getOboxSerialId());
+		setSceneNumber(scene.getSceneNumber());
+		setOboxSceneNumber(scene.getOboxSceneNumber());
+		setMsgAlter(scene.getMsgAlter());
+		setSceneGroup(scene.getSceneGroup());
+		setSceneName(scene.getSceneName());
+		setSceneType(scene.getSceneType());
+		setSceneStatus(scene.getSceneStatus());
+	}
+
+	/**  
+	 *   
+	 */
+	public SceneDTO() {
+		super();
+	}
 
 }
