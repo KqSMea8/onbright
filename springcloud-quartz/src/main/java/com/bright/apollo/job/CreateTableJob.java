@@ -1,7 +1,6 @@
 package com.bright.apollo.job;
 
 import java.util.Date;
-import java.util.List;
 
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -39,19 +38,19 @@ public class CreateTableJob implements Job {
 			String nowMonth = DateHelper.formatDate(new Date().getTime(), DateHelper.FORMATMONTH);
 			String nextMonth = DateHelper.formatDate(DateHelper.getTomorrow(), DateHelper.FORMATMONTH);
 			if (!nowMonth.equals(nextMonth)) {
-				logger.info("====create t_device_status====");
-				createTable(SubTableConstant.T_DEVICE_STATUS, SubTableConstant.T_DEVICE_STATUS_SUFFIX, nextMonth, "");
+				//logger.info("====create t_device_status====");
+				//createTable(SubTableConstant.T_DEVICE_STATUS, SubTableConstant.T_DEVICE_STATUS_SUFFIX, nextMonth, "");
 				logger.info("====create t_user_operation====");
 				createTable(SubTableConstant.T_USER_OPERATION, SubTableConstant.T_USER_OPERATION_SUFFIX, nextMonth, "");
-				logger.info("====create t_device_status_merge====");
-				feignUserClient.dropTable(SubTableConstant.T_DEVICE_STATUS_MERGE);
+				//logger.info("====create t_device_status_merge====");
+				//feignUserClient.dropTable(SubTableConstant.T_DEVICE_STATUS_MERGE);
 				// CreateTableLogBussiness
 				// .dropTable(SubTableConstant.T_DEVICE_STATUS_MERGE);
-				ResponseObject<List<TCreateTableLog>> createTableLogRes = feignUserClient
-						.listCreateTableLogByNameWithLike(SubTableConstant.T_DEVICE_STATUS);
+				//ResponseObject<List<TCreateTableLog>> createTableLogRes = feignUserClient
+				//		.listCreateTableLogByNameWithLike(SubTableConstant.T_DEVICE_STATUS);
 				// List<TCreateTableLog> list = CreateTableLogBussiness
 				// .listCreateTableLogByNameWithLike(SubTableConstant.T_DEVICE_STATUS);
-				if (createTableLogRes != null && createTableLogRes.getData() != null
+				/*if (createTableLogRes != null && createTableLogRes.getData() != null
 						&& createTableLogRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()) {
 					// if (list != null && list.size() > 0) {
 					List<TCreateTableLog> list = createTableLogRes.getData();
@@ -62,7 +61,7 @@ public class CreateTableJob implements Job {
 					String str = auxiliary.toString().substring(0, auxiliary.toString().length() - 1)
 							+ ") INSERT_METHOD=LAST";
 					createTable(SubTableConstant.T_DEVICE_STATUS_MERGE, "", "", str);
-				}
+				}*/
 			}
 		} catch (Exception e) {
 			logger.error("===create table error===");

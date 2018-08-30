@@ -40,4 +40,10 @@ public interface DeviceStatusService {
 	 */
 	List<TDeviceStatus> queryDeviceStatusByDataNoGroup(String serialId, long from, long to);
 
+	/**  
+	 * @param tDeviceStatus  
+	 * @Description:  
+	 */
+	void addDeviceStatus(TDeviceStatus tDeviceStatus);
+
 }

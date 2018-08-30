@@ -2,6 +2,7 @@ package com.bright.apollo.dao.device.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
@@ -10,6 +11,7 @@ import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
 
 import com.bright.apollo.common.entity.TDeviceStatus;
+import com.bright.apollo.dao.device.sqlProvider.DeviceStatusSqlProvider;
 
 /**
  * @Title:
@@ -29,13 +31,13 @@ public interface TDeviceStatusServiceMapper {
 	 * @return
 	 * @Description:
 	 */
-	@Select("select device_state,last_op_time from ${tableName}"
+	@Select("select device_state,last_op_time from t_device_status"
 			+ "  where device_serial_id=#{serialId} order by last_op_time desc limit #{start},#{count}")
 	@Results(value = { @Result(property = "id", column = "id"),
 			@Result(property = "deviceSerialId", column = "device_serial_id"),
 			@Result(property = "deviceState", column = "device_state"),
 			@Result(property = "lastOpTime", column = "last_op_time") })
-	List<TDeviceStatus> queryDeviceStatusByCount(@Param("tableName") String tableName,
+	List<TDeviceStatus> queryDeviceStatusByCount( 
 			@Param("serialId") String serialId, @Param("start") int start, @Param("count") int count);
 
 	/**
@@ -71,5 +73,13 @@ public interface TDeviceStatusServiceMapper {
 			@Result(property = "lastOpTime", column = "last_op_time") })
 	List<TDeviceStatus> queryDeviceStatusByDataNoGroup(@Param("serialId") String serialId, @Param("from") long from,
 			@Param("to") long to);
+
+	/**  
+	 * @param tDeviceStatus
+	 * @param tDeviceStatusMonth  
+	 * @Description:  
+	 */
+	@InsertProvider(type = DeviceStatusSqlProvider.class, method = "addDeviceStatus")
+	void addDeviceStatus(TDeviceStatus tDeviceStatus);
 
 }

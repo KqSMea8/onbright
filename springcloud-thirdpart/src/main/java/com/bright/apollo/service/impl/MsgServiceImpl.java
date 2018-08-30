@@ -161,6 +161,22 @@ public class MsgServiceImpl implements MsgService {
 		return textEntity;
 	}
 
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.MsgService#sendAlter(java.lang.String, java.lang.String)  
+	 */
+	@Override
+	public String sendAlter(String sceneName, String phone) {
+		Client client = Client.create();
+		client.addFilter(new HTTPBasicAuthFilter("api", appKey));
+		WebResource webResource = client.resource(send);
+		MultivaluedMapImpl formData = new MultivaluedMapImpl();
+		formData.add("mobile",phone);
+		formData.add("message", sceneName+",请注意！【昂宝电子】");
+		ClientResponse response = webResource.type(MediaType.APPLICATION_FORM_URLENCODED).post(ClientResponse.class,formData);
+		String textEntity = response.getEntity(String.class);
+		return textEntity;
+	}
+
  
 
 }

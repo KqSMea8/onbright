@@ -9,6 +9,7 @@ import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.common.entity.TScene;
@@ -19,7 +20,7 @@ import com.bright.apollo.feign.FeignDeviceClient;
 import com.bright.apollo.feign.FeignSceneClient;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
-import com.zz.common.util.StringUtils;
+ 
 
 /**
  * @Title:
@@ -57,6 +58,7 @@ public class TimeJob implements Job {
 				if (sceneRes == null || sceneRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()
 						|| sceneRes.getData() == null || sceneRes.getData().getSceneStatus() == 0
 						|| sceneRes.getData().getSceneRun() == 1) {
+					log.info("====scene not exist====");
 					return;
 				}
 				TScene tScene = sceneRes.getData();
@@ -66,6 +68,7 @@ public class TimeJob implements Job {
 				if (sceneConditionsRes != null && sceneConditionsRes.getData() != null
 						&& sceneConditionsRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()
 						&& sceneConditionsRes.getData().size() == 1) {
+					log.info("====condition size one====");
 					tScene.setSceneRun((byte) 1);
 					feignSceneClient.updateScene(tScene);
 					feignAliClient.addSceneAction(tScene.getSceneNumber());
@@ -85,7 +88,7 @@ public class TimeJob implements Job {
 							// .queryDeviceConfigBySerialID(tSceneCondition2.getSerialId());
 							if (deviceRes != null && deviceRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()
 									&& deviceRes.getData() != null) {
-								// if (oboxDeviceConfig != null) {
+								log.info("====condition size mutile match start====");
 								String cond = tSceneCondition2.getCond();
 								for (int i = 0; i < cond.length(); i += 4) {
 									int index = Integer.parseInt(cond.substring(i, i + 2), 16);
@@ -148,6 +151,7 @@ public class TimeJob implements Job {
 						}
 					}
 					if (matchCon) {
+						log.info("====condition size mutile match true====");
 						ResponseObject<List<TSceneAction>> sceneActionRes = feignSceneClient
 								.getSceneActionsBySceneNumber(Integer.parseInt(sceneNumber));
 						// List<TSceneAction> tSceneActions = SceneBusiness

@@ -300,5 +300,13 @@ public class UserServiceImpl implements UserService {
  		return userMapper.addUser(mobile,pwd);
 	}
 
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.UserService#queryUserBySceneNumber(java.lang.Integer)  
+	 */
+	@Override
+	public List<TUser> queryUserBySceneNumber(Integer sceneNumber) {
+ 		return userMapper.queryUserBySceneNumber(sceneNumber);
+	}
+
 
 }

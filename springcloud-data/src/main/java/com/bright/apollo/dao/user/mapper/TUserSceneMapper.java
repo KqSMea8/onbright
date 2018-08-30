@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +21,11 @@ public interface TUserSceneMapper {
     void deleteUserSceneBySceneNum(@Param("sceneNumber") int sceneNumber);
 
     @Select("select * from t_user_scene where scene_number = #{sceneNumber}")
+    @Results(value = {
+            @Result(property = "userId",column = "user_id"),
+            @Result(property = "sceneNumber",column = "scene_number"),
+            @Result(property = "lastOpTime",column = "last_op_time")
+    })
     List<TUserScene> getUserSceneBySceneNum(@Param("sceneNumber") int sceneNumber);
 
 	/**  

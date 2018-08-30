@@ -35,5 +35,12 @@ public interface MsgService {
 	 */
 	String sendCode(String mobile, String validateCode);
 
+	/**  
+	 * @param sceneName
+	 * @param userName  
+	 * @Description:  
+	 */
+	String sendAlter(String sceneName, String phone);
+
 	 
 }
