@@ -49,7 +49,7 @@ public interface TUserMapper{
 	 * @return  
 	 * @Description:  
 	 */
-    @Select("select a.*,"
+    @Select("select a.*"
     		+ " from t_user a ,t_user_scene b where b.scene_number=#{sceneNumber} and"
     		+ " b.user_id=a.user_id")
     @Results(value = {
