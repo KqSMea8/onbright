@@ -51,7 +51,7 @@ public interface TUserMapper{
 	 */
     @Select("select a.*"
     		+ " from t_user a ,t_user_scene b where b.scene_number=#{sceneNumber} and"
-    		+ " b.user_id=a.user_id")
+    		+ " b.user_id=a.id")
     @Results(value = {
             @Result(property = "userName",column = "user_name"),
             @Result(property = "id",column = "id"),
