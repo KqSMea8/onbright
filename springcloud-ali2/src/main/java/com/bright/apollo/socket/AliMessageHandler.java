@@ -1,28 +1,37 @@
 package com.bright.apollo.socket;
 
 import java.util.Calendar;
+import java.util.List;
+import java.util.Set;
 import java.util.TimeZone;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 import org.apache.commons.codec.binary.Base64;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import com.aliyun.mns.model.Message;
+import com.bright.apollo.common.entity.PushMessage;
 import com.bright.apollo.common.entity.TAliDevice;
 import com.bright.apollo.common.entity.TAliDeviceUS;
 import com.bright.apollo.common.entity.TObox;
+import com.bright.apollo.common.entity.TUserObox;
 import com.bright.apollo.enums.ALIDevTypeEnum;
 import com.bright.apollo.enums.AliRegionEnum;
 import com.bright.apollo.enums.CMDEnum;
+import com.bright.apollo.enums.PushMessageType;
 import com.bright.apollo.handler.CMDHandlerManager;
 import com.bright.apollo.handler.CommandHandler;
 import com.bright.apollo.service.AliDeviceService;
 import com.bright.apollo.service.OboxService;
+import com.bright.apollo.service.PushService;
 import com.bright.apollo.service.TopicServer;
+import com.bright.apollo.service.UserOboxService;
 import com.bright.apollo.tool.ByteHelper;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
@@ -49,7 +58,12 @@ public class AliMessageHandler {
 	private CMDHandlerManager cmdHandlerManager;
 	@Autowired
 	private CommandHandler commandHandler;
-
+	@Autowired
+	@Lazy
+	private UserOboxService userOboxService;
+	@Autowired
+	@Lazy
+	private PushService pushservice;
 	/**
 	 * @param message
 	 * @Description:
@@ -89,6 +103,7 @@ public class AliMessageHandler {
 								dbObox.setOboxStatus((byte) 0);
 								// dbObox.setOboxIP("0.0.0.0");
 								oboxService.update(dbObox);
+								pushMessage( dbObox);
 							}
 						} else {
 							TAliDeviceUS tAliDeviceUS = aliDeviceService.getAliUSDeviceByProductKeyAndDeviceName(
@@ -107,6 +122,7 @@ public class AliMessageHandler {
 									dbObox.setOboxStatus((byte) 0);
 									// dbObox.setOboxIP("0.0.0.0");
 									oboxService.update(dbObox);
+									pushMessage( dbObox);
 								}
 							}
 						}
@@ -206,6 +222,30 @@ public class AliMessageHandler {
  			logger.info("------ MNService WorkerFunc Exception ------" + e.getMessage());
 		}
 
+	}
+
+	/**  
+	 * @param dbObox  
+	 * @Description:  
+	 */
+	private void pushMessage(TObox dbObox) {
+
+		if(org.springframework.util.StringUtils.isEmpty(dbObox))
+			return;
+		logger.info("===pushMessage===:" + dbObox.toString());
+ 		PushMessage pushMessage;
+		pushMessage = new PushMessage();
+		pushMessage.setSerialId(dbObox.getOboxSerialId());
+		pushMessage.setType(PushMessageType.OBOX_ONLINE.getValue());
+		pushMessage.setOnLine(dbObox.getOboxStatus() == 0 ? false : true);
+		List<TUserObox> list = userOboxService.getUserOboxBySerialId(dbObox.getOboxSerialId());
+		Set<Integer> setuser=new ConcurrentSkipListSet<Integer>();
+  	  	for(TUserObox userobox:list){
+  		  setuser.add(userobox.getUserId());
+  	  }
+  	  pushservice.pushToApp(pushMessage, setuser);
+	
+		
 	}
 
 }
