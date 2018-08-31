@@ -195,9 +195,9 @@ public class SceneActionThreadPool {
 							byte[] sBytes = ByteHelper.hexStringToBytes(tSceneAction.getAction());
 							System.arraycopy(sBytes, 0, bodyBytes, 7, sBytes.length);
 							if (topicServer != null) {
-								TimeUnit.MILLISECONDS.sleep(100);
 								topicServer.pubTopic(CMDEnum.setting_node_status, bodyBytes,
 										oboxDeviceConfig.getOboxSerialId());
+								TimeUnit.MILLISECONDS.sleep(350);
 							}
 						}
 					}

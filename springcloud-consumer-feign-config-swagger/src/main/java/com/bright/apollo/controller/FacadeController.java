@@ -2251,7 +2251,7 @@ public class FacadeController extends BaseController {
 				map.put("obox_scene_number", scene.getOboxSceneNumber());
 				map.put("obox_serial_id", oboxSerialId);
 				// jsonObject.addProperty("obox_serial_id",oboxSerialId);
-				map.put("scene_status", "02");
+				map.put("scene_status", sceneStatus);
 				// jsonObject.addProperty("scene_status", sceneStatus);
 				// return jsonObject;
 				res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
@@ -2259,7 +2259,7 @@ public class FacadeController extends BaseController {
 				res.setData(map);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("===error msg:"+e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}

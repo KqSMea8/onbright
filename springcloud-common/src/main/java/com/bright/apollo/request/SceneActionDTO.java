@@ -23,57 +23,69 @@ public class SceneActionDTO implements Serializable {
 
 	@Expose
 	@SerializedName("action")
+	@JsonProperty("action")
 	private java.lang.String action;//
 
 	@Expose
 	@SerializedName("node_type")
+	@JsonProperty("node_type")
 	private java.lang.String nodeType;//
 
 	@Expose
 	@SerializedName("actionName")
+	@JsonProperty("actionName")
 	private java.lang.String actionName;//
 
 	@Expose
 	@SerializedName("serialId")
+	@JsonProperty("serialId")
 	private java.lang.String deviceSerialId;// remark:;length:10; not
 											// null,default:null
 
 	@Expose
 	@SerializedName("obox_serial_id")
+	@JsonProperty("obox_serial_id")
 	private java.lang.String oboxSerialId;// remark:;length:128; not
 											// null,default:null
 
 	@Expose
 	@SerializedName("addr")
+	@JsonProperty("addr")
 	private java.lang.String deviceRfAddr;// remark:;length:128; not
 											// null,default:null
 
 	@Expose
 	@SerializedName("groupAddr")
+	@JsonProperty("groupAddr")
 	private java.lang.String oboxGroupAddr;// remark:;length:128; not
 											// null,default:null
 
 	@Expose
 	@SerializedName("group_id")
+	@JsonProperty("group_id")
 	private java.lang.String groupId;// remark:;length:128; not
 										// null,default:null
 
 	@Expose
 	@SerializedName("device_type")
+	@JsonProperty("device_type")
 	private java.lang.String deviceType;// remark:;length:128; not
 										// null,default:null
 
 	@SerializedName("device_child_type")
+	@JsonProperty("device_child_type")
 	private java.lang.String deviceChildType;// remark:;length:128; not
 												// null,default:null
 
 	@Expose
 	@SerializedName("scene_number")
+	@JsonProperty("scene_number")
 	private java.lang.Integer sceneNumber;// remark:;length:128; not
 											// null,default:null
 
 	@Expose
 	@SerializedName("preSet")
+	@JsonProperty("preSet")
 	private java.lang.Integer preSet;// remark:;length:128; not
 										// null,default:null
 
