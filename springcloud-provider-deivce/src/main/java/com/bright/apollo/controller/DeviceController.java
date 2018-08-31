@@ -407,7 +407,7 @@ public class DeviceController {
 	 * @return
 	 * @Description:
 	 */
-	@RequestMapping(value = "/device/getDeviceStatusByDataNoGroup/{serialId}/{from}/{to}", method = RequestMethod.GET)
+	@RequestMapping(value = "/getDeviceStatusByDataNoGroup/{serialId}/{from}/{to}", method = RequestMethod.GET)
 	ResponseObject<List<TDeviceStatus>> getDeviceStatusByDataNoGroup(@PathVariable(value = "serialId") String serialId,
 			@PathVariable(value = "from") long from, @PathVariable(value = "to") long to){
 		ResponseObject<List<TDeviceStatus>> res = new ResponseObject<List<TDeviceStatus>>();
