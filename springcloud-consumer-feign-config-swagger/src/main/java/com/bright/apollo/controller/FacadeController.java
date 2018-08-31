@@ -726,7 +726,8 @@ public class FacadeController extends BaseController {
 				return res;
 			}
 			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
-			if (resUser==null||resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus() || resUser.getData() == null) {
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
 				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
 				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
 				return res;
@@ -1965,22 +1966,18 @@ public class FacadeController extends BaseController {
 				ResponseObject<List<TOboxDeviceConfig>> resDevices = feignDeviceClient
 						.getDeviceTypeByUser(resUser.getData().getId());
 				if (resDevices != null && resDevices.getStatus() == ResponseEnum.SelectSuccess.getStatus()) {
-					if (resDevices.getData() == null || resDevices.getData().size() <= 0) {
-						res.setStatus(ResponseEnum.SelectSuccess.getStatus());
-						res.setMessage(ResponseEnum.SelectSuccess.getMsg());
-						res.setData(tCounts);
-						return res;
-					}
-					List<TOboxDeviceConfig> list = resDevices.getData();
-					for (TOboxDeviceConfig tOboxDeviceConfig : list) {
-						ResponseObject<List<TOboxDeviceConfig>> deviceConfigs = feignDeviceClient
-								.getDevciesByUserIdAndType(resUser.getData().getId(),
-										tOboxDeviceConfig.getDeviceType());
-						if (deviceConfigs != null && deviceConfigs.getData() != null) {
-							DevcieCount count = new DevcieCount();
-							count.setType(tOboxDeviceConfig.getDeviceType());
-							count.setCount(deviceConfigs.getData().size());
-							tCounts.add(count);
+					if ( resDevices.getData().size() > 0) {
+						List<TOboxDeviceConfig> list = resDevices.getData();
+						for (TOboxDeviceConfig tOboxDeviceConfig : list) {
+							ResponseObject<List<TOboxDeviceConfig>> deviceConfigs = feignDeviceClient
+									.getDevciesByUserIdAndType(resUser.getData().getId(),
+											tOboxDeviceConfig.getDeviceType());
+							if (deviceConfigs != null && deviceConfigs.getData() != null) {
+								DevcieCount count = new DevcieCount();
+								count.setType(tOboxDeviceConfig.getDeviceType());
+								count.setCount(deviceConfigs.getData().size());
+								tCounts.add(count);
+							}
 						}
 					}
 					ResponseObject<List<TObox>> oboxRes = feignOboxClient.getOboxByUser(resUser.getData().getId());
@@ -1990,20 +1987,8 @@ public class FacadeController extends BaseController {
 						count.setCount(oboxRes.getData().size());
 						tCounts.add(count);
 					}
-					/*
-					 * TCount cameraCount =
-					 * CameraBusiness.queryYSCameraCountByLicense(user.
-					 * getLicense()); if (cameraCount != null) { JsonObject
-					 * object = new JsonObject(); object.addProperty("type",
-					 * DeviceTypeEnum.camera.getValue());
-					 * object.addProperty("count", cameraCount.getCount());
-					 * devices.add(object); }
-					 */
-					// ResponseObject<List<TYSCamera>> cameraRes =
-					// feignDeviceClient.getYSCameraByUserId(resUser.getData().getId());
 					res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 					res.setMessage(ResponseEnum.SelectSuccess.getMsg());
-
 					res.setData(tCounts);
 				}
 			} else {
