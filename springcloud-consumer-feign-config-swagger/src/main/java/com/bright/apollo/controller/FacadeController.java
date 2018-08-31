@@ -719,6 +719,18 @@ public class FacadeController extends BaseController {
 			if (!StringUtils.isEmpty(sceneGroup)) {
 				tScene.setSceneGroup(sceneGroup);
 			}
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser==null||resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus() || resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
 			if (!StringUtils.isEmpty(sceneName) && !StringUtils.isEmpty(sceneType)
 					&& !sceneType.equals(SceneTypeEnum.server.getValue())) {
 				String oboxSerialId = sceneDTO.getOboxSerialId();
@@ -779,8 +791,13 @@ public class FacadeController extends BaseController {
 				if (dbScene == null) {
 					ResponseObject<TScene> dbSceneRes = feignSceneClient
 							.getScenesByOboxSerialIdAndOboxSceneNumber(oboxSerialId, oboxSceneNumber);
-					if (dbSceneRes != null)
+					if (dbSceneRes != null) {
 						dbScene = dbSceneRes.getData();
+						TUserScene tUserScene = new TUserScene();
+						tUserScene.setSceneNumber(dbScene.getSceneNumber());
+						tUserScene.setUserId(resUser.getData().getId());
+						feignUserClient.addUserScene(tUserScene);
+					}
 				}
 				tScene.setOboxSceneNumber(oboxSceneNumber);
 				tScene.setSceneName(sceneName);
@@ -2259,7 +2276,7 @@ public class FacadeController extends BaseController {
 				res.setData(map);
 			}
 		} catch (Exception e) {
-			logger.error("===error msg:"+e.getMessage());
+			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
@@ -4481,7 +4498,8 @@ public class FacadeController extends BaseController {
 	@ApiOperation(value = "queryScenes", httpMethod = "GET", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/queryScenes/{start}/{count}", method = RequestMethod.GET)
-	public ResponseObject<Map<String, Object>> queryScenes(@PathVariable(value = "start", required = false) String start,
+	public ResponseObject<Map<String, Object>> queryScenes(
+			@PathVariable(value = "start", required = false) String start,
 			@PathVariable(value = "count", required = false) String count) {
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		try {
@@ -4682,8 +4700,8 @@ public class FacadeController extends BaseController {
 					scenes.add(sceneDTO);
 				}
 			}
-			if(!scenes.isEmpty()){
-				Map<String, Object> map=new HashMap<String, Object>();
+			if (!scenes.isEmpty()) {
+				Map<String, Object> map = new HashMap<String, Object>();
 				map.put("scenes", scenes);
 				res.setData(map);
 			}
@@ -4724,17 +4742,16 @@ public class FacadeController extends BaseController {
 				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
 				return res;
 			}
-			ResponseObject<TScene> sceneRes = feignSceneClient.getScenesByOboxSerialIdAndOboxSceneNumber(oboxSerialId, Integer.parseInt(oboxSceneNumber));
-			if (sceneRes == null||sceneRes.getStatus()!=ResponseEnum.SelectSuccess.getStatus()||
-					sceneRes.getData()==null
-					) {
-				logger.error("===oboxSerialId:" + oboxSerialId + " ===oboxSceneNumber:"
-						+ oboxSceneNumber);
+			ResponseObject<TScene> sceneRes = feignSceneClient.getScenesByOboxSerialIdAndOboxSceneNumber(oboxSerialId,
+					Integer.parseInt(oboxSceneNumber));
+			if (sceneRes == null || sceneRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| sceneRes.getData() == null) {
+				logger.error("===oboxSerialId:" + oboxSerialId + " ===oboxSceneNumber:" + oboxSceneNumber);
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
 				return res;
 			}
-			Map<String, Object> map=new HashMap<String, Object>();
+			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("scene_number", sceneRes.getData().getSceneNumber());
 			res.setData(map);
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
