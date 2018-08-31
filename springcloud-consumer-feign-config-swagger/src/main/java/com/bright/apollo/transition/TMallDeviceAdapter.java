@@ -50,7 +50,21 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
 
     private String model;
 
-    private String icon = "https://git.cn-hangzhou.oss-cdn.aliyun-inc.com/image.png";
+    public static String lighticon = "https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png";
+
+    public static String singleOutleticon = "https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/singleOut.png";
+
+    public static String mutipleOutleticon = "https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/mutipleOutlet.png";
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    private String icon = "https://git.cn-hangzhou.oss-cdn.aliyun-inc.com/uploads/image.png";
 
     public JSONArray getProperties() {
         return properties;
@@ -116,13 +130,6 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         this.model = model;
     }
 
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
 
     private void propertiesTransition(Map<String,Object> dfMap,String[] properties){
         String[] propertyString = null;
@@ -152,11 +159,36 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         tMallDeviceAdapter.setDeviceId(oboxDeviceConfig.getDeviceSerialId());
         tMallDeviceAdapter.setDeviceName(oboxDeviceConfig.getDeviceId());
         tMallDeviceAdapter.setDeviceType(oboxDeviceConfig.getDeviceType());
-        tMallDeviceAdapter.setBrand("XXX");
-        tMallDeviceAdapter.setZone("XXX");
-        tMallDeviceAdapter.setModel("XXX");
-        tMallDeviceAdapter.setIcon(icon);
+        tMallDeviceAdapter.setBrand("on-bright");
+        tMallDeviceAdapter.setZone("");
+        String deviceType = oboxDeviceConfig.getDeviceType();
+        String childType = oboxDeviceConfig.getDeviceChildType();
+        if(deviceType.equals("light")){
+            tMallDeviceAdapter.setModel("灯");
+            tMallDeviceAdapter.setIcon(lighticon);
+        }else if(deviceType.equals("outlet")&&(childType.equals("01")||childType.equals("02"))){
+            tMallDeviceAdapter.setModel("单孔插座");
+            tMallDeviceAdapter.setIcon(singleOutleticon);
+        }else if(deviceType.equals("outlet")&&(childType.equals("17")||childType.equals("2b"))){
+            tMallDeviceAdapter.setModel("多孔插座");
+            tMallDeviceAdapter.setIcon(mutipleOutleticon);
+        }else{
+            tMallDeviceAdapter.setModel("");
+            tMallDeviceAdapter.setIcon(icon);
+        }
     }
+
+//    private void setMutipleOutLetExtends(TMallDeviceAdapter tMallDeviceAdapter,Mutipleswitch mutipleswitch){//3路开关配置3个单路开关
+//        for(int i=1;i<=3;i++){
+//            Singleswitch singleswitch = new Singleswitch();
+//            singleswitch.setDeviceId(mutipleswitch.getDeviceId()+"_"+i);
+//            singleswitch.setDeviceName(mutipleswitch.getDeviceName());
+//            singleswitch.setDeviceType("04");
+//            singleswitch.setModel("单孔插座");
+//            singleswitch.setIcon(singleOutleticon);
+//        }
+//
+//    }
 
     //设置灯设备动作和属性
     private void setLight(TMallDeviceAdapter tMallDeviceAdapter,String[] defaultActions,Map<String,Object> dfMap ){
@@ -223,13 +255,20 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         }else if(deviceType.equals("04")){//智能插座/开关
             oboxDeviceConfig.setDeviceType("outlet");
             propertiesTransition(dfMap,defaultProperties);
-            if(deviceChildType.equals("01")){//一路开关
+            if(deviceChildType.equals("01")||deviceChildType.equals("02")){//一路开关
                 Singleswitch singleswitch = new Singleswitch();
                 setProperty(singleswitch,oboxDeviceConfig);
                 singleswitch.setAction(defaultActions);
                 jsonArray.put(dfMap);
                 singleswitch.setProperties(jsonArray);
                 return singleswitch;
+            }else if(deviceChildType.equals("2b")||deviceChildType.equals("17")){//3路开关
+                Mutipleswitch mutipleswitch = new Mutipleswitch();
+                setProperty(mutipleswitch,oboxDeviceConfig);
+                mutipleswitch.setAction(defaultActions);
+                jsonArray.put(dfMap);
+                mutipleswitch.setProperties(jsonArray);
+                return mutipleswitch;
             }
         }else if(deviceType.equals("05")){//开合类设备
             propertiesTransition(dfMap,defaultProperties);

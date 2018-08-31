@@ -1,0 +1,102 @@
+2018-08-30 09:37:37,052 INFO (SpringApplication.java:597)- The following profiles are active: test
+2018-08-30 09:37:41,389 INFO (AuthorizationServerConfiguration.java:78)- ====== AuthorizationServerEndpointsConfigurer endpoints =====
+2018-08-30 09:37:41,404 INFO (AuthorizationServerConfiguration.java:97)-  ======================================= defaultTokenServices ====================== 
+2018-08-30 09:37:42,353 INFO (DefaultView.java:22)-  ====== addViewControllers ====== 
+2018-08-30 09:42:48,071 INFO (SpringApplication.java:597)- The following profiles are active: test
+2018-08-30 09:42:52,430 INFO (AuthorizationServerConfiguration.java:78)- ====== AuthorizationServerEndpointsConfigurer endpoints =====
+2018-08-30 09:42:52,444 INFO (AuthorizationServerConfiguration.java:97)-  ======================================= defaultTokenServices ====================== 
+2018-08-30 09:42:53,372 INFO (DefaultView.java:22)-  ====== addViewControllers ====== 
+2018-08-30 09:52:28,848 INFO (SpringApplication.java:597)- The following profiles are active: test
+2018-08-30 09:52:33,372 INFO (AuthorizationServerConfiguration.java:78)- ====== AuthorizationServerEndpointsConfigurer endpoints =====
+2018-08-30 09:52:33,386 INFO (AuthorizationServerConfiguration.java:97)-  ======================================= defaultTokenServices ====================== 
+2018-08-30 09:52:34,308 INFO (DefaultView.java:22)-  ====== addViewControllers ====== 
+2018-08-30 09:52:37,074 INFO (StartupInfoLogger.java:57)- Started ZuulApplication in 13.023 seconds (JVM running for 13.659)
+2018-08-30 09:57:54,449 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-30 09:57:54,459 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-30 09:57:54,498 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-30 09:59:12,649 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-30 09:59:12,651 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-30 09:59:12,680 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-30 09:59:33,178 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-30 09:59:33,180 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-30 09:59:33,209 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-30 10:00:04,809 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-30 10:00:04,810 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-30 10:00:04,854 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-30 10:00:54,684 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-30 10:00:54,685 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-30 10:00:54,713 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-30 10:08:39,347 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-30 10:08:39,349 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-30 10:08:39,385 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-30 10:35:22,033 INFO (SpringApplication.java:597)- The following profiles are active: test
+2018-08-30 10:35:26,531 INFO (AuthorizationServerConfiguration.java:78)- ====== AuthorizationServerEndpointsConfigurer endpoints =====
+2018-08-30 10:35:26,545 INFO (AuthorizationServerConfiguration.java:97)-  ======================================= defaultTokenServices ====================== 
+2018-08-30 10:35:27,500 INFO (DefaultView.java:22)-  ====== addViewControllers ====== 
+2018-08-30 10:35:55,601 INFO (SpringApplication.java:597)- The following profiles are active: test
+2018-08-30 10:35:59,964 INFO (AuthorizationServerConfiguration.java:78)- ====== AuthorizationServerEndpointsConfigurer endpoints =====
+2018-08-30 10:35:59,978 INFO (AuthorizationServerConfiguration.java:97)-  ======================================= defaultTokenServices ====================== 
+2018-08-30 10:36:00,917 INFO (DefaultView.java:22)-  ====== addViewControllers ====== 
+2018-08-30 10:36:03,714 INFO (StartupInfoLogger.java:57)- Started ZuulApplication in 12.026 seconds (JVM running for 12.635)
+2018-08-30 11:34:51,750 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-30 11:34:51,758 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-30 11:34:51,792 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-30 11:35:32,600 INFO (SpringApplication.java:597)- The following profiles are active: test
+2018-08-30 11:35:37,006 INFO (AuthorizationServerConfiguration.java:78)- ====== AuthorizationServerEndpointsConfigurer endpoints =====
+2018-08-30 11:35:37,020 INFO (AuthorizationServerConfiguration.java:97)-  ======================================= defaultTokenServices ====================== 
+2018-08-30 11:35:37,966 INFO (DefaultView.java:22)-  ====== addViewControllers ====== 
+2018-08-30 11:35:40,773 INFO (StartupInfoLogger.java:57)- Started ZuulApplication in 12.423 seconds (JVM running for 13.032)
+2018-08-30 11:36:51,515 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-30 11:36:51,526 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-30 11:36:51,560 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-30 11:41:55,554 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-30 11:41:55,556 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-30 11:41:55,585 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-30 11:56:56,451 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-30 11:56:56,453 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-30 11:56:56,481 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-30 11:57:54,882 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-30 11:57:54,884 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-30 11:57:54,917 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-30 12:12:08,201 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-30 12:12:08,203 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-30 12:12:08,231 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-30 12:12:35,151 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-30 12:12:35,152 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-30 12:12:35,181 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-30 14:46:52,097 INFO (SpringApplication.java:597)- The following profiles are active: test
+2018-08-30 14:46:56,396 INFO (AuthorizationServerConfiguration.java:78)- ====== AuthorizationServerEndpointsConfigurer endpoints =====
+2018-08-30 14:46:56,409 INFO (AuthorizationServerConfiguration.java:97)-  ======================================= defaultTokenServices ====================== 
+2018-08-30 14:46:57,326 INFO (DefaultView.java:22)-  ====== addViewControllers ====== 
+2018-08-30 14:47:00,060 INFO (StartupInfoLogger.java:57)- Started ZuulApplication in 12.018 seconds (JVM running for 12.672)
+2018-08-30 14:49:15,242 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-30 14:49:15,251 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 13042025784(String)
+2018-08-30 14:49:15,285 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-30 14:52:08,492 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-30 14:52:08,494 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-30 14:52:08,521 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-30 14:52:23,883 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-30 14:52:23,884 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-30 14:52:23,912 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-30 14:57:49,131 DEBUG (BaseJdbcLogger.java:159)- ==>  Preparing: select * from t_user where user_name=? 
+2018-08-30 14:57:49,133 DEBUG (BaseJdbcLogger.java:159)- ==> Parameters: 15879618946(String)
+2018-08-30 14:57:49,161 DEBUG (BaseJdbcLogger.java:159)- <==      Total: 1
+2018-08-30 18:03:20,775 INFO (SpringApplication.java:597)- The following profiles are active: test
+2018-08-30 18:03:29,894 INFO (AuthorizationServerConfiguration.java:78)- ====== AuthorizationServerEndpointsConfigurer endpoints =====
+2018-08-30 18:03:29,909 INFO (AuthorizationServerConfiguration.java:97)-  ======================================= defaultTokenServices ====================== 
+2018-08-30 18:03:30,827 INFO (DefaultView.java:22)-  ====== addViewControllers ====== 
+2018-08-30 18:04:02,072 INFO (SpringApplication.java:597)- The following profiles are active: test
+2018-08-30 18:04:11,264 INFO (AuthorizationServerConfiguration.java:78)- ====== AuthorizationServerEndpointsConfigurer endpoints =====
+2018-08-30 18:04:11,278 INFO (AuthorizationServerConfiguration.java:97)-  ======================================= defaultTokenServices ====================== 
+2018-08-30 18:04:12,221 INFO (DefaultView.java:22)-  ====== addViewControllers ====== 
+2018-08-30 18:04:15,023 INFO (StartupInfoLogger.java:57)- Started ZuulApplication in 20.62 seconds (JVM running for 21.387)
+2018-08-30 18:08:37,033 INFO (SpringApplication.java:597)- The following profiles are active: test
+2018-08-30 18:08:46,025 INFO (AuthorizationServerConfiguration.java:78)- ====== AuthorizationServerEndpointsConfigurer endpoints =====
+2018-08-30 18:08:46,039 INFO (AuthorizationServerConfiguration.java:97)-  ======================================= defaultTokenServices ====================== 
+2018-08-30 18:08:47,012 INFO (DefaultView.java:22)-  ====== addViewControllers ====== 
+2018-08-30 18:08:49,869 INFO (StartupInfoLogger.java:57)- Started ZuulApplication in 16.787 seconds (JVM running for 17.613)
+2018-08-30 18:11:26,162 INFO (SpringApplication.java:597)- The following profiles are active: test
+2018-08-30 18:11:35,827 INFO (AuthorizationServerConfiguration.java:78)- ====== AuthorizationServerEndpointsConfigurer endpoints =====
+2018-08-30 18:11:35,841 INFO (AuthorizationServerConfiguration.java:97)-  ======================================= defaultTokenServices ====================== 
+2018-08-30 18:11:36,760 INFO (DefaultView.java:22)-  ====== addViewControllers ====== 
+2018-08-30 18:11:39,502 INFO (StartupInfoLogger.java:57)- Started ZuulApplication in 17.856 seconds (JVM running for 18.8)

@@ -15,6 +15,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 import com.bright.apollo.common.entity.TUser;
+import com.bright.apollo.transition.Mutipleswitch;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
@@ -113,13 +114,11 @@ public class TmallController {
 			logger.info(" ====== username ====== "+user.getUsername());
 
 			logger.info(" ====== userId ====== "+tUser.getId());
-			ResponseObject<List<TOboxDeviceConfig>> responseObject = feignDeviceClient.getOboxDeviceConfigByUserId(429);//tUser.getId()
+			ResponseObject<List<TOboxDeviceConfig>> responseObject = feignDeviceClient.getOboxDeviceConfigByUserId(tUser.getId());//559
 			List<TOboxDeviceConfig> oboxDeviceConfigList = responseObject.getData();
 			JSONArray jsonArray = new JSONArray();
-			JSONObject extensionsMap = new JSONObject();
-			extensionsMap.put("extension1","");
-			extensionsMap.put("extension2","");
 
+			logger.info(" ======= oboxDeviceConfigList ======= "+oboxDeviceConfigList);
 			List<JSONObject> list = new ArrayList<JSONObject>();
 			for(TOboxDeviceConfig oboxDeviceConfig :oboxDeviceConfigList){
 				adapter = new TMallDeviceAdapter(oboxDeviceConfig,tMallTemplate);
@@ -127,20 +126,23 @@ public class TmallController {
 				logger.info("====== adapter ====== "+adapter);
 				JSONObject devices = new JSONObject();
 				if(adapter !=null&&!adapter.equals("")){
-					devices.put("deviceId",adapter.getDeviceId());
-					devices.put("deviceName",adapter.getDeviceName());
-					devices.put("deviceType",adapter.getDeviceType());
-					devices.put("zone",adapter.getZone());
-					devices.put("brand",adapter.getBrand());
-					devices.put("model",adapter.getModel());
-					devices.put("icon",adapter.getIcon());
-					devices.put("properties",adapter.getProperties());
-					devices.put("actions",adapter.getAction());
-					devices.put("extensions",extensionsMap);
+					setDeviceJson(devices,adapter);
 					list.add(devices);
 					System.out.println("list ====== "+list);
 				}
+			}
+			for(int i=0;i<list.size();i++){
+				JSONObject jsonObject = list.get(i);
+				String deviceType = (String)jsonObject.get("deviceType");
+				String model = (String)jsonObject.get("model");
+				if(deviceType.equals("outlet")&&model.equals("多孔插座")){
+					for(int j=1;j<=3;j++){
+						JSONObject devices = new JSONObject();
+						putChildrenDeviceValue(devices,jsonObject,j);
+						list.add(devices);
+					}
 
+				}
 			}
 			templateScan(list);//展示使用(日后可删除)
 			jsonArray.put(list);
@@ -205,6 +207,44 @@ public class TmallController {
 		}
 		logger.info("map ====== "+map);
 		return map.toString();
+	}
+
+	private void putDeviceValue(JSONObject devices,TMallDeviceAdapter adapter){
+		devices.put("deviceId",adapter.getDeviceId());
+		devices.put("deviceName",adapter.getDeviceName());
+		devices.put("deviceType",adapter.getDeviceType());
+		devices.put("zone",adapter.getZone());
+		devices.put("brand",adapter.getBrand());
+		devices.put("model",adapter.getModel());
+		devices.put("icon",adapter.getIcon());
+		devices.put("properties",adapter.getProperties());
+		devices.put("actions",adapter.getAction());
+	}
+
+	private void putChildrenDeviceValue(JSONObject devices,JSONObject outlet,Integer i ){
+		String deivceId = outlet.getString("deviceId");
+		JSONObject extensionsMap = new JSONObject();
+		extensionsMap.put("extension1","");
+		extensionsMap.put("extension2","");
+		extensionsMap.put("parentId",deivceId);
+		devices.put("deviceId",deivceId+"_"+i);
+		devices.put("deviceName","单孔插座");
+		devices.put("deviceType",outlet.getString("deviceType"));
+		devices.put("zone","");
+		devices.put("brand","on-bright");
+		devices.put("model","");
+		devices.put("icon",TMallDeviceAdapter.singleOutleticon);
+		devices.put("properties",outlet.get("properties"));
+		devices.put("actions",outlet.get("actions"));
+		devices.put("extensions",extensionsMap);
+	}
+
+	private void setDeviceJson(JSONObject devices,TMallDeviceAdapter adapter){
+		JSONObject extensionsMap = new JSONObject();
+		extensionsMap.put("extension1","");
+		extensionsMap.put("extension2","");
+		putDeviceValue(devices,adapter);
+		devices.put("extensions",extensionsMap);
 	}
 
 	private void templateScan(List<JSONObject> list ) throws JSONException {

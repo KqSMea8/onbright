@@ -1,0 +1,174 @@
+2018-08-30 09:36:09,410 INFO (SpringApplication.java:597)- The following profiles are active: test
+2018-08-30 09:36:18,549 INFO (StartupInfoLogger.java:57)- Started DeviceApplication in 13.176 seconds (JVM running for 13.74)
+2018-08-30 09:50:17,282 INFO (SpringApplication.java:597)- The following profiles are active: test
+2018-08-30 09:50:28,605 INFO (StartupInfoLogger.java:57)- Started DeviceApplication in 15.608 seconds (JVM running for 16.964)
+2018-08-30 10:44:18,743 INFO (DeviceController.java:191)-  ====== getOboxDeviceConfigByUserId ====== 
+2018-08-30 10:48:20,125 INFO (DeviceController.java:191)-  ====== getOboxDeviceConfigByUserId ====== 
+2018-08-30 14:45:08,746 INFO (SpringApplication.java:597)- The following profiles are active: test
+2018-08-30 14:45:17,836 INFO (StartupInfoLogger.java:57)- Started DeviceApplication in 13.782 seconds (JVM running for 14.33)
+2018-08-30 14:59:25,392 ERROR (DeviceController.java:375)- ===error msg:
+### Error querying database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+### The error may exist in com/bright/apollo/dao/device/mapper/TDeviceStatusServiceMapper.java (best guess)
+### The error may involve com.bright.apollo.dao.device.mapper.TDeviceStatusServiceMapper.queryDeviceStatusByCount-Inline
+### The error occurred while setting parameters
+### SQL: select device_state,last_op_time from t_device_status_merge  where device_serial_id=? order by last_op_time desc limit ?,?
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+; bad SQL grammar []; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+2018-08-30 14:59:27,428 ERROR (DeviceController.java:375)- ===error msg:
+### Error querying database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+### The error may exist in com/bright/apollo/dao/device/mapper/TDeviceStatusServiceMapper.java (best guess)
+### The error may involve com.bright.apollo.dao.device.mapper.TDeviceStatusServiceMapper.queryDeviceStatusByCount-Inline
+### The error occurred while setting parameters
+### SQL: select device_state,last_op_time from t_device_status_merge  where device_serial_id=? order by last_op_time desc limit ?,?
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+; bad SQL grammar []; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+2018-08-30 14:59:28,695 ERROR (DeviceController.java:375)- ===error msg:
+### Error querying database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+### The error may exist in com/bright/apollo/dao/device/mapper/TDeviceStatusServiceMapper.java (best guess)
+### The error may involve com.bright.apollo.dao.device.mapper.TDeviceStatusServiceMapper.queryDeviceStatusByCount-Inline
+### The error occurred while setting parameters
+### SQL: select device_state,last_op_time from t_device_status_merge  where device_serial_id=? order by last_op_time desc limit ?,?
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+; bad SQL grammar []; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+2018-08-30 14:59:32,778 ERROR (DeviceController.java:375)- ===error msg:
+### Error querying database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+### The error may exist in com/bright/apollo/dao/device/mapper/TDeviceStatusServiceMapper.java (best guess)
+### The error may involve com.bright.apollo.dao.device.mapper.TDeviceStatusServiceMapper.queryDeviceStatusByCount-Inline
+### The error occurred while setting parameters
+### SQL: select device_state,last_op_time from t_device_status_merge  where device_serial_id=? order by last_op_time desc limit ?,?
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+; bad SQL grammar []; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+2018-08-30 14:59:46,852 ERROR (DeviceController.java:375)- ===error msg:
+### Error querying database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+### The error may exist in com/bright/apollo/dao/device/mapper/TDeviceStatusServiceMapper.java (best guess)
+### The error may involve com.bright.apollo.dao.device.mapper.TDeviceStatusServiceMapper.queryDeviceStatusByCount-Inline
+### The error occurred while setting parameters
+### SQL: select device_state,last_op_time from t_device_status_merge  where device_serial_id=? order by last_op_time desc limit ?,?
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+; bad SQL grammar []; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+2018-08-30 14:59:46,920 ERROR (DeviceController.java:375)- ===error msg:
+### Error querying database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+### The error may exist in com/bright/apollo/dao/device/mapper/TDeviceStatusServiceMapper.java (best guess)
+### The error may involve com.bright.apollo.dao.device.mapper.TDeviceStatusServiceMapper.queryDeviceStatusByCount-Inline
+### The error occurred while setting parameters
+### SQL: select device_state,last_op_time from t_device_status_merge  where device_serial_id=? order by last_op_time desc limit ?,?
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+; bad SQL grammar []; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+2018-08-30 15:02:49,432 ERROR (DeviceController.java:375)- ===error msg:
+### Error querying database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+### The error may exist in com/bright/apollo/dao/device/mapper/TDeviceStatusServiceMapper.java (best guess)
+### The error may involve com.bright.apollo.dao.device.mapper.TDeviceStatusServiceMapper.queryDeviceStatusByCount-Inline
+### The error occurred while setting parameters
+### SQL: select device_state,last_op_time from t_device_status_merge  where device_serial_id=? order by last_op_time desc limit ?,?
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+; bad SQL grammar []; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+2018-08-30 15:02:49,508 ERROR (DeviceController.java:375)- ===error msg:
+### Error querying database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+### The error may exist in com/bright/apollo/dao/device/mapper/TDeviceStatusServiceMapper.java (best guess)
+### The error may involve com.bright.apollo.dao.device.mapper.TDeviceStatusServiceMapper.queryDeviceStatusByCount-Inline
+### The error occurred while setting parameters
+### SQL: select device_state,last_op_time from t_device_status_merge  where device_serial_id=? order by last_op_time desc limit ?,?
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+; bad SQL grammar []; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+2018-08-30 15:05:42,231 ERROR (DeviceController.java:375)- ===error msg:
+### Error querying database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+### The error may exist in com/bright/apollo/dao/device/mapper/TDeviceStatusServiceMapper.java (best guess)
+### The error may involve com.bright.apollo.dao.device.mapper.TDeviceStatusServiceMapper.queryDeviceStatusByCount-Inline
+### The error occurred while setting parameters
+### SQL: select device_state,last_op_time from t_device_status_merge  where device_serial_id=? order by last_op_time desc limit ?,?
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+; bad SQL grammar []; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+2018-08-30 15:05:42,333 ERROR (DeviceController.java:375)- ===error msg:
+### Error querying database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+### The error may exist in com/bright/apollo/dao/device/mapper/TDeviceStatusServiceMapper.java (best guess)
+### The error may involve com.bright.apollo.dao.device.mapper.TDeviceStatusServiceMapper.queryDeviceStatusByCount-Inline
+### The error occurred while setting parameters
+### SQL: select device_state,last_op_time from t_device_status_merge  where device_serial_id=? order by last_op_time desc limit ?,?
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+; bad SQL grammar []; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+2018-08-30 15:06:29,984 ERROR (DeviceController.java:375)- ===error msg:
+### Error querying database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+### The error may exist in com/bright/apollo/dao/device/mapper/TDeviceStatusServiceMapper.java (best guess)
+### The error may involve com.bright.apollo.dao.device.mapper.TDeviceStatusServiceMapper.queryDeviceStatusByCount-Inline
+### The error occurred while setting parameters
+### SQL: select device_state,last_op_time from t_device_status_merge  where device_serial_id=? order by last_op_time desc limit ?,?
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+; bad SQL grammar []; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+2018-08-30 15:06:30,020 ERROR (DeviceController.java:375)- ===error msg:
+### Error querying database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+### The error may exist in com/bright/apollo/dao/device/mapper/TDeviceStatusServiceMapper.java (best guess)
+### The error may involve com.bright.apollo.dao.device.mapper.TDeviceStatusServiceMapper.queryDeviceStatusByCount-Inline
+### The error occurred while setting parameters
+### SQL: select device_state,last_op_time from t_device_status_merge  where device_serial_id=? order by last_op_time desc limit ?,?
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+; bad SQL grammar []; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+2018-08-30 15:11:08,873 ERROR (DeviceController.java:375)- ===error msg:
+### Error querying database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+### The error may exist in com/bright/apollo/dao/device/mapper/TDeviceStatusServiceMapper.java (best guess)
+### The error may involve com.bright.apollo.dao.device.mapper.TDeviceStatusServiceMapper.queryDeviceStatusByCount-Inline
+### The error occurred while setting parameters
+### SQL: select device_state,last_op_time from t_device_status_merge  where device_serial_id=? order by last_op_time desc limit ?,?
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+; bad SQL grammar []; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+2018-08-30 15:11:08,929 ERROR (DeviceController.java:375)- ===error msg:
+### Error querying database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+### The error may exist in com/bright/apollo/dao/device/mapper/TDeviceStatusServiceMapper.java (best guess)
+### The error may involve com.bright.apollo.dao.device.mapper.TDeviceStatusServiceMapper.queryDeviceStatusByCount-Inline
+### The error occurred while setting parameters
+### SQL: select device_state,last_op_time from t_device_status_merge  where device_serial_id=? order by last_op_time desc limit ?,?
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+; bad SQL grammar []; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+2018-08-30 15:11:33,403 ERROR (DeviceController.java:375)- ===error msg:
+### Error querying database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+### The error may exist in com/bright/apollo/dao/device/mapper/TDeviceStatusServiceMapper.java (best guess)
+### The error may involve com.bright.apollo.dao.device.mapper.TDeviceStatusServiceMapper.queryDeviceStatusByCount-Inline
+### The error occurred while setting parameters
+### SQL: select device_state,last_op_time from t_device_status_merge  where device_serial_id=? order by last_op_time desc limit ?,?
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+; bad SQL grammar []; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+2018-08-30 15:11:33,565 ERROR (DeviceController.java:375)- ===error msg:
+### Error querying database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+### The error may exist in com/bright/apollo/dao/device/mapper/TDeviceStatusServiceMapper.java (best guess)
+### The error may involve com.bright.apollo.dao.device.mapper.TDeviceStatusServiceMapper.queryDeviceStatusByCount-Inline
+### The error occurred while setting parameters
+### SQL: select device_state,last_op_time from t_device_status_merge  where device_serial_id=? order by last_op_time desc limit ?,?
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+; bad SQL grammar []; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+2018-08-30 15:13:31,276 ERROR (DeviceController.java:375)- ===error msg:
+### Error querying database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+### The error may exist in com/bright/apollo/dao/device/mapper/TDeviceStatusServiceMapper.java (best guess)
+### The error may involve com.bright.apollo.dao.device.mapper.TDeviceStatusServiceMapper.queryDeviceStatusByCount-Inline
+### The error occurred while setting parameters
+### SQL: select device_state,last_op_time from t_device_status_merge  where device_serial_id=? order by last_op_time desc limit ?,?
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+; bad SQL grammar []; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+2018-08-30 15:13:31,326 ERROR (DeviceController.java:375)- ===error msg:
+### Error querying database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+### The error may exist in com/bright/apollo/dao/device/mapper/TDeviceStatusServiceMapper.java (best guess)
+### The error may involve com.bright.apollo.dao.device.mapper.TDeviceStatusServiceMapper.queryDeviceStatusByCount-Inline
+### The error occurred while setting parameters
+### SQL: select device_state,last_op_time from t_device_status_merge  where device_serial_id=? order by last_op_time desc limit ?,?
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+; bad SQL grammar []; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+2018-08-30 15:13:57,480 ERROR (DeviceController.java:375)- ===error msg:
+### Error querying database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+### The error may exist in com/bright/apollo/dao/device/mapper/TDeviceStatusServiceMapper.java (best guess)
+### The error may involve com.bright.apollo.dao.device.mapper.TDeviceStatusServiceMapper.queryDeviceStatusByCount-Inline
+### The error occurred while setting parameters
+### SQL: select device_state,last_op_time from t_device_status_merge  where device_serial_id=? order by last_op_time desc limit ?,?
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+; bad SQL grammar []; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+2018-08-30 15:13:57,997 ERROR (DeviceController.java:375)- ===error msg:
+### Error querying database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+### The error may exist in com/bright/apollo/dao/device/mapper/TDeviceStatusServiceMapper.java (best guess)
+### The error may involve com.bright.apollo.dao.device.mapper.TDeviceStatusServiceMapper.queryDeviceStatusByCount-Inline
+### The error occurred while setting parameters
+### SQL: select device_state,last_op_time from t_device_status_merge  where device_serial_id=? order by last_op_time desc limit ?,?
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+; bad SQL grammar []; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'onbright_ali_new.t_device_status_merge' doesn't exist
+2018-08-30 17:44:24,197 INFO (DeviceController.java:191)-  ====== getOboxDeviceConfigByUserId ====== 
+2018-08-30 17:45:35,983 INFO (DeviceController.java:191)-  ====== getOboxDeviceConfigByUserId ====== 
+2018-08-30 17:48:32,679 INFO (DeviceController.java:191)-  ====== getOboxDeviceConfigByUserId ====== 
+2018-08-30 18:10:33,007 INFO (SpringApplication.java:597)- The following profiles are active: test
+2018-08-30 18:10:46,944 INFO (StartupInfoLogger.java:57)- Started DeviceApplication in 17.762 seconds (JVM running for 18.434)
+2018-08-30 18:11:57,005 INFO (DeviceController.java:191)-  ====== getOboxDeviceConfigByUserId ====== 
