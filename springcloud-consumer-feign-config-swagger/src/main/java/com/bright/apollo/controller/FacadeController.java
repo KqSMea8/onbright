@@ -4212,14 +4212,13 @@ public class FacadeController extends BaseController {
 				java.util.Date toDt = new Date(Long.parseLong(to) * 1000);
 				ResponseObject<List<TDeviceStatus>> deviceStatusRes = feignDeviceClient.getDeviceStatusByData(serialId,
 						Long.parseLong(from), Long.parseLong(to));
-				if (deviceStatusRes == null || deviceStatusRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()
-						|| deviceStatusRes.getData() == null) {
+				if (deviceStatusRes == null || deviceStatusRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
 					res.setStatus(ResponseEnum.RequestParamError.getStatus());
 					res.setMessage(ResponseEnum.RequestParamError.getMsg());
 					return res;
 				}
 				List<TDeviceStatus> tDeviceStatus = deviceStatusRes.getData();
-				if (!tDeviceStatus.isEmpty()) {
+				if (tDeviceStatus!=null&&!tDeviceStatus.isEmpty()) {
 					for (int i = 0; i < tDeviceStatus.size(); i++) {
 						DeviceStatusDTO deviceStatusDTO = new DeviceStatusDTO();
 						deviceStatusDTO.setStatus(tDeviceStatus.get(i).getDeviceState());
@@ -4242,15 +4241,14 @@ public class FacadeController extends BaseController {
 					ResponseObject<List<TDeviceStatus>> deviceStatusRes = feignDeviceClient
 							.getDeviceStatusByDataNoGroup(serialId, Long.parseLong(from) + i * 24 * 60 * 60,
 									Long.parseLong(from) + (i + 1) * 24 * 60 * 60);
-					if (deviceStatusRes == null || deviceStatusRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()
-							|| deviceStatusRes.getData() == null) {
+					if (deviceStatusRes == null || deviceStatusRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
 						res.setStatus(ResponseEnum.RequestParamError.getStatus());
 						res.setMessage(ResponseEnum.RequestParamError.getMsg());
 						return res;
 					}
 					List<TDeviceStatus> tDeviceStatus = deviceStatusRes.getData();
 					if (deviceConfig.getDeviceType().equals(DeviceTypeEnum.sensor.getValue())) {
-						if (tDeviceStatus.isEmpty()) {
+						if (tDeviceStatus==null||tDeviceStatus.isEmpty()) {
 							if (tDeviceStatusDTOs.isEmpty()) {
 								DeviceStatusDTO tDeviceStatusDTO = handlerDeviceStatusDTO(
 										Long.parseLong(from) + i * 24 * 60 * 60, deviceConfig, null, isEnviron);
