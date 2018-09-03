@@ -290,13 +290,13 @@ public class SensorCMDHandler extends BasicHandler {
 			oboxDeviceConfigService.updateTOboxDeviceConfig(tOboxDeviceConfig);
 			// OboxBusiness.updateOboxDeviceConfig(tOboxDeviceConfig);
 			oboxDeviceConfigService.updateTOboxDeviceConfigStatus(tOboxDeviceConfig, state);
-			// addOrUpdateDeviceState(state, tOboxDeviceConfig);
+			 addOrUpdateDeviceState(state, tOboxDeviceConfig);
 		} else {
 			tOboxDeviceConfig.setDeviceState(state);
 			oboxDeviceConfigService.updateTOboxDeviceConfig(tOboxDeviceConfig);
 			// OboxBusiness.updateOboxDeviceConfig(tOboxDeviceConfig);
 			// oboxDeviceConfigService.updateTOboxDeviceConfigStatus(tOboxDeviceConfig,state);
-			// addOrUpdateDeviceState(state, tOboxDeviceConfig);
+			 addOrUpdateDeviceState(state, tOboxDeviceConfig);
 			if (!tOboxDeviceConfig.getDeviceChildType().equals(DeviceTypeEnum.capacity_finger.getValue())
 					&& !tOboxDeviceConfig.getDeviceType().equals(DeviceTypeEnum.doorlock.getValue())) {
 				tOboxDeviceConfig.setDeviceState(state);
@@ -2443,11 +2443,11 @@ public class SensorCMDHandler extends BasicHandler {
 			e.printStackTrace();
 		}
 	}
-	/*private void addOrUpdateDeviceState(String state, TOboxDeviceConfig tOboxDeviceConfig) throws AppException {
+	private void addOrUpdateDeviceState(String state, TOboxDeviceConfig tOboxDeviceConfig) throws AppException {
 		log.info("===add device status===:" + tOboxDeviceConfig.getDeviceSerialId());
 		TDeviceStatus tDeviceStatus = new TDeviceStatus();
 		tDeviceStatus.setDeviceSerialId(tOboxDeviceConfig.getDeviceSerialId());
 		tDeviceStatus.setDeviceState(state);
 		deviceStatusService.addDeviceStatus(tDeviceStatus);
- 	}*/
+ 	}
 }

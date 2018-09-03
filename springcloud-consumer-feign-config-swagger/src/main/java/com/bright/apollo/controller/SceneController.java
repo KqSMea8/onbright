@@ -168,10 +168,12 @@ public class SceneController {
 			map.put("scene_number", scene.getSceneNumber());
 			map.put("scene_type", scene.getSceneType());
 			String oboxSerialId = scene.getOboxSerialId();
-			if(StringUtils.isEmpty(oboxSerialId))
-				oboxSerialId=null;
-			map.put("obox_scene_number", scene.getOboxSceneNumber());
-			map.put("obox_serial_id",oboxSerialId);
+			if(!StringUtils.isEmpty(oboxSerialId)){
+				map.put("obox_serial_id",oboxSerialId);
+			}
+			if(!StringUtils.isEmpty(scene.getOboxSceneNumber())){
+				map.put("obox_scene_number", scene.getOboxSceneNumber());
+			}
 			map.put("scene_status", sceneStatus);
 			res.setData(map);
 			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());

@@ -2092,6 +2092,9 @@ public class FacadeController extends BaseController {
 							}
 						}
 						feignSceneClient.deleteSceneConditionBySceneNumber(sceneNumber);
+						feignUserClient.deleteUserSceneBySceneNumber(sceneNumber);
+						feignSceneClient.deleteSceneActionsBySceneNumber(sceneNumber);
+						feignSceneClient.deleteScene(sceneNumber);
 					}
 				} else if (scene.getSceneType().equals(SceneTypeEnum.local.getValue())) {
 					ResponseObject<TObox> oboxRes = feignOboxClient.getObox(scene.getOboxSerialId());
