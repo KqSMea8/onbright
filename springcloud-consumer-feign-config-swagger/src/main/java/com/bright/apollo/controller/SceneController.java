@@ -165,7 +165,7 @@ public class SceneController {
 			TScene scene = sceneRes.getData();
 			scene.setMessageAlter((byte)Integer.parseInt(sceneStatus.substring(1)));
 			feignSceneClient.updateScene(scene);
-			map.put("scene_number", scene.getSceneNumber());
+			map.put("scene_number", scene.getSceneNumber().intValue());
 			map.put("scene_type", scene.getSceneType());
 			String oboxSerialId = scene.getOboxSerialId();
 			if(!StringUtils.isEmpty(oboxSerialId)){
