@@ -1,0 +1,10 @@
+2018-08-31 16:14:08,889 INFO (SpringApplication.java:597)- The following profiles are active: test
+2018-08-31 16:14:16,982 INFO (AuthorizationServerConfiguration.java:78)- ====== AuthorizationServerEndpointsConfigurer endpoints =====
+2018-08-31 16:14:16,997 INFO (AuthorizationServerConfiguration.java:97)-  ======================================= defaultTokenServices ====================== 
+2018-08-31 16:14:17,920 INFO (DefaultView.java:22)-  ====== addViewControllers ====== 
+2018-08-31 16:14:20,659 INFO (StartupInfoLogger.java:57)- Started ZuulApplication in 16.125 seconds (JVM running for 16.829)
+2018-08-31 16:24:53,087 INFO (SpringApplication.java:597)- The following profiles are active: test
+2018-08-31 16:25:01,176 INFO (AuthorizationServerConfiguration.java:78)- ====== AuthorizationServerEndpointsConfigurer endpoints =====
+2018-08-31 16:25:01,190 INFO (AuthorizationServerConfiguration.java:97)-  ======================================= defaultTokenServices ====================== 
+2018-08-31 16:25:02,110 INFO (DefaultView.java:22)-  ====== addViewControllers ====== 
+2018-08-31 16:25:04,896 INFO (StartupInfoLogger.java:57)- Started ZuulApplication in 15.271 seconds (JVM running for 15.983)

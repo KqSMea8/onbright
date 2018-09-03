@@ -1,0 +1,615 @@
+2018-08-31 16:13:28,808 INFO (SpringApplication.java:593)- No active profile set, falling back to default profiles: default
+2018-08-31 16:13:55,566 INFO (StartupInfoLogger.java:57)- Started ConsumerApplication in 31.128 seconds (JVM running for 32.043)
+2018-08-31 16:14:26,999 INFO (TmallController.java:90)- ====== messageID ======{header={namespace=AliGenie.Iot.Device.Discovery, name=DiscoveryDevices, messageId=1bd5d003-31b9-476f-ad03-71d471922820, payLoadVersion=1}, payload={accessToken=9dd6c995-dbaf-4e02-b555-4ef91a26292d}}
+2018-08-31 16:14:27,001 INFO (TmallController.java:99)-  ===== accessToken ====== 9dd6c995-dbaf-4e02-b555-4ef91a26292d
+2018-08-31 16:14:27,044 INFO (TmallController.java:101)-  ===== redisToken ====== org.springframework.security.oauth2.provider.OAuth2Authentication@176124ad: Principal: org.springframework.security.core.userdetails.User@f9894274: Username: 15879618946; Password: [PROTECTED]; Enabled: true; AccountNonExpired: true; credentialsNonExpired: true; AccountNonLocked: true; Not granted any authorities; Credentials: [PROTECTED]; Authenticated: true; Details: null; Not granted any authorities
+2018-08-31 16:14:28,871 INFO (TmallController.java:114)-  ====== username ====== 15879618946
+2018-08-31 16:14:28,872 INFO (TmallController.java:116)-  ====== userId ====== 429
+2018-08-31 16:15:28,095 INFO (TmallController.java:90)- ====== messageID ======{header={namespace=AliGenie.Iot.Device.Discovery, name=DiscoveryDevices, messageId=1bd5d003-31b9-476f-ad03-71d471922820, payLoadVersion=1}, payload={accessToken=9dd6c995-dbaf-4e02-b555-4ef91a26292d}}
+2018-08-31 16:15:28,095 INFO (TmallController.java:99)-  ===== accessToken ====== 9dd6c995-dbaf-4e02-b555-4ef91a26292d
+2018-08-31 16:15:28,661 INFO (TmallController.java:101)-  ===== redisToken ====== org.springframework.security.oauth2.provider.OAuth2Authentication@176124ad: Principal: org.springframework.security.core.userdetails.User@f9894274: Username: 15879618946; Password: [PROTECTED]; Enabled: true; AccountNonExpired: true; credentialsNonExpired: true; AccountNonLocked: true; Not granted any authorities; Credentials: [PROTECTED]; Authenticated: true; Details: null; Not granted any authorities
+2018-08-31 16:15:28,722 INFO (TmallController.java:114)-  ====== username ====== 15879618946
+2018-08-31 16:15:28,723 INFO (TmallController.java:116)-  ====== userId ====== 429
+2018-08-31 16:16:46,063 INFO (TmallController.java:90)- ====== messageID ======{header={namespace=AliGenie.Iot.Device.Discovery, name=DiscoveryDevices, messageId=1bd5d003-31b9-476f-ad03-71d471922820, payLoadVersion=1}, payload={accessToken=9dd6c995-dbaf-4e02-b555-4ef91a26292d}}
+2018-08-31 16:16:46,064 INFO (TmallController.java:99)-  ===== accessToken ====== 9dd6c995-dbaf-4e02-b555-4ef91a26292d
+2018-08-31 16:16:46,124 INFO (TmallController.java:101)-  ===== redisToken ====== org.springframework.security.oauth2.provider.OAuth2Authentication@176124ad: Principal: org.springframework.security.core.userdetails.User@f9894274: Username: 15879618946; Password: [PROTECTED]; Enabled: true; AccountNonExpired: true; credentialsNonExpired: true; AccountNonLocked: true; Not granted any authorities; Credentials: [PROTECTED]; Authenticated: true; Details: null; Not granted any authorities
+2018-08-31 16:16:46,184 INFO (TmallController.java:114)-  ====== username ====== 15879618946
+2018-08-31 16:16:46,185 INFO (TmallController.java:116)-  ====== userId ====== 429
+2018-08-31 16:17:56,952 INFO (TmallController.java:90)- ====== messageID ======{header={namespace=AliGenie.Iot.Device.Discovery, name=DiscoveryDevices, messageId=1bd5d003-31b9-476f-ad03-71d471922820, payLoadVersion=1}, payload={accessToken=9dd6c995-dbaf-4e02-b555-4ef91a26292d}}
+2018-08-31 16:17:56,952 INFO (TmallController.java:99)-  ===== accessToken ====== 9dd6c995-dbaf-4e02-b555-4ef91a26292d
+2018-08-31 16:17:56,985 INFO (TmallController.java:101)-  ===== redisToken ====== org.springframework.security.oauth2.provider.OAuth2Authentication@176124ad: Principal: org.springframework.security.core.userdetails.User@f9894274: Username: 15879618946; Password: [PROTECTED]; Enabled: true; AccountNonExpired: true; credentialsNonExpired: true; AccountNonLocked: true; Not granted any authorities; Credentials: [PROTECTED]; Authenticated: true; Details: null; Not granted any authorities
+2018-08-31 16:17:57,052 INFO (TmallController.java:114)-  ====== username ====== 15879618946
+2018-08-31 16:17:57,053 INFO (TmallController.java:116)-  ====== userId ====== 429
+2018-08-31 16:20:04,691 INFO (TmallController.java:90)- ====== messageID ======{header={namespace=AliGenie.Iot.Device.Discovery, name=DiscoveryDevices, messageId=1bd5d003-31b9-476f-ad03-71d471922820, payLoadVersion=1}, payload={accessToken=9dd6c995-dbaf-4e02-b555-4ef91a26292d}}
+2018-08-31 16:20:04,692 INFO (TmallController.java:99)-  ===== accessToken ====== 9dd6c995-dbaf-4e02-b555-4ef91a26292d
+2018-08-31 16:20:04,759 INFO (TmallController.java:101)-  ===== redisToken ====== org.springframework.security.oauth2.provider.OAuth2Authentication@176124ad: Principal: org.springframework.security.core.userdetails.User@f9894274: Username: 15879618946; Password: [PROTECTED]; Enabled: true; AccountNonExpired: true; credentialsNonExpired: true; AccountNonLocked: true; Not granted any authorities; Credentials: [PROTECTED]; Authenticated: true; Details: null; Not granted any authorities
+2018-08-31 16:20:04,821 INFO (TmallController.java:114)-  ====== username ====== 15879618946
+2018-08-31 16:20:04,821 INFO (TmallController.java:116)-  ====== userId ====== 429
+2018-08-31 16:24:18,874 INFO (SpringApplication.java:593)- No active profile set, falling back to default profiles: default
+2018-08-31 16:24:45,673 INFO (StartupInfoLogger.java:57)- Started ConsumerApplication in 31.442 seconds (JVM running for 32.367)
+2018-08-31 16:25:15,469 INFO (TmallController.java:90)- ====== messageID ======{header={namespace=AliGenie.Iot.Device.Discovery, name=DiscoveryDevices, messageId=1bd5d003-31b9-476f-ad03-71d471922820, payLoadVersion=1}, payload={accessToken=9dd6c995-dbaf-4e02-b555-4ef91a26292d}}
+2018-08-31 16:25:15,471 INFO (TmallController.java:99)-  ===== accessToken ====== 9dd6c995-dbaf-4e02-b555-4ef91a26292d
+2018-08-31 16:25:15,529 INFO (TmallController.java:101)-  ===== redisToken ====== org.springframework.security.oauth2.provider.OAuth2Authentication@176124ad: Principal: org.springframework.security.core.userdetails.User@f9894274: Username: 15879618946; Password: [PROTECTED]; Enabled: true; AccountNonExpired: true; credentialsNonExpired: true; AccountNonLocked: true; Not granted any authorities; Credentials: [PROTECTED]; Authenticated: true; Details: null; Not granted any authorities
+2018-08-31 16:25:16,158 INFO (TmallController.java:114)-  ====== username ====== 15879618946
+2018-08-31 16:25:16,158 INFO (TmallController.java:116)-  ====== userId ====== 429
+2018-08-31 16:25:33,120 INFO (TmallController.java:126)- ====== adapter ====== deviceId:7164010000
+ deviceName:Lamp1
+ properties:[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]
+ action:[Ljava.lang.String;@58392791
+ zone:
+ model:灯
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png
+2018-08-31 16:25:36,972 INFO (TmallController.java:126)- ====== adapter ====== deviceId:a85a010000
+ deviceName:Lamp2
+ properties:[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]
+ action:[Ljava.lang.String;@18c32bd5
+ zone:
+ model:灯
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png
+2018-08-31 16:25:39,245 INFO (TmallController.java:126)- ====== adapter ====== deviceId:a75a010000
+ deviceName:Lamp3
+ properties:[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]
+ action:[Ljava.lang.String;@3e69d52a
+ zone:
+ model:灯
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png
+2018-08-31 16:25:41,436 INFO (TmallController.java:126)- ====== adapter ====== deviceId:b95f010000
+ deviceName:Lamp4
+ properties:[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]
+ action:[Ljava.lang.String;@5d7a0e68
+ zone:
+ model:灯
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png
+2018-08-31 16:25:42,486 INFO (TmallController.java:126)- ====== adapter ====== deviceId:5164010000
+ deviceName:Socket1
+ properties:[{"powerstate":"off"}]
+ action:[Ljava.lang.String;@4df2a832
+ zone:
+ model:单孔插座
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/singleOut.png
+2018-08-31 16:25:42,964 INFO (TmallController.java:126)- ====== adapter ====== null
+2018-08-31 16:25:44,044 INFO (TmallController.java:126)- ====== adapter ====== null
+2018-08-31 16:25:44,542 INFO (TmallController.java:126)- ====== adapter ====== null
+2018-08-31 16:25:46,167 INFO (TmallController.java:126)- ====== adapter ====== null
+2018-08-31 16:25:51,868 INFO (TmallController.java:126)- ====== adapter ====== deviceId:b761010000
+ deviceName:Socket2
+ properties:[{"powerstate":"off"}]
+ action:[Ljava.lang.String;@3046b4bd
+ zone:
+ model:多孔插座
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/mutipleOutlet.png
+2018-08-31 16:25:51,871 INFO (TmallController.java:195)- map ====== {"payload":{"devices":[{"deviceType":"light","extensions":{"extension1":"","extension2":""},"zone":"","icon":"https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png","model":"灯","deviceId":"7164010000","deviceName":"Lamp1","brand":"on-bright","actions":["SetBrightness","AdjustUpBrightness","AdjustDownBrightness","TurnOn","TurnOff"],"properties":[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]},{"deviceType":"light","extensions":{"extension1":"","extension2":""},"zone":"","icon":"https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png","model":"灯","deviceId":"a85a010000","deviceName":"Lamp2","brand":"on-bright","actions":["SetBrightness","AdjustUpBrightness","AdjustDownBrightness","TurnOn","TurnOff"],"properties":[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]},{"deviceType":"light","extensions":{"extension1":"","extension2":""},"zone":"","icon":"https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png","model":"灯","deviceId":"a75a010000","deviceName":"Lamp3","brand":"on-bright","actions":["SetBrightness","AdjustUpBrightness","AdjustDownBrightness","TurnOn","TurnOff"],"properties":[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]},{"deviceType":"light","extensions":{"extension1":"","extension2":""},"zone":"","icon":"https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png","model":"灯","deviceId":"b95f010000","deviceName":"Lamp4","brand":"on-bright","actions":["SetBrightness","AdjustUpBrightness","AdjustDownBrightness","TurnOn","TurnOff"],"properties":[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]},{"deviceType":"outlet","extensions":{"extension1":"","extension2":""},"zone":"","icon":"https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/singleOut.png","model":"单孔插座","deviceId":"5164010000","deviceName":"Socket1","brand":"on-bright","actions":["TurnOn","TurnOff"],"properties":[{"powerstate":"off"}]},{"deviceType":"04","extensions":{"extension1":"","extension2":"","parentId":"b761010000"},"zone":"","icon":"https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/singleOut.png","model":"","deviceId":"b761010000_3","deviceName":"单孔插座","brand":"on-bright","actions":["TurnOn","TurnOff"],"properties":[{"powerstate":"off"}]},{"deviceType":"light","extensions":{"extension1":"","extension2":""},"zone":"阳台","icon":"https://git.cn-hangzhou.oss-cdn.aliyun-inc.com/uploads/aicloud/aicloud-proxy-service/41baa00903a71c97e3533cf4e19a88bb/image.png","model":"1","deviceId":"34ea34cf2e63","deviceName":"大灯","brand":"1","actions":["TurnOn","TurnOff"],"properties":[{"name":"color","value":"Red"}]},{"deviceType":"light","extensions":{"extension1":"","extension2":""},"zone":"客厅","icon":"https://git.cn-hangzhou.oss-cdn.aliyun-inc.com/uploads/aicloud/aicloud-proxy-service/41baa00903a71c97e3533cf4e19a88bb/image.png","model":"1","deviceId":"34ea34cf2e61","deviceName":"灯","brand":"1","actions":["TurnOn","TurnOff"],"properties":[{"name":"color","value":"Red"}]},{"deviceType":"curtain","extensions":{"extension1":"","extension2":""},"zone":"","icon":"https://git.cn-hangzhou.oss-cdn.aliyun-inc.com/uploads/aicloud/aicloud-proxy-service/41baa00903a71c97e3533cf4e19a88bb/image.png","model":"1","deviceId":"34ea34cf2e69","deviceName":"窗帘","brand":"1","actions":["TurnOn","TurnOff"],"properties":[{"name":"color","value":"Red"}]}]},"header":{"namespace":"AliGenie.Iot.Device.Discovery","name":"DiscoveryDevicesResponse","messageId":"1bd5d003-31b9-476f-ad03-71d471922820","payLoadVersion":"1"}}
+2018-08-31 16:27:42,012 INFO (TmallController.java:90)- ====== messageID ======{header={namespace=AliGenie.Iot.Device.Discovery, name=DiscoveryDevices, messageId=1bd5d003-31b9-476f-ad03-71d471922820, payLoadVersion=1}, payload={accessToken=9dd6c995-dbaf-4e02-b555-4ef91a26292d}}
+2018-08-31 16:27:42,013 INFO (TmallController.java:99)-  ===== accessToken ====== 9dd6c995-dbaf-4e02-b555-4ef91a26292d
+2018-08-31 16:27:42,083 INFO (TmallController.java:101)-  ===== redisToken ====== org.springframework.security.oauth2.provider.OAuth2Authentication@176124ad: Principal: org.springframework.security.core.userdetails.User@f9894274: Username: 15879618946; Password: [PROTECTED]; Enabled: true; AccountNonExpired: true; credentialsNonExpired: true; AccountNonLocked: true; Not granted any authorities; Credentials: [PROTECTED]; Authenticated: true; Details: null; Not granted any authorities
+2018-08-31 16:27:42,144 INFO (TmallController.java:114)-  ====== username ====== 15879618946
+2018-08-31 16:27:42,144 INFO (TmallController.java:116)-  ====== userId ====== 429
+2018-08-31 16:27:42,235 INFO (TmallController.java:126)- ====== adapter ====== deviceId:7164010000
+ deviceName:Lamp1
+ properties:[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]
+ action:[Ljava.lang.String;@2b0cfa3d
+ zone:
+ model:灯
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png
+2018-08-31 16:27:42,236 INFO (TmallController.java:126)- ====== adapter ====== deviceId:a85a010000
+ deviceName:Lamp2
+ properties:[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]
+ action:[Ljava.lang.String;@69006ca4
+ zone:
+ model:灯
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png
+2018-08-31 16:27:42,236 INFO (TmallController.java:126)- ====== adapter ====== deviceId:a75a010000
+ deviceName:Lamp3
+ properties:[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]
+ action:[Ljava.lang.String;@7a4a8ecf
+ zone:
+ model:灯
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png
+2018-08-31 16:27:42,236 INFO (TmallController.java:126)- ====== adapter ====== deviceId:b95f010000
+ deviceName:Lamp4
+ properties:[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]
+ action:[Ljava.lang.String;@380be806
+ zone:
+ model:灯
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png
+2018-08-31 16:27:42,239 INFO (TmallController.java:126)- ====== adapter ====== deviceId:5164010000
+ deviceName:Socket1
+ properties:[{"powerstate":"off"}]
+ action:[Ljava.lang.String;@741a3028
+ zone:
+ model:单孔插座
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/singleOut.png
+2018-08-31 16:27:42,240 INFO (TmallController.java:126)- ====== adapter ====== null
+2018-08-31 16:27:42,240 INFO (TmallController.java:126)- ====== adapter ====== null
+2018-08-31 16:27:42,240 INFO (TmallController.java:126)- ====== adapter ====== null
+2018-08-31 16:27:42,240 INFO (TmallController.java:126)- ====== adapter ====== null
+2018-08-31 16:28:57,185 INFO (TmallController.java:126)- ====== adapter ====== deviceId:b761010000
+ deviceName:Socket2
+ properties:[{"powerstate":"off"}]
+ action:[Ljava.lang.String;@3007cea8
+ zone:
+ model:多孔插座
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/mutipleOutlet.png
+2018-08-31 16:31:22,969 INFO (TmallController.java:195)- map ====== {"payload":{"devices":[{"deviceType":"light","extensions":{"extension1":"","extension2":""},"zone":"","icon":"https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png","model":"灯","deviceId":"7164010000","deviceName":"Lamp1","brand":"on-bright","actions":["SetBrightness","AdjustUpBrightness","AdjustDownBrightness","TurnOn","TurnOff"],"properties":[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]},{"deviceType":"light","extensions":{"extension1":"","extension2":""},"zone":"","icon":"https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png","model":"灯","deviceId":"a85a010000","deviceName":"Lamp2","brand":"on-bright","actions":["SetBrightness","AdjustUpBrightness","AdjustDownBrightness","TurnOn","TurnOff"],"properties":[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]},{"deviceType":"light","extensions":{"extension1":"","extension2":""},"zone":"","icon":"https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png","model":"灯","deviceId":"a75a010000","deviceName":"Lamp3","brand":"on-bright","actions":["SetBrightness","AdjustUpBrightness","AdjustDownBrightness","TurnOn","TurnOff"],"properties":[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]},{"deviceType":"light","extensions":{"extension1":"","extension2":""},"zone":"","icon":"https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png","model":"灯","deviceId":"b95f010000","deviceName":"Lamp4","brand":"on-bright","actions":["SetBrightness","AdjustUpBrightness","AdjustDownBrightness","TurnOn","TurnOff"],"properties":[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]},{"deviceType":"outlet","extensions":{"extension1":"","extension2":""},"zone":"","icon":"https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/singleOut.png","model":"单孔插座","deviceId":"5164010000","deviceName":"Socket1","brand":"on-bright","actions":["TurnOn","TurnOff"],"properties":[{"powerstate":"off"}]},{"deviceType":"04","extensions":{"extension1":"","extension2":"","parentId":"b761010000"},"zone":"","icon":"https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/singleOut.png","model":"","deviceId":"b761010000_3","deviceName":"单孔插座","brand":"on-bright","actions":["TurnOn","TurnOff"],"properties":[{"powerstate":"off"}]},{"deviceType":"light","extensions":{"extension1":"","extension2":""},"zone":"阳台","icon":"https://git.cn-hangzhou.oss-cdn.aliyun-inc.com/uploads/aicloud/aicloud-proxy-service/41baa00903a71c97e3533cf4e19a88bb/image.png","model":"1","deviceId":"34ea34cf2e63","deviceName":"大灯","brand":"1","actions":["TurnOn","TurnOff"],"properties":[{"name":"color","value":"Red"}]},{"deviceType":"light","extensions":{"extension1":"","extension2":""},"zone":"客厅","icon":"https://git.cn-hangzhou.oss-cdn.aliyun-inc.com/uploads/aicloud/aicloud-proxy-service/41baa00903a71c97e3533cf4e19a88bb/image.png","model":"1","deviceId":"34ea34cf2e61","deviceName":"灯","brand":"1","actions":["TurnOn","TurnOff"],"properties":[{"name":"color","value":"Red"}]},{"deviceType":"curtain","extensions":{"extension1":"","extension2":""},"zone":"","icon":"https://git.cn-hangzhou.oss-cdn.aliyun-inc.com/uploads/aicloud/aicloud-proxy-service/41baa00903a71c97e3533cf4e19a88bb/image.png","model":"1","deviceId":"34ea34cf2e69","deviceName":"窗帘","brand":"1","actions":["TurnOn","TurnOff"],"properties":[{"name":"color","value":"Red"}]}]},"header":{"namespace":"AliGenie.Iot.Device.Discovery","name":"DiscoveryDevicesResponse","messageId":"1bd5d003-31b9-476f-ad03-71d471922820","payLoadVersion":"1"}}
+2018-08-31 16:36:25,120 INFO (SpringApplication.java:593)- No active profile set, falling back to default profiles: default
+2018-08-31 16:36:52,225 INFO (StartupInfoLogger.java:57)- Started ConsumerApplication in 32.479 seconds (JVM running for 33.364)
+2018-08-31 16:37:05,622 INFO (TmallController.java:90)- ====== messageID ======{header={namespace=AliGenie.Iot.Device.Discovery, name=DiscoveryDevices, messageId=1bd5d003-31b9-476f-ad03-71d471922820, payLoadVersion=1}, payload={accessToken=9dd6c995-dbaf-4e02-b555-4ef91a26292d}}
+2018-08-31 16:37:05,624 INFO (TmallController.java:99)-  ===== accessToken ====== 9dd6c995-dbaf-4e02-b555-4ef91a26292d
+2018-08-31 16:37:05,662 INFO (TmallController.java:101)-  ===== redisToken ====== org.springframework.security.oauth2.provider.OAuth2Authentication@176124ad: Principal: org.springframework.security.core.userdetails.User@f9894274: Username: 15879618946; Password: [PROTECTED]; Enabled: true; AccountNonExpired: true; credentialsNonExpired: true; AccountNonLocked: true; Not granted any authorities; Credentials: [PROTECTED]; Authenticated: true; Details: null; Not granted any authorities
+2018-08-31 16:37:06,160 INFO (TmallController.java:114)-  ====== username ====== 15879618946
+2018-08-31 16:37:06,161 INFO (TmallController.java:116)-  ====== userId ====== 429
+2018-08-31 16:37:09,695 INFO (TmallController.java:126)- ====== adapter ====== deviceId:7164010000
+ deviceName:Lamp1
+ properties:[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]
+ action:[Ljava.lang.String;@49661124
+ zone:
+ model:灯
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png
+2018-08-31 16:37:12,185 INFO (TmallController.java:126)- ====== adapter ====== deviceId:a85a010000
+ deviceName:Lamp2
+ properties:[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]
+ action:[Ljava.lang.String;@55040b13
+ zone:
+ model:灯
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png
+2018-08-31 16:37:12,187 INFO (TmallController.java:126)- ====== adapter ====== deviceId:a75a010000
+ deviceName:Lamp3
+ properties:[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]
+ action:[Ljava.lang.String;@62228a7c
+ zone:
+ model:灯
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png
+2018-08-31 16:37:12,188 INFO (TmallController.java:126)- ====== adapter ====== deviceId:b95f010000
+ deviceName:Lamp4
+ properties:[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]
+ action:[Ljava.lang.String;@2a316d1
+ zone:
+ model:灯
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png
+2018-08-31 16:37:12,191 INFO (TmallController.java:126)- ====== adapter ====== deviceId:5164010000
+ deviceName:Socket1
+ properties:[{"powerstate":"off"}]
+ action:[Ljava.lang.String;@e1c1866
+ zone:
+ model:单孔插座
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/singleOut.png
+2018-08-31 16:37:12,193 INFO (TmallController.java:126)- ====== adapter ====== null
+2018-08-31 16:37:12,194 INFO (TmallController.java:126)- ====== adapter ====== null
+2018-08-31 16:37:12,195 INFO (TmallController.java:126)- ====== adapter ====== null
+2018-08-31 16:37:12,196 INFO (TmallController.java:126)- ====== adapter ====== null
+2018-08-31 16:37:15,472 INFO (TmallController.java:126)- ====== adapter ====== deviceId:b761010000
+ deviceName:Socket2
+ properties:[{"powerstate":"off"}]
+ action:[Ljava.lang.String;@629496ef
+ zone:
+ model:多孔插座
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/mutipleOutlet.png
+2018-08-31 16:37:18,046 INFO (TmallController.java:195)- map ====== {"payload":{"devices":[{"deviceType":"light","extensions":{"extension1":"","extension2":""},"zone":"","icon":"https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png","model":"灯","deviceId":"7164010000","deviceName":"Lamp1","brand":"on-bright","actions":["SetBrightness","AdjustUpBrightness","AdjustDownBrightness","TurnOn","TurnOff"],"properties":[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]},{"deviceType":"light","extensions":{"extension1":"","extension2":""},"zone":"","icon":"https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png","model":"灯","deviceId":"a85a010000","deviceName":"Lamp2","brand":"on-bright","actions":["SetBrightness","AdjustUpBrightness","AdjustDownBrightness","TurnOn","TurnOff"],"properties":[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]},{"deviceType":"light","extensions":{"extension1":"","extension2":""},"zone":"","icon":"https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png","model":"灯","deviceId":"a75a010000","deviceName":"Lamp3","brand":"on-bright","actions":["SetBrightness","AdjustUpBrightness","AdjustDownBrightness","TurnOn","TurnOff"],"properties":[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]},{"deviceType":"light","extensions":{"extension1":"","extension2":""},"zone":"","icon":"https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png","model":"灯","deviceId":"b95f010000","deviceName":"Lamp4","brand":"on-bright","actions":["SetBrightness","AdjustUpBrightness","AdjustDownBrightness","TurnOn","TurnOff"],"properties":[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]},{"deviceType":"outlet","extensions":{"extension1":"","extension2":""},"zone":"","icon":"https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/singleOut.png","model":"单孔插座","deviceId":"5164010000","deviceName":"Socket1","brand":"on-bright","actions":["TurnOn","TurnOff"],"properties":[{"powerstate":"off"}]},{"deviceType":"outlet","extensions":{"extension1":"","extension2":""},"zone":"","icon":"https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/mutipleOutlet.png","model":"多孔插座","deviceId":"b761010000","deviceName":"Socket2","brand":"on-bright","actions":["TurnOn","TurnOff"],"properties":[{"powerstate":"off"}]},{"deviceType":"light","extensions":{"extension1":"","extension2":""},"zone":"阳台","icon":"https://git.cn-hangzhou.oss-cdn.aliyun-inc.com/uploads/aicloud/aicloud-proxy-service/41baa00903a71c97e3533cf4e19a88bb/image.png","model":"1","deviceId":"34ea34cf2e63","deviceName":"大灯","brand":"1","actions":["TurnOn","TurnOff"],"properties":[{"name":"color","value":"Red"}]},{"deviceType":"light","extensions":{"extension1":"","extension2":""},"zone":"客厅","icon":"https://git.cn-hangzhou.oss-cdn.aliyun-inc.com/uploads/aicloud/aicloud-proxy-service/41baa00903a71c97e3533cf4e19a88bb/image.png","model":"1","deviceId":"34ea34cf2e61","deviceName":"灯","brand":"1","actions":["TurnOn","TurnOff"],"properties":[{"name":"color","value":"Red"}]},{"deviceType":"curtain","extensions":{"extension1":"","extension2":""},"zone":"","icon":"https://git.cn-hangzhou.oss-cdn.aliyun-inc.com/uploads/aicloud/aicloud-proxy-service/41baa00903a71c97e3533cf4e19a88bb/image.png","model":"1","deviceId":"34ea34cf2e69","deviceName":"窗帘","brand":"1","actions":["TurnOn","TurnOff"],"properties":[{"name":"color","value":"Red"}]}]},"header":{"namespace":"AliGenie.Iot.Device.Discovery","name":"DiscoveryDevicesResponse","messageId":"1bd5d003-31b9-476f-ad03-71d471922820","payLoadVersion":"1"}}
+2018-08-31 16:38:49,374 INFO (SpringApplication.java:593)- No active profile set, falling back to default profiles: default
+2018-08-31 16:39:16,428 INFO (StartupInfoLogger.java:57)- Started ConsumerApplication in 31.563 seconds (JVM running for 32.511)
+2018-08-31 16:39:23,580 INFO (TmallController.java:90)- ====== messageID ======{header={namespace=AliGenie.Iot.Device.Discovery, name=DiscoveryDevices, messageId=1bd5d003-31b9-476f-ad03-71d471922820, payLoadVersion=1}, payload={accessToken=9dd6c995-dbaf-4e02-b555-4ef91a26292d}}
+2018-08-31 16:39:23,581 INFO (TmallController.java:99)-  ===== accessToken ====== 9dd6c995-dbaf-4e02-b555-4ef91a26292d
+2018-08-31 16:39:23,621 INFO (TmallController.java:101)-  ===== redisToken ====== org.springframework.security.oauth2.provider.OAuth2Authentication@176124ad: Principal: org.springframework.security.core.userdetails.User@f9894274: Username: 15879618946; Password: [PROTECTED]; Enabled: true; AccountNonExpired: true; credentialsNonExpired: true; AccountNonLocked: true; Not granted any authorities; Credentials: [PROTECTED]; Authenticated: true; Details: null; Not granted any authorities
+2018-08-31 16:39:24,075 INFO (TmallController.java:114)-  ====== username ====== 15879618946
+2018-08-31 16:39:24,075 INFO (TmallController.java:116)-  ====== userId ====== 429
+2018-08-31 16:39:24,213 INFO (TmallController.java:126)- ====== adapter ====== deviceId:7164010000
+ deviceName:Lamp1
+ properties:[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]
+ action:[Ljava.lang.String;@1d9d3b52
+ zone:
+ model:灯
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png
+2018-08-31 16:39:24,214 INFO (TmallController.java:126)- ====== adapter ====== deviceId:a85a010000
+ deviceName:Lamp2
+ properties:[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]
+ action:[Ljava.lang.String;@6081bf80
+ zone:
+ model:灯
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png
+2018-08-31 16:39:24,215 INFO (TmallController.java:126)- ====== adapter ====== deviceId:a75a010000
+ deviceName:Lamp3
+ properties:[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]
+ action:[Ljava.lang.String;@2f552d58
+ zone:
+ model:灯
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png
+2018-08-31 16:39:24,215 INFO (TmallController.java:126)- ====== adapter ====== deviceId:b95f010000
+ deviceName:Lamp4
+ properties:[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]
+ action:[Ljava.lang.String;@2bba86e3
+ zone:
+ model:灯
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png
+2018-08-31 16:39:24,216 INFO (TmallController.java:126)- ====== adapter ====== deviceId:5164010000
+ deviceName:Socket1
+ properties:[{"powerstate":"off"}]
+ action:[Ljava.lang.String;@3299a6a3
+ zone:
+ model:单孔插座
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/singleOut.png
+2018-08-31 16:39:24,217 INFO (TmallController.java:126)- ====== adapter ====== null
+2018-08-31 16:39:24,217 INFO (TmallController.java:126)- ====== adapter ====== null
+2018-08-31 16:39:24,217 INFO (TmallController.java:126)- ====== adapter ====== null
+2018-08-31 16:39:24,217 INFO (TmallController.java:126)- ====== adapter ====== null
+2018-08-31 16:39:24,217 INFO (TmallController.java:126)- ====== adapter ====== deviceId:b761010000
+ deviceName:Socket2
+ properties:[{"powerstate":"off"}]
+ action:[Ljava.lang.String;@4bd267ac
+ zone:
+ model:多孔插座
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/mutipleOutlet.png
+2018-08-31 16:39:24,218 INFO (TmallController.java:195)- map ====== {"payload":{"devices":[{"deviceType":"light","extensions":{"extension1":"","extension2":""},"zone":"","icon":"https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png","model":"灯","deviceId":"7164010000","deviceName":"Lamp1","brand":"on-bright","actions":["SetBrightness","AdjustUpBrightness","AdjustDownBrightness","TurnOn","TurnOff"],"properties":[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]},{"deviceType":"light","extensions":{"extension1":"","extension2":""},"zone":"","icon":"https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png","model":"灯","deviceId":"a85a010000","deviceName":"Lamp2","brand":"on-bright","actions":["SetBrightness","AdjustUpBrightness","AdjustDownBrightness","TurnOn","TurnOff"],"properties":[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]},{"deviceType":"light","extensions":{"extension1":"","extension2":""},"zone":"","icon":"https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png","model":"灯","deviceId":"a75a010000","deviceName":"Lamp3","brand":"on-bright","actions":["SetBrightness","AdjustUpBrightness","AdjustDownBrightness","TurnOn","TurnOff"],"properties":[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]},{"deviceType":"light","extensions":{"extension1":"","extension2":""},"zone":"","icon":"https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png","model":"灯","deviceId":"b95f010000","deviceName":"Lamp4","brand":"on-bright","actions":["SetBrightness","AdjustUpBrightness","AdjustDownBrightness","TurnOn","TurnOff"],"properties":[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]},{"deviceType":"outlet","extensions":{"extension1":"","extension2":""},"zone":"","icon":"https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/singleOut.png","model":"单孔插座","deviceId":"5164010000","deviceName":"Socket1","brand":"on-bright","actions":["TurnOn","TurnOff"],"properties":[{"powerstate":"off"}]},{"deviceType":"outlet","extensions":{"extension1":"","extension2":""},"zone":"","icon":"https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/mutipleOutlet.png","model":"多孔插座","deviceId":"b761010000","deviceName":"Socket2","brand":"on-bright","actions":["TurnOn","TurnOff"],"properties":[{"powerstate":"off"}],"parentId":"b761010000"},{"deviceType":"light","extensions":{"extension1":"","extension2":""},"zone":"阳台","icon":"https://git.cn-hangzhou.oss-cdn.aliyun-inc.com/uploads/aicloud/aicloud-proxy-service/41baa00903a71c97e3533cf4e19a88bb/image.png","model":"1","deviceId":"34ea34cf2e63","deviceName":"大灯","brand":"1","actions":["TurnOn","TurnOff"],"properties":[{"name":"color","value":"Red"}]},{"deviceType":"light","extensions":{"extension1":"","extension2":""},"zone":"客厅","icon":"https://git.cn-hangzhou.oss-cdn.aliyun-inc.com/uploads/aicloud/aicloud-proxy-service/41baa00903a71c97e3533cf4e19a88bb/image.png","model":"1","deviceId":"34ea34cf2e61","deviceName":"灯","brand":"1","actions":["TurnOn","TurnOff"],"properties":[{"name":"color","value":"Red"}]},{"deviceType":"curtain","extensions":{"extension1":"","extension2":""},"zone":"","icon":"https://git.cn-hangzhou.oss-cdn.aliyun-inc.com/uploads/aicloud/aicloud-proxy-service/41baa00903a71c97e3533cf4e19a88bb/image.png","model":"1","deviceId":"34ea34cf2e69","deviceName":"窗帘","brand":"1","actions":["TurnOn","TurnOff"],"properties":[{"name":"color","value":"Red"}]}]},"header":{"namespace":"AliGenie.Iot.Device.Discovery","name":"DiscoveryDevicesResponse","messageId":"1bd5d003-31b9-476f-ad03-71d471922820","payLoadVersion":"1"}}
+2018-08-31 16:53:01,550 INFO (SpringApplication.java:593)- No active profile set, falling back to default profiles: default
+2018-08-31 16:53:28,465 INFO (StartupInfoLogger.java:57)- Started ConsumerApplication in 31.611 seconds (JVM running for 32.498)
+2018-08-31 16:53:37,401 INFO (TmallController.java:90)- ====== messageID ======{header={namespace=AliGenie.Iot.Device.Discovery, name=DiscoveryDevices, messageId=1bd5d003-31b9-476f-ad03-71d471922820, payLoadVersion=1}, payload={accessToken=9dd6c995-dbaf-4e02-b555-4ef91a26292d}}
+2018-08-31 16:53:37,402 INFO (TmallController.java:99)-  ===== accessToken ====== 9dd6c995-dbaf-4e02-b555-4ef91a26292d
+2018-08-31 16:53:37,453 INFO (TmallController.java:101)-  ===== redisToken ====== org.springframework.security.oauth2.provider.OAuth2Authentication@176124ad: Principal: org.springframework.security.core.userdetails.User@f9894274: Username: 15879618946; Password: [PROTECTED]; Enabled: true; AccountNonExpired: true; credentialsNonExpired: true; AccountNonLocked: true; Not granted any authorities; Credentials: [PROTECTED]; Authenticated: true; Details: null; Not granted any authorities
+2018-08-31 16:53:37,878 INFO (TmallController.java:114)-  ====== username ====== 15879618946
+2018-08-31 16:53:37,879 INFO (TmallController.java:116)-  ====== userId ====== 429
+2018-08-31 16:53:38,336 INFO (TmallController.java:126)- ====== adapter ====== deviceId:7164010000
+ deviceName:Lamp1
+ properties:[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]
+ action:[Ljava.lang.String;@4c731abf
+ zone:
+ model:灯
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png
+2018-08-31 16:53:38,337 INFO (TmallController.java:126)- ====== adapter ====== deviceId:a85a010000
+ deviceName:Lamp2
+ properties:[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]
+ action:[Ljava.lang.String;@7c17f8eb
+ zone:
+ model:灯
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png
+2018-08-31 16:53:38,337 INFO (TmallController.java:126)- ====== adapter ====== deviceId:a75a010000
+ deviceName:Lamp3
+ properties:[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]
+ action:[Ljava.lang.String;@13b2b4ce
+ zone:
+ model:灯
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png
+2018-08-31 16:53:38,338 INFO (TmallController.java:126)- ====== adapter ====== deviceId:b95f010000
+ deviceName:Lamp4
+ properties:[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]
+ action:[Ljava.lang.String;@5de66498
+ zone:
+ model:灯
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png
+2018-08-31 16:53:38,341 INFO (TmallController.java:126)- ====== adapter ====== deviceId:5164010000
+ deviceName:Socket1
+ properties:[{"powerstate":"off"}]
+ action:[Ljava.lang.String;@4a075a10
+ zone:
+ model:单孔插座
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/singleOut.png
+2018-08-31 16:53:38,342 INFO (TmallController.java:126)- ====== adapter ====== null
+2018-08-31 16:53:38,342 INFO (TmallController.java:126)- ====== adapter ====== null
+2018-08-31 16:53:38,342 INFO (TmallController.java:126)- ====== adapter ====== null
+2018-08-31 16:53:38,342 INFO (TmallController.java:126)- ====== adapter ====== null
+2018-08-31 16:53:38,343 INFO (TmallController.java:126)- ====== adapter ====== deviceId:b761010000
+ deviceName:Socket2
+ properties:[{"powerstate":"off"}]
+ action:[Ljava.lang.String;@2239fcf4
+ zone:
+ model:多孔插座
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/mutipleOutlet.png
+2018-08-31 16:53:38,344 INFO (TmallController.java:206)- map ====== {"payload":{"devices":[{"deviceType":"light","extensions":{"extension1":"","extension2":""},"zone":"","icon":"https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png","model":"灯","deviceId":"7164010000","deviceName":"Lamp1","brand":"on-bright","actions":["SetBrightness","AdjustUpBrightness","AdjustDownBrightness","TurnOn","TurnOff"],"properties":[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]},{"deviceType":"light","extensions":{"extension1":"","extension2":""},"zone":"","icon":"https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png","model":"灯","deviceId":"a85a010000","deviceName":"Lamp2","brand":"on-bright","actions":["SetBrightness","AdjustUpBrightness","AdjustDownBrightness","TurnOn","TurnOff"],"properties":[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]},{"deviceType":"light","extensions":{"extension1":"","extension2":""},"zone":"","icon":"https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png","model":"灯","deviceId":"a75a010000","deviceName":"Lamp3","brand":"on-bright","actions":["SetBrightness","AdjustUpBrightness","AdjustDownBrightness","TurnOn","TurnOff"],"properties":[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]},{"deviceType":"light","extensions":{"extension1":"","extension2":""},"zone":"","icon":"https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png","model":"灯","deviceId":"b95f010000","deviceName":"Lamp4","brand":"on-bright","actions":["SetBrightness","AdjustUpBrightness","AdjustDownBrightness","TurnOn","TurnOff"],"properties":[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]},{"deviceType":"outlet","extensions":{"extension1":"","extension2":""},"zone":"","icon":"https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/singleOut.png","model":"单孔插座","deviceId":"5164010000","deviceName":"Socket1","brand":"on-bright","actions":["TurnOn","TurnOff"],"properties":[{"powerstate":"off"}]},{"deviceType":"outlet","extensions":{"extension1":"","extension2":""},"zone":"","icon":"https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/mutipleOutlet.png","model":"多孔插座","deviceId":"b761010000","deviceName":"Socket2","brand":"on-bright","actions":["TurnOn","TurnOff"],"properties":[{"powerstate":"off"}]},{"deviceType":"light","extensions":{"extension1":"","extension2":""},"zone":"阳台","icon":"https://git.cn-hangzhou.oss-cdn.aliyun-inc.com/uploads/aicloud/aicloud-proxy-service/41baa00903a71c97e3533cf4e19a88bb/image.png","model":"1","deviceId":"34ea34cf2e63","deviceName":"大灯","brand":"1","actions":["TurnOn","TurnOff"],"properties":[{"name":"color","value":"Red"}]},{"deviceType":"light","extensions":{"extension1":"","extension2":""},"zone":"客厅","icon":"https://git.cn-hangzhou.oss-cdn.aliyun-inc.com/uploads/aicloud/aicloud-proxy-service/41baa00903a71c97e3533cf4e19a88bb/image.png","model":"1","deviceId":"34ea34cf2e61","deviceName":"灯","brand":"1","actions":["TurnOn","TurnOff"],"properties":[{"name":"color","value":"Red"}]},{"deviceType":"curtain","extensions":{"extension1":"","extension2":""},"zone":"","icon":"https://git.cn-hangzhou.oss-cdn.aliyun-inc.com/uploads/aicloud/aicloud-proxy-service/41baa00903a71c97e3533cf4e19a88bb/image.png","model":"1","deviceId":"34ea34cf2e69","deviceName":"窗帘","brand":"1","actions":["TurnOn","TurnOff"],"properties":[{"name":"color","value":"Red"}]}]},"header":{"namespace":"AliGenie.Iot.Device.Discovery","name":"DiscoveryDevicesResponse","messageId":"1bd5d003-31b9-476f-ad03-71d471922820","payLoadVersion":"1"}}
+2018-08-31 16:54:42,688 INFO (SpringApplication.java:593)- No active profile set, falling back to default profiles: default
+2018-08-31 16:55:09,707 INFO (StartupInfoLogger.java:57)- Started ConsumerApplication in 32.646 seconds (JVM running for 33.522)
+2018-08-31 16:55:16,783 INFO (TmallController.java:90)- ====== messageID ======{header={namespace=AliGenie.Iot.Device.Discovery, name=DiscoveryDevices, messageId=1bd5d003-31b9-476f-ad03-71d471922820, payLoadVersion=1}, payload={accessToken=9dd6c995-dbaf-4e02-b555-4ef91a26292d}}
+2018-08-31 16:55:16,784 INFO (TmallController.java:99)-  ===== accessToken ====== 9dd6c995-dbaf-4e02-b555-4ef91a26292d
+2018-08-31 16:55:16,847 INFO (TmallController.java:101)-  ===== redisToken ====== org.springframework.security.oauth2.provider.OAuth2Authentication@176124ad: Principal: org.springframework.security.core.userdetails.User@f9894274: Username: 15879618946; Password: [PROTECTED]; Enabled: true; AccountNonExpired: true; credentialsNonExpired: true; AccountNonLocked: true; Not granted any authorities; Credentials: [PROTECTED]; Authenticated: true; Details: null; Not granted any authorities
+2018-08-31 16:55:17,341 INFO (TmallController.java:114)-  ====== username ====== 15879618946
+2018-08-31 16:55:17,341 INFO (TmallController.java:116)-  ====== userId ====== 429
+2018-08-31 16:55:17,488 INFO (TmallController.java:126)- ====== adapter ====== deviceId:7164010000
+ deviceName:Lamp1
+ properties:[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]
+ action:[Ljava.lang.String;@439a35dd
+ zone:
+ model:灯
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png
+2018-08-31 16:55:17,489 INFO (TmallController.java:126)- ====== adapter ====== deviceId:a85a010000
+ deviceName:Lamp2
+ properties:[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]
+ action:[Ljava.lang.String;@399e7fc6
+ zone:
+ model:灯
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png
+2018-08-31 16:55:17,489 INFO (TmallController.java:126)- ====== adapter ====== deviceId:a75a010000
+ deviceName:Lamp3
+ properties:[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]
+ action:[Ljava.lang.String;@2f1a0f1a
+ zone:
+ model:灯
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png
+2018-08-31 16:55:17,490 INFO (TmallController.java:126)- ====== adapter ====== deviceId:b95f010000
+ deviceName:Lamp4
+ properties:[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]
+ action:[Ljava.lang.String;@3bb003ae
+ zone:
+ model:灯
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png
+2018-08-31 16:55:17,491 INFO (TmallController.java:126)- ====== adapter ====== deviceId:5164010000
+ deviceName:Socket1
+ properties:[{"powerstate":"off"}]
+ action:[Ljava.lang.String;@63bcc763
+ zone:
+ model:单孔插座
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/singleOut.png
+2018-08-31 16:55:17,492 INFO (TmallController.java:126)- ====== adapter ====== null
+2018-08-31 16:55:17,493 INFO (TmallController.java:126)- ====== adapter ====== null
+2018-08-31 16:55:17,493 INFO (TmallController.java:126)- ====== adapter ====== null
+2018-08-31 16:55:17,493 INFO (TmallController.java:126)- ====== adapter ====== null
+2018-08-31 16:55:17,494 INFO (TmallController.java:126)- ====== adapter ====== deviceId:b761010000
+ deviceName:Socket2
+ properties:[{"powerstate":"off"}]
+ action:[Ljava.lang.String;@2737bb88
+ zone:
+ model:多孔插座
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/mutipleOutlet.png
+2018-08-31 16:55:46,354 INFO (TmallController.java:90)- ====== messageID ======{header={namespace=AliGenie.Iot.Device.Discovery, name=DiscoveryDevices, messageId=1bd5d003-31b9-476f-ad03-71d471922820, payLoadVersion=1}, payload={accessToken=9dd6c995-dbaf-4e02-b555-4ef91a26292d}}
+2018-08-31 16:55:46,355 INFO (TmallController.java:99)-  ===== accessToken ====== 9dd6c995-dbaf-4e02-b555-4ef91a26292d
+2018-08-31 16:55:46,389 INFO (TmallController.java:101)-  ===== redisToken ====== org.springframework.security.oauth2.provider.OAuth2Authentication@176124ad: Principal: org.springframework.security.core.userdetails.User@f9894274: Username: 15879618946; Password: [PROTECTED]; Enabled: true; AccountNonExpired: true; credentialsNonExpired: true; AccountNonLocked: true; Not granted any authorities; Credentials: [PROTECTED]; Authenticated: true; Details: null; Not granted any authorities
+2018-08-31 16:55:46,436 INFO (TmallController.java:114)-  ====== username ====== 15879618946
+2018-08-31 16:55:46,437 INFO (TmallController.java:116)-  ====== userId ====== 429
+2018-08-31 16:55:46,495 INFO (TmallController.java:126)- ====== adapter ====== deviceId:7164010000
+ deviceName:Lamp1
+ properties:[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]
+ action:[Ljava.lang.String;@3742a40d
+ zone:
+ model:灯
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png
+2018-08-31 16:55:46,496 INFO (TmallController.java:126)- ====== adapter ====== deviceId:a85a010000
+ deviceName:Lamp2
+ properties:[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]
+ action:[Ljava.lang.String;@535ad223
+ zone:
+ model:灯
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png
+2018-08-31 16:55:46,497 INFO (TmallController.java:126)- ====== adapter ====== deviceId:a75a010000
+ deviceName:Lamp3
+ properties:[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]
+ action:[Ljava.lang.String;@1f10996d
+ zone:
+ model:灯
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png
+2018-08-31 16:55:46,499 INFO (TmallController.java:126)- ====== adapter ====== deviceId:b95f010000
+ deviceName:Lamp4
+ properties:[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]
+ action:[Ljava.lang.String;@169d87a3
+ zone:
+ model:灯
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png
+2018-08-31 16:55:46,500 INFO (TmallController.java:126)- ====== adapter ====== deviceId:5164010000
+ deviceName:Socket1
+ properties:[{"powerstate":"off"}]
+ action:[Ljava.lang.String;@345d2bb1
+ zone:
+ model:单孔插座
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/singleOut.png
+2018-08-31 16:55:46,501 INFO (TmallController.java:126)- ====== adapter ====== null
+2018-08-31 16:55:46,502 INFO (TmallController.java:126)- ====== adapter ====== null
+2018-08-31 16:55:46,503 INFO (TmallController.java:126)- ====== adapter ====== null
+2018-08-31 16:55:46,503 INFO (TmallController.java:126)- ====== adapter ====== null
+2018-08-31 16:55:46,504 INFO (TmallController.java:126)- ====== adapter ====== deviceId:b761010000
+ deviceName:Socket2
+ properties:[{"powerstate":"off"}]
+ action:[Ljava.lang.String;@31133cd3
+ zone:
+ model:多孔插座
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/mutipleOutlet.png
+2018-08-31 16:56:30,846 INFO (TmallController.java:90)- ====== messageID ======{header={namespace=AliGenie.Iot.Device.Discovery, name=DiscoveryDevices, messageId=1bd5d003-31b9-476f-ad03-71d471922820, payLoadVersion=1}, payload={accessToken=9dd6c995-dbaf-4e02-b555-4ef91a26292d}}
+2018-08-31 16:56:30,847 INFO (TmallController.java:99)-  ===== accessToken ====== 9dd6c995-dbaf-4e02-b555-4ef91a26292d
+2018-08-31 16:56:30,883 INFO (TmallController.java:101)-  ===== redisToken ====== org.springframework.security.oauth2.provider.OAuth2Authentication@176124ad: Principal: org.springframework.security.core.userdetails.User@f9894274: Username: 15879618946; Password: [PROTECTED]; Enabled: true; AccountNonExpired: true; credentialsNonExpired: true; AccountNonLocked: true; Not granted any authorities; Credentials: [PROTECTED]; Authenticated: true; Details: null; Not granted any authorities
+2018-08-31 16:56:30,915 INFO (TmallController.java:114)-  ====== username ====== 15879618946
+2018-08-31 16:56:30,916 INFO (TmallController.java:116)-  ====== userId ====== 429
+2018-08-31 16:56:30,953 INFO (TmallController.java:126)- ====== adapter ====== deviceId:7164010000
+ deviceName:Lamp1
+ properties:[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]
+ action:[Ljava.lang.String;@4efedc2d
+ zone:
+ model:灯
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png
+2018-08-31 16:56:30,954 INFO (TmallController.java:126)- ====== adapter ====== deviceId:a85a010000
+ deviceName:Lamp2
+ properties:[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]
+ action:[Ljava.lang.String;@bfc5b96
+ zone:
+ model:灯
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png
+2018-08-31 16:56:30,955 INFO (TmallController.java:126)- ====== adapter ====== deviceId:a75a010000
+ deviceName:Lamp3
+ properties:[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]
+ action:[Ljava.lang.String;@7ab1b9eb
+ zone:
+ model:灯
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png
+2018-08-31 16:56:30,956 INFO (TmallController.java:126)- ====== adapter ====== deviceId:b95f010000
+ deviceName:Lamp4
+ properties:[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]
+ action:[Ljava.lang.String;@3abdd329
+ zone:
+ model:灯
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png
+2018-08-31 16:56:30,957 INFO (TmallController.java:126)- ====== adapter ====== deviceId:5164010000
+ deviceName:Socket1
+ properties:[{"powerstate":"off"}]
+ action:[Ljava.lang.String;@21a6fe7
+ zone:
+ model:单孔插座
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/singleOut.png
+2018-08-31 16:56:30,957 INFO (TmallController.java:126)- ====== adapter ====== null
+2018-08-31 16:56:30,958 INFO (TmallController.java:126)- ====== adapter ====== null
+2018-08-31 16:56:30,958 INFO (TmallController.java:126)- ====== adapter ====== null
+2018-08-31 16:56:30,959 INFO (TmallController.java:126)- ====== adapter ====== null
+2018-08-31 16:56:30,959 INFO (TmallController.java:126)- ====== adapter ====== deviceId:b761010000
+ deviceName:Socket2
+ properties:[{"powerstate":"off"}]
+ action:[Ljava.lang.String;@6bd3a4d9
+ zone:
+ model:多孔插座
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/mutipleOutlet.png
+2018-08-31 16:57:17,253 INFO (TmallController.java:90)- ====== messageID ======{header={namespace=AliGenie.Iot.Device.Discovery, name=DiscoveryDevices, messageId=1bd5d003-31b9-476f-ad03-71d471922820, payLoadVersion=1}, payload={accessToken=9dd6c995-dbaf-4e02-b555-4ef91a26292d}}
+2018-08-31 16:57:17,254 INFO (TmallController.java:99)-  ===== accessToken ====== 9dd6c995-dbaf-4e02-b555-4ef91a26292d
+2018-08-31 16:57:17,289 INFO (TmallController.java:101)-  ===== redisToken ====== org.springframework.security.oauth2.provider.OAuth2Authentication@176124ad: Principal: org.springframework.security.core.userdetails.User@f9894274: Username: 15879618946; Password: [PROTECTED]; Enabled: true; AccountNonExpired: true; credentialsNonExpired: true; AccountNonLocked: true; Not granted any authorities; Credentials: [PROTECTED]; Authenticated: true; Details: null; Not granted any authorities
+2018-08-31 16:57:17,321 INFO (TmallController.java:114)-  ====== username ====== 15879618946
+2018-08-31 16:57:17,322 INFO (TmallController.java:116)-  ====== userId ====== 429
+2018-08-31 16:57:17,412 INFO (TmallController.java:126)- ====== adapter ====== deviceId:7164010000
+ deviceName:Lamp1
+ properties:[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]
+ action:[Ljava.lang.String;@52666aa7
+ zone:
+ model:灯
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png
+2018-08-31 16:57:17,413 INFO (TmallController.java:126)- ====== adapter ====== deviceId:a85a010000
+ deviceName:Lamp2
+ properties:[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]
+ action:[Ljava.lang.String;@23512036
+ zone:
+ model:灯
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png
+2018-08-31 16:57:17,413 INFO (TmallController.java:126)- ====== adapter ====== deviceId:a75a010000
+ deviceName:Lamp3
+ properties:[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]
+ action:[Ljava.lang.String;@2ad44041
+ zone:
+ model:灯
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png
+2018-08-31 16:57:17,413 INFO (TmallController.java:126)- ====== adapter ====== deviceId:b95f010000
+ deviceName:Lamp4
+ properties:[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]
+ action:[Ljava.lang.String;@7226ab2f
+ zone:
+ model:灯
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png
+2018-08-31 16:57:17,418 INFO (TmallController.java:126)- ====== adapter ====== deviceId:5164010000
+ deviceName:Socket1
+ properties:[{"powerstate":"off"}]
+ action:[Ljava.lang.String;@1374d49e
+ zone:
+ model:单孔插座
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/singleOut.png
+2018-08-31 16:57:17,419 INFO (TmallController.java:126)- ====== adapter ====== null
+2018-08-31 16:57:17,419 INFO (TmallController.java:126)- ====== adapter ====== null
+2018-08-31 16:57:17,419 INFO (TmallController.java:126)- ====== adapter ====== null
+2018-08-31 16:57:17,419 INFO (TmallController.java:126)- ====== adapter ====== null
+2018-08-31 16:57:17,420 INFO (TmallController.java:126)- ====== adapter ====== deviceId:b761010000
+ deviceName:Socket2
+ properties:[{"powerstate":"off"}]
+ action:[Ljava.lang.String;@390e0656
+ zone:
+ model:多孔插座
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/mutipleOutlet.png
+2018-08-31 16:59:19,304 INFO (SpringApplication.java:593)- No active profile set, falling back to default profiles: default
+2018-08-31 16:59:45,633 INFO (StartupInfoLogger.java:57)- Started ConsumerApplication in 31.319 seconds (JVM running for 32.257)
+2018-08-31 17:00:01,886 INFO (TmallController.java:90)- ====== messageID ======{header={namespace=AliGenie.Iot.Device.Discovery, name=DiscoveryDevices, messageId=1bd5d003-31b9-476f-ad03-71d471922820, payLoadVersion=1}, payload={accessToken=9dd6c995-dbaf-4e02-b555-4ef91a26292d}}
+2018-08-31 17:00:01,887 INFO (TmallController.java:99)-  ===== accessToken ====== 9dd6c995-dbaf-4e02-b555-4ef91a26292d
+2018-08-31 17:00:01,983 INFO (TmallController.java:101)-  ===== redisToken ====== org.springframework.security.oauth2.provider.OAuth2Authentication@176124ad: Principal: org.springframework.security.core.userdetails.User@f9894274: Username: 15879618946; Password: [PROTECTED]; Enabled: true; AccountNonExpired: true; credentialsNonExpired: true; AccountNonLocked: true; Not granted any authorities; Credentials: [PROTECTED]; Authenticated: true; Details: null; Not granted any authorities
+2018-08-31 17:00:02,521 INFO (TmallController.java:114)-  ====== username ====== 15879618946
+2018-08-31 17:00:02,521 INFO (TmallController.java:116)-  ====== userId ====== 429
+2018-08-31 17:00:02,729 INFO (TmallController.java:126)- ====== adapter ====== deviceId:7164010000
+ deviceName:Lamp1
+ properties:[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]
+ action:[Ljava.lang.String;@205ed3a9
+ zone:
+ model:灯
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png
+2018-08-31 17:00:02,730 INFO (TmallController.java:126)- ====== adapter ====== deviceId:a85a010000
+ deviceName:Lamp2
+ properties:[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]
+ action:[Ljava.lang.String;@1da832af
+ zone:
+ model:灯
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png
+2018-08-31 17:00:02,731 INFO (TmallController.java:126)- ====== adapter ====== deviceId:a75a010000
+ deviceName:Lamp3
+ properties:[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]
+ action:[Ljava.lang.String;@59a6b199
+ zone:
+ model:灯
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png
+2018-08-31 17:00:02,732 INFO (TmallController.java:126)- ====== adapter ====== deviceId:b95f010000
+ deviceName:Lamp4
+ properties:[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]
+ action:[Ljava.lang.String;@59acb08f
+ zone:
+ model:灯
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png
+2018-08-31 17:00:02,734 INFO (TmallController.java:126)- ====== adapter ====== deviceId:5164010000
+ deviceName:Socket1
+ properties:[{"powerstate":"off"}]
+ action:[Ljava.lang.String;@5358859a
+ zone:
+ model:单孔插座
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/singleOut.png
+2018-08-31 17:00:02,735 INFO (TmallController.java:126)- ====== adapter ====== null
+2018-08-31 17:00:02,735 INFO (TmallController.java:126)- ====== adapter ====== null
+2018-08-31 17:00:02,736 INFO (TmallController.java:126)- ====== adapter ====== null
+2018-08-31 17:00:02,736 INFO (TmallController.java:126)- ====== adapter ====== null
+2018-08-31 17:00:02,737 INFO (TmallController.java:126)- ====== adapter ====== deviceId:b761010000
+ deviceName:Socket2
+ properties:[{"powerstate":"off"}]
+ action:[Ljava.lang.String;@30a2ba5
+ zone:
+ model:多孔插座
+ brand:on-bright
+ icon:https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/mutipleOutlet.png
+2018-08-31 17:00:06,311 INFO (TmallController.java:208)- map ====== {"payload":{"devices":[{"deviceType":"light","extensions":{"extension1":"","extension2":""},"zone":"","icon":"https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png","model":"灯","deviceId":"7164010000","deviceName":"Lamp1","brand":"on-bright","actions":["SetBrightness","AdjustUpBrightness","AdjustDownBrightness","TurnOn","TurnOff"],"properties":[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]},{"deviceType":"light","extensions":{"extension1":"","extension2":""},"zone":"","icon":"https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png","model":"灯","deviceId":"a85a010000","deviceName":"Lamp2","brand":"on-bright","actions":["SetBrightness","AdjustUpBrightness","AdjustDownBrightness","TurnOn","TurnOff"],"properties":[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]},{"deviceType":"light","extensions":{"extension1":"","extension2":""},"zone":"","icon":"https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png","model":"灯","deviceId":"a75a010000","deviceName":"Lamp3","brand":"on-bright","actions":["SetBrightness","AdjustUpBrightness","AdjustDownBrightness","TurnOn","TurnOff"],"properties":[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]},{"deviceType":"light","extensions":{"extension1":"","extension2":""},"zone":"","icon":"https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png","model":"灯","deviceId":"b95f010000","deviceName":"Lamp4","brand":"on-bright","actions":["SetBrightness","AdjustUpBrightness","AdjustDownBrightness","TurnOn","TurnOff"],"properties":[{"brightness":"max","brightnessStep":"0","powerstate":"off","colorTemperature":"0"}]},{"deviceType":"outlet","extensions":{"extension1":"","extension2":""},"zone":"","icon":"https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/singleOut.png","model":"单孔插座","deviceId":"5164010000","deviceName":"Socket1","brand":"on-bright","actions":["TurnOn","TurnOff"],"properties":[{"powerstate":"off"}]},{"deviceType":"outlet","extensions":{"extension1":"","extension2":""},"zone":"","icon":"https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/mutipleOutlet.png","model":"多孔插座","deviceId":"b761010000","deviceName":"Socket2","brand":"on-bright","actions":["TurnOn","TurnOff"],"properties":[{"powerstate":"off"}]},{"deviceType":"outlet","extensions":{"extension1":"","extension2":"","parentId":"b761010000"},"zone":"","icon":"https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/singleOut.png","model":"","deviceId":"b761010000_1","deviceName":"单孔插座","brand":"on-bright","actions":["TurnOn","TurnOff"],"properties":[{"powerstate":"off"}]},{"deviceType":"outlet","extensions":{"extension1":"","extension2":"","parentId":"b761010000"},"zone":"","icon":"https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/singleOut.png","model":"","deviceId":"b761010000_2","deviceName":"单孔插座","brand":"on-bright","actions":["TurnOn","TurnOff"],"properties":[{"powerstate":"off"}]},{"deviceType":"outlet","extensions":{"extension1":"","extension2":"","parentId":"b761010000"},"zone":"","icon":"https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/singleOut.png","model":"","deviceId":"b761010000_3","deviceName":"单孔插座","brand":"on-bright","actions":["TurnOn","TurnOff"],"properties":[{"powerstate":"off"}]},{"deviceType":"light","extensions":{"extension1":"","extension2":""},"zone":"阳台","icon":"https://git.cn-hangzhou.oss-cdn.aliyun-inc.com/uploads/aicloud/aicloud-proxy-service/41baa00903a71c97e3533cf4e19a88bb/image.png","model":"1","deviceId":"34ea34cf2e63","deviceName":"大灯","brand":"1","actions":["TurnOn","TurnOff"],"properties":[{"name":"color","value":"Red"}]},{"deviceType":"light","extensions":{"extension1":"","extension2":""},"zone":"客厅","icon":"https://git.cn-hangzhou.oss-cdn.aliyun-inc.com/uploads/aicloud/aicloud-proxy-service/41baa00903a71c97e3533cf4e19a88bb/image.png","model":"1","deviceId":"34ea34cf2e61","deviceName":"灯","brand":"1","actions":["TurnOn","TurnOff"],"properties":[{"name":"color","value":"Red"}]},{"deviceType":"curtain","extensions":{"extension1":"","extension2":""},"zone":"","icon":"https://git.cn-hangzhou.oss-cdn.aliyun-inc.com/uploads/aicloud/aicloud-proxy-service/41baa00903a71c97e3533cf4e19a88bb/image.png","model":"1","deviceId":"34ea34cf2e69","deviceName":"窗帘","brand":"1","actions":["TurnOn","TurnOff"],"properties":[{"name":"color","value":"Red"}]}]},"header":{"namespace":"AliGenie.Iot.Device.Discovery","name":"DiscoveryDevicesResponse","messageId":"1bd5d003-31b9-476f-ad03-71d471922820","payLoadVersion":"1"}}

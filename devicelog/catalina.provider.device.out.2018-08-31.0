@@ -1,0 +1,19 @@
+2018-08-31 16:12:09,780 INFO (SpringApplication.java:597)- The following profiles are active: test
+2018-08-31 16:12:23,035 INFO (StartupInfoLogger.java:57)- Started DeviceApplication in 17.6 seconds (JVM running for 18.279)
+2018-08-31 16:14:29,038 INFO (DeviceController.java:191)-  ====== getOboxDeviceConfigByUserId ====== 
+2018-08-31 16:15:31,061 INFO (DeviceController.java:191)-  ====== getOboxDeviceConfigByUserId ====== 
+2018-08-31 16:16:49,995 INFO (DeviceController.java:191)-  ====== getOboxDeviceConfigByUserId ====== 
+2018-08-31 16:17:59,792 INFO (DeviceController.java:191)-  ====== getOboxDeviceConfigByUserId ====== 
+2018-08-31 16:20:04,827 INFO (DeviceController.java:191)-  ====== getOboxDeviceConfigByUserId ====== 
+2018-08-31 16:23:10,419 INFO (SpringApplication.java:597)- The following profiles are active: test
+2018-08-31 16:23:23,343 INFO (StartupInfoLogger.java:57)- Started DeviceApplication in 18.164 seconds (JVM running for 18.815)
+2018-08-31 16:25:16,323 INFO (DeviceController.java:191)-  ====== getOboxDeviceConfigByUserId ====== 
+2018-08-31 16:27:42,150 INFO (DeviceController.java:191)-  ====== getOboxDeviceConfigByUserId ====== 
+2018-08-31 16:37:06,221 INFO (DeviceController.java:191)-  ====== getOboxDeviceConfigByUserId ====== 
+2018-08-31 16:39:24,137 INFO (DeviceController.java:191)-  ====== getOboxDeviceConfigByUserId ====== 
+2018-08-31 16:53:37,933 INFO (DeviceController.java:191)-  ====== getOboxDeviceConfigByUserId ====== 
+2018-08-31 16:55:17,401 INFO (DeviceController.java:191)-  ====== getOboxDeviceConfigByUserId ====== 
+2018-08-31 16:55:46,447 INFO (DeviceController.java:191)-  ====== getOboxDeviceConfigByUserId ====== 
+2018-08-31 16:56:30,919 INFO (DeviceController.java:191)-  ====== getOboxDeviceConfigByUserId ====== 
+2018-08-31 16:57:17,326 INFO (DeviceController.java:191)-  ====== getOboxDeviceConfigByUserId ====== 
+2018-08-31 17:00:02,576 INFO (DeviceController.java:191)-  ====== getOboxDeviceConfigByUserId ====== 

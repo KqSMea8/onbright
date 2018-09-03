@@ -188,10 +188,12 @@ public class TmallController {
 			try {
 				ResponseObject<TOboxDeviceConfig> responseObject = feignDeviceClient.getDevice(deviceId);
 				TOboxDeviceConfig oboxDeviceConfig = responseObject.getData();
-				adapter = new TMallDeviceAdapter(playLoadMap,tMallTemplate,oboxDeviceConfig);
-				Map<String,Object> paramMap = adapter.TMall2Obright();
-				logger.info("paramMap ====== "+paramMap);
-				facadeController.controlDevice((String)paramMap.get("deviceId"),(String)paramMap.get("deviceState"));
+				if(oboxDeviceConfig !=null &&!oboxDeviceConfig.equals("")){
+					adapter = new TMallDeviceAdapter(playLoadMap,tMallTemplate,oboxDeviceConfig);
+					Map<String,Object> paramMap = adapter.TMall2Obright();
+					logger.info("paramMap ====== "+paramMap);
+					facadeController.controlDevice((String)paramMap.get("deviceId"),(String)paramMap.get("deviceState"));
+				}
 			}catch (Exception e){
 				logger.info("exception ====== "+e);
 			}finally {

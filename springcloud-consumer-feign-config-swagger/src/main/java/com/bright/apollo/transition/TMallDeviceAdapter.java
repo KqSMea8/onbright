@@ -295,6 +295,8 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         String dfControllProperties = tMallTemplate.getDefaultControllProperties();
         String lightControllProperties = tMallTemplate.getLightControllProperties();
         String deviceState = oboxDeviceConfig.getDeviceState();
+        String obdeviceType = oboxDeviceConfig.getDeviceType();
+        String obChildType = oboxDeviceConfig.getDeviceChildType();
         List<String> propertiesLists = new ArrayList<String>();
         Map<String,Object> returnMap = new HashMap<String, Object>();
         String[] dfControllArrays = dfControllProperties.split("\\|");
@@ -337,6 +339,11 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                     }
 
                 }
+            }else if((attribute+"_"+value).equals(propertyArr[0])&&obdeviceType.equals("04")&&(obChildType.equals("2b")||obChildType.equals("17"))){
+                System.out.println(" ====== attribute_value ====== "+attribute+"_"+value);
+                System.out.println(" ====== propertyArr[0] ====== "+propertyArr[0]);
+                System.out.println(" ====== 状态 ====== "+propertyArr[1]);
+                deviceState = changeMutipleOutLet(propertyArr[1]);
             }else if((attribute+"_"+value).equals(propertyArr[0])){
                 value = propertyArr[1];
                 deviceState = changeState(deviceState,value);
@@ -345,6 +352,17 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         returnMap.put("deviceId",deviceId);
         returnMap.put("deviceState",deviceState);
         return returnMap;
+    }
+
+    private String changeMutipleOutLet(String value){
+        Integer v = null;
+        if(value.equals("00")){
+            v = 0;
+            return Integer.toHexString(v)+"0000000";
+        }else{
+            v = 7;
+            return Integer.toHexString(v)+"0000000";
+        }
     }
 
     private String changeState(String deviceState,String value){
