@@ -54,11 +54,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="TmallController.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="TmallController.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/TmallController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-575">
-              <caret line="192" column="66" selection-start-line="192" selection-start-column="66" selection-end-line="192" selection-end-column="66" />
+            <state relative-caret-position="370">
+              <caret line="233" column="39" selection-start-line="233" selection-start-column="39" selection-end-line="233" selection-end-column="39" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#5076#5088#0" expanded="true" />
@@ -88,17 +88,17 @@
       <file leaf-file-name="bootstrap.yml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/springcloud-zuul/src/main/resources/bootstrap.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="314">
+            <state relative-caret-position="328">
               <caret line="59" column="31" lean-forward="true" selection-start-line="59" selection-start-column="31" selection-end-line="59" selection-end-column="31" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TMallDeviceAdapter.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="TMallDeviceAdapter.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/TMallDeviceAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="260">
-              <caret line="342" column="99" selection-start-line="342" selection-start-column="99" selection-end-line="342" selection-end-column="99" />
+            <state relative-caret-position="2512">
+              <caret line="344" lean-forward="true" selection-start-line="344" selection-end-line="344" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -212,9 +212,9 @@
         <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/mqtt/MqttPropertiesConfiguration.java" />
         <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/aop/WebLogAspect.java" />
         <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/Mutipleswitch.java" />
-        <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/TmallController.java" />
         <option value="$PROJECT_DIR$/springcloud-zuul/src/main/resources/bootstrap.yml" />
         <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/TMallDeviceAdapter.java" />
+        <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/TmallController.java" />
       </list>
     </option>
   </component>
@@ -654,12 +654,12 @@
       <workItem from="1533887392858" duration="47322000" />
       <workItem from="1534320136585" duration="157430000" />
       <workItem from="1535537860793" duration="5299000" />
-      <workItem from="1535593741795" duration="45327000" />
+      <workItem from="1535593741795" duration="48502000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1096221000" />
+    <option name="totallyTimeSpent" value="1099396000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -761,11 +761,17 @@
           <properties />
           <option name="timeStamp" value="280" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/TMallDeviceAdapter.java</url>
+          <line>340</line>
+          <properties />
+          <option name="timeStamp" value="284" />
+        </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="284" />
+      <option name="time" value="285" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="SpringBootApplicationConfigurationType">
@@ -1113,13 +1119,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-zuul/src/main/resources/bootstrap.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="314">
-          <caret line="59" column="31" lean-forward="true" selection-start-line="59" selection-start-column="31" selection-end-line="59" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-quartz/src/main/java/com/bright/apollo/feign/FeignSceneClient.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="303">
@@ -1141,23 +1140,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/TmallController.java">
+    <entry file="file://$PROJECT_DIR$/springcloud-zuul/src/main/resources/bootstrap.yml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-575">
-          <caret line="192" column="66" selection-start-line="192" selection-start-column="66" selection-end-line="192" selection-end-column="66" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#5076#5088#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="328">
+          <caret line="59" column="31" lean-forward="true" selection-start-line="59" selection-start-column="31" selection-end-line="59" selection-end-column="31" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/TMallDeviceAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="342" column="99" selection-start-line="342" selection-start-column="99" selection-end-line="342" selection-end-column="99" />
+        <state relative-caret-position="2512">
+          <caret line="344" lean-forward="true" selection-start-line="344" selection-end-line="344" />
           <folding>
             <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/TmallController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="370">
+          <caret line="233" column="39" selection-start-line="233" selection-start-column="39" selection-end-line="233" selection-end-column="39" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#5076#5088#0" expanded="true" />
           </folding>
         </state>
       </provider>

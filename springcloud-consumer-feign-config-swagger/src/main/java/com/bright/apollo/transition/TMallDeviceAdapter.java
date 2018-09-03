@@ -338,9 +338,9 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                         value = ColorEnum.getRegion(value).getValue();
                         deviceState = changeColorState(deviceState,value);
                     }else if(attribute.equals("colorTemperature")){
-                        Integer temperature = Integer.valueOf(value);
-                        temperature = temperature-2700;
-                        deviceState = changeColorTemperature(deviceState,String.valueOf(temperature));
+                        Integer temperature = Integer.valueOf(value)*7;
+                        String middle = ByteHelper.int2HexString(temperature);
+                        deviceState = changeColorTemperature(deviceState,middle);
                     }
 
                 }
@@ -360,7 +360,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         if(value.equals("00")){
             return "000000000000";
         }else{
-            return "070000000000";
+            return "000700000000";
         }
     }
 
@@ -370,8 +370,8 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
     }
 
     private String changeColorTemperature(String deviceState,String value){
-        String beginStr = deviceState.substring(0,4);
-        String endStr = deviceState.substring(6,deviceState.length());
+        String beginStr = deviceState.substring(0,2);
+        String endStr = deviceState.substring(4,deviceState.length());
         return beginStr+value+endStr;
     }
 

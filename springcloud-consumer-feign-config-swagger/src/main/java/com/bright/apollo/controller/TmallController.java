@@ -230,8 +230,8 @@ public class TmallController {
 		extensionsMap.put("extension2","");
 		extensionsMap.put("parentId",deivceId);
 		devices.put("deviceId",deivceId+"_"+i);
-		devices.put("deviceName","单孔插座");
-		devices.put("deviceType",outlet.getString("deviceType"));
+		devices.put("deviceName","灯");//单孔插座
+		devices.put("deviceType","light");//outlet.getString("deviceType")
 		devices.put("zone","");
 		devices.put("brand","on-bright");
 		devices.put("model","");
