@@ -51,11 +51,11 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
 
     private String model;
 
-    public static String lighticon = "https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/light.png";
+    public static String lighticon = "https://raw.githubusercontent.com/onbright-canton/onbrightConfig/master/tmallImg/light.png";
 
-    public static String singleOutleticon = "https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/singleOut.png";
+    public static String singleOutleticon = "https://raw.githubusercontent.com/onbright-canton/onbrightConfig/master/tmallImg/singleOut.png";
 
-    public static String mutipleOutleticon = "https://github.com/onbright-canton/onbrightConfig/blob/master/tmallImg/mutipleOutlet.png";
+    public static String mutipleOutleticon = "https://raw.githubusercontent.com/onbright-canton/onbrightConfig/master/tmallImg/mutipleOutlet.png";
 
     public String getIcon() {
         return icon;
@@ -158,7 +158,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
     //设置设备参数
     private void setProperty(TMallDeviceAdapter tMallDeviceAdapter,TOboxDeviceConfig oboxDeviceConfig){
         tMallDeviceAdapter.setDeviceId(oboxDeviceConfig.getDeviceSerialId());
-        tMallDeviceAdapter.setDeviceName(oboxDeviceConfig.getDeviceId());
+
         tMallDeviceAdapter.setDeviceType(oboxDeviceConfig.getDeviceType());
         tMallDeviceAdapter.setBrand("on-bright");
         tMallDeviceAdapter.setZone("");
@@ -166,12 +166,15 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         String childType = oboxDeviceConfig.getDeviceChildType();
         if(deviceType.equals("light")){
             tMallDeviceAdapter.setModel("灯");
+            tMallDeviceAdapter.setDeviceName("灯");
             tMallDeviceAdapter.setIcon(lighticon);
         }else if(deviceType.equals("outlet")&&(childType.equals("01")||childType.equals("02"))){
             tMallDeviceAdapter.setModel("单孔插座");
+            tMallDeviceAdapter.setDeviceName("单孔插座");
             tMallDeviceAdapter.setIcon(singleOutleticon);
         }else if(deviceType.equals("outlet")&&(childType.equals("17")||childType.equals("2b"))){
             tMallDeviceAdapter.setModel("多孔插座");
+            tMallDeviceAdapter.setDeviceName("多孔插座");
             tMallDeviceAdapter.setIcon(mutipleOutleticon);
         }else{
             tMallDeviceAdapter.setModel("");

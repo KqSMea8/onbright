@@ -167,7 +167,8 @@ public class TmallController {
 			Map<String,Object> playLoadMap = (Map<String, Object>) requestMap.get("payload");
 			String name = (String)requestHeaderMap.get("name");
 			String deviceId = (String)playLoadMap.get("deviceId");
-
+			String[] deviceIdArr = deviceId.split("_");
+			deviceId = deviceIdArr[0];
 			//====== 生成httpsClient begin ======
 			RequestConfig requestConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD_STRICT).build();
 			HttpPost httpPost =new HttpPost("https://cloud.on-bright.com/common");
@@ -206,6 +207,8 @@ public class TmallController {
 				map.put("payload",playloadMap);
 			}
 
+		}else if(requestHeaderMap.get("namespace").equals("AliGenie.Iot.Device.Query")){
+
 		}
 		logger.info("map ====== "+map);
 		return map.toString();
@@ -230,8 +233,8 @@ public class TmallController {
 		extensionsMap.put("extension2","");
 		extensionsMap.put("parentId",deivceId);
 		devices.put("deviceId",deivceId+"_"+i);
-		devices.put("deviceName","灯");//单孔插座
-		devices.put("deviceType","light");//outlet.getString("deviceType")
+		devices.put("deviceName","单孔插座");//单孔插座
+		devices.put("deviceType",outlet.getString("deviceType"));//outlet.getString("deviceType")
 		devices.put("zone","");
 		devices.put("brand","on-bright");
 		devices.put("model","");
