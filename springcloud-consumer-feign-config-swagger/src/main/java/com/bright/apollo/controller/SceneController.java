@@ -171,7 +171,7 @@ public class SceneController {
 			if(!StringUtils.isEmpty(oboxSerialId)){
 				map.put("obox_serial_id",oboxSerialId);
 			}
-			if(!StringUtils.isEmpty(scene.getOboxSceneNumber())){
+			if(scene.getOboxSceneNumber()!=null){
 				map.put("obox_scene_number", scene.getOboxSceneNumber());
 			}
 			map.put("scene_status", sceneStatus);
