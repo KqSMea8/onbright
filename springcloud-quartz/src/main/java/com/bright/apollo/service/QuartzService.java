@@ -21,8 +21,8 @@ import com.bright.apollo.job.RemoteUserOpenJob;
 import com.bright.apollo.job.TimeJob;
 import com.bright.apollo.tool.ByteHelper;
 import com.bright.apollo.tool.DateHelper;
-import com.zz.common.util.MD5;
-
+import com.bright.apollo.tool.MD5;
+ 
 /**
  * @Title:
  * @Description:

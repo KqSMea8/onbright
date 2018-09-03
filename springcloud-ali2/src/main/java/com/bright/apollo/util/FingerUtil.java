@@ -7,10 +7,11 @@ import org.springframework.stereotype.Component;
 
 import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
-import com.bright.apollo.controller.AliServerController;
+import com.bright.apollo.tool.Base64Util;
 import com.bright.apollo.tool.ByteHelper;
 import com.bright.apollo.tool.DateHelper;
 import com.bright.apollo.tool.EncDecHelper;
+import com.bright.apollo.tool.NumberHelper;
 
 /**  
  *@Title:  
@@ -57,8 +58,12 @@ public class FingerUtil {
 		if(Integer.toHexString(userSerialId).length()<=1){
 			pin=0+Integer.toHexString(userSerialId);
 		}
-		byte[] pwdBytes = ByteHelper.stringToAsciiBytes("62" + userSerialId+"" + randomNum, 16);
- 		byte[] hexStringToBytes =ByteHelper.stringToAsciiBytes("smart_doorlock", 64);
+		byte[] pwdBytes = null;
+		if(NumberHelper.isNumeric(randomNum))
+			pwdBytes = ByteHelper.stringToAsciiBytes("62" + userSerialId+"" + randomNum, 16);
+		else
+			pwdBytes = ByteHelper.stringToAsciiBytes("62" + userSerialId+"" + Base64Util.base64Decrypt(randomNum), 16);
+		byte[] hexStringToBytes =ByteHelper.stringToAsciiBytes("smart_doorlock", 64);
   		byte[] hexStringToBytes2 = ByteHelper.hexStringToBytes(pin);
  		byte[] hexStringToBytes3 = ByteHelper.hexStringToBytes(oboxDeviceConfig.getDeviceRfAddr());
  		System.arraycopy(hexStringToBytes2, 0, hexStringToBytes, "smart_doorlock".toCharArray().length, hexStringToBytes2.length);
@@ -91,12 +96,10 @@ public class FingerUtil {
 			hexString="0"+hexString;
 		}
 		byte[] timesByte = ByteHelper.hexStringToBytes(hexString);
-		System.arraycopy(timesByte, 0, bodyBytes, 30, timesByte.length);
 		if(timesByte.length==1){
-			bodyBytes[31] = 0x00;
+			bodyBytes[30] = 0x00;
 		}
-		
+		System.arraycopy(timesByte, 0, bodyBytes, 31, timesByte.length);		
 		return bodyBytes;
-	
 	}
 }

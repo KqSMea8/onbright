@@ -1,7 +1,6 @@
 package com.bright.apollo.handler;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -44,14 +43,12 @@ import com.bright.apollo.service.UserOperationService;
 import com.bright.apollo.service.UserSceneService;
 import com.bright.apollo.service.UserService;
 import com.bright.apollo.session.ClientSession;
-import com.bright.apollo.session.PushObserverManager;
 import com.bright.apollo.session.PushThreadPool;
 import com.bright.apollo.session.SceneActionThreadPool;
 import com.bright.apollo.session.SessionManager;
 import com.bright.apollo.tool.ByteHelper;
 import com.bright.apollo.tool.EncDecHelper;
 import com.bright.apollo.util.FingerUtil;
-import com.zz.common.exception.AppException;
 import com.zz.common.util.StringUtils;
 
 @Component

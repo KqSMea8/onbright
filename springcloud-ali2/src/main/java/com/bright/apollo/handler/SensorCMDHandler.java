@@ -7,7 +7,10 @@ import java.util.TimeZone;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
+
 import com.bright.apollo.bean.Message;
+import com.bright.apollo.bean.PushExceptionMsg;
 import com.bright.apollo.common.entity.TDeviceStatus;
 import com.bright.apollo.common.entity.TIntelligentFingerAbandonRemoteUser;
 import com.bright.apollo.common.entity.TIntelligentFingerAuth;
@@ -26,6 +29,7 @@ import com.bright.apollo.common.entity.TUserScene;
 import com.bright.apollo.enums.CMDEnum;
 import com.bright.apollo.enums.DeviceTypeEnum;
 import com.bright.apollo.enums.DoorOperationEnum;
+import com.bright.apollo.enums.ExceptionEnum;
 import com.bright.apollo.enums.FingerOperationEnum;
 import com.bright.apollo.enums.FingerWarnEnum;
 import com.bright.apollo.enums.IntelligentMaxEnum;
@@ -34,11 +38,10 @@ import com.bright.apollo.enums.RemoteUserEnum;
 import com.bright.apollo.enums.SceneTypeEnum;
 import com.bright.apollo.service.JPushService;
 import com.bright.apollo.session.ClientSession;
+import com.bright.apollo.session.PushObserverManager;
 import com.bright.apollo.tool.ByteHelper;
-import com.zz.common.exception.AppException;
+import com.bright.apollo.tool.MD5;
 import com.zz.common.util.DateTime;
-import com.zz.common.util.MD5;
-import com.zz.common.util.StringUtils;
 
 @Component
 public class SensorCMDHandler extends BasicHandler {
@@ -350,23 +353,20 @@ public class SensorCMDHandler extends BasicHandler {
 								.queryTIntelligentFingerRemoteUserBySerialIdAndPin(
 										tOboxDeviceConfig.getDeviceSerialId(), Integer.parseInt(doorPin));
 						if (tIntelligentFingerRemoteUser != null) {
-							// int times = Integer.parseInt(state.substring(12,
+							// int times =
+							// Integer.parseInt(state.substring(12,
 							// 14)+state.substring(10, 12), 16);
 							int times = Integer.parseInt(state.substring(10, 14), 16);
 							log.info("=====remote user opern=====times:" + times);
 							if (tIntelligentFingerRemoteUser.getTimes() - times < 0)
 								return null;
-							tIntelligentFingerRemoteUser.setUseTimes(tIntelligentFingerRemoteUser.getTimes() - times);
+							tIntelligentFingerRemoteUser
+									.setUseTimes(tIntelligentFingerRemoteUser.getTimes() - times);
 							if (times > 0) {
 								byte[] buildBytes = fingerUtil.buildBytes(RemoteUserEnum.update.getValue(), tObox,
-										tOboxDeviceConfig, tIntelligentFingerRemoteUser.getStartTime(),tIntelligentFingerRemoteUser.getEndTime(), times + "", tIntelligentFingerRemoteUser.getUserSerialid(),
-										tIntelligentFingerRemoteUser.getPwd());
+									tOboxDeviceConfig, tIntelligentFingerRemoteUser.getStartTime(),tIntelligentFingerRemoteUser.getEndTime(), times + "", tIntelligentFingerRemoteUser.getUserSerialid(),
+									tIntelligentFingerRemoteUser.getPwd());
 								topicServer.request(CMDEnum.set_finger_remote_user, buildBytes, tObox.getOboxSerialId());
-								/*ByteHelper.sendMessageToObox(RemoteUserEnum.update.getValue(), tObox, clientSession,
-										tOboxDeviceConfig, tIntelligentFingerRemoteUser.getStartTime(),
-										tIntelligentFingerRemoteUser.getEndTime(), times + "",
-										tIntelligentFingerRemoteUser.getUserSerialid(),
-										tIntelligentFingerRemoteUser.getPwd());*/
 							} else {
 								if (tIntelligentFingerRemoteUser.getIsmax() == IntelligentMaxEnum.MAX.getValue()) {
 									tIntelligentFingerRemoteUser
@@ -375,30 +375,22 @@ public class SensorCMDHandler extends BasicHandler {
 											tOboxDeviceConfig, tIntelligentFingerRemoteUser.getStartTime(),tIntelligentFingerRemoteUser.getEndTime(), IntelligentMaxEnum.MAX.getValue() + "", tIntelligentFingerRemoteUser.getUserSerialid(),
 											tIntelligentFingerRemoteUser.getPwd());
 									topicServer.request(CMDEnum.set_finger_remote_user, buildBytes, tObox.getOboxSerialId());
-								/*	ByteHelper.sendMessageToObox(RemoteUserEnum.update.getValue(), tObox, clientSession,
-											tOboxDeviceConfig, tIntelligentFingerRemoteUser.getStartTime(),
-											tIntelligentFingerRemoteUser.getEndTime(),
-											IntelligentMaxEnum.MAX.getValue() + "",
-											tIntelligentFingerRemoteUser.getUserSerialid(),
-											tIntelligentFingerRemoteUser.getPwd());*/
 								} else {
 									TIntelligentFingerAbandonRemoteUser abandonRemoteUser = new TIntelligentFingerAbandonRemoteUser();
 									abandonRemoteUser.setSerialid(tOboxDeviceConfig.getDeviceSerialId());
 									abandonRemoteUser.setUserSerialid(Integer.parseInt(doorPin));
+									intelligentFingerService.delIntelligentFingerAbandonRemoteUserBySerialIdAndPin(
+											tOboxDeviceConfig.getDeviceSerialId(), Integer.parseInt(doorPin));
 									intelligentFingerService.addIntelligentFingerAbandonRemoteUser(abandonRemoteUser);
 									tIntelligentFingerRemoteUser.setIsend(1);
-									tIntelligentFingerRemoteUser.setUseTimes(tIntelligentFingerRemoteUser.getTimes());
+									tIntelligentFingerRemoteUser
+											.setUseTimes(tIntelligentFingerRemoteUser.getTimes());
 									byte[] buildBytes = fingerUtil.buildBytes(RemoteUserEnum.del.getValue(), tObox,
 											tOboxDeviceConfig, tIntelligentFingerRemoteUser.getStartTime(),
 											tIntelligentFingerRemoteUser.getEndTime(), times + "",
 											tIntelligentFingerRemoteUser.getUserSerialid(),
 											tIntelligentFingerRemoteUser.getPwd());
 									topicServer.request(CMDEnum.set_finger_remote_user, buildBytes, tObox.getOboxSerialId());
-								/*	ByteHelper.sendMessageToObox(RemoteUserEnum.del.getValue(), tObox, clientSession,
-											tOboxDeviceConfig, tIntelligentFingerRemoteUser.getStartTime(),
-											tIntelligentFingerRemoteUser.getEndTime(), times + "",
-											tIntelligentFingerRemoteUser.getUserSerialid(),
-											tIntelligentFingerRemoteUser.getPwd());*/
 								}
 							}
 							intelligentFingerService.updateTintelligentFingerRemoteUser(tIntelligentFingerRemoteUser);
@@ -408,10 +400,10 @@ public class SensorCMDHandler extends BasicHandler {
 							fingerRecord.setNickName(StringUtils.isEmpty(tIntelligentFingerRemoteUser.getNickName())
 									? ("用户" + tIntelligentFingerRemoteUser.getUserSerialid())
 									: tIntelligentFingerRemoteUser.getNickName());
-							log.info("===add remote open :"+intelligentFingerService.addIntelligentFingerRecord(fingerRecord));
-						}  
-							return null;
-						
+							log.info(
+									"===add remote open :" + intelligentFingerService.addIntelligentFingerRecord(fingerRecord));
+						}
+						return null;
 					} else {
 						TIntelligentFingerUser intelligentFingerUser = intelligentFingerService
 								.queryIntelligentFingerUserBySerialIdAndPin(tOboxDeviceConfig.getDeviceSerialId(),
@@ -535,10 +527,7 @@ public class SensorCMDHandler extends BasicHandler {
 						// TODO
 					} else {
 						// 触发场景
-						// TODO
-						// TODO
-						// TODO
-/*						PushExceptionMsg exceptionMsg = new PushExceptionMsg();
+						PushExceptionMsg exceptionMsg = new PushExceptionMsg();
 						exceptionMsg.setId(tOboxDeviceConfig.getId());
 						exceptionMsg.setType(ExceptionEnum.doorlock.getValue());
 						exceptionMsg.setState(state);
@@ -547,7 +536,7 @@ public class SensorCMDHandler extends BasicHandler {
 						} else {
 							exceptionMsg.setChildType(ExceptionEnum.doohickey.getValue());
 						}
-						PushObserverManager.getInstance().sendMessage(exceptionMsg, null);*/
+						pushObserverManager.sendMessage(exceptionMsg, null);
 						return null;
 					}
 				} else if (opernation.equals("c6")
@@ -1691,7 +1680,12 @@ public class SensorCMDHandler extends BasicHandler {
 			fingerWarn.setSerialid(tOboxDeviceConfig.getDeviceSerialId());
 			StringBuffer sb = new StringBuffer();
 			int doorPin = Integer.parseInt(state.substring(8, 10) + state.substring(6, 8), 16);
-			sb.append("您好，你的门锁" + tOboxDeviceConfig.getDeviceId() + "用户" + doorPin + "有警报:");
+			TIntelligentFingerUser intelligentFingerUser = intelligentFingerService
+					.queryIntelligentFingerUserBySerialIdAndPin(tOboxDeviceConfig.getDeviceSerialId(),
+							doorPin+"");
+			sb.append("您好，你的门锁" + tOboxDeviceConfig.getDeviceId()  + "用户" + (StringUtils.isEmpty(intelligentFingerUser.getNickName())
+					? doorPin
+					: intelligentFingerUser.getNickName()) + "有警报:");
 			if (cmd.equals(FingerWarnEnum.jimmy.getCmd())) {
 				fingerWarn.setOperation(FingerWarnEnum.jimmy.getId() + "");
 				sb.append(FingerWarnEnum.jimmy.getValue());
@@ -2443,7 +2437,7 @@ public class SensorCMDHandler extends BasicHandler {
 			e.printStackTrace();
 		}
 	}
-	private void addOrUpdateDeviceState(String state, TOboxDeviceConfig tOboxDeviceConfig) throws AppException {
+	private void addOrUpdateDeviceState(String state, TOboxDeviceConfig tOboxDeviceConfig)  {
 		log.info("===add device status===:" + tOboxDeviceConfig.getDeviceSerialId());
 		TDeviceStatus tDeviceStatus = new TDeviceStatus();
 		tDeviceStatus.setDeviceSerialId(tOboxDeviceConfig.getDeviceSerialId());

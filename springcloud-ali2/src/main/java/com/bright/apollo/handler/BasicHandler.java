@@ -3,6 +3,7 @@ package com.bright.apollo.handler;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import com.bright.apollo.bean.Message;
@@ -28,12 +29,16 @@ import com.bright.apollo.service.UserOperationService;
 import com.bright.apollo.service.UserSceneService;
 import com.bright.apollo.service.UserService;
 import com.bright.apollo.session.ClientSession;
+import com.bright.apollo.session.PushObserverManager;
 import com.bright.apollo.session.SceneActionThreadPool;
 import com.bright.apollo.session.SessionManager;
 import com.bright.apollo.util.FingerUtil;
 
 @Component
 public abstract class BasicHandler {
+	@Autowired
+	@Lazy
+	protected PushObserverManager pushObserverManager;
 	@Autowired
 	protected PushService pushservice;
 	@Autowired
