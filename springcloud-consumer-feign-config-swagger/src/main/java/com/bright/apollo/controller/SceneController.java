@@ -172,7 +172,7 @@ public class SceneController {
 				map.put("obox_serial_id",oboxSerialId);
 			}
 			if(scene.getOboxSceneNumber()!=null){
-				map.put("obox_scene_number", scene.getOboxSceneNumber());
+				map.put("obox_scene_number", scene.getOboxSceneNumber().intValue());
 			}
 			map.put("scene_status", sceneStatus);
 			res.setData(map);
