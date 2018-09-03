@@ -4,6 +4,7 @@ import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.enums.ColorEnum;
 import com.bright.apollo.tool.ByteHelper;
 import com.zz.common.util.ArrayUtils;
+import io.swagger.models.auth.In;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
@@ -330,19 +331,20 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                             value = "00";
                         }else{
                             Integer val = Integer.valueOf(value);
-                            value =  ByteHelper.int2HexString(val*255/100);
+                            value =  ByteHelper.int2HexString(val+154);
                         }
                         deviceState = changeState(deviceState,value);
                     }else if(attribute.equals("color")){
                         value = ColorEnum.getRegion(value).getValue();
                         deviceState = changeColorState(deviceState,value);
+                    }else if(attribute.equals("colorTemperature")){
+                        Integer temperature = Integer.valueOf(value);
+                        temperature = temperature-2700;
+                        deviceState = changeColorTemperature(deviceState,String.valueOf(temperature));
                     }
 
                 }
             }else if((attribute+"_"+value).equals(propertyArr[0])&&obdeviceType.equals("04")&&(obChildType.equals("2b")||obChildType.equals("17"))){
-                System.out.println(" ====== attribute_value ====== "+attribute+"_"+value);
-                System.out.println(" ====== propertyArr[0] ====== "+propertyArr[0]);
-                System.out.println(" ====== 状态 ====== "+propertyArr[1]);
                 deviceState = changeMutipleOutLet(propertyArr[1]);
             }else if((attribute+"_"+value).equals(propertyArr[0])){
                 value = propertyArr[1];
@@ -355,19 +357,22 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
     }
 
     private String changeMutipleOutLet(String value){
-        Integer v = null;
         if(value.equals("00")){
-            v = 0;
-            return Integer.toHexString(v)+"0000000";
+            return "000000000000";
         }else{
-            v = 7;
-            return Integer.toHexString(v)+"0000000";
+            return "070000000000";
         }
     }
 
     private String changeState(String deviceState,String value){
         String endStr = deviceState.substring(2,deviceState.length());
         return value+endStr;
+    }
+
+    private String changeColorTemperature(String deviceState,String value){
+        String beginStr = deviceState.substring(0,4);
+        String endStr = deviceState.substring(6,deviceState.length());
+        return beginStr+value+endStr;
     }
 
     private String changeColorState(String deviceState,String value){
