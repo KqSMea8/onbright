@@ -110,8 +110,8 @@
       <file leaf-file-name="TMallDeviceAdapter.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/TMallDeviceAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="369">
-              <caret line="314" lean-forward="true" selection-start-line="314" selection-end-line="314" />
+            <state relative-caret-position="477">
+              <caret line="486" column="13" selection-start-line="486" selection-start-column="13" selection-end-line="486" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1345#1346#0" expanded="true" />
@@ -207,10 +207,10 @@
       <find>/{serialId}</find>
       <find>SceneActionThreadPool</find>
       <find>JPushSer</find>
-      <find>compositeCommand</find>
       <find>onbright2TMall</find>
       <find>transition</find>
       <find>doorLockicon</find>
+      <find>compositeCommand</find>
     </findStrings>
     <replaceStrings>
       <replace>springcloud</replace>
@@ -940,12 +940,12 @@
       <workItem from="1533887392858" duration="47322000" />
       <workItem from="1534320136585" duration="157430000" />
       <workItem from="1535537860793" duration="5299000" />
-      <workItem from="1535593741795" duration="76403000" />
+      <workItem from="1535593741795" duration="77832000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1127297000" />
+    <option name="totallyTimeSpent" value="1128726000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -970,7 +970,7 @@
       <window_info id="Structure" order="0" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="3" weight="0.25" />
       <window_info id="UI Designer" order="3" />
-      <window_info anchor="bottom" id="Debug" order="4" sideWeight="0.49838188" weight="0.6273148" />
+      <window_info anchor="bottom" id="Debug" order="4" sideWeight="0.49838188" weight="0.41435185" />
       <window_info anchor="bottom" id="TODO" order="7" weight="0.3287037" />
       <window_info anchor="bottom" id="Messages" order="14" sideWeight="0.5234628" weight="0.47800925" />
       <window_info anchor="right" id="Palette&#9;" order="7" />
@@ -1019,7 +1019,7 @@
       <window_info anchor="right" id="Maven Projects" order="9" weight="0.32928804" />
       <window_info anchor="bottom" id="Terminal" order="9" weight="0.3298611" />
       <window_info anchor="bottom" id="Find" order="2" weight="0.32908458" />
-      <window_info active="true" content_ui="combo" id="Project" order="7" visible="true" weight="0.29126215" />
+      <window_info content_ui="combo" id="Project" order="7" weight="0.29126215" />
       <window_info anchor="right" id="Database" order="6" weight="0.32928804" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info id="Web" order="5" side_tool="true" />
@@ -1028,7 +1028,7 @@
       <window_info id="Structure" order="0" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="right" id="Coverage" order="0" side_tool="true" weight="0.32928804" />
-      <window_info anchor="bottom" id="Debug" order="4" sideWeight="0.49838188" weight="0.6273148" />
+      <window_info active="true" anchor="bottom" id="Debug" order="4" sideWeight="0.49838188" visible="true" weight="0.41435185" />
       <window_info anchor="bottom" id="Bean Validation" order="15" sideWeight="0.50161815" side_tool="true" weight="0.6678241" />
     </layout-to-restore>
   </component>
@@ -1053,11 +1053,23 @@
           <properties />
           <option name="timeStamp" value="293" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/TMallDeviceAdapter.java</url>
+          <line>341</line>
+          <properties />
+          <option name="timeStamp" value="300" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/TMallDeviceAdapter.java</url>
+          <line>398</line>
+          <properties />
+          <option name="timeStamp" value="301" />
+        </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="299" />
+      <option name="time" value="302" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="SpringBootApplicationConfigurationType">
@@ -1459,8 +1471,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/TMallDeviceAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="369">
-          <caret line="314" lean-forward="true" selection-start-line="314" selection-end-line="314" />
+        <state relative-caret-position="477">
+          <caret line="486" column="13" selection-start-line="486" selection-start-column="13" selection-end-line="486" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1345#1346#0" expanded="true" />

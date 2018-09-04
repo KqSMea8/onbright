@@ -398,7 +398,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
     private Map<String,Object> queryDoorLockOnOff(String deviceState){
         Map<String,Object> map = new HashMap<String, Object>();
         String onoff = deviceState.substring(4,6);
-        if(onoff.equals("05")){
+        if(!onoff.equals("07")&&!onoff.equals("08")){
             map.put("name","powerstate");
             map.put("value","on");
         }else if(onoff.equals("07")||onoff.equals("08")){
@@ -484,8 +484,6 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                 }
             }else if((attribute+"_"+value).equals(propertyArr[0])&&obdeviceType.equals("04")&&(obChildType.equals("2b")||obChildType.equals("17"))){
                 deviceState = changeMutipleOutLet(propertyArr[1]);
-            }else if(("door_"+attribute+"_"+value).equals(propertyArr[0])&&obdeviceType.equals("15")&&(obChildType.equals("03"))){
-                deviceState = changeState(deviceState,ByteHelper.int2HexString(Integer.valueOf(propertyArr[1])));
             }else if((attribute+"_"+value).equals(propertyArr[0])){
                 value = propertyArr[1];
                 deviceState = changeState(deviceState,value);
