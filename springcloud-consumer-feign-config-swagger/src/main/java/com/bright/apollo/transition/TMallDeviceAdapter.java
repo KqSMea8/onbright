@@ -400,10 +400,10 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         String onoff = deviceState.substring(4,6);
         if(!onoff.equals("07")&&!onoff.equals("08")){
             map.put("name","powerstate");
-            map.put("value","on");
+            map.put("value","off");
         }else if(onoff.equals("07")||onoff.equals("08")){
             map.put("name","powerstate");
-            map.put("value","off");
+            map.put("value","on");
         }
         return map;
     }
