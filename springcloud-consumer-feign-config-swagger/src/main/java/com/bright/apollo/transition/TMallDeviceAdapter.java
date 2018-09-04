@@ -7,10 +7,7 @@ import com.zz.common.util.ArrayUtils;
 import io.swagger.models.auth.In;
 import org.json.JSONArray;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class TMallDeviceAdapter implements ThirdPartyTransition{
 
@@ -50,6 +47,16 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
     private String brand;
 
     private String model;
+
+    public String getQueryName() {
+        return queryName;
+    }
+
+    public void setQueryName(String queryName) {
+        this.queryName = queryName;
+    }
+
+    private String queryName;
 
     public static String lighticon = "https://raw.githubusercontent.com/onbright-canton/onbrightConfig/master/tmallImg/light.png";
 
@@ -294,38 +301,79 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         return null;
     }
 
-    private TMallDeviceAdapter query(TMallTemplate tMallTemplate, TOboxDeviceConfig oboxDeviceConfig){
-        String[] defaultProperties = tMallTemplate.getDefaultProperties().split("\\|");
-//        String[] lightProperties = tMallTemplate.getLightProperties().split("\\|");
+    private TMallDeviceAdapter query(TMallTemplate tMallTemplate, TOboxDeviceConfig oboxDeviceConfig,Map<String,Boolean> isQuery){
         String deviceType = oboxDeviceConfig.getDeviceType();
-//        String childType = oboxDeviceConfig.getDeviceChildType();
+        String childType = oboxDeviceConfig.getDeviceChildType();
         String deviceState = oboxDeviceConfig.getDeviceState();
         TMallDeviceAdapter deviceAdapter = new TMallDeviceAdapter();
         JSONArray jsonArray = new JSONArray();
-        Map<String,Object> map = new HashMap<String, Object>();
-        if(deviceType.equals("01")){//灯
-            queryOnOff(map,defaultProperties,deviceState);
 
-        }else if(deviceType.equals("04")){//插座/开关
-            queryOnOff(map,defaultProperties,deviceState);
+        String queryName = this.getQueryName();
+        Iterator iterator = isQuery.entrySet().iterator();
+        if(queryName.equals("Query")){
+            while (iterator.hasNext()){
+                Map.Entry<String,Boolean> entry = (Map.Entry<String,Boolean>)iterator.next();
+                isQuery.put(entry.getKey(),true);
+            }
+        }else{
+            while (iterator.hasNext()){
+                Map.Entry<String,Boolean> entry = (Map.Entry<String,Boolean>)iterator.next();
+                if(entry.getKey().equals(queryName)){
+                    isQuery.put(entry.getKey(),true);
+                }
+            }
         }
-        jsonArray.put(map);
+
+        if(deviceType.equals("01")){//灯
+            if(isQuery.get("Query").equals(true)){
+                jsonArray.put(queryOnOff(deviceState));
+            }
+            if(childType.equals("02")){
+                if(isQuery.get("QueryBrightness").equals(true)){
+                    jsonArray.put(setWarmLightQueryBrightnessProperty(deviceState));
+                }
+                if(isQuery.get("QueryColorTemperature").equals(true)){
+                    jsonArray.put(setWarmLightQueryTemperatureProperty(deviceState));
+                }
+            }
+        }else if(deviceType.equals("04")){//插座/开关
+            if(isQuery.get("Query").equals(true)){
+                queryOnOff(deviceState);
+            }
+        }
         deviceAdapter.setProperties(jsonArray);
         return deviceAdapter;
     }
 
-    private void queryOnOff(Map<String,Object> map ,String[] defaultProperties,String deviceState){
+    private Map<String,Object> setWarmLightQueryBrightnessProperty(String deviceState){
+        Map<String,Object> map = new HashMap<String, Object>();
+        String brightness = deviceState.substring(0,2);//亮度
+        Integer brightnessInt = Integer.parseInt(brightness,16)-154;
+        map.put("name","brightness");
+        map.put("value",brightnessInt.toString());
+        return map;
+    }
+
+    private Map<String,Object> setWarmLightQueryTemperatureProperty(String deviceState){
+        Map<String,Object> map = new HashMap<String, Object>();
+        String temperature = deviceState.substring(2,4);//色温
+        Integer temperatureInt = Integer.parseInt(temperature,16)/7;
+        map.put("name","colorTemperature");
+        map.put("value",temperatureInt.toString());
+        return map;
+    }
+
+    private Map<String,Object> queryOnOff(String deviceState){
+        Map<String,Object> map = new HashMap<String, Object>();
         String onoff = deviceState.substring(0,2);
-        for(String property :defaultProperties){
-            String[] powerstates = property.split("-");
-            if(!onoff.equals("ff")){
-                map.put("name",powerstates[0]);
-                map.put("value","on");
-            }else if(onoff.equals("ff")){
-                map.put("name",powerstates[0]);
-                map.put("value","off");
-            }
+        if(!onoff.equals("ff")){
+            map.put("name","powerstate");
+            map.put("value","on");
+        }else if(onoff.equals("ff")){
+            map.put("name","powerstate");
+            map.put("value","off");
         }
+        return map;
     }
 
     private Map<String,Object> compositeCommand(TMallTemplate tMallTemplate, TOboxDeviceConfig oboxDeviceConfig,Map<String,Object> playloadMap){
@@ -369,7 +417,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                         deviceState = changeState(deviceState,value);
                     }else if(attribute.equals("brightness")){
                         if(value.equals("max")){
-                            value = "ff";
+                            value = "fe";
                         }else if(value.equals("min")){
                             value = "00";
                         }else{
@@ -435,7 +483,11 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
     }
 
     public TMallDeviceAdapter queryDevice(){
-        return query(tMallTemplate,oboxDeviceConfig);
+        Map<String,Boolean> isQuery = new HashMap<String, Boolean>();
+        isQuery.put("Query",false);
+        isQuery.put("QueryBrightness",false);
+        isQuery.put("QueryColorTemperature",false);
+        return query(tMallTemplate,oboxDeviceConfig,isQuery);
     }
 
     @Override
