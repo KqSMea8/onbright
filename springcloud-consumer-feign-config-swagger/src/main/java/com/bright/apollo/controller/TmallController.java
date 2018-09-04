@@ -324,7 +324,7 @@ public class TmallController {
 		devices3.put("zone","");
 		devices3.put("brand","1");
 		devices3.put("model","1");
-		devices3.put("icon","https://git.cn-hangzhou.oss-cdn.aliyun-inc.com/uploads/aicloud/aicloud-proxy-service/41baa00903a71c97e3533cf4e19a88bb/image.png");
+		devices3.put("icon","https://raw.githubusercontent.com/onbright-canton/onbrightConfig/master/tmallImg/light.png");
 		devices3.put("properties",propertiesJsonArray);
 		String[] actions3 = new String[2];
 		actions3[0] = "TurnOn";

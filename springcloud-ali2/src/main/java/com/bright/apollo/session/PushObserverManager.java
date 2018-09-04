@@ -12,7 +12,7 @@ public class PushObserverManager {
 
     private  BasicPushObserver pushObserver;
 
-    private PushObserverManager(){
+    public PushObserverManager(){
         pushConcreteSub=new PushConcreteSub();
 
         pushObserver=new PushConcreteObs();
