@@ -1,8 +1,0 @@
-2018-08-30 09:35:01,735 INFO (SpringApplication.java:593)- No active profile set, falling back to default profiles: default
-2018-08-30 09:35:05,349 INFO (StartupInfoLogger.java:57)- Started EurekaServerApplication in 4.672 seconds (JVM running for 5.222)
-2018-08-30 09:49:33,533 INFO (SpringApplication.java:593)- No active profile set, falling back to default profiles: default
-2018-08-30 09:49:39,695 INFO (StartupInfoLogger.java:57)- Started EurekaServerApplication in 8.448 seconds (JVM running for 13.173)
-2018-08-30 14:44:19,183 INFO (SpringApplication.java:593)- No active profile set, falling back to default profiles: default
-2018-08-30 14:44:22,779 INFO (StartupInfoLogger.java:57)- Started EurekaServerApplication in 4.6 seconds (JVM running for 5.157)
-2018-08-30 18:00:20,629 INFO (SpringApplication.java:593)- No active profile set, falling back to default profiles: default
-2018-08-30 18:00:24,525 INFO (StartupInfoLogger.java:57)- Started EurekaServerApplication in 4.874 seconds (JVM running for 5.842)

@@ -1,2 +1,0 @@
-2018-08-28 15:57:51,667 INFO (SpringApplication.java:593)- No active profile set, falling back to default profiles: default
-2018-08-28 15:57:55,788 INFO (StartupInfoLogger.java:57)- Started EurekaServerApplication in 5.069 seconds (JVM running for 6.24)

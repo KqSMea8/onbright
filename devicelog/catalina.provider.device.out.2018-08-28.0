@@ -1,2 +1,0 @@
-2018-08-28 15:59:07,993 INFO (SpringApplication.java:597)- The following profiles are active: test
-2018-08-28 15:59:20,149 INFO (StartupInfoLogger.java:57)- Started DeviceApplication in 16.348 seconds (JVM running for 17.174)

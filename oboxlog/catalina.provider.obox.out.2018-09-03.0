@@ -1,6 +1,0 @@
-2018-09-03 11:25:46,604 INFO (SpringApplication.java:597)- The following profiles are active: test
-2018-09-03 11:25:57,801 INFO (StartupInfoLogger.java:57)- Started OboxApplication in 17.129 seconds (JVM running for 17.867)
-2018-09-03 11:59:11,718 INFO (SpringApplication.java:597)- The following profiles are active: test
-2018-09-03 11:59:22,930 INFO (StartupInfoLogger.java:57)- Started OboxApplication in 15.72 seconds (JVM running for 16.374)
-2018-09-03 13:47:45,186 INFO (SpringApplication.java:597)- The following profiles are active: test
-2018-09-03 13:47:54,388 INFO (StartupInfoLogger.java:57)- Started OboxApplication in 13.368 seconds (JVM running for 14.015)
