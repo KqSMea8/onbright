@@ -177,24 +177,11 @@ public class FacadeController extends BaseController {
 			// may will add respone return status and serialId
 			ResponseObject<OboxResp> resSet = feignAliClient.setDeviceStatus(tOboxDeviceConfig.getOboxSerialId(),
 					status, tOboxDeviceConfig.getDeviceRfAddr());
-			if (resSet == null || resSet.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
+			if (resSet == null || resSet.getStatus() != ResponseEnum.UpdateSuccess.getStatus()) {
 				return resSet;
-			}
-			OboxResp oboxResp = resSet.getData();
-			if (oboxResp.getType() != Type.success) {
-				if (oboxResp.getType() == Type.obox_process_failure || oboxResp.getType() == Type.socket_write_error) {
-					res.setStatus(ResponseEnum.SendOboxFail.getStatus());
-					res.setMessage(ResponseEnum.SendOboxFail.getMsg());
-				} else if (oboxResp.getType() == Type.reply_timeout) {
-					res.setStatus(ResponseEnum.SendOboxTimeOut.getStatus());
-					res.setMessage(ResponseEnum.SendOboxTimeOut.getMsg());
-				} else {
-					res.setStatus(ResponseEnum.SendOboxUnKnowFail.getStatus());
-					res.setMessage(ResponseEnum.SendOboxUnKnowFail.getMsg());
-				}
 			} else {
-				res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
-				res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+				res.setStatus(ResponseEnum.SendOboxTimeOut.getStatus());
+				res.setMessage(ResponseEnum.SendOboxTimeOut.getMsg());
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage());
