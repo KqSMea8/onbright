@@ -64,6 +64,8 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
 
     public static String mutipleOutleticon = "https://raw.githubusercontent.com/onbright-canton/onbrightConfig/master/tmallImg/mutipleOutlet.png";
 
+    public static String doorLockicon = "https://raw.githubusercontent.com/onbright-canton/onbrightConfig/master/tmallImg/doorlock.png";
+
     public String getIcon() {
         return icon;
     }
@@ -183,6 +185,10 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
             tMallDeviceAdapter.setModel("多孔插座");
             tMallDeviceAdapter.setDeviceName("多孔插座");
             tMallDeviceAdapter.setIcon(mutipleOutleticon);
+        }else if(deviceType.equals("smart-gating")){
+            tMallDeviceAdapter.setModel("门锁");
+            tMallDeviceAdapter.setDeviceName("门锁");
+            tMallDeviceAdapter.setIcon(doorLockicon);
         }else{
             tMallDeviceAdapter.setModel("");
             tMallDeviceAdapter.setIcon(icon);
@@ -296,6 +302,15 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                 curtain.setProperties(jsonArray);
                 return curtain;
             }
+        }else if(deviceType.equals("15")){
+            propertiesTransition(dfMap,defaultProperties);
+            oboxDeviceConfig.setDeviceType("smart-gating");
+            DoorLock doorLock = new DoorLock();
+            setProperty(doorLock,oboxDeviceConfig);
+            doorLock.setAction(defaultActions);
+            jsonArray.put(dfMap);
+            doorLock.setProperties(jsonArray);
+            return doorLock;
         }
 
         return null;
@@ -338,7 +353,11 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
             }
         }else if(deviceType.equals("04")){//插座/开关
             if(isQuery.get("Query").equals(true)){
-                queryOnOff(deviceState);
+                jsonArray.put(queryOnOff(deviceState));
+            }
+        }else if(deviceType.equals("15")){//门锁
+            if(isQuery.get("Query").equals(true)){
+                jsonArray.put(queryDoorLockOnOff(deviceState));
             }
         }
         deviceAdapter.setProperties(jsonArray);
@@ -375,6 +394,21 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         }
         return map;
     }
+
+    private Map<String,Object> queryDoorLockOnOff(String deviceState){
+        Map<String,Object> map = new HashMap<String, Object>();
+        String onoff = deviceState.substring(4,6);
+        if(onoff.equals("05")){
+            map.put("name","powerstate");
+            map.put("value","on");
+        }else if(onoff.equals("07")||onoff.equals("08")){
+            map.put("name","powerstate");
+            map.put("value","off");
+        }
+        return map;
+    }
+
+
 
     private Map<String,Object> compositeCommand(TMallTemplate tMallTemplate, TOboxDeviceConfig oboxDeviceConfig,Map<String,Object> playloadMap){
         String attribute = (String)playloadMap.get("attribute");
@@ -447,10 +481,11 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                         String middle = ByteHelper.int2HexString(temperature);
                         deviceState = changeColorTemperature(deviceState,middle);
                     }
-
                 }
             }else if((attribute+"_"+value).equals(propertyArr[0])&&obdeviceType.equals("04")&&(obChildType.equals("2b")||obChildType.equals("17"))){
                 deviceState = changeMutipleOutLet(propertyArr[1]);
+            }else if(("door_"+attribute+"_"+value).equals(propertyArr[0])&&obdeviceType.equals("15")&&(obChildType.equals("03"))){
+                deviceState = changeState(deviceState,ByteHelper.int2HexString(Integer.valueOf(propertyArr[1])));
             }else if((attribute+"_"+value).equals(propertyArr[0])){
                 value = propertyArr[1];
                 deviceState = changeState(deviceState,value);
@@ -467,6 +502,11 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         }else{
             return "000700000000";
         }
+    }
+
+    private String changeDoorLock(String deviceState,String value){
+        String beginStr = deviceState.substring(0,4);
+        return null;
     }
 
     private String changeState(String deviceState,String value){
