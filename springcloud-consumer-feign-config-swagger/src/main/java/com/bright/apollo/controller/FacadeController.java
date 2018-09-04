@@ -75,12 +75,12 @@ import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.response.TUserOperationDTO;
 import com.bright.apollo.response.UserFingerDTO;
 import com.bright.apollo.service.MsgService;
+import com.bright.apollo.tool.Base64Util;
 import com.bright.apollo.tool.ByteHelper;
 import com.bright.apollo.tool.DateHelper;
+import com.bright.apollo.tool.MD5;
 import com.bright.apollo.tool.MobileUtil;
 import com.bright.apollo.tool.NumberHelper;
-import com.zz.common.util.MD5;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -3781,46 +3781,11 @@ public class FacadeController extends BaseController {
 			// pin 要改变
 			if (fingerRemoteUser.getIsend() == 0) {
 				feignAliClient.sendMessageToFinger(RemoteUserEnum.update.getValue(), oboxRes.getData(), deviceConfig,
-						startTime + "", endTime + "", times, fingerRemoteUser.getUserSerialid(), randomNum);
+						startTime + "", endTime + "", times, fingerRemoteUser.getUserSerialid(), Base64Util.base64Decrypt(fingerRemoteUser.getPwd()));
 			} else {
-				ResponseObject<List<TIntelligentFingerAbandonRemoteUser>> abandonRemoteUsersRes = feignDeviceClient
-						.getTIntelligentFingerAbandonRemoteUsersBySerialId(deviceConfig.getDeviceSerialId());
-				if (abandonRemoteUsersRes == null
-						|| abandonRemoteUsersRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
-					res.setStatus(ResponseEnum.RequestParamError.getStatus());
-					res.setMessage(ResponseEnum.RequestParamError.getMsg());
-					return res;
-				}
-				List<TIntelligentFingerAbandonRemoteUser> abandonRemoteUsers = abandonRemoteUsersRes.getData();
-				if (abandonRemoteUsers != null && abandonRemoteUsers.size() > 0) {
-					fingerRemoteUser.setUserSerialid(abandonRemoteUsers.get(0).getUserSerialid().intValue());
-					feignDeviceClient.delIntelligentFingerAbandonRemoteUserBySerialIdAndPin(
-							abandonRemoteUsers.get(0).getSerialid(), abandonRemoteUsers.get(0).getUserSerialid());
-					// feignDeviceClient.delIntelligentFingerAbandonRemoteUserById(abandonRemoteUsers.get(0).getId());
-				} else {
-					ResponseObject<List<TIntelligentFingerRemoteUser>> remoteUsersRes = feignDeviceClient
-							.getTIntelligentFingerRemoteUsersBySerialId(deviceConfig.getDeviceSerialId());
-					if (remoteUsersRes == null
-							|| remoteUsersRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
-						res.setStatus(ResponseEnum.RequestParamError.getStatus());
-						res.setMessage(ResponseEnum.RequestParamError.getMsg());
-						return res;
-					}
-					List<TIntelligentFingerRemoteUser> remoteUsers = remoteUsersRes.getData();
-					if (remoteUsers != null && remoteUsers.size() > 0) {
-						if ((remoteUsers.get(0).getUserSerialid() + 1) >= 100) {
-							res.setStatus(ResponseEnum.RequestParamError.getStatus());
-							res.setMessage(ResponseEnum.RequestParamError.getMsg());
-							return res;
-						} else if ((remoteUsers.get(0).getUserSerialid() + 1) < 10) {
-							fingerRemoteUser.setUserSerialid(10);
-						} else {
-							fingerRemoteUser.setUserSerialid(remoteUsers.get(0).getUserSerialid() + 1);
-						}
-					} else {
-						fingerRemoteUser.setUserSerialid(10);
-					}
-				}
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
 			}
 			if (StringUtils.isEmpty(isMax) || Integer.parseInt(isMax) == IntelligentMaxEnum.MIN.getValue()) {
 				fingerRemoteUser.setTimes(Integer.parseInt(times));
@@ -3838,14 +3803,13 @@ public class FacadeController extends BaseController {
 				fingerRemoteUser.setIsend(0);
 			}
 			fingerRemoteUser.setNickName(nickName);
-			fingerRemoteUser.setPwd(randomNum);
-			fingerRemoteUser.setStartTime(startTime + "");
+ 			fingerRemoteUser.setStartTime(startTime + "");
 			fingerRemoteUser.setEndTime(endTime + "");
 			fingerRemoteUser.setTimes(Integer.parseInt(times));
 			fingerRemoteUser.setUseTimes(0);
 			fingerRemoteUser.setMobile(mobile == null ? "" : mobile);
 			feignDeviceClient.updateTIntelligentFingerRemoteUser(fingerRemoteUser);
-			// 创建一个定时器
+			feignQuartzClient.deleteJob(MD5.MD5generator16Bit(fingerRemoteUser.getId()+serialId));
 			feignQuartzClient.addRemoteOpenTaskSchedule(fingerRemoteUser.getId(), endTime + "", serialId);
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("pwd", "62" + fingerRemoteUser.getUserSerialid() + randomNum);
