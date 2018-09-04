@@ -71,8 +71,8 @@
       <file leaf-file-name="TMallDeviceAdapter.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/TMallDeviceAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="124">
-              <caret line="435" column="53" selection-start-line="435" selection-start-column="53" selection-end-line="435" selection-end-column="53" />
+            <state relative-caret-position="568">
+              <caret line="325" column="31" selection-start-line="325" selection-start-column="31" selection-end-line="325" selection-end-column="31" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#11267#11283#0" expanded="true" />
@@ -80,6 +80,8 @@
                 <element signature="e#15575#15576#0" expanded="true" />
                 <element signature="e#15638#15639#0" expanded="true" />
                 <element signature="e#15721#15722#0" expanded="true" />
+                <element signature="e#17214#17215#0" expanded="true" />
+                <element signature="e#17274#17275#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -745,12 +747,12 @@
       <workItem from="1533887392858" duration="47322000" />
       <workItem from="1534320136585" duration="157430000" />
       <workItem from="1535537860793" duration="5299000" />
-      <workItem from="1535593741795" duration="59996000" />
+      <workItem from="1535593741795" duration="60791000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1110890000" />
+    <option name="totallyTimeSpent" value="1111685000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -777,7 +779,7 @@
       <window_info id="UI Designer" order="3" />
       <window_info anchor="bottom" id="Debug" order="4" sideWeight="0.49838188" weight="0.6238426" />
       <window_info anchor="bottom" id="TODO" order="7" weight="0.3287037" />
-      <window_info active="true" anchor="bottom" id="Messages" order="14" sideWeight="0.5234628" visible="true" weight="0.47800925" />
+      <window_info anchor="bottom" id="Messages" order="14" sideWeight="0.5234628" weight="0.47800925" />
       <window_info anchor="right" id="Palette&#9;" order="7" />
       <window_info id="Image Layers" order="2" />
       <window_info anchor="bottom" id="Java Enterprise" order="10" weight="0.3298611" />
@@ -1260,8 +1262,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/TMallDeviceAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="124">
-          <caret line="435" column="53" selection-start-line="435" selection-start-column="53" selection-end-line="435" selection-end-column="53" />
+        <state relative-caret-position="568">
+          <caret line="325" column="31" selection-start-line="325" selection-start-column="31" selection-end-line="325" selection-end-column="31" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#11267#11283#0" expanded="true" />
@@ -1269,6 +1271,8 @@
             <element signature="e#15575#15576#0" expanded="true" />
             <element signature="e#15638#15639#0" expanded="true" />
             <element signature="e#15721#15722#0" expanded="true" />
+            <element signature="e#17214#17215#0" expanded="true" />
+            <element signature="e#17274#17275#0" expanded="true" />
           </folding>
         </state>
       </provider>

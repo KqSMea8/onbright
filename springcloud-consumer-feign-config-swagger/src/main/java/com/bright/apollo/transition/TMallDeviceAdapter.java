@@ -319,9 +319,11 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         for(String property :defaultProperties){
             String[] powerstates = property.split("-");
             if(!onoff.equals("ff")){
-                map.put(powerstates[0],"on");
+                map.put("name",powerstates[0]);
+                map.put("value","on");
             }else if(onoff.equals("ff")){
-                map.put(powerstates[0],"off");
+                map.put("name",powerstates[0]);
+                map.put("value","off");
             }
         }
     }
