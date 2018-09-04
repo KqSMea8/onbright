@@ -13,14 +13,17 @@ import org.springframework.web.servlet.HandlerMapping;
 import com.bright.apollo.common.entity.TDeviceStatus;
 import com.bright.apollo.common.entity.TIntelligentFingerPush;
 import com.bright.apollo.common.entity.TIntelligentFingerRemoteUser;
+import com.bright.apollo.common.entity.TIntelligentFingerUser;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.enums.ConditionTypeEnum;
 import com.bright.apollo.enums.DeviceTypeEnum;
 import com.bright.apollo.enums.EnvironmentalSensorEnum;
+import com.bright.apollo.enums.FingerWarnEnum;
 import com.bright.apollo.request.IntelligentFingerRemoteUserDTO;
 import com.bright.apollo.request.IntelligentFingerWarnDTO;
 import com.bright.apollo.request.IntelligentFingerWarnItemDTO;
 import com.bright.apollo.request.IntelligentOpenRecordDTO;
+import com.bright.apollo.request.IntelligentUserDTO;
 import com.bright.apollo.request.SceneConditionDTO;
 import com.bright.apollo.request.TIntelligentFingerPushDTO;
 import com.bright.apollo.response.DeviceStatusDTO;
@@ -244,5 +247,41 @@ public class BaseController {
 		int i=byteIndexValid<<8+validByte;
 		String byteArryToHexString = ByteHelper.byteArryToHexString(ByteHelper.int2byte(i));
 		return byteArryToHexString;
+	}
+	/**  
+	 * @param list
+	 * @return  
+	 * @Description:  
+	 */
+	protected static List<IntelligentUserDTO> FingerUserListToDTOS(List<TIntelligentFingerUser> list) {
+		List<IntelligentUserDTO> dtos=new ArrayList<IntelligentUserDTO>();
+		if(list!=null&&list.size()>0){
+			for(TIntelligentFingerUser user:list){
+				dtos.add(new IntelligentUserDTO(user));
+			}
+		}
+		return dtos;
+	}
+	public static List<TIntelligentFingerPush> initPush() {
+		List<TIntelligentFingerPush> list = new ArrayList<TIntelligentFingerPush>();
+		TIntelligentFingerPush push = new TIntelligentFingerPush( FingerWarnEnum.jimmy.getCmd(),
+				FingerWarnEnum.jimmy.getId());
+		TIntelligentFingerPush push1 = new TIntelligentFingerPush( FingerWarnEnum.stress.getCmd(),
+				FingerWarnEnum.stress.getId());
+		TIntelligentFingerPush push2 = new TIntelligentFingerPush( FingerWarnEnum.multiple_validation_failed.getCmd(),
+				FingerWarnEnum.multiple_validation_failed.getId());
+		TIntelligentFingerPush push3 = new TIntelligentFingerPush( FingerWarnEnum.overdoor.getCmd(),
+				FingerWarnEnum.overdoor.getId());
+		TIntelligentFingerPush push4 = new TIntelligentFingerPush( FingerWarnEnum.back_lock.getCmd(),
+				FingerWarnEnum.back_lock.getId());
+		TIntelligentFingerPush push5 = new TIntelligentFingerPush( FingerWarnEnum.low_betty.getCmd(),
+				FingerWarnEnum.low_betty.getId());
+		list.add(push);
+		list.add(push1);
+		list.add(push2);
+		list.add(push3);
+		list.add(push4);
+		list.add(push5);
+		return list;
 	}
 }

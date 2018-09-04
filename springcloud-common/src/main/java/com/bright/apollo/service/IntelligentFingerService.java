@@ -235,6 +235,13 @@ public interface IntelligentFingerService {
 	 */
 	void delIntelligentFingerAbandonRemoteUserBySerialIdAndPin(String serialId, Integer pin);
 
+	/**  
+	 * @param pushList
+	 * @param serialId  
+	 * @Description:  
+	 */
+	void batchTIntelligentFingerPush(List<TIntelligentFingerPush> pushList, String serialId);
+
  
 
  

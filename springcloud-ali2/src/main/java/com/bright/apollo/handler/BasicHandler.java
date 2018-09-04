@@ -1,5 +1,6 @@
 package com.bright.apollo.handler;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +9,11 @@ import org.springframework.stereotype.Component;
 
 import com.bright.apollo.bean.Message;
 import com.bright.apollo.cache.CmdCache;
+import com.bright.apollo.common.entity.TIntelligentFingerPush;
 import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.common.entity.TScene;
 import com.bright.apollo.common.entity.TSceneCondition;
+import com.bright.apollo.enums.FingerWarnEnum;
 import com.bright.apollo.service.CMDMessageService;
 import com.bright.apollo.service.DeviceChannelService;
 import com.bright.apollo.service.DeviceStatusService;
@@ -264,5 +267,26 @@ public abstract class BasicHandler {
 	public void setPushservice(PushService pushservice) {
 		this.pushservice = pushservice;
 	}
-
+	public static List<TIntelligentFingerPush> initPush() {
+		List<TIntelligentFingerPush> list = new ArrayList<TIntelligentFingerPush>();
+		TIntelligentFingerPush push = new TIntelligentFingerPush( FingerWarnEnum.jimmy.getCmd(),
+				FingerWarnEnum.jimmy.getId());
+		TIntelligentFingerPush push1 = new TIntelligentFingerPush( FingerWarnEnum.stress.getCmd(),
+				FingerWarnEnum.stress.getId());
+		TIntelligentFingerPush push2 = new TIntelligentFingerPush( FingerWarnEnum.multiple_validation_failed.getCmd(),
+				FingerWarnEnum.multiple_validation_failed.getId());
+		TIntelligentFingerPush push3 = new TIntelligentFingerPush( FingerWarnEnum.overdoor.getCmd(),
+				FingerWarnEnum.overdoor.getId());
+		TIntelligentFingerPush push4 = new TIntelligentFingerPush( FingerWarnEnum.back_lock.getCmd(),
+				FingerWarnEnum.back_lock.getId());
+		TIntelligentFingerPush push5 = new TIntelligentFingerPush( FingerWarnEnum.low_betty.getCmd(),
+				FingerWarnEnum.low_betty.getId());
+		list.add(push);
+		list.add(push1);
+		list.add(push2);
+		list.add(push3);
+		list.add(push4);
+		list.add(push5);
+		return list;
+	}
 }

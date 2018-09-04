@@ -210,8 +210,8 @@ public class IntelligentFingerController {
 		ResponseObject<TIntelligentFingerAuth> res = new ResponseObject<TIntelligentFingerAuth>();
 		try {
 			res.setData(intelligentFingerService.queryIntelligentAuthBySerialId(serialId));
-			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
-			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
@@ -556,6 +556,30 @@ public class IntelligentFingerController {
 		}
 		return res;
 
+	}
+	/**
+	 * @param pushList
+	 * @param serialId
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/batchTIntelligentFingerPush/{serialId}", method = RequestMethod.POST)
+	ResponseObject batchTIntelligentFingerPush(@RequestBody List<TIntelligentFingerPush> pushList,
+			@PathVariable(value = "serialId") String serialId){
+
+		ResponseObject res = new ResponseObject();
+		try {
+			intelligentFingerService.batchTIntelligentFingerPush(pushList,serialId);
+			res.setStatus(ResponseEnum.AddSuccess.getStatus());
+			res.setMessage(ResponseEnum.AddSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+
+	
 	}
 
 }

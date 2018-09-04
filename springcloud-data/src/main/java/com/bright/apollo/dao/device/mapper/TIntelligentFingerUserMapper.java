@@ -41,7 +41,15 @@ public interface TIntelligentFingerUserMapper {
 	 * @return  
 	 * @Description:  
 	 */
-	@Select("SELECT nick_name,identity,mobile,pin,exist_force from t_intelligent_finger_user  where serialId=#{serialId} order by last_op_time desc ")
+	@Select("SELECT * from t_intelligent_finger_user  where serialId=#{serialId} order by last_op_time desc ")
+	@Results(value = { @Result(property = "id", column = "id"),
+			@Result(property = "serialid", column = "serialId"),
+			@Result(property = "nickName", column = "nick_name"),
+			@Result(property = "lastOpTime", column = "last_op_time"),
+			@Result(property = "mobile", column = "mobile"),
+			@Result(property = "existForce", column = "exist_force"),
+			@Result(property = "pin", column = "pin"),
+			@Result(property = "identity", column = "identity")})
 	List<TIntelligentFingerUser> queryIntelligentUserBySerialId(@Param("serialId")String serialId);
 
 	/**  
@@ -53,12 +61,12 @@ public interface TIntelligentFingerUserMapper {
 	@Select("select * from t_intelligent_finger_user where serialId=#{serialId} and pin=#{pin}")
 	@Results(value = { @Result(property = "id", column = "id"),
 			@Result(property = "serialid", column = "serialId"),
+			@Result(property = "nickName", column = "nick_name"),
 			@Result(property = "lastOpTime", column = "last_op_time"),
 			@Result(property = "mobile", column = "mobile"),
 			@Result(property = "existForce", column = "exist_force"),
 			@Result(property = "pin", column = "pin"),
-			@Result(property = "identity", column = "identity"),
-			@Result(property = "deviceSerialId", column = "device_serial_id") })
+			@Result(property = "identity", column = "identity") })
 	TIntelligentFingerUser queryIntelligentFingerUserBySerialIdAndPin(@Param("serialId")String serialId,@Param("pin") String pin);
 
 	/**  

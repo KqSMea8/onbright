@@ -130,7 +130,7 @@ public interface TOboxMapper extends BaseMapper<TObox, TOboxExample, Integer> {
 	 * @Description:  
 	 */
 	 @Select("SELECT * FROM t_obox a WHERE  EXISTS "
-	 		+ "(SELECT 1 FROM t_user_obox b WHERE a.obox_id=b.obox_id and b.user_id = #{userId})"
+	 		+ "(SELECT 1 FROM t_user_obox b WHERE a.obox_serial_id=b.obox_serial_id and b.user_id = #{userId})"
 	 		+ " AND obox_serial_id = #{oboxSerialId} ")
 	 @Results(value = {
 	            @Result(column="id"   ,property="id"),

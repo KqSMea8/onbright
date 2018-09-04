@@ -4,17 +4,19 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import com.bright.apollo.bean.Message;
 import com.bright.apollo.common.entity.TDeviceChannel;
+import com.bright.apollo.common.entity.TIntelligentFingerPush;
 import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.common.entity.TUserDevice;
 import com.bright.apollo.common.entity.TUserObox;
+import com.bright.apollo.enums.DeviceTypeEnum;
+import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.session.ClientSession;
 import com.bright.apollo.tool.ByteHelper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 @Component
 public class SearchResultHandler extends BasicHandler {
@@ -62,7 +64,6 @@ public class SearchResultHandler extends BasicHandler {
             if (obox == null) {
                 return null;
             }
-
             TOboxDeviceConfig dbConfig = oboxDeviceConfigService.queryDeviceConfigBySerialID(device_serial_id);
             if (dbConfig != null && obox.getOboxSerialId().equals(dbConfig.getOboxSerialId())) {
 
@@ -151,7 +152,26 @@ public class SearchResultHandler extends BasicHandler {
                 deviceConfig.setGroupAddr("00");
 //                Integer returnIndex = OboxBusiness.addOboxConfig(deviceConfig);
                 Integer returnIndex =  oboxDeviceConfigService.addTOboxDeviceConfig(deviceConfig);
-//
+                final TOboxDeviceConfig tempDeviceConfig = deviceConfig;
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						if (tempDeviceConfig.getDeviceType().equals(DeviceTypeEnum.doorlock.getValue()) && (tempDeviceConfig
+								.getDeviceChildType().equals(DeviceTypeEnum.capacity_finger.getValue()))) {
+							try {
+								List<TIntelligentFingerPush> list = intelligentFingerService
+										.queryTIntelligentFingerPushsBySerialId(tempDeviceConfig.getDeviceSerialId());
+								if (list!=null&&list.size()<=0) {
+									List<TIntelligentFingerPush> initPush = initPush();
+									intelligentFingerService.batchTIntelligentFingerPush(initPush,
+											tempDeviceConfig.getDeviceSerialId());
+								}
+							} catch (Exception e) {
+								logger.error("===error msg:"+e.getMessage());
+							}
+						}
+					}
+				}).start();
 //                List<TUserObox> tUserOboxs = OboxBusiness.queryUserOboxsByOboxId(obox.getOboxId());
                 List<TUserObox> tUserOboxs = userOboxService.getUserOboxBySerialId(obox.getOboxSerialId());
                  if (!tUserOboxs.isEmpty()) {

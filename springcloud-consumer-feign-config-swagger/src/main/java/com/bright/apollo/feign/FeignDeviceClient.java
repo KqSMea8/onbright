@@ -410,4 +410,15 @@ public interface FeignDeviceClient {
 	ResponseObject<List<TDeviceStatus>> getDeviceStatusByDataNoGroup(@PathVariable(value = "serialId") String serialId,
 			@PathVariable(value = "from") long from, @PathVariable(value = "to") long to);
 
+	/**
+	 * @param pushList
+	 * @param serialId
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/intelligentFinger/batchTIntelligentFingerPush/{serialId}", method = RequestMethod.POST)
+	ResponseObject batchTIntelligentFingerPush(@RequestBody List<TIntelligentFingerPush> pushList,
+			@PathVariable(value = "serialId") String serialId);
+ 
+
 }

@@ -468,4 +468,14 @@ public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implem
 		logger.warn("===device server is break===");
 		return serverError();
 	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#batchTIntelligentFingerPush(java.util.List, java.lang.String)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject batchTIntelligentFingerPush(List<TIntelligentFingerPush> pushList, String serialId) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
 }

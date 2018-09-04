@@ -81,6 +81,7 @@ import com.bright.apollo.tool.DateHelper;
 import com.bright.apollo.tool.MD5;
 import com.bright.apollo.tool.MobileUtil;
 import com.bright.apollo.tool.NumberHelper;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -1675,42 +1676,6 @@ public class FacadeController extends BaseController {
 				}
 				// tobox.setOboxControl((byte) 0);
 				feignOboxClient.updateObox(tobox.getOboxSerialId(), tobox);
-				/*
-				 * ResponseObject<List<TOboxDeviceConfig>> resList =
-				 * feignDeviceClient
-				 * .getDevicesByOboxSerialId(tobox.getOboxSerialId()); if
-				 * (resList == null || resList.getStatus() !=
-				 * ResponseEnum.SelectSuccess.getStatus()) {
-				 * res.setStatus(ResponseEnum.Error.getStatus());
-				 * res.setMessage(ResponseEnum.Error.getMsg()); return res; }
-				 * List<TOboxDeviceConfig> deviceList = resList.getData(); if
-				 * (deviceList != null && deviceList.size() > 0) { for
-				 * (TOboxDeviceConfig tOboxDeviceConfig : deviceList) {
-				 * 
-				 * if (!tOboxDeviceConfig.getGroupAddr().equals("00")) {
-				 * TServerOboxGroup tServerOboxGroup =
-				 * DeviceBusiness.queryOBOXGroupByAddr(
-				 * tOboxDeviceConfig.getOboxSerialId(),
-				 * tOboxDeviceConfig.getGroupAddr()); if (tServerOboxGroup !=
-				 * null) { TServerGroup tServerGroup = DeviceBusiness
-				 * .querySererGroupById(tServerOboxGroup.getServerId()); if
-				 * (tServerGroup != null) { if
-				 * (tServerGroup.getGroupStyle().equals(GroupTypeEnum.
-				 * local.getValue())) {
-				 * DeviceBusiness.deleteServerGroup(tServerGroup); } }
-				 * DeviceBusiness.deleteOBOXGroupByAddr(
-				 * tOboxDeviceConfig.getOboxSerialId(),
-				 * tOboxDeviceConfig.getGroupAddr()); } }
-				 * 
-				 * //
-				 * DeviceBusiness.deleteDeviceGroup(tOboxDeviceConfig.getId());
-				 * feignDeviceClient.delDevice(tOboxDeviceConfig.
-				 * getDeviceSerialId()); //
-				 * DeviceBusiness.deleteUserDeviceByDeviceId(tOboxDeviceConfig.
-				 * getId()); //
-				 * .DeviceBusiness.delDeviceChannel(tOboxDeviceConfig.getId());
-				 * } }
-				 */
 				feignDeviceClient.deleleDeviceByOboxSerialId(tobox.getOboxSerialId());
 				ResponseObject<List<TScene>> resScenes = feignSceneClient
 						.getScenesByOboxSerialId(tobox.getOboxSerialId());
@@ -1764,7 +1729,26 @@ public class FacadeController extends BaseController {
 								tUserDevice.setUserId(resUser.getData().getId());
 								feignUserClient.addUserDevice(tUserDevice);
 							}
-
+							final TOboxDeviceConfig tempDeviceConfig = oboxDeviceConfig;
+							new Thread(new Runnable() {
+								@Override
+								public void run() {
+									if (tempDeviceConfig.getDeviceType().equals(DeviceTypeEnum.doorlock.getValue()) && (tempDeviceConfig
+											.getDeviceChildType().equals(DeviceTypeEnum.capacity_finger.getValue()))) {
+										try {
+											ResponseObject<List<TIntelligentFingerPush>> pushListRes = feignDeviceClient
+													.getTIntelligentFingerPushsBySerialId(tempDeviceConfig.getDeviceSerialId());
+											if (pushListRes!=null&&(pushListRes.getData()==null||pushListRes.getData().size()<=0)) {
+												List<TIntelligentFingerPush> initPush = initPush();
+												feignDeviceClient.batchTIntelligentFingerPush(initPush,
+														tempDeviceConfig.getDeviceSerialId());
+											}
+										} catch (Exception e) {
+											logger.error("===error msg:"+e.getMessage());
+										}
+									}
+								}
+							}).start();
 						}
 						// int ret =
 						// OboxBusiness.addOboxConfig(oboxDeviceConfig);
@@ -2690,9 +2674,9 @@ public class FacadeController extends BaseController {
 	@ApiOperation(value = "query_intelligent_openRecord", httpMethod = "GET", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/getIntelligentFingerOpenRecord/{serialId}", method = RequestMethod.GET)
-	public ResponseObject<List<IntelligentOpenRecordItemDTO>> getIntelligentFingerOpenRecord(
+	public ResponseObject<Map<String, Object>> getIntelligentFingerOpenRecord(
 			@PathVariable(value = "serialId") String serialId) {
-		ResponseObject<List<IntelligentOpenRecordItemDTO>> res = new ResponseObject<List<IntelligentOpenRecordItemDTO>>();
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		try {
 			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			if (StringUtils.isEmpty(principal.getUsername())) {
@@ -2736,9 +2720,11 @@ public class FacadeController extends BaseController {
 					handlerDTO(dto, items, startTime);
 				}
 			}
+			Map<String, Object>map=new HashMap<String, Object>();
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
-			res.setData(delEmptyItems(items));
+			map.put("records", delEmptyItems(items));
+			res.setData(map);
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
@@ -2770,9 +2756,9 @@ public class FacadeController extends BaseController {
 	@ApiOperation(value = "query_intelligent_openRecord", httpMethod = "GET", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/getIntelligentFingerWarnRecord/{serialId}", method = RequestMethod.GET)
-	public ResponseObject<List<IntelligentFingerWarnItemDTO>> getIntelligentFingerWarnRecord(
+	public ResponseObject<Map<String, Object>> getIntelligentFingerWarnRecord(
 			@PathVariable(value = "serialId") String serialId) {
-		ResponseObject<List<IntelligentFingerWarnItemDTO>> res = new ResponseObject<List<IntelligentFingerWarnItemDTO>>();
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		try {
 			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			if (StringUtils.isEmpty(principal.getUsername())) {
@@ -2835,9 +2821,11 @@ public class FacadeController extends BaseController {
 					}
 				}
 			}
+			Map<String, Object> map=new HashMap<String, Object>();
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
-			res.setData(delEmptyWarnItems(items));
+			map.put("warnRecord", delEmptyWarnItems(items));
+			res.setData(map);
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
@@ -2869,9 +2857,9 @@ public class FacadeController extends BaseController {
 	@ApiOperation(value = "query_intelligent_useringRecord", httpMethod = "GET", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/getIntelligentUseringRecord/{serialId}", method = RequestMethod.GET)
-	public ResponseObject<List<TIntelligentFingerUser>> getIntelligentUseringRecord(
+	public ResponseObject<Map<String, Object>> getIntelligentUseringRecord(
 			@PathVariable(value = "serialId") String serialId) {
-		ResponseObject<List<TIntelligentFingerUser>> res = new ResponseObject<List<TIntelligentFingerUser>>();
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		try {
 			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			if (StringUtils.isEmpty(principal.getUsername())) {
@@ -2925,7 +2913,9 @@ public class FacadeController extends BaseController {
 				}
 				list = fingerUserRes.getData();
 			}
-			res.setData(list);
+			Map<String, Object> map=new HashMap<String, Object>();
+			map.put("list", FingerUserListToDTOS(list));
+			res.setData(map);
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {
@@ -2935,6 +2925,8 @@ public class FacadeController extends BaseController {
 		}
 		return res;
 	}
+
+	
 
 	/**
 	 * @param serialId
@@ -3256,9 +3248,9 @@ public class FacadeController extends BaseController {
 	@ApiOperation(value = "query_intelligent_authPwd", httpMethod = "GET", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/getIntelligentAuthPwd/{serialId}/{authToken}", method = RequestMethod.GET)
-	public ResponseObject<List<IntelligentFingerRemoteUserDTO>> getIntelligentRemoteUnLocking(String serialId,
+	public ResponseObject<Map<String, Object>> getIntelligentRemoteUnLocking(String serialId,
 			String authToken) {
-		ResponseObject<List<IntelligentFingerRemoteUserDTO>> res = new ResponseObject<List<IntelligentFingerRemoteUserDTO>>();
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		try {
 			String intelligentSerialId = cmdCache.getIntelligentSerialId(authToken);
 			if (StringUtils.isEmpty(intelligentSerialId) || !intelligentSerialId.equals(serialId)) {
@@ -3317,7 +3309,9 @@ public class FacadeController extends BaseController {
 			}
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
-			res.setData(transformToDTO(remoteRes.getData()));
+			Map<String, Object> map=new HashMap<String, Object>();
+			map.put("list", transformToDTO(remoteRes.getData()));
+			res.setData(map);
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
