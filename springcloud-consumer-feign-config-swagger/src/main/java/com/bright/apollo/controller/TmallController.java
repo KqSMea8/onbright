@@ -128,7 +128,6 @@ public class TmallController {
 				if(adapter !=null&&!adapter.equals("")){
 					setDeviceJson(devices,adapter);
 					list.add(devices);
-					System.out.println("list ====== "+list);
 				}
 			}
 			for(int i=0;i<list.size();i++){
@@ -203,11 +202,34 @@ public class TmallController {
 				headerMap.put("messageId",requestHeaderMap.get("messageId"));
 				headerMap.put("payLoadVersion","1");
 				map.put("header",headerMap);
-				playloadMap.put("deviceId",playLoadMap.get("deviceId"));
+				playloadMap.put("deviceId",deviceId);
 				map.put("payload",playloadMap);
 			}
 
 		}else if(requestHeaderMap.get("namespace").equals("AliGenie.Iot.Device.Query")){
+			Map<String,Object> playLoadMap = (Map<String, Object>) requestMap.get("payload");
+			String name = (String)requestHeaderMap.get("name");
+			String deviceId = (String)playLoadMap.get("deviceId");
+			String[] deviceIdArr = deviceId.split("_");
+			deviceId = deviceIdArr[0];
+			try{
+				ResponseObject<TOboxDeviceConfig> responseObject = feignDeviceClient.getDevice(deviceId);
+				TOboxDeviceConfig oboxDeviceConfig = responseObject.getData();
+				adapter = new TMallDeviceAdapter(playLoadMap,tMallTemplate,oboxDeviceConfig);
+				adapter.queryDevice();
+				logger.info("map ====== "+adapter);
+			}catch (Exception e){
+				logger.info("exception ====== "+e);
+			}finally {
+				headerMap.put("namespace","AliGenie.Iot.Device.Query");
+				headerMap.put("name",name+"Response");
+				headerMap.put("messageId",requestHeaderMap.get("messageId"));
+				headerMap.put("payLoadVersion","1");
+				map.put("header",headerMap);
+				playloadMap.put("deviceId",deviceId);
+				map.put("payload",playloadMap);
+				map.put("properties",adapter.getProperties());
+			}
 
 		}
 		logger.info("map ====== "+map);
@@ -270,7 +292,7 @@ public class TmallController {
 		devices.put("zone","阳台");
 		devices.put("brand","1");
 		devices.put("model","1");
-		devices.put("icon","https://git.cn-hangzhou.oss-cdn.aliyun-inc.com/uploads/aicloud/aicloud-proxy-service/41baa00903a71c97e3533cf4e19a88bb/image.png");
+		devices.put("icon","https://raw.githubusercontent.com/onbright-canton/onbrightConfig/master/tmallImg/light.png");
 		devices.put("properties",propertiesJsonArray);
 		String[] actions = new String[2];
 		actions[0] = "TurnOn";
@@ -286,7 +308,7 @@ public class TmallController {
 		devices2.put("zone","客厅");
 		devices2.put("brand","1");
 		devices2.put("model","1");
-		devices2.put("icon","https://git.cn-hangzhou.oss-cdn.aliyun-inc.com/uploads/aicloud/aicloud-proxy-service/41baa00903a71c97e3533cf4e19a88bb/image.png");
+		devices2.put("icon","https://raw.githubusercontent.com/onbright-canton/onbrightConfig/master/tmallImg/light.png");
 		devices2.put("properties",propertiesJsonArray);
 		String[] actions2 = new String[2];
 		actions2[0] = "TurnOn";

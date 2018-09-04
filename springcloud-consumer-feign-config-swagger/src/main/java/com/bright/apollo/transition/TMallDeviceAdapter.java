@@ -182,6 +182,10 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         }
     }
 
+    private void changeProperty(TMallDeviceAdapter tMallDeviceAdapter,TOboxDeviceConfig oboxDeviceConfig){
+
+    }
+
 //    private void setMutipleOutLetExtends(TMallDeviceAdapter tMallDeviceAdapter,Mutipleswitch mutipleswitch){//3路开关配置3个单路开关
 //        for(int i=1;i<=3;i++){
 //            Singleswitch singleswitch = new Singleswitch();
@@ -290,10 +294,44 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         return null;
     }
 
+    private TMallDeviceAdapter query(TMallTemplate tMallTemplate, TOboxDeviceConfig oboxDeviceConfig){
+        String[] defaultProperties = tMallTemplate.getDefaultProperties().split("\\|");
+//        String[] lightProperties = tMallTemplate.getLightProperties().split("\\|");
+        String deviceType = oboxDeviceConfig.getDeviceType();
+//        String childType = oboxDeviceConfig.getDeviceChildType();
+        String deviceState = oboxDeviceConfig.getDeviceState();
+        TMallDeviceAdapter deviceAdapter = new TMallDeviceAdapter();
+        JSONArray jsonArray = new JSONArray();
+        Map<String,Object> map = new HashMap<String, Object>();
+        if(deviceType.equals("01")){//灯
+            queryOnOff(map,defaultProperties,deviceState);
+
+        }else if(deviceType.equals("04")){//插座/开关
+            queryOnOff(map,defaultProperties,deviceState);
+        }
+        jsonArray.put(map);
+        deviceAdapter.setProperties(jsonArray);
+        return deviceAdapter;
+    }
+
+    private void queryOnOff(Map<String,Object> map ,String[] defaultProperties,String deviceState){
+        String onoff = deviceState.substring(0,2);
+        for(String property :defaultProperties){
+            String[] powerstates = property.split("-");
+            if(!onoff.equals("ff")){
+                map.put(powerstates[0],"on");
+            }else if(onoff.equals("ff")){
+                map.put(powerstates[0],"off");
+            }
+        }
+    }
+
     private Map<String,Object> compositeCommand(TMallTemplate tMallTemplate, TOboxDeviceConfig oboxDeviceConfig,Map<String,Object> playloadMap){
         String attribute = (String)playloadMap.get("attribute");
         String value = (String)playloadMap.get("value");
         String deviceId = (String)playloadMap.get("deviceId");
+        String [] deviceArr = deviceId.split("_");
+        deviceId = deviceArr[0];
         String deviceType = (String)playloadMap.get("deviceType");
         String lightProperties = tMallTemplate.getLightProperties();
         String dfControllProperties = tMallTemplate.getDefaultControllProperties();
@@ -392,6 +430,10 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
     @Override
     public Map<String,Object> TMall2Obright() {
         return compositeCommand(tMallTemplate,oboxDeviceConfig,playloadMap);
+    }
+
+    public TMallDeviceAdapter queryDevice(){
+        return query(tMallTemplate,oboxDeviceConfig);
     }
 
     @Override
