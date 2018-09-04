@@ -1,0 +1,19 @@
+2018-09-03 11:26:57,864 INFO (SpringApplication.java:597)- The following profiles are active: test
+2018-09-03 11:27:04,306 INFO (AuthorizationServerConfiguration.java:78)- ====== AuthorizationServerEndpointsConfigurer endpoints =====
+2018-09-03 11:27:04,321 INFO (AuthorizationServerConfiguration.java:97)-  ======================================= defaultTokenServices ====================== 
+2018-09-03 11:27:05,250 INFO (DefaultView.java:22)-  ====== addViewControllers ====== 
+2018-09-03 11:27:35,570 INFO (SpringApplication.java:597)- The following profiles are active: test
+2018-09-03 11:27:41,872 INFO (AuthorizationServerConfiguration.java:78)- ====== AuthorizationServerEndpointsConfigurer endpoints =====
+2018-09-03 11:27:41,886 INFO (AuthorizationServerConfiguration.java:97)-  ======================================= defaultTokenServices ====================== 
+2018-09-03 11:27:42,806 INFO (DefaultView.java:22)-  ====== addViewControllers ====== 
+2018-09-03 11:27:45,574 INFO (StartupInfoLogger.java:57)- Started ZuulApplication in 14.994 seconds (JVM running for 15.682)
+2018-09-03 12:00:41,144 INFO (SpringApplication.java:597)- The following profiles are active: test
+2018-09-03 12:00:47,466 INFO (AuthorizationServerConfiguration.java:78)- ====== AuthorizationServerEndpointsConfigurer endpoints =====
+2018-09-03 12:00:47,480 INFO (AuthorizationServerConfiguration.java:97)-  ======================================= defaultTokenServices ====================== 
+2018-09-03 12:00:48,398 INFO (DefaultView.java:22)-  ====== addViewControllers ====== 
+2018-09-03 12:00:51,157 INFO (StartupInfoLogger.java:57)- Started ZuulApplication in 14.572 seconds (JVM running for 15.345)
+2018-09-03 13:48:53,707 INFO (SpringApplication.java:597)- The following profiles are active: test
+2018-09-03 13:48:57,991 INFO (AuthorizationServerConfiguration.java:78)- ====== AuthorizationServerEndpointsConfigurer endpoints =====
+2018-09-03 13:48:58,006 INFO (AuthorizationServerConfiguration.java:97)-  ======================================= defaultTokenServices ====================== 
+2018-09-03 13:48:58,923 INFO (DefaultView.java:22)-  ====== addViewControllers ====== 
+2018-09-03 13:49:01,667 INFO (StartupInfoLogger.java:57)- Started ZuulApplication in 11.965 seconds (JVM running for 12.683)

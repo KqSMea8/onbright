@@ -216,7 +216,7 @@ public class TmallController {
 				ResponseObject<TOboxDeviceConfig> responseObject = feignDeviceClient.getDevice(deviceId);
 				TOboxDeviceConfig oboxDeviceConfig = responseObject.getData();
 				adapter = new TMallDeviceAdapter(playLoadMap,tMallTemplate,oboxDeviceConfig);
-				adapter.queryDevice();
+				adapter = adapter.queryDevice();
 				logger.info("map ====== "+adapter);
 			}catch (Exception e){
 				logger.info("exception ====== "+e);
