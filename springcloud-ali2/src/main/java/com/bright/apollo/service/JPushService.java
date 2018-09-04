@@ -142,4 +142,6 @@ public class JPushService {
     public static PushPayload buildPushObject_all_all_alert(String content) {
         return PushPayload.alertAll(content);
     }
+
+
 }
