@@ -411,15 +411,29 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                     value = propertyArr[1];
                     deviceState = changeState(deviceState,value);
                 }else if(("light_"+attribute).equals(propertyArr[0])){
-                    if(attribute.equals("brightnessStep")){
+                    if(attribute.equals("adjustUpBrightness")){
                         Integer val = Integer.valueOf(value);
-                        value =  ByteHelper.int2HexString(val*255/100);
+                        String step = deviceState.substring(0,2);
+                        if(step.equals("fe")){
+                            value =  "fe";
+                        }else{
+                            value =  ByteHelper.int2HexString(Integer.valueOf(ByteHelper.int2HexString(Integer.valueOf(step)+val)));
+                        }
+                        deviceState = changeState(deviceState,value);
+                    }if(attribute.equals("adjustDownBrightness")){
+                        Integer val = Integer.valueOf(value);
+                        String step = deviceState.substring(0,2);
+                        if(step.equals("9a")){
+                            value =  "9a";
+                        }else{
+                            value =  ByteHelper.int2HexString(Integer.valueOf(ByteHelper.int2HexString(Integer.valueOf(step)-val)));
+                        }
                         deviceState = changeState(deviceState,value);
                     }else if(attribute.equals("brightness")){
                         if(value.equals("max")){
                             value = "fe";
                         }else if(value.equals("min")){
-                            value = "00";
+                            value = "9a";
                         }else{
                             Integer val = Integer.valueOf(value);
                             value =  ByteHelper.int2HexString(val+154);
