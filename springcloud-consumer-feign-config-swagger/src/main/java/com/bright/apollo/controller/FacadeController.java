@@ -177,14 +177,14 @@ public class FacadeController extends BaseController {
 			// may will add respone return status and serialId
 			ResponseObject<OboxResp> resSet = feignAliClient.setDeviceStatus(tOboxDeviceConfig.getOboxSerialId(),
 					status, tOboxDeviceConfig.getDeviceRfAddr());
-			if (resSet == null || resSet.getStatus() != ResponseEnum.UpdateSuccess.getStatus()) {
+			if (resSet != null && resSet.getStatus() == ResponseEnum.UpdateSuccess.getStatus()) {
 				return resSet;
 			} else {
 				res.setStatus(ResponseEnum.SendOboxTimeOut.getStatus());
 				res.setMessage(ResponseEnum.SendOboxTimeOut.getMsg());
 			}
 		} catch (Exception e) {
-			logger.error(e.getMessage());
+			logger.error("===error msg:"+e.getMessage());
 			res.setStatus(ResponseEnum.RequestTimeout.getStatus());
 			res.setMessage(ResponseEnum.RequestTimeout.getMsg());
 		}
