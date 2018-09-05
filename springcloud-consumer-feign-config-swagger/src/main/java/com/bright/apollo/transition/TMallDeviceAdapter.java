@@ -77,6 +77,23 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
 
     public static String doorLockicon = "https://raw.githubusercontent.com/onbright-canton/onbrightConfig/master/tmallImg/doorlock.png";
 
+    public static String aerosolizericon = "https://raw.githubusercontent.com/onbright-canton/onbrightConfig/master/tmallImg/aerosolizer.png";//烟雾传感器
+
+    public static String environmentsensoricon = "https://raw.githubusercontent.com/onbright-canton/onbrightConfig/master/tmallImg/environmentsensor.png";//环境传感器
+
+    public static String gatemagnetismicon = "https://raw.githubusercontent.com/onbright-canton/onbrightConfig/master/tmallImg/gatemagnetism.png";//门磁
+
+    public static String humanIRicon = "https://raw.githubusercontent.com/onbright-canton/onbrightConfig/master/tmallImg/humanIR.png";//人体红外
+
+    public static String humituresensoricon = "https://raw.githubusercontent.com/onbright-canton/onbrightConfig/master/tmallImg/humituresensor.png";//温湿度传感器
+
+    public static String lightsensoricon = "https://raw.githubusercontent.com/onbright-canton/onbrightConfig/master/tmallImg/lightsensor.png";//光感传感器
+
+    public static String radaricon = "https://raw.githubusercontent.com/onbright-canton/onbrightConfig/master/tmallImg/radar.png";//雷达传感器
+
+    public static String watersensoricon = "https://raw.githubusercontent.com/onbright-canton/onbrightConfig/master/tmallImg/watersensor.png";//水浸传感器
+
+
     public String getIcon() {
         return icon;
     }
@@ -384,6 +401,13 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
             if(isQuery.get("Query").equals(true)){
                 jsonArray.put(queryDoorLockOnOff(deviceState));
             }
+        }else if(deviceType.equals("0b")){//传感器
+            if(childType.equals("0b")){//温湿器
+                jsonArray.put(queryTemperature(deviceState));
+                jsonArray.put(queryHumidity(deviceState));
+            }else if(childType.equals("15")){//门磁
+                jsonArray.put(queryDoorSensor(deviceState));
+            }
         }
         deviceAdapter.setProperties(jsonArray);
         return deviceAdapter;
@@ -410,6 +434,36 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
     private Map<String,Object> queryOnOff(String deviceState){
         Map<String,Object> map = new HashMap<String, Object>();
         String onoff = deviceState.substring(0,2);
+        if(!onoff.equals("ff")){
+            map.put("name","powerstate");
+            map.put("value","on");
+        }else if(onoff.equals("ff")){
+            map.put("name","powerstate");
+            map.put("value","off");
+        }
+        return map;
+    }
+
+    private Map<String,Object> queryTemperature(String deviceState){
+        Map<String,Object> map = new HashMap<String, Object>();
+        String temperature = deviceState.substring(2,4);//温度
+        Integer temVal = Integer.valueOf(temperature,16)-30;
+        map.put("name","temperature");
+        map.put("value",temVal.toString());
+        return map;
+    }
+    private Map<String,Object> queryHumidity(String deviceState){
+        Map<String,Object> map = new HashMap<String, Object>();
+        String humidity = deviceState.substring(6,8);//湿度
+        Integer humVal = Integer.valueOf(humidity,16);
+        map.put("name","humidity");
+        map.put("value",humVal.toString());
+        return map;
+    }
+
+    private Map<String,Object> queryDoorSensor(String deviceState){
+        Map<String,Object> map = new HashMap<String, Object>();
+        String onoff = deviceState.substring(2,4);//湿度
         if(!onoff.equals("ff")){
             map.put("name","powerstate");
             map.put("value","on");
