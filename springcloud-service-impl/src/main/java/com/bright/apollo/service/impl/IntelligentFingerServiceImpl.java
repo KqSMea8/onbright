@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.bright.apollo.common.entity.TIntelligentFingerAbandonRemoteUser;
 import com.bright.apollo.common.entity.TIntelligentFingerAuth;
@@ -24,7 +25,6 @@ import com.bright.apollo.request.IntelligentOpenRecordDTO;
 import com.bright.apollo.service.IntelligentFingerService;
 import com.bright.apollo.tool.Base64Util;
 import com.bright.apollo.tool.NumberHelper;
-import com.zz.common.util.StringUtils;
 
 /**  
  *@Title:  
