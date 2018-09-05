@@ -422,12 +422,12 @@ public class CommonController {
 					&& Integer.parseInt(oboxSceneNumber)>0) {
 				return facadeController.querySceneNumberByAddr(oboxSceneNumber,oboxSerialId);
 			}
-		}/*else if (CMDEnum.query_user.toString().equals(cmdEnum.toString())) {
-			String requestType = requestParam.getValue("type");
-			if (!StringUtils.isEmpty(requestType)) {
-				return facadeController.querySceneNumberByAddr(oboxSceneNumber,oboxSerialId);
+		} else if (CMDEnum.test.toString().equals(cmdEnum.toString())) {
+ 			String serialId = requestParam.getValue("serialId");
+			if (!StringUtils.isEmpty(serialId)) {
+				return facadeController.test(serialId);
 			}
-		}*/
+		}
 		res = new ResponseObject();
 		res.setStatus(ResponseEnum.RequestParamError.getStatus());
 		res.setMessage(ResponseEnum.RequestParamError.getMsg());

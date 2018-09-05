@@ -10,6 +10,8 @@ package com.bright.apollo.enums;
  */
 
 public enum CMDEnum {
+	test,
+	
 	//ir
 	regist_aliDev,
 	query_ir_cfg,

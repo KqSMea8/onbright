@@ -28,7 +28,7 @@ public class IntelligentFingerRemoteUserDynaSqlProvider {
 					VALUES("serialId", "#{serialid}");
 				}
 				if (!StringUtils.isEmpty(fingerRemoteUser.getNickName())) {
-					VALUES("nick_name", "#{NickName}");
+					VALUES("nick_name", "#{nickName}");
 				}
 				if (!StringUtils.isEmpty(fingerRemoteUser.getStartTime())) {
 					VALUES("start_time", "#{startTime}");

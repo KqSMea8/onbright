@@ -578,8 +578,6 @@ public class IntelligentFingerController {
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
-
-	
 	}
 
 }

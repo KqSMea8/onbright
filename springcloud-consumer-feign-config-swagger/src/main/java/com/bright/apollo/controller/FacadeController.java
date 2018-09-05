@@ -4703,4 +4703,14 @@ public class FacadeController extends BaseController {
 		}
 		return res;
 	}
+
+	/**  
+	 * @param serialId
+	 * @return  
+	 * @Description:  
+	 */
+	public ResponseObject test(String serialId) {
+		// TODO Auto-generated method stub  
+		return null;
+	}
 }
