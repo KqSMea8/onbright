@@ -164,6 +164,7 @@ public class TmallController {
 			List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 
 			Map<String,Object> playLoadMap = (Map<String, Object>) requestMap.get("payload");
+            Map<String,Object> header = (Map<String, Object>) requestMap.get("header");
 			String name = (String)requestHeaderMap.get("name");
 			String deviceId = (String)playLoadMap.get("deviceId");
 			String[] deviceIdArr = deviceId.split("_");
@@ -189,10 +190,24 @@ public class TmallController {
 				ResponseObject<TOboxDeviceConfig> responseObject = feignDeviceClient.getDevice(deviceId);
 				TOboxDeviceConfig oboxDeviceConfig = responseObject.getData();
 				if(oboxDeviceConfig !=null &&!oboxDeviceConfig.equals("")){
-					adapter = new TMallDeviceAdapter(playLoadMap,tMallTemplate,oboxDeviceConfig);
+					adapter = new TMallDeviceAdapter(playLoadMap,tMallTemplate,oboxDeviceConfig,header);
 					Map<String,Object> paramMap = adapter.TMall2Obright();
 					logger.info("paramMap ====== "+paramMap);
-					facadeController.controlDevice((String)paramMap.get("deviceId"),(String)paramMap.get("deviceState"));
+					if(paramMap.get("deviceState")==null){
+                        headerMap.put("namespace","AliGenie.Iot.Device.Control");
+                        headerMap.put("name","ErrorResponseResponse");
+                        headerMap.put("messageId",requestHeaderMap.get("messageId"));
+                        headerMap.put("payLoadVersion","1");
+                        map.put("header",headerMap);
+                        playloadMap.put("deviceId",deviceId);
+                        playloadMap.put("errorCode","INVALIDATE_PARAMS");
+                        playloadMap.put("message","device not support");
+                        map.put("payload",playloadMap);
+                        return map.toString();
+                    }else{
+                        facadeController.controlDevice((String)paramMap.get("deviceId"),(String)paramMap.get("deviceState"));
+                    }
+
 				}
 			}catch (Exception e){
 				logger.info("exception ====== "+e);
@@ -208,6 +223,7 @@ public class TmallController {
 
 		}else if(requestHeaderMap.get("namespace").equals("AliGenie.Iot.Device.Query")){
 			Map<String,Object> playLoadMap = (Map<String, Object>) requestMap.get("payload");
+            Map<String,Object> header = (Map<String, Object>) requestMap.get("header");
 			String name = (String)requestHeaderMap.get("name");
 			String deviceId = (String)playLoadMap.get("deviceId");
 			String[] deviceIdArr = deviceId.split("_");
@@ -215,7 +231,7 @@ public class TmallController {
 			try{
 				ResponseObject<TOboxDeviceConfig> responseObject = feignDeviceClient.getDevice(deviceId);
 				TOboxDeviceConfig oboxDeviceConfig = responseObject.getData();
-				adapter = new TMallDeviceAdapter(playLoadMap,tMallTemplate,oboxDeviceConfig);
+				adapter = new TMallDeviceAdapter(playLoadMap,tMallTemplate,oboxDeviceConfig,header);
                 adapter.setQueryName(name);
 				adapter = adapter.queryDevice();
 				logger.info("map ====== "+adapter);

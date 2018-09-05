@@ -17,15 +17,26 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
 
     private Map<String, Object> playloadMap;
 
+    public Map<String, Object> getHeader() {
+        return header;
+    }
+
+    public void setHeader(Map<String, Object> header) {
+        this.header = header;
+    }
+
+    private Map<String,Object> header;
+
     public TMallDeviceAdapter(TOboxDeviceConfig oboxDeviceConfig,TMallTemplate tMallTemplate){
         this.oboxDeviceConfig = oboxDeviceConfig;
         this.tMallTemplate = tMallTemplate;
     }
 
-    public TMallDeviceAdapter(Map<String, Object> map,TMallTemplate tMallTemplate,TOboxDeviceConfig oboxDeviceConfig){
+    public TMallDeviceAdapter(Map<String, Object> map,TMallTemplate tMallTemplate,TOboxDeviceConfig oboxDeviceConfig,Map<String,Object> header){
         this.playloadMap = map;
         this.tMallTemplate = tMallTemplate;
         this.oboxDeviceConfig = oboxDeviceConfig;
+        this.header = header;
     }
 
     public TMallDeviceAdapter(){
@@ -60,9 +71,9 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
 
     public static String lighticon = "https://raw.githubusercontent.com/onbright-canton/onbrightConfig/master/tmallImg/light.png";
 
-    public static String singleOutleticon = "https://raw.githubusercontent.com/onbright-canton/onbrightConfig/master/tmallImg/singleOut.png";
+    public static String singleOutleticon = "https://raw.githubusercontent.com/onbright-canton/onbrightConfig/master/tmallImg/singleOut.png";//插座
 
-    public static String mutipleOutleticon = "https://raw.githubusercontent.com/onbright-canton/onbrightConfig/master/tmallImg/mutipleOutlet.png";
+    public static String mutipleOutleticon = "https://raw.githubusercontent.com/onbright-canton/onbrightConfig/master/tmallImg/panel.png";//开关
 
     public static String doorLockicon = "https://raw.githubusercontent.com/onbright-canton/onbrightConfig/master/tmallImg/doorlock.png";
 
@@ -177,13 +188,17 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
             tMallDeviceAdapter.setModel("灯");
             tMallDeviceAdapter.setDeviceName("灯");
             tMallDeviceAdapter.setIcon(lighticon);
-        }else if(deviceType.equals("outlet")&&(childType.equals("01")||childType.equals("02"))){
+        }else if(deviceType.equals("outlet")&&(childType.equals("01"))){
             tMallDeviceAdapter.setModel("单孔插座");
             tMallDeviceAdapter.setDeviceName("单孔插座");
             tMallDeviceAdapter.setIcon(singleOutleticon);
-        }else if(deviceType.equals("outlet")&&(childType.equals("17")||childType.equals("2b"))){
-            tMallDeviceAdapter.setModel("多孔插座");
-            tMallDeviceAdapter.setDeviceName("多孔插座");
+        }else if(deviceType.equals("switch")&&childType.equals("02")){
+            tMallDeviceAdapter.setModel("一键开关");
+            tMallDeviceAdapter.setDeviceName("一键开关");
+            tMallDeviceAdapter.setIcon(mutipleOutleticon);
+        }else if(deviceType.equals("switch")&&(childType.equals("17")||childType.equals("2b"))){
+            tMallDeviceAdapter.setModel("三键开关");
+            tMallDeviceAdapter.setDeviceName("三键开关");
             tMallDeviceAdapter.setIcon(mutipleOutleticon);
         }else if(deviceType.equals("smart-gating")){
             tMallDeviceAdapter.setModel("门锁");
@@ -274,9 +289,18 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                 return colorLight;
             }
         }else if(deviceType.equals("04")){//智能插座/开关
-            oboxDeviceConfig.setDeviceType("outlet");
+
             propertiesTransition(dfMap,defaultProperties);
-            if(deviceChildType.equals("01")||deviceChildType.equals("02")){//一路开关
+            if(deviceChildType.equals("01")){//插座
+                oboxDeviceConfig.setDeviceType("outlet");
+                Singleswitch singleswitch = new Singleswitch();
+                setProperty(singleswitch,oboxDeviceConfig);
+                singleswitch.setAction(defaultActions);
+                jsonArray.put(dfMap);
+                singleswitch.setProperties(jsonArray);
+                return singleswitch;
+            }else if(deviceChildType.equals("02")){//一路开关
+                oboxDeviceConfig.setDeviceType("switch");
                 Singleswitch singleswitch = new Singleswitch();
                 setProperty(singleswitch,oboxDeviceConfig);
                 singleswitch.setAction(defaultActions);
@@ -284,6 +308,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                 singleswitch.setProperties(jsonArray);
                 return singleswitch;
             }else if(deviceChildType.equals("2b")||deviceChildType.equals("17")){//3路开关
+                oboxDeviceConfig.setDeviceType("switch");
                 Mutipleswitch mutipleswitch = new Mutipleswitch();
                 setProperty(mutipleswitch,oboxDeviceConfig);
                 mutipleswitch.setAction(defaultActions);
@@ -376,7 +401,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
     private Map<String,Object> setWarmLightQueryTemperatureProperty(String deviceState){
         Map<String,Object> map = new HashMap<String, Object>();
         String temperature = deviceState.substring(2,4);//色温
-        Integer temperatureInt = Integer.parseInt(temperature,16)/7;
+        Integer temperatureInt = Integer.parseInt(temperature,16)*3800/255+2700;
         map.put("name","colorTemperature");
         map.put("value",temperatureInt.toString());
         return map;
@@ -410,15 +435,16 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
 
 
 
-    private Map<String,Object> compositeCommand(TMallTemplate tMallTemplate, TOboxDeviceConfig oboxDeviceConfig,Map<String,Object> playloadMap){
+    private Map<String,Object> compositeCommand(TMallTemplate tMallTemplate, TOboxDeviceConfig oboxDeviceConfig,Map<String,Object> playloadMap,Map<String,Object> header){
         String attribute = (String)playloadMap.get("attribute");
+        String name = (String)header.get("name");
         String value = (String)playloadMap.get("value");
         String deviceId = (String)playloadMap.get("deviceId");
         String [] deviceArr = deviceId.split("_");
         deviceId = deviceArr[0];
         String deviceType = (String)playloadMap.get("deviceType");
-        String lightProperties = tMallTemplate.getLightProperties();
-        String dfControllProperties = tMallTemplate.getDefaultControllProperties();
+        String lightProperties = tMallTemplate.getLightActions();
+        String dfControllProperties = tMallTemplate.getDefaultAction();
         String lightControllProperties = tMallTemplate.getLightControllProperties();
         String deviceState = oboxDeviceConfig.getDeviceState();
         String obdeviceType = oboxDeviceConfig.getDeviceType();
@@ -437,55 +463,95 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         for (String lightProperty:lightPropertiesArrays){
             propertiesLists.add("light_"+lightProperty);
         }
-
         for (String properties : propertiesLists){
             String[] propertyArr =  properties.split("-");
             if(deviceType.equals("light")){
-                if(("light_"+attribute+"_"+value).equals(propertyArr[0])){
-                    value = propertyArr[1];
-                    deviceState = changeState(deviceState,value);
-                }else if(("light_"+attribute).equals(propertyArr[0])){
-                    if(attribute.equals("adjustUpBrightness")){
-                        Integer val = Integer.valueOf(value);
+                if(("light_"+name).equals(propertyArr[0])){
+                    if(name.equals("TurnOn")||name.equals("TurnOff")){
+                        value = propertyArr[1];
+                        deviceState = changeState(deviceState,value);
+                    }
+                    if(name.equals("AdjustUpBrightness")){
                         String step = deviceState.substring(0,2);
-                        if(step.equals("fe")){
+                        Integer middle = Integer.valueOf(step,16);
+                        middle = middle+10;
+                        if(middle>=254){
                             value =  "fe";
                         }else{
-                            value =  ByteHelper.int2HexString(Integer.valueOf(ByteHelper.int2HexString(Integer.valueOf(step)+val)));
+                            value =  ByteHelper.int2HexString(middle);
                         }
                         deviceState = changeState(deviceState,value);
-                    }if(attribute.equals("adjustDownBrightness")){
-                        Integer val = Integer.valueOf(value);
+                    }if(name.equals("AdjustDownBrightness")){
                         String step = deviceState.substring(0,2);
-                        if(step.equals("9a")){
+                        Integer middle = Integer.valueOf(step,16);
+                        middle = middle - 10;
+                        if(middle<=154){
                             value =  "9a";
                         }else{
-                            value =  ByteHelper.int2HexString(Integer.valueOf(ByteHelper.int2HexString(Integer.valueOf(step)-val)));
+                            value =  ByteHelper.int2HexString(middle);
                         }
                         deviceState = changeState(deviceState,value);
-                    }else if(attribute.equals("brightness")){
+                    }else if(name.equals("SetBrightness")){
                         if(value.equals("max")){
                             value = "fe";
                         }else if(value.equals("min")){
                             value = "9a";
                         }else{
                             Integer val = Integer.valueOf(value);
-                            value =  ByteHelper.int2HexString(val+154);
+                            val = val+154;
+                            if(val<=154){
+                                val = 154;
+                            }
+                            if(val>=254){
+                                val = 154;
+                            }
+                            value =  ByteHelper.int2HexString(val);
                         }
                         deviceState = changeState(deviceState,value);
-                    }else if(attribute.equals("color")){
+                    }else if(name.equals("SetColor")){
                         value = ColorEnum.getRegion(value).getValue();
                         deviceState = changeColorState(deviceState,value);
-                    }else if(attribute.equals("colorTemperature")){
-                        Integer temperature = Integer.valueOf(value)*7;
-                        String middle = ByteHelper.int2HexString(temperature);
-                        deviceState = changeColorTemperature(deviceState,middle);
+                    }else if(name.equals("SetColorTemperature")){
+                        Integer v = Integer.valueOf(value);
+                        if(v==0){//暖光
+                            String middle = ByteHelper.int2HexString(0);
+                            deviceState = changeColorTemperature(deviceState,middle);
+                        }else if(v==100){//冷光
+                            String middle = ByteHelper.int2HexString(255);
+                            deviceState = changeColorTemperature(deviceState,middle);
+                        }else if(v<2700||v>6500){
+                            deviceState = null;
+                        }else{
+                            String t = value.substring(0,2);
+                            Integer temperature = Integer.valueOf(t)-27;
+                            temperature = temperature*6;
+                            String middle = ByteHelper.int2HexString(temperature);
+                            deviceState = changeColorTemperature(deviceState,middle);
+                        }
+                    }else if(name.equals("AdjustUpColorTemperature")){
+                        String val = deviceState.substring(2,4);
+                        Integer middle = Integer.valueOf(val,16);
+                        middle = middle+10;
+                        deviceState = changeColorTemperature(deviceState,ByteHelper.int2HexString(middle));
+                    }else if(name.equals("AdjustDownColorTemperature")){
+                        String val = deviceState.substring(2,4);
+                        Integer middle = Integer.valueOf(val,16);
+                        middle = middle-10;
+                        deviceState = changeColorTemperature(deviceState,ByteHelper.int2HexString(middle));
                     }
                 }
-            }else if((attribute+"_"+value).equals(propertyArr[0])&&obdeviceType.equals("04")&&(obChildType.equals("2b")||obChildType.equals("17"))){
-                deviceState = changeMutipleOutLet(propertyArr[1]);
-            }else if((attribute+"_"+value).equals(propertyArr[0])){
+            }else if((name).equals(propertyArr[0])&&obdeviceType.equals("04")&&(obChildType.equals("2b")||obChildType.equals("17")||obChildType.equals("02"))){//开关
+                deviceState = changeMutipleOutLet(value);
+            }else if((name).equals(propertyArr[0])&&obdeviceType.equals("04")&&obChildType.equals("01")){//一路插座
+                if(value.equals("off")){
+                    value = "00";
+                }else if(value.equals("on")){
+                    value = "01";
+                }
+                deviceState = changeState(deviceState,value);
+            }else if((name).equals(propertyArr[0])){
                 value = propertyArr[1];
+
                 deviceState = changeState(deviceState,value);
             }
         }
@@ -495,16 +561,11 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
     }
 
     private String changeMutipleOutLet(String value){
-        if(value.equals("00")){
+        if(value.equals("off")){
             return "000000000000";
         }else{
             return "000700000000";
         }
-    }
-
-    private String changeDoorLock(String deviceState,String value){
-        String beginStr = deviceState.substring(0,4);
-        return null;
     }
 
     private String changeState(String deviceState,String value){
@@ -531,7 +592,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
 
     @Override
     public Map<String,Object> TMall2Obright() {
-        return compositeCommand(tMallTemplate,oboxDeviceConfig,playloadMap);
+        return compositeCommand(tMallTemplate,oboxDeviceConfig,playloadMap,header);
     }
 
     public TMallDeviceAdapter queryDevice(){
