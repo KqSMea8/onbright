@@ -3440,7 +3440,7 @@ public class FacadeController extends BaseController {
 			int fingerRemoteUserId = ingerRemoteUserRes.getData();
 			ResponseObject<TIntelligentFingerRemoteUser> remoteUserRes = feignDeviceClient
 					.getIntelligentFingerRemoteUserById(fingerRemoteUserId);
-			if (remoteUserRes == null || remoteUserRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
+			if (remoteUserRes == null || remoteUserRes.getStatus() != ResponseEnum.AddSuccess.getStatus()) {
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
 				return res;
@@ -4709,8 +4709,46 @@ public class FacadeController extends BaseController {
 	 * @return  
 	 * @Description:  
 	 */
-	public ResponseObject test(String serialId) {
-		// TODO Auto-generated method stub  
-		return null;
+	@ApiOperation(value = "queryScenes", httpMethod = "POST", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/test/{serialId}", method = RequestMethod.POST)
+	public ResponseObject test(@PathVariable(value="serialId") String serialId) {
+		ResponseObject res=new ResponseObject();
+		try {
+			ResponseObject<TOboxDeviceConfig> deviceRes = feignDeviceClient.getDevice(serialId);
+			if(deviceRes==null&&deviceRes.getData()==null){
+				res.setStatus(ResponseEnum.Error.getStatus());
+				res.setMessage(ResponseEnum.Error.getMsg());
+				return res;
+			}
+			final TOboxDeviceConfig tempDeviceConfig = deviceRes.getData();
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					if (tempDeviceConfig.getDeviceType().equals(DeviceTypeEnum.doorlock.getValue())
+							&& (tempDeviceConfig.getDeviceChildType()
+									.equals(DeviceTypeEnum.capacity_finger.getValue()))) {
+						try {
+							ResponseObject<List<TIntelligentFingerPush>> pushListRes = feignDeviceClient
+									.getTIntelligentFingerPushsBySerialId(
+											tempDeviceConfig.getDeviceSerialId());
+							if (pushListRes != null && (pushListRes.getData() == null
+									|| pushListRes.getData().size() <= 0)) {
+								List<TIntelligentFingerPush> initPush = initPush();
+								feignDeviceClient.batchTIntelligentFingerPush(initPush,
+										tempDeviceConfig.getDeviceSerialId());
+							}
+						} catch (Exception e) {
+							logger.error("===error msg:" + e.getMessage());
+						}
+					}
+				}
+			}).start();
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
 	}
 }
