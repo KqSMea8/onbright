@@ -185,7 +185,7 @@ public class FacadeController extends BaseController {
 				res.setMessage(ResponseEnum.SendOboxTimeOut.getMsg());
 			}
 		} catch (Exception e) {
-			logger.error("===error msg:"+e.getMessage());
+			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.RequestTimeout.getStatus());
 			res.setMessage(ResponseEnum.RequestTimeout.getMsg());
 		}
@@ -1733,18 +1733,21 @@ public class FacadeController extends BaseController {
 							new Thread(new Runnable() {
 								@Override
 								public void run() {
-									if (tempDeviceConfig.getDeviceType().equals(DeviceTypeEnum.doorlock.getValue()) && (tempDeviceConfig
-											.getDeviceChildType().equals(DeviceTypeEnum.capacity_finger.getValue()))) {
+									if (tempDeviceConfig.getDeviceType().equals(DeviceTypeEnum.doorlock.getValue())
+											&& (tempDeviceConfig.getDeviceChildType()
+													.equals(DeviceTypeEnum.capacity_finger.getValue()))) {
 										try {
 											ResponseObject<List<TIntelligentFingerPush>> pushListRes = feignDeviceClient
-													.getTIntelligentFingerPushsBySerialId(tempDeviceConfig.getDeviceSerialId());
-											if (pushListRes!=null&&(pushListRes.getData()==null||pushListRes.getData().size()<=0)) {
+													.getTIntelligentFingerPushsBySerialId(
+															tempDeviceConfig.getDeviceSerialId());
+											if (pushListRes != null && (pushListRes.getData() == null
+													|| pushListRes.getData().size() <= 0)) {
 												List<TIntelligentFingerPush> initPush = initPush();
 												feignDeviceClient.batchTIntelligentFingerPush(initPush,
 														tempDeviceConfig.getDeviceSerialId());
 											}
 										} catch (Exception e) {
-											logger.error("===error msg:"+e.getMessage());
+											logger.error("===error msg:" + e.getMessage());
 										}
 									}
 								}
@@ -1937,7 +1940,7 @@ public class FacadeController extends BaseController {
 				ResponseObject<List<TOboxDeviceConfig>> resDevices = feignDeviceClient
 						.getDeviceTypeByUser(resUser.getData().getId());
 				if (resDevices != null && resDevices.getStatus() == ResponseEnum.SelectSuccess.getStatus()) {
-					if ( resDevices.getData().size() > 0) {
+					if (resDevices.getData().size() > 0) {
 						List<TOboxDeviceConfig> list = resDevices.getData();
 						for (TOboxDeviceConfig tOboxDeviceConfig : list) {
 							ResponseObject<List<TOboxDeviceConfig>> deviceConfigs = feignDeviceClient
@@ -2720,7 +2723,7 @@ public class FacadeController extends BaseController {
 					handlerDTO(dto, items, startTime);
 				}
 			}
-			Map<String, Object>map=new HashMap<String, Object>();
+			Map<String, Object> map = new HashMap<String, Object>();
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 			map.put("records", delEmptyItems(items));
@@ -2821,7 +2824,7 @@ public class FacadeController extends BaseController {
 					}
 				}
 			}
-			Map<String, Object> map=new HashMap<String, Object>();
+			Map<String, Object> map = new HashMap<String, Object>();
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 			map.put("warnRecord", delEmptyWarnItems(items));
@@ -2913,7 +2916,7 @@ public class FacadeController extends BaseController {
 				}
 				list = fingerUserRes.getData();
 			}
-			Map<String, Object> map=new HashMap<String, Object>();
+			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("list", FingerUserListToDTOS(list));
 			res.setData(map);
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
@@ -2925,8 +2928,6 @@ public class FacadeController extends BaseController {
 		}
 		return res;
 	}
-
-	
 
 	/**
 	 * @param serialId
@@ -3248,8 +3249,7 @@ public class FacadeController extends BaseController {
 	@ApiOperation(value = "query_intelligent_authPwd", httpMethod = "GET", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/getIntelligentAuthPwd/{serialId}/{authToken}", method = RequestMethod.GET)
-	public ResponseObject<Map<String, Object>> getIntelligentRemoteUnLocking(String serialId,
-			String authToken) {
+	public ResponseObject<Map<String, Object>> getIntelligentRemoteUnLocking(String serialId, String authToken) {
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		try {
 			String intelligentSerialId = cmdCache.getIntelligentSerialId(authToken);
@@ -3309,7 +3309,7 @@ public class FacadeController extends BaseController {
 			}
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
-			Map<String, Object> map=new HashMap<String, Object>();
+			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("list", transformToDTO(remoteRes.getData()));
 			res.setData(map);
 		} catch (Exception e) {
@@ -3418,8 +3418,8 @@ public class FacadeController extends BaseController {
 				}
 			}
 			String randomNum = (int) ((Math.random() * 9 + 1) * 10000) + "";
-			feignAliClient.sendMessageToFinger(RemoteUserEnum.add.getValue(),
-					startTime, endTime, times, userSerialId, randomNum,oboxRes.getData().getOboxSerialId(),deviceConfig.getDeviceRfAddr());
+			feignAliClient.sendMessageToFinger(RemoteUserEnum.add.getValue(), startTime, endTime, times, userSerialId,
+					randomNum, oboxRes.getData().getOboxSerialId(), deviceConfig.getDeviceRfAddr());
 			TIntelligentFingerRemoteUser fingerRemoteUser = null;
 			if (StringUtils.isEmpty(isMax) || Integer.parseInt(isMax) == IntelligentMaxEnum.MIN.getValue()) {
 				fingerRemoteUser = new TIntelligentFingerRemoteUser(userSerialId, mobile == null ? "" : mobile,
@@ -3521,13 +3521,12 @@ public class FacadeController extends BaseController {
 				return res;
 			}
 			feignDeviceClient.delTIntelligentFingerRemoteUserById(remoteUserRes.getData().getId());
-			feignAliClient.sendMessageToFinger(RemoteUserEnum.del.getValue(),
-					 remoteUserRes.getData().getStartTime(),
-					remoteUserRes.getData().getEndTime(), remoteUserRes.getData().getTimes().intValue()
-							- remoteUserRes.getData().getUseTimes().intValue() + "",
+			feignAliClient.sendMessageToFinger(RemoteUserEnum.del.getValue(), remoteUserRes.getData().getStartTime(),
+					remoteUserRes.getData().getEndTime(),
+					remoteUserRes.getData().getTimes().intValue() - remoteUserRes.getData().getUseTimes().intValue()
+							+ "",
 					remoteUserRes.getData().getUserSerialid(), remoteUserRes.getData().getPwd(),
-					oboxRes.getData().getOboxSerialId(),deviceConfigRes.getData().getDeviceRfAddr()
-					);
+					oboxRes.getData().getOboxSerialId(), deviceConfigRes.getData().getDeviceRfAddr());
 			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
 			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
 		} catch (Exception e) {
@@ -3760,13 +3759,14 @@ public class FacadeController extends BaseController {
 				return res;
 			}
 			TIntelligentFingerRemoteUser fingerRemoteUser = remoteRes.getData();
-			String randomNum = (int) ((Math.random() * 9 + 1) * 10000) + "";
+			// String randomNum = (int) ((Math.random() * 9 + 1) * 10000) + "";
 			// pin 要改变
 			if (fingerRemoteUser.getIsend() == 0) {
-				feignAliClient.sendMessageToFinger(RemoteUserEnum.update.getValue(), 
-						startTime + "", endTime + "", times, fingerRemoteUser.getUserSerialid(), Base64Util.base64Decrypt(fingerRemoteUser.getPwd()),
-						oboxRes.getData().getOboxSerialId(),deviceConfig.getDeviceRfAddr()
-						);
+				feignAliClient.sendMessageToFinger(RemoteUserEnum.update.getValue(), startTime + "", endTime + "",
+						times, fingerRemoteUser.getUserSerialid(),
+						NumberHelper.isNumeric(fingerRemoteUser.getPwd()) ? fingerRemoteUser.getPwd()
+								: Base64Util.base64Decrypt(fingerRemoteUser.getPwd()),
+						oboxRes.getData().getOboxSerialId(), deviceConfig.getDeviceRfAddr());
 			} else {
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
@@ -3788,16 +3788,18 @@ public class FacadeController extends BaseController {
 				fingerRemoteUser.setIsend(0);
 			}
 			fingerRemoteUser.setNickName(nickName);
- 			fingerRemoteUser.setStartTime(startTime + "");
+			fingerRemoteUser.setStartTime(startTime + "");
 			fingerRemoteUser.setEndTime(endTime + "");
 			fingerRemoteUser.setTimes(Integer.parseInt(times));
 			fingerRemoteUser.setUseTimes(0);
 			fingerRemoteUser.setMobile(mobile == null ? "" : mobile);
 			feignDeviceClient.updateTIntelligentFingerRemoteUser(fingerRemoteUser);
-			feignQuartzClient.deleteJob(MD5.MD5generator16Bit(fingerRemoteUser.getId()+serialId));
+			feignQuartzClient.deleteJob(MD5.MD5generator16Bit(fingerRemoteUser.getId() + serialId));
 			feignQuartzClient.addRemoteOpenTaskSchedule(fingerRemoteUser.getId(), endTime + "", serialId);
 			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("pwd", "62" + fingerRemoteUser.getUserSerialid() + randomNum);
+			map.put("pwd",
+					"62" + fingerRemoteUser.getUserSerialid() + (NumberHelper.isNumeric(fingerRemoteUser.getPwd())
+							? fingerRemoteUser.getPwd() : Base64Util.base64Decrypt(fingerRemoteUser.getPwd())));
 			map.put("remoteUser", new IntelligentFingerRemoteUserDTO(fingerRemoteUser));
 			res.setData(map);
 			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
@@ -4170,7 +4172,7 @@ public class FacadeController extends BaseController {
 					return res;
 				}
 				List<TDeviceStatus> tDeviceStatus = deviceStatusRes.getData();
-				if (tDeviceStatus!=null&&!tDeviceStatus.isEmpty()) {
+				if (tDeviceStatus != null && !tDeviceStatus.isEmpty()) {
 					for (int i = 0; i < tDeviceStatus.size(); i++) {
 						DeviceStatusDTO deviceStatusDTO = new DeviceStatusDTO();
 						deviceStatusDTO.setStatus(tDeviceStatus.get(i).getDeviceState());
@@ -4193,14 +4195,15 @@ public class FacadeController extends BaseController {
 					ResponseObject<List<TDeviceStatus>> deviceStatusRes = feignDeviceClient
 							.getDeviceStatusByDataNoGroup(serialId, Long.parseLong(from) + i * 24 * 60 * 60,
 									Long.parseLong(from) + (i + 1) * 24 * 60 * 60);
-					if (deviceStatusRes == null || deviceStatusRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
+					if (deviceStatusRes == null
+							|| deviceStatusRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
 						res.setStatus(ResponseEnum.RequestParamError.getStatus());
 						res.setMessage(ResponseEnum.RequestParamError.getMsg());
 						return res;
 					}
 					List<TDeviceStatus> tDeviceStatus = deviceStatusRes.getData();
 					if (deviceConfig.getDeviceType().equals(DeviceTypeEnum.sensor.getValue())) {
-						if (tDeviceStatus==null||tDeviceStatus.isEmpty()) {
+						if (tDeviceStatus == null || tDeviceStatus.isEmpty()) {
 							if (tDeviceStatusDTOs.isEmpty()) {
 								DeviceStatusDTO tDeviceStatusDTO = handlerDeviceStatusDTO(
 										Long.parseLong(from) + i * 24 * 60 * 60, deviceConfig, null, isEnviron);

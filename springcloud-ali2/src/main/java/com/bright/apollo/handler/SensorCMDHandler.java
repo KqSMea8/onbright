@@ -1679,10 +1679,15 @@ public class SensorCMDHandler extends BasicHandler {
 			TIntelligentFingerWarn fingerWarn = new TIntelligentFingerWarn();
 			fingerWarn.setSerialid(tOboxDeviceConfig.getDeviceSerialId());
 			StringBuffer sb = new StringBuffer();
-			int doorPin = Integer.parseInt(state.substring(8, 10) + state.substring(6, 8), 16);
+			//int doorPin = Integer.parseInt(state.substring(8, 10) + state.substring(6, 8), 16);
+			int doorPin = Integer.parseInt(state.substring(6, 10), 16);
 			TIntelligentFingerUser intelligentFingerUser = intelligentFingerService
 					.queryIntelligentFingerUserBySerialIdAndPin(tOboxDeviceConfig.getDeviceSerialId(),
 							doorPin+"");
+			if(intelligentFingerUser==null){
+				log.info("===error pin:"+doorPin+"===serialId:"+tOboxDeviceConfig.getDeviceSerialId());
+				return ;
+			}
 			sb.append("您好，你的门锁" + tOboxDeviceConfig.getDeviceId()  + "用户" + (StringUtils.isEmpty(intelligentFingerUser.getNickName())
 					? doorPin
 					: intelligentFingerUser.getNickName()) + "有警报:");
