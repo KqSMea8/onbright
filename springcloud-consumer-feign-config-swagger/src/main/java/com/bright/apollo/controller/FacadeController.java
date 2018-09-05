@@ -2649,6 +2649,8 @@ public class FacadeController extends BaseController {
 					map.put("type", 7);
 				else if (Integer.parseInt(type, 16) == 8)
 					map.put("type", 8);
+				else
+					map.put("type", 5);
 			} else {
 				map.put("type", 5);
 			}

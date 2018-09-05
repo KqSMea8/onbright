@@ -1685,12 +1685,14 @@ public class SensorCMDHandler extends BasicHandler {
 					.queryIntelligentFingerUserBySerialIdAndPin(tOboxDeviceConfig.getDeviceSerialId(),
 							doorPin+"");
 			if(intelligentFingerUser==null){
-				log.info("===error pin:"+doorPin+"===serialId:"+tOboxDeviceConfig.getDeviceSerialId());
-				return ;
+				log.info("===the pin is error:"+doorPin+"===serialId:"+tOboxDeviceConfig.getDeviceSerialId());
+				sb.append("您好，你的门锁" + tOboxDeviceConfig.getDeviceId()  + "用户" + doorPin + "有警报:");
+			}else{
+				log.info("===nickName:"+intelligentFingerUser.getNickName());
+				sb.append("您好，你的门锁" + tOboxDeviceConfig.getDeviceId()  + "用户" + (StringUtils.isEmpty(intelligentFingerUser.getNickName())
+						? doorPin
+						: intelligentFingerUser.getNickName()) + "有警报:");
 			}
-			sb.append("您好，你的门锁" + tOboxDeviceConfig.getDeviceId()  + "用户" + (StringUtils.isEmpty(intelligentFingerUser.getNickName())
-					? doorPin
-					: intelligentFingerUser.getNickName()) + "有警报:");
 			if (cmd.equals(FingerWarnEnum.jimmy.getCmd())) {
 				fingerWarn.setOperation(FingerWarnEnum.jimmy.getId() + "");
 				sb.append(FingerWarnEnum.jimmy.getValue());
