@@ -134,7 +134,7 @@ public class TmallController {
 				JSONObject jsonObject = list.get(i);
 				String deviceType = (String)jsonObject.get("deviceType");
 				String model = (String)jsonObject.get("model");
-				if(deviceType.equals("outlet")&&model.equals("多孔插座")){
+				if(deviceType.equals("switch")&&model.equals("三键开关")){
 					for(int j=1;j<=3;j++){
 						JSONObject devices = new JSONObject();
 						putChildrenDeviceValue(devices,jsonObject,j);
@@ -272,12 +272,12 @@ public class TmallController {
 		extensionsMap.put("extension2","");
 		extensionsMap.put("parentId",deivceId);
 		devices.put("deviceId",deivceId+"_"+i);
-		devices.put("deviceName","单孔插座");//单孔插座
+		devices.put("deviceName","开关");//单孔插座
 		devices.put("deviceType",outlet.getString("deviceType"));//outlet.getString("deviceType")
 		devices.put("zone","");
 		devices.put("brand","on-bright");
 		devices.put("model","");
-		devices.put("icon",TMallDeviceAdapter.singleOutleticon);
+		devices.put("icon",TMallDeviceAdapter.mutipleOutleticon);
 		devices.put("properties",outlet.get("properties"));
 		devices.put("actions",outlet.get("actions"));
 		devices.put("extensions",extensionsMap);
