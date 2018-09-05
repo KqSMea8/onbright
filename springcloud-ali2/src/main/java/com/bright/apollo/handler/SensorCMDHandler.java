@@ -363,16 +363,16 @@ public class SensorCMDHandler extends BasicHandler {
 							tIntelligentFingerRemoteUser
 									.setUseTimes(tIntelligentFingerRemoteUser.getTimes() - times);
 							if (times > 0) {
-								byte[] buildBytes = fingerUtil.buildBytes(RemoteUserEnum.update.getValue(), tObox,
-									tOboxDeviceConfig, tIntelligentFingerRemoteUser.getStartTime(),tIntelligentFingerRemoteUser.getEndTime(), times + "", tIntelligentFingerRemoteUser.getUserSerialid(),
+								byte[] buildBytes = fingerUtil.buildBytes(RemoteUserEnum.update.getValue(), tObox.getOboxSerialId(),
+									tOboxDeviceConfig.getDeviceRfAddr(), tIntelligentFingerRemoteUser.getStartTime(),tIntelligentFingerRemoteUser.getEndTime(), times + "", tIntelligentFingerRemoteUser.getUserSerialid(),
 									tIntelligentFingerRemoteUser.getPwd());
 								topicServer.request(CMDEnum.set_finger_remote_user, buildBytes, tObox.getOboxSerialId());
 							} else {
 								if (tIntelligentFingerRemoteUser.getIsmax() == IntelligentMaxEnum.MAX.getValue()) {
 									tIntelligentFingerRemoteUser
 											.setUseTimes(tIntelligentFingerRemoteUser.getUseTimes() + 1);
-									byte[] buildBytes = fingerUtil.buildBytes(RemoteUserEnum.update.getValue(), tObox,
-											tOboxDeviceConfig, tIntelligentFingerRemoteUser.getStartTime(),tIntelligentFingerRemoteUser.getEndTime(), IntelligentMaxEnum.MAX.getValue() + "", tIntelligentFingerRemoteUser.getUserSerialid(),
+									byte[] buildBytes = fingerUtil.buildBytes(RemoteUserEnum.update.getValue(), tObox.getOboxSerialId(),
+											tOboxDeviceConfig.getDeviceRfAddr(), tIntelligentFingerRemoteUser.getStartTime(),tIntelligentFingerRemoteUser.getEndTime(), IntelligentMaxEnum.MAX.getValue() + "", tIntelligentFingerRemoteUser.getUserSerialid(),
 											tIntelligentFingerRemoteUser.getPwd());
 									topicServer.request(CMDEnum.set_finger_remote_user, buildBytes, tObox.getOboxSerialId());
 								} else {
@@ -385,8 +385,8 @@ public class SensorCMDHandler extends BasicHandler {
 									tIntelligentFingerRemoteUser.setIsend(1);
 									tIntelligentFingerRemoteUser
 											.setUseTimes(tIntelligentFingerRemoteUser.getTimes());
-									byte[] buildBytes = fingerUtil.buildBytes(RemoteUserEnum.del.getValue(), tObox,
-											tOboxDeviceConfig, tIntelligentFingerRemoteUser.getStartTime(),
+									byte[] buildBytes = fingerUtil.buildBytes(RemoteUserEnum.del.getValue(), tObox.getOboxSerialId(),
+											tOboxDeviceConfig.getDeviceRfAddr(), tIntelligentFingerRemoteUser.getStartTime(),
 											tIntelligentFingerRemoteUser.getEndTime(), times + "",
 											tIntelligentFingerRemoteUser.getUserSerialid(),
 											tIntelligentFingerRemoteUser.getPwd());

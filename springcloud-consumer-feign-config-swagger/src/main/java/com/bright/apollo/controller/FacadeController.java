@@ -3418,8 +3418,8 @@ public class FacadeController extends BaseController {
 				}
 			}
 			String randomNum = (int) ((Math.random() * 9 + 1) * 10000) + "";
-			feignAliClient.sendMessageToFinger(RemoteUserEnum.add.getValue(), oboxRes.getData(), deviceConfig,
-					startTime, endTime, times, userSerialId, randomNum);
+			feignAliClient.sendMessageToFinger(RemoteUserEnum.add.getValue(),
+					startTime, endTime, times, userSerialId, randomNum,oboxRes.getData().getOboxSerialId(),deviceConfig.getDeviceRfAddr());
 			TIntelligentFingerRemoteUser fingerRemoteUser = null;
 			if (StringUtils.isEmpty(isMax) || Integer.parseInt(isMax) == IntelligentMaxEnum.MIN.getValue()) {
 				fingerRemoteUser = new TIntelligentFingerRemoteUser(userSerialId, mobile == null ? "" : mobile,
@@ -3521,11 +3521,13 @@ public class FacadeController extends BaseController {
 				return res;
 			}
 			feignDeviceClient.delTIntelligentFingerRemoteUserById(remoteUserRes.getData().getId());
-			feignAliClient.sendMessageToFinger(RemoteUserEnum.del.getValue(), oboxRes.getData(),
-					deviceConfigRes.getData(), remoteUserRes.getData().getStartTime(),
+			feignAliClient.sendMessageToFinger(RemoteUserEnum.del.getValue(),
+					 remoteUserRes.getData().getStartTime(),
 					remoteUserRes.getData().getEndTime(), remoteUserRes.getData().getTimes().intValue()
 							- remoteUserRes.getData().getUseTimes().intValue() + "",
-					remoteUserRes.getData().getUserSerialid(), remoteUserRes.getData().getPwd());
+					remoteUserRes.getData().getUserSerialid(), remoteUserRes.getData().getPwd(),
+					oboxRes.getData().getOboxSerialId(),deviceConfigRes.getData().getDeviceRfAddr()
+					);
 			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
 			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
 		} catch (Exception e) {
@@ -3761,8 +3763,10 @@ public class FacadeController extends BaseController {
 			String randomNum = (int) ((Math.random() * 9 + 1) * 10000) + "";
 			// pin 要改变
 			if (fingerRemoteUser.getIsend() == 0) {
-				feignAliClient.sendMessageToFinger(RemoteUserEnum.update.getValue(), oboxRes.getData(), deviceConfig,
-						startTime + "", endTime + "", times, fingerRemoteUser.getUserSerialid(), Base64Util.base64Decrypt(fingerRemoteUser.getPwd()));
+				feignAliClient.sendMessageToFinger(RemoteUserEnum.update.getValue(), 
+						startTime + "", endTime + "", times, fingerRemoteUser.getUserSerialid(), Base64Util.base64Decrypt(fingerRemoteUser.getPwd()),
+						oboxRes.getData().getOboxSerialId(),deviceConfig.getDeviceRfAddr()
+						);
 			} else {
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());

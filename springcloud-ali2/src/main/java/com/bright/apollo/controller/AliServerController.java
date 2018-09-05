@@ -474,19 +474,22 @@ public class AliServerController {
 	 * @param randomNum
 	 * @Description:
 	 */
-	@RequestMapping(value = "/sendMessageToFinger/{operation}/{startTime}/{endTime}/{times}/{userSerialId}/{randomNum}", method = RequestMethod.POST)
-	ResponseObject<OboxResp> sendMessageToFinger(@PathVariable(value = "operation") String operation, @RequestParam(required = true,value="obox")TObox obox,
-			@RequestParam(required = true,value="deviceConfig")TOboxDeviceConfig deviceConfig, @PathVariable(value = "startTime") String startTime,
+	@RequestMapping(value = "/sendMessageToFinger/{operation}/{startTime}/{endTime}/{times}/{userSerialId}/{randomNum}/{serialId}/{address}", method = RequestMethod.POST)
+	ResponseObject<OboxResp> sendMessageToFinger(@PathVariable(value = "operation") String operation,
+			@PathVariable(value = "startTime") String startTime,
 			@PathVariable(value = "endTime") String endTime, @PathVariable(value = "times") String times,
 			@PathVariable(value = "userSerialId") Integer userSerialId,
-			@PathVariable(value = "randomNum") String randomNum){
+			@PathVariable(value = "randomNum") String randomNum,
+			@PathVariable(value = "serialId") String serialId,
+			@PathVariable(value = "address") String address
+			){
 		ResponseObject<OboxResp> res = new ResponseObject<OboxResp>();
 		try {
-			byte[] buildBytes = fingerUtil.buildBytes(operation, obox,
-					deviceConfig, startTime, endTime, times, userSerialId, randomNum);
-			topicServer.request(CMDEnum.set_finger_remote_user, buildBytes, obox.getOboxSerialId());
-			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
-			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
+			byte[] buildBytes = fingerUtil.buildBytes(operation,serialId,address,
+					startTime, endTime, times, userSerialId, randomNum);
+			topicServer.request(CMDEnum.set_finger_remote_user, buildBytes, serialId);
+			res.setStatus(ResponseEnum.AddSuccess.getStatus());
+			res.setMessage(ResponseEnum.AddSuccess.getMsg());
 		} catch (Exception e) {
 			logger.error("===error msg:"+e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());

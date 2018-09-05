@@ -23,6 +23,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class FingerRemoteHandler extends BasicHandler {
 	private static final Logger log = LoggerFactory.getLogger(FingerRemoteHandler.class);
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -50,8 +51,8 @@ public class FingerRemoteHandler extends BasicHandler {
 				return null;
 			}
 			log.info("===judge the fingerRemoteUser===");
-			byte[] buildBytes = fingerUtil.buildBytes(RemoteUserEnum.add.getValue(), tObox, tOboxDeviceConfig,
-					fingerRemoteUser.getStartTime(), fingerRemoteUser.getEndTime(),
+			byte[] buildBytes = fingerUtil.buildBytes(RemoteUserEnum.add.getValue(), tObox.getOboxSerialId(),
+					tOboxDeviceConfig.getDeviceRfAddr(), fingerRemoteUser.getStartTime(), fingerRemoteUser.getEndTime(),
 					fingerRemoteUser.getTimes().intValue() - fingerRemoteUser.getUseTimes().intValue() + "",
 					fingerRemoteUser.getUserSerialid(), fingerRemoteUser.getPwd());
 			topicServer.request(CMDEnum.respone_finger_remote_user, buildBytes, tObox.getOboxSerialId());

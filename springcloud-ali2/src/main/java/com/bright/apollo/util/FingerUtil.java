@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.tool.Base64Util;
 import com.bright.apollo.tool.ByteHelper;
@@ -36,13 +35,13 @@ public class FingerUtil {
 	 * @param randomNum  
 	 * @Description:  
 	 */
-	public byte[] buildBytes(String type,TObox obox,  TOboxDeviceConfig oboxDeviceConfig,
+	public byte[] buildBytes(String type,String serialId, String address,
 			String startTime, String endTime, String times, Integer userSerialId, String randomNum){
 		byte[] bodyBytes = new byte[32];
-		byte[] oboxSerildIdBytes = ByteHelper.hexStringToBytes(oboxDeviceConfig.getOboxSerialId());
+		byte[] oboxSerildIdBytes = ByteHelper.hexStringToBytes(serialId);
 		System.arraycopy(oboxSerildIdBytes, 0, bodyBytes, 0, oboxSerildIdBytes.length);
 		bodyBytes[5] = 0x00;
-		bodyBytes[6] = (byte) Integer.parseInt(oboxDeviceConfig.getDeviceRfAddr(), 16);
+		bodyBytes[6] = (byte) Integer.parseInt(address, 16);
 		byte[] setType = ByteHelper.hexStringToBytes(type);
 		//设置类型
 		System.arraycopy(setType, 0, bodyBytes, 7, setType.length);
@@ -65,7 +64,7 @@ public class FingerUtil {
 			pwdBytes = ByteHelper.stringToAsciiBytes("62" + userSerialId+"" + Base64Util.base64Decrypt(randomNum), 16);
 		byte[] hexStringToBytes =ByteHelper.stringToAsciiBytes("smart_doorlock", 64);
   		byte[] hexStringToBytes2 = ByteHelper.hexStringToBytes(pin);
- 		byte[] hexStringToBytes3 = ByteHelper.hexStringToBytes(oboxDeviceConfig.getDeviceRfAddr());
+ 		byte[] hexStringToBytes3 = ByteHelper.hexStringToBytes(address);
  		System.arraycopy(hexStringToBytes2, 0, hexStringToBytes, "smart_doorlock".toCharArray().length, hexStringToBytes2.length);
  		System.arraycopy(hexStringToBytes3, 0, hexStringToBytes, "smart_doorlock".toCharArray().length+hexStringToBytes2.length, hexStringToBytes3.length);
  		
