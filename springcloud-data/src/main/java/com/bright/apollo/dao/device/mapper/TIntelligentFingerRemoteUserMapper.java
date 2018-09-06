@@ -54,7 +54,20 @@ public interface TIntelligentFingerRemoteUserMapper {
 	 * @return  
 	 * @Description:  
 	 */
-	@Select("select * from t_intelligent_finger_remote_user a where a.serialId=#{serialId} order by user_serialId desc")
+	@Select("select a.* from t_intelligent_finger_remote_user a where a.serialId=#{serialId} order by user_serialId desc")
+	@Results(value = { @Result(property = "userSerialid", column = "user_serialId"),
+			@Result(property = "mobile", column = "mobile"),
+			@Result(property = "id", column = "id"),
+			@Result(property = "serialid", column = "serialId"),
+			@Result(property = "nickName", column = "nick_name"),
+			@Result(property = "startTime", column = "start_time"),
+			@Result(property = "endTime", column = "end_time"),
+			@Result(property = "times", column = "times"),
+			@Result(property = "useTimes", column = "use_times"),
+			@Result(property = "pwd", column = "pwd"),
+			@Result(property = "isend", column = "isEnd"),
+			@Result(property = "ismax", column = "isMax"),
+			@Result(property = "lastOpTime", column = "last_op_time")})
 	List<TIntelligentFingerRemoteUser> queryTIntelligentFingerRemoteUsersBySerialId(@Param("serialId")String serialId);
 
 	/**  

@@ -263,7 +263,7 @@ public interface FeignDeviceClient {
 	 * @return
 	 * @Description:
 	 */
-	@RequestMapping(value = "/intelligentFinger/getIntelligentFingerRemoteUsersBySerialId/{serialId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/intelligentFinger/getTIntelligentFingerAbandonRemoteUsersBySerialId/{serialId}", method = RequestMethod.GET)
 	ResponseObject<List<TIntelligentFingerAbandonRemoteUser>> getTIntelligentFingerAbandonRemoteUsersBySerialId(
 			@PathVariable(value = "serialId") String serialId);
 

@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
 import org.springframework.stereotype.Component;
@@ -31,7 +33,11 @@ public interface TIntelligentFingerAbandonRemoteUserMapper {
 	 * @return
 	 * @Description:
 	 */
-	@Select("select * from t_intelligent_finger_abandon_remote_user a where a.serialId=#{serialId}")
+	@Select("select a.* from t_intelligent_finger_abandon_remote_user a where a.serialId=#{serialId}")
+	@Results(value = { @Result(property = "id", column = "id"),
+			@Result(property = "userSerialid", column = "user_serialId"),
+			@Result(property = "lastOpTime", column = "last_op_time"),
+			@Result(property = "serialid", column = "serialId")})
 	List<TIntelligentFingerAbandonRemoteUser> queryTIntelligentFingerAbandonRemoteUsersBySerialId(
 			@Param("serialId") String serialId);
 
