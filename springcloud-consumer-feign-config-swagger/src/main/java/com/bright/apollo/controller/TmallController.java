@@ -9,13 +9,10 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-
 import com.bright.apollo.common.entity.TUser;
-import com.bright.apollo.transition.Mutipleswitch;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
@@ -44,7 +41,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.feign.FeignDeviceClient;
 import com.bright.apollo.feign.FeignUserClient;
@@ -191,6 +187,7 @@ public class TmallController {
 				TOboxDeviceConfig oboxDeviceConfig = responseObject.getData();
 				if(oboxDeviceConfig !=null &&!oboxDeviceConfig.equals("")){
 					adapter = new TMallDeviceAdapter(playLoadMap,tMallTemplate,oboxDeviceConfig,header);
+					adapter.setRedisBussines(redisBussines);
 					Map<String,Object> paramMap = adapter.TMall2Obright();
 					logger.info("paramMap ====== "+paramMap);
 					if(paramMap.get("deviceState")==null){
