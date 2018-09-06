@@ -327,7 +327,7 @@ public class CommonController {
 			String times = requestParam.getValue("times");
 			String mobile = requestParam.getValue("mobile");
 			String isMax = requestParam.getValue("isMax");
-			if (!StringUtils.isEmpty(serialId) && !StringUtils.isEmpty(authToken) && StringUtils.isEmpty(id)
+			if (!StringUtils.isEmpty(serialId) && !StringUtils.isEmpty(authToken) && !StringUtils.isEmpty(id)
 					&& NumberHelper.isNumeric(id) && !StringUtils.isEmpty(nickName) && !StringUtils.isEmpty(startTime)
 					&& NumberHelper.isNumeric(startTime)
 					&& (!StringUtils.isEmpty(endTime) && NumberHelper.isNumeric(endTime))) {
