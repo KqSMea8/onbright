@@ -3443,7 +3443,7 @@ public class FacadeController extends BaseController {
 			int fingerRemoteUserId = ingerRemoteUserRes.getData();
 			ResponseObject<TIntelligentFingerRemoteUser> remoteUserRes = feignDeviceClient
 					.getTIntelligentFingerRemoteUserBySerialIdAndPin(serialId, userSerialId);
-			if (remoteUserRes == null || remoteUserRes.getStatus() != ResponseEnum.AddSuccess.getStatus()) {
+			if (remoteUserRes == null || remoteUserRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
 				return res;
