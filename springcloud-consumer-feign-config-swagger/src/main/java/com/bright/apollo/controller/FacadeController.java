@@ -3447,7 +3447,7 @@ public class FacadeController extends BaseController {
 				return res;
 			}
 			// 创建一个定时器
-			feignQuartzClient.addRemoteOpenTaskSchedule(fingerRemoteUserId, endTime, serialId);
+			feignQuartzClient.addRemoteOpenTaskSchedule(remoteUserRes.getData().getId(), endTime, serialId);
 			// 返回参数待测试
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("authCode", "62" + userSerialId + "" + randomNum);
