@@ -1,5 +1,6 @@
 package com.bright.apollo.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -14,13 +15,17 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bright.apollo.common.entity.TIntelligentFingerAbandonRemoteUser;
 import com.bright.apollo.common.entity.TIntelligentFingerAuth;
 import com.bright.apollo.common.entity.TIntelligentFingerPush;
+import com.bright.apollo.common.entity.TIntelligentFingerRecord;
 import com.bright.apollo.common.entity.TIntelligentFingerRemoteUser;
 import com.bright.apollo.common.entity.TIntelligentFingerUser;
+import com.bright.apollo.common.entity.TIntelligentFingerWarn;
+import com.bright.apollo.enums.FingerOperationEnum;
 import com.bright.apollo.request.IntelligentFingerWarnDTO;
 import com.bright.apollo.request.IntelligentOpenRecordDTO;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.service.IntelligentFingerService;
+import com.bright.apollo.tool.DateHelper;
 
 /**
  * @Title:
@@ -563,13 +568,11 @@ public class IntelligentFingerController {
 	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
-	@RequestMapping(value = "/batchTIntelligentFingerPush/{serialId}", method = RequestMethod.POST)
-	ResponseObject batchTIntelligentFingerPush(@RequestBody List<TIntelligentFingerPush> pushList,
-			@PathVariable(value = "serialId") String serialId){
-
+	@RequestMapping(value = "/batchTIntelligentFingerPush", method = RequestMethod.POST)
+	ResponseObject batchTIntelligentFingerPush(@RequestBody List<TIntelligentFingerPush> pushList){
 		ResponseObject res = new ResponseObject();
 		try {
-			intelligentFingerService.batchTIntelligentFingerPush(pushList,serialId);
+			intelligentFingerService.batchTIntelligentFingerPush(pushList);
 			res.setStatus(ResponseEnum.AddSuccess.getStatus());
 			res.setMessage(ResponseEnum.AddSuccess.getMsg());
 		} catch (Exception e) {
@@ -579,5 +582,27 @@ public class IntelligentFingerController {
 		}
 		return res;
 	}
-
+	/**
+	 * @param pushList
+	 * @param serialId
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/test/{serialId}", method = RequestMethod.GET)
+	ResponseObject test(@PathVariable(value="serialId") String serialId){
+		ResponseObject res = new ResponseObject();
+		try {
+			TIntelligentFingerWarn fingerWarn=new TIntelligentFingerWarn();
+			fingerWarn.setSerialid(serialId);
+			fingerWarn.setOperation("1");
+			intelligentFingerService.addTIntelligentFingerWarn(fingerWarn);
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
 }

@@ -474,7 +474,7 @@ public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implem
 	 */
 	@SuppressWarnings("rawtypes")
 	@Override
-	public ResponseObject batchTIntelligentFingerPush(List<TIntelligentFingerPush> pushList, String serialId) {
+	public ResponseObject batchTIntelligentFingerPush(List<TIntelligentFingerPush> pushList) {
 		logger.warn("===device server is break===");
 		return serverError();
 	}

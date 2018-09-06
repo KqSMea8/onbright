@@ -11,6 +11,10 @@ import com.bright.apollo.enums.CMDEnum;
 import com.bright.apollo.enums.DeviceTypeEnum;
 import com.bright.apollo.enums.RemoteUserEnum;
 import com.bright.apollo.session.ClientSession;
+import com.bright.apollo.tool.Base64Util;
+import com.bright.apollo.tool.ByteHelper;
+import com.bright.apollo.tool.NumberHelper;
+
 import org.springframework.stereotype.Component;
 
 /**
@@ -54,7 +58,8 @@ public class FingerRemoteHandler extends BasicHandler {
 			byte[] buildBytes = fingerUtil.buildBytes(RemoteUserEnum.add.getValue(), tObox.getOboxSerialId(),
 					tOboxDeviceConfig.getDeviceRfAddr(), fingerRemoteUser.getStartTime(), fingerRemoteUser.getEndTime(),
 					fingerRemoteUser.getTimes().intValue() - fingerRemoteUser.getUseTimes().intValue() + "",
-					fingerRemoteUser.getUserSerialid(), fingerRemoteUser.getPwd());
+					fingerRemoteUser.getUserSerialid(), NumberHelper.isNumeric(fingerRemoteUser.getPwd())
+							? fingerRemoteUser.getPwd() : Base64Util.base64Decrypt(fingerRemoteUser.getPwd()));
 			topicServer.request(CMDEnum.respone_finger_remote_user, buildBytes, tObox.getOboxSerialId());
 		}
 		return null;

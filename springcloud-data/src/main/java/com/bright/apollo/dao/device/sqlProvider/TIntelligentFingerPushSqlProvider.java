@@ -1,6 +1,8 @@
 package com.bright.apollo.dao.device.sqlProvider;
 
+import java.text.MessageFormat;
 import java.util.List;
+import java.util.Map;
 
 import com.bright.apollo.common.entity.TIntelligentFingerPush;
 
@@ -12,15 +14,16 @@ import com.bright.apollo.common.entity.TIntelligentFingerPush;
  * @Version:1.1.0
  */
 public class TIntelligentFingerPushSqlProvider {
-	public String batchTIntelligentFingerPush(final List<TIntelligentFingerPush> pushList, final String serialId) {
+	public String batchTIntelligentFingerPush(Map<String, List<TIntelligentFingerPush>> map) {
+		List<TIntelligentFingerPush> list = map.get("list");
  		StringBuilder sb = new StringBuilder("insert into t_intelligent_finger_push (serialId,`cmd`,`value`) values ");
- 		for (int i = 0; i < pushList.size(); i++) {
-			sb.append("(").append(serialId).append(",").append(pushList.get(i).getCmd()).append(",")
-			.append(pushList.get(i).getValue()).append(")");
-			if (i < pushList.size() - 1) {
-				sb.append(",");
-			}
-		}
+ 		MessageFormat messageFormat = new MessageFormat("(#'{'list[{0}].serialid,jdbcType=VARCHAR}, " +
+                "#'{'list[{0}].cmd,jdbcType=VARCHAR}, #'{'list[{0}].value,jdbcType=VARCHAR})");
+ 		for (int i = 0; i < list.size(); i++) {
+ 			sb.append(messageFormat.format(new Integer[]{i}));
+ 			sb.append(",");
+        }
+ 		sb.setLength(sb.length() - 1);
 		return sb.toString();
 	}
 }

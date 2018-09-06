@@ -162,9 +162,9 @@ public class SearchResultHandler extends BasicHandler {
 								List<TIntelligentFingerPush> list = intelligentFingerService
 										.queryTIntelligentFingerPushsBySerialId(tempDeviceConfig.getDeviceSerialId());
 								if (list!=null&&list.size()<=0) {
-									List<TIntelligentFingerPush> initPush = initPush();
-									intelligentFingerService.batchTIntelligentFingerPush(initPush,
-											tempDeviceConfig.getDeviceSerialId());
+									List<TIntelligentFingerPush> initPush = initPush(tempDeviceConfig.getDeviceSerialId());
+									intelligentFingerService.batchTIntelligentFingerPush(initPush
+											);
 								}
 							} catch (Exception e) {
 								logger.error("===error msg:"+e.getMessage());

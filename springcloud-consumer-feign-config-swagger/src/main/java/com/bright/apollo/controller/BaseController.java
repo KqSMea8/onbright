@@ -262,19 +262,19 @@ public class BaseController {
 		}
 		return dtos;
 	}
-	public static List<TIntelligentFingerPush> initPush() {
+	public static List<TIntelligentFingerPush> initPush(String serialId) {
 		List<TIntelligentFingerPush> list = new ArrayList<TIntelligentFingerPush>();
-		TIntelligentFingerPush push = new TIntelligentFingerPush( FingerWarnEnum.jimmy.getCmd(),
+		TIntelligentFingerPush push = new TIntelligentFingerPush(serialId, FingerWarnEnum.jimmy.getCmd(),
 				FingerWarnEnum.jimmy.getId());
-		TIntelligentFingerPush push1 = new TIntelligentFingerPush( FingerWarnEnum.stress.getCmd(),
+		TIntelligentFingerPush push1 = new TIntelligentFingerPush(serialId, FingerWarnEnum.stress.getCmd(),
 				FingerWarnEnum.stress.getId());
-		TIntelligentFingerPush push2 = new TIntelligentFingerPush( FingerWarnEnum.multiple_validation_failed.getCmd(),
+		TIntelligentFingerPush push2 = new TIntelligentFingerPush(serialId, FingerWarnEnum.multiple_validation_failed.getCmd(),
 				FingerWarnEnum.multiple_validation_failed.getId());
-		TIntelligentFingerPush push3 = new TIntelligentFingerPush( FingerWarnEnum.overdoor.getCmd(),
+		TIntelligentFingerPush push3 = new TIntelligentFingerPush(serialId, FingerWarnEnum.overdoor.getCmd(),
 				FingerWarnEnum.overdoor.getId());
-		TIntelligentFingerPush push4 = new TIntelligentFingerPush( FingerWarnEnum.back_lock.getCmd(),
+		TIntelligentFingerPush push4 = new TIntelligentFingerPush(serialId, FingerWarnEnum.back_lock.getCmd(),
 				FingerWarnEnum.back_lock.getId());
-		TIntelligentFingerPush push5 = new TIntelligentFingerPush( FingerWarnEnum.low_betty.getCmd(),
+		TIntelligentFingerPush push5 = new TIntelligentFingerPush(serialId, FingerWarnEnum.low_betty.getCmd(),
 				FingerWarnEnum.low_betty.getId());
 		list.add(push);
 		list.add(push1);

@@ -30,6 +30,7 @@ import com.bright.apollo.common.entity.TDeviceStatus;
 import com.bright.apollo.common.entity.TIntelligentFingerAbandonRemoteUser;
 import com.bright.apollo.common.entity.TIntelligentFingerAuth;
 import com.bright.apollo.common.entity.TIntelligentFingerPush;
+import com.bright.apollo.common.entity.TIntelligentFingerRecord;
 import com.bright.apollo.common.entity.TIntelligentFingerRemoteUser;
 import com.bright.apollo.common.entity.TIntelligentFingerUser;
 import com.bright.apollo.common.entity.TNvr;
@@ -47,6 +48,7 @@ import com.bright.apollo.common.entity.TYSCamera;
 import com.bright.apollo.constant.SubTableConstant;
 import com.bright.apollo.enums.ConditionTypeEnum;
 import com.bright.apollo.enums.DeviceTypeEnum;
+import com.bright.apollo.enums.FingerOperationEnum;
 import com.bright.apollo.enums.IntelligentMaxEnum;
 import com.bright.apollo.enums.NodeTypeEnum;
 import com.bright.apollo.enums.RemoteUserEnum;
@@ -1742,9 +1744,9 @@ public class FacadeController extends BaseController {
 															tempDeviceConfig.getDeviceSerialId());
 											if (pushListRes != null && (pushListRes.getData() == null
 													|| pushListRes.getData().size() <= 0)) {
-												List<TIntelligentFingerPush> initPush = initPush();
-												feignDeviceClient.batchTIntelligentFingerPush(initPush,
-														tempDeviceConfig.getDeviceSerialId());
+												List<TIntelligentFingerPush> initPush = initPush(tempDeviceConfig.getDeviceSerialId());
+												feignDeviceClient.batchTIntelligentFingerPush(initPush
+														);
 											}
 										} catch (Exception e) {
 											logger.error("===error msg:" + e.getMessage());
@@ -3315,6 +3317,7 @@ public class FacadeController extends BaseController {
 			map.put("list", transformToDTO(remoteRes.getData()));
 			res.setData(map);
 		} catch (Exception e) {
+			logger.error("============:"+e);
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
@@ -4715,35 +4718,11 @@ public class FacadeController extends BaseController {
 	public ResponseObject test(@PathVariable(value="serialId") String serialId) {
 		ResponseObject res=new ResponseObject();
 		try {
-			ResponseObject<TOboxDeviceConfig> deviceRes = feignDeviceClient.getDevice(serialId);
-			if(deviceRes==null&&deviceRes.getData()==null){
-				res.setStatus(ResponseEnum.Error.getStatus());
-				res.setMessage(ResponseEnum.Error.getMsg());
-				return res;
-			}
-			final TOboxDeviceConfig tempDeviceConfig = deviceRes.getData();
-			new Thread(new Runnable() {
-				@Override
-				public void run() {
-					if (tempDeviceConfig.getDeviceType().equals(DeviceTypeEnum.doorlock.getValue())
-							&& (tempDeviceConfig.getDeviceChildType()
-									.equals(DeviceTypeEnum.capacity_finger.getValue()))) {
-						try {
-							ResponseObject<List<TIntelligentFingerPush>> pushListRes = feignDeviceClient
-									.getTIntelligentFingerPushsBySerialId(
-											tempDeviceConfig.getDeviceSerialId());
-							if (pushListRes != null && (pushListRes.getData() == null
-									|| pushListRes.getData().size() <= 0)) {
-								List<TIntelligentFingerPush> initPush = initPush();
-								feignDeviceClient.batchTIntelligentFingerPush(initPush,
-										tempDeviceConfig.getDeviceSerialId());
-							}
-						} catch (Exception e) {
-							logger.error("===error msg:" + e.getMessage());
-						}
-					}
-				}
-			}).start();
+			TIntelligentFingerRecord fingerRecord = new TIntelligentFingerRecord();
+			fingerRecord.setOperation(FingerOperationEnum.remote.getValue() + "");
+			fingerRecord.setFingerUserId(11);
+			fingerRecord.setSerialid(serialId);
+			fingerRecord.setNickName("haha");
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());

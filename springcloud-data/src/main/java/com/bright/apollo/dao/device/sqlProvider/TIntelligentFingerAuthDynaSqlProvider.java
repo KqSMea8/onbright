@@ -23,6 +23,7 @@ public class TIntelligentFingerAuthDynaSqlProvider {
 				if (!StringUtils.isEmpty(fingerAuth.getPwd())) {
 					SET("pwd", "#{pwd}");
 				}
+				WHERE("id=#{id}");
 			}
 		}.toString();
 	}

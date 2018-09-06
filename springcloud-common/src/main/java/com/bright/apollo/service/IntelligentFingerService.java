@@ -240,7 +240,7 @@ public interface IntelligentFingerService {
 	 * @param serialId  
 	 * @Description:  
 	 */
-	void batchTIntelligentFingerPush(List<TIntelligentFingerPush> pushList, String serialId);
+	void batchTIntelligentFingerPush(List<TIntelligentFingerPush> pushList);
 
  
 

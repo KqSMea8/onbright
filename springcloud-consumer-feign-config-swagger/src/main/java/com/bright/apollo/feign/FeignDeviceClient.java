@@ -416,9 +416,8 @@ public interface FeignDeviceClient {
 	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
-	@RequestMapping(value = "/intelligentFinger/batchTIntelligentFingerPush/{serialId}", method = RequestMethod.POST)
-	ResponseObject batchTIntelligentFingerPush(@RequestBody List<TIntelligentFingerPush> pushList,
-			@PathVariable(value = "serialId") String serialId);
+	@RequestMapping(value = "/intelligentFinger/batchTIntelligentFingerPush", method = RequestMethod.POST)
+	ResponseObject batchTIntelligentFingerPush(@RequestBody List<TIntelligentFingerPush> pushList);
  
 
 }

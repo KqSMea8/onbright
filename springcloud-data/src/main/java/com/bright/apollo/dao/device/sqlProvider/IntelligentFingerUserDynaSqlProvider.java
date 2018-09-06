@@ -28,7 +28,7 @@ public class IntelligentFingerUserDynaSqlProvider {
 					VALUES("serialId", "#{serialid}");
 				}
 				if (!StringUtils.isEmpty(intelligentFingerUser.getNickName())) {
-					VALUES("nick_name", "#{NickName}");
+					VALUES("nick_name", "#{nickName}");
 				}
 				if(intelligentFingerUser.getExistForce()!=null ){
 					VALUES("exist_force", "#{existForce}");

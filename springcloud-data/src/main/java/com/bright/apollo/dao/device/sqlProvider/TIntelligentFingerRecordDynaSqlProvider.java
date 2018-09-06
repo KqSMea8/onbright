@@ -17,12 +17,12 @@ public class TIntelligentFingerRecordDynaSqlProvider {
 	public String addIntelligentFingerRecord(final TIntelligentFingerRecord fingerRecord) {
 		return new SQL() {
 			{
-				INSERT_INTO("t_intelligent_finger_user");
+				INSERT_INTO("t_intelligent_finger_record");
 				if (!StringUtils.isEmpty(fingerRecord.getSerialid())) {
 					VALUES("serialId", "#{serialid}");
 				}
 				if (!StringUtils.isEmpty(fingerRecord.getNickName())) {
-					VALUES("nick_name", "#{NickName}");
+					VALUES("nick_name", "#{nickName}");
 				}
 				if (!StringUtils.isEmpty(fingerRecord.getFingerUserId())) {
 					VALUES("finger_user_id", "#{fingerUserId}");

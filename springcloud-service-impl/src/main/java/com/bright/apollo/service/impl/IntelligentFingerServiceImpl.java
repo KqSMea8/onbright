@@ -296,8 +296,8 @@ public class IntelligentFingerServiceImpl implements IntelligentFingerService{
 	 * @see com.bright.apollo.service.IntelligentFingerService#batchTIntelligentFingerPush(java.util.List, java.lang.String)  
 	 */
 	@Override
-	public void batchTIntelligentFingerPush(List<TIntelligentFingerPush> pushList, String serialId) {
-		pushMapper.batchTIntelligentFingerPush(pushList,serialId);
+	public void batchTIntelligentFingerPush(List<TIntelligentFingerPush> pushList) {
+		pushMapper.batchTIntelligentFingerPush(pushList);
 		
 	}
  

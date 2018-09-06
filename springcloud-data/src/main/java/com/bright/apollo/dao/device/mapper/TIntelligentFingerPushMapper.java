@@ -33,6 +33,14 @@ public interface TIntelligentFingerPushMapper {
 	 * @Description:
 	 */
 	@Select("select * from t_intelligent_finger_push a where a.serialId=#{serialId}")
+	@Results(value = { 
+			@Result(property = "mobile", column = "mobile"),
+			@Result(property = "id", column = "id"),
+			@Result(property = "serialid", column = "serialId"),
+			@Result(property = "cmd", column = "cmd"),
+			@Result(property = "value", column = "value"),
+			@Result(property = "enable", column = "enable"),
+			@Result(property = "lastOpTime", column = "last_op_time")})
 	List<TIntelligentFingerPush> queryTIntelligentFingerPushsBySerialId(@Param("serialId") String serialId);
 
 	/**
@@ -77,6 +85,6 @@ public interface TIntelligentFingerPushMapper {
 	 * @Description:  
 	 */
 	@InsertProvider(type = TIntelligentFingerPushSqlProvider.class, method = "batchTIntelligentFingerPush")
-	void batchTIntelligentFingerPush(List<TIntelligentFingerPush> pushList, @Param("serialId")String serialId);
+	void batchTIntelligentFingerPush(@Param("list") List<TIntelligentFingerPush> list);
 
 }

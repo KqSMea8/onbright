@@ -69,7 +69,7 @@ public class IntelligentFingerRemoteUserDynaSqlProvider {
 					SET("serialId", "#{serialid}");
 				}
 				if (!StringUtils.isEmpty(fingerRemoteUser.getNickName())) {
-					SET("nick_name", "#{NickName}");
+					SET("nick_name", "#{nickName}");
 				}
 				if (!StringUtils.isEmpty(fingerRemoteUser.getStartTime())) {
 					SET("start_time", "#{startTime}");
@@ -92,6 +92,7 @@ public class IntelligentFingerRemoteUserDynaSqlProvider {
 				if (fingerRemoteUser.getIsmax() != null) {
 					SET("isMax", "#{ismax}");
 				}
+				WHERE("id=#{id}");
 			}
 		}.toString();
 	}
