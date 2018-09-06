@@ -2,6 +2,7 @@ package com.bright.apollo.transition;
 
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.enums.ColorEnum;
+import com.bright.apollo.redis.RedisBussines;
 import com.bright.apollo.tool.ByteHelper;
 import com.zz.common.util.ArrayUtils;
 import io.swagger.models.auth.In;
@@ -16,6 +17,16 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
     private TMallTemplate tMallTemplate;
 
     private Map<String, Object> playloadMap;
+
+    public RedisBussines getRedisBussines() {
+        return redisBussines;
+    }
+
+    public void setRedisBussines(RedisBussines redisBussines) {
+        this.redisBussines = redisBussines;
+    }
+
+    private RedisBussines redisBussines;
 
     public Map<String, Object> getHeader() {
         return header;
@@ -92,6 +103,8 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
     public static String radaricon = "https://raw.githubusercontent.com/onbright-canton/onbrightConfig/master/tmallImg/radar.png";//雷达传感器
 
     public static String watersensoricon = "https://raw.githubusercontent.com/onbright-canton/onbrightConfig/master/tmallImg/watersensor.png";//水浸传感器
+
+    public static String curtainicon = "https://raw.githubusercontent.com/onbright-canton/onbrightConfig/master/tmallImg/curtain.png";//窗帘
 
 
     public String getIcon() {
@@ -195,7 +208,6 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
     //设置设备参数
     private void setProperty(TMallDeviceAdapter tMallDeviceAdapter,TOboxDeviceConfig oboxDeviceConfig){
         tMallDeviceAdapter.setDeviceId(oboxDeviceConfig.getDeviceSerialId());
-
         tMallDeviceAdapter.setDeviceType(oboxDeviceConfig.getDeviceType());
         tMallDeviceAdapter.setBrand("on-bright");
         tMallDeviceAdapter.setZone("");
@@ -221,27 +233,25 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
             tMallDeviceAdapter.setModel("门锁");
             tMallDeviceAdapter.setDeviceName("门锁");
             tMallDeviceAdapter.setIcon(doorLockicon);
+        }else if(deviceType.equals("curtain")&&childType.equals("05")){
+            tMallDeviceAdapter.setModel("窗帘");
+            tMallDeviceAdapter.setDeviceName("窗帘");
+            tMallDeviceAdapter.setIcon(curtainicon);
+        }else if(deviceType.equals("sensor")){
+            if(childType.equals("0b")){//温湿器
+                tMallDeviceAdapter.setModel("温湿器");
+                tMallDeviceAdapter.setDeviceName("温湿器");
+                tMallDeviceAdapter.setIcon(humituresensoricon);
+            }else if(childType.equals("15")){//门磁
+                tMallDeviceAdapter.setModel("门磁");
+                tMallDeviceAdapter.setDeviceName("门磁");
+                tMallDeviceAdapter.setIcon(gatemagnetismicon);
+            }
         }else{
             tMallDeviceAdapter.setModel("");
             tMallDeviceAdapter.setIcon(icon);
         }
     }
-
-    private void changeProperty(TMallDeviceAdapter tMallDeviceAdapter,TOboxDeviceConfig oboxDeviceConfig){
-
-    }
-
-//    private void setMutipleOutLetExtends(TMallDeviceAdapter tMallDeviceAdapter,Mutipleswitch mutipleswitch){//3路开关配置3个单路开关
-//        for(int i=1;i<=3;i++){
-//            Singleswitch singleswitch = new Singleswitch();
-//            singleswitch.setDeviceId(mutipleswitch.getDeviceId()+"_"+i);
-//            singleswitch.setDeviceName(mutipleswitch.getDeviceName());
-//            singleswitch.setDeviceType("04");
-//            singleswitch.setModel("单孔插座");
-//            singleswitch.setIcon(singleOutleticon);
-//        }
-//
-//    }
 
     //设置灯设备动作和属性
     private void setLight(TMallDeviceAdapter tMallDeviceAdapter,String[] defaultActions,Map<String,Object> dfMap ){
@@ -306,7 +316,6 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                 return colorLight;
             }
         }else if(deviceType.equals("04")){//智能插座/开关
-
             propertiesTransition(dfMap,defaultProperties);
             if(deviceChildType.equals("01")){//插座
                 oboxDeviceConfig.setDeviceType("outlet");
@@ -335,14 +344,31 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
             }
         }else if(deviceType.equals("05")){//开合类设备
             propertiesTransition(dfMap,defaultProperties);
-            if(deviceChildType.equals("01")){//窗帘
-                oboxDeviceConfig.setDeviceType("curtain");
-                Curtain curtain = new Curtain();
-                setProperty(curtain,oboxDeviceConfig);
-                curtain.setAction(defaultActions);
+            oboxDeviceConfig.setDeviceType("curtain");
+            Curtain curtain = new Curtain();
+            setProperty(curtain,oboxDeviceConfig);
+            curtain.setAction(defaultActions);
+            jsonArray.put(dfMap);
+            curtain.setProperties(jsonArray);
+            return curtain;
+        }else if(deviceType.equals("0b")){
+            propertiesTransition(dfMap,defaultProperties);
+            if(deviceChildType.equals("0b")){//温湿器
+                oboxDeviceConfig.setDeviceType("sensor");
+                Humituresensor humituresensor = new Humituresensor();
+                setProperty(humituresensor,oboxDeviceConfig);
+                humituresensor.setAction(defaultActions);
                 jsonArray.put(dfMap);
-                curtain.setProperties(jsonArray);
-                return curtain;
+                humituresensor.setProperties(jsonArray);
+                return humituresensor;
+            }else if(deviceChildType.equals("15")){//门磁
+                oboxDeviceConfig.setDeviceType("sensor");
+                Gatemagnetism gatemagnetism = new Gatemagnetism();
+                setProperty(gatemagnetism,oboxDeviceConfig);
+                gatemagnetism.setAction(defaultActions);
+                jsonArray.put(dfMap);
+                gatemagnetism.setProperties(jsonArray);
+                return gatemagnetism;
             }
         }else if(deviceType.equals("15")){
             propertiesTransition(dfMap,defaultProperties);
@@ -364,6 +390,8 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         String deviceState = oboxDeviceConfig.getDeviceState();
         TMallDeviceAdapter deviceAdapter = new TMallDeviceAdapter();
         JSONArray jsonArray = new JSONArray();
+        Map<String,Object> playloadMap = this.playloadMap;
+        String deviceId = (String)playloadMap.get("deviceId");
 
         String queryName = this.getQueryName();
         Iterator iterator = isQuery.entrySet().iterator();
@@ -395,7 +423,11 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
             }
         }else if(deviceType.equals("04")){//插座/开关
             if(isQuery.get("Query").equals(true)){
-                jsonArray.put(queryOnOff(deviceState));
+                if(childType.equals("17")||childType.equals("2b")){//开关
+                    jsonArray.put(querySwitchOnOff(deviceState,deviceId));
+                }else{//插座
+                    jsonArray.put(queryOnOff(deviceState));
+                }
             }
         }else if(deviceType.equals("15")){//门锁
             if(isQuery.get("Query").equals(true)){
@@ -406,7 +438,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                 jsonArray.put(queryTemperature(deviceState));
                 jsonArray.put(queryHumidity(deviceState));
             }else if(childType.equals("15")){//门磁
-                jsonArray.put(queryDoorSensor(deviceState));
+                jsonArray.put(queryOnOff(deviceState));
             }
         }
         deviceAdapter.setProperties(jsonArray);
@@ -431,13 +463,42 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         return map;
     }
 
+    private Map<String,Object> querySwitchOnOff(String deviceState,String deviceId){
+        Map<String,Object> map = new HashMap<String, Object>();
+        String onoff = deviceState.substring(2,4);
+        Integer middle = Integer.valueOf(onoff);
+        String[] deviceIdArr = deviceId.split("_");
+        String child = deviceIdArr[1];
+        if(child.equals("1")){
+            Integer state = middle & 0x01;
+            setOnOffState(map,state);
+        }else if(child.equals("2")){
+            Integer state = middle & 0x02;
+            setOnOffState(map,state);
+        }else if(child.equals("3")){
+            Integer state = middle & 0x04;
+            setOnOffState(map,state);
+        }
+        return map;
+    }
+
+    private void setOnOffState(Map<String,Object> map,Integer state){
+        if(state>0){
+            map.put("name","powerstate");
+            map.put("value","on");
+        }else{
+            map.put("name","powerstate");
+            map.put("value","off");
+        }
+    }
+
     private Map<String,Object> queryOnOff(String deviceState){
         Map<String,Object> map = new HashMap<String, Object>();
         String onoff = deviceState.substring(0,2);
-        if(!onoff.equals("ff")){
+        if(onoff.equals("01")){
             map.put("name","powerstate");
             map.put("value","on");
-        }else if(onoff.equals("ff")){
+        }else if(onoff.equals("00")){
             map.put("name","powerstate");
             map.put("value","off");
         }
@@ -461,19 +522,6 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         return map;
     }
 
-    private Map<String,Object> queryDoorSensor(String deviceState){
-        Map<String,Object> map = new HashMap<String, Object>();
-        String onoff = deviceState.substring(2,4);//湿度
-        if(!onoff.equals("ff")){
-            map.put("name","powerstate");
-            map.put("value","on");
-        }else if(onoff.equals("ff")){
-            map.put("name","powerstate");
-            map.put("value","off");
-        }
-        return map;
-    }
-
     private Map<String,Object> queryDoorLockOnOff(String deviceState){
         Map<String,Object> map = new HashMap<String, Object>();
         String onoff = deviceState.substring(4,6);
@@ -494,8 +542,8 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         String name = (String)header.get("name");
         String value = (String)playloadMap.get("value");
         String deviceId = (String)playloadMap.get("deviceId");
-        String [] deviceArr = deviceId.split("_");
-        deviceId = deviceArr[0];
+//        String [] deviceArr = deviceId.split("_");
+//        deviceId = deviceArr[0];
         String deviceType = (String)playloadMap.get("deviceType");
         String lightProperties = tMallTemplate.getLightActions();
         String dfControllProperties = tMallTemplate.getDefaultAction();
@@ -594,32 +642,90 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                         deviceState = changeColorTemperature(deviceState,ByteHelper.int2HexString(middle));
                     }
                 }
-            }else if((name).equals(propertyArr[0])&&obdeviceType.equals("04")&&(obChildType.equals("2b")||obChildType.equals("17")||obChildType.equals("02"))){//开关
-                deviceState = changeMutipleOutLet(value);
-            }else if((name).equals(propertyArr[0])&&obdeviceType.equals("04")&&obChildType.equals("01")){//一路插座
+            }else if((name).equals(propertyArr[0])&&obdeviceType.equals("04")&&(obChildType.equals("2b")||obChildType.equals("17"))){//开关
+                deviceState = changeMutipleOutLet(deviceState,value,deviceId);
+            }else if((name).equals(propertyArr[0])&&obdeviceType.equals("05")){//开闭合设备
+                if(value.equals("off")){
+                    value = "00";
+                }else if(value.equals("on")){
+                    value = "02";
+                }
+                deviceState = changeState(deviceState,value);
+            }else if((name).equals(propertyArr[0])){
                 if(value.equals("off")){
                     value = "00";
                 }else if(value.equals("on")){
                     value = "01";
                 }
                 deviceState = changeState(deviceState,value);
-            }else if((name).equals(propertyArr[0])){
-                value = propertyArr[1];
-
-                deviceState = changeState(deviceState,value);
             }
+
         }
         returnMap.put("deviceId",deviceId);
         returnMap.put("deviceState",deviceState);
         return returnMap;
     }
 
-    private String changeMutipleOutLet(String value){
-        if(value.equals("off")){
-            return "000000000000";
+    private String changeMutipleOutLet(String deviceState ,String value,String deviceId){
+        String[] deviceIdArr = deviceId.split("_");
+        String middle = "";
+        String id = deviceIdArr[0];
+        String child = deviceIdArr[1];
+        String exist = redisBussines.get("tmall_device_"+id);
+        String val = null;
+        String beginStr = null;
+        String endStr = null;
+        if(exist!=null&&!exist.equals("")){
+            middle = exist.substring(2,4);
+            beginStr = exist.substring(0,2);
+            endStr = exist.substring(4,exist.length());
         }else{
-            return "000700000000";
+            middle = deviceState.substring(2,4);
+            beginStr = deviceState.substring(0,2);
+            endStr = deviceState.substring(4,deviceState.length());
         }
+        if(value.equals("off")){
+            val = andOpt(middle,child);
+        }else if(value.equals("on")){
+            val = orOpt(middle,child);
+        }
+        String reVal = beginStr+val+endStr;
+        redisBussines.setValueWithExpire("tmall_device_"+id,reVal,1000);
+        return reVal;
+    }
+
+    private String andOpt(String val,String child){
+        Integer integerM = Integer.valueOf(val);
+        Integer andM = 0;
+        if(child.equals("1")){
+            andM = integerM & 0xFe;
+        }else if(child.equals("2")){
+            andM = integerM & 0xFd;
+        }else if(child.equals("3")){
+            andM = integerM & 0xF8;
+        }
+        String returnVal = String.valueOf(andM);
+        if(returnVal.length()<2){
+            returnVal = "0"+returnVal;
+        }
+        return returnVal;
+    }
+
+    private String orOpt(String val,String child){
+        Integer integerM = Integer.valueOf(val);
+        Integer andM = 0;
+        if(child.equals("1")){
+            andM = integerM | 0x01;
+        }else if(child.equals("2")){
+            andM = integerM | 0x02;
+        }else if(child.equals("3")){
+            andM = integerM | 0x04;
+        }
+        String returnVal = String.valueOf(andM);
+        if(returnVal.length()<2){
+            returnVal = "0"+returnVal;
+        }
+        return returnVal;
     }
 
     private String changeState(String deviceState,String value){
