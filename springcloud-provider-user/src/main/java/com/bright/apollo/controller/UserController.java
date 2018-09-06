@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -95,6 +96,25 @@ public class UserController {
 			int code = RandomUtil.makeCode();
 			msgService.sendAuthCode(code, mobile);
 			userCacheService.saveCode(mobile, code);
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	@SuppressWarnings("rawtypes")
+	@GetMapping("/sendCodeToApp/{Appkey}")
+	public ResponseObject<Map<String, Object>> sendCodeToApp(@PathVariable(value="Appkey") String Appkey) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		try {			 
+			int code = RandomUtil.makeCode();
+ 			userCacheService.saveCode(Appkey, code);
+ 			Map<String, Object> map=new HashMap<String, Object>();
+ 			map.put("code", code);
+ 			res.setData(map);
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {
@@ -626,6 +646,43 @@ public class UserController {
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
+	
+	}
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/register/{mobile}/{code}/{pwd}/{appkey}", method = RequestMethod.POST)
+	public ResponseObject register(@PathVariable(required = true, value = "mobile") String mobile,
+			@PathVariable(required = true, value = "code") String code,
+			@PathVariable(required = true, value = "pwd") String pwd,
+			@PathVariable(required = true, value = "appkey") String appkey){
+		ResponseObject res=new ResponseObject();
+		try {
+		/*	if (!Verify.checkCellphone(mobile)) {
+				res.setStatus(ResponseEnum.ErrorMobile.getStatus());
+				res.setMessage(ResponseEnum.ErrorMobile.getMsg());
+				return res;
+			}*/
+			TUser tUser = userService.queryUserByName(mobile);
+			if (tUser != null) {
+				res.setStatus(ResponseEnum.ExistMobile.getStatus());
+				res.setMessage(ResponseEnum.ExistMobile.getMsg());
+				return res;
+			} 
+			String saveCode = userCacheService.getCode(appkey);
+			if (StringUtils.isEmpty(saveCode)||!NumberHelper.isNumeric(saveCode) || !code.equals(saveCode)) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			userService.addUser(mobile, pwd);
+			res.setStatus(ResponseEnum.AddSuccess.getStatus());
+			res.setMessage(ResponseEnum.AddSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:"+e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	
 	
 	}
 }

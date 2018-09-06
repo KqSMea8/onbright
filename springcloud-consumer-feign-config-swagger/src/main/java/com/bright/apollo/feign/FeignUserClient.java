@@ -33,9 +33,7 @@ public interface FeignUserClient {
 	@SuppressWarnings("rawtypes")
 	@GetMapping("/user/register/{mobile}/{code}/{pwd}")
 	public ResponseObject register(@PathVariable(value = "mobile") String mobile,
-			@PathVariable(value = "code") Integer code,
-			@PathVariable(value = "pwd") String pwd
-			);
+			@PathVariable(value = "code") Integer code, @PathVariable(value = "pwd") String pwd);
 
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/user/forget/{mobile}", method = RequestMethod.GET)
@@ -47,7 +45,8 @@ public interface FeignUserClient {
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/user/deleteUserObox/{serialId}", method = RequestMethod.DELETE)
-	public ResponseObject deleteUserOboxByOboxSerialId(@PathVariable(required = true, value = "serialId")String serialId);
+	public ResponseObject deleteUserOboxByOboxSerialId(
+			@PathVariable(required = true, value = "serialId") String serialId);
 
 	/**
 	 * @param serialId
@@ -55,7 +54,8 @@ public interface FeignUserClient {
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/user/deleteUserDevice/{serialId}", method = RequestMethod.DELETE)
-	public ResponseObject deleteUserDeviceBySerialId(@PathVariable(required = true, value = "serialId")String serialId);
+	public ResponseObject deleteUserDeviceBySerialId(
+			@PathVariable(required = true, value = "serialId") String serialId);
 
 	/**
 	 * @param sceneNumber
@@ -63,7 +63,8 @@ public interface FeignUserClient {
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/user/deleteUserScene/{sceneNumber}", method = RequestMethod.DELETE)
-	public ResponseObject deleteUserSceneBySceneNumber(@PathVariable(required = true, value = "sceneNumber")Integer sceneNumber);
+	public ResponseObject deleteUserSceneBySceneNumber(
+			@PathVariable(required = true, value = "sceneNumber") Integer sceneNumber);
 
 	/**
 	 * @param username
@@ -199,37 +200,62 @@ public interface FeignUserClient {
 	public ResponseObject<List<TCreateTableLog>> listCreateTableLogByNameWithLike(
 			@PathVariable(required = true, value = "tUserOperationSuffix") String tUserOperationSuffix);
 
-	/**  
+	/**
 	 * @param name
 	 * @param serialId
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
 	@RequestMapping(value = "/user/queryUserOperation/{name}/{serialId}", method = RequestMethod.GET)
-	public ResponseObject<List<TUserOperation>> queryUserOperation(@PathVariable(required = true, value = "name")String name,
-			@PathVariable(required = true, value = "serialId")String serialId);
+	public ResponseObject<List<TUserOperation>> queryUserOperation(
+			@PathVariable(required = true, value = "name") String name,
+			@PathVariable(required = true, value = "serialId") String serialId);
 
-	/**  
+	/**
 	 * @param mobile
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/user/sendCodeToMobile/{mobile}", method = RequestMethod.GET)
-	public ResponseObject sendCodeToMobile(@PathVariable(required = true, value = "mobile")String mobile);
+	public ResponseObject sendCodeToMobile(@PathVariable(required = true, value = "mobile") String mobile);
 
-	/**  
+	/**
 	 * @param code
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
 	@RequestMapping(value = "/user/wxLogin/{code}", method = RequestMethod.GET)
-	public ResponseObject<Map<String, Object>> wxLogin(@PathVariable(required = true, value = "code")Integer code);
+	public ResponseObject<Map<String, Object>> wxLogin(@PathVariable(required = true, value = "code") Integer code);
 
-	/**  
-	 * @param serialId  
-	 * @Description:  
+	/**
+	 * @param serialId
+	 * @Description:
 	 */
 	@RequestMapping(value = "/user/getUserDeviceExceptRoot/{serialId}", method = RequestMethod.GET)
-	public ResponseObject<List<TUserDevice>> getUserDeviceExceptRoot(@PathVariable(required = true, value = "serialId")String serialId);
+	public ResponseObject<List<TUserDevice>> getUserDeviceExceptRoot(
+			@PathVariable(required = true, value = "serialId") String serialId);
+
+	/**
+	 * @param appkey
+	 * @return
+	 * @Description:
+	 */
+ 	@RequestMapping(value = "/user/sendCodeToApp/{appkey}", method = RequestMethod.GET)
+	public ResponseObject<Map<String, Object>> sendCodeToApp(@PathVariable(required = true, value = "appkey") String appkey);
+
+	/**
+	 * @param mobile
+	 * @param code
+	 * @param pwd
+	 * @param appkey
+	 * @return
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/user/register/{mobile}/{code}/{pwd}/{appkey}", method = RequestMethod.POST)
+	public ResponseObject register(@PathVariable(required = true, value = "mobile") String mobile,
+			@PathVariable(required = true, value = "code") String code,
+			@PathVariable(required = true, value = "pwd") String pwd,
+			@PathVariable(required = true, value = "appkey") String appkey);
 }

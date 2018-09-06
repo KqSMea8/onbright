@@ -361,8 +361,8 @@ public class IntelligentFingerController {
 		ResponseObject<TIntelligentFingerRemoteUser> res = new ResponseObject<TIntelligentFingerRemoteUser>();
 		try {
 			res.setData(intelligentFingerService.queryTintelligentFingerRemoteUserById(fingerRemoteUserId));
-			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
-			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+			res.setStatus(ResponseEnum.AddSuccess.getStatus());
+			res.setMessage(ResponseEnum.AddSuccess.getMsg());
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());

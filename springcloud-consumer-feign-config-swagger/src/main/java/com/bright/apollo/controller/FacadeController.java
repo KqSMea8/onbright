@@ -3442,7 +3442,7 @@ public class FacadeController extends BaseController {
 			}
 			int fingerRemoteUserId = ingerRemoteUserRes.getData();
 			ResponseObject<TIntelligentFingerRemoteUser> remoteUserRes = feignDeviceClient
-					.getIntelligentFingerRemoteUserById(fingerRemoteUserId);
+					.getTIntelligentFingerRemoteUserBySerialIdAndPin(serialId, userSerialId);
 			if (remoteUserRes == null || remoteUserRes.getStatus() != ResponseEnum.AddSuccess.getStatus()) {
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
@@ -3457,7 +3457,7 @@ public class FacadeController extends BaseController {
 			res.setData(map);
 			res.setStatus(ResponseEnum.AddSuccess.getStatus());
 			res.setMessage(ResponseEnum.AddSuccess.getMsg());
-		} catch (Exception e) {	
+		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
@@ -3666,6 +3666,7 @@ public class FacadeController extends BaseController {
 				map.put("mobile", list.get(0).getMobile());
 			}
 			map.put("list", pushToDTO(list));
+			res.setData(map);
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {
@@ -4718,11 +4719,10 @@ public class FacadeController extends BaseController {
 	public ResponseObject test(@PathVariable(value="serialId") String serialId) {
 		ResponseObject res=new ResponseObject();
 		try {
-			TIntelligentFingerRecord fingerRecord = new TIntelligentFingerRecord();
-			fingerRecord.setOperation(FingerOperationEnum.remote.getValue() + "");
-			fingerRecord.setFingerUserId(11);
-			fingerRecord.setSerialid(serialId);
-			fingerRecord.setNickName("haha");
+			 
+			ResponseObject<TIntelligentFingerRemoteUser> remoteUserRes = feignDeviceClient
+					.getTIntelligentFingerRemoteUserBySerialIdAndPin(serialId, 13);
+			return remoteUserRes;
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
