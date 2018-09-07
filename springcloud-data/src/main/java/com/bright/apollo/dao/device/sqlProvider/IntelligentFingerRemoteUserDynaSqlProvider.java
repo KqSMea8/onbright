@@ -60,37 +60,37 @@ public class IntelligentFingerRemoteUserDynaSqlProvider {
 			{
 				UPDATE("t_intelligent_finger_remote_user");
 				if (fingerRemoteUser.getUserSerialid() != null && fingerRemoteUser.getUserSerialid().intValue() != 0) {
-					SET("user_serialId", "#{userSerialid}");
+					SET("user_serialId=#{userSerialid}");
 				}
 				if (fingerRemoteUser.getMobile() != null) {
-					SET("mobile", "#{mobile}");
+					SET("mobile=#{mobile}");
 				}
 				if (!StringUtils.isEmpty(fingerRemoteUser.getSerialid())) {
-					SET("serialId", "#{serialid}");
+					SET("serialId=#{serialid}");
 				}
 				if (!StringUtils.isEmpty(fingerRemoteUser.getNickName())) {
-					SET("nick_name", "#{nickName}");
+					SET("nick_name=#{nickName}");
 				}
 				if (!StringUtils.isEmpty(fingerRemoteUser.getStartTime())) {
-					SET("start_time", "#{startTime}");
+					SET("start_time=#{startTime}");
 				}
 				if (!StringUtils.isEmpty(fingerRemoteUser.getEndTime())) {
-					SET("end_time", "#{endTime}");
+					SET("end_time=#{endTime}");
 				}
 				if (fingerRemoteUser.getTimes() != null) {
-					SET("times", "#{times}");
+					SET("times=#{times}");
 				}
 				if (fingerRemoteUser.getUseTimes() != null) {
-					SET("use_times", "#{useTimes}");
+					SET("use_times=#{useTimes}");
 				}
 				if (!StringUtils.isEmpty(fingerRemoteUser.getPwd())) {
-					SET("pwd", "#{pwd}");
+					SET("pwd=#{pwd}");
 				}
 				if (fingerRemoteUser.getIsend() != null) {
-					SET("isEnd", "#{isend}");
+					SET("isEnd=#{isend}");
 				}
 				if (fingerRemoteUser.getIsmax() != null) {
-					SET("isMax", "#{ismax}");
+					SET("isMax=#{ismax}");
 				}
 				WHERE("id=#{id}");
 			}

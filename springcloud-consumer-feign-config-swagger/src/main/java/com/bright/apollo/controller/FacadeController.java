@@ -30,7 +30,6 @@ import com.bright.apollo.common.entity.TDeviceStatus;
 import com.bright.apollo.common.entity.TIntelligentFingerAbandonRemoteUser;
 import com.bright.apollo.common.entity.TIntelligentFingerAuth;
 import com.bright.apollo.common.entity.TIntelligentFingerPush;
-import com.bright.apollo.common.entity.TIntelligentFingerRecord;
 import com.bright.apollo.common.entity.TIntelligentFingerRemoteUser;
 import com.bright.apollo.common.entity.TIntelligentFingerUser;
 import com.bright.apollo.common.entity.TNvr;
@@ -48,7 +47,6 @@ import com.bright.apollo.common.entity.TYSCamera;
 import com.bright.apollo.constant.SubTableConstant;
 import com.bright.apollo.enums.ConditionTypeEnum;
 import com.bright.apollo.enums.DeviceTypeEnum;
-import com.bright.apollo.enums.FingerOperationEnum;
 import com.bright.apollo.enums.IntelligentMaxEnum;
 import com.bright.apollo.enums.NodeTypeEnum;
 import com.bright.apollo.enums.RemoteUserEnum;
@@ -3442,14 +3440,14 @@ public class FacadeController extends BaseController {
 			}
 			int fingerRemoteUserId = ingerRemoteUserRes.getData();
 			ResponseObject<TIntelligentFingerRemoteUser> remoteUserRes = feignDeviceClient
-					.getIntelligentFingerRemoteUserById(fingerRemoteUserId);
-			if (remoteUserRes == null || remoteUserRes.getStatus() != ResponseEnum.AddSuccess.getStatus()) {
+					.getTIntelligentFingerRemoteUserBySerialIdAndPin(serialId, userSerialId);
+			if (remoteUserRes == null || remoteUserRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
 				return res;
 			}
 			// 创建一个定时器
-			feignQuartzClient.addRemoteOpenTaskSchedule(fingerRemoteUserId, endTime, serialId);
+			feignQuartzClient.addRemoteOpenTaskSchedule(remoteUserRes.getData().getId(), endTime, serialId);
 			// 返回参数待测试
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("authCode", "62" + userSerialId + "" + randomNum);
@@ -3457,7 +3455,7 @@ public class FacadeController extends BaseController {
 			res.setData(map);
 			res.setStatus(ResponseEnum.AddSuccess.getStatus());
 			res.setMessage(ResponseEnum.AddSuccess.getMsg());
-		} catch (Exception e) {	
+		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
@@ -3666,6 +3664,7 @@ public class FacadeController extends BaseController {
 				map.put("mobile", list.get(0).getMobile());
 			}
 			map.put("list", pushToDTO(list));
+			res.setData(map);
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {
@@ -4718,11 +4717,10 @@ public class FacadeController extends BaseController {
 	public ResponseObject test(@PathVariable(value="serialId") String serialId) {
 		ResponseObject res=new ResponseObject();
 		try {
-			TIntelligentFingerRecord fingerRecord = new TIntelligentFingerRecord();
-			fingerRecord.setOperation(FingerOperationEnum.remote.getValue() + "");
-			fingerRecord.setFingerUserId(11);
-			fingerRecord.setSerialid(serialId);
-			fingerRecord.setNickName("haha");
+			 
+			ResponseObject<TIntelligentFingerRemoteUser> remoteUserRes = feignDeviceClient
+					.getTIntelligentFingerRemoteUserBySerialIdAndPin(serialId, 13);
+			return remoteUserRes;
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());

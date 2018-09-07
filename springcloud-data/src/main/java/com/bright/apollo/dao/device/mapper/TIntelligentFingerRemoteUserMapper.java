@@ -75,10 +75,10 @@ public interface TIntelligentFingerRemoteUserMapper {
 	 * @return  
 	 * @Description:  
 	 */
-	@SelectKey(statement = "select LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = int.class)
 	@InsertProvider(type=IntelligentFingerRemoteUserDynaSqlProvider.class,method="IntelligentFingerRemoteUser")
-	@Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
-	Integer addTIntelligentFingerRemoteUser(TIntelligentFingerRemoteUser fingerRemoteUser);
+	//@SelectKey(statement = "select LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Integer.class)
+	@Options(useGeneratedKeys=true, keyProperty="id", keyColumn="id")
+	int addTIntelligentFingerRemoteUser(TIntelligentFingerRemoteUser fingerRemoteUser);
 
 	/**  
 	 * @param fingerRemoteUser  
@@ -135,7 +135,7 @@ public interface TIntelligentFingerRemoteUserMapper {
 			@Result(property = "isend", column = "isEnd"),
 			@Result(property = "ismax", column = "isMax"),
 			@Result(property = "lastOpTime", column = "last_op_time")})
-	TIntelligentFingerRemoteUser queryTIntelligentFingerRemoteUserBySerialIdAndPin(@Param("serialId")String serialId,@Param("id") int pin);
+	TIntelligentFingerRemoteUser queryTIntelligentFingerRemoteUserBySerialIdAndPin(@Param("serialId")String serialId,@Param("pin") int pin);
 
  
 

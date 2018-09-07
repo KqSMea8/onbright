@@ -32,7 +32,7 @@ public interface TIntelligentFingerPushMapper {
 	 * @return
 	 * @Description:
 	 */
-	@Select("select * from t_intelligent_finger_push a where a.serialId=#{serialId}")
+	@Select("select a.* from t_intelligent_finger_push a where a.serialId=#{serialId}")
 	@Results(value = { 
 			@Result(property = "mobile", column = "mobile"),
 			@Result(property = "id", column = "id"),

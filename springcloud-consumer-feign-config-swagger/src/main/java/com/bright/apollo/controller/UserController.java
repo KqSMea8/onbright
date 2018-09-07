@@ -1,12 +1,15 @@
 package com.bright.apollo.controller;
 
+import java.util.Date;
 import java.util.Map;
 
+import org.aspectj.weaver.tools.Trace;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -55,19 +58,24 @@ public class UserController {
 	@SuppressWarnings("rawtypes")
 	@ApiOperation(value = "register user", httpMethod = "POST", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
-	@RequestMapping(value = "/register/{mobile}/{code}/{pwd}", method = RequestMethod.POST)
-	public ResponseObject register(@PathVariable String mobile, @PathVariable Integer code, @PathVariable String pwd) {
-		ResponseObject res = null;
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	public ResponseObject register(@RequestBody(required=true) Map<String, String>map) {
+		ResponseObject res = new ResponseObject();
 		try {
-			res = feignUserClient.register(mobile, code, pwd);
-			return res;
+			if(!map.containsKey("code")||!map.containsKey("mobile")||!map.containsKey("pwd")
+					||!map.containsKey("appkey")
+					){
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+			}else{
+				res = feignUserClient.register(map.get("mobile"), map.get("code"), map.get("pwd"),map.get("appkey"));
+			}
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			res = new ResponseObject();
 			res.setStatus(ResponseEnum.RequestTimeout.getStatus());
 			res.setMessage(ResponseEnum.RequestTimeout.getMsg());
-			return res;
 		}
+		return res;
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -78,6 +86,23 @@ public class UserController {
 		ResponseObject res = null;
 		try {
 			res = feignUserClient.sendCodeToMobile(mobile);
+			return res;
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res = new ResponseObject();
+			res.setStatus(ResponseEnum.RequestTimeout.getStatus());
+			res.setMessage(ResponseEnum.RequestTimeout.getMsg());
+			return res;
+		}
+	}
+	@SuppressWarnings("rawtypes")
+	@ApiOperation(value = "send", httpMethod = "GET", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@GetMapping("/sendCodeToApp/{appkey}")
+	public ResponseObject<Map<String, Object>> sendCodeToApp(@PathVariable String appkey) {
+		ResponseObject res = null;
+		try {
+			res = feignUserClient.sendCodeToApp(appkey);
 			return res;
 		} catch (Exception e) {
 			logger.error(e.getMessage());
