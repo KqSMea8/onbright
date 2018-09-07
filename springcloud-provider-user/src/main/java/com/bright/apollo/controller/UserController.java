@@ -681,7 +681,48 @@ public class UserController {
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
-		return res;
+		return res;	
+	}
+	/**
+	 * @param serialId
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/deleteUserDevice/{serialId}", method = RequestMethod.DELETE)
+	public ResponseObject deleteUserDeviceBySerialId(
+			@PathVariable(required = true, value = "serialId") String serialId){
+		ResponseObject res=new ResponseObject();
+		try {
+			userDeviceService.deleteUserDeviceBySerialId(serialId);
+			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:"+e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;	
+	
+	}
+	/**
+	 * @param serialId
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/deleteUserObox/{serialId}", method = RequestMethod.DELETE)
+	public ResponseObject deleteUserOboxByOboxSerialId(
+			@PathVariable(required = true, value = "serialId") String serialId){
+		ResponseObject res=new ResponseObject();
+		try {
+			userOboxService.delectUserOboxByOboxSerialId(serialId);
+			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:"+e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;	
 	
 	
 	}

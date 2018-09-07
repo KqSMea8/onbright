@@ -219,24 +219,41 @@ public interface FeignSceneClient {
 	ResponseObject deleteSceneActionBySceneNumberAndActionId(@PathVariable(value = "sceneNumber") Integer sceneNumber,
 			@PathVariable(value = "actionId") String actionId);
 
-	/**  
+	/**
 	 * @param userId
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
 	@RequestMapping(value = "/scene/getSceneByUserId/{userId}", method = RequestMethod.GET)
-	ResponseObject<List<TScene>> getSceneByUserId(@PathVariable(value = "userId")Integer userId);
+	ResponseObject<List<TScene>> getSceneByUserId(@PathVariable(value = "userId") Integer userId);
 
-	/**  
+	/**
 	 * @param userId
 	 * @param start
 	 * @param count
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
 	@RequestMapping(value = "/scene/getSceneByUserIdAndPage/{userId}/{start}/{count}", method = RequestMethod.GET)
-	ResponseObject<List<TScene>> getSceneByUserIdAndPage(@PathVariable(value = "userId")Integer userId,
-			@PathVariable(value = "start")int start, 
-			@PathVariable(value = "count")int count);
+	ResponseObject<List<TScene>> getSceneByUserIdAndPage(@PathVariable(value = "userId") Integer userId,
+			@PathVariable(value = "start") int start, @PathVariable(value = "count") int count);
+
+	/**
+	 * @param serialId
+	 * @param node
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/scene/deleteSceneActionByActionId/{serialId}/{nodeType}", method = RequestMethod.DELETE)
+	ResponseObject deleteSceneActionByActionId(@PathVariable(value = "serialId") String serialId,
+			@PathVariable(value = "nodeType") String nodeType);
+
+	/**  
+	 * @param deviceSerialId  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/scene/deleteSceneConditionBySerialId/{serialId}", method = RequestMethod.DELETE)
+	ResponseObject deleteSceneConditionBySerialId(@PathVariable(value = "serialId")String serialId);
 
 }

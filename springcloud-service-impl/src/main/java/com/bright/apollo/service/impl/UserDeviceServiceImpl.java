@@ -43,4 +43,12 @@ public class UserDeviceServiceImpl implements UserDeviceService {
 	public List<TUserDevice> getUserDevicesBySerialId(String serialId) {
  		return userDeviceMapper.queryUserDevicesBySerialId(serialId);
 	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.UserDeviceService#deleteUserDeviceBySerialId(java.lang.String)  
+	 */
+	@Override
+	public int deleteUserDeviceBySerialId(String serialId) {
+		return userDeviceMapper.deleteUserDeviceBySerialId(serialId);
+	}
 }

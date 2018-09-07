@@ -624,6 +624,49 @@ public class SceneController {
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
+	}
+	/**
+	 * @param serialId
+	 * @param node
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/deleteSceneActionByActionId/{serialId}/{nodeType}", method = RequestMethod.DELETE)
+	ResponseObject deleteSceneActionByActionId(@PathVariable(value = "serialId") String serialId,
+			@PathVariable(value = "nodeType") String nodeType){
+		ResponseObject res = new ResponseObject();
+		try {
+			sceneService.deleteSceneActionByActionId(serialId,nodeType);
+			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
+ 		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("===deleteSceneActionByActionId error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	/**  
+	 * @param deviceSerialId  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/deleteSceneConditionBySerialId/{serialId}", method = RequestMethod.DELETE)
+	ResponseObject deleteSceneConditionBySerialId(@PathVariable(value = "serialId")String serialId){
+		ResponseObject res = new ResponseObject();
+		try {
+			sceneService.deleteSceneConditionBySerialId(serialId);
+			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
+ 		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("===deleteSceneActionByActionId error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
 	
 	}
 }

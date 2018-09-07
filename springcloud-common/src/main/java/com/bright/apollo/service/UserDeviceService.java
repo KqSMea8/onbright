@@ -28,4 +28,10 @@ TUserDevice getUserDeviceByUserIdAndSerialId(Integer userId, String device_seria
  * @Description:  
  */
 List<TUserDevice> getUserDevicesBySerialId(String serialId);
+
+/**  
+ * @param serialId  
+ * @Description:  
+ */
+int deleteUserDeviceBySerialId(String serialId);
 }

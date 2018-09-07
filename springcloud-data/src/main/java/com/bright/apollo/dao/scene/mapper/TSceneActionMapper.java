@@ -66,4 +66,13 @@ public interface TSceneActionMapper  {
 			"where id = #{id}")
 	void updateSceneAction(TSceneAction sceneAction);
 
+	/**  
+	 * @param serialId
+	 * @param nodeType
+	 * @return  
+	 * @Description:  
+	 */
+	@Delete("delete t_scene_action where actionID=#{serialId} and node_type = #{nodeType}")
+	int deleteSceneActionByActionId(@Param("serialId")String serialId, @Param("nodeType")String nodeType);
+
 }

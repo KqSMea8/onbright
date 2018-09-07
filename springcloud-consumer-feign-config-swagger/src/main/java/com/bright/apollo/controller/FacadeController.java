@@ -1742,9 +1742,9 @@ public class FacadeController extends BaseController {
 															tempDeviceConfig.getDeviceSerialId());
 											if (pushListRes != null && (pushListRes.getData() == null
 													|| pushListRes.getData().size() <= 0)) {
-												List<TIntelligentFingerPush> initPush = initPush(tempDeviceConfig.getDeviceSerialId());
-												feignDeviceClient.batchTIntelligentFingerPush(initPush
-														);
+												List<TIntelligentFingerPush> initPush = initPush(
+														tempDeviceConfig.getDeviceSerialId());
+												feignDeviceClient.batchTIntelligentFingerPush(initPush);
 											}
 										} catch (Exception e) {
 											logger.error("===error msg:" + e.getMessage());
@@ -1753,16 +1753,6 @@ public class FacadeController extends BaseController {
 								}
 							}).start();
 						}
-						// int ret =
-						// OboxBusiness.addOboxConfig(oboxDeviceConfig);
-						/*
-						 * TDeviceChannel tDeviceChannel = new TDeviceChannel();
-						 * tDeviceChannel.setDeviceId(ret);
-						 * tDeviceChannel.setOboxId(dbObox.getOboxId());
-						 * tDeviceChannel.setSignalIntensity(15);
-						 * DeviceBusiness.addDeviceChannel(tDeviceChannel);
-						 * DeviceBusiness.addUserDevice(userId, ret);
-						 */
 					}
 				}
 				List<SceneDTO> sceneDTOs = oboxDTO.getScenes();
@@ -1777,15 +1767,6 @@ public class FacadeController extends BaseController {
 						tScene.setSceneStatus(sceneDTO.getSceneStatus());
 						tScene.setOboxSceneNumber(sceneDTO.getOboxSceneNumber());
 						tScene.setOboxSerialId(tobox.getOboxSerialId());
-
-						/*
-						 * if (!StringUtils.isEmpty(sceneDTO.getSceneGroup())) {
-						 * tScene.setSceneGroup(sceneDTO.getSceneGroup()); }
-						 */
-
-						// waiting for new week
-						// int ret = SceneBusiness.addScene(tScene);
-
 						ResponseObject<TScene> sceneRes = feignSceneClient.addScene(tScene);
 						if (sceneRes == null || sceneRes.getStatus() != ResponseEnum.AddSuccess.getStatus()
 								|| sceneRes.getData() == null) {
@@ -1797,8 +1778,6 @@ public class FacadeController extends BaseController {
 						tUserScene.setSceneNumber(sceneRes.getData().getSceneNumber());
 						tUserScene.setUserId(resUser.getData().getId());
 						feignUserClient.addUserScene(tUserScene);
-						// SceneBusiness.addUserScene(tUserScene);
-
 						List<SceneActionDTO> tActionDTOs = sceneDTO.getActions();
 						if (tActionDTOs != null) {
 							for (SceneActionDTO sceneActionDTO : tActionDTOs) {
@@ -1808,23 +1787,6 @@ public class FacadeController extends BaseController {
 
 								String node_type = sceneActionDTO.getNodeType();
 								if (node_type.equals(NodeTypeEnum.group.getValue())) {
-									/*
-									 * // group //the ali server has no group
-									 * TServerOboxGroup tServerOboxGroup =
-									 * DeviceBusiness.queryOBOXGroupByAddr(
-									 * dbObox.getOboxSerialId(),
-									 * sceneActionDTO.getOboxGroupAddr()); if
-									 * (tServerOboxGroup != null) { TServerGroup
-									 * tServerGroup = DeviceBusiness
-									 * .querySererGroupById(tServerOboxGroup.
-									 * getServerId());
-									 * 
-									 * if (tServerGroup != null) {
-									 * tSceneAction.setActionID(tServerGroup.
-									 * getId());
-									 * tSceneAction.setNodeType(NodeTypeEnum.
-									 * group.getValue()); } } /*}
-									 */
 								} else if (node_type.equals(NodeTypeEnum.single.getValue())) {
 									ResponseObject<TOboxDeviceConfig> deviceRes = feignDeviceClient
 											.getDevice(sceneActionDTO.getDeviceSerialId());
@@ -3315,7 +3277,7 @@ public class FacadeController extends BaseController {
 			map.put("list", transformToDTO(remoteRes.getData()));
 			res.setData(map);
 		} catch (Exception e) {
-			logger.error("============:"+e);
+			logger.error("============:" + e);
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
@@ -3967,7 +3929,7 @@ public class FacadeController extends BaseController {
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/updateIntelligentRemoteUser/{serialId}/{mobile}", method = RequestMethod.PUT)
 	public ResponseObject updateIntelligentRemoteUser(@PathVariable(value = "serialId") String serialId,
-			@PathVariable(value = "mobile") String mobile,
+			@PathVariable(value = "mobile", required = false) String mobile,
 			@RequestParam(value = "pushinfo") List<TIntelligentFingerPushDTO> pushinfo) {
 		ResponseObject res = new ResponseObject();
 		try {
@@ -4002,7 +3964,8 @@ public class FacadeController extends BaseController {
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
 				return res;
 			}
-			feignDeviceClient.updateTIntelligentFingerPushMobileBySerialId(mobile, serialId);
+			feignDeviceClient.updateTIntelligentFingerPushMobileBySerialId(StringUtils.isEmpty(mobile) ? "" : mobile,
+					serialId);
 			for (int i = 0; i < pushinfo.size(); i++) {
 				TIntelligentFingerPushDTO dto = pushinfo.get(i);
 				feignDeviceClient.updateTIntelligentFingerPushEnableBySerialIdAndValue(dto.getEnable(), serialId,
@@ -4706,18 +4669,92 @@ public class FacadeController extends BaseController {
 		return res;
 	}
 
-	/**  
+	/**
 	 * @param serialId
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
+	@SuppressWarnings("rawtypes")
+	@ApiOperation(value = "delete obox", httpMethod = "DELETE", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/deleteObox/{serialId}", method = RequestMethod.DELETE)
+	public ResponseObject deleteObox(@PathVariable(value = "serialId") String serialId) {
+		ResponseObject res = new ResponseObject();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+			ResponseObject<TObox> oboxRes = feignOboxClient.getObox(serialId);
+			if (oboxRes == null || oboxRes.getData() == null
+					|| oboxRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			feignAliClient.deleteObox(serialId);
+			ResponseObject<List<TOboxDeviceConfig>> devicseRes = feignDeviceClient.getDevicesByOboxSerialId(serialId);
+			if(devicseRes==null||devicseRes.getStatus()!=ResponseEnum.SelectSuccess.getStatus()){
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			List<TOboxDeviceConfig> tOboxDeviceConfigs = devicseRes.getData();
+			if(tOboxDeviceConfigs!=null){
+				for (TOboxDeviceConfig tOboxDeviceConfig : tOboxDeviceConfigs) {
+					feignUserClient.deleteUserDeviceBySerialId(tOboxDeviceConfig.getDeviceSerialId());
+					feignSceneClient.deleteSceneActionByActionId(tOboxDeviceConfig.getDeviceSerialId(),NodeTypeEnum.single.getValue());
+					feignSceneClient.deleteSceneConditionBySerialId(tOboxDeviceConfig.getDeviceSerialId());
+				}
+			}
+			feignDeviceClient.deleleDeviceByOboxSerialId(serialId);
+			ResponseObject<List<TScene>> sceneRes = feignSceneClient.getScenesByOboxSerialId(serialId);
+			if(sceneRes==null||sceneRes.getStatus()!=ResponseEnum.SelectSuccess.getStatus()){
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			List<TScene> tScenes = sceneRes.getData();
+			if(tScenes!=null){
+				for (TScene tScene : tScenes) {
+					feignSceneClient.deleteSceneConditionBySceneNumber(tScene.getSceneNumber());
+				}
+			}
+			feignSceneClient.deleteSceneByOboxSerialId(serialId);
+			feignUserClient.deleteUserOboxByOboxSerialId(serialId);
+			feignOboxClient.deleteObox(serialId);
+			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	/**
+	 * @param serialId
+	 * @return
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
 	@ApiOperation(value = "queryScenes", httpMethod = "POST", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/test/{serialId}", method = RequestMethod.POST)
-	public ResponseObject test(@PathVariable(value="serialId") String serialId) {
-		ResponseObject res=new ResponseObject();
+	public ResponseObject test(@PathVariable(value = "serialId") String serialId) {
+		ResponseObject res = new ResponseObject();
 		try {
-			 
+
 			ResponseObject<TIntelligentFingerRemoteUser> remoteUserRes = feignDeviceClient
 					.getTIntelligentFingerRemoteUserBySerialIdAndPin(serialId, 13);
 			return remoteUserRes;
@@ -4728,4 +4765,5 @@ public class FacadeController extends BaseController {
 		}
 		return res;
 	}
+
 }

@@ -297,5 +297,14 @@ public class HystrixFeignAli2Fallback extends BasicHystrixFeignFallback implemen
 		return serverError();
 	}
 
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignAliClient#deleteObox(java.lang.String)  
+	 */
+	@Override
+	public ResponseObject<OboxResp> deleteObox(String serialId) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
  
 }

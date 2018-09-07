@@ -339,8 +339,8 @@ public class CommonController {
 			String serialId = requestParam.getValue("serialId");
 			String mobile = requestParam.getValue("mobile");
 			String pushInfo = requestParam.getValue("pushInfo");
-			if (StringUtils.isEmpty(serialId) || StringUtils.isEmpty(mobile) || StringUtils.isEmpty(pushInfo)
-					|| !MobileUtil.checkMobile(mobile)) {
+			if (StringUtils.isEmpty(serialId)   || StringUtils.isEmpty(pushInfo)
+				 ) {
 			} else {
 				return facadeController.updateIntelligentRemoteUser(serialId, mobile,
 						getObjectList(pushInfo, TIntelligentFingerPushDTO.class));
@@ -421,6 +421,12 @@ public class CommonController {
 					&& NumberHelper.isNumeric(oboxSceneNumber)
 					&& Integer.parseInt(oboxSceneNumber)>0) {
 				return facadeController.querySceneNumberByAddr(oboxSceneNumber,oboxSerialId);
+			}
+		}else if (CMDEnum.delete_obox.toString().equals(cmdEnum.toString())) {
+			// modify
+			String obox_serial_id = requestParam.getValue("obox_serial_id");
+			if(!StringUtils.isEmpty(obox_serial_id)){
+				return facadeController.deleteObox(obox_serial_id);
 			}
 		} else if (CMDEnum.test.toString().equals(cmdEnum.toString())) {
  			String serialId = requestParam.getValue("serialId");

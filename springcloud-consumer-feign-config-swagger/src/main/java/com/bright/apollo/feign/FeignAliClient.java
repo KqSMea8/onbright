@@ -292,4 +292,11 @@ public interface FeignAliClient {
 	 */
 	@RequestMapping(value = "/aliService/getRealNodeStatus", method = RequestMethod.PUT)
 	ResponseObject<OboxResp> getRealNodeStatus(@RequestBody TOboxDeviceConfig deviceConfig);
+
+	/**  
+	 * @param serialId  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/aliService/deleteObox/{serialId}", method = RequestMethod.DELETE)
+	ResponseObject<OboxResp>  deleteObox(@PathVariable(value = "serialId") String serialId);
 }

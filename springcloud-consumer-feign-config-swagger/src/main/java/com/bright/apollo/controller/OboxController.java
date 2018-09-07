@@ -62,7 +62,7 @@ public class OboxController {
 		}
 		return res;
 	}
-
+/*
 	@SuppressWarnings("rawtypes")
 	@ApiOperation(value = "delete obox ", httpMethod = "DELETE", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
@@ -78,7 +78,7 @@ public class OboxController {
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
-	}
+	}*/
 /*
 	@ApiOperation(value = "add obox ", httpMethod = "POST", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)

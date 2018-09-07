@@ -110,6 +110,14 @@ public interface TUserDeviceMapper  {
             @Result(property = "privilege",column = "privilege")
     })
 	List<TUserDevice> queryUserDevicesBySerialId(@Param("serialId")String serialId);
+
+	/**  
+	 * @param serialId
+	 * @return  
+	 * @Description:  
+	 */
+	@Delete("delete from t_user_device where device_serial_id=#{serialId}")
+	int deleteUserDeviceBySerialId(@Param("serialId")String serialId);
  
 
 }

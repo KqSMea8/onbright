@@ -182,5 +182,19 @@ public interface SceneService extends BasicService{
 	 * @Description:  
 	 */
 	public List<TScene> getSceneByUserIdAndPage(Integer userId, int start, int count);
+
+	/**  
+	 * @param serialId
+	 * @param nodeType
+	 * @return  
+	 * @Description:  
+	 */
+	public int deleteSceneActionByActionId(String serialId, String nodeType);
+
+	/**  
+	 * @param serialId  
+	 * @Description:  
+	 */
+	public int deleteSceneConditionBySerialId(String serialId);
  
 }

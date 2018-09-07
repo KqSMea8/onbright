@@ -26,6 +26,9 @@ public class TIntelligentFingerPushDTO implements Serializable{
 	@Expose
 	@SerializedName("enable")
 	private Integer enable;
+	@Expose
+	@SerializedName("serialId")
+	private String serialId;
 	public Integer getValue() {
 		return value;
 	}
@@ -38,6 +41,12 @@ public class TIntelligentFingerPushDTO implements Serializable{
 	public void setEnable(Integer enable) {
 		this.enable = enable;
 	}
+	public String getSerialId() {
+		return serialId;
+	}
+	public void setSerialId(String serialId) {
+		this.serialId = serialId;
+	}
 	/**  
 	 *   
 	 */
@@ -47,6 +56,7 @@ public class TIntelligentFingerPushDTO implements Serializable{
 			return;
 		setValue(push.getValue());
 		setEnable(push.getEnable());
+		setSerialId(push.getSerialid());
 	}
 	/**  
 	 *   

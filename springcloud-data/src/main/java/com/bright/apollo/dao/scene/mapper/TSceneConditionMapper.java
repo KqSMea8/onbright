@@ -80,6 +80,14 @@ public interface TSceneConditionMapper{
 			@Result(column = "condition_group", property = "conditionGroup") })
 	List<TSceneCondition> getConditionsBySceneNumber(@Param("sceneNumber") Integer sceneNumber);
 
+	/**  
+	 * @param serialId
+	 * @return  
+	 * @Description:  
+	 */
+	@Delete("delete from t_scene_condition where serialId = #{serialId}")
+	int deleteSceneConditionBySerialId(@Param("serialId")String serialId);
+
  
 
 }

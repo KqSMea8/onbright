@@ -19,4 +19,6 @@ public interface UserOboxService {
 	 * @Description:  
 	 */
 	TUserObox getUserOboxByUserIdAndOboxSerialId(Integer userId, String oboxSerialId);
+
+ 
 }

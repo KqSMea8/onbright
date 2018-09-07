@@ -429,4 +429,21 @@ public class SceneServiceImpl implements SceneService {
 		return sceneMapper.getSceneByUserIdAndPage(userId,start,count);
 	}
 
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.SceneService#deleteSceneActionByActionId(java.lang.String, java.lang.String)  
+	 */
+	@Override
+	public int deleteSceneActionByActionId(String serialId, String nodeType) {
+		return tSceneActionMapper.deleteSceneActionByActionId(serialId,nodeType);
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.SceneService#deleteSceneConditionBySerialId(java.lang.String)  
+	 */
+	@Override
+	public int deleteSceneConditionBySerialId(String serialId) {
+		 
+		return tSceneConditionMapper.deleteSceneConditionBySerialId(serialId);
+	}
+
 }

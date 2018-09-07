@@ -265,4 +265,22 @@ public class HystrixFeignSceneFallback extends BasicHystrixFeignFallback impleme
 		logger.warn("===scene server is break===");
 		return serverError();
 	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignSceneClient#deleteSceneActionByActionId(java.lang.String, java.lang.String)  
+	 */
+	@Override
+	public ResponseObject deleteSceneActionByActionId(String serialId, String nodeType) {
+		logger.warn("===scene server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignSceneClient#deleteSceneConditionBySerialId(java.lang.String)  
+	 */
+	@Override
+	public ResponseObject deleteSceneConditionBySerialId(String serialId) {
+		logger.warn("===scene server is break===");
+		return serverError();
+	}
 }

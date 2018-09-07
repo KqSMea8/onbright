@@ -25,7 +25,7 @@ public class UserOboxServiceImpl implements UserOboxService {
 
     @Override
     public void delectUserOboxByOboxSerialId(String oboxSerialId) {
-
+    	userOboxMapper.delectUserOboxByOboxSerialId(oboxSerialId);
     }
 
 	/* (non-Javadoc)  
@@ -36,4 +36,6 @@ public class UserOboxServiceImpl implements UserOboxService {
 		 
 		return userOboxMapper.getUserOboxByUserIdAndOboxSerialId(userId,oboxSerialId);
 	}
+
+	 
 }
