@@ -5,12 +5,14 @@ import com.bright.apollo.enums.ColorEnum;
 import com.bright.apollo.redis.RedisBussines;
 import com.bright.apollo.tool.ByteHelper;
 import com.zz.common.util.ArrayUtils;
-import io.swagger.models.auth.In;
 import org.json.JSONArray;
 
 import java.util.*;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class TMallDeviceAdapter implements ThirdPartyTransition{
+
+    private ReentrantLock lock = new ReentrantLock();
 
     private TOboxDeviceConfig oboxDeviceConfig;
 
@@ -233,7 +235,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
             tMallDeviceAdapter.setModel("门锁");
             tMallDeviceAdapter.setDeviceName("门锁");
             tMallDeviceAdapter.setIcon(doorLockicon);
-        }else if(deviceType.equals("curtain")&&childType.equals("05")){
+        }else if(deviceType.equals("curtain")){
             tMallDeviceAdapter.setModel("窗帘");
             tMallDeviceAdapter.setDeviceName("窗帘");
             tMallDeviceAdapter.setIcon(curtainicon);
@@ -684,26 +686,34 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         String middle = "";
         String id = deviceIdArr[0];
         String child = deviceIdArr[1];
-        String exist = redisBussines.get("tmall_device_"+id);
-        String val = null;
-        String beginStr = null;
-        String endStr = null;
-        if(exist!=null&&!exist.equals("")){
-            middle = exist.substring(2,4);
-            beginStr = exist.substring(0,2);
-            endStr = exist.substring(4,exist.length());
-        }else{
-            middle = deviceState.substring(2,4);
-            beginStr = deviceState.substring(0,2);
-            endStr = deviceState.substring(4,deviceState.length());
+        String reVal = "";
+        lock.lock();
+        try{
+            String exist = redisBussines.get("tmall_device_"+id);
+            String val = null;
+            String beginStr = null;
+            String endStr = null;
+            if(exist!=null&&!exist.equals("")){
+                middle = exist.substring(2,4);
+                beginStr = exist.substring(0,2);
+                endStr = exist.substring(4,exist.length());
+            }else{
+                middle = deviceState.substring(2,4);
+                beginStr = deviceState.substring(0,2);
+                endStr = deviceState.substring(4,deviceState.length());
+            }
+            if(value.equals("off")){
+                val = andOpt(middle,child);
+            }else if(value.equals("on")){
+                val = orOpt(middle,child);
+            }
+            reVal = beginStr+val+endStr;
+            redisBussines.setValueWithExpire("tmall_device_"+id,reVal,2000);
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            lock.unlock();
         }
-        if(value.equals("off")){
-            val = andOpt(middle,child);
-        }else if(value.equals("on")){
-            val = orOpt(middle,child);
-        }
-        String reVal = beginStr+val+endStr;
-        redisBussines.setValueWithExpire("tmall_device_"+id,reVal,1000);
         return reVal;
     }
 
