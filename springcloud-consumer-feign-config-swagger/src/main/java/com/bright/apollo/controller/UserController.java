@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bright.apollo.feign.FeignUserClient;
@@ -59,17 +60,19 @@ public class UserController {
 	@ApiOperation(value = "register user", httpMethod = "POST", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public ResponseObject register(@RequestBody(required=true) Map<String, String>map) {
+	public ResponseObject register(@RequestParam(name="appkey") String appkey,@RequestParam(name="mobile") String mobile,
+			@RequestParam(name="code") String code,@RequestParam(name="pwd") String pwd
+			) {
 		ResponseObject res = new ResponseObject();
 		try {
-			if(!map.containsKey("code")||!map.containsKey("mobile")||!map.containsKey("pwd")
+			/*if(!map.containsKey("code")||!map.containsKey("mobile")||!map.containsKey("pwd")
 					||!map.containsKey("appkey")
 					){
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
-			}else{
-				res = feignUserClient.register(map.get("mobile"), map.get("code"), map.get("pwd"),map.get("appkey"));
-			}
+			}else{*/
+				res = feignUserClient.register(mobile, code, pwd,appkey);
+			//}
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			res.setStatus(ResponseEnum.RequestTimeout.getStatus());
