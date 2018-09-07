@@ -202,7 +202,7 @@ public class TmallController {
                         map.put("payload",playloadMap);
                         return map.toString();
                     }else{
-                        facadeController.controlDevice((String)paramMap.get("deviceId"),(String)paramMap.get("deviceState"));
+                        facadeController.controlDevice(deviceId,(String)paramMap.get("deviceState"));
                     }
 
 				}

@@ -239,12 +239,12 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
             tMallDeviceAdapter.setIcon(curtainicon);
         }else if(deviceType.equals("sensor")){
             if(childType.equals("0b")){//温湿器
-                tMallDeviceAdapter.setModel("温湿器");
-                tMallDeviceAdapter.setDeviceName("温湿器");
+                tMallDeviceAdapter.setModel("传感器");
+                tMallDeviceAdapter.setDeviceName("传感器");
                 tMallDeviceAdapter.setIcon(humituresensoricon);
             }else if(childType.equals("15")){//门磁
-                tMallDeviceAdapter.setModel("门磁");
-                tMallDeviceAdapter.setDeviceName("门磁");
+                tMallDeviceAdapter.setModel("传感器");
+                tMallDeviceAdapter.setDeviceName("传感器");
                 tMallDeviceAdapter.setIcon(gatemagnetismicon);
             }
         }else{
@@ -438,8 +438,10 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                 jsonArray.put(queryTemperature(deviceState));
                 jsonArray.put(queryHumidity(deviceState));
             }else if(childType.equals("15")){//门磁
-                jsonArray.put(queryOnOff(deviceState));
+                jsonArray.put(queryGatemagnetismOnOff(deviceState));
             }
+        }else if(deviceType.equals("05")){//窗帘
+            jsonArray.put(queryOnOff(deviceState));
         }
         deviceAdapter.setProperties(jsonArray);
         return deviceAdapter;
@@ -492,9 +494,14 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         }
     }
 
-    private Map<String,Object> queryOnOff(String deviceState){
+    private Map<String,Object> queryGatemagnetismOnOff(String deviceState){
         Map<String,Object> map = new HashMap<String, Object>();
-        String onoff = deviceState.substring(0,2);
+        String onoff = deviceState.substring(2,4);
+        setOnOff(onoff,map);
+        return map;
+    }
+
+    private void setOnOff(String onoff,Map<String,Object> map){
         if(onoff.equals("01")){
             map.put("name","powerstate");
             map.put("value","on");
@@ -502,6 +509,12 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
             map.put("name","powerstate");
             map.put("value","off");
         }
+    }
+
+    private Map<String,Object> queryOnOff(String deviceState){
+        Map<String,Object> map = new HashMap<String, Object>();
+        String onoff = deviceState.substring(0,2);
+        setOnOff(onoff,map);
         return map;
     }
 

@@ -54,11 +54,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="TmallController.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="TmallController.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/TmallController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="566">
-              <caret line="230" column="43" selection-start-line="230" selection-start-column="30" selection-end-line="230" selection-end-column="48" />
+            <state relative-caret-position="539">
+              <caret line="204" column="63" selection-start-line="204" selection-start-column="63" selection-end-line="204" selection-end-column="63" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#5076#5088#0" expanded="true" />
@@ -68,7 +68,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="bootstrap.yml" pinned="false" current-in-tab="true">
+      <file leaf-file-name="bootstrap.yml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/springcloud-zuul/src/main/resources/bootstrap.yml">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="314">
@@ -80,8 +80,8 @@
       <file leaf-file-name="TMallDeviceAdapter.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/TMallDeviceAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="322">
-              <caret line="481" selection-start-line="481" selection-end-line="481" />
+            <state relative-caret-position="214">
+              <caret line="500" selection-start-line="500" selection-end-line="500" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#595#596#0" expanded="true" />
@@ -96,16 +96,17 @@
                 <element signature="e#1377#1378#0" expanded="true" />
                 <element signature="e#1427#1428#0" expanded="true" />
                 <element signature="e#1469#1470#0" expanded="true" />
-                <element signature="e#17771#17787#0" expanded="true" />
-                <element signature="e#18169#18185#0" expanded="true" />
-                <element signature="e#18561#18577#0" expanded="true" />
-                <element signature="e#19001#19017#0" expanded="true" />
-                <element signature="e#19447#19463#0" expanded="true" />
-                <element signature="e#19808#19824#0" expanded="true" />
-                <element signature="e#20163#20179#0" expanded="true" />
+                <element signature="e#17967#17983#0" expanded="true" />
+                <element signature="e#18365#18381#0" expanded="true" />
+                <element signature="e#18779#18795#0" expanded="true" />
+                <element signature="e#19760#19776#0" expanded="true" />
+                <element signature="e#20200#20216#0" expanded="true" />
+                <element signature="e#20646#20662#0" expanded="true" />
+                <element signature="e#21007#21023#0" expanded="true" />
+                <element signature="e#21362#21378#0" expanded="true" />
                 <element signature="e#18815#18816#0" expanded="true" />
                 <element signature="e#18880#18881#0" expanded="true" />
-                <element signature="e#30606#30623#0" expanded="true" />
+                <element signature="e#31805#31822#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -253,9 +254,9 @@
         <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/DoorSensor.java" />
         <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/Gatemagnetism.java" />
         <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/Humituresensor.java" />
+        <option value="$PROJECT_DIR$/springcloud-zuul/src/main/resources/bootstrap.yml" />
         <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/TmallController.java" />
         <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/TMallDeviceAdapter.java" />
-        <option value="$PROJECT_DIR$/springcloud-zuul/src/main/resources/bootstrap.yml" />
       </list>
     </option>
   </component>
@@ -891,12 +892,12 @@
       <workItem from="1533887392858" duration="47322000" />
       <workItem from="1534320136585" duration="157430000" />
       <workItem from="1535537860793" duration="5299000" />
-      <workItem from="1535593741795" duration="114535000" />
+      <workItem from="1535593741795" duration="116883000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1165429000" />
+    <option name="totallyTimeSpent" value="1167777000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -921,9 +922,9 @@
       <window_info id="Structure" order="0" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="3" weight="0.25" />
       <window_info id="UI Designer" order="3" />
-      <window_info anchor="bottom" id="Debug" order="4" sideWeight="0.49838188" weight="0.44444445" />
+      <window_info active="true" anchor="bottom" id="Debug" order="4" sideWeight="0.49838188" visible="true" weight="0.44444445" />
       <window_info anchor="bottom" id="TODO" order="7" weight="0.3287037" />
-      <window_info active="true" anchor="bottom" id="Messages" order="14" sideWeight="0.5234628" visible="true" weight="0.47800925" />
+      <window_info anchor="bottom" id="Messages" order="14" sideWeight="0.5234628" weight="0.47800925" />
       <window_info anchor="right" id="Palette&#9;" order="7" />
       <window_info id="Image Layers" order="2" />
       <window_info anchor="bottom" id="Java Enterprise" order="10" weight="0.3298611" />
@@ -994,21 +995,33 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/TMallDeviceAdapter.java</url>
-          <line>466</line>
-          <properties />
-          <option name="timeStamp" value="326" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/TMallDeviceAdapter.java</url>
           <line>387</line>
           <properties />
           <option name="timeStamp" value="327" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/TMallDeviceAdapter.java</url>
+          <line>440</line>
+          <properties />
+          <option name="timeStamp" value="328" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/TMallDeviceAdapter.java</url>
+          <line>497</line>
+          <properties />
+          <option name="timeStamp" value="329" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/TmallController.java</url>
+          <line>190</line>
+          <properties />
+          <option name="timeStamp" value="330" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="328" />
+      <option name="time" value="331" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="SpringBootApplicationConfigurationType">
@@ -1378,22 +1391,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/TmallController.java">
+    <entry file="file://$PROJECT_DIR$/springcloud-zuul/src/main/resources/bootstrap.yml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="566">
-          <caret line="230" column="43" selection-start-line="230" selection-start-column="30" selection-end-line="230" selection-end-column="48" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#5076#5088#0" expanded="true" />
-            <element signature="e#7191#7216#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="314">
+          <caret line="59" column="31" lean-forward="true" selection-start-line="59" selection-start-column="31" selection-end-line="59" selection-end-column="31" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/TMallDeviceAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="322">
-          <caret line="481" selection-start-line="481" selection-end-line="481" />
+        <state relative-caret-position="214">
+          <caret line="500" selection-start-line="500" selection-end-line="500" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#595#596#0" expanded="true" />
@@ -1408,24 +1416,30 @@
             <element signature="e#1377#1378#0" expanded="true" />
             <element signature="e#1427#1428#0" expanded="true" />
             <element signature="e#1469#1470#0" expanded="true" />
-            <element signature="e#17771#17787#0" expanded="true" />
-            <element signature="e#18169#18185#0" expanded="true" />
-            <element signature="e#18561#18577#0" expanded="true" />
-            <element signature="e#19001#19017#0" expanded="true" />
-            <element signature="e#19447#19463#0" expanded="true" />
-            <element signature="e#19808#19824#0" expanded="true" />
-            <element signature="e#20163#20179#0" expanded="true" />
+            <element signature="e#17967#17983#0" expanded="true" />
+            <element signature="e#18365#18381#0" expanded="true" />
+            <element signature="e#18779#18795#0" expanded="true" />
+            <element signature="e#19760#19776#0" expanded="true" />
+            <element signature="e#20200#20216#0" expanded="true" />
+            <element signature="e#20646#20662#0" expanded="true" />
+            <element signature="e#21007#21023#0" expanded="true" />
+            <element signature="e#21362#21378#0" expanded="true" />
             <element signature="e#18815#18816#0" expanded="true" />
             <element signature="e#18880#18881#0" expanded="true" />
-            <element signature="e#30606#30623#0" expanded="true" />
+            <element signature="e#31805#31822#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-zuul/src/main/resources/bootstrap.yml">
+    <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/TmallController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="314">
-          <caret line="59" column="31" lean-forward="true" selection-start-line="59" selection-start-column="31" selection-end-line="59" selection-end-column="31" />
+        <state relative-caret-position="539">
+          <caret line="204" column="63" selection-start-line="204" selection-start-column="63" selection-end-line="204" selection-end-column="63" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#5076#5088#0" expanded="true" />
+            <element signature="e#7191#7216#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
