@@ -2,6 +2,7 @@ package com.bright.apollo.http;
 
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.net.ssl.HostnameVerifier;
@@ -20,10 +21,13 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.ssl.SSLContextBuilder;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 import com.bright.apollo.common.entity.OauthClientDetails;
 import com.bright.apollo.constant.Constant;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
   
 
@@ -35,7 +39,9 @@ import com.bright.apollo.constant.Constant;
  *@Version:1.1.0  
  */
 public class HttpWithBasicAuth {
-	    public static CloseableHttpResponse http(Map<String, Object> map,OauthClientDetails client) throws Exception {
+	private static final Logger logger = LoggerFactory.getLogger(HttpWithBasicAuth.class);
+	@SuppressWarnings("unchecked")
+	public static Map<String, Object> http(Map<String, Object> map,OauthClientDetails client) throws Exception {
     		if(client==null||StringUtils.isEmpty(client.getClientId())||StringUtils.isEmpty(client.getClientSecret())){
     			return null;
     		}
@@ -62,10 +68,27 @@ public class HttpWithBasicAuth {
             	}
              }
     		HttpPost post = new HttpPost(sb.toString());
-    		return createDefault.execute(post);
+    		CloseableHttpResponse result = createDefault.execute(post);
+    		int statusCode = result.getStatusLine().getStatusCode();
+    		String string = EntityUtils.toString(result.getEntity());
+    		logger.info("===http result:"+string+"===http code:"+statusCode);
+    		if(statusCode!=200)
+    			return null;
+    		return new ObjectMapper().readValue(string, Map.class); 
+    		 
     		/*CloseableHttpResponse result = createDefault.execute(post);
     		int statusCode = result.getStatusLine().getStatusCode();
     		System.out.println(statusCode);
     		System.out.println("result：" + EntityUtils.toString(result.getEntity()));*/
     	}
+	    public static void main(String[] args) throws Exception {
+	    	Map<String, Object>map=new HashMap<String, Object>();
+	    	map.put("grant_type", "password");
+	    	map.put("username", "15879618946");
+	    	map.put("password", "12345678");
+	    	OauthClientDetails client=new OauthClientDetails();
+	    	client.setClientId("app");
+	    	client.setClientSecret("app");
+	    	System.out.println(HttpWithBasicAuth.http(map, client));
+		}
 }

@@ -2,8 +2,10 @@ package com.bright.apollo.controller;
 
 import java.nio.charset.Charset;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.util.EntityUtils;
@@ -103,15 +105,12 @@ public class UserController {
 				map.put("username", user.getUserName());
 				//may should decode
 				map.put("password", user.getPassword());
-				CloseableHttpResponse httpResponse = HttpWithBasicAuth.http(map, clients.get(0));
-				if(httpResponse!=null&&httpResponse.getStatusLine().getStatusCode()==200){
+				Map<String, Object> hashmap = HttpWithBasicAuth.http(map, clients.get(0));
+				if(hashmap!=null&&!hashmap.isEmpty()){
 					res.setStatus(ResponseEnum.SelectSuccess.getStatus());
-					res.setMessage(ResponseEnum.SelectSuccess.getMsg());
-					Map<String, Object> hashmap=new HashMap<String, Object>();
-					
+					res.setMessage(ResponseEnum.SelectSuccess.getMsg());					  
+					res.setData(hashmap);
 					return res; 
-				}else if(httpResponse!=null){
-					logger.error("=== http result:"+EntityUtils.toString(httpResponse.getEntity()));
 				}
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
@@ -204,28 +203,5 @@ public class UserController {
 			return res;
 		}
 	}
-	/**
-	   * 构造Basic Auth认证头信息
-	   * 
-	   * @return
-	   */
-	  private static String getHeader(String appkey,String secrect) {
-	    String auth = appkey + ":" + secrect;
-	    //encodeBase64();Base64Util.base64Encrypt(fingerRemoteUser.getPwd().getBytes())
-	    String encodedAuth = Base64Util.base64Encrypt(auth.getBytes(Charset.forName("US-ASCII")));
-	    String authHeader = "Basic " + new String(encodedAuth);
-	    System.out.println(authHeader);
-	    return authHeader;
-	  }
-public static void main(String[] args) throws Exception {
-	MobClient mobClient = new MobClient();
-	mobClient.addParam("grant_type", "password").addParam("username", "13828486833")
-	.addParam("password", "12345678").addParam("appkey", "fsfsfdsf").addParam("AppControlbox", "dadad");
-	mobClient.setAddress("https://aliiot.on-bright.com/oauth/token");
-	mobClient.addRequestProperty("Authorization",getHeader("webApp", "webApp"));
-	mobClient.addRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
-	mobClient.addRequestProperty("Accept", "application/json");
-	String result = mobClient.post();
-	System.out.println(result);
-}
+	 
 }
