@@ -12,7 +12,7 @@ public interface Constant {
 	//public static final String NAME = "";
 	public static final String WX_APPID = "";
 	public static final String WX_SECRET = "";
-	public static final String OAUTH="http://localhost:8400/oauth/token";
+	public static final String OAUTH="https://aliiot.on-bright.com/oauth/token";
 	public static final String APPID="";
 	public static final String SECRET="";
 }

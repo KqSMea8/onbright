@@ -241,8 +241,9 @@ public interface FeignUserClient {
 	 * @return
 	 * @Description:
 	 */
- 	@RequestMapping(value = "/user/sendCodeToApp/{appkey}", method = RequestMethod.GET)
-	public ResponseObject<Map<String, Object>> sendCodeToApp(@PathVariable(required = true, value = "appkey") String appkey);
+	@RequestMapping(value = "/user/sendCodeToApp/{appkey}", method = RequestMethod.GET)
+	public ResponseObject<Map<String, Object>> sendCodeToApp(
+			@PathVariable(required = true, value = "appkey") String appkey);
 
 	/**
 	 * @param mobile
@@ -258,4 +259,12 @@ public interface FeignUserClient {
 			@PathVariable(required = true, value = "code") String code,
 			@PathVariable(required = true, value = "pwd") String pwd,
 			@PathVariable(required = true, value = "appkey") String appkey);
+
+	/**
+	 * @param string
+	 * @Description:
+	 */
+	@RequestMapping(value = "/oauthclient/getClients/{grantType}", method = RequestMethod.GET)
+	public ResponseObject<List<OauthClientDetails>> getClients(
+			@PathVariable(required = true, value = "grantType") String grantType);
 }

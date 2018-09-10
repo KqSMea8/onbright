@@ -1,8 +1,11 @@
 package com.bright.apollo.controller;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -37,6 +40,20 @@ public class OauthClientController {
 			res.setStatus(ResponseEnum.AddSuccess.getStatus());
 			res.setMessage(ResponseEnum.AddSuccess.getMsg());
 			res.setData(oauthClientDetails);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	@RequestMapping(value = "/getClients/{grantType}",method = RequestMethod.GET)
+	public ResponseObject<List<OauthClientDetails>> getClient(@PathVariable(value="grantType") String grantType) {
+		ResponseObject<List<OauthClientDetails>> res=new ResponseObject<List<OauthClientDetails>>();
+		try {
+ 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+			res.setData(oauthService.getClients(grantType));
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());

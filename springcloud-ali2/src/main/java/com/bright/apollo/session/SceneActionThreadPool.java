@@ -197,7 +197,7 @@ public class SceneActionThreadPool {
 							if (topicServer != null) {
 								topicServer.pubTopic(CMDEnum.setting_node_status, bodyBytes,
 										oboxDeviceConfig.getOboxSerialId());
-								TimeUnit.MILLISECONDS.sleep(550);
+								TimeUnit.MILLISECONDS.sleep(250);
 							}
 						}
 					}
