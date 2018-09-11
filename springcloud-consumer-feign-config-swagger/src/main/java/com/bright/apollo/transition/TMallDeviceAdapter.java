@@ -223,9 +223,13 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
             tMallDeviceAdapter.setModel("单孔插座");
             tMallDeviceAdapter.setDeviceName("单孔插座");
             tMallDeviceAdapter.setIcon(singleOutleticon);
-        }else if(deviceType.equals("switch")&&childType.equals("02")){
+        }else if(deviceType.equals("switch")&&(childType.equals("02")||childType.equals("15")||childType.equals("51"))){
             tMallDeviceAdapter.setModel("一键开关");
             tMallDeviceAdapter.setDeviceName("一键开关");
+            tMallDeviceAdapter.setIcon(mutipleOutleticon);
+        }else if(deviceType.equals("switch")&&(childType.equals("16")||childType.equals("2a"))){
+            tMallDeviceAdapter.setModel("两键键开关");
+            tMallDeviceAdapter.setDeviceName("两键开关");
             tMallDeviceAdapter.setIcon(mutipleOutleticon);
         }else if(deviceType.equals("switch")&&(childType.equals("17")||childType.equals("2b"))){
             tMallDeviceAdapter.setModel("三键开关");
@@ -321,23 +325,31 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
             propertiesTransition(dfMap,defaultProperties);
             if(deviceChildType.equals("01")){//插座
                 oboxDeviceConfig.setDeviceType("outlet");
-                Singleswitch singleswitch = new Singleswitch();
+                SingleSwitch singleswitch = new SingleSwitch();
                 setProperty(singleswitch,oboxDeviceConfig);
                 singleswitch.setAction(defaultActions);
                 jsonArray.put(dfMap);
                 singleswitch.setProperties(jsonArray);
                 return singleswitch;
-            }else if(deviceChildType.equals("02")){//一路开关
+            }else if(deviceChildType.equals("02")||deviceChildType.equals("15")){//一路开关
                 oboxDeviceConfig.setDeviceType("switch");
-                Singleswitch singleswitch = new Singleswitch();
+                SingleSwitch singleswitch = new SingleSwitch();
                 setProperty(singleswitch,oboxDeviceConfig);
                 singleswitch.setAction(defaultActions);
                 jsonArray.put(dfMap);
                 singleswitch.setProperties(jsonArray);
                 return singleswitch;
-            }else if(deviceChildType.equals("2b")||deviceChildType.equals("17")){//3路开关
+            }else if(deviceChildType.equals("16")||deviceChildType.equals("2a")){//2路开关
                 oboxDeviceConfig.setDeviceType("switch");
-                Mutipleswitch mutipleswitch = new Mutipleswitch();
+                DoubleSwitch doubleswitch = new DoubleSwitch();
+                setProperty(doubleswitch,oboxDeviceConfig);
+                doubleswitch.setAction(defaultActions);
+                jsonArray.put(dfMap);
+                doubleswitch.setProperties(jsonArray);
+                return doubleswitch;
+            }else if(deviceChildType.equals("2b")||deviceChildType.equals("17")||deviceChildType.equals("53")){//3路开关
+                oboxDeviceConfig.setDeviceType("switch");
+                MutipleSwitch mutipleswitch = new MutipleSwitch();
                 setProperty(mutipleswitch,oboxDeviceConfig);
                 mutipleswitch.setAction(defaultActions);
                 jsonArray.put(dfMap);
@@ -394,7 +406,6 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         JSONArray jsonArray = new JSONArray();
         Map<String,Object> playloadMap = this.playloadMap;
         String deviceId = (String)playloadMap.get("deviceId");
-
         String queryName = this.getQueryName();
         Iterator iterator = isQuery.entrySet().iterator();
         if(queryName.equals("Query")){
@@ -410,7 +421,6 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                 }
             }
         }
-
         if(deviceType.equals("01")){//灯
             if(isQuery.get("Query").equals(true)){
                 jsonArray.put(queryOnOff(deviceState));
@@ -425,7 +435,8 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
             }
         }else if(deviceType.equals("04")){//插座/开关
             if(isQuery.get("Query").equals(true)){
-                if(childType.equals("17")||childType.equals("2b")){//开关
+                if(childType.equals("17")||childType.equals("2b")||childType.equals("53")
+                        ||childType.equals("16")||childType.equals("2a")){//开关
                     jsonArray.put(querySwitchOnOff(deviceState,deviceId));
                 }else{//插座
                     jsonArray.put(queryOnOff(deviceState));
@@ -657,7 +668,9 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                         deviceState = changeColorTemperature(deviceState,ByteHelper.int2HexString(middle));
                     }
                 }
-            }else if((name).equals(propertyArr[0])&&obdeviceType.equals("04")&&(obChildType.equals("2b")||obChildType.equals("17"))){//开关
+            }else if((name).equals(propertyArr[0])&&obdeviceType.equals("04")
+                    &&(obChildType.equals("2b")||obChildType.equals("17")||obChildType.equals("53")
+                    ||obChildType.equals("16")||obChildType.equals("2a"))){//2键及以上的开关
                 deviceState = changeMutipleOutLet(deviceState,value,deviceId);
             }else if((name).equals(propertyArr[0])&&obdeviceType.equals("05")){//开闭合设备
                 if(value.equals("off")){
@@ -685,7 +698,12 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         String[] deviceIdArr = deviceId.split("_");
         String middle = "";
         String id = deviceIdArr[0];
-        String child = deviceIdArr[1];
+        String child = "";
+        if(deviceIdArr.length>1){
+            child = deviceIdArr[1];
+        }else{
+            return null;
+        }
         String reVal = "";
         lock.lock();
         try{

@@ -1,4 +1,4 @@
 package com.bright.apollo.transition;
 
-public class Singleswitch extends TMallDeviceAdapter {
+public class SingleSwitch extends TMallDeviceAdapter {
 }
