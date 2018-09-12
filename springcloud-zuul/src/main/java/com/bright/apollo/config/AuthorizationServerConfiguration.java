@@ -1,5 +1,6 @@
 package com.bright.apollo.config;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 
 import org.slf4j.Logger;
@@ -15,7 +16,6 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
 import org.springframework.security.oauth2.provider.code.InMemoryAuthorizationCodeServices;
@@ -24,8 +24,6 @@ import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
 import com.bright.apollo.service.impl.UserDetailsServiceImpl;
-
-import java.util.List;
 
 /**  
  *@Title:  
@@ -56,7 +54,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     RedisTokenStore redisTokenStore(){
         return new RedisTokenStore(jedisConnectionFactory);
     }
-
+     
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.withClientDetails(clientDetails());

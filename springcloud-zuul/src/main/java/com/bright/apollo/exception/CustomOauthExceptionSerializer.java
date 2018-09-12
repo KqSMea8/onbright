@@ -29,7 +29,7 @@ public class CustomOauthExceptionSerializer extends StdSerializer<CustomOauthExc
 	public CustomOauthExceptionSerializer() {
         super(CustomOauthException.class);
     }
-
+	 
     @Override
     public void serialize(CustomOauthException value, JsonGenerator gen, SerializerProvider provider) throws IOException {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();

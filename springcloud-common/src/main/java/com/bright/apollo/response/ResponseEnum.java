@@ -13,8 +13,10 @@ public enum ResponseEnum {
 	UpdateSuccess(205,"update success"),
 	DeleteSuccess(204,"delete success"),
 	SelectSuccess(200,"select success"),
+	AuthenticationSuccess(200,"Authentication success"),
 	
- 	ErrorMobile(410,"error moble"),
+	AuthenticationError(401,"Authentication does not pass"),
+	ErrorMobile(410,"error moble"),
 	ExistMobile(411,"the mobile is exist"),
 	NoExistMobile(412,"the mobile is not exist"),
 	RequestObjectNotExist(413,"request object not exist"),

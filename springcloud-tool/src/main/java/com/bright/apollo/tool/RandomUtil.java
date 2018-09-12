@@ -13,4 +13,7 @@ public class RandomUtil {
 	public static int makeCode() {
  		return (int)((Math.random()*9+1)*100000);
 	}
+	public static void main(String[] args) {
+		System.out.println(makeCode());
+	}
 }

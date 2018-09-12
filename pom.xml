@@ -12,6 +12,7 @@
 		<redis-version>0.0.1-SNAPSHOT</redis-version>
 		<thirdpart-version>0.0.1-SNAPSHOT</thirdpart-version>
 		<tool-version>0.0.1-SNAPSHOT</tool-version>
+		<oauth-core-version>0.0.1-SNAPSHOT</oauth-core-version>
 		<service-impl-version>0.0.1-SNAPSHOT</service-impl-version>
 		<!--<mqtt-version>0.0.1-SNAPSHOT</mqtt-version> -->
 		<jersey-version>1.19</jersey-version>
@@ -43,6 +44,7 @@
 		<module>springcloud-service-impl</module>
 		<module>springcloud-ali2</module>
 		<module>springcloud-quartz</module>
+		<module>springcloud-oauth-core</module>
 	</modules>
 	<dependencyManagement>
 		<dependencies>

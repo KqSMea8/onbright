@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import com.bright.apollo.common.entity.TUser;
+import com.bright.apollo.feign.FeignUserClient;
+import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.service.UserService;
 import com.bright.apollo.tool.NumberHelper;
 
@@ -26,18 +28,19 @@ import com.bright.apollo.tool.NumberHelper;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    private UserService userService;
+    private FeignUserClient feignUserClient;
    
     //should design the tables
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    	TUser tUser =null;
+    	ResponseObject<TUser> userRes=null;
     	if(NumberHelper.isNumeric(username)){
-    		tUser =userService.queryUserByName(username);
-    	}else{
+    		userRes = feignUserClient.getUser(username);
+    	}/*else{
+    		feignUserClient.get
     		tUser =userService.queryUserByOpenId(username);
-    	}
-    	if (tUser == null) {
+    	}*/
+    	if (userRes == null||userRes.getData()==null) {
             throw new UsernameNotFoundException("用户:" + username + ",不存在!");
         }
         Set<GrantedAuthority> grantedAuthorities = new HashSet<GrantedAuthority>();
@@ -46,7 +49,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         boolean credentialsNonExpired = true; 
         boolean accountNonLocked = true;  
         
-        User user = new User(username, tUser.getPassword(),
+        User user = new User(username, userRes.getData().getPassword(),
                 enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, grantedAuthorities);
         return user;
     }

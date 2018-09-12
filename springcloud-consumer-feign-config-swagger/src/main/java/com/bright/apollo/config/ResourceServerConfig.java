@@ -32,6 +32,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     private RedisConnectionFactory redisConnectionFactory;
 	@Resource
     private AuthorizeConfigManager authorizeConfigManager;
+	@Autowired
+	private SmsLoginAuthenticationSecurityConfig smsLoginAuthenticationSecurityConfig;
     @Bean
     RedisTokenStore redisTokenStore(){
         return new RedisTokenStore(redisConnectionFactory);
@@ -47,6 +49,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
          .and()
          .httpBasic();
     	 authorizeConfigManager.config(http.authorizeRequests());
+    	 http.apply(smsLoginAuthenticationSecurityConfig);
     	 
     }
     @Override
