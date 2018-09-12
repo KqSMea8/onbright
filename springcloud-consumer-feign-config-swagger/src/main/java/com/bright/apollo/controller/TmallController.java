@@ -136,7 +136,13 @@ public class TmallController {
 						putChildrenDeviceValue(devices,jsonObject,j);
 						list.add(devices);
 					}
-
+				}
+				if(deviceType.equals("switch")&&model.equals("两键键开关")){
+					for(int j=1;j<=2;j++){
+						JSONObject devices = new JSONObject();
+						putChildrenDeviceValue(devices,jsonObject,j);
+						list.add(devices);
+					}
 				}
 			}
 			templateScan(list);//展示使用(日后可删除)
@@ -269,7 +275,7 @@ public class TmallController {
 		extensionsMap.put("extension2","");
 		extensionsMap.put("parentId",deivceId);
 		devices.put("deviceId",deivceId+"_"+i);
-		devices.put("deviceName","开关");//单孔插座
+		devices.put("deviceName","开关");//开关
 		devices.put("deviceType",outlet.getString("deviceType"));//outlet.getString("deviceType")
 		devices.put("zone","");
 		devices.put("brand","on-bright");

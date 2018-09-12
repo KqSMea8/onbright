@@ -54,17 +54,53 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="TmallController.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="TmallController.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/TmallController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="161">
-              <caret line="408" column="97" selection-start-line="408" selection-start-column="97" selection-end-line="408" selection-end-column="97" />
+            <state relative-caret-position="252">
+              <caret line="210" column="44" selection-start-line="210" selection-start-column="44" selection-end-line="210" selection-end-column="44" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#5076#5088#0" expanded="true" />
                 <element signature="e#6670#6685#0" expanded="true" />
                 <element signature="e#7191#7216#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FacadeController.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/FacadeController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="622">
+              <caret line="178" column="67" lean-forward="true" selection-start-line="178" selection-start-column="67" selection-end-line="178" selection-end-column="67" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FeignAliClient.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/feign/FeignAliClient.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="244">
+              <caret line="115" column="56" selection-start-line="115" selection-start-column="41" selection-end-line="115" selection-end-column="56" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AliServerController.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/controller/AliServerController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="369">
+              <caret line="277" column="71" selection-start-line="277" selection-start-column="62" selection-end-line="277" selection-end-column="71" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TopicServer.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/service/TopicServer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="144">
+              <caret line="135" column="55" selection-start-line="135" selection-start-column="55" selection-end-line="135" selection-end-column="55" />
             </state>
           </provider>
         </entry>
@@ -92,15 +128,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ByteHelper.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-tool/src/main/java/com/bright/apollo/tool/ByteHelper.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="457">
-              <caret line="185" column="25" selection-start-line="185" selection-start-column="25" selection-end-line="185" selection-end-column="25" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="SingleSwitch.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/SingleSwitch.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -110,20 +137,16 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DoorLock.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/DoorLock.java">
+      <file leaf-file-name="TMallDeviceAdapter.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/TMallDeviceAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="162">
-              <caret line="6" selection-start-line="6" selection-end-line="6" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SingleLight.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/SingleLight.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="54">
-              <caret line="2" column="41" selection-start-line="2" selection-start-column="41" selection-end-line="2" selection-end-column="41" />
+            <state relative-caret-position="159">
+              <caret line="230" column="46" selection-start-line="230" selection-start-column="41" selection-end-line="230" selection-end-column="46" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#32965#32966#0" expanded="true" />
+                <element signature="e#33030#33031#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -141,8 +164,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>8201</find>
-      <find>connectAndSubscribe</find>
       <find>doStart</find>
       <find>C:</find>
       <find>setProperty(</find>
@@ -171,6 +192,8 @@
       <find>setProperty</find>
       <find>lock</find>
       <find>querySwitchOnOff</find>
+      <find>putChildrenDeviceValue</find>
+      <find>setDeviceStatus</find>
     </findStrings>
     <replaceStrings>
       <replace>springcloud</replace>
@@ -186,7 +209,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/handler/SetStatusHandler.java" />
         <option value="$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/handler/SetReleaseHandler.java" />
         <option value="$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/handler/SetSearchHandler.java" />
         <option value="$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/handler/SetNodeHandler.java" />
@@ -237,6 +259,7 @@
         <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/TMallDeviceAdapter.java" />
         <option value="$PROJECT_DIR$/springcloud-zuul/src/main/resources/bootstrap.yml" />
         <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/TmallController.java" />
+        <option value="$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/service/TopicServer.java" />
       </list>
     </option>
   </component>
@@ -295,6 +318,86 @@
             <path>
               <item name="springcloud-multi" type="b2602c69:ProjectViewProjectNode" />
               <item name="springcloud-multi" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-multi" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-multi" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-ali2" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-multi" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-multi" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-ali2" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-multi" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-multi" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-ali2" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-multi" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-multi" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-ali2" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-multi" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-multi" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-ali2" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-multi" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-multi" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-ali2" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="bright" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-multi" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-multi" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-ali2" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="bright" type="462c0819:PsiDirectoryNode" />
+              <item name="apollo" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-multi" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-multi" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-ali2" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="bright" type="462c0819:PsiDirectoryNode" />
+              <item name="apollo" type="462c0819:PsiDirectoryNode" />
+              <item name="controller" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-multi" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-multi" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-ali2" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="bright" type="462c0819:PsiDirectoryNode" />
+              <item name="apollo" type="462c0819:PsiDirectoryNode" />
+              <item name="socket" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="springcloud-multi" type="b2602c69:ProjectViewProjectNode" />
@@ -399,6 +502,18 @@
               <item name="bright" type="462c0819:PsiDirectoryNode" />
               <item name="apollo" type="462c0819:PsiDirectoryNode" />
               <item name="config" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-multi" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-multi" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-consumer-feign-config-swagger" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="bright" type="462c0819:PsiDirectoryNode" />
+              <item name="apollo" type="462c0819:PsiDirectoryNode" />
+              <item name="controller" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="springcloud-multi" type="b2602c69:ProjectViewProjectNode" />
@@ -872,12 +987,12 @@
       <workItem from="1533887392858" duration="47322000" />
       <workItem from="1534320136585" duration="157430000" />
       <workItem from="1535537860793" duration="5299000" />
-      <workItem from="1535593741795" duration="131570000" />
+      <workItem from="1535593741795" duration="133404000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1182464000" />
+    <option name="totallyTimeSpent" value="1184298000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -942,7 +1057,7 @@
       <window_info id="Capture Tool" order="6" />
       <window_info anchor="right" id="Capture Analysis" order="5" />
       <window_info anchor="bottom" id="Event Log" order="13" sideWeight="0.50161815" side_tool="true" weight="0.5115741" />
-      <window_info anchor="bottom" id="Messages" order="14" sideWeight="0.5234628" visible="true" weight="0.47800925" />
+      <window_info anchor="bottom" id="Messages" order="14" sideWeight="0.5234628" weight="0.47800925" />
       <window_info anchor="bottom" id="TODO" order="7" weight="0.3287037" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.3907767" />
       <window_info anchor="bottom" id="Java Enterprise" order="10" weight="0.3298611" />
@@ -951,7 +1066,7 @@
       <window_info anchor="right" id="Maven Projects" order="9" weight="0.32928804" />
       <window_info anchor="bottom" id="Terminal" order="9" weight="0.3298611" />
       <window_info anchor="bottom" id="Find" order="2" weight="0.32908458" />
-      <window_info content_ui="combo" id="Project" order="7" weight="0.29126215" />
+      <window_info active="true" content_ui="combo" id="Project" order="7" visible="true" weight="0.29126215" />
       <window_info anchor="right" id="Database" order="6" weight="0.32928804" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info id="Web" order="5" side_tool="true" />
@@ -991,33 +1106,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/mqtt/MqttOutBoundConfiguration.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="29" column="48" lean-forward="true" selection-start-line="29" selection-start-column="48" selection-end-line="29" selection-end-column="48" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#908#909#0" expanded="true" />
-            <element signature="e#950#951#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/aop/WebLogAspect.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="71">
-          <caret line="113" column="9" lean-forward="true" selection-start-line="113" selection-start-column="9" selection-end-line="113" selection-end-column="9" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-config-server/src/main/resources/banner.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-420" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-config-server/src/main/java/com/bright/apollo/ConfigServerApplication.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="189">
@@ -1251,13 +1339,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/FacadeController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="116613">
-          <caret line="4402" column="27" lean-forward="true" selection-start-line="4402" selection-start-column="27" selection-end-line="4402" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/service/JPushService.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-185">
@@ -1341,41 +1422,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/TMallDeviceAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
-          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#595#596#0" expanded="true" />
-            <element signature="e#631#632#0" expanded="true" />
-            <element signature="e#696#697#0" expanded="true" />
-            <element signature="e#746#747#0" expanded="true" />
-            <element signature="e#548#549#0" expanded="true" />
-            <element signature="e#577#578#0" expanded="true" />
-            <element signature="e#634#635#0" expanded="true" />
-            <element signature="e#670#671#0" expanded="true" />
-            <element signature="e#1345#1346#0" expanded="true" />
-            <element signature="e#1377#1378#0" expanded="true" />
-            <element signature="e#1427#1428#0" expanded="true" />
-            <element signature="e#1469#1470#0" expanded="true" />
-            <element signature="e#17967#17983#0" expanded="true" />
-            <element signature="e#18365#18381#0" expanded="true" />
-            <element signature="e#18779#18795#0" expanded="true" />
-            <element signature="e#19760#19776#0" expanded="true" />
-            <element signature="e#20200#20216#0" expanded="true" />
-            <element signature="e#20646#20662#0" expanded="true" />
-            <element signature="e#21007#21023#0" expanded="true" />
-            <element signature="e#21362#21378#0" expanded="true" />
-            <element signature="e#13195#13203#0" expanded="true" />
-            <element signature="e#13257#13273#0" expanded="true" />
-            <element signature="e#18815#18816#0" expanded="true" />
-            <element signature="e#18880#18881#0" expanded="true" />
-            <element signature="e#31805#31822#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-zuul/src/main/resources/bootstrap.yml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="233">
@@ -1383,16 +1429,56 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/TMallDeviceAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="159">
+          <caret line="230" column="46" selection-start-line="230" selection-start-column="41" selection-end-line="230" selection-end-column="46" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#32965#32966#0" expanded="true" />
+            <element signature="e#33030#33031#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/TmallController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="161">
-          <caret line="408" column="97" selection-start-line="408" selection-start-column="97" selection-end-line="408" selection-end-column="97" />
+        <state relative-caret-position="252">
+          <caret line="210" column="44" selection-start-line="210" selection-start-column="44" selection-end-line="210" selection-end-column="44" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#5076#5088#0" expanded="true" />
             <element signature="e#6670#6685#0" expanded="true" />
             <element signature="e#7191#7216#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/FacadeController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="622">
+          <caret line="178" column="67" lean-forward="true" selection-start-line="178" selection-start-column="67" selection-end-line="178" selection-end-column="67" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/feign/FeignAliClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="244">
+          <caret line="115" column="56" selection-start-line="115" selection-start-column="41" selection-end-line="115" selection-end-column="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/controller/AliServerController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="369">
+          <caret line="277" column="71" selection-start-line="277" selection-start-column="62" selection-end-line="277" selection-end-column="71" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/service/TopicServer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="135" column="55" selection-start-line="135" selection-start-column="55" selection-end-line="135" selection-end-column="55" />
         </state>
       </provider>
     </entry>
