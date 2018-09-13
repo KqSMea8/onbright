@@ -710,7 +710,12 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
             if(value.equals("off")){
                 redisBussines.setValueWithExpire("tmall_device_"+id,"000000000000",2);
             }else if(value.equals("on")){
-                redisBussines.setValueWithExpire("tmall_device_"+id,"000700000000",2);
+                if(partition.equals("12")){
+                    redisBussines.setValueWithExpire("tmall_device_"+id,"03000000000",2);
+                }else{
+                    redisBussines.setValueWithExpire("tmall_device_"+id,"000700000000",2);
+                }
+
             }
             return null;
         }
@@ -755,7 +760,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         String combindVal = "";
         while(true){
             combindVal = redisBussines.get("tmall_device_"+id);
-            if(combindVal.equals("000700000000")||combindVal.equals("000000000000")){
+            if(combindVal.equals("000700000000")||combindVal.equals("000000000000")||combindVal.equals("030000000000")){
                 break;
             }else if(end-start>1000){
                 break;
