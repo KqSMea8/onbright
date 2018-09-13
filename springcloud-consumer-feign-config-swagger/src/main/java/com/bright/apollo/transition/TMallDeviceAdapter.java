@@ -770,6 +770,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         long end = 0;
         String combindVal = "";
         while(true){
+            end = System.currentTimeMillis();
             combindVal = redisBussines.get("tmall_device_"+id);
             if(combindVal!=null && (combindVal.equals("000700000000")||combindVal.equals("000000000000")||combindVal.equals("030000000000"))){
                 break;
