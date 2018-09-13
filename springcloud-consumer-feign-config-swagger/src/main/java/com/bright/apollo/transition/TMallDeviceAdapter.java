@@ -704,9 +704,9 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
             child = deviceIdArr[1];
         }else{
             if(value.equals("off")){
-                redisBussines.setValueWithExpire("tmall_device_"+id,"000000000000",2000);
+                redisBussines.setValueWithExpire("tmall_device_"+id,"000000000000",2);
             }else if(value.equals("on")){
-                redisBussines.setValueWithExpire("tmall_device_"+id,"000700000000",2000);
+                redisBussines.setValueWithExpire("tmall_device_"+id,"000700000000",2);
             }
             return null;
         }
@@ -735,13 +735,14 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                     val = orOpt(middle,child);
                 }
                 reVal = beginStr+val+endStr;
-                redisBussines.setValueWithExpire("tmall_device_"+id,reVal,2000);
+                redisBussines.setValueWithExpire("tmall_device_"+id,reVal,2);
             }
         }catch (Exception e){
             e.printStackTrace();
         }finally {
             lock.unlock();
         }
+        redisBussines.delete("tmall_device_"+id);
         return reVal;
     }
 
