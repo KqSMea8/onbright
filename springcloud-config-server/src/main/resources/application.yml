@@ -19,7 +19,7 @@ spring:
           searchPaths: '{application}'
 security:
   basic:
-    enabled: true
+    enabled: false
   user:
     name: root
     password: booszy

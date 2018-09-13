@@ -62,7 +62,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	 * @Bean public PasswordEncoder passwordEncoder() { return new
 	 * BCryptPasswordEncoder(); }
 	 */
-
+	
+	//the password from app 12345678 encrypt to 297297C35D079DF661902FD4FC8D0777
+	//i should use the encryptd String to md5
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService);
