@@ -669,9 +669,11 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                     }
                 }
             }else if((name).equals(propertyArr[0])&&obdeviceType.equals("04")
-                    &&(obChildType.equals("2b")||obChildType.equals("17")||obChildType.equals("53")
-                    ||obChildType.equals("16")||obChildType.equals("2a"))){//2键及以上的开关
-                deviceState = changeMutipleOutLet(deviceState,value,deviceId);
+                    &&(obChildType.equals("2b")||obChildType.equals("53")||obChildType.equals("2a"))){//2键及以上的开关
+                deviceState = changeMutipleOutLet(deviceState,value,deviceId,"24");
+            }else if((name).equals(propertyArr[0])&&obdeviceType.equals("04")&&(obChildType.equals("17")
+                    ||obChildType.equals("16"))){
+                deviceState = changeMutipleOutLet(deviceState,value,deviceId,"12");
             }else if((name).equals(propertyArr[0])&&obdeviceType.equals("05")){//开闭合设备
                 if(value.equals("off")){
                     value = "00";
@@ -694,48 +696,53 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         return returnMap;
     }
 
-    private String changeMutipleOutLet(String deviceState ,String value,String deviceId){
+    private String changeMutipleOutLet(String deviceState ,String value,String deviceId,String partition){
         String[] deviceIdArr = deviceId.split("_");
         String middle = "";
         String id = deviceIdArr[0];
         String child = "";
         String val = null;
+
+        lock.lock();
         if(deviceIdArr.length>1){
             child = deviceIdArr[1];
         }else{
             if(value.equals("off")){
-                redisBussines.setValueWithExpire("tmall_device_"+id,"000000000000",1);
+                redisBussines.setValueWithExpire("tmall_device_"+id,"000000000000",2);
             }else if(value.equals("on")){
-                redisBussines.setValueWithExpire("tmall_device_"+id,"000700000000",1);
+                redisBussines.setValueWithExpire("tmall_device_"+id,"000700000000",2);
             }
             return null;
         }
         String reVal = "";
-        lock.lock();
         try{
             String exist = redisBussines.get("tmall_device_"+id);
             String beginStr = null;
             String endStr = null;
             if(exist!=null&&!exist.equals("")&&(exist.equals("000000000000")||exist.equals("000700000000"))){
                 return exist;
-            }
-            else {
-//                if(exist!=null&&!exist.equals("")){
-//                    middle = exist.substring(2,4);
-//                    beginStr = exist.substring(0,2);
-//                    endStr = exist.substring(4,exist.length());
-//                }else{
+            }else {
+                if(partition.equals("24")){
                     middle = deviceState.substring(2,4);
                     beginStr = deviceState.substring(0,2);
                     endStr = deviceState.substring(4,deviceState.length());
-//                }
-                if(value.equals("off")){
-                    val = andOpt(middle,child);
-                }else if(value.equals("on")){
-                    val = orOpt(middle,child);
+                    if(value.equals("off")){
+                        val = andOpt(middle,child);
+                    }else if(value.equals("on")){
+                        val = orOpt(middle,child);
+                    }
+                    reVal = beginStr+val+endStr;
+                }else if(partition.equals("12")){
+                    beginStr = deviceState.substring(0,2);
+                    endStr = deviceState.substring(2,deviceState.length());
+                    if(value.equals("off")){
+                        val = andOpt(beginStr,child);
+                    }else if(value.equals("on")){
+                        val = orOpt(beginStr,child);
+                    }
+                    reVal = val+endStr;
                 }
-                reVal = beginStr+val+endStr;
-                redisBussines.setValueWithExpire("tmall_device_"+id,reVal,1);
+                redisBussines.setValueWithExpire("tmall_device_"+id,reVal,2);
             }
         }catch (Exception e){
             e.printStackTrace();
