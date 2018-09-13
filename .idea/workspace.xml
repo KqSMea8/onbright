@@ -98,12 +98,12 @@
       <file leaf-file-name="TMallDeviceAdapter.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/TMallDeviceAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="622">
-              <caret line="781" column="58" selection-start-line="781" selection-start-column="58" selection-end-line="781" selection-end-column="58" />
+            <state relative-caret-position="298">
+              <caret line="723" column="14" lean-forward="true" selection-start-line="723" selection-start-column="14" selection-end-line="723" selection-end-column="14" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#32965#32966#0" expanded="true" />
-                <element signature="e#33030#33031#0" expanded="true" />
+                <element signature="e#35277#35278#0" expanded="true" />
+                <element signature="e#35342#35343#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -690,12 +690,12 @@
       <workItem from="1533887392858" duration="47322000" />
       <workItem from="1534320136585" duration="157430000" />
       <workItem from="1535537860793" duration="5299000" />
-      <workItem from="1535593741795" duration="152576000" />
+      <workItem from="1535593741795" duration="153432000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1203470000" />
+    <option name="totallyTimeSpent" value="1204326000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1177,12 +1177,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/TMallDeviceAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="622">
-          <caret line="781" column="58" selection-start-line="781" selection-start-column="58" selection-end-line="781" selection-end-column="58" />
+        <state relative-caret-position="298">
+          <caret line="723" column="14" lean-forward="true" selection-start-line="723" selection-start-column="14" selection-end-line="723" selection-end-column="14" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#32965#32966#0" expanded="true" />
-            <element signature="e#33030#33031#0" expanded="true" />
+            <element signature="e#35277#35278#0" expanded="true" />
+            <element signature="e#35342#35343#0" expanded="true" />
           </folding>
         </state>
       </provider>

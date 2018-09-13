@@ -703,28 +703,27 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         String child = "";
         String val = null;
 
-        lock.lock();
+//        lock.lock();
         if(deviceIdArr.length>1){
             child = deviceIdArr[1];
         }else{
             if(value.equals("off")){
-                redisBussines.setValueWithExpire("tmall_device_"+id,"000000000000",2);
+                redisBussines.setValueWithExpire("tmall_device_all"+id,"000000000000",2);
             }else if(value.equals("on")){
                 if(partition.equals("12")){
-                    redisBussines.setValueWithExpire("tmall_device_"+id,"03000000000",2);
+                    redisBussines.setValueWithExpire("tmall_device_all"+id,"03000000000",2);
                 }else{
-                    redisBussines.setValueWithExpire("tmall_device_"+id,"000700000000",2);
+                    redisBussines.setValueWithExpire("tmall_device_all"+id,"000700000000",2);
                 }
 
             }
             return redisBussines.get("tmall_device_"+id);
         }
         String reVal = "";
-        try{
+//        try{
             String exist = redisBussines.get("tmall_device_"+id);
             String beginStr = null;
             String endStr = null;
-            System.out.println("============== exist ============"+exist);
             if(exist!=null&&!exist.equals("")&&(exist.equals("000000000000")||exist.equals("000700000000"))){
                 return exist;
             }else {
@@ -761,26 +760,30 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                 }
                 redisBussines.setValueWithExpire("tmall_device_"+id,reVal,2);
             }
-        }catch (Exception e){
-            e.printStackTrace();
-        }finally {
-            lock.unlock();
-        }
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }finally {
+//            lock.unlock();
+//        }
 
         long start = System.currentTimeMillis();
         long end = 0;
         String combindVal = "";
         while(true){
             end = System.currentTimeMillis();
-            combindVal = redisBussines.get("tmall_device_"+id);
+            combindVal = redisBussines.get("tmall_device_all"+id);
             if(combindVal!=null && (combindVal.equals("000700000000")||combindVal.equals("000000000000")||combindVal.equals("030000000000"))){
                 break;
             }else if(end-start>3000){
                 break;
             }
         }
-        System.out.println(" ======== reVal ====== "+reVal);
-        return reVal;
+        if(combindVal!=null){
+            return combindVal;
+        }else{
+            return reVal;
+        }
+
     }
 
     private String andOpt(String val,String child){
