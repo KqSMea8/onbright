@@ -197,6 +197,9 @@ public class SceneCMDHandler extends BasicHandler{
                         String SerialString = data.substring(8 + i*30, 8 + i*30 + 10);
                         String groupString = data.substring(18 + i*30, 18 + i*30 + 2);
                         String addrString = data.substring(20 + i*30, 20 + i*30 + 2);
+                        logger.info("===cond:"+cond+"===action:"+action+"===SerialString:"+SerialString+"===groupString:"+groupString
+                        		+"===addrString:"+addrString
+                        		);
                         if (groupString.equals("00")) {
                             TOboxDeviceConfig tOboxDeviceConfig =  oboxDeviceConfigService.getTOboxDeviceConfigByDeviceSerialIdAndAddress(SerialString, addrString);
 //                            TOboxDeviceConfig tOboxDeviceConfig = DeviceBusiness.queryDeviceConfigByAddr(SerialString, addrString);
@@ -215,6 +218,7 @@ public class SceneCMDHandler extends BasicHandler{
                                     sceneActionService.addSceneAction(tSceneAction);
 //                                    SceneBusiness.addSceneAction(tSceneAction);
                                 }else if (cond == 2) {
+                                	logger.info("===sceneNumer:"+scene.getSceneNumber()+"===serialId:"+tOboxDeviceConfig.getDeviceSerialId());
                                     //modify
                                     TSceneAction tSceneAction =  sceneActionService.getSceneActionBySceneNumberAndActionId(scene.getSceneNumber(),tOboxDeviceConfig.getDeviceSerialId());
 //                                    TSceneAction tSceneAction = SceneBusiness.querySceneAction(scene.getSceneNumber(), tOboxDeviceConfig.getId());
