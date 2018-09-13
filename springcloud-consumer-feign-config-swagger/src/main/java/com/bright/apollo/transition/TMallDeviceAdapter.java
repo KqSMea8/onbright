@@ -774,7 +774,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
             combindVal = redisBussines.get("tmall_device_"+id);
             if(combindVal!=null && (combindVal.equals("000700000000")||combindVal.equals("000000000000")||combindVal.equals("030000000000"))){
                 break;
-            }else if(end-start>1000){
+            }else if(end-start>3000){
                 break;
             }
         }
