@@ -724,6 +724,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
             String exist = redisBussines.get("tmall_device_"+id);
             String beginStr = null;
             String endStr = null;
+            System.out.println("============== exist ============"+exist);
             if(exist!=null&&!exist.equals("")&&(exist.equals("000000000000")||exist.equals("000700000000"))){
                 return exist;
             }else {
@@ -778,6 +779,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                 break;
             }
         }
+        System.out.println(" ======== reVal ====== "+reVal);
         return reVal;
     }
 

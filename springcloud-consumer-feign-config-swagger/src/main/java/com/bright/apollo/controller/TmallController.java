@@ -194,7 +194,9 @@ public class TmallController {
 				if(oboxDeviceConfig !=null &&!oboxDeviceConfig.equals("")){
 					adapter = new TMallDeviceAdapter(playLoadMap,tMallTemplate,oboxDeviceConfig,header);
 					adapter.setRedisBussines(redisBussines);
+
 					Map<String,Object> paramMap = adapter.TMall2Obright();
+
 					logger.info("paramMap ====== "+paramMap);
 					if(paramMap.get("deviceState")==null){
                         headerMap.put("namespace","AliGenie.Iot.Device.Control");
