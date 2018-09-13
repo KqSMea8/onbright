@@ -717,7 +717,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                 }
 
             }
-            return null;
+            return redisBussines.get("tmall_device_"+id);
         }
         String reVal = "";
         try{

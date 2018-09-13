@@ -58,7 +58,7 @@
       <file leaf-file-name="TmallController.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/TmallController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1143">
+            <state relative-caret-position="657">
               <caret line="210" column="44" selection-start-line="210" selection-start-column="44" selection-end-line="210" selection-end-column="44" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -66,15 +66,6 @@
                 <element signature="e#6670#6685#0" expanded="true" />
                 <element signature="e#7191#7216#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AliServerController.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/controller/AliServerController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="369">
-              <caret line="277" column="71" selection-start-line="277" selection-start-column="62" selection-end-line="277" selection-end-column="71" />
             </state>
           </provider>
         </entry>
@@ -107,8 +98,8 @@
       <file leaf-file-name="TMallDeviceAdapter.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/TMallDeviceAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="287">
-              <caret line="790" column="34" selection-start-line="790" selection-start-column="34" selection-end-line="790" selection-end-column="34" />
+            <state relative-caret-position="557">
+              <caret line="719" column="55" selection-start-line="719" selection-start-column="55" selection-end-line="719" selection-end-column="55" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#32965#32966#0" expanded="true" />
@@ -185,8 +176,8 @@
       <find>setProperty</find>
       <find>lock</find>
       <find>querySwitchOnOff</find>
-      <find>setDeviceStatus</find>
       <find>rabbit</find>
+      <find>setDeviceStatus</find>
       <find>putChildrenDeviceValue</find>
     </findStrings>
     <replaceStrings>
@@ -699,12 +690,12 @@
       <workItem from="1533887392858" duration="47322000" />
       <workItem from="1534320136585" duration="157430000" />
       <workItem from="1535537860793" duration="5299000" />
-      <workItem from="1535593741795" duration="148584000" />
+      <workItem from="1535593741795" duration="148784000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1199478000" />
+    <option name="totallyTimeSpent" value="1199678000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1097,26 +1088,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/controller/AliServerController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="369">
-          <caret line="277" column="71" selection-start-line="277" selection-start-column="62" selection-end-line="277" selection-end-column="71" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/TmallController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1143">
-          <caret line="210" column="44" selection-start-line="210" selection-start-column="44" selection-end-line="210" selection-end-column="44" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#5076#5088#0" expanded="true" />
-            <element signature="e#6670#6685#0" expanded="true" />
-            <element signature="e#7191#7216#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/data/spring-data-redis/1.8.6.RELEASE/spring-data-redis-1.8.6.RELEASE.jar!/org/springframework/data/redis/connection/RedisKeyCommands.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="279">
@@ -1148,10 +1119,30 @@
     <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/resources/bootstrap.yml">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/controller/AliServerController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="369">
+          <caret line="277" column="71" selection-start-line="277" selection-start-column="62" selection-end-line="277" selection-end-column="71" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/TmallController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="657">
+          <caret line="210" column="44" selection-start-line="210" selection-start-column="44" selection-end-line="210" selection-end-column="44" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#5076#5088#0" expanded="true" />
+            <element signature="e#6670#6685#0" expanded="true" />
+            <element signature="e#7191#7216#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/TMallDeviceAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="287">
-          <caret line="790" column="34" selection-start-line="790" selection-start-column="34" selection-end-line="790" selection-end-column="34" />
+        <state relative-caret-position="557">
+          <caret line="719" column="55" selection-start-line="719" selection-start-column="55" selection-end-line="719" selection-end-column="55" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#32965#32966#0" expanded="true" />
