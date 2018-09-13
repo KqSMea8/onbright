@@ -724,7 +724,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
             String exist = redisBussines.get("tmall_device_"+id);
             String beginStr = null;
             String endStr = null;
-            if(exist!=null&&!exist.equals("")&&(exist.equals("000000000000")||exist.equals("000700000000"))){
+            if(exist!=null&&!exist.equals("")&&(exist.equals("000000000000")||exist.equals("000700000000")||exist.equals("03000000000"))){
                 return exist;
             }else {
                 if(partition.equals("24")){
