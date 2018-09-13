@@ -699,34 +699,44 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         String middle = "";
         String id = deviceIdArr[0];
         String child = "";
+        String val = null;
         if(deviceIdArr.length>1){
             child = deviceIdArr[1];
         }else{
+            if(value.equals("off")){
+                redisBussines.setValueWithExpire("tmall_device_"+id,"000000000000",2000);
+            }else if(value.equals("on")){
+                redisBussines.setValueWithExpire("tmall_device_"+id,"000700000000",2000);
+            }
             return null;
         }
         String reVal = "";
         lock.lock();
         try{
             String exist = redisBussines.get("tmall_device_"+id);
-            String val = null;
             String beginStr = null;
             String endStr = null;
-            if(exist!=null&&!exist.equals("")){
-                middle = exist.substring(2,4);
-                beginStr = exist.substring(0,2);
-                endStr = exist.substring(4,exist.length());
-            }else{
-                middle = deviceState.substring(2,4);
-                beginStr = deviceState.substring(0,2);
-                endStr = deviceState.substring(4,deviceState.length());
+            if(exist!=null&&!exist.equals("")&&(exist.equals("000000000000")||exist.equals("000700000000"))){
+                return exist;
             }
-            if(value.equals("off")){
-                val = andOpt(middle,child);
-            }else if(value.equals("on")){
-                val = orOpt(middle,child);
+            else {
+//                if(exist!=null&&!exist.equals("")){
+//                    middle = exist.substring(2,4);
+//                    beginStr = exist.substring(0,2);
+//                    endStr = exist.substring(4,exist.length());
+//                }else{
+                    middle = deviceState.substring(2,4);
+                    beginStr = deviceState.substring(0,2);
+                    endStr = deviceState.substring(4,deviceState.length());
+//                }
+                if(value.equals("off")){
+                    val = andOpt(middle,child);
+                }else if(value.equals("on")){
+                    val = orOpt(middle,child);
+                }
+                reVal = beginStr+val+endStr;
+                redisBussines.setValueWithExpire("tmall_device_"+id,reVal,2000);
             }
-            reVal = beginStr+val+endStr;
-            redisBussines.setValueWithExpire("tmall_device_"+id,reVal,2000);
         }catch (Exception e){
             e.printStackTrace();
         }finally {

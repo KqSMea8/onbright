@@ -13,6 +13,7 @@
         <module name="springcloud-data" />
         <module name="springcloud-eureka-server" />
         <module name="springcloud-hystrix-turbine-dashboard" />
+        <module name="springcloud-oauth-core" />
         <module name="springcloud-oauth2" />
         <module name="springcloud-provider-deivce" />
         <module name="springcloud-provider-obox" />
