@@ -4754,10 +4754,15 @@ public class FacadeController extends BaseController {
 	public ResponseObject test(@PathVariable(value = "serialId") String serialId) {
 		ResponseObject res = new ResponseObject();
 		try {
-
-			ResponseObject<TIntelligentFingerRemoteUser> remoteUserRes = feignDeviceClient
+			TSceneAction action=new TSceneAction();
+			action.setSceneNumber(1111);
+			action.setActionid("fasfafa");
+			action.setAction("fasfasfafafafa");
+			action.setNodeType("11");
+			feignSceneClient.addSceneAction(action);
+			/*ResponseObject<TIntelligentFingerRemoteUser> remoteUserRes = feignDeviceClient
 					.getTIntelligentFingerRemoteUserBySerialIdAndPin(serialId, 13);
-			return remoteUserRes;
+			return remoteUserRes;*/
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());

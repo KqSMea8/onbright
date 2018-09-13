@@ -137,47 +137,47 @@ public class SceneCMDHandler extends BasicHandler{
 
                 }
 
-            }else if ("02".equals(data.substring(2, 4))) {
-                //scene condition
-                int index = Integer.parseInt(data.substring(8, 10), 16);
-                int choice = Integer.parseInt(data.substring(4, 6), 16);
-                int condType = Integer.parseInt(data.substring(10, 12), 16);
-                TScene scene = sceneService.getTSceneByOboxSerialIdAndOboxSceneNumber(dbObox.getOboxSerialId(), scene_number);
-                if (scene == null) {
-                    logger.error(String.format("not found scene_number %s in obox!", scene_number));
-                    return null;
-                }
-                sceneConditionService.deleteSceneConditionBySceneNumberAndGroup(scene.getSceneNumber(), index-1);
-//                SceneBusiness.deleteSceneConditionBySceneNumberAndGroup(scene.getSceneNumber(), index-1);
-                for (int i = 0; i < 3; i++) {
-                    int cond = (choice >>i) & 0x01;
-                    if (cond != 0) {
-                        int type = (condType >>(i*2)) & 0x03;
-                        TSceneCondition tSceneCondition = new TSceneCondition();
-                        tSceneCondition.setSceneNumber(scene.getSceneNumber());
-                        tSceneCondition.setConditionGroup(index-1);
-                        tSceneCondition.setCond(data.substring(26 + i*30, 26 + i*30 + 16));
-                        if (type == 1) {
-                            //time
-                        }else if (type == 2) {
-                            //sensor
-                            String SerialString = data.substring(12 + i*30, 12 + i*30 + 10);
-                            String addrString = data.substring(24 + i*30, 24 + i*30 + 2);
-                            TOboxDeviceConfig tOboxDeviceConfig = oboxDeviceConfigService.getTOboxDeviceConfigByDeviceSerialIdAndAddress(SerialString, addrString);
-//                            TOboxDeviceConfig tOboxDeviceConfig = DeviceBusiness.queryDeviceConfigByAddr(SerialString, addrString);
-                            if (tOboxDeviceConfig != null) {
-                                tSceneCondition.setSerialid(tOboxDeviceConfig.getDeviceSerialId());
-                            }
-                        }else if (type == 3) {
-                            //remoter
-                        }
-                        sceneConditionService.addSceneCondition(tSceneCondition);
-//                        SceneBusiness.addSceneCondition(tSceneCondition);
-
-                    }
-                }
-
-            }else if ("03".equals(data.substring(2, 4))) {
+	            }else if ("02".equals(data.substring(2, 4))) {
+	                //scene condition
+	                int index = Integer.parseInt(data.substring(8, 10), 16);
+	                int choice = Integer.parseInt(data.substring(4, 6), 16);
+	                int condType = Integer.parseInt(data.substring(10, 12), 16);
+	                TScene scene = sceneService.getTSceneByOboxSerialIdAndOboxSceneNumber(dbObox.getOboxSerialId(), scene_number);
+	                if (scene == null) {
+	                    logger.error(String.format("not found scene_number %s in obox!", scene_number));
+	                    return null;
+	                }
+	                sceneConditionService.deleteSceneConditionBySceneNumberAndGroup(scene.getSceneNumber(), index-1);
+	//                SceneBusiness.deleteSceneConditionBySceneNumberAndGroup(scene.getSceneNumber(), index-1);
+	                for (int i = 0; i < 3; i++) {
+	                    int cond = (choice >>i) & 0x01;
+	                    if (cond != 0) {
+	                        int type = (condType >>(i*2)) & 0x03;
+	                        TSceneCondition tSceneCondition = new TSceneCondition();
+	                        tSceneCondition.setSceneNumber(scene.getSceneNumber());
+	                        tSceneCondition.setConditionGroup(index-1);
+	                        tSceneCondition.setCond(data.substring(26 + i*30, 26 + i*30 + 16));
+	                        if (type == 1) {
+	                            //time
+	                        }else if (type == 2) {
+	                            //sensor
+	                            String SerialString = data.substring(12 + i*30, 12 + i*30 + 10);
+	                            String addrString = data.substring(24 + i*30, 24 + i*30 + 2);
+	                            TOboxDeviceConfig tOboxDeviceConfig = oboxDeviceConfigService.getTOboxDeviceConfigByDeviceSerialIdAndAddress(SerialString, addrString);
+	//                            TOboxDeviceConfig tOboxDeviceConfig = DeviceBusiness.queryDeviceConfigByAddr(SerialString, addrString);
+	                            if (tOboxDeviceConfig != null) {
+	                                tSceneCondition.setSerialid(tOboxDeviceConfig.getDeviceSerialId());
+	                            }
+	                        }else if (type == 3) {
+	                            //remoter
+	                        }
+	                        sceneConditionService.addSceneCondition(tSceneCondition);
+	//                        SceneBusiness.addSceneCondition(tSceneCondition);
+	
+	                    }
+	                }
+	
+	            }else if ("03".equals(data.substring(2, 4))) {
                 //scene action
                 TScene scene = sceneService.getTSceneByOboxSerialIdAndOboxSceneNumber(dbObox.getOboxSerialId(), scene_number);
                 if (scene == null) {

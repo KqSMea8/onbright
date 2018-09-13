@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
@@ -14,6 +15,8 @@ import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Component;
 
 import com.bright.apollo.common.entity.TSceneAction;
+import com.bright.apollo.dao.device.sqlProvider.SceneActionProvider;
+import com.bright.apollo.dao.device.sqlProvider.TIntelligentFingerRecordDynaSqlProvider;
 
 @Mapper
 @Component
@@ -45,12 +48,7 @@ public interface TSceneActionMapper  {
 	@Delete("delete t_scene_action where scene_number=#{sceneNumber} and actionID = #{actionId}")
 	void deleteSceneActionByBySceneNumberAndActionId(@Param("sceneNumber") int sceneNumber,@Param("actionId") String actionId);
 
-	@Insert("insert into t_scene_action (actionID,\n" +
-			"action,\n" +
-			"node_type,\n" +
-			"scene_number,\n" +
-			"preSet) " +
-			"values(#{actionid},#{action},#{nodeType},#{sceneNumber},#{preset})")
+	@InsertProvider(type=SceneActionProvider.class,method="addAction")
 	@Options(useGeneratedKeys=true, keyProperty="id", keyColumn="id")
 	int addSceneAction(TSceneAction sceneAction);
 
