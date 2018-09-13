@@ -728,9 +728,15 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                 return exist;
             }else {
                 if(partition.equals("24")){
-                    middle = deviceState.substring(2,4);
-                    beginStr = deviceState.substring(0,2);
-                    endStr = deviceState.substring(4,deviceState.length());
+                    if(exist!=null&&!exist.equals("")){
+                        middle = exist.substring(2,4);
+                        beginStr = exist.substring(0,2);
+                        endStr = exist.substring(4,exist.length());
+                    }else{
+                        middle = deviceState.substring(2,4);
+                        beginStr = deviceState.substring(0,2);
+                        endStr = deviceState.substring(4,deviceState.length());
+                    }
                     if(value.equals("off")){
                         val = andOpt(middle,child);
                     }else if(value.equals("on")){
@@ -738,8 +744,13 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                     }
                     reVal = beginStr+val+endStr;
                 }else if(partition.equals("12")){
-                    beginStr = deviceState.substring(0,2);
-                    endStr = deviceState.substring(2,deviceState.length());
+                    if(exist!=null&&!exist.equals("")){
+                        beginStr = exist.substring(0,2);
+                        endStr = exist.substring(2,exist.length());
+                    }else{
+                        beginStr = deviceState.substring(0,2);
+                        endStr = deviceState.substring(2,deviceState.length());
+                    }
                     if(value.equals("off")){
                         val = andOpt(beginStr,child);
                     }else if(value.equals("on")){
