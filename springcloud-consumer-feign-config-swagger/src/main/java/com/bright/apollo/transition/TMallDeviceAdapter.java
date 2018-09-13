@@ -788,7 +788,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         }else if(child.equals("2")){
             andM = integerM & 0xFd;
         }else if(child.equals("3")){
-            andM = integerM & 0xF8;
+            andM = integerM & 0xFb;
         }
         String returnVal = String.valueOf(andM);
         if(returnVal.length()<2){
