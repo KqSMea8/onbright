@@ -11,6 +11,8 @@ import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.common.entity.TScene;
 import com.bright.apollo.common.entity.TSceneAction;
 import com.bright.apollo.common.entity.TSceneCondition;
+import com.bright.apollo.common.entity.TUserObox;
+import com.bright.apollo.common.entity.TUserScene;
 import com.bright.apollo.enums.NodeTypeEnum;
 import com.bright.apollo.session.ClientSession;
 import com.bright.apollo.tool.ByteHelper;
@@ -85,14 +87,23 @@ public class SceneCMDHandler extends BasicHandler{
 //                    int ret = OboxBusiness.addOboxScene(scene);
                     int ret = sceneService.addScene(scene);
                     cmdCache.saveAddLocalSceneInfo(scene_id, dbObox.getOboxSerialId(), scene_group,scene_number,ret);
-//                    List<TUserObox> tUserOboxs = OboxBusiness.queryUserOboxsByOboxId(dbObox.getOboxId());
-//                    for (TUserObox tUserObox : tUserOboxs) {
-//                        TUserOboxScene tUserScene = new TUserScene();
-//                        tUserScene.setUserId(tUserObox.getUserId());
-//                        tUserScene.setSceneNumber(ret);
-//                        SceneBusiness.addUserScene(tUserScene);
-//                    }
-
+                    /*List<TUserObox> tUserOboxs = OboxBusiness.queryUserOboxsByOboxId(dbObox.getOboxId());
+                    for (TUserObox tUserObox : tUserOboxs) {
+                        TUserOboxScene tUserScene = new TUserScene();
+                        tUserScene.setUserId(tUserObox.getUserId());
+                        tUserScene.setSceneNumber(ret);
+                        SceneBusiness.addUserScene(tUserScene);
+                    }*/
+                    List<TUserObox> tUserOboxs = userOboxService.getUserOboxBySerialId(dbObox.getOboxSerialId());
+                    if(tUserOboxs!=null&&tUserOboxs.size()>0){
+                    	 for (TUserObox tUserObox : tUserOboxs) {
+                             TUserScene tUserScene = new TUserScene();
+                             tUserScene.setUserId(tUserObox.getUserId());
+                             tUserScene.setSceneNumber(ret);
+                             userService.addUserScene(tUserScene);
+                             //SceneBusiness.addUserScene(tUserScene);
+                         }
+                    }
                 }else if (operte_type == 2) {
                     //modify scene
                     logger.info("====modify scene====");
