@@ -227,8 +227,10 @@ public class TmallController {
 						if(acceptIds.indexOf(deviceId)>=0){
 							logger.info("=========== controll ======= "+deviceId);
 							if(name.equals("TurnOn")){
+								logger.info("=========== controll ======= on ======= ");
 								facadeController.controlDevice(deviceId,"00070000000000");
 							}else if(name.equals("TurnOff")){
+								logger.info("=========== controll ======= off ====== ");
 								facadeController.controlDevice(deviceId,"00000000000000");
 							}
 						}
