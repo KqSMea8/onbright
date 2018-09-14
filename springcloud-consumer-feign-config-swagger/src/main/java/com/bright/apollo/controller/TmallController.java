@@ -219,25 +219,18 @@ public class TmallController {
 					String childType = oboxDeviceConfig.getDeviceChildType();
 					Map<String,Object> paramMap = null;
 					String acceptIds = "";
-					lock.lock();
-					try {
-						acceptIds =redisBussines.get("tmall_accept_id_"+deviceId);
-					}catch (Exception e){
-						logger.info(" ====== lock ===== tmall_accept_id_ exception ====== "+e.getMessage());
-					}finally {
-						lock.unlock();
-					}
-
+					Thread.sleep(500);
+					acceptIds =redisBussines.get("tmall_accept_id_"+deviceId);
 					String[] idArr = acceptIds.split(",");
 					if(deviceType.equals("04")&&
 							(childType.equals("2b")||childType.equals("53")||
 							childType.equals("2a")||childType.equals("17") ||
 							childType.equals("16"))&&idArr.length>1){
 							if(name.equals("TurnOn")){
-								logger.info("=========== controll ======= on ======= "+deviceId);
+								logger.info("=========== controll ======= on ======= "+originalId);
 								facadeController.controlDevice(deviceId,"00070000000000");
 							}else if(name.equals("TurnOff")){
-								logger.info("=========== controll ======= off ====== "+deviceId);
+								logger.info("=========== controll ======= off ====== "+originalId);
 								facadeController.controlDevice(deviceId,"00000000000000");
 							}
 
