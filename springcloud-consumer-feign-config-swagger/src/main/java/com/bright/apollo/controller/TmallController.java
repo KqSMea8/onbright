@@ -226,7 +226,7 @@ public class TmallController {
 							(childType.equals("2b")||childType.equals("53")||
 							childType.equals("2a")||childType.equals("17") ||
 							childType.equals("16"))&&idArr.length>1){
-						
+
 							logger.info("=========== controll ======= "+deviceId);
 							if(name.equals("TurnOn")){
 								logger.info("=========== controll ======= on ======= ");
@@ -254,7 +254,7 @@ public class TmallController {
 				map.put("header",headerMap);
 				playloadMap.put("deviceId",deviceId);
 				map.put("payload",playloadMap);
-//				redisBussines.delete("tmall_accept_id");
+				redisBussines.delete("tmall_accept_id_"+originalId);
 			}
 
 		}else if(requestHeaderMap.get("namespace").equals("AliGenie.Iot.Device.Query")){
