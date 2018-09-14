@@ -7,6 +7,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
@@ -198,11 +199,11 @@ public class TmallController {
 			try {
 				try {
 					lock.lock();
-					String redisId = redisBussines.get("tmall_accept_id");
+					String redisId = redisBussines.get("tmall_accept_id_"+originalId);
 					if(StringUtils.isEmpty(redisId)){
-						redisBussines.setValueWithExpire("tmall_accept_id",originalId,3);
+						redisBussines.setValueWithExpire("tmall_accept_id_"+originalId,originalId,3);
 					}else{
-						redisBussines.setValueWithExpire("tmall_accept_id",redisId+","+originalId,3);
+						redisBussines.setValueWithExpire("tmall_accept_id_"+originalId,redisId+","+originalId,3);
 					}
 
 				}catch (Exception e){
@@ -217,14 +218,15 @@ public class TmallController {
 					String deviceType = oboxDeviceConfig.getDeviceType();
 					String childType = oboxDeviceConfig.getDeviceChildType();
 					Map<String,Object> paramMap = null;
+					String acceptIds = redisBussines.get("tmall_accept_id_"+originalId);
+					String[] idArr = acceptIds.split(",");
+					logger.info(" redisId ====== tmall_accept_id ====== "+originalId+" ====== "+acceptIds);
+					logger.info(" ====== idArr.length ====== "+idArr.length);
 					if(deviceType.equals("04")&&
 							(childType.equals("2b")||childType.equals("53")||
 							childType.equals("2a")||childType.equals("17") ||
-							childType.equals("16"))){
-						String acceptIds = redisBussines.get("tmall_accept_id");
-						logger.info(" redisId ====== tmall_accept_id ====== "+acceptIds);
-						logger.info(" ====== indexof ====== "+deviceId+" ======= "+acceptIds.indexOf(deviceId));
-						if(acceptIds.indexOf(deviceId)>=0){
+							childType.equals("16"))&&idArr.length>1){
+						
 							logger.info("=========== controll ======= "+deviceId);
 							if(name.equals("TurnOn")){
 								logger.info("=========== controll ======= on ======= ");
@@ -233,7 +235,7 @@ public class TmallController {
 								logger.info("=========== controll ======= off ====== ");
 								facadeController.controlDevice(deviceId,"00000000000000");
 							}
-						}
+
 					}else{
 						adapter = new TMallDeviceAdapter(playLoadMap,tMallTemplate,oboxDeviceConfig,header);
 						adapter.setRedisBussines(redisBussines);
