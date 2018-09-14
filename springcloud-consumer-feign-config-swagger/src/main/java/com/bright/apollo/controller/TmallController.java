@@ -176,6 +176,7 @@ public class TmallController {
 			String originalId = deviceId;
 			String[] deviceIdArr = deviceId.split("_");
 			deviceId = deviceIdArr[0];
+			String value = (String)playloadMap.get("value");
 			//====== 生成httpsClient begin ======
 			RequestConfig requestConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD_STRICT).build();
 			HttpPost httpPost =new HttpPost("https://cloud.on-bright.com/common");
@@ -221,7 +222,7 @@ public class TmallController {
 							childType.equals("16"))){
 						String acceptIds = redisBussines.get("tmall_accept_id");
 						logger.info(" redisId ====== tmall_accept_id ====== "+acceptIds);
-						String value = (String)playloadMap.get("value");
+
 						if(acceptIds.indexOf(deviceId)>=0){
 							if(value.equals("on")){
 								facadeController.controlDevice(deviceId,"00070000000000");
