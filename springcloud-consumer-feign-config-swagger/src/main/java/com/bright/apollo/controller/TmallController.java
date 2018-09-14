@@ -221,7 +221,7 @@ public class TmallController {
 					String acceptIds = redisBussines.get("tmall_accept_id_"+deviceId);
 					String[] idArr = acceptIds.split(",");
 					logger.info(" ====== idArr.length ====== "+deviceId+" ====== "+idArr.length);
-					Thread.sleep(100);
+					Thread.sleep(1000);
 					if(deviceType.equals("04")&&
 							(childType.equals("2b")||childType.equals("53")||
 							childType.equals("2a")||childType.equals("17") ||
