@@ -170,13 +170,14 @@ public class TmallController {
 			List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 
 			Map<String,Object> playLoadMap = (Map<String, Object>) requestMap.get("payload");
+
             Map<String,Object> header = (Map<String, Object>) requestMap.get("header");
 			String name = (String)requestHeaderMap.get("name");
 			String deviceId = (String)playLoadMap.get("deviceId");
 			String originalId = deviceId;
 			String[] deviceIdArr = deviceId.split("_");
 			deviceId = deviceIdArr[0];
-			String value = (String)playloadMap.get("value");
+
 			//====== 生成httpsClient begin ======
 			RequestConfig requestConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD_STRICT).build();
 			HttpPost httpPost =new HttpPost("https://cloud.on-bright.com/common");
@@ -224,9 +225,9 @@ public class TmallController {
 						logger.info(" redisId ====== tmall_accept_id ====== "+acceptIds);
 
 						if(acceptIds.indexOf(deviceId)>=0){
-							if(value.equals("on")){
+							if(name.equals("TurnOn")){
 								facadeController.controlDevice(deviceId,"00070000000000");
-							}else if(value.equals("off")){
+							}else if(name.equals("TurnOff")){
 								facadeController.controlDevice(deviceId,"00000000000000");
 							}
 							String[] idArray = acceptIds.split(",");
