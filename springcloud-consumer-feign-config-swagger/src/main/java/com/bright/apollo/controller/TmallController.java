@@ -225,23 +225,12 @@ public class TmallController {
 						logger.info(" redisId ====== tmall_accept_id ====== "+acceptIds);
 
 						if(acceptIds.indexOf(deviceId)>=0){
+							logger.info("=========== controll ======= "+deviceId);
 							if(name.equals("TurnOn")){
 								facadeController.controlDevice(deviceId,"00070000000000");
 							}else if(name.equals("TurnOff")){
 								facadeController.controlDevice(deviceId,"00000000000000");
 							}
-							String[] idArray = acceptIds.split(",");
-							String id = "";
-							String resetStr = "";
-							for(int i=0;i<idArray.length;i++){
-								id = idArray[i];
-								if(id.indexOf(deviceId)<0){
-									resetStr +=resetStr.equals("")?resetStr:resetStr+",";
-								}
-							}
-							resetStr = resetStr.substring(0,resetStr.length()-1);
-							logger.info(" ======after send   ====== "+deviceId+" ====== "+resetStr);
-							redisBussines.setValueWithExpire("tmall_accept_id",resetStr,3);
 						}
 					}else{
 						adapter = new TMallDeviceAdapter(playLoadMap,tMallTemplate,oboxDeviceConfig,header);

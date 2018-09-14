@@ -58,8 +58,8 @@
       <file leaf-file-name="TmallController.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/TmallController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="232">
-              <caret line="224" selection-start-line="224" selection-end-line="224" />
+            <state relative-caret-position="556">
+              <caret line="233" selection-start-line="233" selection-end-line="233" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#5076#5088#0" expanded="true" />
@@ -699,12 +699,12 @@
       <workItem from="1533887392858" duration="47322000" />
       <workItem from="1534320136585" duration="157430000" />
       <workItem from="1535537860793" duration="5299000" />
-      <workItem from="1535593741795" duration="163144000" />
+      <workItem from="1535593741795" duration="164334000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1214038000" />
+    <option name="totallyTimeSpent" value="1215228000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -717,6 +717,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1296" height="1000" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="4" />
       <window_info anchor="bottom" id="Event Log" order="13" sideWeight="0.5040453" side_tool="true" weight="0.44444445" />
@@ -728,7 +729,7 @@
       <window_info id="Structure" order="0" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="3" weight="0.25" />
       <window_info id="UI Designer" order="3" />
-      <window_info active="true" anchor="bottom" id="Debug" order="4" sideWeight="0.4959547" visible="true" weight="0.44444445" />
+      <window_info anchor="bottom" id="Debug" order="4" sideWeight="0.4959547" weight="0.44444445" />
       <window_info anchor="bottom" id="TODO" order="7" weight="0.3287037" />
       <window_info anchor="bottom" id="Messages" order="14" sideWeight="0.5088997" weight="0.47800925" />
       <window_info anchor="right" id="Palette&#9;" order="7" />
@@ -1176,8 +1177,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/TmallController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="232">
-          <caret line="224" selection-start-line="224" selection-end-line="224" />
+        <state relative-caret-position="556">
+          <caret line="233" selection-start-line="233" selection-end-line="233" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#5076#5088#0" expanded="true" />
