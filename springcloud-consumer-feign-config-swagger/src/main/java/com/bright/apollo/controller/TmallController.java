@@ -194,14 +194,21 @@ public class TmallController {
 
 
 			try {
-				lock.lock();
-				String redisId = redisBussines.get(deviceId);
-				if(StringUtils.isEmpty(redisId)){
-					redisBussines.setValueWithExpire(deviceId,originalId,2);
-				}else{
-					redisBussines.setValueWithExpire(deviceId,redisId+","+originalId,2);
+				try {
+					lock.lock();
+					String redisId = redisBussines.get(deviceId);
+					if(StringUtils.isEmpty(redisId)){
+						redisBussines.setValueWithExpire(deviceId,originalId,2);
+					}else{
+						redisBussines.setValueWithExpire(deviceId,redisId+","+originalId,2);
+					}
+					logger.info(" redisId ====== "+deviceId+" ====== "+redisBussines.get(deviceId));
+				}catch (Exception e){
+					logger.info(" ====== lock ===== exception ====== "+e.getMessage());
+				}finally {
+					lock.unlock();
 				}
-				logger.info(" redisId ====== "+deviceId+" ====== "+redisBussines.get(deviceId));
+
 				ResponseObject<TOboxDeviceConfig> responseObject = feignDeviceClient.getDevice(deviceId);
 				TOboxDeviceConfig oboxDeviceConfig = responseObject.getData();
 				if(oboxDeviceConfig !=null &&!oboxDeviceConfig.equals("")){
@@ -237,7 +244,7 @@ public class TmallController {
 				map.put("header",headerMap);
 				playloadMap.put("deviceId",deviceId);
 				map.put("payload",playloadMap);
-				lock.unlock();
+
 			}
 
 		}else if(requestHeaderMap.get("namespace").equals("AliGenie.Iot.Device.Query")){
