@@ -199,11 +199,11 @@ public class TmallController {
 			try {
 				try {
 					lock.lock();
-					String redisId = redisBussines.get("tmall_accept_id_"+originalId);
+					String redisId = redisBussines.get("tmall_accept_id_"+deviceId);
 					if(StringUtils.isEmpty(redisId)){
-						redisBussines.setValueWithExpire("tmall_accept_id_"+originalId,originalId,3);
+						redisBussines.setValueWithExpire("tmall_accept_id_"+deviceId,originalId,3);
 					}else{
-						redisBussines.setValueWithExpire("tmall_accept_id_"+originalId,redisId+","+originalId,3);
+						redisBussines.setValueWithExpire("tmall_accept_id_"+deviceId,redisId+","+originalId,3);
 					}
 
 				}catch (Exception e){
@@ -218,9 +218,9 @@ public class TmallController {
 					String deviceType = oboxDeviceConfig.getDeviceType();
 					String childType = oboxDeviceConfig.getDeviceChildType();
 					Map<String,Object> paramMap = null;
-					String acceptIds = redisBussines.get("tmall_accept_id_"+originalId);
+					String acceptIds = redisBussines.get("tmall_accept_id_"+deviceId);
 					String[] idArr = acceptIds.split(",");
-					logger.info(" redisId ====== tmall_accept_id ====== "+originalId+" ====== "+acceptIds);
+					logger.info(" redisId ====== tmall_accept_id ====== "+deviceId+" ====== "+acceptIds);
 					logger.info(" ====== idArr.length ====== "+idArr.length);
 					if(deviceType.equals("04")&&
 							(childType.equals("2b")||childType.equals("53")||
@@ -254,7 +254,7 @@ public class TmallController {
 				map.put("header",headerMap);
 				playloadMap.put("deviceId",deviceId);
 				map.put("payload",playloadMap);
-				redisBussines.delete("tmall_accept_id_"+originalId);
+				redisBussines.delete("tmall_accept_id_"+deviceId);
 			}
 
 		}else if(requestHeaderMap.get("namespace").equals("AliGenie.Iot.Device.Query")){
@@ -286,7 +286,7 @@ public class TmallController {
 
 		}
 		logger.info("map ====== "+map);
-		
+
 		return map.toString();
 	}
 
