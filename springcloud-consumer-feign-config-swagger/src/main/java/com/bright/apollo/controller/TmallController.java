@@ -9,6 +9,7 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.locks.ReentrantLock;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
@@ -37,6 +38,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -76,6 +78,8 @@ public class TmallController {
 
 	@Autowired
 	private FacadeController facadeController;
+
+	private ReentrantLock lock = new ReentrantLock();
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 //	@ApiOperation(value = "get deivcie by device serialId", httpMethod = "GET", produces = "application/json")
@@ -169,6 +173,7 @@ public class TmallController {
             Map<String,Object> header = (Map<String, Object>) requestMap.get("header");
 			String name = (String)requestHeaderMap.get("name");
 			String deviceId = (String)playLoadMap.get("deviceId");
+			String originalId = deviceId;
 			String[] deviceIdArr = deviceId.split("_");
 			deviceId = deviceIdArr[0];
 			//====== 生成httpsClient begin ======
@@ -189,6 +194,14 @@ public class TmallController {
 
 
 			try {
+				lock.lock();
+				String redisId = redisBussines.get(deviceId);
+				if(StringUtils.isEmpty(redisId)){
+					redisBussines.setValueWithExpire(deviceId,originalId,2);
+				}else{
+					redisBussines.setValueWithExpire(deviceId,redisId+","+originalId,2);
+				}
+				logger.info(" redisId ====== "+deviceId+" ====== "+redisBussines.get(deviceId));
 				ResponseObject<TOboxDeviceConfig> responseObject = feignDeviceClient.getDevice(deviceId);
 				TOboxDeviceConfig oboxDeviceConfig = responseObject.getData();
 				if(oboxDeviceConfig !=null &&!oboxDeviceConfig.equals("")){
@@ -224,6 +237,7 @@ public class TmallController {
 				map.put("header",headerMap);
 				playloadMap.put("deviceId",deviceId);
 				map.put("payload",playloadMap);
+				lock.unlock();
 			}
 
 		}else if(requestHeaderMap.get("namespace").equals("AliGenie.Iot.Device.Query")){
