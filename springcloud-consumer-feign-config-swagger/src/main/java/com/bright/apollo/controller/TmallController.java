@@ -196,13 +196,13 @@ public class TmallController {
 			try {
 				try {
 					lock.lock();
-					String redisId = redisBussines.get(deviceId);
+					String redisId = redisBussines.get("tmall_accept_id");
 					if(StringUtils.isEmpty(redisId)){
-						redisBussines.setValueWithExpire(deviceId,originalId,2);
+						redisBussines.setValueWithExpire("tmall_accept_id",originalId,5);
 					}else{
-						redisBussines.setValueWithExpire(deviceId,redisId+","+originalId,2);
+						redisBussines.setValueWithExpire("tmall_accept_id",redisId+","+originalId,5);
 					}
-					logger.info(" redisId ====== "+deviceId+" ====== "+redisBussines.get(deviceId));
+					logger.info(" redisId ====== tmall_accept_id ====== "+redisBussines.get("tmall_accept_id"));
 				}catch (Exception e){
 					logger.info(" ====== lock ===== exception ====== "+e.getMessage());
 				}finally {
