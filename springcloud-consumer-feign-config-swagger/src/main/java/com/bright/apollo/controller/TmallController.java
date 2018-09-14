@@ -198,11 +198,11 @@ public class TmallController {
 					lock.lock();
 					String redisId = redisBussines.get("tmall_accept_id");
 					if(StringUtils.isEmpty(redisId)){
-						redisBussines.setValueWithExpire("tmall_accept_id",originalId,5);
+						redisBussines.setValueWithExpire("tmall_accept_id",originalId,3);
 					}else{
-						redisBussines.setValueWithExpire("tmall_accept_id",redisId+","+originalId,5);
+						redisBussines.setValueWithExpire("tmall_accept_id",redisId+","+originalId,3);
 					}
-					logger.info(" redisId ====== tmall_accept_id ====== "+redisBussines.get("tmall_accept_id"));
+
 				}catch (Exception e){
 					logger.info(" ====== lock ===== exception ====== "+e.getMessage());
 				}finally {
@@ -212,27 +212,42 @@ public class TmallController {
 				ResponseObject<TOboxDeviceConfig> responseObject = feignDeviceClient.getDevice(deviceId);
 				TOboxDeviceConfig oboxDeviceConfig = responseObject.getData();
 				if(oboxDeviceConfig !=null &&!oboxDeviceConfig.equals("")){
-					adapter = new TMallDeviceAdapter(playLoadMap,tMallTemplate,oboxDeviceConfig,header);
-					adapter.setRedisBussines(redisBussines);
-
-					Map<String,Object> paramMap = adapter.TMall2Obright();
-
-					logger.info("paramMap ====== "+paramMap);
-					if(paramMap.get("deviceState")==null){
-                        headerMap.put("namespace","AliGenie.Iot.Device.Control");
-                        headerMap.put("name","ErrorResponseResponse");
-                        headerMap.put("messageId",requestHeaderMap.get("messageId"));
-                        headerMap.put("payLoadVersion","1");
-                        map.put("header",headerMap);
-                        playloadMap.put("deviceId",deviceId);
-                        playloadMap.put("errorCode","INVALIDATE_PARAMS");
-                        playloadMap.put("message","device not support");
-                        map.put("payload",playloadMap);
-                        return map.toString();
-                    }else{
-                        facadeController.controlDevice(deviceId,(String)paramMap.get("deviceState"));
-                    }
-
+					String deviceType = oboxDeviceConfig.getDeviceType();
+					String childType = oboxDeviceConfig.getDeviceChildType();
+					Map<String,Object> paramMap = null;
+					if(deviceType.equals("04")&&
+							(childType.equals("2b")||childType.equals("53")||
+							childType.equals("2a")||childType.equals("17") ||
+							childType.equals("16"))){
+						String acceptIds = redisBussines.get("tmall_accept_id");
+						logger.info(" redisId ====== tmall_accept_id ====== "+acceptIds);
+						String value = (String)playloadMap.get("value");
+						if(acceptIds.indexOf(deviceId)>=0){
+							if(value.equals("on")){
+								facadeController.controlDevice(deviceId,"00070000000000");
+							}else if(value.equals("off")){
+								facadeController.controlDevice(deviceId,"00000000000000");
+							}
+							String[] idArray = acceptIds.split(",");
+							String id = "";
+							String resetStr = "";
+							for(int i=0;i<idArray.length;i++){
+								id = idArray[i];
+								if(id.indexOf(deviceId)<0){
+									resetStr +=resetStr.equals("")?resetStr:resetStr+",";
+								}
+							}
+							resetStr = resetStr.substring(0,resetStr.length()-1);
+							logger.info(" ======after send   ====== "+deviceId+" ====== "+resetStr);
+							redisBussines.setValueWithExpire("tmall_accept_id",resetStr,3);
+						}
+					}else{
+						adapter = new TMallDeviceAdapter(playLoadMap,tMallTemplate,oboxDeviceConfig,header);
+						adapter.setRedisBussines(redisBussines);
+						paramMap = adapter.TMall2Obright();
+						logger.info("paramMap ====== "+paramMap);
+						facadeController.controlDevice(deviceId,(String)paramMap.get("deviceState"));
+					}
 				}
 			}catch (Exception e){
 				logger.info("exception ====== "+e);
