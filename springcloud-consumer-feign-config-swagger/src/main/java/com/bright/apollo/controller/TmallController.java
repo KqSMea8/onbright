@@ -252,7 +252,7 @@ public class TmallController {
 				map.put("header",headerMap);
 				playloadMap.put("deviceId",deviceId);
 				map.put("payload",playloadMap);
-
+				redisBussines.delete("tmall_accept_id");
 			}
 
 		}else if(requestHeaderMap.get("namespace").equals("AliGenie.Iot.Device.Query")){

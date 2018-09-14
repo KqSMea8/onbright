@@ -707,36 +707,36 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         if(deviceIdArr.length>1){
             child = deviceIdArr[1];
         }else{
-            if(value.equals("off")){
-                redisBussines.setValueWithExpire("tmall_device_all"+id,"000000000000",2);
-            }else if(value.equals("on")){
-                if(partition.equals("12")){
-                    redisBussines.setValueWithExpire("tmall_device_all"+id,"03000000000",2);
-                }else{
-                    redisBussines.setValueWithExpire("tmall_device_all"+id,"000700000000",2);
-                }
-
-            }
-            return redisBussines.get("tmall_device_"+id);
+//            if(value.equals("off")){
+//                redisBussines.setValueWithExpire("tmall_device_all"+id,"000000000000",2);
+//            }else if(value.equals("on")){
+//                if(partition.equals("12")){
+//                    redisBussines.setValueWithExpire("tmall_device_all"+id,"03000000000",2);
+//                }else{
+//                    redisBussines.setValueWithExpire("tmall_device_all"+id,"000700000000",2);
+//                }
+//
+//            }
+            return null;
         }
         String reVal = "";
 //        try{
-            String exist = redisBussines.get("tmall_device_"+id);
+//            String exist = redisBussines.get("tmall_device_"+id);
             String beginStr = null;
             String endStr = null;
-            if(exist!=null&&!exist.equals("")&&(exist.equals("000000000000")||exist.equals("000700000000")||exist.equals("03000000000"))){
-                return exist;
-            }else {
+//            if(exist!=null&&!exist.equals("")&&(exist.equals("000000000000")||exist.equals("000700000000")||exist.equals("03000000000"))){
+//                return exist;
+//            }else {
                 if(partition.equals("24")){
-                    if(exist!=null&&!exist.equals("")){
-                        middle = exist.substring(2,4);
-                        beginStr = exist.substring(0,2);
-                        endStr = exist.substring(4,exist.length());
-                    }else{
+//                    if(exist!=null&&!exist.equals("")){
+//                        middle = exist.substring(2,4);
+//                        beginStr = exist.substring(0,2);
+//                        endStr = exist.substring(4,exist.length());
+//                    }else{
                         middle = deviceState.substring(2,4);
                         beginStr = deviceState.substring(0,2);
                         endStr = deviceState.substring(4,deviceState.length());
-                    }
+//                    }
                     if(value.equals("off")){
                         val = andOpt(middle,child);
                     }else if(value.equals("on")){
@@ -744,13 +744,13 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                     }
                     reVal = beginStr+val+endStr;
                 }else if(partition.equals("12")){
-                    if(exist!=null&&!exist.equals("")){
-                        beginStr = exist.substring(0,2);
-                        endStr = exist.substring(2,exist.length());
-                    }else{
+//                    if(exist!=null&&!exist.equals("")){
+//                        beginStr = exist.substring(0,2);
+//                        endStr = exist.substring(2,exist.length());
+//                    }else{
                         beginStr = deviceState.substring(0,2);
                         endStr = deviceState.substring(2,deviceState.length());
-                    }
+//                    }
                     if(value.equals("off")){
                         val = andOpt(beginStr,child);
                     }else if(value.equals("on")){
@@ -758,32 +758,32 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                     }
                     reVal = val+endStr;
                 }
-                redisBussines.setValueWithExpire("tmall_device_"+id,reVal,2);
-            }
+//                redisBussines.setValueWithExpire("tmall_device_"+id,reVal,2);
+//            }
 //        }catch (Exception e){
 //            e.printStackTrace();
 //        }finally {
 //            lock.unlock();
 //        }
 
-        long start = System.currentTimeMillis();
-        long end = 0;
-        String combindVal = "";
-        while(true){
-            end = System.currentTimeMillis();
-            combindVal = redisBussines.get("tmall_device_all"+id);
-            if(combindVal!=null && (combindVal.equals("000700000000")||combindVal.equals("000000000000")||combindVal.equals("030000000000"))){
-                break;
-            }else if(end-start>3000){
-                break;
-            }
-        }
-        if(combindVal!=null){
-            return combindVal;
-        }else{
-            return reVal;
-        }
-
+//        long start = System.currentTimeMillis();
+//        long end = 0;
+//        String combindVal = "";
+//        while(true){
+//            end = System.currentTimeMillis();
+//            combindVal = redisBussines.get("tmall_device_all"+id);
+//            if(combindVal!=null && (combindVal.equals("000700000000")||combindVal.equals("000000000000")||combindVal.equals("030000000000"))){
+//                break;
+//            }else if(end-start>3000){
+//                break;
+//            }
+//        }
+//        if(combindVal!=null){
+//            return combindVal;
+//        }else{
+//
+//        }
+        return reVal;
     }
 
     private String andOpt(String val,String child){
