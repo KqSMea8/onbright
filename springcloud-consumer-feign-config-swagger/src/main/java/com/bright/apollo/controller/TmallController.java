@@ -207,7 +207,7 @@ public class TmallController {
 					}
 
 				}catch (Exception e){
-					logger.info(" ====== lock ===== exception ====== "+e.getMessage());
+					logger.info(" ====== lock ===== setredis exception ====== "+e.getMessage());
 				}finally {
 					lock.unlock();
 				}
@@ -218,21 +218,26 @@ public class TmallController {
 					String deviceType = oboxDeviceConfig.getDeviceType();
 					String childType = oboxDeviceConfig.getDeviceChildType();
 					Map<String,Object> paramMap = null;
-					String acceptIds = redisBussines.get("tmall_accept_id_"+deviceId);
+					String acceptIds = "";
+					lock.lock();
+					try {
+						acceptIds =redisBussines.get("tmall_accept_id_"+deviceId);
+					}catch (Exception e){
+						logger.info(" ====== lock ===== tmall_accept_id_ exception ====== "+e.getMessage());
+					}finally {
+						lock.unlock();
+					}
+
 					String[] idArr = acceptIds.split(",");
-					logger.info(" ====== idArr.length ====== "+deviceId+" ====== "+idArr.length);
-					Thread.sleep(1000);
 					if(deviceType.equals("04")&&
 							(childType.equals("2b")||childType.equals("53")||
 							childType.equals("2a")||childType.equals("17") ||
 							childType.equals("16"))&&idArr.length>1){
-
-							logger.info("=========== controll ======= "+deviceId);
 							if(name.equals("TurnOn")){
-								logger.info("=========== controll ======= on ======= ");
+								logger.info("=========== controll ======= on ======= "+deviceId);
 								facadeController.controlDevice(deviceId,"00070000000000");
 							}else if(name.equals("TurnOff")){
-								logger.info("=========== controll ======= off ====== ");
+								logger.info("=========== controll ======= off ====== "+deviceId);
 								facadeController.controlDevice(deviceId,"00000000000000");
 							}
 
