@@ -223,7 +223,7 @@ public class TmallController {
 							childType.equals("16"))){
 						String acceptIds = redisBussines.get("tmall_accept_id");
 						logger.info(" redisId ====== tmall_accept_id ====== "+acceptIds);
-
+						logger.info(" ====== indexof ====== "+deviceId+" ======= "+acceptIds.indexOf(deviceId));
 						if(acceptIds.indexOf(deviceId)>=0){
 							logger.info("=========== controll ======= "+deviceId);
 							if(name.equals("TurnOn")){
