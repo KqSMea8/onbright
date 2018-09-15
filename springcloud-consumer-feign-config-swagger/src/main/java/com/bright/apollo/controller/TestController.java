@@ -1,18 +1,15 @@
 package com.bright.apollo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bright.apollo.feign.FeignDeviceClient;
-import com.bright.apollo.response.AliDevInfo;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
-
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
+import com.bright.apollo.vo.SmsLoginVo;
 
 /**  
  *@Title:  
@@ -26,6 +23,8 @@ import io.swagger.annotations.ApiResponse;
 @RequestMapping("test")
 public class TestController {
 	@Autowired
+	private SmsLoginVo SmsLoginVo;
+	@Autowired
 	private FeignDeviceClient feignDeviceClient;
   	@RequestMapping(value = "/getOboxDeviceConfigByUserId", method = RequestMethod.GET)
 	public ResponseObject registAliDev() {
@@ -33,6 +32,21 @@ public class TestController {
 		try {
 			
 			return feignDeviceClient.getOboxDeviceConfigByUserId(439);
+		} catch (Exception e) {
+			e.printStackTrace();
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+  	@RequestMapping(value = "/test", method = RequestMethod.GET)
+  	public ResponseObject test() {
+		ResponseObject res = new ResponseObject();
+		try {
+			System.out.println("===url:"+SmsLoginVo.getUrl());
+			System.out.println("===method:"+SmsLoginVo.getHttpMethod());
+ 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {
 			e.printStackTrace();
 			res.setStatus(ResponseEnum.Error.getStatus());

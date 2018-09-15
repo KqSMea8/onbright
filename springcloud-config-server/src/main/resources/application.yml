@@ -18,10 +18,10 @@ spring:
           uri: https://github.com/onbright-canton/onbrightConfig/
           searchPaths: '{application}'
   rabbitmq:
-    host: localhost
+    host: 192.168.200.212
     port: 5672
-    username: myuser
-    password: mypass
+    username: admin
+    password: 123456
 security:
   basic:
     enabled: false

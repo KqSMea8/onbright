@@ -1,6 +1,8 @@
 package com.bright.apollo.vo;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 /**  
@@ -10,11 +12,12 @@ import org.springframework.stereotype.Component;
  *@Since:2018年9月11日  
  *@Version:1.1.0  
  */
-@Component  
-@ConfigurationProperties(prefix="SmsLogin")
+@Configuration  
+@RefreshScope
 public class SmsLoginVo {
-
+	@Value("${SmsLogin.url}")
 	private String url;
+	@Value("${SmsLogin.httpMethod}")
 	private String httpMethod;
 	public String getUrl() {
 		return url;

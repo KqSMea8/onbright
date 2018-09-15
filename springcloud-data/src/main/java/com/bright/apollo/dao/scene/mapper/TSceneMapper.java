@@ -63,12 +63,12 @@ public interface TSceneMapper {
 	void deleteSceneByOboxSerialIdAndSceneNum(@Param("oboxSerialId") String oboxSerialId,
 			@Param("oboxSceneNumber") int oboxSceneNumber);
 
-	@SelectKey(statement = "select LAST_INSERT_ID()", keyProperty = "sceneNumber", before = false, resultType = int.class)
+	
 	@Insert("insert into t_scene (scene_name,\n" + "obox_serial_id,\n" + "obox_scene_number,\n" + "scene_status,\n"
 			+ "scene_type,\n" + "msg_alter,\n" + "last_op_time,\n" + "scene_run,\n" + "license,\n" + "alter_need,\n"
 			+ "scene_group) values(#{sceneName},#{oboxSerialId}," + "#{oboxSceneNumber},#{sceneStatus},#{sceneType},"
 			+ "#{msgAlter},#{lastOpTime},#{sceneRun},#{license}," + "#{alterNeed},#{sceneGroup})")
-	@Options(useGeneratedKeys = true, keyProperty = "sceneNumber", keyColumn = "scene_number")
+	@SelectKey(statement = "select LAST_INSERT_ID()", keyProperty = "sceneNumber", before = false, resultType = int.class)
 	int addScene(TScene scene);
 
 	@Update("update t_scene set scene_name = #{sceneName},\n" + "obox_serial_id = #{oboxSerialId},\n"

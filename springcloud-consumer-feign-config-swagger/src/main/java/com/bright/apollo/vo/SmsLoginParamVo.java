@@ -1,6 +1,7 @@
 package com.bright.apollo.vo;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Component;
 
 /**  
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
  *@Version:1.1.0  
  */
 @Component  
+@RefreshScope
 @ConfigurationProperties(prefix="SmsLoginParam")
 public class SmsLoginParamVo {
 

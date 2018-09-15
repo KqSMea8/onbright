@@ -17,6 +17,7 @@ import com.bright.apollo.enums.NodeTypeEnum;
 import com.bright.apollo.session.ClientSession;
 import com.bright.apollo.tool.ByteHelper;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 @Component
 public class SceneCMDHandler extends BasicHandler{
@@ -99,7 +100,7 @@ public class SceneCMDHandler extends BasicHandler{
                     	 for (TUserObox tUserObox : tUserOboxs) {
                              TUserScene tUserScene = new TUserScene();
                              tUserScene.setUserId(tUserObox.getUserId());
-                             tUserScene.setSceneNumber(ret);
+                             tUserScene.setSceneNumber(scene.getSceneNumber());
                              userService.addUserScene(tUserScene);
                              //SceneBusiness.addUserScene(tUserScene);
                          }

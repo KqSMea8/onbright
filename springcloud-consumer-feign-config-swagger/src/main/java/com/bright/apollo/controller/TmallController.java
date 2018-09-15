@@ -288,7 +288,7 @@ public class TmallController {
 		return map.toString();
 	}
 
-	private void putDeviceValue(JSONObject devices,TMallDeviceAdapter adapter){
+	private void putDeviceValue(JSONObject devices,TMallDeviceAdapter adapter) throws JSONException{
 		devices.put("deviceId",adapter.getDeviceId());
 		devices.put("deviceName",adapter.getDeviceName());
 		devices.put("deviceType",adapter.getDeviceType());
@@ -300,7 +300,7 @@ public class TmallController {
 		devices.put("actions",adapter.getAction());
 	}
 
-	private void putChildrenDeviceValue(JSONObject devices,JSONObject outlet,Integer i ){
+	private void putChildrenDeviceValue(JSONObject devices,JSONObject outlet,Integer i ) throws JSONException{
 		String deivceId = outlet.getString("deviceId");
 		JSONObject extensionsMap = new JSONObject();
 		extensionsMap.put("extension1","");
@@ -318,7 +318,7 @@ public class TmallController {
 		devices.put("extensions",extensionsMap);
 	}
 
-	private void setDeviceJson(JSONObject devices,TMallDeviceAdapter adapter){
+	private void setDeviceJson(JSONObject devices,TMallDeviceAdapter adapter) throws JSONException{
 		JSONObject extensionsMap = new JSONObject();
 		extensionsMap.put("extension1","");
 		extensionsMap.put("extension2","");
