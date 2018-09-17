@@ -7,10 +7,16 @@ spring:
     sampler:
       percentage: 1.0
   rabbitmq:
-    host: 192.168.200.212
+    host: 47.96.100.153
     port: 5672
-    username: admin
-    password: 123456
+    username: liujj
+    password: liujj123456
+#test rabbitmq
+#  rabbitmq:
+#    host: 192.168.200.212
+#    port: 5672
+#    username: admin
+#    password: 123456
   cloud:
     config:
       discovery:

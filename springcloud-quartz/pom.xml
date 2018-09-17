@@ -62,16 +62,10 @@
 			<artifactId>springcloud-common</artifactId>
 			<version>${common-version}</version>
 		</dependency>
-		<!-- <dependency>
-			<groupId>com.bright.apollo</groupId>
-			<artifactId>springcloud-service-impl</artifactId>
-			<version>${service-impl-version}</version>
-		</dependency> -->
-		<!-- <dependency>
-			<groupId>com.bright.apollo</groupId>
-			<artifactId>springcloud-data</artifactId>
-			<version>${data-version}</version>
-		</dependency> -->
+		<!-- <dependency> <groupId>com.bright.apollo</groupId> <artifactId>springcloud-service-impl</artifactId> 
+			<version>${service-impl-version}</version> </dependency> -->
+		<!-- <dependency> <groupId>com.bright.apollo</groupId> <artifactId>springcloud-data</artifactId> 
+			<version>${data-version}</version> </dependency> -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-jdbc</artifactId>
@@ -81,7 +75,14 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-
+<!-- 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency> -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-bus-amqp</artifactId>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

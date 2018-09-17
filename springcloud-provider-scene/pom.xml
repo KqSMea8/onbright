@@ -54,25 +54,20 @@
 			<groupId>com.bright.apollo</groupId>
 			<artifactId>springcloud-service-impl</artifactId>
 			<version>${service-impl-version}</version>
-			 <!-- <exclusions>
-				<exclusion>
-					<groupId>com.bright.apollo</groupId>
-					<artifactId>springcloud-common</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>com.bright.apollo</groupId>
-					<artifactId>springcloud-data</artifactId>
-				</exclusion>
-			</exclusions>  -->
+			<!-- <exclusions> <exclusion> <groupId>com.bright.apollo</groupId> <artifactId>springcloud-common</artifactId> 
+				</exclusion> <exclusion> <groupId>com.bright.apollo</groupId> <artifactId>springcloud-data</artifactId> 
+				</exclusion> </exclusions> -->
 		</dependency>
-	<!--   	<dependency>
-			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis-spring</artifactId>
-			<version>RELEASE</version>
-			<scope>compile</scope>
-		</dependency>   
- -->
-
+		<!-- <dependency> <groupId>org.mybatis</groupId> <artifactId>mybatis-spring</artifactId> 
+			<version>RELEASE</version> <scope>compile</scope> </dependency> -->
+<!-- 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency> -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-bus-amqp</artifactId>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

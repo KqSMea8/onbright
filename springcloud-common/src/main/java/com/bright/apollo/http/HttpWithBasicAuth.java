@@ -41,7 +41,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class HttpWithBasicAuth {
 	private static final Logger logger = LoggerFactory.getLogger(HttpWithBasicAuth.class);
 	@SuppressWarnings("unchecked")
-	public static Map<String, Object> http(Map<String, Object> map,OauthClientDetails client) throws Exception {
+	public static Map<String, Object> https(Map<String, Object> map,OauthClientDetails client) throws Exception {
     		if(client==null||StringUtils.isEmpty(client.getClientId())||StringUtils.isEmpty(client.getClientSecret())){
     			return null;
     		}
@@ -81,14 +81,29 @@ public class HttpWithBasicAuth {
     		System.out.println(statusCode);
     		System.out.println("result：" + EntityUtils.toString(result.getEntity()));*/
     	}
+	public static void http(String url) throws Exception {
+		CredentialsProvider credsProvider = new BasicCredentialsProvider();
+        credsProvider.setCredentials(AuthScope.ANY,
+                new UsernamePasswordCredentials("root", "booszy"));
+        CloseableHttpClient createDefault = HttpClients.custom()
+                .setDefaultCredentialsProvider(credsProvider) 
+                .build();
+        StringBuilder sb=new StringBuilder(url);
+		HttpPost post = new HttpPost(sb.toString());
+		CloseableHttpResponse result = createDefault.execute(post);
+		int statusCode = result.getStatusLine().getStatusCode();
+		String string = EntityUtils.toString(result.getEntity());
+		logger.info("===http result:"+string+"===http code:"+statusCode);
+		 
+		/*CloseableHttpResponse result = createDefault.execute(post);
+		int statusCode = result.getStatusLine().getStatusCode();
+		System.out.println(statusCode);
+		System.out.println("result：" + EntityUtils.toString(result.getEntity()));*/
+	}
 	    public static void main(String[] args) throws Exception {
 	    	Map<String, Object>map=new HashMap<String, Object>();
-	    	map.put("grant_type", "password");
-	    	map.put("username", "15879618946");
-	    	map.put("password", "12345678");
-	    	OauthClientDetails client=new OauthClientDetails();
-	    	client.setClientId("app");
-	    	client.setClientSecret("app");
-	    	System.out.println(HttpWithBasicAuth.http(map, client));
+	    	//HttpWithBasicAuth.http();
+	   
+	    	//System.out.println(HttpWithBasicAuth.http());
 		}
 }

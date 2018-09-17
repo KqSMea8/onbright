@@ -15,6 +15,11 @@ spring:
       username: root
       password: booszy
       profile: pro
+  rabbitmq:
+    host: 47.96.100.153
+    port: 5672
+    username: liujj
+    password: liujj123456
 
 eureka:
   client:

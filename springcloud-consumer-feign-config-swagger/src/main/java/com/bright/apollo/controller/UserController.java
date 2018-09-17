@@ -105,7 +105,7 @@ public class UserController {
 				map.put("username", user.getUserName());
 				//may should decode
 				map.put("password", user.getPassword());
-				Map<String, Object> hashmap = HttpWithBasicAuth.http(map, clients.get(0));
+				Map<String, Object> hashmap = HttpWithBasicAuth.https(map, clients.get(0));
 				if(hashmap!=null&&!hashmap.isEmpty()){
 					res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 					res.setMessage(ResponseEnum.SelectSuccess.getMsg());					  
