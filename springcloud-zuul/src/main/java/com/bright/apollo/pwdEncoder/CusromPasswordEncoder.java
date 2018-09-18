@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.bright.apollo.config.WebSecurityConfig;
 import com.bright.apollo.tool.Base64Util;
 import com.bright.apollo.tool.MD5;
 
@@ -42,6 +41,10 @@ public class CusromPasswordEncoder  implements PasswordEncoder {
 		if (rawPassword == null || rawPassword.length() == 0) {
 			logger.warn("Empty raw password");
 			return false;
+		}
+		String base64Encrypt = Base64Util.base64Encrypt(rawPassword.toString().getBytes());
+		if(MD5.MD5generator(base64Encrypt+rawPassword.toString()).equals(encodedPassword)){
+			return true;
 		}
 		return false;
 	}

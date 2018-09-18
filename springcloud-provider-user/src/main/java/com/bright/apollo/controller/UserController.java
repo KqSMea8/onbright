@@ -40,7 +40,9 @@ import com.bright.apollo.service.UserOperationService;
 import com.bright.apollo.service.UserSceneService;
 import com.bright.apollo.service.UserService;
 import com.bright.apollo.service.WxService;
+import com.bright.apollo.tool.Base64Util;
 import com.bright.apollo.tool.HttpUtil;
+import com.bright.apollo.tool.MD5;
 import com.bright.apollo.tool.NumberHelper;
 import com.bright.apollo.tool.RandomUtil;
 import com.bright.apollo.tool.Verify;
@@ -673,7 +675,8 @@ public class UserController {
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
 				return res;
 			}
-			userService.addUser(mobile, pwd);
+			String base64Encrypt = Base64Util.base64Encrypt(pwd.toString().getBytes());
+			userService.addUser(mobile, MD5.MD5generator(base64Encrypt+pwd));
 			res.setStatus(ResponseEnum.AddSuccess.getStatus());
 			res.setMessage(ResponseEnum.AddSuccess.getMsg());
 		} catch (Exception e) {

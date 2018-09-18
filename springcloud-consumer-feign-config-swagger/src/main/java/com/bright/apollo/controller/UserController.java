@@ -1,14 +1,9 @@
 package com.bright.apollo.controller;
 
-import java.nio.charset.Charset;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +22,6 @@ import com.bright.apollo.http.HttpWithBasicAuth;
 import com.bright.apollo.http.MobClient;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
-import com.bright.apollo.tool.Base64Util;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
