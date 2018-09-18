@@ -59,6 +59,7 @@ public class UserController {
 		}
 		return res;
 	}
+	@Deprecated
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@ApiOperation(value = "sms login", httpMethod = "POST", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)

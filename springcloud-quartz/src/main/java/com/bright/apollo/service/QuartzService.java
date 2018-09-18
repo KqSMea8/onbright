@@ -22,7 +22,7 @@ import com.bright.apollo.job.TimeJob;
 import com.bright.apollo.tool.ByteHelper;
 import com.bright.apollo.tool.DateHelper;
 import com.bright.apollo.tool.MD5;
- 
+
 /**
  * @Title:
  * @Description:
@@ -121,18 +121,20 @@ public class QuartzService {
 	 * @param fingerRemoteUserId
 	 * @param endTime
 	 * @param serialId
+	 * @throws Exception
 	 * @Description:
 	 */
 	public void startRemoteOpenTaskSchedule(int fingerRemoteUserId, String endTime, String serialId) {
 		// 得到默认的调度器
-		Scheduler scheduler = schedulerFactory.getScheduler();
-		JobDetail jobDetail = JobBuilder.newJob(RemoteUserOpenJob.class)
-				.withIdentity(MD5.MD5generator16Bit(fingerRemoteUserId + serialId), SERVER_REMOTE_OPEN_TASK).build();
-		JobDataMap jobDataMap = jobDetail.getJobDataMap();
-		jobDataMap.put("fingerRemoteUserId", String.format("%d", fingerRemoteUserId));
-		jobDataMap.put("serialId", String.format("%s", serialId));
-		String rightConString = Date2Cron(endTime);
 		try {
+			Scheduler scheduler = schedulerFactory.getScheduler();
+			JobDetail jobDetail = JobBuilder.newJob(RemoteUserOpenJob.class)
+					.withIdentity(MD5.getMD5Str(fingerRemoteUserId + serialId), SERVER_REMOTE_OPEN_TASK).build();
+			JobDataMap jobDataMap = jobDetail.getJobDataMap();
+			jobDataMap.put("fingerRemoteUserId", String.format("%d", fingerRemoteUserId));
+			jobDataMap.put("serialId", String.format("%s", serialId));
+			String rightConString = Date2Cron(endTime);
+
 			CronTrigger cronTrigger = TriggerBuilder.newTrigger()
 					.withIdentity(String.format("%d", fingerRemoteUserId) + "_" + String.format("%s", serialId),
 							SERVER_TRIGGER_GROUP_NAME)
