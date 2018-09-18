@@ -13,12 +13,15 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 import org.springframework.web.filter.GenericFilterBean;
 
@@ -58,10 +61,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	// @Autowired
 	// private MqttPahoMessageDrivenChannelAdapter adapter;
 
-	/*
-	 * @Bean public PasswordEncoder passwordEncoder() { return new
-	 * BCryptPasswordEncoder(); }
-	 */
+	
+	  @Bean 
+	  public PasswordEncoder passwordEncoder() { 
+		  return new BCryptPasswordEncoder();
+	  }
+	 
 	
 	//the password from app 12345678 encrypt to 297297C35D079DF661902FD4FC8D0777
 	//i should use the encryptd String to md5
