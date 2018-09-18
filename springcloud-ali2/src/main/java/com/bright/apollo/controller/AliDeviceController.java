@@ -1,27 +1,15 @@
 package com.bright.apollo.controller;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import com.bright.apollo.common.entity.*;
-import com.bright.apollo.mqtt.MqttGateWay;
-import com.bright.apollo.mqtt.MqttInBoundConfiguration;
-import com.bright.apollo.mqtt.MqttOutBoundConfiguration;
-import com.bright.apollo.service.TopicServer;
-import com.bright.apollo.service.YaoKongYunService;
-import com.bright.apollo.util.SpringContextUtil;
-import com.zz.common.util.MD5;
-import org.apache.activemq.command.ActiveMQTopic;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.support.BeanDefinitionBuilder;
-import org.springframework.beans.factory.support.DefaultListableBeanFactory;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.integration.mqtt.core.MqttPahoClientFactory;
-import org.springframework.integration.mqtt.inbound.MqttPahoMessageDrivenChannelAdapter;
-import org.springframework.integration.mqtt.outbound.MqttPahoMessageHandler;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,15 +19,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bright.apollo.cache.AliDevCache;
+import com.bright.apollo.common.entity.TAliDevice;
+import com.bright.apollo.common.entity.TAliDeviceUS;
+import com.bright.apollo.common.entity.TObox;
+import com.bright.apollo.common.entity.TYaoKongYunBrand;
+import com.bright.apollo.common.entity.TYaokonyunDevice;
 import com.bright.apollo.enums.ALIDevTypeEnum;
 import com.bright.apollo.enums.AliRegionEnum;
+import com.bright.apollo.mqtt.MqttGateWay;
 import com.bright.apollo.response.AliDevInfo;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.service.AliDeviceService;
 import com.bright.apollo.service.CMDMessageService;
+import com.bright.apollo.service.TopicServer;
+import com.bright.apollo.service.YaoKongYunService;
 import com.bright.apollo.service.AliRequest.AliService;
 import com.bright.apollo.tool.ByteHelper;
+import com.bright.apollo.tool.MD5;
+import com.bright.apollo.util.SpringContextUtil;
 
 @RestController
 @RequestMapping("aliDevice")
@@ -329,7 +327,7 @@ public class AliDeviceController {
 		return res;
 	}
 
-	private TYaokonyunDevice initYaoKongDevice(){
+	private TYaokonyunDevice initYaoKongDevice() throws Exception{
 		String ir_appId = aliDevCache.getValue("ir_appId");
 		TYaokonyunDevice yaokonyunDevice = null;
 //		if(!StringUtils.isEmpty(deviceId)){//已经用完50次,更新状态
@@ -344,12 +342,12 @@ public class AliDeviceController {
 		return yaokonyunDevice;
 	}
 
-	public TYaokonyunDevice useTimesExpire(String deviceId){
+	public TYaokonyunDevice useTimesExpire(String deviceId) throws Exception{
 		yaoKongYunService.updateYaoKongDevice(deviceId);
 		return getYaoKongDevice();
 	}
 
-	private TYaokonyunDevice getYaoKongDevice(){
+	private TYaokonyunDevice getYaoKongDevice() throws Exception{
 		TYaokonyunDevice yaokonyunDevice = null;
 		yaokonyunDevice = yaoKongYunService.getYaoKongYunDevice();
 		if(yaokonyunDevice==null){
@@ -359,9 +357,9 @@ public class AliDeviceController {
 		return yaokonyunDevice;
 	}
 
-	private TYaokonyunDevice createYaoKongYunDevice(){
+	private TYaokonyunDevice createYaoKongYunDevice() throws Exception{
 		TYaokonyunDevice device = new TYaokonyunDevice();
-		device.setDeviceId(MD5.MD5generator(new Date().getTime()+""));
+		device.setDeviceId(MD5.getMD5Str(new Date().getTime()+""));
 		yaoKongYunService.addYaoKongDevice(device);
 		return yaoKongYunService.getYaoKongYunDevice();
 	}

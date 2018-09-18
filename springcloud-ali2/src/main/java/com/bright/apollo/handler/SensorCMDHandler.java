@@ -596,7 +596,7 @@ public class SensorCMDHandler extends BasicHandler {
 						TIntelligentFingerAuth fingerAuth = intelligentFingerService
 								.queryIntelligentAuthBySerialId(tOboxDeviceConfig.getDeviceSerialId());
 						if (fingerAuth != null) {
-							fingerAuth.setPwd(MD5.MD5generator(pwd + salt));
+							fingerAuth.setPwd(MD5.getMD5Str(pwd + salt));
 							intelligentFingerService.updateTintelligentFingerAuth(fingerAuth);
 						}
 					}
