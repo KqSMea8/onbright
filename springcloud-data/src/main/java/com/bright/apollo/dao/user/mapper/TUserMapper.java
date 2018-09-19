@@ -8,9 +8,12 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.UpdateProvider;
 import org.springframework.stereotype.Component;
 
 import com.bright.apollo.common.entity.TUser;
+import com.bright.apollo.dao.device.sqlProvider.TIntelligentFingerAuthDynaSqlProvider;
+import com.bright.apollo.dao.device.sqlProvider.UserProvider;
 
 @Mapper
 @Component
@@ -62,4 +65,11 @@ public interface TUserMapper{
             @Result(property = "lastOpTime",column = "last_op_time")
     })
     List<TUser> queryUserBySceneNumber(@Param("sceneNumber") Integer sceneNumber);
+
+	/**  
+	 * @param user  
+	 * @Description:  
+	 */
+    @UpdateProvider(type=UserProvider.class,method="updateUser")
+	void updateUser(TUser user);
 }

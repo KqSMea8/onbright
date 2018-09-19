@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.StringUtils;
@@ -4741,7 +4742,43 @@ public class FacadeController extends BaseController {
 		}
 		return res;
 	}
-
+	/**  
+	 * @param pwd
+	 * @return  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@ApiOperation(value = "modifyUserPwd", httpMethod = "PUT", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/modifyUserPwd/{pwd}", method = RequestMethod.PUT)
+	public ResponseObject modifyUserPwd(@PathVariable(value = "pwd")String pwd) {
+		ResponseObject res = new ResponseObject();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
+					.getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser==null||resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus() || resUser.getData() == null) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			TUser user = resUser.getData();
+			user.setPassword(pwd);
+			feignUserClient.updateUserPwd(user);
+			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
 	/**
 	 * @param serialId
 	 * @return
@@ -4754,16 +4791,7 @@ public class FacadeController extends BaseController {
 	public ResponseObject test(@PathVariable(value = "serialId") String serialId) {
 		ResponseObject res = new ResponseObject();
 		try {
-			 TScene scene=new TScene();
-			 scene.setSceneName("111111");
-			 scene.setOboxSerialId("affff");
-			 scene.setOboxSceneNumber(12);
-			 scene.setSceneStatus((byte)1);
-			 scene.setSceneType("23");
-			 return feignSceneClient.addScene(scene);
-			/*ResponseObject<TIntelligentFingerRemoteUser> remoteUserRes = feignDeviceClient
-					.getTIntelligentFingerRemoteUserBySerialIdAndPin(serialId, 13);
-			return remoteUserRes;*/
+			SecurityContextHolder.clearContext();
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
@@ -4771,5 +4799,7 @@ public class FacadeController extends BaseController {
 		}
 		return res;
 	}
+
+	
 
 }

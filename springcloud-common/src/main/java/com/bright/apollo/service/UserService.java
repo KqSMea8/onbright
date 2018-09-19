@@ -44,7 +44,7 @@ public interface UserService {
 	 * @param tUserByMobile  
 	 * @Description:  
 	 */
-	@Deprecated
+	
 	int updateUser(TUser tUserByMobile);
 
 	/**  
@@ -188,4 +188,10 @@ public interface UserService {
 	 * @Description:  
 	 */
 	List<TUser> queryUserBySceneNumber(Integer sceneNumber);
+
+	/**  
+	 * @param user  
+	 * @Description:  
+	 */
+	//void updateUser(TUser user);
 }

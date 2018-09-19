@@ -91,9 +91,8 @@ public class UserServiceImpl implements UserService {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	@Deprecated
 	public int updateUser(TUser tUser) {
-//		return userBusiness.updateByPrimaryKeySelective(tUser);
+		userMapper.updateUser(tUser);
 		return 0;
 	}
 
@@ -307,6 +306,7 @@ public class UserServiceImpl implements UserService {
 	public List<TUser> queryUserBySceneNumber(Integer sceneNumber) {
  		return userMapper.queryUserBySceneNumber(sceneNumber);
 	}
+ 
 
 
 }
