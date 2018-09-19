@@ -26,6 +26,7 @@ import org.springframework.security.web.authentication.preauth.AbstractPreAuthen
 import org.springframework.web.filter.GenericFilterBean;
 
 import com.bright.apollo.filter.ValidateCodeFilter;
+import com.bright.apollo.pwdEncoder.CusromPasswordEncoder;
 import com.bright.apollo.service.impl.UserDetailsServiceImpl;
 
 /**
@@ -64,7 +65,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	  @Bean 
 	  public PasswordEncoder passwordEncoder() { 
-		  return new BCryptPasswordEncoder();
+		  return new CusromPasswordEncoder();
 	  }
 	 
 	
@@ -72,8 +73,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	//i should use the encryptd String to md5
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailsService);
-		// .passwordEncoder(passwordEncoder());
+		auth.userDetailsService(userDetailsService)
+		 .passwordEncoder(passwordEncoder());
 	}
 
 	@Override

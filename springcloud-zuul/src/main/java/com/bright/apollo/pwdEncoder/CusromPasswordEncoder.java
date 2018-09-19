@@ -25,8 +25,14 @@ public class CusromPasswordEncoder  implements PasswordEncoder {
 			logger.warn("Empty raw password");
 			return null;
 		}
+		logger.info("====the pwd from app:"+rawPassword);
 		String base64Encrypt = Base64Util.base64Encrypt(rawPassword.toString().getBytes());
-		return MD5.MD5generator(base64Encrypt+rawPassword.toString());
+		try {
+			return MD5.getMD5Str(base64Encrypt+rawPassword.toString());
+		} catch (Exception e) {
+			logger.error("===error msg:"+e.getMessage());
+			return null;
+		}
 	}
 
 	/* (non-Javadoc)  
@@ -43,8 +49,13 @@ public class CusromPasswordEncoder  implements PasswordEncoder {
 			return false;
 		}
 		String base64Encrypt = Base64Util.base64Encrypt(rawPassword.toString().getBytes());
-		if(MD5.MD5generator(base64Encrypt+rawPassword.toString()).equals(encodedPassword)){
-			return true;
+		try {
+			if(MD5.getMD5Str(base64Encrypt+rawPassword.toString()).equals(encodedPassword)){
+				return true;
+			}
+		} catch (Exception e) {
+			logger.error("===error msg:"+e.getMessage());
+			return false;
 		}
 		return false;
 	}

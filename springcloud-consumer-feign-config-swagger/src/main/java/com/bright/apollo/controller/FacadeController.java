@@ -3124,7 +3124,7 @@ public class FacadeController extends BaseController {
 				return res;
 			}
 			TIntelligentFingerAuth auth = new TIntelligentFingerAuth();
-			auth.setPwd(MD5.MD5generator(pwd + salt));
+			auth.setPwd(MD5.getMD5Str(pwd + salt));
 			auth.setSerialid(serialId);
 			feignDeviceClient.addIntelligentFingerAuth(auth);
 			// int id=UserBusiness.addIntelligentFingerAuth(auth);
@@ -3551,13 +3551,13 @@ public class FacadeController extends BaseController {
 			ResponseObject<TIntelligentFingerAuth> authRes = feignDeviceClient.getIntelligentAuthBySerialId(serialId);
 			if (authRes == null || authRes.getData() == null
 					|| authRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()
-					|| !MD5.MD5generator(oldPwd + salt).equals(authRes.getData().getPwd())) {
+					|| !MD5.getMD5Str(oldPwd + salt).equals(authRes.getData().getPwd())) {
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
 				return res;
 			}
 			TIntelligentFingerAuth fingerAuth = authRes.getData();
-			fingerAuth.setPwd(MD5.MD5generator(newPwd + salt));
+			fingerAuth.setPwd(MD5.getMD5Str(newPwd + salt));
 			feignDeviceClient.updateTintelligentFingerAuth(fingerAuth);
 			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
 			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
@@ -3760,7 +3760,7 @@ public class FacadeController extends BaseController {
 			fingerRemoteUser.setUseTimes(0);
 			fingerRemoteUser.setMobile(mobile == null ? "" : mobile);
 			feignDeviceClient.updateTIntelligentFingerRemoteUser(fingerRemoteUser);
-			feignQuartzClient.deleteJob(MD5.MD5generator16Bit(fingerRemoteUser.getId() + serialId));
+			feignQuartzClient.deleteJob(MD5.getMD5Str(fingerRemoteUser.getId().intValue()+"" + serialId));
 			feignQuartzClient.addRemoteOpenTaskSchedule(fingerRemoteUser.getId(), endTime + "", serialId);
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("pwd",

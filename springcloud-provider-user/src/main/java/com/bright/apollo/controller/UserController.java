@@ -676,7 +676,7 @@ public class UserController {
 				return res;
 			}
 			String base64Encrypt = Base64Util.base64Encrypt(pwd.toString().getBytes());
-			userService.addUser(mobile, MD5.MD5generator(base64Encrypt+pwd));
+			userService.addUser(mobile, MD5.getMD5Str(base64Encrypt+pwd));
 			res.setStatus(ResponseEnum.AddSuccess.getStatus());
 			res.setMessage(ResponseEnum.AddSuccess.getMsg());
 		} catch (Exception e) {
