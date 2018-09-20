@@ -79,7 +79,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
- 
 		http.addFilterBefore(validateCodeFilter, AbstractPreAuthenticatedProcessingFilter.class).csrf().disable()
 				.requestMatchers().anyRequest().and().authorizeRequests()
 				.antMatchers("/health", "/css/**", "/oauth/**", "/uaa/**").permitAll().and().formLogin()
@@ -187,31 +186,31 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	// }
 	// }
 
-	public class BeforeLoginFilter extends GenericFilterBean {
-
-		@Override
-		public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
-				throws IOException, ServletException {
-			logger.info("This is a filter before UsernamePasswordAuthenticationFilter.");
-			HttpServletRequest request = (HttpServletRequest) servletRequest;
-			String redirect_uri = request.getParameter("redirect_uri");
-			String state = request.getParameter("state");
-			logger.info(request.getRequestURI());
-			if (redirect_uri != null) {
-				redirect_uri = URLDecoder.decode(redirect_uri, "UTF-8");
-				redirect_uri += "&" + state;
-				logger.info(redirect_uri);
-				request.setAttribute("redirect_uri", redirect_uri);
-			}
-			Enumeration<String> m = request.getParameterNames();
-			while (m.hasMoreElements()) {
-				String element = m.nextElement();
-				logger.info("params ------ " + element + " ------ " + request.getParameter(element));
-			}
-
-			// 继续调用 Filter 链
-			filterChain.doFilter(servletRequest, servletResponse);
-		}
-	}
+//	public class BeforeLoginFilter extends GenericFilterBean {
+//
+//		@Override
+//		public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
+//				throws IOException, ServletException {
+//			logger.info("This is a filter before UsernamePasswordAuthenticationFilter.");
+//			HttpServletRequest request = (HttpServletRequest) servletRequest;
+//			String redirect_uri = request.getParameter("redirect_uri");
+//			String state = request.getParameter("state");
+//			logger.info(request.getRequestURI());
+//			if (redirect_uri != null) {
+//				redirect_uri = URLDecoder.decode(redirect_uri, "UTF-8");
+//				redirect_uri += "&" + state;
+//				logger.info(redirect_uri);
+//				request.setAttribute("redirect_uri", redirect_uri);
+//			}
+//			Enumeration<String> m = request.getParameterNames();
+//			while (m.hasMoreElements()) {
+//				String element = m.nextElement();
+//				logger.info("params ------ " + element + " ------ " + request.getParameter(element));
+//			}
+//
+//			// 继续调用 Filter 链
+//			filterChain.doFilter(servletRequest, servletResponse);
+//		}
+//	}
 
 }
