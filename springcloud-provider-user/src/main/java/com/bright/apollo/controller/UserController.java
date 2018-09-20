@@ -726,7 +726,29 @@ public class UserController {
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;	
-	
-	
+	}
+	/**  
+	 * @param user  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/updateUserPwd", method = RequestMethod.PUT)
+	public ResponseObject updateUserPwd(@RequestBody TUser user){
+		ResponseObject res=new ResponseObject();
+		try {
+			if(user==null||user.getId()==null||StringUtils.isEmpty(user.getPassword())){
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+			}else{
+				String base64Encrypt = Base64Util.base64Encrypt(user.getPassword().toString().getBytes());
+				user.setPassword(MD5.getMD5Str(base64Encrypt+user.getPassword()));
+				userService.updateUser(user);
+			}
+		} catch (Exception e) {
+			logger.error("===error msg:"+e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;	
 	}
 }

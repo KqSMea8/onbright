@@ -21,6 +21,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.bright.apollo.http.MobClient;
 import com.bright.apollo.vo.SmsLoginParamVo;
 import com.bright.apollo.vo.SmsLoginVo;
+import com.netflix.zuul.http.HttpServletRequestWrapper;
 
 /**
  * @Title:
@@ -32,7 +33,7 @@ import com.bright.apollo.vo.SmsLoginVo;
 @Component("validateCodeFilter")
 public class ValidateCodeFilter extends OncePerRequestFilter implements InitializingBean {
 	private static final Logger logger = LoggerFactory.getLogger(ValidateCodeFilter.class);
-
+	private static final String LOGINURL="/login";
 	public ValidateCodeFilter() {
 		logger.info("===Loading ValidateCodeFilter===");
 	}

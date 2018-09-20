@@ -1,5 +1,6 @@
 server:
   port: 8800
+<<<<<<< HEAD
 eureka:
   client:
     service-url:
@@ -8,8 +9,13 @@ eureka:
     prefer-ip-address: true
     instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${spring.application.instance_id:${server.port}}
     appname: springcloud-config-server
+=======
+>>>>>>> obTest
 spring:
+  profiles:
+    active: dev
   application:
+<<<<<<< HEAD
     name: springcloud-config-server
   cloud:
     config:
@@ -36,3 +42,6 @@ security:
     password: booszy
 logging:
   config: classpath:logback-config.xml
+=======
+    name: springcloud-config-server
+>>>>>>> obTest

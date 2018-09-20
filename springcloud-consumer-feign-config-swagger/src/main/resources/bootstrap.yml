@@ -1,6 +1,7 @@
 spring:
   application:
     name: springcloud-consumer-feign
+<<<<<<< HEAD
   zipkin:
     base-url: http://localhost:9411
   sleuth:
@@ -17,6 +18,8 @@ spring:
 #    port: 5672
 #    username: admin
 #    password: 123456
+=======
+>>>>>>> obTest
   cloud:
     config:
       discovery:
@@ -25,6 +28,7 @@ spring:
       fail-fast: true
       username: root
       password: booszy
+<<<<<<< HEAD
       profile: pro
 eureka:
   client:
@@ -65,4 +69,7 @@ datasource:
 #          url: tcp://47.99.107.215:1883
 #          clientId: aliOutbound
 #          topics: topic1
+=======
+      profile: test
+>>>>>>> obTest
 
