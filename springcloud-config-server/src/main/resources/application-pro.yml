@@ -1,0 +1,28 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://root:booszy@47.99.107.215:8761/eureka
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${spring.application.instance_id:${server.port}}
+    appname: springcloud-config-server
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/onbright-canton/onbrightConfig/
+          searchPaths: '{application}'
+  rabbitmq:
+    host: 47.99.107.215
+    port: 5672
+    username: liujj
+    password: liujj123456
+security:
+  basic:
+    enabled: true
+  user:
+    name: root
+    password: booszy
+logging:
+  config: classpath:logback-config.xml

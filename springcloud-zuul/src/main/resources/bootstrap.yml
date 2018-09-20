@@ -1,8 +1,6 @@
 spring:
   application:
     name: springcloud-zuul
-  zipkin:
-    base-url: http://localhost:9411
   cloud:
     config:
       discovery:
@@ -11,75 +9,4 @@ spring:
       fail-fast: true
       username: root
       password: booszy
-      profile: pro
-  rabbitmq:
-    host: 47.96.100.153
-    port: 5672
-    username: liujj
-    password: liujj123456
-eureka:
-  client:
-    service-url:
-#      defaultZone: http://root:booszy@172.17.0.1:8761/eureka
-      defaultZone: http://root:booszy@localhost:8761/eureka
-  instance:
-    prefer-ip-address: true
-    instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${spring.application.instance_id:${server.port}}
-    appname: springcloud-zuul
-endpoints:
-  health:
-    sensitive: false
-    enabled: true
-redis:
-    database: 0
-    host: 47.96.100.153
-    port: 6389
-    timeout: 3000
-    pool:
-      # 连接池最大连接数（使用负值表示没有限制）
-      max-active: 8
-      # 连接池最大阻塞等待时间（使用负值表示没有限制）
-      max-wait: -1
-      # 连接池中的最大空闲连接
-      max-idle: 8
-      # 连接池中的最小空闲连接
-      min-idle: 0
-mybatis:
-type-aliases-package: com.bright.apollo.common.entity.*
-logging:
-  level:
-    com.bright.apollo.dao : debug
-  pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss} - [%thread] %-5level %logger{36} - %msg%n"
-    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
-datasource:
-    username: root
-    password: Iltwao!1
-    url: jdbc:mysql://rm-bp1phzwe9h981t77x6o.mysql.rds.aliyuncs.com:3306/onbright_ali_new?useUnicode=true&amp;characterEncoding=utf8
-    driver-class-name: com.mysql.jdbc.Driver
-    type: com.alibaba.druid.pool.DruidDataSource
-server:
-   ssl:
-#      key-store: E:\keys\.keystore
-      key-store: /root/.keystore
-      key-store-password: 123456
-      key-store-type: JKS
-#com:
-#  mqtt:
-#    inbound:
-#        url: tcp://127.0.0.1:1883
-#        clientId: aliInbound
-#        topics: topic1,ob-smart.67A5AA91-880A-48F8-93C2-D91A2D32EEF3
-#    outbound:
-#          url: tcp://127.0.0.1:1883
-#          clientId: aliOutbound
-#          topics: topic1
-#自定义
-SmsLogin:
-  url: /login/mobile
-  httpMethod: POST
-SmsLoginParam:
-  appkey: shareSdkAppkey
-  mobile: mobile
-  code: code
-  zone: zone
+      profile: test

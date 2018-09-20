@@ -1,8 +1,6 @@
 spring:
   application:
     name: springcloud-quartz
-  zipkin:
-    base-url: http://localhost:9411
   cloud:
     config:
       discovery:
@@ -11,25 +9,4 @@ spring:
       fail-fast: true
       username: root
       password: booszy
-      profile: pro
-  rabbitmq:
-    host: 47.96.100.153
-    port: 5672
-    username: liujj
-    password: liujj123456
-  jpa:
-    hibernate:
-      ddl-auto: none
-  datasource:
-    url: jdbc:mysql://rm-bp1phzwe9h981t77x6o.mysql.rds.aliyuncs.com:3306/quartz?useUnicode=true&amp;characterEncoding=utf8
-    password: Iltwao!1
-    username: root
-eureka:
-  client:
-    service-url:
-      defaultZone: http://root:booszy@localhost:8761/eureka
-  instance:
-    prefer-ip-address: true
-    instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${spring.application.instance_id:${server.port}}
-    appname: springcloud-quartz
-
+      profile: test
