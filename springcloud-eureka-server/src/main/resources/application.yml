@@ -1,33 +1,5 @@
 server:
   port: 8761
-<<<<<<< HEAD
-eureka:
-  datacenter: trmap
-  environment: pro
-  client:
-    healthcheck:
-      enabled: true
-    service-url:
-      defaultZone: http://root:booszy@47.99.107.215:8761/eureka
-    register-with-eureka: false
-    fetch-registry: false
-#  server:
-#    enable-self-preservation: true #生成环境关闭
-#    eviction-interval-timer-in-ms: 60000 #同上
-security:
-  basic:
-    enabled: false
-  user:
-    name: root
-    password: booszy
-logging:
-  config: classpath:logback-eureka.xml
-#  level: info
-#  pattern:
-#    console: "%d{yyyy-MM-dd HH:mm:ss} - [%thread] %-5level %logger{36} - %msg%n"
-#    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
-=======
 spring:
   profiles:
     active: dev
->>>>>>> obTest
