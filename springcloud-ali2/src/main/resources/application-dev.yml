@@ -57,8 +57,16 @@ com:
           url: tcp://localhost:1883
           clientId: aliOutbound
           topics: topic1
-
-
+IotDevConncetion:
+  accessKeyId: LTAIBE0b86xFi9q5
+  accessKeySecret: Ym9F1CNAgwhbxt5Sk1Qki1nr6w6e3v
+  endPoint: http://1563722132092243.mns.cn-shanghai.aliyuncs.com/
+  oboxSouthChinaUrl: aliyun-iot-a103Rjc0j6B
+  oboxSouthChinaName: a103Rjc0j6B
+  oboxAmericaName: 3PQo9W8wweT
+  wifiSouthChinaUrl: aliyun-iot-b1eakXpQ1WU
+  wifiSouthChinaName: b1eakXpQ1WU
+  wifiAmericaName: LJjxCM3gZrj
 
 
 
