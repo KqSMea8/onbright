@@ -55,13 +55,48 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="MqttOutBoundConfiguration.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MqttOutBoundConfiguration.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/mqtt/MqttOutBoundConfiguration.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="189">
               <caret line="27" column="67" selection-start-line="27" selection-start-column="67" selection-end-line="27" selection-end-column="67" />
             </state>
           </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="WebSecurityConfig.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/springcloud-zuul/src/main/java/com/bright/apollo/config/WebSecurityConfig.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="399">
+              <caret line="77" column="5" lean-forward="true" selection-start-line="77" selection-start-column="5" selection-end-line="77" selection-end-column="5" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TmallController.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/TmallController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="394">
+              <caret line="111" column="73" lean-forward="true" selection-start-line="111" selection-start-column="73" selection-end-line="111" selection-end-column="73" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="login.ftl" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/springcloud-zuul/src/main/resources/templates/login.ftl">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="135">
+              <caret line="5" column="4" lean-forward="true" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="4" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="bootstrap.yml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/springcloud-quartz/src/main/resources/bootstrap.yml">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file leaf-file-name="bootstrap.yml" pinned="false" current-in-tab="false">
@@ -244,7 +279,6 @@
         <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/DoubleSwitch.java" />
         <option value="$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/service/TopicServer.java" />
         <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/TMallDeviceAdapter.java" />
-        <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/TmallController.java" />
         <option value="$PROJECT_DIR$/springcloud-ali2/src/main/resources/bootstrap.yml" />
         <option value="$PROJECT_DIR$/springcloud-zuul/src/main/java/com/bright/apollo/config/WebSecurityConfig.java" />
         <option value="$PROJECT_DIR$/springcloud-zuul/src/main/java/com/bright/apollo/filter/ValidateCodeFilter.java" />
@@ -252,9 +286,10 @@
         <option value="$PROJECT_DIR$/springcloud-config-server/src/main/resources/application.yml" />
         <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/resources/bootstrap.yml" />
         <option value="$PROJECT_DIR$/springcloud-zuul/src/main/resources/bootstrap.yml" />
-        <option value="$PROJECT_DIR$/springcloud-provider-user/src/main/resources/bootstrap.yml" />
         <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/mqtt/MqttInBoundConfiguration.java" />
         <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/mqtt/MqttOutBoundConfiguration.java" />
+        <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/TmallController.java" />
+        <option value="$PROJECT_DIR$/springcloud-provider-user/src/main/resources/bootstrap.yml" />
       </list>
     </option>
   </component>
@@ -314,6 +349,8 @@
               <item name="springcloud-multi" type="b2602c69:ProjectViewProjectNode" />
               <item name="springcloud-multi" type="462c0819:PsiDirectoryNode" />
             </path>
+<<<<<<< HEAD
+=======
 <<<<<<< HEAD
             <path>
               <item name="springcloud-multi" type="b2602c69:ProjectViewProjectNode" />
@@ -385,6 +422,7 @@
             </path>
 =======
 >>>>>>> obTest
+>>>>>>> 88db57bc2606b39fbd5b6cf49158d12dc904be37
           </expand>
           <select />
         </subPane>
@@ -767,16 +805,20 @@
       <workItem from="1535537860793" duration="5299000" />
       <workItem from="1535593741795" duration="194211000" />
       <workItem from="1537261508320" duration="23783000" />
-      <workItem from="1537423108925" duration="1616000" />
+      <workItem from="1537423108925" duration="10698000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
 <<<<<<< HEAD
+    <option name="totallyTimeSpent" value="1279860000" />
+=======
+<<<<<<< HEAD
     <option name="totallyTimeSpent" value="1270778000" />
 =======
     <option name="totallyTimeSpent" value="1243435000" />
 >>>>>>> obTest
+>>>>>>> 88db57bc2606b39fbd5b6cf49158d12dc904be37
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -811,7 +853,7 @@
       <window_info anchor="bottom" id="Run" order="3" sideWeight="0.49838188" weight="0.6122685" />
       <window_info anchor="bottom" id="Spring" order="8" weight="0.3287037" />
       <window_info anchor="bottom" id="Terminal" order="9" weight="0.3298611" />
-      <window_info active="true" content_ui="combo" id="Project" order="7" visible="true" weight="0.30097088" />
+      <window_info content_ui="combo" id="Project" order="7" weight="0.21035598" />
       <window_info anchor="bottom" id="Bean Validation" order="15" sideWeight="0.50161815" side_tool="true" weight="0.6678241" />
       <window_info id="Web" order="5" side_tool="true" />
       <window_info anchor="right" id="Theme Preview" order="8" />
@@ -829,9 +871,10 @@
     <layout-to-restore>
       <window_info id="Designer" order="1" />
       <window_info anchor="right" id="Palette" order="4" />
+      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.49838188" weight="0.6122685" />
       <window_info anchor="bottom" id="Spring" order="8" weight="0.3287037" />
       <window_info id="Image Layers" order="2" />
-      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.49838188" visible="true" weight="0.6122685" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="3" weight="0.25" />
       <window_info id="UI Designer" order="3" />
@@ -839,18 +882,18 @@
       <window_info anchor="bottom" id="Database Changes" order="11" show_stripe_button="false" />
       <window_info id="Capture Tool" order="6" />
       <window_info anchor="right" id="Capture Analysis" order="5" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
       <window_info anchor="bottom" id="Event Log" order="13" sideWeight="0.5040453" side_tool="true" weight="0.44444445" />
-      <window_info anchor="bottom" id="Messages" order="14" sideWeight="0.5088997" weight="0.47800925" />
       <window_info anchor="bottom" id="TODO" order="7" weight="0.3287037" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.3907767" />
+      <window_info anchor="right" id="Database" order="6" weight="0.32928804" />
       <window_info anchor="bottom" id="Java Enterprise" order="10" weight="0.3298611" />
       <window_info anchor="bottom" id="Dependency Viewer" order="0" weight="0.32908458" />
       <window_info anchor="bottom" id="Version Control" order="12" sideWeight="0.49919093" weight="0.3298611" />
       <window_info anchor="right" id="Maven Projects" order="9" weight="0.32928804" />
       <window_info anchor="bottom" id="Terminal" order="9" weight="0.3298611" />
-      <window_info active="true" content_ui="combo" id="Project" order="7" visible="true" weight="0.2961165" />
-      <window_info anchor="right" id="Database" order="6" weight="0.32928804" />
+      <window_info anchor="bottom" id="Find" order="2" weight="0.32908458" />
+      <window_info active="true" content_ui="combo" id="Project" order="7" visible="true" weight="0.30097088" />
+      <window_info anchor="bottom" id="Messages" order="14" sideWeight="0.5088997" weight="0.47800925" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info id="Web" order="5" side_tool="true" />
       <window_info anchor="right" id="Palette&#9;" order="7" />
@@ -858,9 +901,8 @@
       <window_info id="Structure" order="0" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="right" id="Coverage" order="0" side_tool="true" weight="0.32928804" />
-      <window_info anchor="bottom" id="Find" order="2" weight="0.32908458" />
-      <window_info anchor="bottom" id="Bean Validation" order="15" sideWeight="0.50161815" side_tool="true" weight="0.6678241" />
       <window_info anchor="bottom" id="Debug" order="4" sideWeight="0.4959547" weight="0.5983796" />
+      <window_info anchor="bottom" id="Bean Validation" order="15" sideWeight="0.50161815" side_tool="true" weight="0.6678241" />
     </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -890,6 +932,8 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
+<<<<<<< HEAD
+=======
 <<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/resources/bootstrap.yml">
 =======
@@ -1062,6 +1106,7 @@
         </state>
       </provider>
     </entry>
+>>>>>>> 88db57bc2606b39fbd5b6cf49158d12dc904be37
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-972" />
@@ -1109,17 +1154,15 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/TmallController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="718">
-          <caret line="123" column="36" lean-forward="true" selection-start-line="123" selection-start-column="36" selection-end-line="123" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/TMallDeviceAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="487">
           <caret line="777" column="24" selection-start-line="777" selection-start-column="24" selection-end-line="777" selection-end-column="24" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#35303#35304#0" expanded="true" />
+            <element signature="e#35368#35369#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1286,13 +1329,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-zuul/src/main/java/com/bright/apollo/config/WebSecurityConfig.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-106">
-          <caret line="81" column="96" selection-start-line="81" selection-start-column="12" selection-end-line="81" selection-end-column="96" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/security/spring-security-web/4.2.3.RELEASE/spring-security-web-4.2.3.RELEASE.jar!/org/springframework/security/web/authentication/logout/LogoutFilter.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="151">
@@ -1370,13 +1406,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-provider-user/src/main/resources/bootstrap.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="513">
-          <caret line="31" column="17" selection-start-line="31" selection-start-column="17" selection-end-line="31" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/resources/bootstrap.yml">
       <provider selected="true" editor-type-id="text-editor">
 <<<<<<< HEAD
@@ -1400,6 +1429,46 @@
         <state relative-caret-position="530">
           <caret line="68" column="30" selection-start-line="68" selection-start-column="30" selection-end-line="68" selection-end-column="30" />
 >>>>>>> obTest
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-zuul/src/main/java/com/bright/apollo/config/WebSecurityConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="399">
+          <caret line="77" column="5" lean-forward="true" selection-start-line="77" selection-start-column="5" selection-end-line="77" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-zuul/src/main/resources/templates/authorize.ftl">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-quartz/src/main/resources/application.yml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-zuul/src/main/resources/templates/login.ftl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="5" column="4" lean-forward="true" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-quartz/src/main/resources/bootstrap.yml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-provider-user/src/main/resources/bootstrap.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="756">
+          <caret line="28" column="15" lean-forward="true" selection-start-line="28" selection-start-column="15" selection-end-line="28" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/TmallController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="394">
+          <caret line="111" column="73" lean-forward="true" selection-start-line="111" selection-start-column="73" selection-end-line="111" selection-end-column="73" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

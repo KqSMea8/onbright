@@ -228,7 +228,14 @@ public class TmallController {
 							childType.equals("16"))&&idArr.length>1){
 							if(name.equals("TurnOn")){
 								logger.info("=========== controll ======= on ======= "+originalId);
-								facadeController.controlDevice(deviceId,"00070000000000");
+								if(childType.equals("2a") ){
+									facadeController.controlDevice(deviceId,"03000000000000");
+								}else if(childType.equals("16")){
+									facadeController.controlDevice(deviceId,"00030000000000");
+								}else{
+									facadeController.controlDevice(deviceId,"00070000000000");
+								}
+
 							}else if(name.equals("TurnOff")){
 								logger.info("=========== controll ======= off ====== "+originalId);
 								facadeController.controlDevice(deviceId,"00000000000000");
