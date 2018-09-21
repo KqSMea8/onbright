@@ -10,7 +10,7 @@ spring:
       username: root
       password: booszy
       profile: pro
- eureka:
+eureka:
   client:
     service-url:
       defaultZone: http://root:booszy@47.99.107.215:8761/eureka
