@@ -267,4 +267,12 @@ public interface FeignUserClient {
 	@RequestMapping(value = "/oauthclient/getClients/{grantType}", method = RequestMethod.GET)
 	public ResponseObject<List<OauthClientDetails>> getClients(
 			@PathVariable(required = true, value = "grantType") String grantType);
+
+	/**  
+	 * @param user  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/user/updateUserPwd", method = RequestMethod.PUT)
+	public ResponseObject updateUserPwd(@RequestBody TUser user);
 }

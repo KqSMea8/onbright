@@ -27,13 +27,15 @@ public class RefreshController {
  
 	@Value("${Refresh.url}")
 	private String url;
-
+	//@Value("${hahah.value}")
+	//private String value;
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	public ResponseObject refreshConfig() {
 		// 执行 curl -X POST http://localhost:8800/bus/refresh
 		ResponseObject res = new ResponseObject();
 		try {
+		//	logger.info("===============value:"+value);
 			HttpWithBasicAuth.http(url);
  			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());

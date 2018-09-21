@@ -428,7 +428,14 @@ public class CommonController {
 			if(!StringUtils.isEmpty(obox_serial_id)){
 				return facadeController.deleteObox(obox_serial_id);
 			}
-		} else if (CMDEnum.test.toString().equals(cmdEnum.toString())) {
+		} else if (CMDEnum.set_pwd.toString().equals(cmdEnum.toString())) {
+			//String type = requestParam.getValue("type");
+			String pwd = requestParam.getValue("pwd");
+			if(!StringUtils.isEmpty(pwd)){
+				return facadeController.modifyUserPwd(pwd);
+			}
+		}
+		else if (CMDEnum.test.toString().equals(cmdEnum.toString())) {
  			String serialId = requestParam.getValue("serialId");
 			if (!StringUtils.isEmpty(serialId)) {
 				return facadeController.test(serialId);

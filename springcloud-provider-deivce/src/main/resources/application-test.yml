@@ -1,0 +1,36 @@
+spring:
+  zipkin:
+    base-url: http://localhost:9411
+  rabbitmq:
+    host: 47.96.100.153
+    port: 5672
+    username: liujj
+    password: liujj123456
+eureka:
+  client:
+    service-url:
+      defaultZone: http://root:booszy@localhost:8761/eureka
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${spring.application.instance_id:${server.port}}
+    appname: springcloud-provider-deivce
+redis:
+    database: 0
+    host: 47.96.100.153
+    port: 6389
+    timeout: 3000
+    pool:
+      # 连接池最大连接数（使用负值表示没有限制）
+      max-active: 8
+      # 连接池最大阻塞等待时间（使用负值表示没有限制）
+      max-wait: -1
+      # 连接池中的最大空闲连接
+      max-idle: 8
+      # 连接池中的最小空闲连接
+      min-idle: 0
+datasource:
+    username: root
+    password: Iltwao!1
+    url: jdbc:mysql://rm-bp1phzwe9h981t77x6o.mysql.rds.aliyuncs.com:3306/onbright_ali_new?useUnicode=true&amp;characterEncoding=utf8
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource

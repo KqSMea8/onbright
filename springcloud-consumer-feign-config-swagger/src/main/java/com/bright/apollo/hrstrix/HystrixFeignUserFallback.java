@@ -307,4 +307,14 @@ public class HystrixFeignUserFallback extends BasicHystrixFeignFallback implemen
 		ResponseObject res = serverError();
 		return res;
 	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignUserClient#updateUserPwd(com.bright.apollo.common.entity.TUser)  
+	 */
+	@Override
+	public ResponseObject updateUserPwd(TUser user) {
+		logger.warn("===user server is break===");
+		ResponseObject res = serverError();
+		return res;
+	}
 }

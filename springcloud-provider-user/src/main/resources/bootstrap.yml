@@ -1,8 +1,6 @@
 spring:
   application:
     name: springcloud-provider-user
-  zipkin:
-    base-url: http://localhost:9411
   cloud:
     config:
       discovery:
