@@ -10,4 +10,12 @@ spring:
       username: root
       password: booszy
       profile: pro
+ eureka:
+  client:
+    service-url:
+      defaultZone: http://root:booszy@47.99.107.215:8761/eureka
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${spring.application.instance_id:${server.port}}
+    appname: springcloud-quartz
  

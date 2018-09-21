@@ -9,7 +9,6 @@ spring:
 eureka:
   client:
     service-url:
-#      defaultZone: http://root:booszy@172.17.0.1:8761/eureka
       defaultZone: http://root:booszy@47.99.107.215:8761/eureka
   instance:
     prefer-ip-address: true
