@@ -542,7 +542,83 @@ public class AliServerController {
 		return res;
 
 	}
-
+	/**  
+	 * @param serialId  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/addRemoteLed/{serialId}", method = RequestMethod.POST)
+	ResponseObject<OboxResp> addRemoteLed(@PathVariable(value = "serialId")String serialId){
+		ResponseObject<OboxResp> res = new ResponseObject<OboxResp>();
+		try {
+			byte[] bodyBytes = new byte[12];
+			byte[] oboxSerialIdBytes = ByteHelper.hexStringToBytes(serialId);
+			System.arraycopy(oboxSerialIdBytes, 0, bodyBytes, 0, oboxSerialIdBytes.length);
+			bodyBytes[5] = 0x00;
+			bodyBytes[6] = (byte) 0xfe;
+			bodyBytes[7] = (byte) 0x01;
+			bodyBytes[8] = (byte) 0x01;
+ 			topicServer.request(CMDEnum.setting_remote_led, bodyBytes, serialId);
+			res.setStatus(ResponseEnum.AddSuccess.getStatus());
+			res.setMessage(ResponseEnum.AddSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;	
+	}
+	/**  
+	 * @param oboxSerialId  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/aliService/delRemoteLed/{serialId}", method = RequestMethod.DELETE)
+	ResponseObject<OboxResp> delRemoteLed(@PathVariable(value = "serialId")String serialId){
+		ResponseObject<OboxResp> res = new ResponseObject<OboxResp>();
+		try {
+			byte[] bodyBytes = new byte[12];
+			byte[] oboxSerialIdBytes = ByteHelper.hexStringToBytes(serialId);
+			System.arraycopy(oboxSerialIdBytes, 0, bodyBytes, 0, oboxSerialIdBytes.length);
+			bodyBytes[5] = 0x00;
+			bodyBytes[6] = (byte) 0xfe;
+			bodyBytes[7] = (byte) 0x01;
+			bodyBytes[8] = (byte) 0x02;
+ 			topicServer.request(CMDEnum.setting_remote_led, bodyBytes, serialId);
+			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;	
+	}
+	/**  
+	 * @param oboxSerialId
+	 * @param status  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/controlRemoteLed/{serialId}/{status}", method = RequestMethod.PUT)
+	ResponseObject<OboxResp> controlRemoteLed(@PathVariable(value = "serialId")String serialId, 
+			@PathVariable(value = "status")String status){
+		ResponseObject<OboxResp> res = new ResponseObject<OboxResp>();
+		try {
+			byte[] stateBytes = ByteHelper.hexStringToBytes(status);
+			byte[] bodyBytes = new byte[7 + stateBytes.length];
+			byte[] oboxSerialIdBytes = ByteHelper.hexStringToBytes(serialId);
+			System.arraycopy(oboxSerialIdBytes, 0, bodyBytes, 0, oboxSerialIdBytes.length);
+			bodyBytes[5] = 0x00;
+			bodyBytes[6] = (byte)0xfe;
+			System.arraycopy(stateBytes, 0, bodyBytes, 7, stateBytes.length);
+			topicServer.pubTopic(CMDEnum.setting_remote_led, bodyBytes, serialId);
+  			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
 	static class sceneAction implements Runnable {
 
 		private List<SceneActionDTO> lists;
