@@ -27,5 +27,13 @@ public class OauthServiceImpl implements OauthService {
 	public List<OauthClientDetails> getClients(String grantType) {
  		return oauthMapper.getClients(grantType);
 	}
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.OauthService#queryClientByClientId(java.lang.String)  
+	 */
+	@Override
+	public OauthClientDetails queryClientByClientId(String clientId) {
+		 
+		return oauthMapper.queryClientByClientId(clientId);
+	}
 	
 }

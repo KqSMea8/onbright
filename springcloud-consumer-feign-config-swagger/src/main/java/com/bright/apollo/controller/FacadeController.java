@@ -6,14 +6,21 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
+
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContext;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.oauth2.provider.OAuth2Request;
+import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bright.apollo.cache.CmdCache;
 import com.bright.apollo.common.dto.OboxResp;
 import com.bright.apollo.common.dto.OboxResp.Type;
+import com.bright.apollo.common.entity.OauthClientDetails;
 import com.bright.apollo.common.entity.TCreateTableLog;
 import com.bright.apollo.common.entity.TDeviceStatus;
 import com.bright.apollo.common.entity.TIntelligentFingerAbandonRemoteUser;
@@ -58,6 +66,7 @@ import com.bright.apollo.feign.FeignOboxClient;
 import com.bright.apollo.feign.FeignQuartzClient;
 import com.bright.apollo.feign.FeignSceneClient;
 import com.bright.apollo.feign.FeignUserClient;
+import com.bright.apollo.http.HttpWithBasicAuth;
 import com.bright.apollo.request.IntelligentFingerRemoteUserDTO;
 import com.bright.apollo.request.IntelligentFingerWarnDTO;
 import com.bright.apollo.request.IntelligentFingerWarnItemDTO;
@@ -116,7 +125,8 @@ public class FacadeController extends BaseController {
 	private CmdCache cmdCache;
 	@Autowired
 	private MsgService msgService;
-
+	@Value("${logout.url}")
+	private String logoutUrl;
 	// release obox
 	@SuppressWarnings({ "rawtypes" })
 	@ApiOperation(value = "release  obox", httpMethod = "DELETE", produces = "application/json")
@@ -4751,12 +4761,23 @@ public class FacadeController extends BaseController {
 	@ApiOperation(value = "modifyUserPwd", httpMethod = "PUT", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/modifyUserPwd/{pwd}", method = RequestMethod.PUT)
-	public ResponseObject modifyUserPwd(@PathVariable(value = "pwd")String pwd) {
+	public ResponseObject modifyUserPwd(@PathVariable(value = "pwd")String pwd
+			) {
 		ResponseObject res = new ResponseObject();
 		try {
-			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
+			OAuth2Authentication authentication = (OAuth2Authentication)SecurityContextHolder.getContext().getAuthentication();
+			UserDetails principal = (UserDetails) authentication
 					.getPrincipal();
 			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			OAuth2AuthenticationDetails details = (OAuth2AuthenticationDetails)authentication.getDetails();
+			String tokenValue = details.getTokenValue();
+			OAuth2Request oAuth2Request = authentication.getOAuth2Request();
+			String clientId = oAuth2Request.getClientId();
+			if(StringUtils.isEmpty(clientId)){
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
 				return res;
@@ -4770,6 +4791,15 @@ public class FacadeController extends BaseController {
 			TUser user = resUser.getData();
 			user.setPassword(pwd);
 			feignUserClient.updateUserPwd(user);
+			//logout
+			ResponseObject<OauthClientDetails> clientDetail=feignUserClient.getClientByClientId(clientId);
+			if(clientDetail==null||clientDetail.getData()==null){
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			
+			}
+			HttpWithBasicAuth.logout(logoutUrl, tokenValue, clientDetail.getData());
 			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
 			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
 		} catch (Exception e) {
@@ -4787,11 +4817,11 @@ public class FacadeController extends BaseController {
 	@SuppressWarnings("rawtypes")
 	@ApiOperation(value = "queryScenes", httpMethod = "POST", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
-	@RequestMapping(value = "/test/{serialId}", method = RequestMethod.POST)
-	public ResponseObject test(@PathVariable(value = "serialId") String serialId) {
+	@RequestMapping(value = "/test/{access_token}", method = RequestMethod.POST)
+	public ResponseObject test(@PathVariable(value = "access_token") String access_token) {
 		ResponseObject res = new ResponseObject();
 		try {
-			SecurityContextHolder.clearContext();
+			//consumerTokenServices.revokeToken(access_token);
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());

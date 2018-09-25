@@ -53,4 +53,25 @@ public interface OauthMapper {
             @Result(column="autoapprove" ,  property="autoapprove")
     })
 	List<OauthClientDetails> getClients(@Param("grantType")String grantType);
+
+	/**  
+	 * @param clientId
+	 * @return  
+	 * @Description:  
+	 */
+	@Select("select * from oauth_client_details where client_id=#{clientId}")
+	@Results(value = {
+            @Result(column="client_id"   ,property="clientId"),
+            @Result(column="resource_ids" ,  property="resourceIds"),
+            @Result(column="client_secret" ,  property="clientSecret"),
+            @Result(column="scope" ,  property="scope"),
+            @Result(column="authorized_grant_types" ,  property="authorizedGrantTypes"),
+            @Result(column="web_server_redirect_uri" ,  property="webServerRedirectUri"),
+            @Result(column="authorities"  , property="authorities"),
+            @Result(column="access_token_validity" ,  property="accessTokenValidity" ),
+            @Result(column="refresh_token_validity"  , property="refreshTokenValidity" ),
+            @Result(column="additional_information"  , property="additionalInformation"),
+            @Result(column="autoapprove" ,  property="autoapprove")
+    })
+	OauthClientDetails queryClientByClientId(@Param("clientId")String clientId);
 }
