@@ -118,7 +118,7 @@ public class CMDHandlerManager {
 
 	@Autowired
 	private PushService pushservice;
-
+	
 	private static Map<String, BasicHandler> cmdHandlers = null;
 
 	/**
@@ -219,7 +219,10 @@ public class CMDHandlerManager {
 
 	@Autowired
 	private FingerRemoteHandler fingerRemoteHandler;
-
+	//remote led
+	@Autowired
+	private RemoteLedHandler remoteLedHandler;
+	
 	public CMDHandlerManager() {
 		cmdHandlers = new HashMap<String, BasicHandler>();
 	}
@@ -238,7 +241,9 @@ public class CMDHandlerManager {
 		// RemoterChannelHandler());
 		// cmdHandlers.put(Command.REMOTERBUTTON.getValue(), new
 		// RemoterButtonHandler());
-
+		if (cmdHandlers.get(Command.SETTINGREMOTELED.getValue()) == null) {
+			cmdHandlers.put(Command.SETTINGREMOTELED.getValue(), remoteLedHandler);
+		}
 		if (cmdHandlers.get(Command.VERSION.getValue()) == null) {
 			cmdHandlers.put(Command.VERSION.getValue(), versionCMDHandler);
 		}
