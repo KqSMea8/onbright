@@ -37,5 +37,6 @@ datasource:
     url: jdbc:mysql://rm-bp1phzwe9h981t77x6o.mysql.rds.aliyuncs.com:3306/bright_apollo_new?useUnicode=true&amp;characterEncoding=utf8
     driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
-
+logout:
+  url: https://aliiot.on-bright.com/oauth/token
   

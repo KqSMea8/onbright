@@ -61,4 +61,24 @@ public class OauthClientController {
 		}
 		return res;
 	}
+	/**
+	 * @param clientId
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/getClientByClientId/{clientId}", method = RequestMethod.GET)
+	public ResponseObject<OauthClientDetails> getClientByClientId(
+			@PathVariable(required = true, value = "clientId") String clientId){
+		ResponseObject<OauthClientDetails> res=new ResponseObject<OauthClientDetails>();
+		try {
+ 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+			res.setData(oauthService.queryClientByClientId(clientId));
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
 }

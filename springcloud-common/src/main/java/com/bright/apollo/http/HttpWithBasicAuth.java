@@ -12,6 +12,7 @@ import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
@@ -95,6 +96,37 @@ public class HttpWithBasicAuth {
 		String string = EntityUtils.toString(result.getEntity());
 		logger.info("===http result:"+string+"===http code:"+statusCode);
 		 
+		/*CloseableHttpResponse result = createDefault.execute(post);
+		int statusCode = result.getStatusLine().getStatusCode();
+		System.out.println(statusCode);
+		System.out.println("result：" + EntityUtils.toString(result.getEntity()));*/
+	}
+	public static void logout(String url,String accessToken,OauthClientDetails client) throws Exception {
+		if(client==null||StringUtils.isEmpty(client.getClientId())||StringUtils.isEmpty(client.getClientSecret())){
+			return ;
+		}
+    	SSLContext sslContext = new SSLContextBuilder().loadTrustMaterial(null, new TrustStrategy() {
+			// 信任所有
+			public boolean isTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+				return true;
+			}
+		}).build();
+	    HostnameVerifier hostnameVerifier = NoopHostnameVerifier.INSTANCE;
+		SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslContext, hostnameVerifier);
+		
+		CredentialsProvider credsProvider = new BasicCredentialsProvider();
+        credsProvider.setCredentials(AuthScope.ANY,
+                new UsernamePasswordCredentials(client.getClientId(), client.getClientSecret()));
+        CloseableHttpClient createDefault = HttpClients.custom()
+                .setDefaultCredentialsProvider(credsProvider).setSSLSocketFactory(sslsf)
+                .build();
+        StringBuilder sb=new StringBuilder(url);
+        sb.append("/").append(accessToken);
+		HttpDelete delete = new HttpDelete(sb.toString());
+		CloseableHttpResponse result = createDefault.execute(delete);
+		int statusCode = result.getStatusLine().getStatusCode();
+		String string = EntityUtils.toString(result.getEntity());
+		logger.info("===http result:"+string+"===http code:"+statusCode);		 
 		/*CloseableHttpResponse result = createDefault.execute(post);
 		int statusCode = result.getStatusLine().getStatusCode();
 		System.out.println(statusCode);

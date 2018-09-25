@@ -13,4 +13,11 @@ public interface OauthService {
 	 * @Description:  
 	 */
 	List<OauthClientDetails> getClients(String grantType);
+
+	/**  
+	 * @param clientId
+	 * @return  
+	 * @Description:  
+	 */
+	OauthClientDetails queryClientByClientId(String clientId);
 }
