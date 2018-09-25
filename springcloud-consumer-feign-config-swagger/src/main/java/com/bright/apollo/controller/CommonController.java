@@ -49,8 +49,8 @@ public class CommonController {
 	private FacadeController facadeController;
 	@Autowired
 	private SceneController sceneController;
-	@Autowired
-	private DeviceController deviceController;
+//	@Autowired
+//	private DeviceController deviceController;
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping("/common")
