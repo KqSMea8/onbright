@@ -107,14 +107,14 @@ public class TmallController {
 			headerMap.put("messageId",(String)requestHeaderMap.get("messageId"));
 			headerMap.put("payLoadVersion","1");
 			map.put("header",headerMap);
-//			User user = (User) defaultOAuth2AccessToken.getPrincipal();
-			ResponseObject<TUser> userResponseObject = feignUserClient.getUser("13828486833");//user.getUsername()
+			User user = (User) defaultOAuth2AccessToken.getPrincipal();
+			ResponseObject<TUser> userResponseObject = feignUserClient.getUser(user.getUsername());//user.getUsername()
 			TUser tUser = userResponseObject.getData();
 
 //			logger.info(" ====== username ====== "+user.getUsername());
 
 			logger.info(" ====== userId ====== "+tUser.getId());
-			ResponseObject<List<TOboxDeviceConfig>> responseObject = feignDeviceClient.getOboxDeviceConfigByUserId(559);//559
+			ResponseObject<List<TOboxDeviceConfig>> responseObject = feignDeviceClient.getOboxDeviceConfigByUserId(tUser.getId());//559
 			List<TOboxDeviceConfig> oboxDeviceConfigList = responseObject.getData();
 			JSONArray jsonArray = new JSONArray();
 
