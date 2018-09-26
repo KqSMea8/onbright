@@ -50,11 +50,11 @@ datasource:
 com:
   mqtt:
     inbound:
-          url: tcp://localhost:1883
+          url: tcp://47.99.107.215:1883
           clientId: aliInbound
           topics: topic1
     outbound:
-          url: tcp://localhost:1883
+          url: tcp://47.99.107.215:1883
           clientId: aliOutbound
           topics: topic1
 

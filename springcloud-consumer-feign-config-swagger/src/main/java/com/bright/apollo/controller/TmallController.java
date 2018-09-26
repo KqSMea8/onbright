@@ -15,6 +15,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import com.bright.apollo.common.entity.TUser;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
@@ -40,10 +41,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.feign.FeignDeviceClient;
 import com.bright.apollo.feign.FeignUserClient;
@@ -52,12 +50,12 @@ import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.transition.TMallDeviceAdapter;
 import com.bright.apollo.transition.TMallTemplate;
 
-/**  
- *@Title:  
- *@Description:  
+/**
+ *@Title:
+ *@Description:
  *@Author:JettyLiu
- *@Since:2018年3月16日  
- *@Version:1.1.0  
+ *@Since:2018年3月16日
+ *@Version:1.1.0
  */
 //@Api("device Controller")
 @RequestMapping("tmall")
@@ -86,6 +84,7 @@ public class TmallController {
 //	@ApiOperation(value = "get deivcie by device serialId", httpMethod = "GET", produces = "application/json")
 //	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/tmallCmd", method = RequestMethod.POST,produces = "application/json ;charset=UTF-8")
+	@ResponseBody
 	public Object tmallCmd(@RequestBody Object object) throws Exception {
 
 		logger.info("====== messageID ======"+object);
@@ -105,17 +104,17 @@ public class TmallController {
 
 			headerMap.put("namespace","AliGenie.Iot.Device.Discovery");
 			headerMap.put("name","DiscoveryDevicesResponse");
-			headerMap.put("messageId",requestHeaderMap.get("messageId"));
+			headerMap.put("messageId",(String)requestHeaderMap.get("messageId"));
 			headerMap.put("payLoadVersion","1");
 			map.put("header",headerMap);
-			User user = (User) defaultOAuth2AccessToken.getPrincipal();
-			ResponseObject<TUser> userResponseObject = feignUserClient.getUser(user.getUsername());
+//			User user = (User) defaultOAuth2AccessToken.getPrincipal();
+			ResponseObject<TUser> userResponseObject = feignUserClient.getUser("13828486833");//user.getUsername()
 			TUser tUser = userResponseObject.getData();
 
-			logger.info(" ====== username ====== "+user.getUsername());
+//			logger.info(" ====== username ====== "+user.getUsername());
 
 			logger.info(" ====== userId ====== "+tUser.getId());
-			ResponseObject<List<TOboxDeviceConfig>> responseObject = feignDeviceClient.getOboxDeviceConfigByUserId(tUser.getId());//559
+			ResponseObject<List<TOboxDeviceConfig>> responseObject = feignDeviceClient.getOboxDeviceConfigByUserId(559);//559
 			List<TOboxDeviceConfig> oboxDeviceConfigList = responseObject.getData();
 			JSONArray jsonArray = new JSONArray();
 
@@ -128,7 +127,8 @@ public class TmallController {
 				JSONObject devices = new JSONObject();
 				if(adapter !=null&&!adapter.equals("")){
 					setDeviceJson(devices,adapter);
-					list.add(devices);
+//					list.add(devices);
+					jsonArray.put(devices);
 				}
 			}
 			for(int i=0;i<list.size();i++){
@@ -139,24 +139,26 @@ public class TmallController {
 					for(int j=1;j<=3;j++){
 						JSONObject devices = new JSONObject();
 						putChildrenDeviceValue(devices,jsonObject,j);
-						list.add(devices);
+//						list.add(devices);
+						jsonArray.put(devices);
 					}
 				}
 				if(deviceType.equals("switch")&&model.equals("两键键开关")){
 					for(int j=1;j<=2;j++){
 						JSONObject devices = new JSONObject();
 						putChildrenDeviceValue(devices,jsonObject,j);
-						list.add(devices);
+//						list.add(devices);
+						jsonArray.put(devices);
 					}
 				}
 			}
 			templateScan(list);//展示使用(日后可删除)
-			jsonArray.put(list);
-			playloadMap.put("devices",list);
+//			jsonArray.put(list);
+			playloadMap.put("devices",jsonArray);
 			map.put("payload",playloadMap);
 			headerMap.put("namespace","AliGenie.Iot.Device.Discovery");
 			headerMap.put("name","DiscoveryDevicesResponse");
-			headerMap.put("messageId",requestHeaderMap.get("messageId"));
+			headerMap.put("messageId",(String)requestHeaderMap.get("messageId"));
 			headerMap.put("payLoadVersion","1");
 			map.put("header",headerMap);
 		}else if(requestHeaderMap.get("namespace").equals("AliGenie.Iot.Device.Control")){//天猫精灵控制设备
@@ -254,7 +256,7 @@ public class TmallController {
 			}finally {
 				headerMap.put("namespace","AliGenie.Iot.Device.Control");
 				headerMap.put("name",name+"Response");
-				headerMap.put("messageId",requestHeaderMap.get("messageId"));
+				headerMap.put("messageId",(String)requestHeaderMap.get("messageId"));
 				headerMap.put("payLoadVersion","1");
 				map.put("header",headerMap);
 				playloadMap.put("deviceId",deviceId);
@@ -281,7 +283,7 @@ public class TmallController {
 			}finally {
 				headerMap.put("namespace","AliGenie.Iot.Device.Query");
 				headerMap.put("name",name+"Response");
-				headerMap.put("messageId",requestHeaderMap.get("messageId"));
+				headerMap.put("messageId",(String)requestHeaderMap.get("messageId"));
 				headerMap.put("payLoadVersion","1");
 				map.put("header",headerMap);
 				playloadMap.put("deviceId",deviceId);
@@ -290,9 +292,8 @@ public class TmallController {
 			}
 
 		}
-		logger.info("map ====== "+map);
-
-		return map.toString();
+		logger.info("map ====== "+StringEscapeUtils.unescapeJavaScript(map.toString()));
+		return StringEscapeUtils.unescapeJavaScript(map.toString());
 	}
 
 	private void putDeviceValue(JSONObject devices,TMallDeviceAdapter adapter) throws JSONException{
@@ -304,24 +305,24 @@ public class TmallController {
 		devices.put("model",adapter.getModel());
 		devices.put("icon",adapter.getIcon());
 		devices.put("properties",adapter.getProperties());
-		devices.put("actions",adapter.getAction());
+//		devices.put("actions",adapter.getAction());
 	}
 
 	private void putChildrenDeviceValue(JSONObject devices,JSONObject outlet,Integer i ) throws JSONException{
-		String deivceId = outlet.getString("deviceId");
+		String deivceId = (String)outlet.get("deviceId");
 		JSONObject extensionsMap = new JSONObject();
 		extensionsMap.put("extension1","");
 		extensionsMap.put("extension2","");
 		extensionsMap.put("parentId",deivceId);
 		devices.put("deviceId",deivceId+"_"+i);
 		devices.put("deviceName","开关");//开关
-		devices.put("deviceType",outlet.getString("deviceType"));//outlet.getString("deviceType")
+		devices.put("deviceType",outlet.get("deviceType"));//outlet.getString("deviceType")
 		devices.put("zone","");
 		devices.put("brand","on-bright");
 		devices.put("model","");
 		devices.put("icon",TMallDeviceAdapter.mutipleOutleticon);
 		devices.put("properties",outlet.get("properties"));
-		devices.put("actions",outlet.get("actions"));
+//		devices.put("actions",outlet.get("actions"));
 		devices.put("extensions",extensionsMap);
 	}
 
@@ -356,7 +357,7 @@ public class TmallController {
 		String[] actions = new String[2];
 		actions[0] = "TurnOn";
 		actions[1] = "TurnOff";
-		devices.put("actions",actions);
+//		devices.put("actions",actions);
 		devices.put("extensions",extensionsMap);
 
 		JSONObject devices2 = new JSONObject();
@@ -372,7 +373,7 @@ public class TmallController {
 		String[] actions2 = new String[2];
 		actions2[0] = "TurnOn";
 		actions2[1] = "TurnOff";
-		devices2.put("actions",actions2);
+//		devices2.put("actions",actions2);
 		devices2.put("extensions",extensionsMap);
 
 		JSONObject devices3 = new JSONObject();
@@ -388,7 +389,7 @@ public class TmallController {
 		String[] actions3 = new String[2];
 		actions3[0] = "TurnOn";
 		actions3[1] = "TurnOff";
-		devices3.put("actions",actions3);
+//		devices3.put("actions",actions3);
 		devices3.put("extensions",extensionsMap);
 		list.add(devices);
 		list.add(devices2);

@@ -6,6 +6,8 @@ import com.bright.apollo.redis.RedisBussines;
 import com.bright.apollo.tool.ByteHelper;
 import com.zz.common.util.ArrayUtils;
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
@@ -58,7 +60,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
 
     private JSONArray properties;
 
-    private String[] action;
+//    private String[] action;
 
     private String deviceId;
 
@@ -127,13 +129,13 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         this.properties = properties;
     }
 
-    public String[] getAction() {
-        return action;
-    }
-
-    public void setAction(String[] action) {
-        this.action = action;
-    }
+//    public String[] getAction() {
+//        return action;
+//    }
+//
+//    public void setAction(String[] action) {
+//        this.action = action;
+//    }
 
     public String getDeviceId() {
         return deviceId;
@@ -184,11 +186,15 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
     }
 
 
-    private void propertiesTransition(Map<String,Object> dfMap,String[] properties){
+    private void propertiesTransition(JSONObject dfMap,String[] properties) {
         String[] propertyString = null;
         for(String property : properties){
             propertyString = property.split("-");
-            dfMap.put(propertyString[0],propertyString[1]);
+            try {
+                dfMap.put(propertyString[0],propertyString[1]);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -260,7 +266,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
     }
 
     //设置灯设备动作和属性
-    private void setLight(TMallDeviceAdapter tMallDeviceAdapter,String[] defaultActions,Map<String,Object> dfMap ){
+    private void setLight(TMallDeviceAdapter tMallDeviceAdapter,String[] defaultActions,JSONObject dfMap ){
         JSONArray jsonArray = new JSONArray();
         String[] lightActions = tMallTemplate.getLightActions().split("\\|");
         String[] lightProperties = tMallTemplate.getLightProperties().split("\\|");
@@ -281,7 +287,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         propertiesTransition(dfMap,lightProperties);
         jsonArray.put(dfMap);
         tMallDeviceAdapter.setProperties(jsonArray);
-        tMallDeviceAdapter.setAction(actionsTransition(lightActions,defaultActions));
+//        tMallDeviceAdapter.setAction(new String[0]);//actionsTransition(lightActions,defaultActions)
     }
 
     //发现设备转换
@@ -291,7 +297,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         String deviceState = oboxDeviceConfig.getDeviceState();
         String[] defaultActions = tMallTemplate.getDefaultAction().split("\\|");
         String[] defaultProperties = tMallTemplate.getDefaultProperties().split("\\|");
-        Map<String,Object> dfMap = new HashMap<String, Object>();
+        JSONObject dfMap = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         if(deviceType.equals("01")){//灯设备
             oboxDeviceConfig.setDeviceType("light");
@@ -327,7 +333,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                 oboxDeviceConfig.setDeviceType("outlet");
                 SingleSwitch singleswitch = new SingleSwitch();
                 setProperty(singleswitch,oboxDeviceConfig);
-                singleswitch.setAction(defaultActions);
+//                singleswitch.setAction(new String[0]);
                 jsonArray.put(dfMap);
                 singleswitch.setProperties(jsonArray);
                 return singleswitch;
@@ -335,7 +341,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                 oboxDeviceConfig.setDeviceType("switch");
                 SingleSwitch singleswitch = new SingleSwitch();
                 setProperty(singleswitch,oboxDeviceConfig);
-                singleswitch.setAction(defaultActions);
+//                singleswitch.setAction(new String[0]);
                 jsonArray.put(dfMap);
                 singleswitch.setProperties(jsonArray);
                 return singleswitch;
@@ -343,7 +349,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                 oboxDeviceConfig.setDeviceType("switch");
                 DoubleSwitch doubleswitch = new DoubleSwitch();
                 setProperty(doubleswitch,oboxDeviceConfig);
-                doubleswitch.setAction(defaultActions);
+//                doubleswitch.setAction(new String[0]);
                 jsonArray.put(dfMap);
                 doubleswitch.setProperties(jsonArray);
                 return doubleswitch;
@@ -351,7 +357,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                 oboxDeviceConfig.setDeviceType("switch");
                 MutipleSwitch mutipleswitch = new MutipleSwitch();
                 setProperty(mutipleswitch,oboxDeviceConfig);
-                mutipleswitch.setAction(defaultActions);
+//                mutipleswitch.setAction(new String[0]);
                 jsonArray.put(dfMap);
                 mutipleswitch.setProperties(jsonArray);
                 return mutipleswitch;
@@ -361,7 +367,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
             oboxDeviceConfig.setDeviceType("curtain");
             Curtain curtain = new Curtain();
             setProperty(curtain,oboxDeviceConfig);
-            curtain.setAction(defaultActions);
+//            curtain.setAction(new String[0]);
             jsonArray.put(dfMap);
             curtain.setProperties(jsonArray);
             return curtain;
@@ -371,7 +377,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                 oboxDeviceConfig.setDeviceType("sensor");
                 Humituresensor humituresensor = new Humituresensor();
                 setProperty(humituresensor,oboxDeviceConfig);
-                humituresensor.setAction(defaultActions);
+//                humituresensor.setAction(new String[0]);
                 jsonArray.put(dfMap);
                 humituresensor.setProperties(jsonArray);
                 return humituresensor;
@@ -379,7 +385,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                 oboxDeviceConfig.setDeviceType("sensor");
                 Gatemagnetism gatemagnetism = new Gatemagnetism();
                 setProperty(gatemagnetism,oboxDeviceConfig);
-                gatemagnetism.setAction(defaultActions);
+//                gatemagnetism.setAction(new String[0]);
                 jsonArray.put(dfMap);
                 gatemagnetism.setProperties(jsonArray);
                 return gatemagnetism;
@@ -389,7 +395,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
             oboxDeviceConfig.setDeviceType("smart-gating");
             DoorLock doorLock = new DoorLock();
             setProperty(doorLock,oboxDeviceConfig);
-            doorLock.setAction(defaultActions);
+//            doorLock.setAction(new String[0]);
             jsonArray.put(dfMap);
             doorLock.setProperties(jsonArray);
             return doorLock;
@@ -858,7 +864,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
     @Override
     public String toString(){
         return "deviceId:"+getDeviceId()+"\n deviceName:"+getDeviceName()+"\n properties:"+getProperties()+
-               "\n action:"+getAction()+"\n zone:"+getZone()+"\n model:"+getModel()+"\n brand:"+getBrand()+
+               "\n zone:"+getZone()+"\n model:"+getModel()+"\n brand:"+getBrand()+
                 "\n icon:"+getIcon();
     }
 }
