@@ -306,5 +306,32 @@ public class HystrixFeignAli2Fallback extends BasicHystrixFeignFallback implemen
 		return serverError();
 	}
 
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignAliClient#addRemoteLed(java.lang.String)  
+	 */
+	@Override
+	public ResponseObject<OboxResp> addRemoteLed(String serialId) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignAliClient#delRemoteLed(java.lang.String)  
+	 */
+	@Override
+	public ResponseObject<OboxResp> delRemoteLed(String serialId) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignAliClient#controlRemoteLed(java.lang.String, java.lang.String)  
+	 */
+	@Override
+	public ResponseObject<OboxResp> controlRemoteLed(String serialId, String status) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
  
 }
