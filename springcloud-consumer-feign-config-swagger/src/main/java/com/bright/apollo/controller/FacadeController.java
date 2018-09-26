@@ -772,10 +772,12 @@ public class FacadeController extends BaseController {
 				oboxSceneNumber = Integer.parseInt(data.substring(6, 8), 16);
 				while (System.currentTimeMillis() - startTime < max_waitting_time) {
 					try {
+						logger.info("===key:"+sceneName+oboxSerialId+sceneGroup+oboxSceneNumber);
 						reply = cmdCache.getLocalSceneInfo(sceneName, oboxSerialId, sceneGroup, oboxSceneNumber);
 						if (StringUtils.isEmpty(reply)) {
 							TimeUnit.MILLISECONDS.sleep(150);
 						} else {
+							logger.info("===reply:"+reply);
 							cmdCache.delLocalSceneInfo(sceneName, oboxSerialId, sceneGroup, oboxSceneNumber);
 							break;
 						}
