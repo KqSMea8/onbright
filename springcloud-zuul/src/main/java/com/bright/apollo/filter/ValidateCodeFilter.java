@@ -69,6 +69,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 				mobClient.addRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
 				mobClient.addRequestProperty("Accept", "application/json");
 				String result = mobClient.post();
+				logger.info("===result:"+result);
 				JSONObject object = new JSONObject(result);
 				if (object.getInt("status") == 200) {
 					filterChain.doFilter(request, response);
