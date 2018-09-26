@@ -1,5 +1,7 @@
 package com.bright.apollo.handler;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
+
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -88,6 +90,7 @@ public class SceneCMDHandler extends BasicHandler{
 //                    int ret = OboxBusiness.addOboxScene(scene);
                     int ret = sceneService.addScene(scene);
                     cmdCache.saveAddLocalSceneInfo(scene_id, dbObox.getOboxSerialId(), scene_group,scene_number,ret);
+                    logger.info("===key:"+scene_id+dbObox.getOboxSerialId()+scene_group+scene_number);
                     /*List<TUserObox> tUserOboxs = OboxBusiness.queryUserOboxsByOboxId(dbObox.getOboxId());
                     for (TUserObox tUserObox : tUserOboxs) {
                         TUserOboxScene tUserScene = new TUserScene();

@@ -24,7 +24,7 @@ import com.bright.apollo.common.entity.TAliDeviceUS;
 import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.common.entity.TYaoKongYunBrand;
 import com.bright.apollo.common.entity.TYaokonyunDevice;
-import com.bright.apollo.enums.ALIDevTypeEnum;
+import com.bright.apollo.enums.AliIotDevTypeEnum;
 import com.bright.apollo.enums.AliRegionEnum;
 import com.bright.apollo.mqtt.MqttGateWay;
 import com.bright.apollo.response.AliDevInfo;
@@ -38,6 +38,7 @@ import com.bright.apollo.service.AliRequest.AliService;
 import com.bright.apollo.tool.ByteHelper;
 import com.bright.apollo.tool.MD5;
 import com.bright.apollo.util.SpringContextUtil;
+import com.bright.apollo.vo.IotDevConncetion;
 
 @RestController
 @RequestMapping("aliDevice")
@@ -62,7 +63,8 @@ public class AliDeviceController {
 
 	@Autowired
 	private YaoKongYunService yaoKongYunService;
-
+	@Autowired
+	private IotDevConncetion iotOboxConncetion;
 	private static final Logger logger = LoggerFactory.getLogger(AliDeviceController.class);
 
 	@RequestMapping(value = "/sendToMqtt", method = RequestMethod.GET)
@@ -79,10 +81,11 @@ public class AliDeviceController {
 		ResponseObject<AliDevInfo> res = new ResponseObject<AliDevInfo>();
 		try {
 			AliDevInfo aliDevInfo = new AliDevInfo();
-			ALIDevTypeEnum aliDevTypeEnum = ALIDevTypeEnum.getType(type);
+			//ALIDevTypeEnum aliDevTypeEnum = ALIDevTypeEnum.getType(type);
+			AliIotDevTypeEnum aliIotDevTypeEnum=AliIotDevTypeEnum.getType(type);
 			AliRegionEnum region;
 			Boolean isFound = false;
-			if(aliDevTypeEnum==null){
+			if(aliIotDevTypeEnum==null){
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
 				return res;
@@ -91,7 +94,7 @@ public class AliDeviceController {
 				region = AliRegionEnum.SOURTHCHINA;
 				aliDevInfo.setKitCenter(region.getValue());
 				List<TAliDevice> tAliDeviceList = aliDeviceService
-						.getAliDeviceByProductKeyAndDeviceSerialId(aliDevTypeEnum.getSouthChinaName(), "available");
+						.getAliDeviceByProductKeyAndDeviceSerialId(iotOboxConncetion.getOboxSouthChinaName(), "available");
 				for (TAliDevice tAliDevice2 : tAliDeviceList) {
 					if (StringUtils.isEmpty(
 							aliDevCache.getAliDevAvailable(tAliDevice2.getProductKey(), tAliDevice2.getDeviceName()))) {
@@ -125,7 +128,7 @@ public class AliDeviceController {
 				region = AliRegionEnum.AMERICA;
 				aliDevInfo.setKitCenter(AliRegionEnum.AMERICA.getValue());
 				List<TAliDeviceUS> tAliDeviceList = aliDeviceService
-						.getAliUSDeviceByProductKeyAndDeviceSerialId(aliDevTypeEnum.getSouthChinaName(), "available");
+						.getAliUSDeviceByProductKeyAndDeviceSerialId(iotOboxConncetion.getOboxSouthChinaName(), "available");
 				for (TAliDeviceUS tAliDevice2 : tAliDeviceList) {
 					if (StringUtils.isEmpty(
 							aliDevCache.getAliDevAvailable(tAliDevice2.getProductKey(), tAliDevice2.getDeviceName()))) {
@@ -159,9 +162,9 @@ public class AliDeviceController {
 			if (!isFound) {
 				TAliDevice tAliDevice;
 				if (region.equals(AliRegionEnum.AMERICA)) {
-					tAliDevice = aliService.registDevice(aliDevTypeEnum.getAmericaName(), null, region);
+					tAliDevice = aliService.registDevice(iotOboxConncetion.getOboxAmericaName(), null, region);
 				} else {
-					tAliDevice = aliService.registDevice(aliDevTypeEnum.getSouthChinaName(), null, region);
+					tAliDevice = aliService.registDevice(iotOboxConncetion.getOboxSouthChinaName(), null, region);
 				}
 				if (tAliDevice == null) {
 					res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());

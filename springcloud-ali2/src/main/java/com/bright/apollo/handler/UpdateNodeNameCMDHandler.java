@@ -1,11 +1,12 @@
 package com.bright.apollo.handler;
 
+import org.springframework.stereotype.Component;
+
 import com.bright.apollo.bean.Message;
 import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.session.ClientSession;
 import com.bright.apollo.tool.ByteHelper;
-import org.springframework.stereotype.Component;
 
 @Component
 public class UpdateNodeNameCMDHandler extends BasicHandler{
@@ -117,7 +118,20 @@ public class UpdateNodeNameCMDHandler extends BasicHandler{
 //                        DeviceBusiness.updateOBOXGroupName(tServerOboxGroup);
 //                    }
                 }
-            }
+            }else if("04".equals(set)){
+				if ("00".equals(groupAddr)) {
+					//node
+					TOboxDeviceConfig tOboxDeviceConfig = oboxDeviceConfigService.queryOboxConfigByRFAddr(obox.getOboxId(), nodeAddr);
+					if (tOboxDeviceConfig == null) {
+						return null;
+					}
+					userDeviceService.deleteUserDevice(tOboxDeviceConfig.getDeviceSerialId());
+                    oboxDeviceConfigService.deleteTOboxDeviceConfigByOboxIdAndNodeAddress(obox.getOboxId(),nodeAddr);
+//                 
+					 //DeviceBusiness.deleteDeviceById(tOboxDeviceConfig.getId());
+					 //DeviceBusiness.deleteUserDeviceByDeviceId(tOboxDeviceConfig.getId());
+				}else {}
+			}
         }
         return null;
     }

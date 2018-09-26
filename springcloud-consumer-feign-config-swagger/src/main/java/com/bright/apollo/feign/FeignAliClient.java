@@ -299,4 +299,28 @@ public interface FeignAliClient {
 	 */
 	@RequestMapping(value = "/aliService/deleteObox/{serialId}", method = RequestMethod.DELETE)
 	ResponseObject<OboxResp>  deleteObox(@PathVariable(value = "serialId") String serialId);
+
+	/**  
+	 * @param serialId  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/aliService/addRemoteLed/{serialId}", method = RequestMethod.POST)
+	ResponseObject<OboxResp> addRemoteLed(@PathVariable(value = "serialId")String serialId);
+
+	/**  
+	 * @param oboxSerialId  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/aliService/delRemoteLed/{serialId}", method = RequestMethod.DELETE)
+	ResponseObject<OboxResp> delRemoteLed(@PathVariable(value = "serialId")String serialId);
+
+	/**  
+	 * @param oboxSerialId
+	 * @param status  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/aliService/controlRemoteLed/{serialId}/{status}", method = RequestMethod.PUT)
+	ResponseObject<OboxResp> controlRemoteLed(@PathVariable(value = "serialId")String serialId, 
+			@PathVariable(value = "status")String status);
+ 
 }

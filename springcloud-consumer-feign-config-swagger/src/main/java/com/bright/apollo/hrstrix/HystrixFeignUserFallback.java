@@ -317,4 +317,14 @@ public class HystrixFeignUserFallback extends BasicHystrixFeignFallback implemen
 		ResponseObject res = serverError();
 		return res;
 	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignUserClient#getClientByClientId(java.lang.String)  
+	 */
+	@Override
+	public ResponseObject<OauthClientDetails> getClientByClientId(String clientId) {
+		logger.warn("===user server is break===");
+		ResponseObject res = serverError();
+		return res;
+	}
 }

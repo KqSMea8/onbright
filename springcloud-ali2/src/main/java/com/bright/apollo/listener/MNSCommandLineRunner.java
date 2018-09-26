@@ -5,10 +5,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import com.bright.apollo.socket.MNSHandler;
 import com.bright.apollo.socket.WIFIHandler;
+ 
+ 
 
 /**  
  *@Title:  
@@ -18,6 +22,7 @@ import com.bright.apollo.socket.WIFIHandler;
  *@Version:1.1.0  
  */
 @Component
+@Order(Ordered.LOWEST_PRECEDENCE)
 public class MNSCommandLineRunner implements CommandLineRunner{
 	private static Logger logger = LoggerFactory.getLogger(MNSCommandLineRunner.class);
  	@Autowired
@@ -25,6 +30,7 @@ public class MNSCommandLineRunner implements CommandLineRunner{
     private MNSHandler mnshandler;
 
 	@Autowired
+	@Lazy
 	private WIFIHandler irhandler;
 
 	/* (non-Javadoc)  

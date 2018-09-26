@@ -20,19 +20,19 @@ public class UserProvider {
 			{
 				UPDATE("t_user");
 				if (!StringUtils.isEmpty(user.getPassword())) {
-					SET("password", "#{password}");
+					SET("password=#{password}");
 				}
 				if (!StringUtils.isEmpty(user.getOpenId())) {
-					SET("open_id", "#{openId}");
+					SET("open_id=#{openId}");
 				}
 				if (!StringUtils.isEmpty(user.getNickname())) {
-					SET("nickname", "#{nickname}");
+					SET("nickname=#{nickname}");
 				}
 				if (!StringUtils.isEmpty(user.getHeadimgurl())) {
-					SET("headimgurl", "#{headimgurl}");
+					SET("headimgurl=#{headimgurl}");
 				}
 				if (!StringUtils.isEmpty(user.getHeadimgurl())) {
-					SET("headimgurl", "#{headimgurl}");
+					SET("headimgurl=#{headimgurl}");
 				}	
 				WHERE("id=#{id}");
 			}

@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import com.aliyun.mns.model.Message;
 import com.bright.apollo.common.entity.PushMessage;
@@ -21,7 +22,6 @@ import com.bright.apollo.common.entity.TAliDevice;
 import com.bright.apollo.common.entity.TAliDeviceUS;
 import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.common.entity.TUserObox;
-import com.bright.apollo.enums.ALIDevTypeEnum;
 import com.bright.apollo.enums.AliRegionEnum;
 import com.bright.apollo.enums.CMDEnum;
 import com.bright.apollo.enums.PushMessageType;
@@ -33,6 +33,7 @@ import com.bright.apollo.service.PushService;
 import com.bright.apollo.service.TopicServer;
 import com.bright.apollo.service.UserOboxService;
 import com.bright.apollo.tool.ByteHelper;
+import com.bright.apollo.vo.IotDevConncetion;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 
@@ -64,6 +65,9 @@ public class AliMessageHandler {
 	@Autowired
 	@Lazy
 	private PushService pushservice;
+	@Autowired
+	@Lazy
+	private IotDevConncetion iotOboxConncetion;
 	/**
 	 * @param message
 	 * @Description:
@@ -85,7 +89,10 @@ public class AliMessageHandler {
 				logger.info(" deviceName ------ " + object.get("deviceName"));
 				// String obox_serial_id = object.getString("deviceName");
 				if (object.getString("status").equals("offline")) {
-					if (ALIDevTypeEnum.getTypebyValue(object.getString("productKey")).equals(ALIDevTypeEnum.OBOX)) {
+					if(!StringUtils.isEmpty(object.getString("productKey"))&&(iotOboxConncetion.getOboxSouthChinaName().equals(object.getString("productKey"))||
+							iotOboxConncetion.getOboxAmericaName().equals(object.getString("productKey"))
+							)){
+					//if (ALIDevTypeEnum.getTypebyValue(object.getString("productKey")).equals(ALIDevTypeEnum.OBOX)) {
 						TAliDevice tAliDevice = aliDeviceService.getAliDeviceByProductKeyAndDeviceName(
 								object.getString("productKey"), object.getString("deviceName"));
 						// TAliDevice tAliDevice =
@@ -170,8 +177,10 @@ public class AliMessageHandler {
 					body1[6] = (byte) date.get(Calendar.HOUR_OF_DAY); // 小时
 					body1[7] = (byte) date.get(Calendar.MINUTE); // 分钟
 					body1[8] = (byte) date.get(Calendar.SECOND); // 秒
-
-					if (ALIDevTypeEnum.getTypebyValue(object.getString("productKey")).equals(ALIDevTypeEnum.OBOX)) {
+					if(!StringUtils.isEmpty(object.getString("productKey"))&&(iotOboxConncetion.getOboxSouthChinaName().equals(object.getString("productKey"))||
+							iotOboxConncetion.getOboxAmericaName().equals(object.getString("productKey"))
+							)){
+					//if (ALIDevTypeEnum.getTypebyValue(object.getString("productKey")).equals(ALIDevTypeEnum.OBOX)) {
 						topicService.pubTopic(CMDEnum.time, body1, object.getString("productKey"),
 								object.getString("deviceName"), AliRegionEnum.SOURTHCHINA);
 					} else {
@@ -211,7 +220,10 @@ public class AliMessageHandler {
 				String[] topicArray = topic.split("/");
 				logger.info("topic:" + topic + " PopMessage Body: " + aString); // 获取原始消息
 				logger.info("topic:" + topic + " PopMessage Body length : " + aString.length()); // 获取原始消息长度
-				if (ALIDevTypeEnum.getTypebyValue(topicArray[1]).equals(ALIDevTypeEnum.OBOX)) {
+				if(!StringUtils.isEmpty(topicArray[1])&&(iotOboxConncetion.getOboxSouthChinaName().equals(topicArray[1])||
+						iotOboxConncetion.getOboxAmericaName().equals(topicArray[1])
+						)){
+				//if (ALIDevTypeEnum.getTypebyValue(topicArray[1]).equals(ALIDevTypeEnum.OBOX)) {
 
 					 cmdHandlerManager.processTopic(topicArray[1],topicArray[2],aString);
 				} else {
