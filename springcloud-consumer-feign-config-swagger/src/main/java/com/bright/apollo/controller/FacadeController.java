@@ -127,6 +127,7 @@ public class FacadeController extends BaseController {
 	private MsgService msgService;
 	@Value("${logout.url}")
 	private String logoutUrl;
+
 	// release obox
 	@SuppressWarnings({ "rawtypes" })
 	@ApiOperation(value = "release  obox", httpMethod = "DELETE", produces = "application/json")
@@ -771,10 +772,12 @@ public class FacadeController extends BaseController {
 				oboxSceneNumber = Integer.parseInt(data.substring(6, 8), 16);
 				while (System.currentTimeMillis() - startTime < max_waitting_time) {
 					try {
+						logger.info("===key:"+sceneName+oboxSerialId+sceneGroup+oboxSceneNumber);
 						reply = cmdCache.getLocalSceneInfo(sceneName, oboxSerialId, sceneGroup, oboxSceneNumber);
 						if (StringUtils.isEmpty(reply)) {
 							TimeUnit.MILLISECONDS.sleep(150);
 						} else {
+							logger.info("===reply:"+reply);
 							cmdCache.delLocalSceneInfo(sceneName, oboxSerialId, sceneGroup, oboxSceneNumber);
 							break;
 						}
@@ -3771,7 +3774,7 @@ public class FacadeController extends BaseController {
 			fingerRemoteUser.setUseTimes(0);
 			fingerRemoteUser.setMobile(mobile == null ? "" : mobile);
 			feignDeviceClient.updateTIntelligentFingerRemoteUser(fingerRemoteUser);
-			feignQuartzClient.deleteJob(MD5.getMD5Str(fingerRemoteUser.getId().intValue()+"" + serialId));
+			feignQuartzClient.deleteJob(MD5.getMD5Str(fingerRemoteUser.getId().intValue() + "" + serialId));
 			feignQuartzClient.addRemoteOpenTaskSchedule(fingerRemoteUser.getId(), endTime + "", serialId);
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("pwd",
@@ -4714,28 +4717,29 @@ public class FacadeController extends BaseController {
 			}
 			feignAliClient.deleteObox(serialId);
 			ResponseObject<List<TOboxDeviceConfig>> devicseRes = feignDeviceClient.getDevicesByOboxSerialId(serialId);
-			if(devicseRes==null||devicseRes.getStatus()!=ResponseEnum.SelectSuccess.getStatus()){
+			if (devicseRes == null || devicseRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
 				return res;
 			}
 			List<TOboxDeviceConfig> tOboxDeviceConfigs = devicseRes.getData();
-			if(tOboxDeviceConfigs!=null){
+			if (tOboxDeviceConfigs != null) {
 				for (TOboxDeviceConfig tOboxDeviceConfig : tOboxDeviceConfigs) {
 					feignUserClient.deleteUserDeviceBySerialId(tOboxDeviceConfig.getDeviceSerialId());
-					feignSceneClient.deleteSceneActionByActionId(tOboxDeviceConfig.getDeviceSerialId(),NodeTypeEnum.single.getValue());
+					feignSceneClient.deleteSceneActionByActionId(tOboxDeviceConfig.getDeviceSerialId(),
+							NodeTypeEnum.single.getValue());
 					feignSceneClient.deleteSceneConditionBySerialId(tOboxDeviceConfig.getDeviceSerialId());
 				}
 			}
 			feignDeviceClient.deleleDeviceByOboxSerialId(serialId);
 			ResponseObject<List<TScene>> sceneRes = feignSceneClient.getScenesByOboxSerialId(serialId);
-			if(sceneRes==null||sceneRes.getStatus()!=ResponseEnum.SelectSuccess.getStatus()){
+			if (sceneRes == null || sceneRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
 				return res;
 			}
 			List<TScene> tScenes = sceneRes.getData();
-			if(tScenes!=null){
+			if (tScenes != null) {
 				for (TScene tScene : tScenes) {
 					feignSceneClient.deleteSceneConditionBySceneNumber(tScene.getSceneNumber());
 				}
@@ -4752,38 +4756,39 @@ public class FacadeController extends BaseController {
 		}
 		return res;
 	}
-	/**  
+
+	/**
 	 * @param pwd
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
 	@ApiOperation(value = "modifyUserPwd", httpMethod = "PUT", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/modifyUserPwd/{pwd}", method = RequestMethod.PUT)
-	public ResponseObject modifyUserPwd(@PathVariable(value = "pwd")String pwd
-			) {
+	public ResponseObject modifyUserPwd(@PathVariable(value = "pwd") String pwd) {
 		ResponseObject res = new ResponseObject();
 		try {
-			OAuth2Authentication authentication = (OAuth2Authentication)SecurityContextHolder.getContext().getAuthentication();
-			UserDetails principal = (UserDetails) authentication
-					.getPrincipal();
+			OAuth2Authentication authentication = (OAuth2Authentication) SecurityContextHolder.getContext()
+					.getAuthentication();
+			UserDetails principal = (UserDetails) authentication.getPrincipal();
 			if (StringUtils.isEmpty(principal.getUsername())) {
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
 				return res;
 			}
-			OAuth2AuthenticationDetails details = (OAuth2AuthenticationDetails)authentication.getDetails();
+			OAuth2AuthenticationDetails details = (OAuth2AuthenticationDetails) authentication.getDetails();
 			String tokenValue = details.getTokenValue();
 			OAuth2Request oAuth2Request = authentication.getOAuth2Request();
 			String clientId = oAuth2Request.getClientId();
-			if(StringUtils.isEmpty(clientId)){
+			if (StringUtils.isEmpty(clientId)) {
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
 				return res;
 			}
 			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
-			if (resUser==null||resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus() || resUser.getData() == null) {
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
 				return res;
@@ -4791,13 +4796,13 @@ public class FacadeController extends BaseController {
 			TUser user = resUser.getData();
 			user.setPassword(pwd);
 			feignUserClient.updateUserPwd(user);
-			//logout
-			ResponseObject<OauthClientDetails> clientDetail=feignUserClient.getClientByClientId(clientId);
-			if(clientDetail==null||clientDetail.getData()==null){
+			// logout
+			ResponseObject<OauthClientDetails> clientDetail = feignUserClient.getClientByClientId(clientId);
+			if (clientDetail == null || clientDetail.getData() == null) {
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
 				return res;
-			
+
 			}
 			HttpWithBasicAuth.logout(logoutUrl, tokenValue, clientDetail.getData());
 			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
@@ -4809,6 +4814,152 @@ public class FacadeController extends BaseController {
 		}
 		return res;
 	}
+
+	/**
+	 * @param obox_serial_id
+	 * @return
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@ApiOperation(value = "addRemoteLed", httpMethod = "POST", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/addRemoteLed/{serialId}", method = RequestMethod.POST)
+	public ResponseObject addRemoteLed(@PathVariable(value = "serialId") String serialId) {
+		ResponseObject res = new ResponseObject();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+			ResponseObject<TObox> oboxRes = feignOboxClient.getObox(serialId);
+			if (oboxRes == null || oboxRes.getData() == null
+					|| oboxRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			feignAliClient.addRemoteLed(serialId);
+			res.setStatus(ResponseEnum.AddSuccess.getStatus());
+			res.setMessage(ResponseEnum.AddSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	/**
+	 * @param obox_serial_id
+	 * @param device_serial_id
+	 * @return
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@ApiOperation(value = "delRemoteLed", httpMethod = "DELETE", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/delRemoteLed/{oboxSerialId}/{deviceSerialId}", method = RequestMethod.DELETE)
+	public ResponseObject delRemoteLed(@PathVariable(value = "oboxSerialId") String oboxSerialId,
+			@PathVariable(value = "deviceSerialId") String deviceSerialId) {
+		ResponseObject res = new ResponseObject();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+			ResponseObject<TObox> oboxRes = feignOboxClient.getObox(oboxSerialId);
+			if (oboxRes == null || oboxRes.getData() == null
+					|| oboxRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TOboxDeviceConfig> deviceRes = feignDeviceClient.getDevice(deviceSerialId);
+			if (deviceRes == null || deviceRes.getData() == null
+					|| deviceRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			feignAliClient.delRemoteLed(oboxSerialId);
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	/**
+	 * @param obox_serial_id
+	 * @param device_serial_id
+	 * @param status
+	 * @return
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@ApiOperation(value = "controlRemoteLed", httpMethod = "PUT", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/controlRemoteLed/{oboxSerialId}/{deviceSerialId}/{status}", method = RequestMethod.PUT)
+	public ResponseObject controlRemoteLed(@PathVariable(value = "oboxSerialId") String oboxSerialId,
+			@PathVariable(value = "deviceSerialId") String deviceSerialId,
+			@PathVariable(value = "status") String status) {
+		ResponseObject res = new ResponseObject();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+			ResponseObject<TObox> oboxRes = feignOboxClient.getObox(oboxSerialId);
+			if (oboxRes == null || oboxRes.getData() == null
+					|| oboxRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TOboxDeviceConfig> deviceRes = feignDeviceClient.getDevice(deviceSerialId);
+			if (deviceRes == null || deviceRes.getData() == null
+					|| deviceRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			feignAliClient.controlRemoteLed(oboxSerialId,status);
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
 	/**
 	 * @param serialId
 	 * @return
@@ -4821,7 +4972,7 @@ public class FacadeController extends BaseController {
 	public ResponseObject test(@PathVariable(value = "access_token") String access_token) {
 		ResponseObject res = new ResponseObject();
 		try {
-			//consumerTokenServices.revokeToken(access_token);
+			// consumerTokenServices.revokeToken(access_token);
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
@@ -4829,7 +4980,4 @@ public class FacadeController extends BaseController {
 		}
 		return res;
 	}
-
-	
-
 }

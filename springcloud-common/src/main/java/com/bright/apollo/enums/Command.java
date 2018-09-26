@@ -65,6 +65,8 @@ public enum Command {
 	//远程开锁
 	REMOTEOPEN("2504"),
 	
+	SETTINGREMOTELED("a103"),
+	
  	
 	FILTER("000000");
 

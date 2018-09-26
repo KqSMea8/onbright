@@ -434,6 +434,25 @@ public class CommonController {
 			if(!StringUtils.isEmpty(pwd)){
 				return facadeController.modifyUserPwd(pwd);
 			}
+		}else if (CMDEnum.setting_remote_led.toString().equals(cmdEnum.toString())) {
+ 			String type = requestParam.getValue("type");
+ 			String obox_serial_id = requestParam.getValue("obox_serial_id");
+ 			String device_serial_id = requestParam.getValue("device_serial_id");
+ 			String status = requestParam.getValue("status");
+			if(!StringUtils.isEmpty(type)&&!StringUtils.isEmpty(obox_serial_id)){
+				 if(type.equals("1")){
+					 //add
+					 return facadeController.addRemoteLed(obox_serial_id);
+				 }else if(type.equals("2")&&!StringUtils.isEmpty(device_serial_id)){
+					 //del
+					 return facadeController.delRemoteLed(obox_serial_id,device_serial_id);
+				 }else if(type.equals("3")&&!StringUtils.isEmpty(device_serial_id)
+						 &&!StringUtils.isEmpty(status)
+						 ){
+					 //control
+					 return facadeController.controlRemoteLed(obox_serial_id,device_serial_id,status);
+				 }
+			}
 		}
 		else if (CMDEnum.test.toString().equals(cmdEnum.toString())) {
  			String serialId = requestParam.getValue("serialId");
