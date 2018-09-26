@@ -76,7 +76,12 @@ public enum DeviceTypeEnum {
     //门锁子类
     doorlock_child("02"),
     
-    capacity_finger("03")
+    capacity_finger("03"),
+    
+    //光头强
+    remote_led("22"),
+    
+    remote_child_led("01")
     ;
 
     private String value;
