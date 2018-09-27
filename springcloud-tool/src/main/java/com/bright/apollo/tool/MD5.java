@@ -56,15 +56,7 @@ public class MD5 {
 	    return ret.toString();
 	}
 	public static void main(String[] args) throws Exception {
-<<<<<<< HEAD
-<<<<<<< HEAD
 		String rawPassword="aqd12347";
-=======
-		String rawPassword="12345678";
->>>>>>> master
-=======
-		String rawPassword="aqd12347";
->>>>>>> 4b5d1569fa22fc43e8ac3080622715a1374e9e01
 		String base64Encrypt = Base64Util.base64Encrypt(rawPassword.toString().getBytes());
  		System.out.println(getMD5Str(base64Encrypt+rawPassword));
 	}

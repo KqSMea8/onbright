@@ -3774,15 +3774,10 @@ public class FacadeController extends BaseController {
 			fingerRemoteUser.setUseTimes(0);
 			fingerRemoteUser.setMobile(mobile == null ? "" : mobile);
 			feignDeviceClient.updateTIntelligentFingerRemoteUser(fingerRemoteUser);
-<<<<<<< HEAD
-<<<<<<< HEAD
+//
+//			feignQuartzClient.deleteJob(MD5.getMD5Str(fingerRemoteUser.getId().intValue() + "" + serialId));
+//			feignQuartzClient.deleteJob(MD5.getMD5Str(fingerRemoteUser.getId().intValue()+"" + serialId));
 			feignQuartzClient.deleteJob(MD5.getMD5Str(fingerRemoteUser.getId().intValue() + "" + serialId));
-=======
-			feignQuartzClient.deleteJob(MD5.getMD5Str(fingerRemoteUser.getId().intValue()+"" + serialId));
->>>>>>> master
-=======
-			feignQuartzClient.deleteJob(MD5.getMD5Str(fingerRemoteUser.getId().intValue() + "" + serialId));
->>>>>>> 4b5d1569fa22fc43e8ac3080622715a1374e9e01
 			feignQuartzClient.addRemoteOpenTaskSchedule(fingerRemoteUser.getId(), endTime + "", serialId);
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("pwd",
