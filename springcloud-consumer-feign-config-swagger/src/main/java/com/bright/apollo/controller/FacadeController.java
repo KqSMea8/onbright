@@ -3774,7 +3774,11 @@ public class FacadeController extends BaseController {
 			fingerRemoteUser.setUseTimes(0);
 			fingerRemoteUser.setMobile(mobile == null ? "" : mobile);
 			feignDeviceClient.updateTIntelligentFingerRemoteUser(fingerRemoteUser);
+<<<<<<< HEAD
 			feignQuartzClient.deleteJob(MD5.getMD5Str(fingerRemoteUser.getId().intValue() + "" + serialId));
+=======
+			feignQuartzClient.deleteJob(MD5.getMD5Str(fingerRemoteUser.getId().intValue()+"" + serialId));
+>>>>>>> master
 			feignQuartzClient.addRemoteOpenTaskSchedule(fingerRemoteUser.getId(), endTime + "", serialId);
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("pwd",

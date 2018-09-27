@@ -24,7 +24,11 @@ import com.bright.apollo.common.entity.TAliDeviceUS;
 import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.common.entity.TYaoKongYunBrand;
 import com.bright.apollo.common.entity.TYaokonyunDevice;
+<<<<<<< HEAD
 import com.bright.apollo.enums.AliIotDevTypeEnum;
+=======
+import com.bright.apollo.enums.ALIDevTypeEnum;
+>>>>>>> master
 import com.bright.apollo.enums.AliRegionEnum;
 import com.bright.apollo.mqtt.MqttGateWay;
 import com.bright.apollo.response.AliDevInfo;
@@ -38,7 +42,10 @@ import com.bright.apollo.service.AliRequest.AliService;
 import com.bright.apollo.tool.ByteHelper;
 import com.bright.apollo.tool.MD5;
 import com.bright.apollo.util.SpringContextUtil;
+<<<<<<< HEAD
 import com.bright.apollo.vo.IotDevConncetion;
+=======
+>>>>>>> master
 
 @RestController
 @RequestMapping("aliDevice")
