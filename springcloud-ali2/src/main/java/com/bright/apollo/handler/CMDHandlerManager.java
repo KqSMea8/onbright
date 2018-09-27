@@ -371,6 +371,7 @@ public class CMDHandlerManager {
 			msg.setData(msg.getDecodeData().substring(14, 14 + 54 * 2));
 
 			String cmd = msg.getCmd();
+			logger.info("===cmd:"+cmd);
 			logger.info("===msg data:" + msg.getData());
 			if ("a1".equals(cmd) || "b1".equals(cmd) || "b4".equals(cmd)) {
 				// if (clientSession.getStatus() ==
