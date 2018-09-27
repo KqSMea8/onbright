@@ -31,6 +31,7 @@ public class RemoteLedHandler extends BasicHandler {
 	 */
 	@Override
 	public Message<String> process(ClientSession clientSession, Message<String> msg) throws Exception {
+		logger.info("===start===");
 		String data = msg.getData();
 		String isSuccess = data.substring(0, 2);
 		String oboxSerialId = data.substring(2, 12);
@@ -49,6 +50,7 @@ public class RemoteLedHandler extends BasicHandler {
 				List<TUserObox> tUserOboxs = userOboxService.getUserOboxBySerialId(oboxSerialId);
 				//入网/退网
 				if(cmdValue.equals("01")){
+					logger.info("===add===");
 					//add
 					if(device==null){
 						device=new TOboxDeviceConfig();
@@ -69,6 +71,7 @@ public class RemoteLedHandler extends BasicHandler {
 						}
 					}
 				}else if(cmdValue.equals("02")){
+					logger.info("===del===");
 					if(device==null){
 						logger.warn("===delete the remote led is not exist===");
 						return null;
