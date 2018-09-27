@@ -571,7 +571,7 @@ public class AliServerController {
 	 * @param oboxSerialId  
 	 * @Description:  
 	 */
-	@RequestMapping(value = "/aliService/delRemoteLed/{serialId}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/delRemoteLed/{serialId}", method = RequestMethod.DELETE)
 	ResponseObject<OboxResp> delRemoteLed(@PathVariable(value = "serialId")String serialId){
 		ResponseObject<OboxResp> res = new ResponseObject<OboxResp>();
 		try {
