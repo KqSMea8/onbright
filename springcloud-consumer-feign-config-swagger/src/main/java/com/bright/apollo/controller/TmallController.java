@@ -152,7 +152,7 @@ public class TmallController {
 					}
 				}
 			}
-			templateScan(list);//展示使用(日后可删除)
+			templateScan(jsonArray);//展示使用(日后可删除)
 //			jsonArray.put(list);
 			playloadMap.put("devices",jsonArray);
 			map.put("payload",playloadMap);
@@ -334,7 +334,7 @@ public class TmallController {
 		devices.put("extensions",extensionsMap);
 	}
 
-	private void templateScan(List<JSONObject> list ) throws JSONException {
+	private void templateScan(JSONArray list ) throws JSONException {
 		JSONArray jsonArray = new JSONArray();
 		JSONArray propertiesJsonArray = new JSONArray();
 		JSONObject propertiesMap = new JSONObject();
@@ -391,9 +391,9 @@ public class TmallController {
 		actions3[1] = "TurnOff";
 //		devices3.put("actions",actions3);
 		devices3.put("extensions",extensionsMap);
-		list.add(devices);
-		list.add(devices2);
-		list.add(devices3);
+		list.put(devices);
+		list.put(devices2);
+		list.put(devices3);
 	}
 
 	private void postControl(List<NameValuePair> nvps,HttpPost httpPost,CloseableHttpClient httpClient){
