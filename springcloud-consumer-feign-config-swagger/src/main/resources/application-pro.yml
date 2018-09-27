@@ -38,5 +38,5 @@ datasource:
     driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
 logout:
-  url: https://aliiot.on-bright.com/oauth/token
+  url: https://alicloud.on-bright.com/oauth/token
   

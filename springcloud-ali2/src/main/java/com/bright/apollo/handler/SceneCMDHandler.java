@@ -1,7 +1,5 @@
 package com.bright.apollo.handler;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
-
 import java.util.List;
 
 import org.slf4j.Logger;
