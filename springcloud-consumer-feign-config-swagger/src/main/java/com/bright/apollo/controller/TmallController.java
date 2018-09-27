@@ -152,7 +152,7 @@ public class TmallController {
 					}
 				}
 			}
-			templateScan(jsonArray);//展示使用(日后可删除)
+//			templateScan(jsonArray);//展示使用(日后可删除)
 //			jsonArray.put(list);
 			playloadMap.put("devices",jsonArray);
 			map.put("payload",playloadMap);
@@ -195,7 +195,7 @@ public class TmallController {
 					.setDefaultRequestConfig(requestConfig).build();
 			//====== 生成httpsClient end ======
 
-			templateControl(name,deviceId,nvps,httpPost,httpClient);//展示台模板(仅供展厅展示使用，日后可删除)
+//			templateControl(name,deviceId,nvps,httpPost,httpClient);//展示台模板(仅供展厅展示使用，日后可删除)
 
 
 			try {
@@ -334,132 +334,132 @@ public class TmallController {
 		devices.put("extensions",extensionsMap);
 	}
 
-	private void templateScan(JSONArray list ) throws JSONException {
-		JSONArray jsonArray = new JSONArray();
-		JSONArray propertiesJsonArray = new JSONArray();
-		JSONObject propertiesMap = new JSONObject();
-		propertiesMap.put("name","color");
-		propertiesMap.put("value","Red");
-		propertiesJsonArray.put(propertiesMap);
-		JSONObject extensionsMap = new JSONObject();
-		extensionsMap.put("extension1","");
-		extensionsMap.put("extension2","");
-		JSONObject devices = new JSONObject();
+//	private void templateScan(JSONArray list ) throws JSONException {
+//		JSONArray jsonArray = new JSONArray();
+//		JSONArray propertiesJsonArray = new JSONArray();
+//		JSONObject propertiesMap = new JSONObject();
+//		propertiesMap.put("name","color");
+//		propertiesMap.put("value","Red");
+//		propertiesJsonArray.put(propertiesMap);
+//		JSONObject extensionsMap = new JSONObject();
+//		extensionsMap.put("extension1","");
+//		extensionsMap.put("extension2","");
+//		JSONObject devices = new JSONObject();
+//
+//		devices.put("deviceId","34ea34cf2e63");
+//		devices.put("deviceName","大灯");
+//		devices.put("deviceType","light");
+//		devices.put("zone","阳台");
+//		devices.put("brand","1");
+//		devices.put("model","1");
+//		devices.put("icon","https://raw.githubusercontent.com/onbright-canton/onbrightConfig/master/tmallImg/light.png");
+//		devices.put("properties",propertiesJsonArray);
+//		String[] actions = new String[2];
+//		actions[0] = "TurnOn";
+//		actions[1] = "TurnOff";
+////		devices.put("actions",actions);
+//		devices.put("extensions",extensionsMap);
+//
+//		JSONObject devices2 = new JSONObject();
+//
+//		devices2.put("deviceId","34ea34cf2e61");
+//		devices2.put("deviceName","灯");
+//		devices2.put("deviceType","light");
+//		devices2.put("zone","客厅");
+//		devices2.put("brand","1");
+//		devices2.put("model","1");
+//		devices2.put("icon","https://raw.githubusercontent.com/onbright-canton/onbrightConfig/master/tmallImg/light.png");
+//		devices2.put("properties",propertiesJsonArray);
+//		String[] actions2 = new String[2];
+//		actions2[0] = "TurnOn";
+//		actions2[1] = "TurnOff";
+////		devices2.put("actions",actions2);
+//		devices2.put("extensions",extensionsMap);
+//
+//		JSONObject devices3 = new JSONObject();
+//
+//		devices3.put("deviceId","34ea34cf2e69");
+//		devices3.put("deviceName","窗帘");
+//		devices3.put("deviceType","curtain");
+//		devices3.put("zone","");
+//		devices3.put("brand","1");
+//		devices3.put("model","1");
+//		devices3.put("icon","https://raw.githubusercontent.com/onbright-canton/onbrightConfig/master/tmallImg/curtain.png");
+//		devices3.put("properties",propertiesJsonArray);
+//		String[] actions3 = new String[2];
+//		actions3[0] = "TurnOn";
+//		actions3[1] = "TurnOff";
+////		devices3.put("actions",actions3);
+//		devices3.put("extensions",extensionsMap);
+//		list.put(devices);
+//		list.put(devices2);
+//		list.put(devices3);
+//	}
 
-		devices.put("deviceId","34ea34cf2e63");
-		devices.put("deviceName","大灯");
-		devices.put("deviceType","light");
-		devices.put("zone","阳台");
-		devices.put("brand","1");
-		devices.put("model","1");
-		devices.put("icon","https://raw.githubusercontent.com/onbright-canton/onbrightConfig/master/tmallImg/light.png");
-		devices.put("properties",propertiesJsonArray);
-		String[] actions = new String[2];
-		actions[0] = "TurnOn";
-		actions[1] = "TurnOff";
-//		devices.put("actions",actions);
-		devices.put("extensions",extensionsMap);
+//	private void postControl(List<NameValuePair> nvps,HttpPost httpPost,CloseableHttpClient httpClient){
+//
+//	}
 
-		JSONObject devices2 = new JSONObject();
-
-		devices2.put("deviceId","34ea34cf2e61");
-		devices2.put("deviceName","灯");
-		devices2.put("deviceType","light");
-		devices2.put("zone","客厅");
-		devices2.put("brand","1");
-		devices2.put("model","1");
-		devices2.put("icon","https://raw.githubusercontent.com/onbright-canton/onbrightConfig/master/tmallImg/light.png");
-		devices2.put("properties",propertiesJsonArray);
-		String[] actions2 = new String[2];
-		actions2[0] = "TurnOn";
-		actions2[1] = "TurnOff";
-//		devices2.put("actions",actions2);
-		devices2.put("extensions",extensionsMap);
-
-		JSONObject devices3 = new JSONObject();
-
-		devices3.put("deviceId","34ea34cf2e69");
-		devices3.put("deviceName","窗帘");
-		devices3.put("deviceType","curtain");
-		devices3.put("zone","");
-		devices3.put("brand","1");
-		devices3.put("model","1");
-		devices3.put("icon","https://raw.githubusercontent.com/onbright-canton/onbrightConfig/master/tmallImg/curtain.png");
-		devices3.put("properties",propertiesJsonArray);
-		String[] actions3 = new String[2];
-		actions3[0] = "TurnOn";
-		actions3[1] = "TurnOff";
-//		devices3.put("actions",actions3);
-		devices3.put("extensions",extensionsMap);
-		list.put(devices);
-		list.put(devices2);
-		list.put(devices3);
-	}
-
-	private void postControl(List<NameValuePair> nvps,HttpPost httpPost,CloseableHttpClient httpClient){
-
-	}
-
-	private void templateControl(String name,String deviceId,List<NameValuePair> nvps,HttpPost httpPost,CloseableHttpClient httpClient) throws IOException {
-		if(name.equals("TurnOn")&&deviceId.equals("34ea34cf2e63")){
-			nvps.add(new BasicNameValuePair("CMD", "set_group"));
-			nvps.add(new BasicNameValuePair("access_token", "cb81fd97-3531-4828-b502-e161467a09c5"));
-			nvps.add(new BasicNameValuePair("operate_type", "06"));
-			nvps.add(new BasicNameValuePair("group_id", "104"));
-			nvps.add(new BasicNameValuePair("group_state", "ff000000000002"));
-			nvps.add(new BasicNameValuePair("appkey", "00000000-2898-fa39-a85f-89320033c587"));
-			httpPost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
-			httpClient.execute(httpPost);
-		}
-		if(name.equals("TurnOff")&&deviceId.equals("34ea34cf2e63")){
-			nvps.add(new BasicNameValuePair("CMD", "set_group"));
-			nvps.add(new BasicNameValuePair("access_token", "cb81fd97-3531-4828-b502-e161467a09c5"));
-			nvps.add(new BasicNameValuePair("operate_type", "06"));
-			nvps.add(new BasicNameValuePair("group_id", "104"));
-			nvps.add(new BasicNameValuePair("group_state", "00000000000002"));
-			nvps.add(new BasicNameValuePair("appkey", "00000000-2898-fa39-a85f-89320033c587"));
-			httpPost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
-			httpClient.execute(httpPost);
-		}
-		if(name.equals("TurnOn")&&deviceId.equals("34ea34cf2e61")){
-			nvps.add(new BasicNameValuePair("CMD", "set_group"));
-			nvps.add(new BasicNameValuePair("access_token", "cb81fd97-3531-4828-b502-e161467a09c5"));
-			nvps.add(new BasicNameValuePair("operate_type", "06"));
-			nvps.add(new BasicNameValuePair("group_id", "105"));
-			nvps.add(new BasicNameValuePair("group_state", "ff000000000002"));
-			nvps.add(new BasicNameValuePair("appkey", "00000000-2898-fa39-a85f-89320033c587"));
-			httpPost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
-			httpClient.execute(httpPost);
-		}
-		if(name.equals("TurnOff")&&deviceId.equals("34ea34cf2e61")){
-			nvps.add(new BasicNameValuePair("CMD", "set_group"));
-			nvps.add(new BasicNameValuePair("access_token", "cb81fd97-3531-4828-b502-e161467a09c5"));
-			nvps.add(new BasicNameValuePair("operate_type", "06"));
-			nvps.add(new BasicNameValuePair("group_id", "105"));
-			nvps.add(new BasicNameValuePair("group_state", "00000000000002"));
-			nvps.add(new BasicNameValuePair("appkey", "00000000-2898-fa39-a85f-89320033c587"));
-			httpPost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
-			httpClient.execute(httpPost);
-		}
-		if(name.equals("TurnOn")&&deviceId.equals("34ea34cf2e69")){
-			nvps.add(new BasicNameValuePair("CMD", "setting_node_status"));
-			nvps.add(new BasicNameValuePair("access_token", "cb81fd97-3531-4828-b502-e161467a09c5"));
-			nvps.add(new BasicNameValuePair("serialId", "185f010000"));
-			nvps.add(new BasicNameValuePair("status", "02000000000000"));
-			nvps.add(new BasicNameValuePair("appkey", "00000000-2898-fa39-a85f-89320033c587"));
-			httpPost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
-			httpClient.execute(httpPost);
-		}
-		if(name.equals("TurnOff")&&deviceId.equals("34ea34cf2e69")){
-			nvps.add(new BasicNameValuePair("CMD", "setting_node_status"));
-			nvps.add(new BasicNameValuePair("access_token", "cb81fd97-3531-4828-b502-e161467a09c5"));
-			nvps.add(new BasicNameValuePair("serialId", "185f010000"));
-			nvps.add(new BasicNameValuePair("status", "00000000000000"));
-			nvps.add(new BasicNameValuePair("appkey", "00000000-2898-fa39-a85f-89320033c587"));
-			httpPost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
-			httpClient.execute(httpPost);
-		}
-	}
+//	private void templateControl(String name,String deviceId,List<NameValuePair> nvps,HttpPost httpPost,CloseableHttpClient httpClient) throws IOException {
+//		if(name.equals("TurnOn")&&deviceId.equals("34ea34cf2e63")){
+//			nvps.add(new BasicNameValuePair("CMD", "set_group"));
+//			nvps.add(new BasicNameValuePair("access_token", "cb81fd97-3531-4828-b502-e161467a09c5"));
+//			nvps.add(new BasicNameValuePair("operate_type", "06"));
+//			nvps.add(new BasicNameValuePair("group_id", "104"));
+//			nvps.add(new BasicNameValuePair("group_state", "ff000000000002"));
+//			nvps.add(new BasicNameValuePair("appkey", "00000000-2898-fa39-a85f-89320033c587"));
+//			httpPost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+//			httpClient.execute(httpPost);
+//		}
+//		if(name.equals("TurnOff")&&deviceId.equals("34ea34cf2e63")){
+//			nvps.add(new BasicNameValuePair("CMD", "set_group"));
+//			nvps.add(new BasicNameValuePair("access_token", "cb81fd97-3531-4828-b502-e161467a09c5"));
+//			nvps.add(new BasicNameValuePair("operate_type", "06"));
+//			nvps.add(new BasicNameValuePair("group_id", "104"));
+//			nvps.add(new BasicNameValuePair("group_state", "00000000000002"));
+//			nvps.add(new BasicNameValuePair("appkey", "00000000-2898-fa39-a85f-89320033c587"));
+//			httpPost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+//			httpClient.execute(httpPost);
+//		}
+//		if(name.equals("TurnOn")&&deviceId.equals("34ea34cf2e61")){
+//			nvps.add(new BasicNameValuePair("CMD", "set_group"));
+//			nvps.add(new BasicNameValuePair("access_token", "cb81fd97-3531-4828-b502-e161467a09c5"));
+//			nvps.add(new BasicNameValuePair("operate_type", "06"));
+//			nvps.add(new BasicNameValuePair("group_id", "105"));
+//			nvps.add(new BasicNameValuePair("group_state", "ff000000000002"));
+//			nvps.add(new BasicNameValuePair("appkey", "00000000-2898-fa39-a85f-89320033c587"));
+//			httpPost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+//			httpClient.execute(httpPost);
+//		}
+//		if(name.equals("TurnOff")&&deviceId.equals("34ea34cf2e61")){
+//			nvps.add(new BasicNameValuePair("CMD", "set_group"));
+//			nvps.add(new BasicNameValuePair("access_token", "cb81fd97-3531-4828-b502-e161467a09c5"));
+//			nvps.add(new BasicNameValuePair("operate_type", "06"));
+//			nvps.add(new BasicNameValuePair("group_id", "105"));
+//			nvps.add(new BasicNameValuePair("group_state", "00000000000002"));
+//			nvps.add(new BasicNameValuePair("appkey", "00000000-2898-fa39-a85f-89320033c587"));
+//			httpPost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+//			httpClient.execute(httpPost);
+//		}
+//		if(name.equals("TurnOn")&&deviceId.equals("34ea34cf2e69")){
+//			nvps.add(new BasicNameValuePair("CMD", "setting_node_status"));
+//			nvps.add(new BasicNameValuePair("access_token", "cb81fd97-3531-4828-b502-e161467a09c5"));
+//			nvps.add(new BasicNameValuePair("serialId", "185f010000"));
+//			nvps.add(new BasicNameValuePair("status", "02000000000000"));
+//			nvps.add(new BasicNameValuePair("appkey", "00000000-2898-fa39-a85f-89320033c587"));
+//			httpPost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+//			httpClient.execute(httpPost);
+//		}
+//		if(name.equals("TurnOff")&&deviceId.equals("34ea34cf2e69")){
+//			nvps.add(new BasicNameValuePair("CMD", "setting_node_status"));
+//			nvps.add(new BasicNameValuePair("access_token", "cb81fd97-3531-4828-b502-e161467a09c5"));
+//			nvps.add(new BasicNameValuePair("serialId", "185f010000"));
+//			nvps.add(new BasicNameValuePair("status", "00000000000000"));
+//			nvps.add(new BasicNameValuePair("appkey", "00000000-2898-fa39-a85f-89320033c587"));
+//			httpPost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+//			httpClient.execute(httpPost);
+//		}
+//	}
 
 	private static TrustManager manager = new X509TrustManager() {
 		@Override
