@@ -54,12 +54,15 @@ public class RemoteLedHandler extends BasicHandler {
 					//add
 					if(device==null){
 						device=new TOboxDeviceConfig();
+						device.setDeviceId("RemoteLed");
 						device.setOboxSerialId(oboxSerialId);
 						device.setDeviceSerialId(oboxSerialId);
 						device.setDeviceRfAddr(addr);
 						device.setOboxId(obox.getId());
 						device.setDeviceType(DeviceTypeEnum.remote_led.getValue());
 						device.setDeviceChildType(DeviceTypeEnum.remote_child_led.getValue());
+						device.setDeviceState("00000000000000");
+						device.setDeviceVersion("0000000000000000");
 						oboxDeviceConfigService.addTOboxDeviceConfig(device);
 						if(tUserOboxs!=null&&tUserOboxs.size()>0){
 							for(TUserObox tUserObox: tUserOboxs){

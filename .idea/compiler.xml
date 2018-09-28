@@ -18,6 +18,7 @@
         <module name="springcloud-provider-deivce" />
         <module name="springcloud-provider-obox" />
         <module name="springcloud-provider-scene" />
+        <module name="springcloud-provider-user" />
         <module name="springcloud-quartz" />
         <module name="springcloud-redis" />
         <module name="springcloud-service-impl" />
@@ -25,11 +26,7 @@
         <module name="springcloud-tool" />
         <module name="springcloud-zipkin-server" />
         <module name="springcloud-zuul" />
-        <module name="srpingcloud-provider-user" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="springcloud-mqtt" target="8" />
-    </bytecodeTargetLevel>
   </component>
 </project>

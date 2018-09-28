@@ -583,8 +583,7 @@ public class CMDHandlerManager {
 					logger.info("====FilterCMDHandler error===");
 			}
 		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
+			logger.error("===error msg:"+e.getMessage());
 		}
 	}
 
