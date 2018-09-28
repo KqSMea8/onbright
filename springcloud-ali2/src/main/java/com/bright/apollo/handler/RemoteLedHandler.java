@@ -32,13 +32,13 @@ public class RemoteLedHandler extends BasicHandler {
 	@Override
 	public Message<String> process(ClientSession clientSession, Message<String> msg) throws Exception {
 		logger.info("===start===");
-		String data = msg.getData();
+ 		String data = msg.getData();
 		String isSuccess = data.substring(0, 2);
 		String oboxSerialId = data.substring(2, 12);
 		String addr = data.substring(14, 16);
 		String cmdType = data.substring(16, 18);
 		String cmdValue = data.substring(18, 20);
-		String groupAddr = data.substring(22, 22);
+		String groupAddr = data.substring(22, 24);
 		if(isSuccess.equals("01")){
 			TObox obox = oboxService.queryOboxsByOboxSerialId(oboxSerialId);
 			if(obox==null){
