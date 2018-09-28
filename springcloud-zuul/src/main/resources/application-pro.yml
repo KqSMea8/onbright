@@ -2,7 +2,7 @@ spring:
   zipkin:
     base-url: http://localhost:9411
   rabbitmq:
-    host: 47.99.107.215
+    host: 172.16.45.167
     port: 5672
     username: liujj
     password: liujj123456
@@ -20,7 +20,7 @@ endpoints:
     enabled: true
 redis:
     database: 0
-    host: 47.99.107.215
+    host: 172.16.45.167
     port: 6389
     timeout: 3000
     pool:

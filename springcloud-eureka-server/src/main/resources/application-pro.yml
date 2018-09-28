@@ -5,7 +5,7 @@ eureka:
     healthcheck:
       enabled: true
     service-url:
-      defaultZone: http://root:booszy@47.99.107.215:8761/eureka
+      defaultZone: http://root:booszy@172.16.45.167:8761/eureka
     register-with-eureka: false
     fetch-registry: false
 #  server:

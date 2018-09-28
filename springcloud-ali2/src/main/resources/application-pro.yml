@@ -5,14 +5,14 @@ spring:
     sampler:
       percentage: 1.0
   rabbitmq:
-    host: 47.99.107.215
+    host: 172.16.45.167
     port: 5672
     username: liujj
     password: liujj123456
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://root:booszy@47.99.107.215:8761/eureka
+      defaultZone: http://root:booszy@172.16.45.167:8761/eureka
   instance:
     prefer-ip-address: true
     instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${spring.application.instance_id:${server.port}}
@@ -28,7 +28,7 @@ mybatis:
 type-aliases-package: com.bright.apollo.common.entity.*
 redis:
     database: 0
-    host: 47.99.107.215
+    host: 172.16.45.167
     port: 6389
     timeout: 3000
     pool:
@@ -49,11 +49,11 @@ datasource:
 com:
   mqtt:
     inbound:
-          url: tcp://47.99.107.215:1883
+          url: tcp://172.16.45.167:1883
           clientId: aliInbound
           topics: topic1
     outbound:
-          url: tcp://47.99.107.215:1883
+          url: tcp://172.16.45.167:1883
           clientId: aliOutbound
           topics: topic1
 IotDevConncetion:
