@@ -2,17 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="8b2d9cad-145f-4f92-b649-293d9b702730" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-ali2/src/main/resources/application-pro.yml" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-ali2/src/main/resources/application-pro.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-config-server/src/main/resources/application-pro.yml" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-config-server/src/main/resources/application-pro.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/resources/application-pro.yml" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/resources/application-pro.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-eureka-server/src/main/resources/application-pro.yml" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-eureka-server/src/main/resources/application-pro.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-provider-deivce/src/main/resources/application-pro.yml" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-provider-deivce/src/main/resources/application-pro.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-provider-obox/src/main/resources/application-pro.yml" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-provider-obox/src/main/resources/application-pro.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-provider-scene/src/main/resources/application-pro.yml" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-provider-scene/src/main/resources/application-pro.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-provider-user/src/main/resources/application-pro.yml" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-provider-user/src/main/resources/application-pro.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-quartz/src/main/resources/application-pro.yml" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-quartz/src/main/resources/application-pro.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-zuul/src/main/resources/application-pro.yml" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-zuul/src/main/resources/application-pro.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/springcloud-zuul/src/main/resources/application-dev.yml" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-zuul/src/main/resources/application-dev.yml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/springcloud-zuul/target/" />
     <ignored path="$PROJECT_DIR$/springcloud-provider-deivce/target/" />
@@ -68,10 +58,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="application-pro.yml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/resources/application-pro.yml">
+        <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/resources/application-pro.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="189">
-              <caret line="7" column="23" selection-start-line="7" selection-start-column="23" selection-end-line="7" selection-end-column="23" />
+            <state relative-caret-position="97">
+              <caret line="21" column="23" selection-start-line="21" selection-start-column="23" selection-end-line="21" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -86,10 +76,10 @@
         </entry>
       </file>
       <file leaf-file-name="application-pro.yml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/resources/application-pro.yml">
+        <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/resources/application-pro.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="567">
-              <caret line="21" column="23" selection-start-line="21" selection-start-column="23" selection-end-line="21" selection-end-column="23" />
+            <state relative-caret-position="-821">
+              <caret line="7" column="23" selection-start-line="7" selection-start-column="23" selection-end-line="7" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -97,53 +87,26 @@
       <file leaf-file-name="application-pro.yml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/springcloud-eureka-server/src/main/resources/application-pro.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="189">
-              <caret line="7" column="51" selection-start-line="7" selection-start-column="51" selection-end-line="7" selection-end-column="51" />
+            <state relative-caret-position="432">
+              <caret line="16" column="7" lean-forward="true" selection-start-line="16" selection-start-column="7" selection-end-line="16" selection-end-column="7" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="application-pro.yml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-provider-deivce/src/main/resources/application-pro.yml">
+      <file leaf-file-name="MqttOutBoundConfiguration.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/mqtt/MqttOutBoundConfiguration.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="162">
-              <caret line="18" column="23" selection-start-line="18" selection-start-column="23" selection-end-line="18" selection-end-column="23" />
+            <state relative-caret-position="135">
+              <caret line="14" column="16" selection-start-line="14" selection-start-column="16" selection-end-line="14" selection-end-column="16" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="application-pro.yml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-provider-obox/src/main/resources/application-pro.yml">
+      <file leaf-file-name="bootstrap.yml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/springcloud-zuul/src/main/resources/bootstrap.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="486">
-              <caret line="18" column="23" selection-start-line="18" selection-start-column="23" selection-end-line="18" selection-end-column="23" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="application-pro.yml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-provider-scene/src/main/resources/application-pro.yml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="486">
-              <caret line="18" column="23" selection-start-line="18" selection-start-column="23" selection-end-line="18" selection-end-column="23" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="application-pro.yml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-provider-user/src/main/resources/application-pro.yml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="486">
-              <caret line="18" column="23" selection-start-line="18" selection-start-column="23" selection-end-line="18" selection-end-column="23" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="application-pro.yml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-quartz/src/main/resources/application-pro.yml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="108">
-              <caret line="4" column="23" selection-start-line="4" selection-start-column="23" selection-end-line="4" selection-end-column="23" />
+            <state relative-caret-position="513">
+              <caret line="19" column="29" selection-start-line="19" selection-start-column="29" selection-end-line="19" selection-end-column="29" />
             </state>
           </provider>
         </entry>
@@ -151,10 +114,31 @@
       <file leaf-file-name="application-pro.yml" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/springcloud-zuul/src/main/resources/application-pro.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-416">
+            <state relative-caret-position="-540">
               <caret line="22" column="23" selection-start-line="22" selection-start-column="23" selection-end-line="22" selection-end-column="23" />
             </state>
           </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="application-dev.yml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/springcloud-zuul/src/main/resources/application-dev.yml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="729">
+              <caret line="53" column="20" lean-forward="true" selection-start-line="53" selection-start-column="20" selection-end-line="53" selection-end-column="20" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="application-test.yml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/springcloud-zuul/src/main/resources/application-test.yml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-729" />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="application.yml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/springcloud-zuul/src/main/resources/application.yml">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
     </leaf>
@@ -170,7 +154,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>/{serialId}</find>
       <find>SceneActionThreadPool</find>
       <find>JPushSer</find>
       <find>onbright2TMall</find>
@@ -200,6 +183,7 @@
       <find>setAction</find>
       <find>actions</find>
       <find>MqttPahoMessageDrivenChannelAdapter</find>
+      <find>8006</find>
     </findStrings>
     <replaceStrings>
       <replace>springcloud</replace>
@@ -248,7 +232,6 @@
         <option value="$PROJECT_DIR$/springcloud-provider-user/src/main/resources/bootstrap.yml" />
         <option value="$PROJECT_DIR$/springcloud-provider-deivce/src/main/resources/bootstrap.yml" />
         <option value="$PROJECT_DIR$/springcloud-provider-deivce/src/main/resources/application-dev.yml" />
-        <option value="$PROJECT_DIR$/springcloud-zuul/src/main/resources/application-dev.yml" />
         <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/TMallDeviceAdapter.java" />
         <option value="$PROJECT_DIR$/springcloud-ali2/src/main/resources/application-dev.yml" />
         <option value="$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/handler/SceneCMDHandler.java" />
@@ -268,6 +251,7 @@
         <option value="$PROJECT_DIR$/springcloud-provider-user/src/main/resources/application-pro.yml" />
         <option value="$PROJECT_DIR$/springcloud-quartz/src/main/resources/application-pro.yml" />
         <option value="$PROJECT_DIR$/springcloud-zuul/src/main/resources/application-pro.yml" />
+        <option value="$PROJECT_DIR$/springcloud-zuul/src/main/resources/application-dev.yml" />
       </list>
     </option>
   </component>
@@ -331,6 +315,74 @@
             <path>
               <item name="springcloud-multi" type="b2602c69:ProjectViewProjectNode" />
               <item name="springcloud-multi" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-consumer-feign-config-swagger" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-multi" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-multi" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-consumer-feign-config-swagger" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-multi" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-multi" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-consumer-feign-config-swagger" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-multi" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-multi" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-consumer-feign-config-swagger" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-multi" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-multi" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-consumer-feign-config-swagger" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-multi" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-multi" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-consumer-feign-config-swagger" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="bright" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-multi" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-multi" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-consumer-feign-config-swagger" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="bright" type="462c0819:PsiDirectoryNode" />
+              <item name="apollo" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-multi" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-multi" type="462c0819:PsiDirectoryNode" />
+              <item name="springcloud-consumer-feign-config-swagger" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="bright" type="462c0819:PsiDirectoryNode" />
+              <item name="apollo" type="462c0819:PsiDirectoryNode" />
+              <item name="mqtt" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springcloud-multi" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springcloud-multi" type="462c0819:PsiDirectoryNode" />
               <item name="springcloud-zuul" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -369,7 +421,7 @@
     <property name="RequestMappingsPanelWidth2" value="75" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="E:/springOb/onbright" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="project.structure.last.edited" value="Modules" />
@@ -742,12 +794,12 @@
       <workItem from="1537924546673" duration="22296000" />
       <workItem from="1538012046164" duration="8311000" />
       <workItem from="1538040803583" duration="2125000" />
-      <workItem from="1538105738024" duration="289000" />
+      <workItem from="1538105738024" duration="2285000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1319230000" />
+    <option name="totallyTimeSpent" value="1321226000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -785,6 +837,7 @@
       <window_info active="true" content_ui="combo" id="Project" order="7" visible="true" weight="0.30420712" />
       <window_info anchor="bottom" id="Bean Validation" order="15" sideWeight="0.50161815" side_tool="true" weight="0.6678241" />
       <window_info id="Web" order="5" side_tool="true" />
+      <window_info anchor="bottom" id="Find" order="2" weight="0.32908458" />
       <window_info anchor="right" id="Theme Preview" order="8" />
       <window_info id="Favorites" order="4" side_tool="true" />
       <window_info anchor="bottom" id="Dependency Viewer" order="0" weight="0.32908458" />
@@ -795,7 +848,6 @@
       <window_info anchor="right" id="Coverage" order="0" side_tool="true" weight="0.32928804" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.3907767" />
-      <window_info anchor="bottom" id="Find" order="2" weight="0.32908458" />
     </layout>
     <layout-to-restore>
       <window_info id="Designer" order="1" />
@@ -861,20 +913,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/springcloud-eureka-server/src/main/resources/application.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="243">
-          <caret line="9" column="51" selection-start-line="9" selection-start-column="38" selection-end-line="9" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-zuul/src/main/java/com/bright/apollo/config/WebSecurityConfig.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="399">
-          <caret line="77" column="5" lean-forward="true" selection-start-line="77" selection-start-column="5" selection-end-line="77" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-zuul/src/main/resources/templates/login.ftl">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
@@ -1055,20 +1093,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-zuul/src/main/resources/application-dev.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1323">
-          <caret line="49" selection-start-line="49" selection-end-line="54" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-zuul/src/main/resources/bootstrap.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="513">
-          <caret line="19" column="29" selection-start-line="19" selection-start-column="29" selection-end-line="19" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/ConsumerApplication.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-386">
@@ -1103,20 +1127,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/mqtt/MqttOutBoundConfiguration.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="14" column="16" selection-start-line="14" selection-start-column="16" selection-end-line="14" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/mqtt/MqttInBoundConfiguration.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="864">
-          <caret line="49" column="75" selection-start-line="49" selection-start-column="75" selection-end-line="49" selection-end-column="75" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/service/PushServiceImpl.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
@@ -1145,34 +1155,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="279">
           <caret line="28" column="13" selection-start-line="28" selection-start-column="13" selection-end-line="28" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/resources/application-pro.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="7" column="23" selection-start-line="7" selection-start-column="23" selection-end-line="7" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-config-server/src/main/resources/application-pro.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="81">
-          <caret line="3" column="51" selection-start-line="3" selection-start-column="51" selection-end-line="3" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/resources/application-pro.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="567">
-          <caret line="21" column="23" selection-start-line="21" selection-start-column="23" selection-end-line="21" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-eureka-server/src/main/resources/application-pro.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="7" column="51" selection-start-line="7" selection-start-column="51" selection-end-line="7" selection-end-column="51" />
         </state>
       </provider>
     </entry>
@@ -1211,9 +1193,73 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/resources/application-pro.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="97">
+          <caret line="21" column="23" selection-start-line="21" selection-start-column="23" selection-end-line="21" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-config-server/src/main/resources/application-pro.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="81">
+          <caret line="3" column="51" selection-start-line="3" selection-start-column="51" selection-end-line="3" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-ali2/src/main/resources/application-pro.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-821">
+          <caret line="7" column="23" selection-start-line="7" selection-start-column="23" selection-end-line="7" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-eureka-server/src/main/resources/application-pro.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="432">
+          <caret line="16" column="7" lean-forward="true" selection-start-line="16" selection-start-column="7" selection-end-line="16" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/mqtt/MqttInBoundConfiguration.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="783">
+          <caret line="49" column="75" selection-start-line="49" selection-start-column="75" selection-end-line="49" selection-end-column="75" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/mqtt/MqttOutBoundConfiguration.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="14" column="16" selection-start-line="14" selection-start-column="16" selection-end-line="14" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-zuul/src/main/resources/bootstrap.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="513">
+          <caret line="19" column="29" selection-start-line="19" selection-start-column="29" selection-end-line="19" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-zuul/src/main/resources/application-test.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-729" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-zuul/src/main/resources/application.yml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-zuul/src/main/resources/application-dev.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="729">
+          <caret line="53" column="20" lean-forward="true" selection-start-line="53" selection-start-column="20" selection-end-line="53" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-zuul/src/main/resources/application-pro.yml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-416">
+        <state relative-caret-position="-540">
           <caret line="22" column="23" selection-start-line="22" selection-start-column="23" selection-end-line="22" selection-end-column="23" />
         </state>
       </provider>
