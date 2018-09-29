@@ -31,13 +31,14 @@ public class RemoteLedHandler extends BasicHandler {
 	 */
 	@Override
 	public Message<String> process(ClientSession clientSession, Message<String> msg) throws Exception {
-		String data = msg.getData();
+		logger.info("===start===");
+ 		String data = msg.getData();
 		String isSuccess = data.substring(0, 2);
 		String oboxSerialId = data.substring(2, 12);
 		String addr = data.substring(14, 16);
 		String cmdType = data.substring(16, 18);
 		String cmdValue = data.substring(18, 20);
-		String groupAddr = data.substring(22, 22);
+		String groupAddr = data.substring(22, 24);
 		if(isSuccess.equals("01")){
 			TObox obox = oboxService.queryOboxsByOboxSerialId(oboxSerialId);
 			if(obox==null){
@@ -49,15 +50,19 @@ public class RemoteLedHandler extends BasicHandler {
 				List<TUserObox> tUserOboxs = userOboxService.getUserOboxBySerialId(oboxSerialId);
 				//入网/退网
 				if(cmdValue.equals("01")){
+					logger.info("===add===");
 					//add
 					if(device==null){
 						device=new TOboxDeviceConfig();
+						device.setDeviceId("RemoteLed");
 						device.setOboxSerialId(oboxSerialId);
 						device.setDeviceSerialId(oboxSerialId);
 						device.setDeviceRfAddr(addr);
 						device.setOboxId(obox.getId());
 						device.setDeviceType(DeviceTypeEnum.remote_led.getValue());
 						device.setDeviceChildType(DeviceTypeEnum.remote_child_led.getValue());
+						device.setDeviceState("00000000000000");
+						device.setDeviceVersion("0000000000000000");
 						oboxDeviceConfigService.addTOboxDeviceConfig(device);
 						if(tUserOboxs!=null&&tUserOboxs.size()>0){
 							for(TUserObox tUserObox: tUserOboxs){
@@ -69,6 +74,7 @@ public class RemoteLedHandler extends BasicHandler {
 						}
 					}
 				}else if(cmdValue.equals("02")){
+					logger.info("===del===");
 					if(device==null){
 						logger.warn("===delete the remote led is not exist===");
 						return null;

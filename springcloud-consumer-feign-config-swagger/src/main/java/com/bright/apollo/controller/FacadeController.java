@@ -772,8 +772,8 @@ public class FacadeController extends BaseController {
 				oboxSceneNumber = Integer.parseInt(data.substring(6, 8), 16);
 				while (System.currentTimeMillis() - startTime < max_waitting_time) {
 					try {
-						logger.info("===key:"+sceneName+oboxSerialId+sceneGroup+oboxSceneNumber);
-						reply = cmdCache.getLocalSceneInfo(sceneName, oboxSerialId, sceneGroup, oboxSceneNumber);
+						logger.info("===key:"+sceneName.trim()+oboxSerialId+sceneGroup+oboxSceneNumber);
+						reply = cmdCache.getLocalSceneInfo(sceneName.trim(), oboxSerialId, sceneGroup, oboxSceneNumber);
 						if (StringUtils.isEmpty(reply)) {
 							TimeUnit.MILLISECONDS.sleep(150);
 						} else {
@@ -4903,6 +4903,8 @@ public class FacadeController extends BaseController {
 				return res;
 			}
 			feignAliClient.delRemoteLed(oboxSerialId);
+			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
@@ -4956,6 +4958,8 @@ public class FacadeController extends BaseController {
 				return res;
 			}
 			feignAliClient.controlRemoteLed(oboxSerialId,status);
+			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());

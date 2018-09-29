@@ -264,6 +264,6 @@ public interface TOboxDeviceConfigMapper   {
 	 * @Description:  
 	 */
 	@Delete("delete from t_obox_device_config where id = #{id}")
-	void deleteTOboxDeviceConfigById(@Param("serialId") Integer id);
+	void deleteTOboxDeviceConfigById(@Param("id") Integer id);
 
 }

@@ -87,8 +87,8 @@ public class SceneCMDHandler extends BasicHandler{
                     }
 //                    int ret = OboxBusiness.addOboxScene(scene);
                     int ret = sceneService.addScene(scene);
-                    cmdCache.saveAddLocalSceneInfo(scene_id, dbObox.getOboxSerialId(), scene_group,scene_number,ret);
-                    logger.info("===key:"+scene_id+dbObox.getOboxSerialId()+scene_group+scene_number);
+                    cmdCache.saveAddLocalSceneInfo(scene_id.trim(), dbObox.getOboxSerialId(), scene_group,scene_number,ret);
+                    logger.info("===key:"+scene_id.trim()+dbObox.getOboxSerialId()+scene_group+scene_number);
                     /*List<TUserObox> tUserOboxs = OboxBusiness.queryUserOboxsByOboxId(dbObox.getOboxId());
                     for (TUserObox tUserObox : tUserOboxs) {
                         TUserOboxScene tUserScene = new TUserScene();
