@@ -261,7 +261,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                 tMallDeviceAdapter.setDeviceName("传感器");
                 tMallDeviceAdapter.setIcon(gatemagnetismicon);
             }
-        }if(deviceType.equals("remotelight")){
+        }else if(deviceType.equals("remotelight")){
             tMallDeviceAdapter.setDeviceId(oboxDeviceConfig.getDeviceSerialId()+"_1");
             tMallDeviceAdapter.setModel("遥控灯");
             tMallDeviceAdapter.setDeviceName("遥控灯1");
