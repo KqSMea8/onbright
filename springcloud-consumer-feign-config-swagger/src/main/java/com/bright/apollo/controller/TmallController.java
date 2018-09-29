@@ -346,12 +346,12 @@ public class TmallController {
 		extensionsMap.put("extension2","");
 //		extensionsMap.put("parentId",deivceId);
 		devices.put("deviceId",deivceId+"_"+i);
-		devices.put("deviceName","遥控灯");//开关
+		devices.put("deviceName","遥控灯"+i);//开关
 		devices.put("deviceType","light");//outlet.getString("deviceType")
 		devices.put("zone","");
 		devices.put("brand","on-bright");
 		devices.put("model","");
-		devices.put("icon",TMallDeviceAdapter.lighticon);
+		devices.put("icon",TMallDeviceAdapter.remotelighticon);
 		devices.put("properties",light.get("properties"));
 //		devices.put("actions",outlet.get("actions"));
 		devices.put("extensions",extensionsMap);
