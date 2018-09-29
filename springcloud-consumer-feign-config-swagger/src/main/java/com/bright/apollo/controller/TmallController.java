@@ -78,6 +78,7 @@ public class TmallController {
 	@Autowired
 	private FacadeController facadeController;
 
+
 	private ReentrantLock lock = new ReentrantLock();
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -127,7 +128,7 @@ public class TmallController {
 				JSONObject devices = new JSONObject();
 				if(adapter !=null&&!adapter.equals("")){
 					setDeviceJson(devices,adapter);
-//					list.add(devices);
+					list.add(devices);
 					jsonArray.put(devices);
 				}
 			}
@@ -139,7 +140,6 @@ public class TmallController {
 					for(int j=1;j<=3;j++){
 						JSONObject devices = new JSONObject();
 						putChildrenDeviceValue(devices,jsonObject,j);
-//						list.add(devices);
 						jsonArray.put(devices);
 					}
 				}
@@ -147,13 +147,18 @@ public class TmallController {
 					for(int j=1;j<=2;j++){
 						JSONObject devices = new JSONObject();
 						putChildrenDeviceValue(devices,jsonObject,j);
-//						list.add(devices);
+						jsonArray.put(devices);
+					}
+				}
+				if(deviceType.equals("remotelight")&&model.equals("遥控灯")){
+					for(int j=2;j<=8;j++){
+						JSONObject devices = new JSONObject();
+						putRemoteVirtualLight(devices,jsonObject,j);
 						jsonArray.put(devices);
 					}
 				}
 			}
-//			templateScan(jsonArray);//展示使用(日后可删除)
-//			jsonArray.put(list);
+
 			playloadMap.put("devices",jsonArray);
 			map.put("payload",playloadMap);
 			headerMap.put("namespace","AliGenie.Iot.Device.Discovery");
@@ -195,9 +200,6 @@ public class TmallController {
 					.setDefaultRequestConfig(requestConfig).build();
 			//====== 生成httpsClient end ======
 
-//			templateControl(name,deviceId,nvps,httpPost,httpClient);//展示台模板(仅供展厅展示使用，日后可删除)
-
-
 			try {
 				try {
 					lock.lock();
@@ -223,11 +225,14 @@ public class TmallController {
 					String acceptIds = "";
 					Thread.sleep(500);
 					acceptIds =redisBussines.get("tmall_accept_id_"+deviceId);
-					String[] idArr = acceptIds.split(",");
+					String[] idArr = null;
+					if (acceptIds!=null){
+						idArr = acceptIds.split(",");
+					}
 					if(deviceType.equals("04")&&
 							(childType.equals("2b")||childType.equals("53")||
 							childType.equals("2a")||childType.equals("17") ||
-							childType.equals("16"))&&idArr.length>1){
+							childType.equals("16"))&&idArr!=null&&idArr.length>1){
 							if(name.equals("TurnOn")){
 								logger.info("=========== controll ======= on ======= "+originalId);
 								if(childType.equals("2a") ){
@@ -243,6 +248,12 @@ public class TmallController {
 								facadeController.controlDevice(deviceId,"00000000000000");
 							}
 
+					}else if(deviceType.equals("22")){
+						adapter = new TMallDeviceAdapter(playLoadMap,tMallTemplate,oboxDeviceConfig,header);
+						adapter.setRedisBussines(redisBussines);
+						paramMap = adapter.TMall2Obright();
+						logger.info("paramMap ====== "+paramMap);
+						facadeController.controlRemoteLed(oboxDeviceConfig.getOboxSerialId(),deviceId,(String)paramMap.get("deviceState"));
 					}else{
 						adapter = new TMallDeviceAdapter(playLoadMap,tMallTemplate,oboxDeviceConfig,header);
 						adapter.setRedisBussines(redisBussines);
@@ -322,6 +333,26 @@ public class TmallController {
 		devices.put("model","");
 		devices.put("icon",TMallDeviceAdapter.mutipleOutleticon);
 		devices.put("properties",outlet.get("properties"));
+//		devices.put("actions",outlet.get("actions"));
+		devices.put("extensions",extensionsMap);
+	}
+
+	private void putRemoteVirtualLight(JSONObject devices,JSONObject light,Integer i ) throws JSONException{
+		String deivceId = (String)light.get("deviceId");
+		String [] id = deivceId.split("_");
+		deivceId = id[0];
+		JSONObject extensionsMap = new JSONObject();
+		extensionsMap.put("extension1","");
+		extensionsMap.put("extension2","");
+//		extensionsMap.put("parentId",deivceId);
+		devices.put("deviceId",deivceId+"_"+i);
+		devices.put("deviceName","遥控灯");//开关
+		devices.put("deviceType","light");//outlet.getString("deviceType")
+		devices.put("zone","");
+		devices.put("brand","on-bright");
+		devices.put("model","");
+		devices.put("icon",TMallDeviceAdapter.lighticon);
+		devices.put("properties",light.get("properties"));
 //		devices.put("actions",outlet.get("actions"));
 		devices.put("extensions",extensionsMap);
 	}
