@@ -263,7 +263,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
             }
         }else if(deviceType.equals("remotelight")){
             tMallDeviceAdapter.setDeviceId(oboxDeviceConfig.getDeviceSerialId()+"_1");
-            tMallDeviceAdapter.setModel("遥控灯");
+            tMallDeviceAdapter.setModel("遥控灯1");
             tMallDeviceAdapter.setDeviceName("遥控灯1");
             tMallDeviceAdapter.setIcon(remotelighticon);
         }else{
@@ -695,8 +695,8 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                             if(v==0){//暖光
                                 String middle = ByteHelper.int2HexString(0);
                                 deviceState = changeColorTemperature(deviceState,middle);
-                            }else if(v==100){//冷光
-                                String middle = ByteHelper.int2HexString(255);
+                            }else if(v==254){//冷光
+                                String middle = ByteHelper.int2HexString(254);
                                 deviceState = changeColorTemperature(deviceState,middle);
                             }else if(v<2700||v>6500){
                                 deviceState = null;

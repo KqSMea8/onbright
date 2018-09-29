@@ -152,7 +152,8 @@ public class TmallController {
 						jsonArray.put(devices);
 					}
 				}
-				if(deviceType.equals("remotelight")&&model.equals("遥控灯")){
+				if(deviceType.equals("remotelight")&&model.equals("遥控灯1")){
+					jsonObject.put("deviceType","light");
 					for(int j=2;j<=8;j++){
 						JSONObject devices = new JSONObject();
 						putRemoteVirtualLight(devices,jsonObject,j);
@@ -352,7 +353,7 @@ public class TmallController {
 		devices.put("deviceType","light");//outlet.getString("deviceType")
 		devices.put("zone","");
 		devices.put("brand","on-bright");
-		devices.put("model","");
+		devices.put("model","遥控灯"+i);
 		devices.put("icon",TMallDeviceAdapter.remotelighticon);
 		devices.put("properties",light.get("properties"));
 //		devices.put("actions",outlet.get("actions"));
