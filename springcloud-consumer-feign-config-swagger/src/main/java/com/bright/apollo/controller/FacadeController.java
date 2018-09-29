@@ -4929,6 +4929,7 @@ public class FacadeController extends BaseController {
 			@PathVariable(value = "status") String status) {
 		ResponseObject res = new ResponseObject();
 		try {
+//			System.out.println("userdetails ------ "+SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			if (StringUtils.isEmpty(principal.getUsername())) {
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
