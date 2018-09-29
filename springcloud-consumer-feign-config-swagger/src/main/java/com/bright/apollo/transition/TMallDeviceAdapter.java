@@ -616,7 +616,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                         String[] ids = deviceId.split("_");
                         if(name.equals("TurnOn")||name.equals("TurnOff")){
                             value = propertyArr[1];
-                            deviceState = changeRemoteOnOffState(name,value);
+                            deviceState = changeRemoteOnOffState(name,ids[1]);
                         }else if(name.equals("SetBrightness")){
                             if(value.equals("max")){
                                 value = "64";
@@ -878,11 +878,11 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         return value+endStr;
     }
 
-    private String changeRemoteOnOffState(String name,String value){
+    private String changeRemoteOnOffState(String name,String position){
         if(name.equals("TurnOn")){
-            return "0301";
+            return "03010"+position+"00";
         }else{
-            return "0302";
+            return "03020"+position+"00";
         }
     }
 
