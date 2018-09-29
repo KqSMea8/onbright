@@ -880,9 +880,9 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
 
     private String changeRemoteOnOffState(String name,String position){
         if(name.equals("TurnOn")){
-            return "0301"+position+"00";
+            return "03010"+position+"00";
         }else{
-            return "0302"+position+"00";
+            return "03020"+position+"00";
         }
     }
 

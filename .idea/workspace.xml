@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="8b2d9cad-145f-4f92-b649-293d9b702730" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/TmallController.java" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/TmallController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/service/impl/CustomerAuthorizeConfigProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/service/impl/CustomerAuthorizeConfigProvider.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/TMallDeviceAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/TMallDeviceAdapter.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/springcloud-zuul/target/" />
@@ -61,38 +58,38 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="TmallController.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="TmallController.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/TmallController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="378">
-              <caret line="102" column="111" selection-start-line="102" selection-start-column="111" selection-end-line="102" selection-end-column="111" />
+            <state relative-caret-position="189">
+              <caret line="113" column="71" lean-forward="true" selection-start-line="113" selection-start-column="71" selection-end-line="113" selection-end-column="71" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CustomerAuthorizeConfigProvider.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="TMallDeviceAdapter.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/TMallDeviceAdapter.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="271">
+              <caret line="880" column="71" lean-forward="true" selection-start-line="880" selection-start-column="71" selection-end-line="880" selection-end-column="71" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FacadeController.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/FacadeController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="279">
+              <caret line="4926" column="26" selection-start-line="4926" selection-start-column="26" selection-end-line="4926" selection-end-column="26" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CustomerAuthorizeConfigProvider.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/service/impl/CustomerAuthorizeConfigProvider.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="526">
-              <caret line="32" column="151" selection-start-line="32" selection-start-column="151" selection-end-line="32" selection-end-column="151" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="application-pro.yml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-eureka-server/src/main/resources/application-pro.yml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="432">
-              <caret line="16" column="7" selection-start-line="16" selection-start-column="7" selection-end-line="16" selection-end-column="7" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MqttOutBoundConfiguration.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/mqtt/MqttOutBoundConfiguration.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="14" column="16" selection-start-line="14" selection-start-column="16" selection-end-line="14" selection-end-column="16" />
+            <state relative-caret-position="634">
+              <caret line="36" column="1" lean-forward="true" selection-start-line="36" selection-start-column="1" selection-end-line="36" selection-end-column="1" />
             </state>
           </provider>
         </entry>
@@ -233,7 +230,6 @@
         <option value="$PROJECT_DIR$/springcloud-provider-user/src/main/resources/bootstrap.yml" />
         <option value="$PROJECT_DIR$/springcloud-provider-deivce/src/main/resources/bootstrap.yml" />
         <option value="$PROJECT_DIR$/springcloud-provider-deivce/src/main/resources/application-dev.yml" />
-        <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/TMallDeviceAdapter.java" />
         <option value="$PROJECT_DIR$/springcloud-ali2/src/main/resources/application-dev.yml" />
         <option value="$PROJECT_DIR$/springcloud-ali2/src/main/java/com/bright/apollo/handler/SceneCMDHandler.java" />
         <option value="$PROJECT_DIR$/springcloud-zuul/src/main/resources/bootstrap.yml" />
@@ -252,8 +248,9 @@
         <option value="$PROJECT_DIR$/springcloud-quartz/src/main/resources/application-pro.yml" />
         <option value="$PROJECT_DIR$/springcloud-zuul/src/main/resources/application-pro.yml" />
         <option value="$PROJECT_DIR$/springcloud-zuul/src/main/resources/application-dev.yml" />
-        <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/TmallController.java" />
         <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/service/impl/CustomerAuthorizeConfigProvider.java" />
+        <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/TMallDeviceAdapter.java" />
+        <option value="$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/TmallController.java" />
       </list>
     </option>
   </component>
@@ -783,12 +780,12 @@
       <workItem from="1538040803583" duration="2125000" />
       <workItem from="1538105738024" duration="2885000" />
       <workItem from="1538117153751" duration="539000" />
-      <workItem from="1538200076470" duration="1203000" />
+      <workItem from="1538200076470" duration="2693000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1323568000" />
+    <option name="totallyTimeSpent" value="1325058000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -902,13 +899,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/TMallTemplate.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="61" selection-start-line="61" selection-end-line="70" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/springcloud-config-server/src/main/resources/application-test.yml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="419">
@@ -1011,13 +1001,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="279">
           <caret line="84" column="21" selection-start-line="84" selection-start-column="21" selection-end-line="84" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/TMallDeviceAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2619">
-          <caret line="123" column="21" selection-start-line="123" selection-start-column="21" selection-end-line="123" selection-end-column="21" />
         </state>
       </provider>
     </entry>
@@ -1234,17 +1217,31 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/TmallController.java">
+    <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/service/impl/CustomerAuthorizeConfigProvider.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="102" column="111" selection-start-line="102" selection-start-column="111" selection-end-line="102" selection-end-column="111" />
+        <state relative-caret-position="634">
+          <caret line="36" column="1" lean-forward="true" selection-start-line="36" selection-start-column="1" selection-end-line="36" selection-end-column="1" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/service/impl/CustomerAuthorizeConfigProvider.java">
+    <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/FacadeController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="526">
-          <caret line="32" column="151" selection-start-line="32" selection-start-column="151" selection-end-line="32" selection-end-column="151" />
+        <state relative-caret-position="279">
+          <caret line="4926" column="26" selection-start-line="4926" selection-start-column="26" selection-end-line="4926" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/transition/TMallDeviceAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="271">
+          <caret line="880" column="71" lean-forward="true" selection-start-line="880" selection-start-column="71" selection-end-line="880" selection-end-column="71" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/springcloud-consumer-feign-config-swagger/src/main/java/com/bright/apollo/controller/TmallController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="113" column="71" lean-forward="true" selection-start-line="113" selection-start-column="71" selection-end-line="113" selection-end-column="71" />
         </state>
       </provider>
     </entry>
