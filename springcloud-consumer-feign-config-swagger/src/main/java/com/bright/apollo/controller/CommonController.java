@@ -439,6 +439,7 @@ public class CommonController {
  			String obox_serial_id = requestParam.getValue("obox_serial_id");
  			String serialId = requestParam.getValue("serialId");
  			String status = requestParam.getValue("status");
+ 			String addr = requestParam.getValue("addr");
  			//addr
 			if(!StringUtils.isEmpty(type)&&!StringUtils.isEmpty(obox_serial_id)){
 				 if(type.equals("1")){
