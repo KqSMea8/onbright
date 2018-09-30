@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,7 +23,7 @@ import com.bright.apollo.tool.NumberHelper;
  *@Since:2018年7月2日  
  *@Version:1.1.0  
  */
-@Component 
+@Component
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
