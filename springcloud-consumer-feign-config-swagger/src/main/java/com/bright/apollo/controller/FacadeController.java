@@ -270,25 +270,9 @@ public class FacadeController extends BaseController {
 				res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
 			} else {
 				ResponseObject<OboxResp> scanObox = feignAliClient.stopScan(oboxSerialId);
-				if (scanObox != null && scanObox.getStatus() == ResponseEnum.SelectSuccess.getStatus()
-						&& scanObox.getData() != null) {
-					OboxResp oboxResp = scanObox.getData();
-					if (oboxResp.getType() != Type.success) {
-						if (oboxResp.getType() == Type.obox_process_failure
-								|| oboxResp.getType() == Type.socket_write_error) {
-							res.setStatus(ResponseEnum.SendOboxFail.getStatus());
-							res.setMessage(ResponseEnum.SendOboxFail.getMsg());
-						} else if (oboxResp.getType() == Type.reply_timeout) {
-							res.setStatus(ResponseEnum.SendOboxTimeOut.getStatus());
-							res.setMessage(ResponseEnum.SendOboxTimeOut.getMsg());
-						} else {
-							res.setStatus(ResponseEnum.SendOboxUnKnowFail.getStatus());
-							res.setMessage(ResponseEnum.SendOboxUnKnowFail.getMsg());
-						}
-					} else {
-						res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
-						res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
-					}
+				if (scanObox != null && scanObox.getStatus() == ResponseEnum.DeleteSuccess.getStatus()) {
+					res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+					res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
 				} else {
 					res.setStatus(ResponseEnum.SendOboxError.getStatus());
 					res.setMessage(ResponseEnum.SendOboxError.getMsg());
@@ -772,12 +756,12 @@ public class FacadeController extends BaseController {
 				oboxSceneNumber = Integer.parseInt(data.substring(6, 8), 16);
 				while (System.currentTimeMillis() - startTime < max_waitting_time) {
 					try {
-						logger.info("===key:"+sceneName.trim()+oboxSerialId+sceneGroup+oboxSceneNumber);
+						logger.info("===key:" + sceneName.trim() + oboxSerialId + sceneGroup + oboxSceneNumber);
 						reply = cmdCache.getLocalSceneInfo(sceneName.trim(), oboxSerialId, sceneGroup, oboxSceneNumber);
 						if (StringUtils.isEmpty(reply)) {
 							TimeUnit.MILLISECONDS.sleep(150);
 						} else {
-							logger.info("===reply:"+reply);
+							logger.info("===reply:" + reply);
 							cmdCache.delLocalSceneInfo(sceneName, oboxSerialId, sceneGroup, oboxSceneNumber);
 							break;
 						}
@@ -3774,9 +3758,11 @@ public class FacadeController extends BaseController {
 			fingerRemoteUser.setUseTimes(0);
 			fingerRemoteUser.setMobile(mobile == null ? "" : mobile);
 			feignDeviceClient.updateTIntelligentFingerRemoteUser(fingerRemoteUser);
-//
-//			feignQuartzClient.deleteJob(MD5.getMD5Str(fingerRemoteUser.getId().intValue() + "" + serialId));
-//			feignQuartzClient.deleteJob(MD5.getMD5Str(fingerRemoteUser.getId().intValue()+"" + serialId));
+			//
+			// feignQuartzClient.deleteJob(MD5.getMD5Str(fingerRemoteUser.getId().intValue()
+			// + "" + serialId));
+			// feignQuartzClient.deleteJob(MD5.getMD5Str(fingerRemoteUser.getId().intValue()+""
+			// + serialId));
 			feignQuartzClient.deleteJob(MD5.getMD5Str(fingerRemoteUser.getId().intValue() + "" + serialId));
 			feignQuartzClient.addRemoteOpenTaskSchedule(fingerRemoteUser.getId(), endTime + "", serialId);
 			Map<String, Object> map = new HashMap<String, Object>();
@@ -4929,7 +4915,8 @@ public class FacadeController extends BaseController {
 			@PathVariable(value = "status") String status) {
 		ResponseObject res = new ResponseObject();
 		try {
-//			System.out.println("userdetails ------ "+SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+			// System.out.println("userdetails ------
+			// "+SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			if (StringUtils.isEmpty(principal.getUsername())) {
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
@@ -4957,7 +4944,7 @@ public class FacadeController extends BaseController {
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
 				return res;
 			}
-			feignAliClient.controlRemoteLed(oboxSerialId,status);
+			feignAliClient.controlRemoteLed(oboxSerialId, status);
 			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
 			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
 		} catch (Exception e) {
