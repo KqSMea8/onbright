@@ -621,7 +621,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                             if(value.equals("max")){
                                 value = "64";
                             }else if(value.equals("min")){
-                                value = "00";
+                                value = "01";
                             }
                             deviceState = "03fd0"+ids[1]+"00"+value+"ff0001";
                         }else if(name.equals("SetColor")){
