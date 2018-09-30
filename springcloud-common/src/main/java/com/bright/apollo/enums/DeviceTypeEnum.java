@@ -79,7 +79,7 @@ public enum DeviceTypeEnum {
     capacity_finger("03"),
     
     //光头强
-    remote_led("22"),
+    remote_led("16"),
     
     remote_child_led("01")
     ;
