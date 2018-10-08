@@ -354,7 +354,7 @@ public class TmallController {
 		devices.put("zone","");
 		devices.put("brand","on-bright");
 		devices.put("model","遥控灯"+i);
-		devices.put("icon",TMallDeviceAdapter.lighticon);
+		devices.put("icon",TMallDeviceAdapter.remotelighticon);
 		devices.put("properties",light.get("properties"));
 //		devices.put("actions",outlet.get("actions"));
 		devices.put("extensions",extensionsMap);

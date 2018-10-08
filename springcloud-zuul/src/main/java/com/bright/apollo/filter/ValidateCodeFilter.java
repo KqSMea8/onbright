@@ -19,6 +19,9 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.bright.apollo.http.MobClient;
+import com.bright.apollo.service.UserService;
+import com.bright.apollo.tool.Base64Util;
+import com.bright.apollo.tool.MD5;
 import com.bright.apollo.vo.SmsLoginParamVo;
 import com.bright.apollo.vo.SmsLoginVo;
 import com.netflix.zuul.http.HttpServletRequestWrapper;
@@ -33,13 +36,15 @@ import com.netflix.zuul.http.HttpServletRequestWrapper;
 @Component("validateCodeFilter")
 public class ValidateCodeFilter extends OncePerRequestFilter implements InitializingBean {
 	private static final Logger logger = LoggerFactory.getLogger(ValidateCodeFilter.class);
-	private static final String LOGINURL="/login";
+	private static final String LOGINURL = "/login";
+
 	public ValidateCodeFilter() {
 		logger.info("===Loading ValidateCodeFilter===");
 	}
 
 	private AntPathMatcher pathMatcher = new AntPathMatcher();
-
+	@Autowired
+	private UserService userService;
 	@Autowired
 	private SmsLoginVo smsLoginVo;
 	@Autowired
@@ -60,8 +65,6 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 				if (StringUtils.isEmpty(shareSdkAppkey) || StringUtils.isEmpty(zone) || StringUtils.isEmpty(mobile)
 						|| StringUtils.isEmpty(code)) {
 					throw new InternalAuthenticationServiceException("request param error");
-					// throw new CustomException(HttpStatus.BAD_REQUEST.value(),
-					// "request param error");
 				}
 				MobClient mobClient = new MobClient();
 				mobClient.addParam("appkey", shareSdkAppkey).addParam("phone", mobile).addParam("zone", zone)
@@ -69,13 +72,22 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 				mobClient.addRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
 				mobClient.addRequestProperty("Accept", "application/json");
 				String result = mobClient.post();
-				logger.info("===result:"+result);
+				logger.info("===result:" + result);
 				JSONObject object = new JSONObject(result);
 				if (object.getInt("status") == 200) {
+					if (userService.queryUserByName(mobile) == null) {
+						String pwd = mobile.substring(mobile.length() - 8);
+						try {
+							userService.addUser(mobile, encrypt(encrypt(pwd)));
+						} catch (Exception e) {
+							logger.error("===error msg:" + e.getMessage());
+						}
+					}
 					filterChain.doFilter(request, response);
 				} else {
 					throw new InternalAuthenticationServiceException("Validation code is incorrect");
 				}
+
 				// filterChain.doFilter(request, response);
 				logger.info("====result:" + result);
 			} catch (Exception e) {
@@ -89,4 +101,8 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 		}
 	}
 
+	private static String encrypt(String rawPassword) throws Exception {
+		String base64Encrypt = Base64Util.base64Encrypt(rawPassword.toString().getBytes());
+		return MD5.getMD5Str(base64Encrypt + rawPassword);
+	}
 }

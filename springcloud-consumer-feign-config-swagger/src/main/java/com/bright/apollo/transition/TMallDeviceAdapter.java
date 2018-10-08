@@ -623,18 +623,18 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                             }else if(value.equals("min")){
                                 value = "01";
                             }
-                            deviceState = "03fd0"+ids[1]+"0000"+value+"ff0001";
+                            deviceState = "03fd0"+ids[1]+"00"+value+"ff0001";
                         }else if(name.equals("SetColor")){
                             value = ColorEnum.getRegion(value).getValue();
-                            deviceState = "03fe"+ids[1]+"0000"+value+"01";
+                            deviceState = "03fe"+ids[1]+"00"+value+"01";
                         }else if(name.equals("SetColorTemperature")){
                             Integer v = Integer.valueOf(value);
                             if(v==0){//暖光
                                 String middle = ByteHelper.int2HexString(0);
-                                deviceState = "03fd0"+ids[1]+"0000ff"+middle+"0001";
+                                deviceState = "03fd0"+ids[1]+"00ff"+middle+"0001";
                             }else if(v==100){//冷光
                                 String middle = ByteHelper.int2HexString(100);
-                                deviceState = "03fd0"+ids[1]+"0000ff"+middle+"0001";
+                                deviceState = "03fd0"+ids[1]+"00ff"+middle+"0001";
                             }else if(v<2700||v>6500){
                                 deviceState = null;
                             }else{
@@ -642,7 +642,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                                 Integer temperature = Integer.valueOf(t)-27;
                                 temperature = temperature*4;
                                 String middle = ByteHelper.int2HexString(temperature);
-                                deviceState = "03fd0"+ids[1]+"0000ff"+middle+"0001";
+                                deviceState = "03fd0"+ids[1]+"00ff"+middle+"0001";
                             }
                         }
                     }else{//一般灯
@@ -695,8 +695,8 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                             if(v==0){//暖光
                                 String middle = ByteHelper.int2HexString(0);
                                 deviceState = changeColorTemperature(deviceState,middle);
-                            }else if(v==100){//冷光
-                                String middle = ByteHelper.int2HexString(255);
+                            }else if(v==254){//冷光
+                                String middle = ByteHelper.int2HexString(254);
                                 deviceState = changeColorTemperature(deviceState,middle);
                             }else if(v<2700||v>6500){
                                 deviceState = null;
