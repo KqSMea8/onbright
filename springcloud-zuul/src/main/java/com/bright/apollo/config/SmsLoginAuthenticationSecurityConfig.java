@@ -40,7 +40,7 @@ public class SmsLoginAuthenticationSecurityConfig extends SecurityConfigurerAdap
     private String defaultMobileLoginHttpMethod;
     
     @Autowired
-    private UserDetailsService customUserDetailsService;
+    private UserDetailsService smsUserDetailsService;
     @Autowired
     private AuthenticationSuccessHandler customAuthenticationSuccessHandler;
     @Autowired
@@ -69,7 +69,7 @@ public class SmsLoginAuthenticationSecurityConfig extends SecurityConfigurerAdap
         mobileLoginAuthenticationFilter.setAuthenticationFailureHandler(customAuthenticationFailureHandler);
 
         SmsLoginAuthenticationProvider smsLoginAuthenticationProvider = new SmsLoginAuthenticationProvider();
-        smsLoginAuthenticationProvider.setUserDetailsService(customUserDetailsService);
+        smsLoginAuthenticationProvider.setUserDetailsService(smsUserDetailsService);
 
         http.authenticationProvider(smsLoginAuthenticationProvider)
                 .addFilterAfter(mobileLoginAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
