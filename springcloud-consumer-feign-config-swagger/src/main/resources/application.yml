@@ -4,4 +4,21 @@ server:
 spring:
   profiles:
     active: dev
-  
+#自定义
+SmsLogin:
+  url: /login/mobile
+  httpMethod: POST
+SmsLoginParam:
+  appkey: shareSdkAppkey
+  mobile: mobile
+  code: code
+  zone: zone
+WxLogin:
+  url: /login/wx
+  httpMethod: POST
+WxLoginParam:
+  wxToken: wxToken
+  openId: openId
+  appId: ssssss
+  secret: sssss
+  wxUrl: https://api.weixin.qq.com/sns/userinfo?access_token=

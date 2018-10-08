@@ -47,4 +47,13 @@ public class WxServcieImpl implements WxService {
 
 	}
 
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.WxService#getWxUserInfo(java.lang.String, java.lang.String, java.lang.String)  
+	 */
+	@Override
+	public JSONObject getWxUserInfo(String url, String token, String openId) {
+		URI uri = URI.create(url + token + "&openid=" + openId);
+		return HttpUtil.request(uri);
+	}
+
 }

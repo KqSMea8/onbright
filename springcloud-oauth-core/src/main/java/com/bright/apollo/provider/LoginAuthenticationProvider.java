@@ -9,7 +9,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-import com.bright.apollo.token.SmsLoginAuthenticationToken;
+import com.bright.apollo.token.LoginAuthenticationToken;
 
 /**  
  *@Title:  
@@ -18,12 +18,12 @@ import com.bright.apollo.token.SmsLoginAuthenticationToken;
  *@Since:2018年9月12日  
  *@Version:1.1.0  
  */
-public class SmsLoginAuthenticationProvider implements AuthenticationProvider {
+public class LoginAuthenticationProvider implements AuthenticationProvider {
 
 
-    private static final Logger logger = LoggerFactory.getLogger(SmsLoginAuthenticationProvider.class.getName());
-    public SmsLoginAuthenticationProvider() {
-        logger.info("===SmsLoginAuthenticationProvider loading===");
+    private static final Logger logger = LoggerFactory.getLogger(LoginAuthenticationProvider.class.getName());
+    public LoginAuthenticationProvider() {
+        logger.info("===LoginAuthenticationProvider loading===");
     }
     
     private UserDetailsService userDetailsService;
@@ -33,7 +33,7 @@ public class SmsLoginAuthenticationProvider implements AuthenticationProvider {
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         //获取过滤器封装的token信息
-        SmsLoginAuthenticationToken authenticationToken = (SmsLoginAuthenticationToken) authentication;
+        LoginAuthenticationToken authenticationToken = (LoginAuthenticationToken) authentication;
         //获取用户信息（数据库认证）
         UserDetails userDetails = userDetailsService.loadUserByUsername((String) authenticationToken.getPrincipal());
         //不通过
@@ -41,7 +41,7 @@ public class SmsLoginAuthenticationProvider implements AuthenticationProvider {
             throw new InternalAuthenticationServiceException("Unable to obtain user information");
         }
         //通过
-        SmsLoginAuthenticationToken authenticationResult = new SmsLoginAuthenticationToken(userDetails, userDetails.getAuthorities());
+        LoginAuthenticationToken authenticationResult = new LoginAuthenticationToken(userDetails, userDetails.getAuthorities());
 
         authenticationResult.setDetails(authenticationToken.getDetails());
 
@@ -52,7 +52,7 @@ public class SmsLoginAuthenticationProvider implements AuthenticationProvider {
      */
     @Override
     public boolean supports(Class<?> authentication) {
-        return SmsLoginAuthenticationToken.class.isAssignableFrom(authentication);
+        return LoginAuthenticationToken.class.isAssignableFrom(authentication);
     }
 	public UserDetailsService getUserDetailsService() {
 		return userDetailsService;

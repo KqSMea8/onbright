@@ -1,15 +1,5 @@
 package com.bright.apollo.config;
 
-import java.io.IOException;
-import java.net.URLDecoder;
-import java.util.Enumeration;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +10,8 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
-import org.springframework.web.filter.GenericFilterBean;
 
 import com.bright.apollo.filter.ValidateCodeFilter;
 import com.bright.apollo.pwdEncoder.CusromPasswordEncoder;
@@ -47,7 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	private ValidateCodeFilter validateCodeFilter;
 	 
 	@Autowired
-	private SmsLoginAuthenticationSecurityConfig smsLoginAuthenticationSecurityConfig;
+	private LoginAuthenticationSecurityConfig loginAuthenticationSecurityConfig;
 	//@Autowired
 	//private AuthenticationSuccessHandler customAuthenticationSuccessHandler;
 	//@Autowired
@@ -84,7 +72,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/health", "/css/**", "/oauth/**", "/uaa/**").permitAll().and().formLogin()
 				.loginPage("/login").permitAll();
 		
-		 http.apply(smsLoginAuthenticationSecurityConfig);
+		 http.apply(loginAuthenticationSecurityConfig);
 
 		// .and()
 		// .addFilterAfter(new
