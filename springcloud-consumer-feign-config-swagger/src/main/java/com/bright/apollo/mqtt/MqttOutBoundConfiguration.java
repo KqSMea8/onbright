@@ -12,7 +12,7 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
 
 //@Configuration
-public class MqttOutBoundConfiguration {
+//public class MqttOutBoundConfiguration {
 
 //    @Autowired
 //    private MqttProperties mqttProperties;
@@ -44,4 +44,4 @@ public class MqttOutBoundConfiguration {
 //    }
 
 
-}
+//}
