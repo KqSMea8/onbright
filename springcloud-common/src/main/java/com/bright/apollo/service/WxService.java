@@ -17,4 +17,6 @@ public interface WxService {
 	static final String WX_USERINFO_URL="https://api.weixin.qq.com/sns/userinfo?access_token=";
 	public JSONObject getWxToken(String code);
 	public JSONObject getWxUserInfo(String token,String openId);
+	
+	public JSONObject getWxUserInfo(String url,String token,String openId);
 }

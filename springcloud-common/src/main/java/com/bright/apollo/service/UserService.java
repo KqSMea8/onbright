@@ -37,7 +37,6 @@ public interface UserService {
 	 * @param object3  
 	 * @Description:  
 	 */
-	@Deprecated
 	int saveUserByWeiXinInfo(String openid, String headimgurl, String nickname);
 
 	/**  

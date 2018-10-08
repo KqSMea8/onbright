@@ -75,12 +75,10 @@ public class UserServiceImpl implements UserService {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	@Deprecated
 	public int saveUserByWeiXinInfo(String openid, String headimgurl, String nickname) {
-
+		return userMapper.saveUserByWeiXinInfo(openid,headimgurl,nickname);
 //		return userBusiness.insertSelective(new TUser(openid, nickname, headimgurl));
-		return 0;
-	}
+ 	}
 
 	/*
 	 * (non-Javadoc)

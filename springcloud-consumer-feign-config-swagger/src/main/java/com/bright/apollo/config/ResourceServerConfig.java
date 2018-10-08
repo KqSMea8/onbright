@@ -33,7 +33,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 	@Resource
     private AuthorizeConfigManager authorizeConfigManager;
 	@Autowired
-	private SmsLoginAuthenticationSecurityConfig smsLoginAuthenticationSecurityConfig;
+	private LoginAuthenticationSecurityConfig smsLoginAuthenticationSecurityConfig;
     @Bean
     RedisTokenStore redisTokenStore(){
         return new RedisTokenStore(redisConnectionFactory);
