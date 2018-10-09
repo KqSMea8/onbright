@@ -3,9 +3,10 @@ package com.bright.apollo.service.impl;
 import java.net.URI;
 
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-
 import com.bright.apollo.service.WxService;
 import com.bright.apollo.tool.HttpUtil;
 
@@ -18,7 +19,7 @@ import com.bright.apollo.tool.HttpUtil;
  */
 @Service
 public class WxServcieImpl implements WxService {
-
+	private static final Logger logger = LoggerFactory.getLogger(WxServcieImpl.class);
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -76,6 +77,7 @@ public class WxServcieImpl implements WxService {
 		sb.append("?appid=").append(appId).append("&secret=").append(secret)
 		.append("&grant_type=").append(grantType)
 		.append("&code=").append(code);
+		logger.info("===url:"+sb.toString());
 		URI uri = URI.create(sb.toString());
 		return HttpUtil.request(uri);
 	}
