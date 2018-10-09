@@ -25,6 +25,7 @@ import com.bright.apollo.common.entity.TUser;
 import com.bright.apollo.common.entity.TUserScene;
 import com.bright.apollo.enums.AliRegionEnum;
 import com.bright.apollo.enums.CMDEnum;
+import com.bright.apollo.enums.DeviceTypeEnum;
 import com.bright.apollo.enums.NodeTypeEnum;
 import com.bright.apollo.enums.SystemEnum;
 import com.bright.apollo.service.AliDeviceService;
@@ -195,7 +196,11 @@ public class SceneActionThreadPool {
 							byte[] sBytes = ByteHelper.hexStringToBytes(tSceneAction.getAction());
 							System.arraycopy(sBytes, 0, bodyBytes, 7, sBytes.length);
 							if (topicServer != null) {
-								topicServer.pubTopic(CMDEnum.setting_node_status, bodyBytes,
+								CMDEnum cmd=CMDEnum.setting_node_status;
+								if(oboxDeviceConfig.getDeviceType().equals(DeviceTypeEnum.remote_led.getValue())){
+									cmd=CMDEnum.setting_remote_led;
+								}
+								topicServer.pubTopic(cmd, bodyBytes,
 										oboxDeviceConfig.getOboxSerialId());
 								//TimeUnit.MILLISECONDS.sleep(250);
 							}
