@@ -406,7 +406,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
             jsonArray.put(dfMap);
             doorLock.setProperties(jsonArray);
             return doorLock;
-        }else if(deviceType.equals("22")){
+        }else if(deviceType.equals("16")){
             oboxDeviceConfig.setDeviceType("remotelight");
             propertiesTransition(dfMap,defaultProperties);
             RemoteLight remoteLight = new RemoteLight();
