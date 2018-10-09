@@ -19,7 +19,9 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.bright.apollo.common.entity.TUser;
+import com.bright.apollo.constant.Constant;
 import com.bright.apollo.http.MobClient;
+import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.service.UserService;
 import com.bright.apollo.service.WxService;
 import com.bright.apollo.tool.Base64Util;
@@ -113,7 +115,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 				if (StringUtils.isEmpty(wxToken) || StringUtils.isEmpty(openId)) {
 					throw new InternalAuthenticationServiceException("request param error");
 				}
-				JSONObject wxUserInfo = wxService.getWxUserInfo(wxToken, openId);
+				JSONObject wxUserInfo = wxService.getWxUserInfo(wxLoginParamVo.getWxUrl(),wxToken, openId);
 				if (wxUserInfo == null || !wxUserInfo.has("headimgurl") || !wxUserInfo.has("nickname")
 						|| !wxUserInfo.has("sex")) {
 					throw new InternalAuthenticationServiceException("request param error");
@@ -131,6 +133,41 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 				logger.error("====error msg:" + e.getMessage());
 				throw new InternalAuthenticationServiceException(e.getMessage());
 			}
+		} else if (pathMatcher.match(wxLoginVo.getCodeUrl(), request.getRequestURI())) {
+			// login/wx/code
+			try {
+				String code = request.getParameter(wxLoginParamVo.getCode());
+				logger.info("===code:" + code);
+				if (StringUtils.isEmpty(code)) {
+					throw new InternalAuthenticationServiceException("request param error");
+				}
+				JSONObject wxToken = wxService.getWxToken(code, wxLoginParamVo.getAppId(), wxLoginParamVo.getSecret(),
+						wxLoginParamVo.getGrantType(), wxLoginParamVo.getWxLoginUrl());
+				if (wxToken == null || !wxToken.has("access_token") || !wxToken.has("openid")) {
+					throw new InternalAuthenticationServiceException("request param error");
+				} else {
+					String token = wxToken.getString("access_token");
+					String openId = wxToken.getString("openid");
+					logger.info("===token:" + token + "===openId:" + openId);
+					JSONObject wxUserInfo = wxService.getWxUserInfo(wxLoginParamVo.getWxUrl(),token, openId);
+					if (wxUserInfo == null || !wxUserInfo.has("headimgurl") || !wxUserInfo.has("nickname")
+							|| !wxUserInfo.has("sex")) {
+						throw new InternalAuthenticationServiceException("request param error");
+					}
+					TUser tuser = userService.queryUserByOpenId(openId);
+					if(tuser==null){
+						logger.info("===headimgurl:" + wxUserInfo.getString("headimgurl") + "===nickname:"
+								+ wxUserInfo.getString("nickname"));
+						userService.saveUserByWeiXinInfo(openId, wxUserInfo.getString("headimgurl"),
+								wxUserInfo.getString("nickname"));
+					}
+					filterChain.doFilter(request, response);
+				}
+			} catch (Exception e) {
+				logger.error("====error msg:" + e.getMessage());
+				throw new InternalAuthenticationServiceException(e.getMessage());
+			}
+
 		} else {
 			// let it go
 			filterChain.doFilter(request, response);

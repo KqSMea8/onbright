@@ -32,7 +32,7 @@ import com.bright.apollo.vo.WxLoginVo;
 @Configuration("loginAuthenticationSecurityConfig")
 public class LoginAuthenticationSecurityConfig
 		extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(LoginAuthenticationSecurityConfig.class.getName());
 
 	@Value("${login.mobile.url}")
@@ -41,7 +41,7 @@ public class LoginAuthenticationSecurityConfig
 	private String defaultMobileLoginParameter;
 	@Value("${login.mobile.httpMethod}")
 	private String defaultMobileLoginHttpMethod;
-	private static final String antUrl="/login/**";
+	private static final String antUrl = "/login/**";
 	@Autowired
 	private UserDetailsService userDetailsService;
 	@Autowired
@@ -67,10 +67,9 @@ public class LoginAuthenticationSecurityConfig
 		String url = smsLoginVo.getUrl();
 		String parameter = smsLoginParamVo.getMobile();
 		String httpMethod = smsLoginVo.getHttpMethod();
-		LoginAuthenticationFilter loginAuthenticationFilter = new LoginAuthenticationFilter(
-				antUrl,
+		LoginAuthenticationFilter loginAuthenticationFilter = new LoginAuthenticationFilter(antUrl,
 				StringUtils.isBlank(parameter) ? defaultMobileLoginUrl : parameter, wxLoginParamVo.getOpenId(),
-				StringUtils.isBlank(httpMethod) ? defaultMobileLoginHttpMethod : httpMethod);
+				wxLoginParamVo.getCode(), StringUtils.isBlank(httpMethod) ? defaultMobileLoginHttpMethod : httpMethod);
 
 		loginAuthenticationFilter.setAuthenticationManager(http.getSharedObject(AuthenticationManager.class));
 		loginAuthenticationFilter.setAuthenticationSuccessHandler(customAuthenticationSuccessHandler);

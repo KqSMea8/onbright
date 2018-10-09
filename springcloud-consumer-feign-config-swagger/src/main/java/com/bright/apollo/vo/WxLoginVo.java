@@ -16,6 +16,8 @@ public class WxLoginVo {
 
 	private String url;
 	
+	private String codeUrl;
+	
 	private String httpMethod;
 	
 	public String getUrl() {
@@ -33,4 +35,13 @@ public class WxLoginVo {
 	public void setHttpMethod(String httpMethod) {
 		this.httpMethod = httpMethod;
 	}
+
+	public String getCodeUrl() {
+		return codeUrl;
+	}
+
+	public void setCodeUrl(String codeUrl) {
+		this.codeUrl = codeUrl;
+	}
+	
 }
