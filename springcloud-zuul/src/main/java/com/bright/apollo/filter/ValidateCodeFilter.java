@@ -139,17 +139,19 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 				String code = request.getParameter(wxLoginParamVo.getCode());
 				logger.info("===code:" + code);
 				if (StringUtils.isEmpty(code)) {
-					throw new InternalAuthenticationServiceException("request param error");
+					throw new InternalAuthenticationServiceException("code is null");
 				}
 				JSONObject wxToken = wxService.getWxToken(code, wxLoginParamVo.getAppId(), wxLoginParamVo.getSecret(),
 						wxLoginParamVo.getGrantType(), wxLoginParamVo.getWxLoginUrl());
+				logger.info("===wxToken:"+wxToken);
 				if (wxToken == null || !wxToken.has("access_token") || !wxToken.has("openid")) {
-					throw new InternalAuthenticationServiceException("request param error");
+					throw new InternalAuthenticationServiceException("wx code verify request error ");
 				} else {
 					String token = wxToken.getString("access_token");
 					String openId = wxToken.getString("openid");
 					logger.info("===token:" + token + "===openId:" + openId);
 					JSONObject wxUserInfo = wxService.getWxUserInfo(wxLoginParamVo.getWxUrl(),token, openId);
+					logger.info("===wxUserInfo:"+wxUserInfo);
 					if (wxUserInfo == null || !wxUserInfo.has("headimgurl") || !wxUserInfo.has("nickname")
 							|| !wxUserInfo.has("sex")) {
 						throw new InternalAuthenticationServiceException("request param error");
