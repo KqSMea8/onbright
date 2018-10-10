@@ -71,12 +71,11 @@ public class WxServcieImpl implements WxService {
 		if (StringUtils.isEmpty(code))
 			return null;
 		StringBuffer sb = new StringBuffer(wxLoginUrl);
-		// "https://api.weixin.qq.com/sns/oauth2/access_token?appid="
-		// +Constant.WX_APPID+"&secret="+Constant.WX_SECRET+"CODE&grant_type=
-		// authorization_code&code=";
+		//https://api.weixin.qq.com/sns/jscode2session?
+		//appid=APPID&secret=SECRET&js_code=JSCODE&grant_type=authorization_code
 		sb.append("?appid=").append(appId).append("&secret=").append(secret)
 		.append("&grant_type=").append(grantType)
-		.append("&code=").append(code);
+		.append("&js_code=").append(code);
 		logger.info("===url:"+sb.toString());
 		URI uri = URI.create(sb.toString());
 		return HttpUtil.request(uri);

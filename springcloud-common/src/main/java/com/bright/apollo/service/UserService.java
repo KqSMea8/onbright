@@ -38,7 +38,14 @@ public interface UserService {
 	 * @Description:  
 	 */
 	int saveUserByWeiXinInfo(String openid, String headimgurl, String nickname);
-
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.bright.apollo.service.UserService#saveUserByWeiXinInfo(java.lang.
+	 * String, java.lang.String, java.lang.String)
+	 */
+	int saveUserByWeiXinInfo(String openid);
 	/**  
 	 * @param tUserByMobile  
 	 * @Description:  

@@ -144,24 +144,13 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 				JSONObject wxToken = wxService.getWxToken(code, wxLoginParamVo.getAppId(), wxLoginParamVo.getSecret(),
 						wxLoginParamVo.getGrantType(), wxLoginParamVo.getWxLoginUrl());
 				logger.info("===wxToken:"+wxToken);
-				if (wxToken == null || !wxToken.has("access_token") || !wxToken.has("openid")) {
+				if (wxToken == null || !wxToken.has("session_key") || !wxToken.has("openid")) {
 					throw new InternalAuthenticationServiceException("wx code verify request error ");
 				} else {
-					String token = wxToken.getString("access_token");
-					String openId = wxToken.getString("openid");
-					logger.info("===token:" + token + "===openId:" + openId);
-					JSONObject wxUserInfo = wxService.getWxUserInfo(wxLoginParamVo.getWxUrl(),token, openId);
-					logger.info("===wxUserInfo:"+wxUserInfo);
-					if (wxUserInfo == null || !wxUserInfo.has("headimgurl") || !wxUserInfo.has("nickname")
-							|| !wxUserInfo.has("sex")) {
-						throw new InternalAuthenticationServiceException("request param error");
-					}
+ 					String openId = wxToken.getString("openid");
 					TUser tuser = userService.queryUserByOpenId(openId);
 					if(tuser==null){
-						logger.info("===headimgurl:" + wxUserInfo.getString("headimgurl") + "===nickname:"
-								+ wxUserInfo.getString("nickname"));
-						userService.saveUserByWeiXinInfo(openId, wxUserInfo.getString("headimgurl"),
-								wxUserInfo.getString("nickname"));
+						userService.saveUserByWeiXinInfo(openId);
 					}
 					filterChain.doFilter(request, response);
 				}

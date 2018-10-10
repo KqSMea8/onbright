@@ -241,7 +241,11 @@ public class UserController {
 	public ResponseObject<TUser> getUser(@PathVariable(required = true) String userName) {
 		ResponseObject<TUser> res = new ResponseObject<TUser>();
 		try {
-			TUser tuser = userService.queryUserByName(userName);
+			TUser tuser = null;
+			if(NumberHelper.isNumeric(userName))
+				tuser=userService.queryUserByName(userName);
+			else
+				tuser=userService.queryUserByOpenId(userName);
 			if (tuser == null) {
 				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
 				res.setMessage(ResponseEnum.UnKonwUser.getMsg());

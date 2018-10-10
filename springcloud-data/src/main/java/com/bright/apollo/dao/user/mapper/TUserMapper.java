@@ -74,4 +74,12 @@ public interface TUserMapper {
 	@Insert("insert into t_user (open_id,headimgurl,nickname) values(#{openid},#{headimgurl},#{nickname})")
 	int saveUserByWeiXinInfo(@Param("openid") String openid, @Param("headimgurl") String headimgurl,
 			@Param("nickname") String nickname);
+	
+	/**
+	 * @param openid
+	 * @return
+	 * @Description:
+	 */
+	@Insert("insert into t_user (open_id) values(#{openid})")
+	int saveUserByWeiXinInfo(@Param("openid") String openid);
 }
