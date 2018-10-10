@@ -18,10 +18,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.bright.apollo.cache.CacheHelper;
 import com.bright.apollo.common.entity.TUser;
-import com.bright.apollo.constant.Constant;
 import com.bright.apollo.http.MobClient;
-import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.service.UserService;
 import com.bright.apollo.service.WxService;
 import com.bright.apollo.tool.Base64Util;
@@ -59,7 +58,8 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 	private WxLoginParamVo wxLoginParamVo;
 	@Autowired
 	private WxService wxService;
-
+	@Autowired
+	private CacheHelper cacheHelper;
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		logger.info("===validateCodeFilter before===");
@@ -152,6 +152,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 					if(tuser==null){
 						userService.saveUserByWeiXinInfo(openId);
 					}
+					cacheHelper.addOpenId(code, openId);
 					filterChain.doFilter(request, response);
 				}
 			} catch (Exception e) {

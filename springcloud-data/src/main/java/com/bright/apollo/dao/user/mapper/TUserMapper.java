@@ -33,6 +33,11 @@ public interface TUserMapper {
 	TUser getUserByUserName(@Param("userName") String userName);
 
 	@Select("select * from t_user where open_id=#{openId}")
+	@Results(value = { @Result(property = "userName", column = "user_name"), @Result(property = "id", column = "id"),
+			@Result(property = "nickname", column = "nickname"),
+			@Result(property = "headimgurl", column = "headimgurl"),
+			@Result(property = "password", column = "password"), @Result(property = "openId", column = "open_id"),
+			@Result(property = "lastOpTime", column = "last_op_time") })
 	TUser getUserByOpenId(@Param("openId") String openId);
 
 	/**

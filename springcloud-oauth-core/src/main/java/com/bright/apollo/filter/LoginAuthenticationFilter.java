@@ -63,8 +63,9 @@ public class LoginAuthenticationFilter extends AbstractAuthenticationProcessingF
 			principal=mobile;
 		else if(!StringUtils.isEmpty(openId))
 			principal=openId;
-		else if(!StringUtils.isEmpty(code))
+		else if(!StringUtils.isEmpty(code)){
 			principal=code;
+		}
 		// assemble token
 		LoginAuthenticationToken authRequest = new LoginAuthenticationToken(principal);
   		// Allow subclasses to set the "details" property
