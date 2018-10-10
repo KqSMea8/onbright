@@ -81,5 +81,5 @@ public interface TUserMapper {
 	 * @Description:
 	 */
 	@Insert("insert into t_user (open_id) values(#{openid})")
-	int saveUserByWeiXinInfo(@Param("openid") String openid);
+	int saveUserOpenId(@Param("openid") String openid);
 }

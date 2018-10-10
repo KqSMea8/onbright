@@ -89,7 +89,7 @@ public class UserServiceImpl implements UserService {
 	@SuppressWarnings("unchecked")
 	@Override
 	public int saveUserByWeiXinInfo(String openid) {
-		return userMapper.saveUserByWeiXinInfo(openid);
+		return userMapper.saveUserOpenId(openid);
 //		return userBusiness.insertSelective(new TUser(openid, nickname, headimgurl));
  	}
 	/*
