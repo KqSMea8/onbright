@@ -24,9 +24,8 @@ import com.bright.apollo.common.entity.TAliDeviceUS;
 import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.common.entity.TYaoKongYunBrand;
 import com.bright.apollo.common.entity.TYaokonyunDevice;
-
+import com.bright.apollo.enums.ALIDevTypeEnum;
 import com.bright.apollo.enums.AliIotDevTypeEnum;
-
 import com.bright.apollo.enums.AliRegionEnum;
 import com.bright.apollo.mqtt.MqttGateWay;
 import com.bright.apollo.response.AliDevInfo;
@@ -41,7 +40,6 @@ import com.bright.apollo.tool.ByteHelper;
 import com.bright.apollo.tool.MD5;
 import com.bright.apollo.util.SpringContextUtil;
 import com.bright.apollo.vo.IotDevConncetion;
-
 
 @RestController
 @RequestMapping("aliDevice")
@@ -73,10 +71,11 @@ public class AliDeviceController {
 	@RequestMapping(value = "/sendToMqtt", method = RequestMethod.GET)
 	public String testMqtt() {
 
-//		mqttGateWay.sendToMqtt("ob-smart\\F1640B28-33A6-4A19-BB49-91A24E76EBF7","12312312qqqqqq3");
+		// mqttGateWay.sendToMqtt("ob-smart\\F1640B28-33A6-4A19-BB49-91A24E76EBF7","12312312qqqqqq3");
 
 		return "";
 	}
+
 	@RequestMapping(value = "/registAliDev/{type}", method = RequestMethod.GET)
 	public ResponseObject<AliDevInfo> registAliDev(@PathVariable(required = true, value = "type") String type,
 			@RequestParam(required = false, value = "zone") String zone) {
@@ -84,11 +83,11 @@ public class AliDeviceController {
 		ResponseObject<AliDevInfo> res = new ResponseObject<AliDevInfo>();
 		try {
 			AliDevInfo aliDevInfo = new AliDevInfo();
-			//ALIDevTypeEnum aliDevTypeEnum = ALIDevTypeEnum.getType(type);
-			AliIotDevTypeEnum aliIotDevTypeEnum=AliIotDevTypeEnum.getType(type);
+			// ALIDevTypeEnum aliDevTypeEnum = ALIDevTypeEnum.getType(type);
+			AliIotDevTypeEnum aliIotDevTypeEnum = AliIotDevTypeEnum.getType(type);
 			AliRegionEnum region;
 			Boolean isFound = false;
-			if(aliIotDevTypeEnum==null){
+			if (aliIotDevTypeEnum == null) {
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
 				return res;
@@ -96,8 +95,14 @@ public class AliDeviceController {
 			if (StringUtils.isEmpty(zone) || !zone.split("/")[0].equals("America")) {
 				region = AliRegionEnum.SOURTHCHINA;
 				aliDevInfo.setKitCenter(region.getValue());
-				List<TAliDevice> tAliDeviceList = aliDeviceService
-						.getAliDeviceByProductKeyAndDeviceSerialId(iotOboxConncetion.getOboxSouthChinaName(), "available");
+				List<TAliDevice> tAliDeviceList = null;
+				if (!type.equals(ALIDevTypeEnum.OBOX)) {
+					tAliDeviceList = aliDeviceService.getAliDeviceByProductKeyAndDeviceSerialId(
+							iotOboxConncetion.getDeviceSouthChinaName(), "available");
+				} else {
+					tAliDeviceList = aliDeviceService.getAliDeviceByProductKeyAndDeviceSerialId(
+							iotOboxConncetion.getOboxSouthChinaName(), "available");
+				}
 				for (TAliDevice tAliDevice2 : tAliDeviceList) {
 					if (StringUtils.isEmpty(
 							aliDevCache.getAliDevAvailable(tAliDevice2.getProductKey(), tAliDevice2.getDeviceName()))) {
@@ -130,8 +135,8 @@ public class AliDeviceController {
 			} else {
 				region = AliRegionEnum.AMERICA;
 				aliDevInfo.setKitCenter(AliRegionEnum.AMERICA.getValue());
-				List<TAliDeviceUS> tAliDeviceList = aliDeviceService
-						.getAliUSDeviceByProductKeyAndDeviceSerialId(iotOboxConncetion.getOboxSouthChinaName(), "available");
+				List<TAliDeviceUS> tAliDeviceList = aliDeviceService.getAliUSDeviceByProductKeyAndDeviceSerialId(
+						iotOboxConncetion.getOboxSouthChinaName(), "available");
 				for (TAliDeviceUS tAliDevice2 : tAliDeviceList) {
 					if (StringUtils.isEmpty(
 							aliDevCache.getAliDevAvailable(tAliDevice2.getProductKey(), tAliDevice2.getDeviceName()))) {
@@ -165,9 +170,17 @@ public class AliDeviceController {
 			if (!isFound) {
 				TAliDevice tAliDevice;
 				if (region.equals(AliRegionEnum.AMERICA)) {
-					tAliDevice = aliService.registDevice(iotOboxConncetion.getOboxAmericaName(), null, region);
+					if (type.equals(ALIDevTypeEnum.OBOX)) {
+						tAliDevice = aliService.registDevice(iotOboxConncetion.getOboxAmericaName(), null, region);
+					} else {
+						tAliDevice = aliService.registDevice(iotOboxConncetion.getDeviceAmericaName(), null, region);
+					}
 				} else {
-					tAliDevice = aliService.registDevice(iotOboxConncetion.getOboxSouthChinaName(), null, region);
+					if (type.equals(ALIDevTypeEnum.OBOX)) {
+						tAliDevice =aliService.registDevice(iotOboxConncetion.getOboxSouthChinaName(), null, region);
+					} else {
+						tAliDevice = aliService.registDevice(iotOboxConncetion.getDeviceSouthChinaName(), null, region);
+					}
 				}
 				if (tAliDevice == null) {
 					res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
@@ -179,58 +192,58 @@ public class AliDeviceController {
 					aliDevInfo.setDeviceSecret(tAliDevice.getDeviceSecret());
 					aliDevCache.saveAliDevWait(tAliDevice.getProductKey(), tAliDevice.getDeviceName(),
 							region.getValue());
-
 				}
 			}
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 			res.setData(aliDevInfo);
 		} catch (Exception e) {
-			logger.error("===error msg:"+e.getMessage());
+			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
+
 	@RequestMapping(value = "/getSearchNewDevice", method = RequestMethod.PUT)
-	ResponseObject<List<Map<String, String>>> getSearchNewDevice(@RequestBody(required = true)  TObox obox) {
+	ResponseObject<List<Map<String, String>>> getSearchNewDevice(@RequestBody(required = true) TObox obox) {
 		ResponseObject<List<Map<String, String>>> res = new ResponseObject<List<Map<String, String>>>();
 		try {
 			List<String> replyList = cMDMessageService.searchReply(obox);
- 			List<Map<String, String>> mapList = new ArrayList<Map<String,String>>();
- 			if (!replyList.isEmpty()) {
-				
+			List<Map<String, String>> mapList = new ArrayList<Map<String, String>>();
+			if (!replyList.isEmpty()) {
+
 				for (String string : replyList) {
-					
-					byte [] bodyBytes = ByteHelper.hexStringToBytes(string);
-					byte [] deviceTypeBytes = { bodyBytes[1] };
-					byte device_type_int = (byte)(deviceTypeBytes [0] & 0x1f);
-					deviceTypeBytes [0] = device_type_int; 
+
+					byte[] bodyBytes = ByteHelper.hexStringToBytes(string);
+					byte[] deviceTypeBytes = { bodyBytes[1] };
+					byte device_type_int = (byte) (deviceTypeBytes[0] & 0x1f);
+					deviceTypeBytes[0] = device_type_int;
 					String device_type = ByteHelper.bytesToHexString(deviceTypeBytes);
 					if (!device_type.equals("1e")) {
-						byte [] deviceChildTypeBytes = { bodyBytes[2] };
+						byte[] deviceChildTypeBytes = { bodyBytes[2] };
 						String device_child_type = ByteHelper.bytesToHexString(deviceChildTypeBytes);
-						
-						byte [] idBytes = new byte [16];
+
+						byte[] idBytes = new byte[16];
 						System.arraycopy(bodyBytes, 3, idBytes, 0, idBytes.length);
 						String ID = ByteHelper.bytesToHexString(idBytes);
 						ID = ByteHelper.fromHexAscii(ID);
 						if (ID.equals("")) {
 							continue;
 						}
-						byte [] stateBytes = new byte [5];
+						byte[] stateBytes = new byte[5];
 						System.arraycopy(bodyBytes, 19, stateBytes, 0, stateBytes.length);
 						String deviceSerialId = ByteHelper.bytesToHexString(stateBytes);
-						
+
 						byte[] oboxSerial = new byte[5];
 						System.arraycopy(bodyBytes, 24, oboxSerial, 0, oboxSerial.length);
 						String oboxSerialId = ByteHelper.bytesToHexString(oboxSerial);
-						
-						byte [] addrByte = { bodyBytes[30] };
+
+						byte[] addrByte = { bodyBytes[30] };
 						String addr = ByteHelper.bytesToHexString(addrByte);
-						
-						Map<String, String> nodeMap = new HashMap<String,String>();
-						
+
+						Map<String, String> nodeMap = new HashMap<String, String>();
+
 						nodeMap.put("name", ID);
 						nodeMap.put("state", "01000000000000");
 						nodeMap.put("serialId", deviceSerialId);
@@ -242,9 +255,9 @@ public class AliDeviceController {
 						mapList.add(nodeMap);
 					}
 				}
-				
+
 			}
- 			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
 			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
 			res.setData(mapList);
 		} catch (Exception e) {
@@ -256,11 +269,11 @@ public class AliDeviceController {
 	}
 
 	@RequestMapping(value = "/sendlearn", method = RequestMethod.POST)
-	ResponseObject<List<Map<String, String>>> sendLearn2IR(@RequestBody(required = true)  Object object) {
+	ResponseObject<List<Map<String, String>>> sendLearn2IR(@RequestBody(required = true) Object object) {
 		ResponseObject<List<Map<String, String>>> res = new ResponseObject<List<Map<String, String>>>();
-		Map<String,Object> requestMap = (Map<String, Object>) object;
+		Map<String, Object> requestMap = (Map<String, Object>) object;
 		try {
-			topServer.pubIRTopic(null,null,(String)requestMap.get("deviceId"),requestMap);
+			topServer.pubIRTopic(null, null, (String) requestMap.get("deviceId"), requestMap);
 			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
 			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
 		} catch (Exception e) {
@@ -271,17 +284,16 @@ public class AliDeviceController {
 		return res;
 	}
 
-
-	//进入学习
+	// 进入学习
 	@RequestMapping(value = "/toLearn", method = RequestMethod.POST)
-	ResponseObject<List<Map<String, String>>> learnCode(@RequestBody(required = true)  Object object) {
+	ResponseObject<List<Map<String, String>>> learnCode(@RequestBody(required = true) Object object) {
 		ResponseObject<List<Map<String, String>>> res = new ResponseObject<List<Map<String, String>>>();
-		Map<String,Object> requestMap = (Map<String, Object>) object;
+		Map<String, Object> requestMap = (Map<String, Object>) object;
 		try {
-			String brandId = (String)requestMap.get("brandId");//品牌ID
-			String deviceId = (String)requestMap.get("deviceId");//设备ID
-			aliDevCache.setKey("ir_"+deviceId,brandId,30000);
-			topServer.pubIRTopic(null,null,deviceId,requestMap);
+			String brandId = (String) requestMap.get("brandId");// 品牌ID
+			String deviceId = (String) requestMap.get("deviceId");// 设备ID
+			aliDevCache.setKey("ir_" + deviceId, brandId, 30000);
+			topServer.pubIRTopic(null, null, deviceId, requestMap);
 			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
 			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
 		} catch (Exception e) {
@@ -292,16 +304,15 @@ public class AliDeviceController {
 		return res;
 	}
 
-
-	//修改/新增红外方案
+	// 修改/新增红外方案
 	@RequestMapping(value = "/modifyIR", method = RequestMethod.POST)
-	ResponseObject<List<Map<String, String>>> modifyIR(@RequestBody(required = true)  Object object) {
+	ResponseObject<List<Map<String, String>>> modifyIR(@RequestBody(required = true) Object object) {
 		ResponseObject<List<Map<String, String>>> res = new ResponseObject<List<Map<String, String>>>();
-		Map<String,Object> requestMap = (Map<String, Object>) object;
+		Map<String, Object> requestMap = (Map<String, Object>) object;
 		try {
-			String serialId = (String)requestMap.get("serialId");//设备ID
-			Map<String,Object> irprogram = (Map<String,Object>)requestMap.get("ir_ program");//标准按键
-			//todo 更新套数
+			String serialId = (String) requestMap.get("serialId");// 设备ID
+			Map<String, Object> irprogram = (Map<String, Object>) requestMap.get("ir_ program");// 标准按键
+			// todo 更新套数
 			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
 			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
 		} catch (Exception e) {
@@ -312,16 +323,15 @@ public class AliDeviceController {
 		return res;
 	}
 
-
-	//获取遥控器列表
+	// 获取遥控器列表
 	@RequestMapping(value = "/getIrList", method = RequestMethod.POST)
-	ResponseObject<List<Map<String, String>>> getIrList(@RequestBody(required = true)  Object object) {
+	ResponseObject<List<Map<String, String>>> getIrList(@RequestBody(required = true) Object object) {
 		ResponseObject<List<Map<String, String>>> res = new ResponseObject<List<Map<String, String>>>();
-		Map<String,Object> requestMap = (Map<String, Object>) object;
+		Map<String, Object> requestMap = (Map<String, Object>) object;
 		try {
-			String brandId = (String)requestMap.get("brandId");//品牌ID
-			String deviceType = (String)requestMap.get("deviceType");//设备类型
-			List<TYaoKongYunBrand> brandList = yaoKongYunService.getYaoKongYunByTIdAndDeviceType(brandId,deviceType);
+			String brandId = (String) requestMap.get("brandId");// 品牌ID
+			String deviceType = (String) requestMap.get("deviceType");// 设备类型
+			List<TYaoKongYunBrand> brandList = yaoKongYunService.getYaoKongYunByTIdAndDeviceType(brandId, deviceType);
 
 			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
 			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
@@ -333,39 +343,41 @@ public class AliDeviceController {
 		return res;
 	}
 
-	private TYaokonyunDevice initYaoKongDevice() throws Exception{
+	private TYaokonyunDevice initYaoKongDevice() throws Exception {
 		String ir_appId = aliDevCache.getValue("ir_appId");
 		TYaokonyunDevice yaokonyunDevice = null;
-//		if(!StringUtils.isEmpty(deviceId)){//已经用完50次,更新状态
-//			yaoKongYunService.updateYaoKongDevice(deviceId);
-//		}
+		// if(!StringUtils.isEmpty(deviceId)){//已经用完50次,更新状态
+		// yaoKongYunService.updateYaoKongDevice(deviceId);
+		// }
 
-		if(StringUtils.isEmpty(ir_appId)){
+		if (StringUtils.isEmpty(ir_appId)) {
 			yaokonyunDevice = getYaoKongDevice();
-		}else{
+		} else {
 			ir_appId.split(":");
 		}
 		return yaokonyunDevice;
 	}
 
-	public TYaokonyunDevice useTimesExpire(String deviceId) throws Exception{
+	public TYaokonyunDevice useTimesExpire(String deviceId) throws Exception {
 		yaoKongYunService.updateYaoKongDevice(deviceId);
 		return getYaoKongDevice();
 	}
 
-	private TYaokonyunDevice getYaoKongDevice() throws Exception{
+	private TYaokonyunDevice getYaoKongDevice() throws Exception {
 		TYaokonyunDevice yaokonyunDevice = null;
 		yaokonyunDevice = yaoKongYunService.getYaoKongYunDevice();
-		if(yaokonyunDevice==null){
+		if (yaokonyunDevice == null) {
 			createYaoKongYunDevice();
 		}
-		aliDevCache.setKey("createYaoKonYun",yaokonyunDevice.getAppId()+":"+yaokonyunDevice.getDeviceId()+":"+yaokonyunDevice.getUseTime(),60 * 60 * 24 * 7);
+		aliDevCache.setKey("createYaoKonYun",
+				yaokonyunDevice.getAppId() + ":" + yaokonyunDevice.getDeviceId() + ":" + yaokonyunDevice.getUseTime(),
+				60 * 60 * 24 * 7);
 		return yaokonyunDevice;
 	}
 
-	private TYaokonyunDevice createYaoKongYunDevice() throws Exception{
+	private TYaokonyunDevice createYaoKongYunDevice() throws Exception {
 		TYaokonyunDevice device = new TYaokonyunDevice();
-		device.setDeviceId(MD5.getMD5Str(new Date().getTime()+""));
+		device.setDeviceId(MD5.getMD5Str(new Date().getTime() + ""));
 		yaoKongYunService.addYaoKongDevice(device);
 		return yaoKongYunService.getYaoKongYunDevice();
 	}
