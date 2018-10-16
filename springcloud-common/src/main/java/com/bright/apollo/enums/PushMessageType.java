@@ -5,7 +5,11 @@ public enum PushMessageType {
     SERVER_CHANGE((byte)1),
     OBOX_ONLINE((byte)2),
 
-    ALERT((byte)3)//警报
+    ALERT((byte)3),//警报
+    
+    WIFI_ONLINE((byte)4),
+	
+	WIFI_TRANS((byte)5)
     ;
 
     private byte value;

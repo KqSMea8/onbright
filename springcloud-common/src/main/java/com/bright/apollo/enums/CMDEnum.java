@@ -354,7 +354,9 @@ public enum CMDEnum {
 	del_all_intelligent_remote_user, 
 	
 	setting_remote_led("8103","a103"),
-	my_test;
+	my_test, 
+	
+	upload_config;
 		
 	
 	private String sendCMD;

@@ -84,6 +84,8 @@ public class AliMessageHandler {
 			String aString = new String(contentBytes, "utf-8");
 			if (messageType.equals("status")) {
 				// update device status
+				//傻逼代码写死了地区  后面再看
+				commandHandler.processWiFiStatus(new JSONObject(aString),AliRegionEnum.SOURTHCHINA);
 				JSONObject object = new JSONObject(aString);
 				logger.info(" productKey ------ " + object.get("productKey"));
 				logger.info(" deviceName ------ " + object.get("deviceName"));

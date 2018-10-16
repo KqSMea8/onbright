@@ -455,8 +455,11 @@ public class CommonController {
 					 return facadeController.controlRemoteLed(obox_serial_id,serialId,status);
 				 }
 			}
-		}
-		else if (CMDEnum.test.toString().equals(cmdEnum.toString())) {
+		}else if (CMDEnum.upload_config.toString().equals(cmdEnum.toString())) {
+ 			
+			
+			//update ali device config
+		}else if (CMDEnum.test.toString().equals(cmdEnum.toString())) {
  			String serialId = requestParam.getValue("serialId");
 			if (!StringUtils.isEmpty(serialId)) {
 				return facadeController.test(serialId);
