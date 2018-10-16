@@ -612,7 +612,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
             String[] propertyArr =  properties.split("-");
             if(deviceType.equals("light")){
                 if(("light_"+name).equals(propertyArr[0])){
-                    if(obdeviceType.equals("22")){//遥控灯
+                    if(obdeviceType.equals("16")){//遥控灯
                         String[] ids = deviceId.split("_");
                         if(name.equals("TurnOn")||name.equals("TurnOff")){
                             value = propertyArr[1];

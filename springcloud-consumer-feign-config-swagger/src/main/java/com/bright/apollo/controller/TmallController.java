@@ -251,7 +251,7 @@ public class TmallController {
 								facadeController.controlDevice(deviceId,"00000000000000");
 							}
 
-					}else if(deviceType.equals("22")){
+					}else if(deviceType.equals("16")){
 						adapter = new TMallDeviceAdapter(playLoadMap,tMallTemplate,oboxDeviceConfig,header);
 						adapter.setRedisBussines(redisBussines);
 						paramMap = adapter.TMall2Obright();
