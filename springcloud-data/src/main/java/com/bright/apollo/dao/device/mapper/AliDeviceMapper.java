@@ -1,9 +1,6 @@
 package com.bright.apollo.dao.device.mapper;
 
-import com.bright.apollo.common.entity.TAliDevTimer;
-import com.bright.apollo.common.entity.TAliDevice;
-import com.bright.apollo.common.entity.TAliDeviceUS;
-import com.bright.apollo.common.entity.TOboxDeviceConfig;
+import com.bright.apollo.common.entity.*;
 
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
@@ -98,6 +95,61 @@ public interface AliDeviceMapper {
     })
     @Select("select * from t_ali_device where productKey = #{productKey} and obox_serial_id = #{oboxSerialId}")
     List<TAliDevice> getAliDeviceByProductKeyAndDeviceSerialId(@Param("productKey")  String productKey, @Param("oboxSerialId")  String oboxSerialId);
-     
- 
+
+
+	@Results(value = {
+			@Result(property = "Id",column = "id"),
+			@Result(property = "oboxSerialId",column = "obox_serial_id"),
+			@Result(property = "lastOpTime",column = "last_op_time"),
+			@Result(property = "deviceName",column = "DeviceName"),
+			@Result(property = "deviceSecret",column = "DeviceSecret"),
+			@Result(property = "productKey",column = "productKey"),
+			@Result(property = "offline",column = "offline")
+	})
+	@Select("select * from t_ali_device where productKey = #{productKey}  ")
+	List<TAliDevice> getAliDeviceByProductKey(@Param("productKey")  String productKey);
+
+
+	@Select("select * from t_ali_device_timer where device_serial_id = #{oboxSerialId}")
+	@Results(value = {
+			@Result(property = "Id",column = "id"),
+			@Result(property = "oboxSerialId",column = "obox_serial_id"),
+			@Result(property = "lastOpTime",column = "last_op_time"),
+			@Result(property = "timer",column = "timer"),
+			@Result(property = "timerValue",column = "timer_value"),
+			@Result(property = "isCountdown",column = "is_countdown"),
+			@Result(property = "state",column = "state")
+	})
+	List<TAliDevTimer> getAliDevTimerByDeviceSerialId(@Param("oboxSerialId") String oboxSerialId);
+
+	@Select("select * from t_ali_device_timer where device_serial_id = #{oboxSerialId} and is_countdown = 1 ")
+	TAliDevTimer getAliDevTimerByDeviceSerialIdAndCountDown(@Param("oboxSerialId") String oboxSerialId);
+
+	@Delete("delete from t_ali_device_timer where id = #{id} ")
+	void deleteAliDevTimerById(@Param("id") Integer id);
+
+	@Insert("insert into t_ali_device_timer(device_serial_id,\n" +
+			"timer,\n" +
+			"timer_value,\n" +
+			"last_op_time,\n" +
+			"is_countdown,state) values(#{deviceSerialId},#{timer},#{timerValue},#{lastOpTime},#{isCountdown},#{state})")
+	@Options(useGeneratedKeys=true, keyProperty="Id", keyColumn="id")
+	int addAliDevTimer(TAliDevTimer aliDevTimer);
+
+
+	@Update(" update t_ali_device_timer set device_serial_id = #{deviceSerialId} " +
+			" ,timer = #{timer},timer_value = #{timerValue}" +
+			" ,last_op_time = #{lastOpTime},is_countdown = #{isCountdown}" +
+			" ,state = #{state} where id = #{id}")
+	void updateAliDevTimer(TAliDevTimer aliDevTimer);
+
+	@Delete("delete from t_user_ali_device where device_serial_id = #{deviceSerialId} ")
+	void deleteAliDeviceUser(@Param("deviceSerialId") String deviceSerialId);
+
+	@Insert("insert into t_user_ali_device(user_id,\n" +
+			"device_serial_id,\n" +
+			"last_op_time ) values(#{userId},#{deviceSerialId},#{lastOpTime})")
+	@Options(useGeneratedKeys=true, keyProperty="Id", keyColumn="id")
+	int addAliDevUser(TUserAliDev userAliDev);
+
 }

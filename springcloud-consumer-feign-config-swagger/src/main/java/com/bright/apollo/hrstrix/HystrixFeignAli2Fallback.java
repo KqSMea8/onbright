@@ -333,5 +333,53 @@ public class HystrixFeignAli2Fallback extends BasicHystrixFeignFallback implemen
 		return serverError();
 	}
 
- 
+	@Override
+	public ResponseObject queryAliDevice(Integer userId) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
+	@Override
+	public ResponseObject setAliDevice(Object value, String deviceId) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
+	@Override
+	public ResponseObject readAliDevice(String functionId, String deviceId, String value) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
+	@Override
+	public ResponseObject queryAliDeviceTimer(String deviceId) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
+	@Override
+	public ResponseObject setAliCountdown(String deviceId, String command, String timer, String timerValue) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
+	@Override
+	public ResponseObject setAliTimer(String deviceId, String command, String timer, String timerValue) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
+	@Override
+	public ResponseObject uploadAliDevice(String deviceName, String productKey, Object config, Integer userId) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
+//	@Override
+//	public ResponseObject registAliDevice(String zone, String type) {
+//		logger.warn("===ali server is break===");
+//		return serverError();
+//	}
+
+
 }

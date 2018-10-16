@@ -1,9 +1,27 @@
 package com.bright.apollo.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import com.alibaba.fastjson.JSONArray;
+import com.aliyuncs.iot.model.v20170420.QueryDeviceByNameRequest;
+import com.aliyuncs.iot.model.v20170420.QueryDeviceByNameResponse;
+import com.aliyuncs.iot.model.v20170420.RegistDeviceRequest;
+import com.aliyuncs.iot.model.v20170420.RegistDeviceResponse;
+import com.bright.apollo.cache.AliDevCache;
+import com.bright.apollo.common.entity.*;
+import com.bright.apollo.enums.AliRegionEnum;
+import com.bright.apollo.enums.TimerSetTypeEnum;
+import com.bright.apollo.request.AliDeviceDTO;
+import com.bright.apollo.service.*;
+import com.bright.apollo.service.AliRequest.BaseRequest;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import jdk.nashorn.internal.runtime.arrays.ArrayLikeIterator;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,15 +35,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bright.apollo.cache.CmdCache;
 import com.bright.apollo.common.dto.OboxResp;
-import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.enums.CMDEnum;
 import com.bright.apollo.enums.NodeTypeEnum;
 import com.bright.apollo.request.SceneActionDTO;
 import com.bright.apollo.request.SceneConditionDTO;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
-import com.bright.apollo.service.OboxDeviceConfigService;
-import com.bright.apollo.service.TopicServer;
 import com.bright.apollo.session.SceneActionThreadPool;
 import com.bright.apollo.tool.ByteHelper;
 import com.bright.apollo.util.FingerUtil;
@@ -47,6 +62,21 @@ public class AliServerController {
 	private FingerUtil fingerUtil;
 	// for search new device
 	private static String timeout = "30";
+
+	@Autowired
+	private AliDeviceConfigService aliDeviceConfigService;
+
+	@Autowired
+	private AliDeviceService aliDeviceService;
+
+	@Autowired
+	private AliDevCache aliDevCache;
+
+	@Autowired
+	private BaseRequest baseRequest;
+
+	@Autowired
+	private QuartzService quartzService;
 
 	@RequestMapping(value = "/toAli", method = RequestMethod.POST)
 	@ResponseBody
@@ -821,6 +851,278 @@ public class AliServerController {
 			}
 		}
 
+	}
+
+	@RequestMapping(value = "/queryAliDevice/{userId}", method = RequestMethod.GET)
+	public ResponseObject queryAliDevice(@PathVariable(required = true, value = "userId") Integer userId) {
+		ResponseObject res = new ResponseObject();
+		try {
+			// from old code
+			List<AliDeviceDTO> sendlist = new ArrayList<AliDeviceDTO>();
+			List<TAliDeviceConfig> aliDeviceConfigs = aliDeviceConfigService.getAliDeviceConfigByUserId(userId);
+			for(TAliDeviceConfig aliDeviceConfig : aliDeviceConfigs){
+				AliDeviceDTO deviceDTO = new AliDeviceDTO(aliDeviceConfig);
+				TAliDevice aliDevice = aliDeviceService.getAliDeviceBySerializeId(aliDeviceConfig.getDeviceSerialId());
+				if(aliDevice!=null){
+					deviceDTO.setOnline(aliDevice.getOffline());
+					sendlist.add(deviceDTO);
+				}
+			}
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+			res.setData(sendlist);
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	@RequestMapping(value = "/setAliDevice", method = RequestMethod.POST)
+	public ResponseObject setAliDevice(@RequestParam(required = true, value = "value") Object value,@RequestParam(required = true, value = "deviceId") String deviceId) {
+		ResponseObject res = new ResponseObject();
+		try {
+			String val = (String)value;
+			JSONArray array = JSONArray.parseArray(val);
+			JSONObject object = new JSONObject();
+			object.put("command", "set");
+
+//			object.put("value", value);
+			topicServer.requestDev(object,deviceId,array.toJSONString());
+			TAliDeviceConfig aliDeviceConfig = aliDeviceConfigService.getAliDeviceConfigBySerializeId(deviceId);
+			if(aliDeviceConfig !=null){
+				aliDeviceConfig.setState(val);
+				aliDeviceConfigService.update(aliDeviceConfig);
+			}
+			res.setData(val);
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	@RequestMapping(value = "/readAliDevice/{functionId}/{deviceId}/{value}", method = RequestMethod.GET)
+	public ResponseObject readAliDevice(@PathVariable(required = true, value = "functionId") String functionId,
+										@PathVariable(required = true, value = "deviceId") String deviceId,
+										@PathVariable(required = true, value = "value") String value) {
+		ResponseObject res = new ResponseObject();
+		try {
+			JSONArray array = JSONArray.parseArray(functionId);
+			JSONObject object = new JSONObject();
+			object.put("command", "read");
+			topicServer.requestDev(object,deviceId,array.toJSONString());
+			TAliDeviceConfig aliDeviceConfig = aliDeviceConfigService.getAliDeviceConfigBySerializeId(deviceId);
+			if(aliDeviceConfig !=null){
+				aliDeviceConfig.setState(value);
+				aliDeviceConfigService.update(aliDeviceConfig);
+			}
+			res.setData(array);
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	@RequestMapping(value = "/queryAliDeviceTimer/{deviceId}", method = RequestMethod.GET)
+	public ResponseObject queryAliDeviceTimer(@PathVariable(required = true, value = "deviceId") String deviceId) {
+		ResponseObject res = new ResponseObject();
+		try {
+			List<JsonObject> count = new ArrayList<JsonObject>();
+			List<TAliDevTimer> aliDevTimers = aliDeviceService.getAliDevTimerByDeviceSerialId(deviceId);
+			Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+			for(TAliDevTimer aliDevTimer : aliDevTimers ){
+				JsonObject object = new JsonObject();
+				object.addProperty("timerId", aliDevTimer.getId());
+				object.addProperty("state", aliDevTimer.getState());
+				object.add("value", gson.toJsonTree(JSONArray.parseArray(aliDevTimer.getTimerValue())));
+				object.addProperty("timer", aliDevTimer.getTimer());
+				count.add(object);
+			}
+			res.setData(count);
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	@RequestMapping(value = "/setAliCountdown/{deviceId}/{command}/{timer}/{timerValue}", method = RequestMethod.GET)
+	public ResponseObject setAliCountdown(@PathVariable(value = "deviceId") String deviceId,
+											  @PathVariable(value = "command") String command,
+											  @PathVariable(value = "timer") String timer,
+											  @PathVariable(value = "timerValue") String timerValue) {
+		ResponseObject res = new ResponseObject();
+		try {
+			TAliDevice aliDevice = aliDeviceService.getAliDeviceBySerializeId(deviceId);
+			if(aliDevice == null){
+				res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
+				res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
+				return res;
+			}
+			TAliDevTimer aliDevTimer;
+			switch (TimerSetTypeEnum.getSetType(command)){
+				case add:
+					aliDevTimer = aliDeviceService.getAliDevTimerByDeviceSerialIdAndCountDown(deviceId);
+					if(aliDevTimer !=null){
+						aliDeviceService.deleteAliDevTimerById(aliDevTimer.getId());
+						quartzService.deleteJob(aliDevTimer.getId().toString());
+					}
+					aliDevTimer = new TAliDevTimer();
+					aliDevTimer.setTimer(timer);
+					aliDevTimer.setDeviceSerialId(deviceId);
+					aliDevTimer.setTimerValue(timerValue);
+					aliDevTimer.setIsCountdown(1);
+					int repId = aliDeviceService.addAliDevTimer(aliDevTimer);
+					quartzService.startRemoteOpenTaskSchedule(repId,timer,deviceId);
+					break;
+				case delete:
+					aliDevTimer = aliDeviceService.getAliDevTimerByDeviceSerialIdAndCountDown(deviceId);
+					aliDeviceService.deleteAliDevTimerById(aliDevTimer.getId());
+					quartzService.deleteJob(aliDevTimer.getId().toString());
+					break;
+				default:
+					res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
+					res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
+					return res;
+			}
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+
+	@RequestMapping(value = "/setAliTimer/{deviceId}/{command}/{timer}/{timerValue}", method = RequestMethod.GET)
+	public ResponseObject setAliTimer(@PathVariable(value = "deviceId") String deviceId,
+										  @PathVariable(value = "command") String command,
+										  @PathVariable(value = "timer") String timer,
+										  @PathVariable(value = "timerValue") String timerValue) {
+		ResponseObject res = new ResponseObject();
+		try {
+			TAliDevice aliDevice = aliDeviceService.getAliDeviceBySerializeId(deviceId);
+			if(aliDevice == null){
+				res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
+				res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
+				return res;
+			}
+			JsonObject object = new JsonObject();
+			TAliDevTimer aliDevTimer;
+			switch (TimerSetTypeEnum.getSetType(command)){
+				case add:
+					aliDevTimer = aliDeviceService.getAliDevTimerByDeviceSerialIdAndCountDown(deviceId);
+					if(aliDevTimer !=null){
+						aliDeviceService.deleteAliDevTimerById(aliDevTimer.getId());
+						quartzService.deleteJob(aliDevTimer.getId().toString());
+					}
+					aliDevTimer = new TAliDevTimer();
+					aliDevTimer.setTimer(timer);
+					aliDevTimer.setDeviceSerialId(deviceId);
+					aliDevTimer.setTimerValue(timerValue);
+					int repId = aliDeviceService.addAliDevTimer(aliDevTimer);
+					quartzService.startRemoteOpenTaskSchedule(repId,timer,deviceId);
+					break;
+				case delete:
+					aliDevTimer = aliDeviceService.getAliDevTimerByDeviceSerialIdAndCountDown(deviceId);
+					aliDeviceService.deleteAliDevTimerById(aliDevTimer.getId());
+					quartzService.deleteJob(aliDevTimer.getId().toString());
+					break;
+				case enable:
+					aliDevTimer = aliDeviceService.getAliDevTimerByDeviceSerialIdAndCountDown(deviceId);
+					aliDevTimer.setState(1);
+					aliDeviceService.updateAliDevTimer(aliDevTimer);
+					quartzService.resumeJob(aliDevTimer.getId().toString());
+					object.addProperty("timerId",aliDevTimer.getId());
+					break;
+				case disable:
+					aliDevTimer = aliDeviceService.getAliDevTimerByDeviceSerialIdAndCountDown(deviceId);
+					aliDevTimer.setState(1);
+					aliDeviceService.updateAliDevTimer(aliDevTimer);
+					quartzService.pauseJob(aliDevTimer.getId().toString());
+					object.addProperty("timerId",aliDevTimer.getId());
+					break;
+				default:
+					res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
+					res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
+					return res;
+			}
+			res.setData(object);
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	@RequestMapping(value = "/uploadAliDevice", method = RequestMethod.POST)
+	public ResponseObject uploadAliDevice(@RequestParam(required = true,value = "deviceName") String deviceName,
+										  @RequestParam(required = true,value = "productKey") String productKey,
+										  @RequestParam(required = true,value = "config") Object config,@RequestParam(required = true,value = "userId") Integer userId) {
+		ResponseObject res = new ResponseObject();
+		try {
+
+			JSONObject object = new JSONObject((String)config);
+			TAliDeviceConfig aliDeviceConfig = aliDeviceConfigService.getAliDeviceConfigBySerializeId(object.getString("deviceId"));
+			if(aliDeviceConfig == null){
+				aliDeviceConfig = new TAliDeviceConfig();
+				aliDeviceConfig.setAction(object.getString("action"));
+				aliDeviceConfig.setDeviceSerialId(object.getString("deviceId"));
+				aliDeviceConfig.setName(object.getString("name"));
+				aliDeviceConfig.setState(object.getString("state"));
+				aliDeviceConfig.setType(object.getString("type"));
+				aliDeviceConfigService.addAliDevice(aliDeviceConfig);
+			}else{
+				aliDeviceConfig.setAction(object.getString("action"));
+				aliDeviceConfig.setDeviceSerialId(object.getString("deviceId"));
+				aliDeviceConfig.setName(object.getString("name"));
+				aliDeviceConfig.setState(object.getString("state"));
+				aliDeviceConfig.setType(object.getString("type"));
+				aliDeviceConfigService.update(aliDeviceConfig);
+			}
+			aliDeviceService.deleteAliDeviceUser(aliDeviceConfig.getDeviceSerialId());
+			TAliDevice aliDevice = aliDeviceService.getAliDeviceBySerializeId(aliDeviceConfig.getDeviceSerialId());
+			if(aliDevice!=null&&!aliDevice.getDeviceName().equals(deviceName)&&!aliDevice.getProductKey().equals(productKey)){
+				aliDevice.setOboxSerialId("available");
+				aliDeviceService.updateAliDevice(aliDevice);
+				aliDevCache.DelDevInfo(aliDeviceConfig.getDeviceSerialId());
+			}
+			TAliDevice taliDevice = aliDeviceService.getAliDeviceByProductKeyAndDeviceName(productKey,deviceName);
+			if(taliDevice != null){
+				taliDevice.setOboxSerialId(object.getString("deviceId"));
+				aliDeviceService.updateAliDevice(taliDevice);
+				aliDevCache.saveDevInfo(productKey,object.getString("deviceId"),deviceName,AliRegionEnum.SOURTHCHINA);
+			}
+			aliDevCache.delAliDevWait(productKey,deviceName);
+			TUserAliDev userAliDev = new TUserAliDev();
+			userAliDev.setDeviceSerialId(object.getString("deviceId"));
+			userAliDev.setUserId(userId);
+			aliDeviceService.addAliDevUser(userAliDev);
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
 	}
 
 }

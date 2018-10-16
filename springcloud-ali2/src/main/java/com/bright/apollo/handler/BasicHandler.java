@@ -3,6 +3,8 @@ package com.bright.apollo.handler;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.bright.apollo.service.*;
+import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -14,23 +16,6 @@ import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.common.entity.TScene;
 import com.bright.apollo.common.entity.TSceneCondition;
 import com.bright.apollo.enums.FingerWarnEnum;
-import com.bright.apollo.service.CMDMessageService;
-import com.bright.apollo.service.DeviceChannelService;
-import com.bright.apollo.service.DeviceStatusService;
-import com.bright.apollo.service.IntelligentFingerService;
-import com.bright.apollo.service.MsgService;
-import com.bright.apollo.service.OboxDeviceConfigService;
-import com.bright.apollo.service.OboxService;
-import com.bright.apollo.service.PushService;
-import com.bright.apollo.service.SceneActionService;
-import com.bright.apollo.service.SceneConditionService;
-import com.bright.apollo.service.SceneService;
-import com.bright.apollo.service.TopicServer;
-import com.bright.apollo.service.UserDeviceService;
-import com.bright.apollo.service.UserOboxService;
-import com.bright.apollo.service.UserOperationService;
-import com.bright.apollo.service.UserSceneService;
-import com.bright.apollo.service.UserService;
 import com.bright.apollo.session.ClientSession;
 import com.bright.apollo.session.PushObserverManager;
 import com.bright.apollo.session.SceneActionThreadPool;
@@ -84,8 +69,16 @@ public abstract class BasicHandler {
 
 	@Autowired
 	protected MsgService msgService;
+
 	@Autowired
 	protected DeviceStatusService deviceStatusService;
+
+	@Autowired
+	protected AliDeviceConfigService aliDeviceConfigService;
+
+	@Autowired
+	protected AliDeviceService aliDeviceService;
+
 	public abstract Message<String> process(ClientSession clientSession, Message<String> msg) throws Exception;
 
 	protected void deleteSceneNumber(List<TScene> scenes, TObox tObox) {

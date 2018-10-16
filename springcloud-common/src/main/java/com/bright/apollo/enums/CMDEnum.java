@@ -351,7 +351,23 @@ public enum CMDEnum {
 	
 	modify_intelligent_push, 
 	
-	del_all_intelligent_remote_user, 
+	del_all_intelligent_remote_user,
+
+	query_ali_dev,
+
+	set_ali_dev,
+
+	read_ali_dev,
+
+	query_timer,
+
+	set_timer,
+
+	upload_config,
+
+	set_countdown,
+
+
 	
 	setting_remote_led("8103","a103"),
 	my_test;

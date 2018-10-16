@@ -3,6 +3,7 @@ package com.bright.apollo.service.impl;
 import com.bright.apollo.common.entity.TAliDevTimer;
 import com.bright.apollo.common.entity.TAliDevice;
 import com.bright.apollo.common.entity.TAliDeviceUS;
+import com.bright.apollo.common.entity.TUserAliDev;
 import com.bright.apollo.dao.device.mapper.AliDeviceMapper;
 import com.bright.apollo.service.AliDeviceService;
 
@@ -58,27 +59,20 @@ public class AliDeviceServiceImpl implements AliDeviceService {
         mapper.updateAliUSDevice(aliDevice);
     }
 
-	/* (non-Javadoc)  
-	 * @see com.bright.apollo.service.AliDeviceService#getAliUSDeviceByProductKeyAndDeviceSerialId(java.lang.String, java.lang.String)  
-	 */
+
 	@Override
 	public List<TAliDeviceUS>  getAliUSDeviceByProductKeyAndDeviceSerialId(String productKey, String deviceSerialId) {
 		 
 		return mapper.getAliUSDeviceByProductKeyAndDeviceSerialId(productKey, deviceSerialId);
 	}
 
-	/* (non-Javadoc)  
-	 * @see com.bright.apollo.service.AliDeviceService#addAliDevUS(com.bright.apollo.common.entity.TAliDeviceUS)  
-	 */
+
 	@Override
 	public int addAliDevUS(TAliDeviceUS tAliDeviceUS) {
 		  
 		return mapper.addAliDevUS(tAliDeviceUS);
 	}
 
-	/* (non-Javadoc)  
-	 * @see com.bright.apollo.service.AliDeviceService#addAliDev(com.bright.apollo.common.entity.TAliDevice)  
-	 */
 	@Override
 	public int addAliDev(TAliDevice tAliDevice) {
 		if(tAliDevice==null){
@@ -91,9 +85,47 @@ public class AliDeviceServiceImpl implements AliDeviceService {
 		return mapper.addAliDev(tAliDevice);
 	}
 
-	/* (non-Javadoc)  
-	 * @see com.bright.apollo.service.AliDeviceService#getAliDeviceByProductKeyAndDeviceSerialId(java.lang.String, java.lang.String)  
-	 */
+	@Override
+	public List<TAliDevice> getAliDeviceByProductKey(String productKey) {
+		return mapper.getAliDeviceByProductKey(productKey);
+	}
+
+	@Override
+	public List<TAliDevTimer> getAliDevTimerByDeviceSerialId(String oboxSerialId) {
+		return mapper.getAliDevTimerByDeviceSerialId(oboxSerialId);
+	}
+
+	@Override
+	public TAliDevTimer getAliDevTimerByDeviceSerialIdAndCountDown(String oboxSerialId) {
+		return mapper.getAliDevTimerByDeviceSerialIdAndCountDown(oboxSerialId);
+	}
+
+	@Override
+	public void deleteAliDevTimerById(Integer id) {
+		mapper.deleteAliDevTimerById(id);
+	}
+
+	@Override
+	public int addAliDevTimer(TAliDevTimer aliDevTimer) {
+		return mapper.addAliDevTimer(aliDevTimer);
+	}
+
+	@Override
+	public void updateAliDevTimer(TAliDevTimer aliDevTimer) {
+		mapper.updateAliDevTimer(aliDevTimer);
+	}
+
+	@Override
+	public void deleteAliDeviceUser(String oboxSerialId) {
+		mapper.deleteAliDeviceUser(oboxSerialId);
+	}
+
+	@Override
+	public int addAliDevUser(TUserAliDev userAliDev) {
+		return mapper.addAliDevUser(userAliDev);
+	}
+
+
 	@Override
 	public List<TAliDevice> getAliDeviceByProductKeyAndDeviceSerialId(String productKey, String oboxSerialId) {
 		return mapper.getAliDeviceByProductKeyAndDeviceSerialId(productKey,oboxSerialId);

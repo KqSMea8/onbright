@@ -5,6 +5,7 @@ import java.util.List;
 import com.bright.apollo.common.entity.TAliDevTimer;
 import com.bright.apollo.common.entity.TAliDevice;
 import com.bright.apollo.common.entity.TAliDeviceUS;
+import com.bright.apollo.common.entity.TUserAliDev;
 
 
 public interface AliDeviceService {
@@ -37,5 +38,20 @@ public interface AliDeviceService {
 	 */
 	int addAliDev(TAliDevice tAliDevice);
 
- 
+    List<TAliDevice> getAliDeviceByProductKey(String productKey);
+
+    List<TAliDevTimer> getAliDevTimerByDeviceSerialId(String oboxSerialId);
+
+    TAliDevTimer getAliDevTimerByDeviceSerialIdAndCountDown(String oboxSerialId);
+
+    void deleteAliDevTimerById(Integer id);
+
+    int addAliDevTimer(TAliDevTimer aliDevTimer);
+
+    void updateAliDevTimer(TAliDevTimer aliDevTimer);
+
+    void deleteAliDeviceUser(String oboxSerialId);
+
+    int addAliDevUser(TUserAliDev userAliDev);
+
 }
