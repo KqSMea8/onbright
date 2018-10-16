@@ -190,12 +190,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 		</dependency>
-        <dependency>
+       <!-- <dependency>
             <groupId>com.bright.apollo</groupId>
             <artifactId>springcloud-quartz</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
-        </dependency>
+        </dependency>-->
 
 
     </dependencies>

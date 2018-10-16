@@ -75,8 +75,8 @@ public class AliServerController {
 	@Autowired
 	private BaseRequest baseRequest;
 
-	@Autowired
-	private QuartzService quartzService;
+//	@Autowired
+//	private QuartzService quartzService;
 
 	@RequestMapping(value = "/toAli", method = RequestMethod.POST)
 	@ResponseBody
@@ -971,32 +971,32 @@ public class AliServerController {
 				res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
 				return res;
 			}
-			TAliDevTimer aliDevTimer;
-			switch (TimerSetTypeEnum.getSetType(command)){
-				case add:
-					aliDevTimer = aliDeviceService.getAliDevTimerByDeviceSerialIdAndCountDown(deviceId);
-					if(aliDevTimer !=null){
-						aliDeviceService.deleteAliDevTimerById(aliDevTimer.getId());
-						quartzService.deleteJob(aliDevTimer.getId().toString());
-					}
-					aliDevTimer = new TAliDevTimer();
-					aliDevTimer.setTimer(timer);
-					aliDevTimer.setDeviceSerialId(deviceId);
-					aliDevTimer.setTimerValue(timerValue);
-					aliDevTimer.setIsCountdown(1);
-					int repId = aliDeviceService.addAliDevTimer(aliDevTimer);
-					quartzService.startRemoteOpenTaskSchedule(repId,timer,deviceId);
-					break;
-				case delete:
-					aliDevTimer = aliDeviceService.getAliDevTimerByDeviceSerialIdAndCountDown(deviceId);
-					aliDeviceService.deleteAliDevTimerById(aliDevTimer.getId());
-					quartzService.deleteJob(aliDevTimer.getId().toString());
-					break;
-				default:
-					res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
-					res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
-					return res;
-			}
+//			TAliDevTimer aliDevTimer;
+//			switch (TimerSetTypeEnum.getSetType(command)){
+//				case add:
+//					aliDevTimer = aliDeviceService.getAliDevTimerByDeviceSerialIdAndCountDown(deviceId);
+//					if(aliDevTimer !=null){
+//						aliDeviceService.deleteAliDevTimerById(aliDevTimer.getId());
+//						quartzService.deleteJob(aliDevTimer.getId().toString());
+//					}
+//					aliDevTimer = new TAliDevTimer();
+//					aliDevTimer.setTimer(timer);
+//					aliDevTimer.setDeviceSerialId(deviceId);
+//					aliDevTimer.setTimerValue(timerValue);
+//					aliDevTimer.setIsCountdown(1);
+//					int repId = aliDeviceService.addAliDevTimer(aliDevTimer);
+//					quartzService.startRemoteOpenTaskSchedule(repId,timer,deviceId);
+//					break;
+//				case delete:
+//					aliDevTimer = aliDeviceService.getAliDevTimerByDeviceSerialIdAndCountDown(deviceId);
+//					aliDeviceService.deleteAliDevTimerById(aliDevTimer.getId());
+//					quartzService.deleteJob(aliDevTimer.getId().toString());
+//					break;
+//				default:
+//					res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
+//					res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
+//					return res;
+//			}
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {
@@ -1023,44 +1023,44 @@ public class AliServerController {
 			}
 			JsonObject object = new JsonObject();
 			TAliDevTimer aliDevTimer;
-			switch (TimerSetTypeEnum.getSetType(command)){
-				case add:
-					aliDevTimer = aliDeviceService.getAliDevTimerByDeviceSerialIdAndCountDown(deviceId);
-					if(aliDevTimer !=null){
-						aliDeviceService.deleteAliDevTimerById(aliDevTimer.getId());
-						quartzService.deleteJob(aliDevTimer.getId().toString());
-					}
-					aliDevTimer = new TAliDevTimer();
-					aliDevTimer.setTimer(timer);
-					aliDevTimer.setDeviceSerialId(deviceId);
-					aliDevTimer.setTimerValue(timerValue);
-					int repId = aliDeviceService.addAliDevTimer(aliDevTimer);
-					quartzService.startRemoteOpenTaskSchedule(repId,timer,deviceId);
-					break;
-				case delete:
-					aliDevTimer = aliDeviceService.getAliDevTimerByDeviceSerialIdAndCountDown(deviceId);
-					aliDeviceService.deleteAliDevTimerById(aliDevTimer.getId());
-					quartzService.deleteJob(aliDevTimer.getId().toString());
-					break;
-				case enable:
-					aliDevTimer = aliDeviceService.getAliDevTimerByDeviceSerialIdAndCountDown(deviceId);
-					aliDevTimer.setState(1);
-					aliDeviceService.updateAliDevTimer(aliDevTimer);
-					quartzService.resumeJob(aliDevTimer.getId().toString());
-					object.addProperty("timerId",aliDevTimer.getId());
-					break;
-				case disable:
-					aliDevTimer = aliDeviceService.getAliDevTimerByDeviceSerialIdAndCountDown(deviceId);
-					aliDevTimer.setState(1);
-					aliDeviceService.updateAliDevTimer(aliDevTimer);
-					quartzService.pauseJob(aliDevTimer.getId().toString());
-					object.addProperty("timerId",aliDevTimer.getId());
-					break;
-				default:
-					res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
-					res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
-					return res;
-			}
+//			switch (TimerSetTypeEnum.getSetType(command)){
+//				case add:
+//					aliDevTimer = aliDeviceService.getAliDevTimerByDeviceSerialIdAndCountDown(deviceId);
+//					if(aliDevTimer !=null){
+//						aliDeviceService.deleteAliDevTimerById(aliDevTimer.getId());
+//						quartzService.deleteJob(aliDevTimer.getId().toString());
+//					}
+//					aliDevTimer = new TAliDevTimer();
+//					aliDevTimer.setTimer(timer);
+//					aliDevTimer.setDeviceSerialId(deviceId);
+//					aliDevTimer.setTimerValue(timerValue);
+//					int repId = aliDeviceService.addAliDevTimer(aliDevTimer);
+//					quartzService.startRemoteOpenTaskSchedule(repId,timer,deviceId);
+//					break;
+//				case delete:
+//					aliDevTimer = aliDeviceService.getAliDevTimerByDeviceSerialIdAndCountDown(deviceId);
+//					aliDeviceService.deleteAliDevTimerById(aliDevTimer.getId());
+//					quartzService.deleteJob(aliDevTimer.getId().toString());
+//					break;
+//				case enable:
+//					aliDevTimer = aliDeviceService.getAliDevTimerByDeviceSerialIdAndCountDown(deviceId);
+//					aliDevTimer.setState(1);
+//					aliDeviceService.updateAliDevTimer(aliDevTimer);
+//					quartzService.resumeJob(aliDevTimer.getId().toString());
+//					object.addProperty("timerId",aliDevTimer.getId());
+//					break;
+//				case disable:
+//					aliDevTimer = aliDeviceService.getAliDevTimerByDeviceSerialIdAndCountDown(deviceId);
+//					aliDevTimer.setState(1);
+//					aliDeviceService.updateAliDevTimer(aliDevTimer);
+//					quartzService.pauseJob(aliDevTimer.getId().toString());
+//					object.addProperty("timerId",aliDevTimer.getId());
+//					break;
+//				default:
+//					res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
+//					res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
+//					return res;
+//			}
 			res.setData(object);
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
