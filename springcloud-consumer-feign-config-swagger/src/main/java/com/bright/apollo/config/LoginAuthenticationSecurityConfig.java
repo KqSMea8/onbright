@@ -68,11 +68,9 @@ public class LoginAuthenticationSecurityConfig  extends SecurityConfigurerAdapte
 		String url = smsLoginVo.getUrl();
 		String parameter = smsLoginParamVo.getMobile();
 		String httpMethod = smsLoginVo.getHttpMethod();
-
-		LoginAuthenticationFilter loginAuthenticationFilter = new LoginAuthenticationFilter(
-				antUrl,
+		LoginAuthenticationFilter loginAuthenticationFilter = new LoginAuthenticationFilter(antUrl,
 				StringUtils.isBlank(parameter) ? defaultMobileLoginUrl : parameter, wxLoginParamVo.getOpenId(),
-				StringUtils.isBlank(httpMethod) ? defaultMobileLoginHttpMethod : httpMethod);
+				wxLoginParamVo.getCode(), StringUtils.isBlank(httpMethod) ? defaultMobileLoginHttpMethod : httpMethod);
 
 		loginAuthenticationFilter.setAuthenticationManager(http.getSharedObject(AuthenticationManager.class));
 		loginAuthenticationFilter.setAuthenticationSuccessHandler(customAuthenticationSuccessHandler);

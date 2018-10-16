@@ -79,7 +79,19 @@ public class UserServiceImpl implements UserService {
 		return userMapper.saveUserByWeiXinInfo(openid,headimgurl,nickname);
 //		return userBusiness.insertSelective(new TUser(openid, nickname, headimgurl));
  	}
-
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.bright.apollo.service.UserService#saveUserByWeiXinInfo(java.lang.
+	 * String, java.lang.String, java.lang.String)
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public int saveUserByWeiXinInfo(String openid) {
+		return userMapper.saveUserOpenId(openid);
+//		return userBusiness.insertSelective(new TUser(openid, nickname, headimgurl));
+ 	}
 	/*
 	 * (non-Javadoc)
 	 * 

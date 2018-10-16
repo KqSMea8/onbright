@@ -12,10 +12,14 @@ SmsLoginParam:
   zone: zone
 WxLogin:
   url: /login/wx
+  codeUrl: /login/wx/code
   httpMethod: POST
 WxLoginParam:
   wxToken: wxToken
   openId: openId
-  appId: ssssss
-  secret: sssss
+  appId: wx93d35060325623d3
+  secret: d8884078fdbde26990199c416bb3375b
   wxUrl: https://api.weixin.qq.com/sns/userinfo?access_token=
+  code: code
+  wxLoginUrl: https://api.weixin.qq.com/sns/jscode2session
+  grantType: authorization_code

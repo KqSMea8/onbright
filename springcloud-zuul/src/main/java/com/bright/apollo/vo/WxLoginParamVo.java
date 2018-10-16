@@ -22,7 +22,12 @@ public class WxLoginParamVo {
 	private String secret;
 
 	private String wxUrl;
+	
+	private String code;
 
+	private String wxLoginUrl;
+	
+	private String grantType;
 	public String getWxToken() {
 		return wxToken;
 	}
@@ -61,6 +66,30 @@ public class WxLoginParamVo {
 
 	public void setWxUrl(String wxUrl) {
 		this.wxUrl = wxUrl;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getWxLoginUrl() {
+		return wxLoginUrl;
+	}
+
+	public void setWxLoginUrl(String wxLoginUrl) {
+		this.wxLoginUrl = wxLoginUrl;
+	}
+
+	public String getGrantType() {
+		return grantType;
+	}
+
+	public void setGrantType(String grantType) {
+		this.grantType = grantType;
 	}
 
 }

@@ -32,14 +32,14 @@ public class LoginAuthenticationFilter extends AbstractAuthenticationProcessingF
 
 	private String mobileParameterName;
 	private String wxParameterName;
- 
+	private String wxCodeParameterName;
 	private String httpMethod;
-	public LoginAuthenticationFilter(String url, String mobileParameterName, String wxParameterName,
+	public LoginAuthenticationFilter(String url, String mobileParameterName, String wxParameterName,String wxCodeParameterName,
 			String httpMethod) {
  		super(new AntPathRequestMatcher(url, httpMethod));
 		this.mobileParameterName = mobileParameterName;
 		this.wxParameterName = wxParameterName;
- 
+		this.wxCodeParameterName=wxCodeParameterName;
 		this.httpMethod=httpMethod;
 		logger.info("LoginAuthenticationFilter ex loading ...");
 	}
@@ -56,13 +56,25 @@ public class LoginAuthenticationFilter extends AbstractAuthenticationProcessingF
 		String mobile = obtainMobile(request);
 		// get openid
 		String openId = obtainOpenId(request);
+		//get code
+		String code  = obtainCode(request);
+		String principal=null;
+		if(!StringUtils.isEmpty(mobile))
+			principal=mobile;
+		else if(!StringUtils.isEmpty(openId))
+			principal=openId;
+		else if(!StringUtils.isEmpty(code)){
+			principal=code;
+		}
 		// assemble token
-		LoginAuthenticationToken authRequest = new LoginAuthenticationToken(StringUtils.isEmpty(mobile)?openId:mobile);
+		LoginAuthenticationToken authRequest = new LoginAuthenticationToken(principal);
   		// Allow subclasses to set the "details" property
 		setDetails(request, authRequest);
 
 		return this.getAuthenticationManager().authenticate(authRequest);
 	}
+
+	
 
 	/**
 	 * 设置身份认证的详情信息
@@ -79,12 +91,17 @@ public class LoginAuthenticationFilter extends AbstractAuthenticationProcessingF
 	}
 
 	/**
-	 * 获取手机号
+	 * 获取openId
 	 */
 	private String obtainOpenId(HttpServletRequest request) {
 		return request.getParameter(wxParameterName);
 	}
-
+	/**
+	 * 获取code
+	 */
+	private String obtainCode(HttpServletRequest request) {
+		return request.getParameter(wxCodeParameterName);
+	}
 	/**
 	 * Defines whether only HTTP POST requests will be allowed by this filter.
 	 * If set to true, and an authentication request is received which is not a

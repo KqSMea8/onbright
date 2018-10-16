@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.bright.apollo.cache.CacheHelper;
 import com.bright.apollo.common.entity.TUser;
 import com.bright.apollo.http.MobClient;
 import com.bright.apollo.service.UserService;
@@ -57,7 +58,8 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 	private WxLoginParamVo wxLoginParamVo;
 	@Autowired
 	private WxService wxService;
-
+	@Autowired
+	private CacheHelper cacheHelper;
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		logger.info("===validateCodeFilter before===");
@@ -113,7 +115,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 				if (StringUtils.isEmpty(wxToken) || StringUtils.isEmpty(openId)) {
 					throw new InternalAuthenticationServiceException("request param error");
 				}
-				JSONObject wxUserInfo = wxService.getWxUserInfo(wxToken, openId);
+				JSONObject wxUserInfo = wxService.getWxUserInfo(wxLoginParamVo.getWxUrl(),wxToken, openId);
 				if (wxUserInfo == null || !wxUserInfo.has("headimgurl") || !wxUserInfo.has("nickname")
 						|| !wxUserInfo.has("sex")) {
 					throw new InternalAuthenticationServiceException("request param error");
@@ -131,6 +133,35 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 				logger.error("====error msg:" + e.getMessage());
 				throw new InternalAuthenticationServiceException(e.getMessage());
 			}
+		} else if (pathMatcher.match(wxLoginVo.getCodeUrl(), request.getRequestURI())) {
+			// login/wx/code
+			try {
+				String code = request.getParameter(wxLoginParamVo.getCode());
+				logger.info("===code:" + code);
+				if (StringUtils.isEmpty(code)) {
+					throw new InternalAuthenticationServiceException("code is null");
+				}
+				/*JSONObject wxToken = wxService.getWxToken(code, wxLoginParamVo.getAppId(), wxLoginParamVo.getSecret(),
+						wxLoginParamVo.getGrantType(), wxLoginParamVo.getWxLoginUrl());
+				logger.info("===wxToken:"+wxToken);
+				if (wxToken == null || !wxToken.has("session_key") || !wxToken.has("openid")) {
+					throw new InternalAuthenticationServiceException("wx code verify request error ");
+				} else {
+ 					String openId = wxToken.getString("openid");
+					TUser tuser = userService.queryUserByOpenId(openId);
+					if(tuser==null){
+						userService.saveUserByWeiXinInfo(openId);
+					}
+					cacheHelper.addOpenId(code, openId);
+					filterChain.doFilter(request, response);
+				}*/
+				cacheHelper.addOpenId(code, "o40G45XVBWdf8HKQCkN-9W74vNBk");
+				filterChain.doFilter(request, response);
+			} catch (Exception e) {
+				logger.error("====error msg:" + e.getMessage());
+				throw new InternalAuthenticationServiceException(e.getMessage());
+			}
+
 		} else {
 			// let it go
 			filterChain.doFilter(request, response);

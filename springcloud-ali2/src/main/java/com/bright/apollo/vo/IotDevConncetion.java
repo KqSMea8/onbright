@@ -1,10 +1,6 @@
 package com.bright.apollo.vo;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 /**  
@@ -35,6 +31,10 @@ public class IotDevConncetion {
 	private String wifiSouthChinaName;
 	@Value("${IotDevConncetion.wifiAmericaName}")
 	private String wifiAmericaName;
+	@Value("${IotDevConncetion.deviceAmericaName}")
+	private String deviceAmericaName;
+	@Value("${IotDevConncetion.deviceSouthChinaName}")
+	private String deviceSouthChinaName;
 	public String getAccessKeyId() {
 		return accessKeyId;
 	}
@@ -88,6 +88,18 @@ public class IotDevConncetion {
 	}
 	public void setWifiAmericaName(String wifiAmericaName) {
 		this.wifiAmericaName = wifiAmericaName;
+	}
+	public String getDeviceAmericaName() {
+		return deviceAmericaName;
+	}
+	public void setDeviceAmericaName(String deviceAmericaName) {
+		this.deviceAmericaName = deviceAmericaName;
+	}
+	public String getDeviceSouthChinaName() {
+		return deviceSouthChinaName;
+	}
+	public void setDeviceSouthChinaName(String deviceSouthChinaName) {
+		this.deviceSouthChinaName = deviceSouthChinaName;
 	}
 	 
 
