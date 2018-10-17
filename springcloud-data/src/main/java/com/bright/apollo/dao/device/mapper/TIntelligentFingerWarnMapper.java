@@ -13,8 +13,8 @@ import org.apache.ibatis.annotations.SelectKey;
 import org.springframework.stereotype.Component;
 
 import com.bright.apollo.common.entity.TIntelligentFingerWarn;
-import com.bright.apollo.dao.device.sqlProvider.IntelligentFingerRemoteUserDynaSqlProvider;
-import com.bright.apollo.dao.device.sqlProvider.IntelligentFingerWarnDynaSqlProvider;
+import com.bright.apollo.dao.sqlProvider.IntelligentFingerRemoteUserDynaSqlProvider;
+import com.bright.apollo.dao.sqlProvider.IntelligentFingerWarnDynaSqlProvider;
 import com.bright.apollo.request.IntelligentFingerWarnDTO;
 
 /**  

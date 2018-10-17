@@ -14,7 +14,7 @@ import org.apache.ibatis.annotations.SelectKey;
 import org.springframework.stereotype.Component;
 
 import com.bright.apollo.common.entity.TIntelligentFingerRecord;
-import com.bright.apollo.dao.device.sqlProvider.TIntelligentFingerRecordDynaSqlProvider;
+import com.bright.apollo.dao.sqlProvider.TIntelligentFingerRecordDynaSqlProvider;
 import com.bright.apollo.request.IntelligentOpenRecordDTO;
 
 /**

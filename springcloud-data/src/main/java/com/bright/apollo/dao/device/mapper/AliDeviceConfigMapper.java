@@ -1,11 +1,21 @@
 package com.bright.apollo.dao.device.mapper;
 
-import com.bright.apollo.common.entity.TAliDevTimer;
-import com.bright.apollo.common.entity.TAliDeviceConfig;
-import org.apache.ibatis.annotations.*;
+import java.util.List;
+
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.InsertProvider;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectKey;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import com.bright.apollo.common.entity.TAliDeviceConfig;
+import com.bright.apollo.dao.sqlProvider.AliDeviceConfigProvider;
 
 @Mapper
 @Repository
@@ -33,6 +43,21 @@ public interface AliDeviceConfigMapper {
             "    name=#{name} where id = #{id}")
     void update(TAliDeviceConfig aliDeviceConfig);
 
+	/**  
+	 * @param deviceId
+	 * @return  
+	 * @Description:  
+	 */
+	TAliDeviceConfig queryAliDevConfigBySerialId(String deviceId);
+
+	/**  
+	 * @param tAliDeviceConfig  
+	 * @Description:  
+	 */
+	@SelectKey(statement = "select LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = int.class)
+	@InsertProvider(type=AliDeviceConfigProvider.class,method="addAliDevConfig")
+	@Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
+	void addAliDevConfig(TAliDeviceConfig tAliDeviceConfig);
     @Select(" select tadc.* from t_user_ali_device tuad " +
             " inner join t_ali_device_config tadc on tuad.device_serial_id=tadc.device_serial_id where tuad.user_id = #{userId} ")
     @Results(value = {
@@ -54,4 +79,5 @@ public interface AliDeviceConfigMapper {
             "action,state,name) values(#{Id},#{deviceSerialId},#{type},#{lastOpTime},#{action},#{state},#{name})")
     @Options(useGeneratedKeys=true, keyProperty="Id", keyColumn="id")
     int addAliDeviceConfig(TAliDeviceConfig aliDeviceConfig);
+
 }

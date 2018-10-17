@@ -15,7 +15,7 @@ import org.apache.ibatis.annotations.UpdateProvider;
 import org.springframework.stereotype.Component;
 
 import com.bright.apollo.common.entity.TIntelligentFingerRemoteUser;
-import com.bright.apollo.dao.device.sqlProvider.IntelligentFingerRemoteUserDynaSqlProvider;
+import com.bright.apollo.dao.sqlProvider.IntelligentFingerRemoteUserDynaSqlProvider;
 
 /**  
  *@Title:  

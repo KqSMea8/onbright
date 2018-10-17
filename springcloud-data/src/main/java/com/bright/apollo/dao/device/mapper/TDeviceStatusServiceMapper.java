@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
 
 import com.bright.apollo.common.entity.TDeviceStatus;
-import com.bright.apollo.dao.device.sqlProvider.DeviceStatusSqlProvider;
+import com.bright.apollo.dao.sqlProvider.DeviceStatusSqlProvider;
 
 /**
  * @Title:

@@ -12,5 +12,14 @@ public interface AliDeviceConfigService {
 
     void update(TAliDeviceConfig aliDeviceConfig);
 
-    void addAliDevice(TAliDeviceConfig aliDeviceConfig);
+ 
+	/**  
+	 * @param tAliDeviceConfig  
+	 * @Description:  
+	 */
+	void addAliDevConfig(TAliDeviceConfig tAliDeviceConfig);
+
+ 
+     void addAliDevice(TAliDeviceConfig aliDeviceConfig);
+ 
 }

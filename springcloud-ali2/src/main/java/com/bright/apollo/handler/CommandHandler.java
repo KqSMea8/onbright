@@ -20,6 +20,7 @@ import com.bright.apollo.common.entity.PushMessage;
 import com.bright.apollo.common.entity.TAliDevice;
 import com.bright.apollo.common.entity.TAliDeviceUS;
 import com.bright.apollo.common.entity.TObox;
+import com.bright.apollo.common.entity.TUserAliDevice;
 import com.bright.apollo.common.entity.TUserObox;
 import com.bright.apollo.enums.ALIDevTypeEnum;
 import com.bright.apollo.enums.AliCmdTypeEnum;
@@ -30,6 +31,7 @@ import com.bright.apollo.service.AliDeviceService;
 import com.bright.apollo.service.OboxService;
 import com.bright.apollo.service.PushService;
 import com.bright.apollo.service.TopicServer;
+import com.bright.apollo.service.UserAliDevService;
 import com.bright.apollo.service.UserOboxService;
 import com.bright.apollo.session.PushObserverManager;
 import com.bright.apollo.tool.ByteHelper;
@@ -60,6 +62,8 @@ public class CommandHandler {
 	@Autowired
 	@Lazy
 	private TopicServer topServer;
+	@Autowired
+	private UserAliDevService userAliDevService;
 	public CommandHandler() {
 		cmdHandlers = new HashMap<String, AliBaseHandler>();
 
@@ -291,15 +295,11 @@ public class CommandHandler {
 		}
 		//pushservice
 		pushMessage.setSerialId(deviceSerialId);
+		List<TUserAliDevice> list=userAliDevService.queryAliUserId(deviceSerialId);
 		Set<Integer> setuser=new ConcurrentSkipListSet<Integer>();
-		 
- 		/*List<UserKeyDTO> UserKeyDTOs = UserBusiness.queryAliUserId(deviceSerialId);
-		for (UserKeyDTO userKeyDTO : UserKeyDTOs) {
-			ClientSession clientSessionByUid = SessionManager.getInstance()
-					.getClientSessionByUid(userKeyDTO.getUserId().intValue() + "");
-			if (clientSessionByUid != null) {
-				pushObserverManager.sendMessage(pushMessage, clientSessionByUid);
-			}
-		}*/
+		for (TUserAliDevice tUserAliDevice : list) {
+			setuser.add(tUserAliDevice.getUserId());
+		}
+		pushservice.pushToApp(pushMessage, setuser);
 	}
 }

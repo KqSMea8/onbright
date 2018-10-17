@@ -8,18 +8,23 @@ import com.bright.apollo.common.entity.*;
 import com.bright.apollo.common.entity.TSceneAction;
 import com.bright.apollo.constant.SubTableConstant;
 import com.bright.apollo.enums.*;
-import com.bright.apollo.feign.*;
 import com.bright.apollo.http.HttpWithBasicAuth;
-import com.bright.apollo.request.*;
-import com.bright.apollo.response.*;
 import com.bright.apollo.service.AliDeviceService;
 import com.bright.apollo.service.MsgService;
-import com.bright.apollo.tool.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,10 +36,77 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.OAuth2Request;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import java.util.*;
-import java.util.concurrent.TimeUnit;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.bright.apollo.cache.AliDevCache;
+
+import com.bright.apollo.common.entity.OauthClientDetails;
+import com.bright.apollo.common.entity.TAliDevice;
+import com.bright.apollo.common.entity.TAliDeviceConfig;
+import com.bright.apollo.common.entity.TAliDeviceUS;
+import com.bright.apollo.common.entity.TCreateTableLog;
+import com.bright.apollo.common.entity.TDeviceStatus;
+import com.bright.apollo.common.entity.TIntelligentFingerAbandonRemoteUser;
+import com.bright.apollo.common.entity.TIntelligentFingerAuth;
+import com.bright.apollo.common.entity.TIntelligentFingerPush;
+import com.bright.apollo.common.entity.TIntelligentFingerRemoteUser;
+import com.bright.apollo.common.entity.TIntelligentFingerUser;
+import com.bright.apollo.common.entity.TNvr;
+import com.bright.apollo.common.entity.TObox;
+import com.bright.apollo.common.entity.TOboxDeviceConfig;
+import com.bright.apollo.common.entity.TScene;
+import com.bright.apollo.common.entity.TSceneCondition;
+import com.bright.apollo.common.entity.TUser;
+import com.bright.apollo.common.entity.TUserAliDevice;
+import com.bright.apollo.common.entity.TUserDevice;
+import com.bright.apollo.common.entity.TUserObox;
+import com.bright.apollo.common.entity.TUserOperation;
+import com.bright.apollo.common.entity.TUserScene;
+import com.bright.apollo.common.entity.TYSCamera;
+import com.bright.apollo.enums.AliRegionEnum;
+import com.bright.apollo.enums.ConditionTypeEnum;
+import com.bright.apollo.enums.DeviceTypeEnum;
+import com.bright.apollo.enums.IntelligentMaxEnum;
+import com.bright.apollo.enums.NodeTypeEnum;
+import com.bright.apollo.enums.RemoteUserEnum;
+import com.bright.apollo.enums.SceneTypeEnum;
+import com.bright.apollo.feign.FeignAliClient;
+import com.bright.apollo.feign.FeignDeviceClient;
+import com.bright.apollo.feign.FeignOboxClient;
+import com.bright.apollo.feign.FeignQuartzClient;
+import com.bright.apollo.feign.FeignSceneClient;
+import com.bright.apollo.feign.FeignUserClient;
+import com.bright.apollo.request.IntelligentFingerRemoteUserDTO;
+import com.bright.apollo.request.IntelligentFingerWarnDTO;
+import com.bright.apollo.request.IntelligentFingerWarnItemDTO;
+import com.bright.apollo.request.IntelligentOpenRecordDTO;
+import com.bright.apollo.request.OboxDTO;
+import com.bright.apollo.request.SceneActionDTO;
+import com.bright.apollo.request.SceneConditionDTO;
+import com.bright.apollo.request.SceneDTO;
+import com.bright.apollo.request.TIntelligentFingerPushDTO;
+import com.bright.apollo.response.AliDevInfo;
+import com.bright.apollo.response.DevcieCount;
+import com.bright.apollo.response.DeviceStatusDTO;
+import com.bright.apollo.response.IntelligentOpenRecordItemDTO;
+import com.bright.apollo.response.ResponseEnum;
+import com.bright.apollo.response.ResponseObject;
+import com.bright.apollo.response.TUserOperationDTO;
+import com.bright.apollo.response.UserFingerDTO;
+
+import com.bright.apollo.tool.Base64Util;
+import com.bright.apollo.tool.ByteHelper;
+import com.bright.apollo.tool.DateHelper;
+import com.bright.apollo.tool.MD5;
+import com.bright.apollo.tool.MobileUtil;
+import com.bright.apollo.tool.NumberHelper;
+
 
 /**
  * @Title:
@@ -65,6 +137,10 @@ public class FacadeController extends BaseController {
 	private CmdCache cmdCache;
 	@Autowired
 	private MsgService msgService;
+	@Autowired
+	private AliDevCache aliDevCache;
+	@Autowired
+	private AliDeviceService aliDeviceService;
 	@Value("${logout.url}")
 	private String logoutUrl;
 
@@ -4901,6 +4977,117 @@ public class FacadeController extends BaseController {
 	 * @return
 	 * @Description:
 	 */
+	@Deprecated
+	@SuppressWarnings("rawtypes")
+	@ApiOperation(value = "uploadConfig", httpMethod = "PUT", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/uploadConfig/{deviceName}/{productKey}", method = RequestMethod.PUT)
+	public ResponseObject uploadConfig(@PathVariable(value = "deviceName") String deviceName,
+			@PathVariable(value = "productKey") String productKey,
+			@RequestParam(name = "config", required = true) String config) {
+		ResponseObject res = new ResponseObject();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+			String region = aliDevCache.getAliDevAvailable(productKey, deviceName);
+			if (StringUtils.isEmpty(region)) {
+				res.setStatus(ResponseEnum.SendOboxUnKnowFail.getStatus());
+				res.setMessage(ResponseEnum.SendOboxUnKnowFail.getMsg());
+				return res;
+			}
+			JSONObject object = new JSONObject(config);
+			ResponseObject<TAliDeviceConfig> aliDeviceRes = feignDeviceClient
+					.queryAliDevConfigBySerial(object.getString("deviceId"));
+			if (aliDeviceRes == null || aliDeviceRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			TAliDeviceConfig tAliDeviceConfig = aliDeviceRes.getData();
+			if (tAliDeviceConfig == null) {
+				tAliDeviceConfig = new TAliDeviceConfig();
+				tAliDeviceConfig.setAction(object.getString("action"));
+				tAliDeviceConfig.setDeviceSerialId(object.getString("deviceId"));
+				tAliDeviceConfig.setName(object.getString("name"));
+				tAliDeviceConfig.setState(object.getString("state"));
+				tAliDeviceConfig.setType(object.getString("type"));
+				feignDeviceClient.addAliDevConfig(tAliDeviceConfig);
+			} else {
+				tAliDeviceConfig.setAction(object.getString("action"));
+				tAliDeviceConfig.setDeviceSerialId(object.getString("deviceId"));
+				tAliDeviceConfig.setName(object.getString("name"));
+				tAliDeviceConfig.setState(object.getString("state"));
+				tAliDeviceConfig.setType(object.getString("type"));
+				feignDeviceClient.updateAliDevConfig(tAliDeviceConfig);
+			}
+			feignUserClient.deleteUserAliDev(tAliDeviceConfig.getDeviceSerialId());
+			TAliDevice aliDevice = aliDeviceService.getAliDeviceBySerializeId(object.getString("deviceId"));
+			if (aliDevice != null) {
+				if (!aliDevice.getProductKey().equals(productKey) && !aliDevice.getDeviceName().equals(deviceName)) {
+					aliDevice.setOboxSerialId("available");
+					aliDeviceService.updateAliDevice(aliDevice);
+					aliDevCache.DelDevInfo(object.getString("deviceId"));
+					// AliDevCache.DelDevInfo(object.getString("deviceId"));
+				}
+			} else {
+				TAliDeviceUS aliDeviceUS = aliDeviceService.getAliUSDeviceBySerializeId(object.getString("deviceId"));
+				if (aliDeviceUS != null) {
+					if (!aliDeviceUS.getProductKey().equals(productKey)
+							&& !aliDeviceUS.getDeviceName().equals(deviceName)) {
+						aliDeviceUS.setDeviceSerialId("available");
+						aliDeviceService.updateAliDevice(aliDevice);
+						aliDevCache.DelDevInfo(object.getString("deviceId"));
+					}
+				}
+			}
+			TAliDevice tAliDevice = aliDeviceService.getAliDeviceByProductKeyAndDeviceName(productKey, deviceName);
+			if (tAliDevice != null) {
+				tAliDevice.setOboxSerialId(object.getString("deviceId"));
+				aliDeviceService.updateAliDevice(aliDevice);
+				aliDevCache.saveDevInfo(productKey, object.getString("deviceId"), deviceName,
+						AliRegionEnum.SOURTHCHINA);
+			} else {
+				TAliDeviceUS tAliDeviceUS = aliDeviceService.getAliUSDeviceByProductKeyAndDeviceName(productKey,
+						deviceName);
+				if (tAliDeviceUS != null) {
+					tAliDeviceUS.setDeviceSerialId(object.getString("deviceId"));
+					aliDeviceService.updateAliUSDevice(tAliDeviceUS);
+					aliDevCache.saveDevInfo(productKey, object.getString("deviceId"), deviceName,
+							AliRegionEnum.AMERICA);
+				}
+			}
+			aliDevCache.delAliDevWait(productKey, deviceName);
+			
+			TUserAliDevice tUserAliDev = new TUserAliDevice();
+			tUserAliDev.setDeviceSerialId(tAliDeviceConfig.getDeviceSerialId());
+			tUserAliDev.setUserId(resUser.getData().getId());
+			feignUserClient.addUserAliDev(tUserAliDev);
+			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	/**
+	 * @param serialId
+	 * @return
+	 * @Description:
+	 */
 	@SuppressWarnings("rawtypes")
 	@ApiOperation(value = "queryScenes", httpMethod = "POST", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
@@ -4938,10 +5125,7 @@ public class FacadeController extends BaseController {
 			}
 			TUser user = resUser.getData();
 			ResponseObject aliRes = feignAliClient.queryAliDevice(user.getId());
-			Map<String, Object> map = new HashMap<String, Object>();
-			JSONObject jsonObject = new JSONObject();
 
-			Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
             List list = (List) aliRes.getData();
             if(list.size()>0){
 				res.setData(aliRes.getData());
@@ -5054,9 +5238,7 @@ public class FacadeController extends BaseController {
 			}
 
 			Map<String, Object> map = new HashMap<String, Object>();
-//			Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 			ResponseObject aliRes = feignAliClient.queryAliDeviceTimer(deviceId);
-//			map.put("timers",gson.toJsonTree(aliRes.getData()));
 			res.setData(aliRes.getData());
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());

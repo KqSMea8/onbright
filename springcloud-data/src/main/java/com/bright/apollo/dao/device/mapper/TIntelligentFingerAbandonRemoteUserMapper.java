@@ -14,8 +14,8 @@ import org.apache.ibatis.annotations.SelectKey;
 import org.springframework.stereotype.Component;
 
 import com.bright.apollo.common.entity.TIntelligentFingerAbandonRemoteUser;
-import com.bright.apollo.dao.device.sqlProvider.IntelligentFingerRemoteUserDynaSqlProvider;
-import com.bright.apollo.dao.device.sqlProvider.IntelligentFingerabandonRemoteUserDynaSqlProvider;
+import com.bright.apollo.dao.sqlProvider.IntelligentFingerRemoteUserDynaSqlProvider;
+import com.bright.apollo.dao.sqlProvider.IntelligentFingerabandonRemoteUserDynaSqlProvider;
 
 /**
  * @Title:

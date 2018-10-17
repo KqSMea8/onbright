@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.bright.apollo.common.entity.TAliDeviceConfig;
 import com.bright.apollo.common.entity.TDeviceStatus;
 import com.bright.apollo.common.entity.TIntelligentFingerAbandonRemoteUser;
 import com.bright.apollo.common.entity.TIntelligentFingerAuth;
@@ -418,6 +419,30 @@ public interface FeignDeviceClient {
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/intelligentFinger/batchTIntelligentFingerPush", method = RequestMethod.POST)
 	ResponseObject batchTIntelligentFingerPush(@RequestBody List<TIntelligentFingerPush> pushList);
+
+	/**  
+	 * @param deviceId
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/ali/queryAliDevConfigBySerial/{deviceId}", method = RequestMethod.GET)
+	ResponseObject<TAliDeviceConfig> queryAliDevConfigBySerial(@PathVariable(value = "deviceId")String deviceId);
+
+	/**  
+	 * @param tAliDeviceConfig  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/ali/addAliDevConfig", method = RequestMethod.POST)
+	ResponseObject addAliDevConfig(@RequestBody TAliDeviceConfig tAliDeviceConfig);
+
+	/**  
+	 * @param tAliDeviceConfig  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/ali/updateAliDevConfig", method = RequestMethod.PUT)
+	ResponseObject updateAliDevConfig(@RequestBody TAliDeviceConfig tAliDeviceConfig);
 
  
  

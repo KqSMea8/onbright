@@ -15,8 +15,8 @@ import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Component;
 
 import com.bright.apollo.common.entity.TSceneAction;
-import com.bright.apollo.dao.device.sqlProvider.SceneActionProvider;
-import com.bright.apollo.dao.device.sqlProvider.TIntelligentFingerRecordDynaSqlProvider;
+import com.bright.apollo.dao.sqlProvider.SceneActionProvider;
+import com.bright.apollo.dao.sqlProvider.TIntelligentFingerRecordDynaSqlProvider;
 
 @Mapper
 @Component

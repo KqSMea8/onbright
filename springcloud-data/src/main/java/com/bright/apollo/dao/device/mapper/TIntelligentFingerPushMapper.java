@@ -13,8 +13,8 @@ import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Component;
 
 import com.bright.apollo.common.entity.TIntelligentFingerPush;
-import com.bright.apollo.dao.device.sqlProvider.OboxDeviceConfigSqlProvider;
-import com.bright.apollo.dao.device.sqlProvider.TIntelligentFingerPushSqlProvider;
+import com.bright.apollo.dao.sqlProvider.OboxDeviceConfigSqlProvider;
+import com.bright.apollo.dao.sqlProvider.TIntelligentFingerPushSqlProvider;
 
 /**
  * @Title:

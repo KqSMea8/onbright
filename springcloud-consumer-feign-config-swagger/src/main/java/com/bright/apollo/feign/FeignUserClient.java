@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.bright.apollo.common.entity.OauthClientDetails;
 import com.bright.apollo.common.entity.TCreateTableLog;
 import com.bright.apollo.common.entity.TUser;
+import com.bright.apollo.common.entity.TUserAliDevice;
 import com.bright.apollo.common.entity.TUserDevice;
 import com.bright.apollo.common.entity.TUserObox;
 import com.bright.apollo.common.entity.TUserOperation;
@@ -284,4 +285,20 @@ public interface FeignUserClient {
 	@RequestMapping(value = "/oauthclient/getClientByClientId/{clientId}", method = RequestMethod.GET)
 	public ResponseObject<OauthClientDetails> getClientByClientId(
 			@PathVariable(required = true, value = "clientId") String clientId);
+
+	/**  
+	 * @param deviceSerialId  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/user/deleteUserAliDev/{deviceSerialId}", method = RequestMethod.DELETE)
+	public ResponseObject deleteUserAliDev(@PathVariable(required = true, value = "deviceSerialId")  String deviceSerialId);
+
+	/**  
+	 * @param tUserAliDev  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/user/addUserAliDev", method = RequestMethod.POST)
+	public ResponseObject addUserAliDev(@RequestBody TUserAliDevice tUserAliDev);
 }
