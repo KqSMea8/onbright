@@ -20,6 +20,8 @@ public interface AliDeviceConfigService {
 	void addAliDevConfig(TAliDeviceConfig tAliDeviceConfig);
 
  
-     void addAliDevice(TAliDeviceConfig aliDeviceConfig);
+	void addAliDevice(TAliDeviceConfig aliDeviceConfig);
+
+	void deleteAliDeviceConfig(String oboxSerialId);
  
 }

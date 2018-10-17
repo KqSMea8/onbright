@@ -1189,4 +1189,33 @@ public class AliServerController {
 		return res;
 	}
 
+	@RequestMapping(value = "/delAliDevice", method = RequestMethod.POST)
+	public ResponseObject delAliDevice(@RequestParam(required = true, value = "value") Object value,@RequestParam(required = true, value = "deviceId") String deviceId) {
+		ResponseObject res = new ResponseObject();
+		try {
+			String val = (String)value;
+			JSONArray array = JSONArray.parseArray(val);
+			JSONObject object = new JSONObject();
+			object.put("command", "delete");
+
+//			object.put("value", value);
+			topicServer.requestDev(object,deviceId,array.toJSONString());
+//			TAliDeviceConfig aliDeviceConfig = aliDeviceConfigService.getAliDeviceConfigBySerializeId(deviceId);
+//			if(aliDeviceConfig !=null){
+//				aliDeviceConfig.setState(val);
+//				aliDeviceConfigService.update(aliDeviceConfig);
+//			}
+//			res.setData(val);
+			aliDeviceService.deleteAliDeviceUser(deviceId);
+			aliDeviceConfigService.deleteAliDeviceConfig(deviceId);
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
 }

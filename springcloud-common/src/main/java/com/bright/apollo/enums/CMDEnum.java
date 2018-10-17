@@ -367,6 +367,7 @@ public enum CMDEnum {
 
 	set_countdown,
 
+	del_ali_dev,
 
 	
 	setting_remote_led("8103","a103"),
