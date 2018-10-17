@@ -468,8 +468,8 @@ public class CommonController {
 			String value = requestParam.getValue("value");
 			return facadeController.readAliDevice(functionId,deviceId,value);
 		}else if(CMDEnum.query_timer.toString().equals(cmdEnum.toString())){
-			String functionId = requestParam.getValue("functionId");
-			return facadeController.queryAliDeviceTimer(functionId);
+			String deviceId = requestParam.getValue("deviceId");
+			return facadeController.queryAliDeviceTimer(deviceId);
 		}else if(CMDEnum.set_timer.toString().equals(cmdEnum.toString())){
 			String command = requestParam.getValue("command");
 			String deviceId = requestParam.getValue("deviceId");

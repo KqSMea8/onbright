@@ -3,6 +3,7 @@ package com.bright.apollo.hrstrix;
 import java.util.List;
 import java.util.Map;
 
+import com.bright.apollo.common.entity.TAliDevTimer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -346,7 +347,7 @@ public class HystrixFeignAli2Fallback extends BasicHystrixFeignFallback implemen
 	}
 
 	@Override
-	public ResponseObject readAliDevice(String functionId, String deviceId, String value) {
+	public ResponseObject readAliDevice(String functionId, String deviceId, Object value) {
 		logger.warn("===ali server is break===");
 		return serverError();
 	}
@@ -371,6 +372,30 @@ public class HystrixFeignAli2Fallback extends BasicHystrixFeignFallback implemen
 
 	@Override
 	public ResponseObject uploadAliDevice(String deviceName, String productKey, Object config, Integer userId) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
+	@Override
+	public ResponseObject getAliDevTimerByDeviceSerialIdAndCountDown(String deviceId) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
+	@Override
+	public ResponseObject delAliDevTimerByDeviceSerialId(Integer id) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
+	@Override
+	public ResponseObject addAliDevTimer(TAliDevTimer aliDevTimer) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
+	@Override
+	public ResponseObject updateAliDevTimer(TAliDevTimer aliDevTimer) {
 		logger.warn("===ali server is break===");
 		return serverError();
 	}

@@ -906,22 +906,24 @@ public class AliServerController {
 		return res;
 	}
 
-	@RequestMapping(value = "/readAliDevice/{functionId}/{deviceId}/{value}", method = RequestMethod.GET)
-	public ResponseObject readAliDevice(@PathVariable(required = true, value = "functionId") String functionId,
-										@PathVariable(required = true, value = "deviceId") String deviceId,
-										@PathVariable(required = true, value = "value") String value) {
+	@RequestMapping(value = "/readAliDevice", method = RequestMethod.POST)
+	public ResponseObject readAliDevice(@RequestParam(required = true, value = "functionId") String functionId,
+										@RequestParam(required = true, value = "deviceId") String deviceId,
+										@RequestParam(required = true, value = "value") Object value) {
 		ResponseObject res = new ResponseObject();
 		try {
 			JSONArray array = JSONArray.parseArray(functionId);
+			String val = (String)value;
+			JSONArray valArr = JSONArray.parseArray(val);
 			JSONObject object = new JSONObject();
 			object.put("command", "read");
 			topicServer.requestDev(object,deviceId,array.toJSONString());
 			TAliDeviceConfig aliDeviceConfig = aliDeviceConfigService.getAliDeviceConfigBySerializeId(deviceId);
 			if(aliDeviceConfig !=null){
-				aliDeviceConfig.setState(value);
+				aliDeviceConfig.setState(val);
 				aliDeviceConfigService.update(aliDeviceConfig);
 			}
-			res.setData(array);
+			res.setData(val);
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {
@@ -1022,7 +1024,7 @@ public class AliServerController {
 				return res;
 			}
 			JsonObject object = new JsonObject();
-			TAliDevTimer aliDevTimer;
+//			TAliDevTimer aliDevTimer;
 //			switch (TimerSetTypeEnum.getSetType(command)){
 //				case add:
 //					aliDevTimer = aliDeviceService.getAliDevTimerByDeviceSerialIdAndCountDown(deviceId);
@@ -1115,6 +1117,68 @@ public class AliServerController {
 			userAliDev.setDeviceSerialId(object.getString("deviceId"));
 			userAliDev.setUserId(userId);
 			aliDeviceService.addAliDevUser(userAliDev);
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	@RequestMapping(value = "/getAliDevTimerByDeviceSerialIdAndCountDown/{deviceId}", method = RequestMethod.GET)
+	public ResponseObject getAliDevTimerByDeviceSerialIdAndCountDown(@PathVariable(value = "deviceId") String deviceId) {
+		ResponseObject res = new ResponseObject();
+		try {
+			TAliDevTimer aliDevTimer = aliDeviceService.getAliDevTimerByDeviceSerialIdAndCountDown(deviceId);
+			res.setData(aliDevTimer);
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	@RequestMapping(value = "/delAliDevTimerByDeviceSerialId/{deviceId}", method = RequestMethod.GET)
+	public ResponseObject delAliDevTimerByDeviceSerialId(@PathVariable(value = "id") Integer id) {
+		ResponseObject res = new ResponseObject();
+		try {
+			aliDeviceService.deleteAliDevTimerById(id);
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	@RequestMapping(value = "/addAliDevTimer", method = RequestMethod.POST)
+	public ResponseObject addAliDevTimer(@RequestParam(required = true, value = "aliDevTimer") TAliDevTimer aliDevTimer) {
+		ResponseObject res = new ResponseObject();
+		try {
+			Integer id = aliDeviceService.addAliDevTimer(aliDevTimer);
+			res.setData(id);
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	@RequestMapping(value = "/updateAliDevTimer", method = RequestMethod.POST)
+	public ResponseObject updateAliDevTimer(@RequestParam(required = true, value = "aliDevTimer") TAliDevTimer aliDevTimer) {
+		ResponseObject res = new ResponseObject();
+		try {
+			aliDeviceService.updateAliDevTimer(aliDevTimer);
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {

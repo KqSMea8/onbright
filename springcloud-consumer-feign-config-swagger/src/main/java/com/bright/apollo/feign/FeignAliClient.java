@@ -3,6 +3,7 @@ package com.bright.apollo.feign;
 import java.util.List;
 import java.util.Map;
 
+import com.bright.apollo.common.entity.TAliDevTimer;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -338,8 +339,8 @@ public interface FeignAliClient {
 	/**
 	 * @Description:读取阿里WiFi
 	 */
-	@RequestMapping(value = "/aliService/readAliDevice/{functionId}/{deviceId}/{value}", method = RequestMethod.GET)
-	ResponseObject readAliDevice(@PathVariable(required = true, value = "functionId") String functionId,@PathVariable(required = true, value = "deviceId") String deviceId,@PathVariable(required = true, value = "value") String value);
+	@RequestMapping(value = "/aliService/readAliDevice", method = RequestMethod.POST)
+	ResponseObject readAliDevice(@RequestParam(required = true, value = "functionId") String functionId,@RequestParam(required = true, value = "deviceId") String deviceId,@RequestParam(required = true, value = "value") Object value);
 
 	/**
 	 * @Description:查询阿里WiFi Timer
@@ -372,4 +373,28 @@ public interface FeignAliClient {
 	ResponseObject uploadAliDevice(@RequestParam(required = true,value = "deviceName") String deviceName,
 							   @RequestParam(required = true,value = "productKey") String productKey,@RequestParam(required = true, value = "config") Object config,@RequestParam(required = true,value = "userId") Integer userId);
 
+
+	/**
+	 * @Description:通过序列号查询TImer
+	 */
+	@RequestMapping(value = "/aliService/getAliDevTimerByDeviceSerialIdAndCountDown/{deviceId}", method = RequestMethod.GET)
+	ResponseObject getAliDevTimerByDeviceSerialIdAndCountDown(@PathVariable(value = "deviceId") String deviceId);
+
+	/**
+	 * @Description:通过序列号查询TImer
+	 */
+	@RequestMapping(value = "/aliService/delAliDevTimerByDeviceSerialId/{id}", method = RequestMethod.GET)
+	ResponseObject delAliDevTimerByDeviceSerialId(@PathVariable(value = "id") Integer id);
+
+	/**
+	 * @Description:新增TImer
+	 */
+	@RequestMapping(value = "/aliService/addAliDevTimer", method = RequestMethod.POST)
+	ResponseObject addAliDevTimer(@RequestParam(required = true, value = "aliDevTimer") TAliDevTimer aliDevTimer);
+
+	/**
+	 * @Description:新增TImer
+	 */
+	@RequestMapping(value = "/aliService/updateAliDevTimer", method = RequestMethod.POST)
+	ResponseObject updateAliDevTimer(@RequestParam(required = true, value = "aliDevTimer") TAliDevTimer aliDevTimer);
 }
