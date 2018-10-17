@@ -909,7 +909,7 @@ public class AliServerController {
 	@RequestMapping(value = "/readAliDevice", method = RequestMethod.POST)
 	public ResponseObject readAliDevice(@RequestParam(required = true, value = "functionId") String functionId,
 										@RequestParam(required = true, value = "deviceId") String deviceId,
-										@RequestParam(required = true, value = "value") Object value) {
+										@RequestParam(required = true, value = "value") String value) {
 		ResponseObject res = new ResponseObject();
 		try {
 			JSONArray array = JSONArray.parseArray(functionId);

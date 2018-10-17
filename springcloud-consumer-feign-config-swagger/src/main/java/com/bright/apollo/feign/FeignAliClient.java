@@ -340,7 +340,7 @@ public interface FeignAliClient {
 	 * @Description:读取阿里WiFi
 	 */
 	@RequestMapping(value = "/aliService/readAliDevice", method = RequestMethod.POST)
-	ResponseObject readAliDevice(@RequestParam(required = true, value = "functionId") String functionId,@RequestParam(required = true, value = "deviceId") String deviceId,@RequestParam(required = true, value = "value") Object value);
+	ResponseObject readAliDevice(@RequestParam(required = true, value = "functionId") String functionId,@RequestParam(required = true, value = "deviceId") String deviceId,@RequestParam(required = true, value = "value") String value);
 
 	/**
 	 * @Description:查询阿里WiFi Timer

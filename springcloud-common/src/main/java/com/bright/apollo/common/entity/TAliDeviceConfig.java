@@ -2,10 +2,17 @@ package com.bright.apollo.common.entity;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class TAliDeviceConfig {
 
     private java.lang.Integer Id;
-
+    @Expose
+	@SerializedName("deviceId")
+ 	@JsonProperty(value="deviceId")
     private java.lang.String deviceSerialId;
 
     private java.lang.String name;

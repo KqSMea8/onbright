@@ -2,6 +2,7 @@ package com.bright.apollo.request;
 
 import com.bright.apollo.common.entity.TAliDeviceConfig;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.alibaba.fastjson.JSONArray;
@@ -28,10 +29,12 @@ public class AliDeviceDTO extends TAliDeviceConfig implements Serializable {
 
     @Expose
     @SerializedName("action")
+    @JsonProperty(value="action")
     private JSONArray deviceAction;//
 
     @Expose
     @SerializedName("state")
+    @JsonProperty(value="state")
     private JSONArray deviceState;//
 
     @Expose
