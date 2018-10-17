@@ -21,6 +21,7 @@ import com.bright.apollo.cache.UserCacheService;
 import com.bright.apollo.common.entity.TCreateTableLog;
 import com.bright.apollo.common.entity.TCreateTableSql;
 import com.bright.apollo.common.entity.TUser;
+import com.bright.apollo.common.entity.TUserAliDevice;
 import com.bright.apollo.common.entity.TUserDevice;
 import com.bright.apollo.common.entity.TUserObox;
 import com.bright.apollo.common.entity.TUserOperation;
@@ -34,6 +35,7 @@ import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.service.CreateTableLogService;
 import com.bright.apollo.service.CreateTableSqlService;
 import com.bright.apollo.service.MsgService;
+import com.bright.apollo.service.UserAliDevService;
 import com.bright.apollo.service.UserDeviceService;
 import com.bright.apollo.service.UserOboxService;
 import com.bright.apollo.service.UserOperationService;
@@ -78,7 +80,8 @@ public class UserController {
 	private CreateTableSqlService createTableSqlService;
 	@Autowired
 	private UserSceneService userSceneService;
-
+	@Autowired
+	private UserAliDevService userAliDevService;
 	@SuppressWarnings("rawtypes")
 	@GetMapping("/sendCodeToMobile/{mobile}")
 	public ResponseObject sendCodeToMobile(@PathVariable String mobile) {
@@ -754,5 +757,44 @@ public class UserController {
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;	
+	}
+	/**  
+	 * @param deviceSerialId  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/deleteUserAliDev/{deviceSerialId}", method = RequestMethod.DELETE)
+	public ResponseObject deleteUserAliDev(@PathVariable(required = true, value = "deviceSerialId")  String deviceSerialId){
+		ResponseObject res=new ResponseObject();
+		try {
+			userAliDevService.deleteUserAliDev(deviceSerialId);
+			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:"+e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;	
+	}
+	/**  
+	 * @param tUserAliDev  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/addUserAliDev", method = RequestMethod.POST)
+	public ResponseObject addUserAliDev(@RequestBody TUserAliDevice tUserAliDev){
+		ResponseObject res=new ResponseObject();
+		try {
+			userAliDevService.addUserAliDev(tUserAliDev);
+			res.setStatus(ResponseEnum.AddSuccess.getStatus());
+			res.setMessage(ResponseEnum.AddSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:"+e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;	
+	
 	}
 }

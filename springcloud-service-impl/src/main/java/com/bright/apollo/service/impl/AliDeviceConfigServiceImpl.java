@@ -21,4 +21,15 @@ public class AliDeviceConfigServiceImpl implements AliDeviceConfigService {
     public void update(TAliDeviceConfig aliDeviceConfig) {
         mapper.update(aliDeviceConfig);
     }
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.AliDeviceConfigService#addAliDevConfig(com.bright.apollo.common.entity.TAliDeviceConfig)  
+	 */
+	@Override
+	public void addAliDevConfig(TAliDeviceConfig tAliDeviceConfig) {
+		mapper.addAliDevConfig(tAliDeviceConfig);
+		
+	}
+
+ 
 }

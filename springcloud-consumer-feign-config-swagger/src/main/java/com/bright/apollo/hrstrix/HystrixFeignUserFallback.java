@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import com.bright.apollo.common.entity.OauthClientDetails;
 import com.bright.apollo.common.entity.TCreateTableLog;
 import com.bright.apollo.common.entity.TUser;
+import com.bright.apollo.common.entity.TUserAliDevice;
 import com.bright.apollo.common.entity.TUserDevice;
 import com.bright.apollo.common.entity.TUserObox;
 import com.bright.apollo.common.entity.TUserOperation;
@@ -321,8 +322,31 @@ public class HystrixFeignUserFallback extends BasicHystrixFeignFallback implemen
 	/* (non-Javadoc)  
 	 * @see com.bright.apollo.feign.FeignUserClient#getClientByClientId(java.lang.String)  
 	 */
+	@SuppressWarnings("rawtypes")
 	@Override
 	public ResponseObject<OauthClientDetails> getClientByClientId(String clientId) {
+		logger.warn("===user server is break===");
+		ResponseObject res = serverError();
+		return res;
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignUserClient#deleteUserAliDev(java.lang.String)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject deleteUserAliDev(String deviceSerialId) {
+		logger.warn("===user server is break===");
+		ResponseObject res = serverError();
+		return res;
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignUserClient#addUserAliDev(com.bright.apollo.common.entity.TUserAliDevice)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject addUserAliDev(TUserAliDevice tUserAliDev) {
 		logger.warn("===user server is break===");
 		ResponseObject res = serverError();
 		return res;

@@ -15,7 +15,7 @@ import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Component;
 
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
-import com.bright.apollo.dao.device.sqlProvider.OboxDeviceConfigSqlProvider;
+import com.bright.apollo.dao.sqlProvider.OboxDeviceConfigSqlProvider;
  
 
 @Mapper

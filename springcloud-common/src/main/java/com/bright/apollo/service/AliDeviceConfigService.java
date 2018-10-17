@@ -7,4 +7,12 @@ public interface AliDeviceConfigService {
     TAliDeviceConfig getAliDeviceConfigBySerializeId(String oboxSerialId);
 
     void update(TAliDeviceConfig aliDeviceConfig);
+
+	/**  
+	 * @param tAliDeviceConfig  
+	 * @Description:  
+	 */
+	void addAliDevConfig(TAliDeviceConfig tAliDeviceConfig);
+
+ 
 }

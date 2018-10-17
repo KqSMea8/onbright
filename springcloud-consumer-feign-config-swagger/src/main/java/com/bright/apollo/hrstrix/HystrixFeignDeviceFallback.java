@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import com.bright.apollo.common.entity.TAliDeviceConfig;
 import com.bright.apollo.common.entity.TDeviceStatus;
 import com.bright.apollo.common.entity.TIntelligentFingerAbandonRemoteUser;
 import com.bright.apollo.common.entity.TIntelligentFingerAuth;
@@ -475,6 +476,36 @@ public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implem
 	@SuppressWarnings("rawtypes")
 	@Override
 	public ResponseObject batchTIntelligentFingerPush(List<TIntelligentFingerPush> pushList) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#queryAliDevConfigBySerial(java.lang.String)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<TAliDeviceConfig> queryAliDevConfigBySerial(String deviceId) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#addAliDevConfig(com.bright.apollo.common.entity.TAliDeviceConfig)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject addAliDevConfig(TAliDeviceConfig tAliDeviceConfig) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#updateAliDevConfig(com.bright.apollo.common.entity.TAliDeviceConfig)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject updateAliDevConfig(TAliDeviceConfig tAliDeviceConfig) {
 		logger.warn("===device server is break===");
 		return serverError();
 	}

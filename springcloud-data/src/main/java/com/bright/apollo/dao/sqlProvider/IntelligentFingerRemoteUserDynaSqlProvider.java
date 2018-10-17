@@ -1,4 +1,4 @@
-package com.bright.apollo.dao.device.sqlProvider;
+package com.bright.apollo.dao.sqlProvider;
 
 import org.apache.ibatis.jdbc.SQL;
 import org.springframework.util.StringUtils;

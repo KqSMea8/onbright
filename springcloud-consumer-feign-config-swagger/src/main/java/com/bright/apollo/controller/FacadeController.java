@@ -6,16 +6,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import javax.validation.Valid;
-
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -30,10 +27,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bright.apollo.cache.AliDevCache;
 import com.bright.apollo.cache.CmdCache;
 import com.bright.apollo.common.dto.OboxResp;
 import com.bright.apollo.common.dto.OboxResp.Type;
 import com.bright.apollo.common.entity.OauthClientDetails;
+import com.bright.apollo.common.entity.TAliDevice;
+import com.bright.apollo.common.entity.TAliDeviceConfig;
+import com.bright.apollo.common.entity.TAliDeviceUS;
 import com.bright.apollo.common.entity.TCreateTableLog;
 import com.bright.apollo.common.entity.TDeviceStatus;
 import com.bright.apollo.common.entity.TIntelligentFingerAbandonRemoteUser;
@@ -48,12 +49,14 @@ import com.bright.apollo.common.entity.TScene;
 import com.bright.apollo.common.entity.TSceneAction;
 import com.bright.apollo.common.entity.TSceneCondition;
 import com.bright.apollo.common.entity.TUser;
+import com.bright.apollo.common.entity.TUserAliDevice;
 import com.bright.apollo.common.entity.TUserDevice;
 import com.bright.apollo.common.entity.TUserObox;
 import com.bright.apollo.common.entity.TUserOperation;
 import com.bright.apollo.common.entity.TUserScene;
 import com.bright.apollo.common.entity.TYSCamera;
 import com.bright.apollo.constant.SubTableConstant;
+import com.bright.apollo.enums.AliRegionEnum;
 import com.bright.apollo.enums.ConditionTypeEnum;
 import com.bright.apollo.enums.DeviceTypeEnum;
 import com.bright.apollo.enums.IntelligentMaxEnum;
@@ -84,6 +87,7 @@ import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.response.TUserOperationDTO;
 import com.bright.apollo.response.UserFingerDTO;
+import com.bright.apollo.service.AliDeviceService;
 import com.bright.apollo.service.MsgService;
 import com.bright.apollo.tool.Base64Util;
 import com.bright.apollo.tool.ByteHelper;
@@ -125,6 +129,10 @@ public class FacadeController extends BaseController {
 	private CmdCache cmdCache;
 	@Autowired
 	private MsgService msgService;
+	@Autowired
+	private AliDevCache aliDevCache;
+	@Autowired
+	private AliDeviceService aliDeviceService;
 	@Value("${logout.url}")
 	private String logoutUrl;
 
@@ -4945,6 +4953,116 @@ public class FacadeController extends BaseController {
 				return res;
 			}
 			feignAliClient.controlRemoteLed(oboxSerialId, status);
+			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	/**
+	 * @param serialId
+	 * @return
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@ApiOperation(value = "queryScenes", httpMethod = "PUT", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/uploadConfig/{deviceName}/{productKey}", method = RequestMethod.PUT)
+	public ResponseObject uploadConfig(@PathVariable(value = "deviceName") String deviceName,
+			@PathVariable(value = "productKey") String productKey,
+			@RequestParam(name = "config", required = true) String config) {
+		ResponseObject res = new ResponseObject();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+			String region = aliDevCache.getAliDevAvailable(productKey, deviceName);
+			if (StringUtils.isEmpty(region)) {
+				res.setStatus(ResponseEnum.SendOboxUnKnowFail.getStatus());
+				res.setMessage(ResponseEnum.SendOboxUnKnowFail.getMsg());
+				return res;
+			}
+			JSONObject object = new JSONObject(config);
+			ResponseObject<TAliDeviceConfig> aliDeviceRes = feignDeviceClient
+					.queryAliDevConfigBySerial(object.getString("deviceId"));
+			if (aliDeviceRes == null || aliDeviceRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			TAliDeviceConfig tAliDeviceConfig = aliDeviceRes.getData();
+			if (tAliDeviceConfig == null) {
+				tAliDeviceConfig = new TAliDeviceConfig();
+				tAliDeviceConfig.setAction(object.getString("action"));
+				tAliDeviceConfig.setDeviceSerialId(object.getString("deviceId"));
+				tAliDeviceConfig.setName(object.getString("name"));
+				tAliDeviceConfig.setState(object.getString("state"));
+				tAliDeviceConfig.setType(object.getString("type"));
+				feignDeviceClient.addAliDevConfig(tAliDeviceConfig);
+			} else {
+				tAliDeviceConfig.setAction(object.getString("action"));
+				tAliDeviceConfig.setDeviceSerialId(object.getString("deviceId"));
+				tAliDeviceConfig.setName(object.getString("name"));
+				tAliDeviceConfig.setState(object.getString("state"));
+				tAliDeviceConfig.setType(object.getString("type"));
+				feignDeviceClient.updateAliDevConfig(tAliDeviceConfig);
+			}
+			feignUserClient.deleteUserAliDev(tAliDeviceConfig.getDeviceSerialId());
+			TAliDevice aliDevice = aliDeviceService.getAliDeviceBySerializeId(object.getString("deviceId"));
+			if (aliDevice != null) {
+				if (!aliDevice.getProductKey().equals(productKey) && !aliDevice.getDeviceName().equals(deviceName)) {
+					aliDevice.setOboxSerialId("available");
+					aliDeviceService.updateAliDevice(aliDevice);
+					aliDevCache.DelDevInfo(object.getString("deviceId"));
+					// AliDevCache.DelDevInfo(object.getString("deviceId"));
+				}
+			} else {
+				TAliDeviceUS aliDeviceUS = aliDeviceService.getAliUSDeviceBySerializeId(object.getString("deviceId"));
+				if (aliDeviceUS != null) {
+					if (!aliDeviceUS.getProductKey().equals(productKey)
+							&& !aliDeviceUS.getDeviceName().equals(deviceName)) {
+						aliDeviceUS.setDeviceSerialId("available");
+						aliDeviceService.updateAliDevice(aliDevice);
+						aliDevCache.DelDevInfo(object.getString("deviceId"));
+					}
+				}
+			}
+			TAliDevice tAliDevice = aliDeviceService.getAliDeviceByProductKeyAndDeviceName(productKey, deviceName);
+			if (tAliDevice != null) {
+				tAliDevice.setOboxSerialId(object.getString("deviceId"));
+				aliDeviceService.updateAliDevice(aliDevice);
+				aliDevCache.saveDevInfo(productKey, object.getString("deviceId"), deviceName,
+						AliRegionEnum.SOURTHCHINA);
+			} else {
+				TAliDeviceUS tAliDeviceUS = aliDeviceService.getAliUSDeviceByProductKeyAndDeviceName(productKey,
+						deviceName);
+				if (tAliDeviceUS != null) {
+					tAliDeviceUS.setDeviceSerialId(object.getString("deviceId"));
+					aliDeviceService.updateAliUSDevice(tAliDeviceUS);
+					aliDevCache.saveDevInfo(productKey, object.getString("deviceId"), deviceName,
+							AliRegionEnum.AMERICA);
+				}
+			}
+			aliDevCache.delAliDevWait(productKey, deviceName);
+			
+			TUserAliDevice tUserAliDev = new TUserAliDevice();
+			tUserAliDev.setDeviceSerialId(tAliDeviceConfig.getDeviceSerialId());
+			tUserAliDev.setUserId(resUser.getData().getId());
+			feignUserClient.addUserAliDev(tUserAliDev);
 			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
 			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
 		} catch (Exception e) {
