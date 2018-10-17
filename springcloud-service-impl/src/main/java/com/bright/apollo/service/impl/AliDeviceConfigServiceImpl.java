@@ -6,6 +6,8 @@ import com.bright.apollo.service.AliDeviceConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AliDeviceConfigServiceImpl implements AliDeviceConfigService {
 
@@ -18,8 +20,19 @@ public class AliDeviceConfigServiceImpl implements AliDeviceConfigService {
     }
 
     @Override
+    public List<TAliDeviceConfig> getAliDeviceConfigByUserId(Integer userId) {
+        return mapper.getAliDeviceConfigByUserId(userId);
+    }
+
+    @Override
     public void update(TAliDeviceConfig aliDeviceConfig) {
         mapper.update(aliDeviceConfig);
+    }
+
+
+    @Override
+    public void addAliDevice(TAliDeviceConfig aliDeviceConfig) {
+        mapper.addAliDeviceConfig(aliDeviceConfig);
     }
 
 	/* (non-Javadoc)  
@@ -27,9 +40,7 @@ public class AliDeviceConfigServiceImpl implements AliDeviceConfigService {
 	 */
 	@Override
 	public void addAliDevConfig(TAliDeviceConfig tAliDeviceConfig) {
-		mapper.addAliDevConfig(tAliDeviceConfig);
+		mapper.addAliDeviceConfig(tAliDeviceConfig);
 		
 	}
-
- 
 }

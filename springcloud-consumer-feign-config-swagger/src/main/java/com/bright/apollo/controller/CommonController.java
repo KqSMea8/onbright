@@ -10,6 +10,11 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.bright.apollo.common.entity.TAliDevice;
+import com.bright.apollo.common.entity.TAliDeviceConfig;
+import com.bright.apollo.request.*;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bright.apollo.common.entity.TScene;
 import com.bright.apollo.enums.CMDEnum;
 import com.bright.apollo.enums.SceneTypeEnum;
-import com.bright.apollo.request.OboxDTO;
-import com.bright.apollo.request.RequestParam;
-import com.bright.apollo.request.SceneDTO;
-import com.bright.apollo.request.TIntelligentFingerPushDTO;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.tool.MobileUtil;
@@ -455,11 +456,39 @@ public class CommonController {
 					 return facadeController.controlRemoteLed(obox_serial_id,serialId,status);
 				 }
 			}
-		}else if (CMDEnum.upload_config.toString().equals(cmdEnum.toString())) {
- 			
-			
-			//update ali device config
-		}else if (CMDEnum.test.toString().equals(cmdEnum.toString())) {
+		}else if(CMDEnum.query_ali_dev.toString().equals(cmdEnum.toString())){//阿里wifi设备查询
+			return facadeController.queryAliDevice();
+		}else if(CMDEnum.set_ali_dev.toString().equals(cmdEnum.toString())){
+			String value = requestParam.getValue("value");
+			String deviceId = requestParam.getValue("deviceId");
+			return facadeController.setAliDevice(value,deviceId);
+		}else if(CMDEnum.read_ali_dev.toString().equals(cmdEnum.toString())){
+			String functionId = requestParam.getValue("functionId");
+			String deviceId = requestParam.getValue("deviceId");
+			String value = requestParam.getValue("value");
+			return facadeController.readAliDevice(functionId,deviceId,value);
+		}else if(CMDEnum.query_timer.toString().equals(cmdEnum.toString())){
+			String functionId = requestParam.getValue("functionId");
+			return facadeController.queryAliDeviceTimer(functionId);
+		}else if(CMDEnum.set_timer.toString().equals(cmdEnum.toString())){
+			String command = requestParam.getValue("command");
+			String deviceId = requestParam.getValue("deviceId");
+			String timer = requestParam.getValue("timer");
+			String timerValue = requestParam.getValue("timerValue");
+			return facadeController.setAliTimer(deviceId,command,timer,timerValue);
+		}else if(CMDEnum.upload_config.toString().equals(cmdEnum.toString())){
+			String deviceName = requestParam.getValue("deviceName");
+			String productKey = requestParam.getValue("productKey");
+			String config = requestParam.getValue("config");
+			return facadeController.uploadAliDevice(deviceName,productKey,config);
+		}else if(CMDEnum.set_countdown.toString().equals(cmdEnum.toString())){
+			String command = requestParam.getValue("command");
+			String deviceId = requestParam.getValue("deviceId");
+			String timer = requestParam.getValue("timer");
+			String timerValue = requestParam.getValue("timerValue");
+			return facadeController.setAliCountdown(deviceId,command,timer,timerValue);
+		}
+		else if (CMDEnum.test.toString().equals(cmdEnum.toString())) {
  			String serialId = requestParam.getValue("serialId");
 			if (!StringUtils.isEmpty(serialId)) {
 				return facadeController.test(serialId);

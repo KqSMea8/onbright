@@ -316,11 +316,60 @@ public interface FeignAliClient {
 
 	/**  
 	 * @param oboxSerialId
-	 * @param status  
-	 * @Description:  
+	 * @param status
+	 * @Description:
 	 */
 	@RequestMapping(value = "/aliService/controlRemoteLed/{serialId}/{status}", method = RequestMethod.PUT)
 	ResponseObject<OboxResp> controlRemoteLed(@PathVariable(value = "serialId")String serialId, 
 			@PathVariable(value = "status")String status);
- 
+
+	/**
+	 * @Description:阿里WiFi设备查询
+	 */
+	@RequestMapping(value = "/aliService/queryAliDevice/{userId}", method = RequestMethod.GET)
+	ResponseObject queryAliDevice(@PathVariable(required = true, value = "userId") Integer userId);
+
+	/**
+	 * @Description:设置阿里WiFi
+	 */
+	@RequestMapping(value = "/aliService/setAliDevice", method = RequestMethod.POST)
+	ResponseObject setAliDevice(@RequestParam(required = true, value = "value") Object value,@RequestParam(required = true, value = "deviceId") String deviceId);
+
+	/**
+	 * @Description:读取阿里WiFi
+	 */
+	@RequestMapping(value = "/aliService/readAliDevice/{functionId}/{deviceId}/{value}", method = RequestMethod.GET)
+	ResponseObject readAliDevice(@PathVariable(required = true, value = "functionId") String functionId,@PathVariable(required = true, value = "deviceId") String deviceId,@PathVariable(required = true, value = "value") String value);
+
+	/**
+	 * @Description:查询阿里WiFi Timer
+	 */
+	@RequestMapping(value = "/aliService/queryAliDeviceTimer/{deviceId}", method = RequestMethod.GET)
+	ResponseObject queryAliDeviceTimer(@PathVariable(required = true, value = "deviceId") String deviceId);
+
+	/**
+	 * @Description:倒计时阿里WiFi Timer
+	 */
+	@RequestMapping(value = "/aliService/setAliCountdown/{deviceId}/{command}/{timer}/{timerValue}", method = RequestMethod.GET)
+	ResponseObject setAliCountdown(@PathVariable(value = "deviceId") String deviceId,
+								   @PathVariable(value = "command") String command,
+								   @PathVariable(value = "timer") String timer,
+								   @PathVariable(value = "timerValue") String timerValue);
+
+	/**
+	 * @Description:阿里WiFi 计时器Timer
+	 */
+	@RequestMapping(value = "/aliService/setAliTimer/{deviceId}/{command}/{timer}/{timerValue}", method = RequestMethod.GET)
+	ResponseObject setAliTimer(@PathVariable(value = "deviceId") String deviceId,
+								   @PathVariable(value = "command") String command,
+								   @PathVariable(value = "timer") String timer,
+								   @PathVariable(value = "timerValue") String timerValue);
+
+	/**
+	 * @Description:上传阿里WiFi
+	 */
+	@RequestMapping(value = "/aliService/uploadAliDevice", method = RequestMethod.POST)
+	ResponseObject uploadAliDevice(@RequestParam(required = true,value = "deviceName") String deviceName,
+							   @RequestParam(required = true,value = "productKey") String productKey,@RequestParam(required = true, value = "config") Object config,@RequestParam(required = true,value = "userId") Integer userId);
+
 }

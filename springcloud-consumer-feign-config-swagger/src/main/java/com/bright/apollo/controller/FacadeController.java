@@ -1,5 +1,6 @@
 package com.bright.apollo.controller;
 
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -95,10 +96,13 @@ import com.bright.apollo.tool.DateHelper;
 import com.bright.apollo.tool.MD5;
 import com.bright.apollo.tool.MobileUtil;
 import com.bright.apollo.tool.NumberHelper;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
+
 
 /**
  * @Title:
@@ -135,6 +139,7 @@ public class FacadeController extends BaseController {
 	private AliDeviceService aliDeviceService;
 	@Value("${logout.url}")
 	private String logoutUrl;
+
 
 	// release obox
 	@SuppressWarnings({ "rawtypes" })
@@ -4968,8 +4973,9 @@ public class FacadeController extends BaseController {
 	 * @return
 	 * @Description:
 	 */
+	@Deprecated
 	@SuppressWarnings("rawtypes")
-	@ApiOperation(value = "queryScenes", httpMethod = "PUT", produces = "application/json")
+	@ApiOperation(value = "uploadConfig", httpMethod = "PUT", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/uploadConfig/{deviceName}/{productKey}", method = RequestMethod.PUT)
 	public ResponseObject uploadConfig(@PathVariable(value = "deviceName") String deviceName,
@@ -5093,4 +5099,258 @@ public class FacadeController extends BaseController {
 		}
 		return res;
 	}
+
+	@ApiOperation(value = "queryAliDevice", httpMethod = "GET", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/queryAliDevice", method = RequestMethod.GET)
+	public ResponseObject<Map<String, Object>> queryAliDevice() {
+		ResponseObject res = new ResponseObject<Map<String, Object>>();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+			TUser user = resUser.getData();
+			ResponseObject aliRes = feignAliClient.queryAliDevice(user.getId());
+			Map<String, Object> map = new HashMap<String, Object>();
+			JSONObject jsonObject = new JSONObject();
+
+			Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+            List list = (List) aliRes.getData();
+            if(list.size()>0){
+				res.setData(aliRes.getData());
+            }else{
+                res.setData(null);
+            }
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	@ApiOperation(value = "setAliDevice", httpMethod = "GET", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/setAliDevice/{value}/{deviceId}", method = RequestMethod.GET)
+	public ResponseObject<Map<String, Object>> setAliDevice(@RequestBody Object value,@PathVariable(value = "deviceId") String deviceId) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+
+			Map<String, Object> map = new HashMap<String, Object>();
+			ResponseObject aliRes = feignAliClient.setAliDevice(value,deviceId);
+			com.alibaba.fastjson.JSONArray jsonArray = com.alibaba.fastjson.JSONArray.parseArray((String)aliRes.getData());
+			com.alibaba.fastjson.JSONObject jsonObject = jsonArray.getJSONObject(0);
+			jsonObject.put("deviceId",deviceId);
+			logger.info("json ====== "+jsonObject);
+			map.put("value",jsonArray);
+			res.setData(map);
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	@ApiOperation(value = "readAliDevice", httpMethod = "GET", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/readAliDevice/{functionId}/{deviceId}/{value}", method = RequestMethod.GET)
+	public ResponseObject<Map<String, Object>> readAliDevice(@PathVariable(value = "functionId") String functionId,
+															 @PathVariable(value = "deviceId") String deviceId,
+															 @PathVariable(value = "value") String value) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+
+			ResponseObject aliRes = feignAliClient.setAliDevice(value,deviceId);
+			com.alibaba.fastjson.JSONArray jsonArray = com.alibaba.fastjson.JSONArray.parseArray((String)aliRes.getData());
+			com.alibaba.fastjson.JSONObject jsonObject = jsonArray.getJSONObject(0);
+			jsonObject.put("deviceId",deviceId);
+			res.setData(jsonObject);
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	@ApiOperation(value = "queryAliDeviceTimer", httpMethod = "GET", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/queryAliDeviceTimer/{deviceId}", method = RequestMethod.GET)
+	public ResponseObject<Map<String, Object>> queryAliDeviceTimer(@PathVariable(value = "deviceId") String deviceId) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+
+			Map<String, Object> map = new HashMap<String, Object>();
+			Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+			ResponseObject aliRes = feignAliClient.queryAliDeviceTimer(deviceId);
+			map.put("timers",gson.toJsonTree(aliRes.getData()));
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+
+	@ApiOperation(value = "setAliCountdown", httpMethod = "GET", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/setAliCountdown/{deviceId}/{command}/{timer}/{timerValue}", method = RequestMethod.GET)
+	public ResponseObject<Map<String, Object>> setAliCountdown(@PathVariable(value = "deviceId") String deviceId,
+															   @PathVariable(value = "command") String command,
+															   @PathVariable(value = "timer") String timer,
+															   @PathVariable(value = "timerValue") String timerValue) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+
+			feignAliClient.setAliCountdown(deviceId,command,timer,timerValue);
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	@ApiOperation(value = "setAliTimer", httpMethod = "GET", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/setAliTimer/{deviceId}/{command}/{timer}/{timerValue}", method = RequestMethod.GET)
+	public ResponseObject<Map<String, Object>> setAliTimer(@PathVariable(value = "deviceId") String deviceId,
+															   @PathVariable(value = "command") String command,
+															   @PathVariable(value = "timer") String timer,
+															   @PathVariable(value = "timerValue") String timerValue) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+
+			feignAliClient.setAliTimer(deviceId,command,timer,timerValue);
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+
+	@ApiOperation(value = "uploadAliDevice", httpMethod = "GET", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/uploadAliDevice/{deviceName}/{productKey}/{config}", method = RequestMethod.GET)
+	public ResponseObject<Map<String, Object>> uploadAliDevice(@PathVariable(value = "deviceName") String deviceName,
+														   @PathVariable(value = "productKey") String productKey,
+														   @RequestBody Object config) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+			feignAliClient.uploadAliDevice(deviceName,productKey,config,resUser.getData().getId());
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+
 }
