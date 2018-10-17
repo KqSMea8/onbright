@@ -397,4 +397,10 @@ public interface FeignAliClient {
 	 */
 	@RequestMapping(value = "/aliService/updateAliDevTimer", method = RequestMethod.POST)
 	ResponseObject updateAliDevTimer(@RequestParam(required = true, value = "aliDevTimer") TAliDevTimer aliDevTimer);
+
+	/**
+	 * @Description:通过序列号查询TImer
+	 */
+	@RequestMapping(value = "/aliService/delAliDevice", method = RequestMethod.POST)
+	ResponseObject delAliDevice(@RequestParam(required = true, value = "value") Object value,@RequestParam(required = true, value = "deviceId") String deviceId);
 }

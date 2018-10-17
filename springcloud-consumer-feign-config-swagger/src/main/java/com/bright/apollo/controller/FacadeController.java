@@ -1,22 +1,5 @@
 package com.bright.apollo.controller;
 
-import com.alibaba.fastjson.JSONArray;
-import com.bright.apollo.cache.CmdCache;
-import com.bright.apollo.common.dto.OboxResp;
-import com.bright.apollo.common.dto.OboxResp.Type;
-import com.bright.apollo.common.entity.*;
-import com.bright.apollo.common.entity.TSceneAction;
-import com.bright.apollo.constant.SubTableConstant;
-import com.bright.apollo.enums.*;
-import com.bright.apollo.http.HttpWithBasicAuth;
-import com.bright.apollo.service.AliDeviceService;
-import com.bright.apollo.service.MsgService;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -25,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,12 +26,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSONArray;
 import com.bright.apollo.cache.AliDevCache;
-
+import com.bright.apollo.cache.CmdCache;
+import com.bright.apollo.common.dto.OboxResp;
+import com.bright.apollo.common.dto.OboxResp.Type;
 import com.bright.apollo.common.entity.OauthClientDetails;
-import com.bright.apollo.common.entity.TAliDevice;
-import com.bright.apollo.common.entity.TAliDeviceConfig;
-import com.bright.apollo.common.entity.TAliDeviceUS;
+import com.bright.apollo.common.entity.TAliDevTimer;
 import com.bright.apollo.common.entity.TCreateTableLog;
 import com.bright.apollo.common.entity.TDeviceStatus;
 import com.bright.apollo.common.entity.TIntelligentFingerAbandonRemoteUser;
@@ -61,27 +44,29 @@ import com.bright.apollo.common.entity.TNvr;
 import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.common.entity.TScene;
+import com.bright.apollo.common.entity.TSceneAction;
 import com.bright.apollo.common.entity.TSceneCondition;
 import com.bright.apollo.common.entity.TUser;
-import com.bright.apollo.common.entity.TUserAliDevice;
 import com.bright.apollo.common.entity.TUserDevice;
 import com.bright.apollo.common.entity.TUserObox;
 import com.bright.apollo.common.entity.TUserOperation;
 import com.bright.apollo.common.entity.TUserScene;
 import com.bright.apollo.common.entity.TYSCamera;
-import com.bright.apollo.enums.AliRegionEnum;
+import com.bright.apollo.constant.SubTableConstant;
 import com.bright.apollo.enums.ConditionTypeEnum;
 import com.bright.apollo.enums.DeviceTypeEnum;
 import com.bright.apollo.enums.IntelligentMaxEnum;
 import com.bright.apollo.enums.NodeTypeEnum;
 import com.bright.apollo.enums.RemoteUserEnum;
 import com.bright.apollo.enums.SceneTypeEnum;
+import com.bright.apollo.enums.TimerSetTypeEnum;
 import com.bright.apollo.feign.FeignAliClient;
 import com.bright.apollo.feign.FeignDeviceClient;
 import com.bright.apollo.feign.FeignOboxClient;
 import com.bright.apollo.feign.FeignQuartzClient;
 import com.bright.apollo.feign.FeignSceneClient;
 import com.bright.apollo.feign.FeignUserClient;
+import com.bright.apollo.http.HttpWithBasicAuth;
 import com.bright.apollo.request.IntelligentFingerRemoteUserDTO;
 import com.bright.apollo.request.IntelligentFingerWarnDTO;
 import com.bright.apollo.request.IntelligentFingerWarnItemDTO;
@@ -99,13 +84,17 @@ import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.response.TUserOperationDTO;
 import com.bright.apollo.response.UserFingerDTO;
-
+import com.bright.apollo.service.MsgService;
 import com.bright.apollo.tool.Base64Util;
 import com.bright.apollo.tool.ByteHelper;
 import com.bright.apollo.tool.DateHelper;
 import com.bright.apollo.tool.MD5;
 import com.bright.apollo.tool.MobileUtil;
 import com.bright.apollo.tool.NumberHelper;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
 
 
 /**
@@ -139,7 +128,7 @@ public class FacadeController extends BaseController {
 	private MsgService msgService;
 	@Autowired
 	private AliDevCache aliDevCache;
-	 
+ 
 	@Value("${logout.url}")
 	private String logoutUrl;
 
@@ -4971,7 +4960,7 @@ public class FacadeController extends BaseController {
 		return res;
 	}
 
-	 
+  
 
 	/**
 	 * @param serialId
@@ -5327,6 +5316,36 @@ public class FacadeController extends BaseController {
 				return res;
 			}
 			feignAliClient.uploadAliDevice(deviceName,productKey,config,resUser.getData().getId());
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	@ApiOperation(value = "delAliDevice", httpMethod = "GET", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/delAliDevice", method = RequestMethod.POST)
+	public ResponseObject<Map<String, Object>> delAliDevice(@RequestBody Object value,@RequestParam(value = "deviceId") String deviceId) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+			feignAliClient.delAliDevice(value,deviceId);
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {

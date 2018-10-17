@@ -2,16 +2,7 @@ package com.bright.apollo.dao.device.mapper;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.InsertProvider;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.SelectKey;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import com.bright.apollo.common.entity.TAliDeviceConfig;
@@ -80,4 +71,6 @@ public interface AliDeviceConfigMapper {
     @Options(useGeneratedKeys=true, keyProperty="Id", keyColumn="id")
     int addAliDeviceConfig(TAliDeviceConfig aliDeviceConfig);
 
+	@Delete("delete from t_ali_device_config where device_serial_id = #{deviceSerialId} ")
+	void deleteAliDeviceConfig(@Param("deviceSerialId") String deviceSerialId);
 }

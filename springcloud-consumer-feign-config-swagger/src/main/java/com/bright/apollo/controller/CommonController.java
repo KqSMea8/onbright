@@ -487,6 +487,10 @@ public class CommonController {
 			String timer = requestParam.getValue("timer");
 			String timerValue = requestParam.getValue("timerValue");
 			return facadeController.setAliCountdown(deviceId,command,timer,timerValue);
+		}else if(CMDEnum.del_ali_dev.toString().equals(cmdEnum.toString())){
+			String deviceId = requestParam.getValue("deviceId");
+			String value = requestParam.getValue("value");
+			return facadeController.delAliDevice(value,deviceId);
 		}
 		else if (CMDEnum.test.toString().equals(cmdEnum.toString())) {
  			String serialId = requestParam.getValue("serialId");

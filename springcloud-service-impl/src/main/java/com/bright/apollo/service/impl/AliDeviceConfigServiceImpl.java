@@ -35,7 +35,12 @@ public class AliDeviceConfigServiceImpl implements AliDeviceConfigService {
         mapper.addAliDeviceConfig(aliDeviceConfig);
     }
 
-	/* (non-Javadoc)  
+    @Override
+    public void deleteAliDeviceConfig(String oboxSerialId) {
+        mapper.deleteAliDeviceConfig(oboxSerialId);
+    }
+
+    /* (non-Javadoc)
 	 * @see com.bright.apollo.service.AliDeviceConfigService#addAliDevConfig(com.bright.apollo.common.entity.TAliDeviceConfig)  
 	 */
 	@Override
