@@ -139,8 +139,7 @@ public class FacadeController extends BaseController {
 	private MsgService msgService;
 	@Autowired
 	private AliDevCache aliDevCache;
-	@Autowired
-	private AliDeviceService aliDeviceService;
+//	@Autowiredg
 	@Value("${logout.url}")
 	private String logoutUrl;
 
@@ -4977,111 +4976,111 @@ public class FacadeController extends BaseController {
 	 * @return
 	 * @Description:
 	 */
-	@Deprecated
-	@SuppressWarnings("rawtypes")
-	@ApiOperation(value = "uploadConfig", httpMethod = "PUT", produces = "application/json")
-	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
-	@RequestMapping(value = "/uploadConfig/{deviceName}/{productKey}", method = RequestMethod.PUT)
-	public ResponseObject uploadConfig(@PathVariable(value = "deviceName") String deviceName,
-			@PathVariable(value = "productKey") String productKey,
-			@RequestParam(name = "config", required = true) String config) {
-		ResponseObject res = new ResponseObject();
-		try {
-			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			if (StringUtils.isEmpty(principal.getUsername())) {
-				res.setStatus(ResponseEnum.RequestParamError.getStatus());
-				res.setMessage(ResponseEnum.RequestParamError.getMsg());
-				return res;
-			}
-			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
-			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
-					|| resUser.getData() == null) {
-				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
-				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
-				return res;
-			}
-			String region = aliDevCache.getAliDevAvailable(productKey, deviceName);
-			if (StringUtils.isEmpty(region)) {
-				res.setStatus(ResponseEnum.SendOboxUnKnowFail.getStatus());
-				res.setMessage(ResponseEnum.SendOboxUnKnowFail.getMsg());
-				return res;
-			}
-			JSONObject object = new JSONObject(config);
-			ResponseObject<TAliDeviceConfig> aliDeviceRes = feignDeviceClient
-					.queryAliDevConfigBySerial(object.getString("deviceId"));
-			if (aliDeviceRes == null || aliDeviceRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
-				res.setStatus(ResponseEnum.RequestParamError.getStatus());
-				res.setMessage(ResponseEnum.RequestParamError.getMsg());
-				return res;
-			}
-			TAliDeviceConfig tAliDeviceConfig = aliDeviceRes.getData();
-			if (tAliDeviceConfig == null) {
-				tAliDeviceConfig = new TAliDeviceConfig();
-				tAliDeviceConfig.setAction(object.getString("action"));
-				tAliDeviceConfig.setDeviceSerialId(object.getString("deviceId"));
-				tAliDeviceConfig.setName(object.getString("name"));
-				tAliDeviceConfig.setState(object.getString("state"));
-				tAliDeviceConfig.setType(object.getString("type"));
-				feignDeviceClient.addAliDevConfig(tAliDeviceConfig);
-			} else {
-				tAliDeviceConfig.setAction(object.getString("action"));
-				tAliDeviceConfig.setDeviceSerialId(object.getString("deviceId"));
-				tAliDeviceConfig.setName(object.getString("name"));
-				tAliDeviceConfig.setState(object.getString("state"));
-				tAliDeviceConfig.setType(object.getString("type"));
-				feignDeviceClient.updateAliDevConfig(tAliDeviceConfig);
-			}
-			feignUserClient.deleteUserAliDev(tAliDeviceConfig.getDeviceSerialId());
-			TAliDevice aliDevice = aliDeviceService.getAliDeviceBySerializeId(object.getString("deviceId"));
-			if (aliDevice != null) {
-				if (!aliDevice.getProductKey().equals(productKey) && !aliDevice.getDeviceName().equals(deviceName)) {
-					aliDevice.setOboxSerialId("available");
-					aliDeviceService.updateAliDevice(aliDevice);
-					aliDevCache.DelDevInfo(object.getString("deviceId"));
-					// AliDevCache.DelDevInfo(object.getString("deviceId"));
-				}
-			} else {
-				TAliDeviceUS aliDeviceUS = aliDeviceService.getAliUSDeviceBySerializeId(object.getString("deviceId"));
-				if (aliDeviceUS != null) {
-					if (!aliDeviceUS.getProductKey().equals(productKey)
-							&& !aliDeviceUS.getDeviceName().equals(deviceName)) {
-						aliDeviceUS.setDeviceSerialId("available");
-						aliDeviceService.updateAliDevice(aliDevice);
-						aliDevCache.DelDevInfo(object.getString("deviceId"));
-					}
-				}
-			}
-			TAliDevice tAliDevice = aliDeviceService.getAliDeviceByProductKeyAndDeviceName(productKey, deviceName);
-			if (tAliDevice != null) {
-				tAliDevice.setOboxSerialId(object.getString("deviceId"));
-				aliDeviceService.updateAliDevice(aliDevice);
-				aliDevCache.saveDevInfo(productKey, object.getString("deviceId"), deviceName,
-						AliRegionEnum.SOURTHCHINA);
-			} else {
-				TAliDeviceUS tAliDeviceUS = aliDeviceService.getAliUSDeviceByProductKeyAndDeviceName(productKey,
-						deviceName);
-				if (tAliDeviceUS != null) {
-					tAliDeviceUS.setDeviceSerialId(object.getString("deviceId"));
-					aliDeviceService.updateAliUSDevice(tAliDeviceUS);
-					aliDevCache.saveDevInfo(productKey, object.getString("deviceId"), deviceName,
-							AliRegionEnum.AMERICA);
-				}
-			}
-			aliDevCache.delAliDevWait(productKey, deviceName);
-			
-			TUserAliDevice tUserAliDev = new TUserAliDevice();
-			tUserAliDev.setDeviceSerialId(tAliDeviceConfig.getDeviceSerialId());
-			tUserAliDev.setUserId(resUser.getData().getId());
-			feignUserClient.addUserAliDev(tUserAliDev);
-			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
-			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
-		} catch (Exception e) {
-			logger.error("===error msg:" + e.getMessage());
-			res.setStatus(ResponseEnum.Error.getStatus());
-			res.setMessage(ResponseEnum.Error.getMsg());
-		}
-		return res;
-	}
+//	@Deprecated
+//	@SuppressWarnings("rawtypes")
+//	@ApiOperation(value = "uploadConfig", httpMethod = "PUT", produces = "application/json")
+//	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+//	@RequestMapping(value = "/uploadConfig/{deviceName}/{productKey}", method = RequestMethod.PUT)
+//	public ResponseObject uploadConfig(@PathVariable(value = "deviceName") String deviceName,
+//			@PathVariable(value = "productKey") String productKey,
+//			@RequestParam(name = "config", required = true) String config) {
+//		ResponseObject res = new ResponseObject();
+//		try {
+//			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//			if (StringUtils.isEmpty(principal.getUsername())) {
+//				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+//				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+//				return res;
+//			}
+//			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+//			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+//					|| resUser.getData() == null) {
+//				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+//				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+//				return res;
+//			}
+//			String region = aliDevCache.getAliDevAvailable(productKey, deviceName);
+//			if (StringUtils.isEmpty(region)) {
+//				res.setStatus(ResponseEnum.SendOboxUnKnowFail.getStatus());
+//				res.setMessage(ResponseEnum.SendOboxUnKnowFail.getMsg());
+//				return res;
+//			}
+//			JSONObject object = new JSONObject(config);
+//			ResponseObject<TAliDeviceConfig> aliDeviceRes = feignDeviceClient
+//					.queryAliDevConfigBySerial(object.getString("deviceId"));
+//			if (aliDeviceRes == null || aliDeviceRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
+//				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+//				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+//				return res;
+//			}
+//			TAliDeviceConfig tAliDeviceConfig = aliDeviceRes.getData();
+//			if (tAliDeviceConfig == null) {
+//				tAliDeviceConfig = new TAliDeviceConfig();
+//				tAliDeviceConfig.setAction(object.getString("action"));
+//				tAliDeviceConfig.setDeviceSerialId(object.getString("deviceId"));
+//				tAliDeviceConfig.setName(object.getString("name"));
+//				tAliDeviceConfig.setState(object.getString("state"));
+//				tAliDeviceConfig.setType(object.getString("type"));
+//				feignDeviceClient.addAliDevConfig(tAliDeviceConfig);
+//			} else {
+//				tAliDeviceConfig.setAction(object.getString("action"));
+//				tAliDeviceConfig.setDeviceSerialId(object.getString("deviceId"));
+//				tAliDeviceConfig.setName(object.getString("name"));
+//				tAliDeviceConfig.setState(object.getString("state"));
+//				tAliDeviceConfig.setType(object.getString("type"));
+//				feignDeviceClient.updateAliDevConfig(tAliDeviceConfig);
+//			}
+//			feignUserClient.deleteUserAliDev(tAliDeviceConfig.getDeviceSerialId());
+//			TAliDevice aliDevice = aliDeviceService.getAliDeviceBySerializeId(object.getString("deviceId"));
+//			if (aliDevice != null) {
+//				if (!aliDevice.getProductKey().equals(productKey) && !aliDevice.getDeviceName().equals(deviceName)) {
+//					aliDevice.setOboxSerialId("available");
+//					aliDeviceService.updateAliDevice(aliDevice);
+//					aliDevCache.DelDevInfo(object.getString("deviceId"));
+//					// AliDevCache.DelDevInfo(object.getString("deviceId"));
+//				}
+//			} else {
+//				TAliDeviceUS aliDeviceUS = aliDeviceService.getAliUSDeviceBySerializeId(object.getString("deviceId"));
+//				if (aliDeviceUS != null) {
+//					if (!aliDeviceUS.getProductKey().equals(productKey)
+//							&& !aliDeviceUS.getDeviceName().equals(deviceName)) {
+//						aliDeviceUS.setDeviceSerialId("available");
+//						aliDeviceService.updateAliDevice(aliDevice);
+//						aliDevCache.DelDevInfo(object.getString("deviceId"));
+//					}
+//				}
+//			}
+//			TAliDevice tAliDevice = aliDeviceService.getAliDeviceByProductKeyAndDeviceName(productKey, deviceName);
+//			if (tAliDevice != null) {
+//				tAliDevice.setOboxSerialId(object.getString("deviceId"));
+//				aliDeviceService.updateAliDevice(aliDevice);
+//				aliDevCache.saveDevInfo(productKey, object.getString("deviceId"), deviceName,
+//						AliRegionEnum.SOURTHCHINA);
+//			} else {
+//				TAliDeviceUS tAliDeviceUS = aliDeviceService.getAliUSDeviceByProductKeyAndDeviceName(productKey,
+//						deviceName);
+//				if (tAliDeviceUS != null) {
+//					tAliDeviceUS.setDeviceSerialId(object.getString("deviceId"));
+//					aliDeviceService.updateAliUSDevice(tAliDeviceUS);
+//					aliDevCache.saveDevInfo(productKey, object.getString("deviceId"), deviceName,
+//							AliRegionEnum.AMERICA);
+//				}
+//			}
+//			aliDevCache.delAliDevWait(productKey, deviceName);
+//
+//			TUserAliDevice tUserAliDev = new TUserAliDevice();
+//			tUserAliDev.setDeviceSerialId(tAliDeviceConfig.getDeviceSerialId());
+//			tUserAliDev.setUserId(resUser.getData().getId());
+//			feignUserClient.addUserAliDev(tUserAliDev);
+//			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+//			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+//		} catch (Exception e) {
+//			logger.error("===error msg:" + e.getMessage());
+//			res.setStatus(ResponseEnum.Error.getStatus());
+//			res.setMessage(ResponseEnum.Error.getMsg());
+//		}
+//		return res;
+//	}
 
 	/**
 	 * @param serialId
