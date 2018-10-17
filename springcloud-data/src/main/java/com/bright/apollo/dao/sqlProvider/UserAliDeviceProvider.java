@@ -13,7 +13,7 @@ import com.bright.apollo.common.entity.TUserAliDevice;
  *@Version:1.1.0  
  */
 public class UserAliDeviceProvider {
-	public String addAction(final TUserAliDevice tUserAliDev) {
+	public String addUserAliDev(final TUserAliDevice tUserAliDev) {
 		return new SQL() {
 			{
 				INSERT_INTO("t_user_ali_device");
