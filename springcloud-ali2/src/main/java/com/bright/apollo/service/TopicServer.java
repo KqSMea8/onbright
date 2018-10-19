@@ -171,7 +171,7 @@ public class TopicServer {
 		 * iotClient.getClient(AliRegionEnum.SOURTHCHINA.name()).getAcsResponse(
 		 * request); }
 		 */
-		logger.info(" rep success topic: " + response.getSuccess());
+		
 		logger.info(" ====== pubTopicDev end ====== ");
 	}
 

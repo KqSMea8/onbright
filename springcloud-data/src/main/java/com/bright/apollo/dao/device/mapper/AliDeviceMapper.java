@@ -26,10 +26,15 @@ public interface AliDeviceMapper {
     @Delete("delete from t_ali_device_timer where device_serial_id = #{deviceSerialId} and is_countdown = #{isCountdown}")
     void deleteAliDevTimerBySerializeIdAndType(@Param("deviceSerialId") String deviceSerialId,@Param("isCountdown") int isCountdown);
 
-    @Results(value = {
-            @Result(property = "oboxSerialId",column = "obox_serial_id"),
-            @Result(property = "lastOpTime",column = "last_op_time")
-    })
+	@Results(value = {
+			@Result(property = "Id",column = "id"),
+			@Result(property = "oboxSerialId",column = "obox_serial_id"),
+			@Result(property = "lastOpTime",column = "last_op_time"),
+			@Result(property = "deviceName",column = "DeviceName"),
+			@Result(property = "deviceSecret",column = "DeviceSecret"),
+			@Result(property = "productKey",column = "productKey"),
+			@Result(property = "offline",column = "offline")
+	})
     @Select("select * from t_ali_device where productKey = #{productKey} and deviceName = #{deviceName} ")
     TAliDevice getAliDeviceByProductKeyAndDeviceName(@Param("productKey") String productKey,@Param("deviceName") String deviceName);
 
