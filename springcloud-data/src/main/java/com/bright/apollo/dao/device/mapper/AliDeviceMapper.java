@@ -21,6 +21,15 @@ public interface AliDeviceMapper {
     TAliDeviceUS getAliUSDeviceBySerializeId(@Param("oboxSerialId") String oboxSerialId);
 
     @Select("select * from t_ali_device_timer where id = #{id}")
+	@Results(value = {
+			@Result(property = "Id",column = "id"),
+			@Result(property = "deviceSerialId",column = "device_serial_id"),
+			@Result(property = "lastOpTime",column = "last_op_time"),
+			@Result(property = "timer",column = "timer"),
+			@Result(property = "timerValue",column = "timer_value"),
+			@Result(property = "isCountdown",column = "is_countdown"),
+			@Result(property = "state",column = "state")
+	})
     TAliDevTimer getAliDevTimerByTimerId(@Param("id") int id);
 
     @Delete("delete from t_ali_device_timer where device_serial_id = #{deviceSerialId} and is_countdown = #{isCountdown}")

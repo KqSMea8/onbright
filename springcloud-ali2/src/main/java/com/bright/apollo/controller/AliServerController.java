@@ -1190,4 +1190,20 @@ public class AliServerController {
 		return res;
 	}
 
+	@RequestMapping(value = "/getAliDevTimerById/{id}", method = RequestMethod.GET)
+	public ResponseObject getAliDevTimerById(@PathVariable(value = "id") Integer id) {
+		ResponseObject res = new ResponseObject();
+		try {
+			TAliDevTimer tAliDevTimer = aliDeviceService.getAliDevTimerById(id);
+			res.setData(tAliDevTimer);
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
 }

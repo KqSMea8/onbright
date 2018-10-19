@@ -153,7 +153,7 @@ public class TopicServer {
 		
 		logger.info(" ====== pubTopic end ====== ");
 	}
-	public void pubTopicDev(JSONObject object, String productKey, String deviceName, AliRegionEnum eAliRegionEnum)
+	public void pubTopicDev(net.sf.json.JSONObject object, String productKey, String deviceName, AliRegionEnum eAliRegionEnum)
 			throws Exception {
 		logger.info(" ====== pubTopicDev start ====== ");
 		PubRequest request = new PubRequest();
@@ -171,7 +171,7 @@ public class TopicServer {
 		 * iotClient.getClient(AliRegionEnum.SOURTHCHINA.name()).getAcsResponse(
 		 * request); }
 		 */
-		
+
 		logger.info(" ====== pubTopicDev end ====== ");
 	}
 

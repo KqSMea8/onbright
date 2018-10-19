@@ -38,6 +38,14 @@ public interface FeignQuartzClient {
 	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/quartz/deleteJobTimer/{jobName}", method = RequestMethod.DELETE, produces = "application/json")
+	public ResponseObject deleteJobTimer(@PathVariable(value = "jobName", required = true) String jobName);
+
+	/**
+	 * @param jobName
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/quartz/pauseJob/{jobName}", method = RequestMethod.PUT, produces = "application/json")
 	public ResponseObject pauseJob(@PathVariable(value = "jobName", required = true) String jobName);
 
@@ -46,8 +54,23 @@ public interface FeignQuartzClient {
 	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/quartz/pauseJobTimer/{jobName}", method = RequestMethod.PUT, produces = "application/json")
+	public ResponseObject pauseJobTimer(@PathVariable(value = "jobName", required = true) String jobName);
+	/**
+	 * @param jobName
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/quartz/resumeJob/{jobName}", method = RequestMethod.PUT, produces = "application/json")
 	public ResponseObject resumeJob(@PathVariable(value = "jobName", required = true) String jobName);
+
+	/**
+	 * @param jobName
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/quartz/resumeJobTimer/{jobName}", method = RequestMethod.PUT, produces = "application/json")
+	public ResponseObject resumeJobTimer(@PathVariable(value = "jobName", required = true) String jobName);
 
 	/**
 	 * @param fingerRemoteUserId

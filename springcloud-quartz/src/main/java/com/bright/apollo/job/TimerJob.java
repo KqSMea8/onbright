@@ -2,6 +2,7 @@ package com.bright.apollo.job;
 
 import com.bright.apollo.common.entity.TAliDevTimer;
 import com.bright.apollo.feign.FeignAliClient;
+import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.service.AliDeviceService;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
@@ -14,8 +15,7 @@ import org.springframework.util.StringUtils;
 
 public class TimerJob implements Job {
     private static final Logger log = LoggerFactory.getLogger(TimerJob.class);
-    @Autowired
-    private AliDeviceService aliDeviceService;
+
     @Autowired
     private FeignAliClient feignAliClient;
     @Override
@@ -27,8 +27,8 @@ public class TimerJob implements Job {
         if (!StringUtils.isEmpty(timerId)) {
             try {
                 Integer id = Integer.valueOf(timerId);
-                TAliDevTimer tAliDevTimer = aliDeviceService.getAliDevTimerById(id);
-                if (tAliDevTimer != null) {
+                ResponseObject res = feignAliClient.getAliDevTimerById(id);
+                if (res.getData() != null) {
                     feignAliClient.addTimerAction(id);
                 }
             } catch (Exception e) {

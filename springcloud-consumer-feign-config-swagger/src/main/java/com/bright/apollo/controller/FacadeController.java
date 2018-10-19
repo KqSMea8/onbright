@@ -5165,44 +5165,55 @@ public class FacadeController extends BaseController {
 			feignAliClient.setAliCountdown(deviceId);
 			TAliDevTimer aliDevTimer;
 			ResponseObject aldRes;
+			Map<String,Object> map = null;
 			switch (TimerSetTypeEnum.getSetType(command)) {
 			case add:
 				aldRes = feignAliClient.getAliDevTimerByDeviceSerialIdAndCountDown(deviceId);
-				aliDevTimer = (TAliDevTimer) aldRes.getData();
-				if (aliDevTimer != null) {
-					feignAliClient.delAliDevTimerByDeviceSerialId(aliDevTimer.getId());
+				map = (Map<String,Object>) aldRes.getData();
+				if (map != null) {
+					feignAliClient.delAliDevTimerByDeviceSerialId(Integer.valueOf(map.get("id").toString()));
 
-					feignQuartzClient.deleteJob(aliDevTimer.getId().toString());
+					feignQuartzClient.deleteJob(map.get("id").toString());
+				}
+				JSONArray array = JSONArray.parseArray(timerValue);
+				for (int i = 0; i < array.size(); i++) {
+					com.alibaba.fastjson.JSONObject jsonObject = array.getJSONObject(i);
+					if (jsonObject.getBoolean("data")) {
+						jsonObject.put("data", true);
+					}else {
+						jsonObject.put("data", false);
+					}
 				}
 				aliDevTimer = new TAliDevTimer();
 				aliDevTimer.setTimer(timer);
 				aliDevTimer.setDeviceSerialId(deviceId);
-				aliDevTimer.setTimerValue(timerValue);
+				aliDevTimer.setTimerValue(array.toJSONString());
 				aliDevTimer.setIsCountdown(1);
+				aliDevTimer.setState(1);
 				ResponseObject addRes = feignAliClient.addAliDevTimer(aliDevTimer);
 				int repId = (Integer) addRes.getData();
-				feignQuartzClient.addRemoteOpenTaskSchedule(repId, timer, deviceId);
+				feignQuartzClient.startTimerSchedule(repId, timer);
 				break;
 			case delete:
 				aldRes = feignAliClient.getAliDevTimerByDeviceSerialIdAndCountDown(deviceId);
-				aliDevTimer = (TAliDevTimer) aldRes.getData();
-				feignAliClient.delAliDevTimerByDeviceSerialId(aliDevTimer.getId());
-				feignQuartzClient.deleteJob(aliDevTimer.getId().toString());
+				map = (Map<String,Object>) aldRes.getData();
+				feignAliClient.delAliDevTimerByDeviceSerialId(Integer.valueOf(map.get("id").toString()));
+				feignQuartzClient.deleteJobTimer(map.get("id").toString());
 				break;
 			default:
 				res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
 				res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
 				return res;
 			}
-			JSONArray jsonArray = null;
-			if (aliDevTimer != null) {
-				jsonArray = JSONArray.parseArray(aliDevTimer.getTimerValue());
-				com.alibaba.fastjson.JSONObject jsonObject = jsonArray.getJSONObject(0);
-				jsonObject.put("timer", aliDevTimer.getTimer());
-			} else {
-				jsonArray = new JSONArray();
-			}
-			res.setData(jsonArray);
+//			JSONArray jsonArray = null;
+//			if (map != null) {
+//				jsonArray = JSONArray.parseArray(map.get("timerValue").toString());
+//				com.alibaba.fastjson.JSONObject jsonObject = jsonArray.getJSONObject(0);
+//				jsonObject.put("timer", aliDevTimer.getTimer());
+//			} else {
+//				jsonArray = new JSONArray();
+//			}
+//			res.setData(jsonArray);
 
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
@@ -5264,7 +5275,7 @@ public class FacadeController extends BaseController {
 				aldRes = feignAliClient.getAliDevTimerByIdAndDeviceId(deviceId, Integer.valueOf(timerId));
 				map = (Map<String, Object>) aldRes.getData();
 				feignAliClient.delAliDevTimerByDeviceSerialId(Integer.valueOf(map.get("id").toString()));
-				feignQuartzClient.deleteJob(map.get("id").toString());
+				feignQuartzClient.deleteJobTimer(map.get("id").toString());
 				break;
 			case enable:
 				aldRes = feignAliClient.getAliDevTimerByIdAndDeviceId(deviceId, Integer.valueOf(timerId));
@@ -5278,7 +5289,7 @@ public class FacadeController extends BaseController {
 				aliDevTimer.setId(Integer.valueOf(map.get("id").toString()));
 				aliDevTimer.setState(1);
 				feignAliClient.updateAliDevTimer(aliDevTimer);
-				feignQuartzClient.resumeJob(aliDevTimer.getId().toString());
+				feignQuartzClient.resumeJobTimer(aliDevTimer.getId().toString());
 				map.put("timerId", aliDevTimer.getId());
 				break;
 			case disable:
@@ -5294,7 +5305,7 @@ public class FacadeController extends BaseController {
 				// aliDevTimer.setState(1);
 				aliDevTimer.setState(0);
 				feignAliClient.updateAliDevTimer(aliDevTimer);
-				feignQuartzClient.pauseJob(aliDevTimer.getId().toString());
+				feignQuartzClient.pauseJobTimer(aliDevTimer.getId().toString());
 				map.put("timerId", aliDevTimer.getId());
 				break;
 			default:

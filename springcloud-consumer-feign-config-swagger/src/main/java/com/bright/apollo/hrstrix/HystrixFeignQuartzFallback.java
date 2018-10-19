@@ -38,6 +38,12 @@ public class HystrixFeignQuartzFallback extends BasicHystrixFeignFallback implem
 		return serverError();
 	}
 
+	@Override
+	public ResponseObject deleteJobTimer(String jobName) {
+		logger.warn("===quartz server is break===");
+		return serverError();
+	}
+
 	/* (non-Javadoc)  
 	 * @see com.bright.apollo.feign.FeignQuartzClient#pauseJob(java.lang.String)  
 	 */
@@ -48,12 +54,24 @@ public class HystrixFeignQuartzFallback extends BasicHystrixFeignFallback implem
 		return serverError();
 	}
 
+	@Override
+	public ResponseObject pauseJobTimer(String jobName) {
+		logger.warn("===quartz server is break===");
+		return serverError();
+	}
+
 	/* (non-Javadoc)  
 	 * @see com.bright.apollo.feign.FeignQuartzClient#resumeJob(java.lang.String)  
 	 */
 	@SuppressWarnings("rawtypes")
 	@Override
 	public ResponseObject resumeJob(String jobName) {
+		logger.warn("===quartz server is break===");
+		return serverError();
+	}
+
+	@Override
+	public ResponseObject resumeJobTimer(String jobName) {
 		logger.warn("===quartz server is break===");
 		return serverError();
 	}

@@ -88,7 +88,8 @@ public class CommandHandler {
 			logger.info("======topic msg=====:key:" + ProductKey + " device:" + DeviceName + " payload" + aString);
 
 			JSONObject object = new JSONObject(aString);
-			if (StringUtils.isEmpty(object.getString("command"))) {
+			logger.info("command ==== "+object.isNull("command"));
+			if (object.isNull("command")) {
 				return;
 			}
 			AliBaseHandler handler = cmdHandlers.get(object.getString("command"));
@@ -237,7 +238,7 @@ public class CommandHandler {
 						object.getString("deviceName"), eAliRegionEnum);
 			} else {
 				String time = ByteHelper.bytesToHexString(body1);
-				JSONObject object2 = new JSONObject();
+				net.sf.json.JSONObject object2 = new net.sf.json.JSONObject();
 				object2.put("time", time.substring(2));
 				object2.put("command", "time_sync");
 				topServer.pubTopicDev(object2, object.getString("productKey"), object.getString("deviceName"),

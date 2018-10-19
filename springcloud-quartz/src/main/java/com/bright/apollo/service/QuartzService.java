@@ -92,6 +92,18 @@ public class QuartzService {
 		}
 	}
 
+	public void deleteJobTimer(String jobName) {
+		try {
+			Scheduler scheduler = schedulerFactory.getScheduler();
+			scheduler.pauseTrigger(new TriggerKey(jobName, SERVER_TRIGGER_TIMER_JOB_NAME));
+			scheduler.unscheduleJob(new TriggerKey(jobName, SERVER_TRIGGER_TIMER_JOB_NAME));
+			scheduler.deleteJob(new JobKey(jobName, SERVER_TIMER_JOB_NAME));
+		} catch (Exception e) {
+			log.error("===error msg:" + e.getMessage());
+			throw new RuntimeException(e);
+		}
+	}
+
 	/**
 	 * @param jobName
 	 * @Description:
@@ -106,6 +118,16 @@ public class QuartzService {
 		}
 	}
 
+	public void pauseJobTimer(String jobName) {
+		try {
+			Scheduler scheduler = schedulerFactory.getScheduler();
+			scheduler.pauseTrigger(new TriggerKey(jobName, SERVER_TRIGGER_TIMER_JOB_NAME));
+		} catch (Exception e) {
+			log.error("===error msg:" + e.getMessage());
+			throw new RuntimeException(e);
+		}
+	}
+
 	/**
 	 * @param jobName
 	 * @Description:
@@ -114,6 +136,16 @@ public class QuartzService {
 		try {
 			Scheduler scheduler = schedulerFactory.getScheduler();
 			scheduler.resumeTrigger(new TriggerKey(jobName, SERVER_TRIGGER_GROUP_NAME));
+		} catch (Exception e) {
+			log.error("===error msg:" + e.getMessage());
+			throw new RuntimeException(e);
+		}
+	}
+
+	public void resumeJobTimer(String jobName) {
+		try {
+			Scheduler scheduler = schedulerFactory.getScheduler();
+			scheduler.resumeTrigger(new TriggerKey(jobName, SERVER_TRIGGER_TIMER_JOB_NAME));
 		} catch (Exception e) {
 			log.error("===error msg:" + e.getMessage());
 			throw new RuntimeException(e);

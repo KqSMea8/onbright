@@ -106,7 +106,7 @@ public class SceneActionThreadPool {
 					return;
 				}
 				String productKey = aliDevCache.getProductKey(tAliDevTimer.getDeviceSerialId());
-				String deviceName = aliDevCache.getProductKey(tAliDevTimer.getDeviceSerialId());
+				String deviceName = aliDevCache.getDeviceName(tAliDevTimer.getDeviceSerialId());
 				String region = aliDevCache.getProductRegion(tAliDevTimer.getDeviceSerialId());
 				AliRegionEnum eAliRegionEnum = AliRegionEnum.SOURTHCHINA;
 				if (StringUtils.isEmpty(productKey)) {
@@ -137,7 +137,7 @@ public class SceneActionThreadPool {
 
 				if (tAliDevTimer != null) {
 					if (!StringUtils.isEmpty(tAliDevTimer.getTimerValue())) {
-						JSONObject sendObject = new JSONObject();
+						net.sf.json.JSONObject sendObject = new net.sf.json.JSONObject();
 						sendObject.put("command", "set");
 						sendObject.put("value", JSONArray.parseArray(tAliDevTimer.getTimerValue()));
 						topicServer.pubTopicDev(sendObject, productKey, deviceName, eAliRegionEnum);

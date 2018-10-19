@@ -30,5 +30,8 @@ public interface FeignAliClient {
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/aliScene/addTimerAction/{timerId}", method = RequestMethod.POST)
 	ResponseObject addTimerAction(@PathVariable(value = "timerId")Integer timerId);
-	
+
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/aliService/getAliDevTimerById/{id}", method = RequestMethod.GET)
+	ResponseObject getAliDevTimerById(@PathVariable(value = "id")Integer id);
 }

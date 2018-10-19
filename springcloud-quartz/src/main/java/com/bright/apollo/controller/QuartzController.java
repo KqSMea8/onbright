@@ -46,10 +46,26 @@ public class QuartzController {
 	}
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/deleteJob/{jobName}", method = RequestMethod.DELETE, produces = "application/json")
-    public ResponseObject deleteJob(@PathVariable(value="jobName",required=true) String jobName) {
+	public ResponseObject deleteJob(@PathVariable(value="jobName",required=true) String jobName) {
 		ResponseObject res=new ResponseObject();
 		try {
 			quartzService.deleteJob(jobName);
+			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
+		} catch (Exception e) {
+			log.error("===error msg:"+e.getMessage());
+			res.setStatus(ResponseEnum.RequestTimeout.getStatus());
+			res.setMessage(ResponseEnum.RequestTimeout.getMsg());
+		}
+		return res;
+	}
+
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/deleteJobTimer/{jobName}", method = RequestMethod.DELETE, produces = "application/json")
+	public ResponseObject deleteJobTimer(@PathVariable(value="jobName",required=true) String jobName) {
+		ResponseObject res=new ResponseObject();
+		try {
+			quartzService.deleteJobTimer(jobName);
 			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
 			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
 		} catch (Exception e) {
@@ -74,12 +90,44 @@ public class QuartzController {
 		}
 		return res;
 	}
+
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/pauseJobTimer/{jobName}", method = RequestMethod.PUT, produces = "application/json")
+	public ResponseObject pauseJobTimer(@PathVariable(value="jobName",required=true) String jobName) {
+		ResponseObject res=new ResponseObject();
+		try {
+			quartzService.pauseJobTimer(jobName);
+			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+		} catch (Exception e) {
+			log.error("===error msg:"+e.getMessage());
+			res.setStatus(ResponseEnum.RequestTimeout.getStatus());
+			res.setMessage(ResponseEnum.RequestTimeout.getMsg());
+		}
+		return res;
+	}
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/resumeJob/{jobName}", method = RequestMethod.PUT, produces = "application/json")
 	public ResponseObject resumeJob(@PathVariable(value="jobName",required=true) String jobName) {
 		ResponseObject res=new ResponseObject();
 		try {
 			quartzService.resumeJob(jobName);
+			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+		} catch (Exception e) {
+			log.error("===error msg:"+e.getMessage());
+			res.setStatus(ResponseEnum.RequestTimeout.getStatus());
+			res.setMessage(ResponseEnum.RequestTimeout.getMsg());
+		}
+		return res;
+	}
+
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/resumeJobTimer/{jobName}", method = RequestMethod.PUT, produces = "application/json")
+	public ResponseObject resumeJobTimer(@PathVariable(value="jobName",required=true) String jobName) {
+		ResponseObject res=new ResponseObject();
+		try {
+			quartzService.resumeJobTimer(jobName);
 			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
 			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
 		} catch (Exception e) {
