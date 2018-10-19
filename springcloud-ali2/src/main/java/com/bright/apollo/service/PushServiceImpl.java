@@ -32,6 +32,7 @@ public class PushServiceImpl implements PushService {
 //            mqttGateWay.sendToMqtt("ob-smart.67A5AA91-880A-48F8-93C2-D91A2D32EEF3","STR===test67A5AA91-880A-48F8-93C2-D91A2D32EEF3===END");
 //            mqttGateWay.sendToMqtt("ob-smart.22DDBCF6-E304-4AD9-B9A2-13C4ED915A30","STR===22DDBCF6-E304-4AD9-B9A2-13C4ED915A30===END");
         }
+        logger.info("====== sendStr ======  "+sendStr);
         Iterator<Integer> iterator = users.iterator();
         String tokenUserIdVal = "";
         while (iterator.hasNext()){
