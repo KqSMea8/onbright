@@ -2,10 +2,10 @@ spring:
   zipkin:
     base-url: http://localhost:9411
   rabbitmq:
-    host: 192.168.200.212
+    host: localhost
     port: 5672
-    username: admin
-    password: 123456
+    username: guest
+    password: guest
 eureka:
   client:
     service-url:

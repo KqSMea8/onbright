@@ -110,10 +110,10 @@ public interface AliDeviceMapper {
 	List<TAliDevice> getAliDeviceByProductKey(@Param("productKey")  String productKey);
 
 
-	@Select("select * from t_ali_device_timer where device_serial_id = #{oboxSerialId}")
+	@Select("select * from t_ali_device_timer where device_serial_id = #{oboxSerialId} and is_countdown = 0 ")
 	@Results(value = {
 			@Result(property = "Id",column = "id"),
-			@Result(property = "oboxSerialId",column = "obox_serial_id"),
+			@Result(property = "deviceSerialId",column = "device_serial_id"),
 			@Result(property = "lastOpTime",column = "last_op_time"),
 			@Result(property = "timer",column = "timer"),
 			@Result(property = "timerValue",column = "timer_value"),
@@ -123,7 +123,29 @@ public interface AliDeviceMapper {
 	List<TAliDevTimer> getAliDevTimerByDeviceSerialId(@Param("oboxSerialId") String oboxSerialId);
 
 	@Select("select * from t_ali_device_timer where device_serial_id = #{oboxSerialId} and is_countdown = 1 ")
+	@Results(value = {
+			@Result(property = "Id",column = "id"),
+			@Result(property = "deviceSerialId",column = "device_serial_id"),
+			@Result(property = "lastOpTime",column = "last_op_time"),
+			@Result(property = "timer",column = "timer"),
+			@Result(property = "timerValue",column = "timer_value"),
+			@Result(property = "isCountdown",column = "is_countdown"),
+			@Result(property = "state",column = "state")
+	})
 	TAliDevTimer getAliDevTimerByDeviceSerialIdAndCountDown(@Param("oboxSerialId") String oboxSerialId);
+
+
+	@Select("select * from t_ali_device_timer where device_serial_id = #{oboxSerialId} and  id =#{id}")
+	@Results(value = {
+			@Result(property = "Id",column = "id"),
+			@Result(property = "deviceSerialId",column = "device_serial_id"),
+			@Result(property = "lastOpTime",column = "last_op_time"),
+			@Result(property = "timer",column = "timer"),
+			@Result(property = "timerValue",column = "timer_value"),
+			@Result(property = "isCountdown",column = "is_countdown"),
+			@Result(property = "state",column = "state")
+	})
+	TAliDevTimer getAliDevTimerByIdAndDeviceId(@Param("oboxSerialId") String oboxSerialId,@Param("id") Integer id);
 
 	@Delete("delete from t_ali_device_timer where id = #{id} ")
 	void deleteAliDevTimerById(@Param("id") Integer id);
@@ -151,5 +173,17 @@ public interface AliDeviceMapper {
 			"last_op_time ) values(#{userId},#{deviceSerialId},#{lastOpTime})")
 	@Options(useGeneratedKeys=true, keyProperty="Id", keyColumn="id")
 	int addAliDevUser(TUserAliDev userAliDev);
+
+	@Select("select * from t_ali_device_timer where id = #{id}")
+	@Results(value = {
+			@Result(property = "Id",column = "id"),
+			@Result(property = "deviceSerialId",column = "device_serial_id"),
+			@Result(property = "lastOpTime",column = "last_op_time"),
+			@Result(property = "timer",column = "timer"),
+			@Result(property = "timerValue",column = "timer_value"),
+			@Result(property = "isCountdown",column = "is_countdown"),
+			@Result(property = "state",column = "state")
+	})
+	TAliDevTimer getAliDevTimerByDId(@Param("id") int id);
 
 }

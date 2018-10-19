@@ -340,7 +340,7 @@ public interface FeignAliClient {
 	 * @Description:读取阿里WiFi
 	 */
 	@RequestMapping(value = "/aliService/readAliDevice", method = RequestMethod.POST)
-	ResponseObject readAliDevice(@RequestParam(required = true, value = "functionId") String functionId,@RequestParam(required = true, value = "deviceId") String deviceId,@RequestParam(required = true, value = "value") String value);
+	ResponseObject readAliDevice(@RequestParam(required = true, value = "functionId") String functionId,@RequestParam(required = true, value = "deviceId") String deviceId);
 
 	/**
 	 * @Description:查询阿里WiFi Timer
@@ -351,20 +351,14 @@ public interface FeignAliClient {
 	/**
 	 * @Description:倒计时阿里WiFi Timer
 	 */
-	@RequestMapping(value = "/aliService/setAliCountdown/{deviceId}/{command}/{timer}/{timerValue}", method = RequestMethod.GET)
-	ResponseObject setAliCountdown(@PathVariable(value = "deviceId") String deviceId,
-								   @PathVariable(value = "command") String command,
-								   @PathVariable(value = "timer") String timer,
-								   @PathVariable(value = "timerValue") String timerValue);
+	@RequestMapping(value = "/aliService/setAliCountdown", method = RequestMethod.POST)
+	ResponseObject setAliCountdown(@RequestParam(value = "deviceId") String deviceId);
 
 	/**
 	 * @Description:阿里WiFi 计时器Timer
 	 */
-	@RequestMapping(value = "/aliService/setAliTimer/{deviceId}/{command}/{timer}/{timerValue}", method = RequestMethod.GET)
-	ResponseObject setAliTimer(@PathVariable(value = "deviceId") String deviceId,
-								   @PathVariable(value = "command") String command,
-								   @PathVariable(value = "timer") String timer,
-								   @PathVariable(value = "timerValue") String timerValue);
+	@RequestMapping(value = "/aliService/setAliTimer", method = RequestMethod.POST)
+	ResponseObject setAliTimer(@RequestParam(value = "deviceId") String deviceId);
 
 	/**
 	 * @Description:上传阿里WiFi
@@ -390,17 +384,31 @@ public interface FeignAliClient {
 	 * @Description:新增TImer
 	 */
 	@RequestMapping(value = "/aliService/addAliDevTimer", method = RequestMethod.POST)
-	ResponseObject addAliDevTimer(@RequestParam(required = true, value = "aliDevTimer") TAliDevTimer aliDevTimer);
+	ResponseObject addAliDevTimer(@RequestBody TAliDevTimer aliDevTimer);
 
 	/**
 	 * @Description:新增TImer
 	 */
 	@RequestMapping(value = "/aliService/updateAliDevTimer", method = RequestMethod.POST)
-	ResponseObject updateAliDevTimer(@RequestParam(required = true, value = "aliDevTimer") TAliDevTimer aliDevTimer);
+	ResponseObject updateAliDevTimer(@RequestBody TAliDevTimer aliDevTimer);
 
 	/**
 	 * @Description:通过序列号查询TImer
 	 */
 	@RequestMapping(value = "/aliService/delAliDevice", method = RequestMethod.POST)
-	ResponseObject delAliDevice(@RequestParam(required = true, value = "value") Object value,@RequestParam(required = true, value = "deviceId") String deviceId);
+	ResponseObject delAliDevice(@RequestParam(required = true, value = "deviceId") String deviceId);
+
+
+	/**
+	 * @Description:通过序列号查询TImer
+	 */
+	@RequestMapping(value = "/aliService/queryCountDown/{deviceId}", method = RequestMethod.GET)
+	ResponseObject queryCountDown(@PathVariable(value = "deviceId") String deviceId);
+
+
+	/**
+	 * @Description:通过序列号查询TImer
+	 */
+	@RequestMapping(value = "/aliService/getAliDevTimerByIdAndDeviceId/{deviceId}/{timerId}", method = RequestMethod.GET)
+	ResponseObject getAliDevTimerByIdAndDeviceId(@PathVariable(value = "deviceId") String deviceId,@PathVariable(value = "timerId") Integer timerId);
 }

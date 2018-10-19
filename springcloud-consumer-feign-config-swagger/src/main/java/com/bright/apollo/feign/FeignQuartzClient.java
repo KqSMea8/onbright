@@ -62,4 +62,13 @@ public interface FeignQuartzClient {
 			@PathVariable(value = "endTime", required = true) String endTime,
 			@PathVariable(value = "serialId", required = true) String serialId);
 
+	/**
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/quartz/startTimerSchedule/{timerId}/{cronString}", method = RequestMethod.POST, produces = "application/json")
+	ResponseObject startTimerSchedule(
+			@PathVariable(value="timerId",required=true) Integer timerId,
+			@PathVariable(value="cronString",required=true) String cronString);
+
 }

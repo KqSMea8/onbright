@@ -353,13 +353,13 @@ public class HystrixFeignAli2Fallback extends BasicHystrixFeignFallback implemen
 	}
 
 	@Override
-	public ResponseObject setAliCountdown(String deviceId, String command, String timer, String timerValue) {
+	public ResponseObject setAliCountdown(String deviceId) {
 		logger.warn("===ali server is break===");
 		return serverError();
 	}
 
 	@Override
-	public ResponseObject setAliTimer(String deviceId, String command, String timer, String timerValue) {
+	public ResponseObject setAliTimer(String deviceId) {
 		logger.warn("===ali server is break===");
 		return serverError();
 	}
@@ -399,14 +399,25 @@ public class HystrixFeignAli2Fallback extends BasicHystrixFeignFallback implemen
 	 * @see com.bright.apollo.feign.FeignAliClient#readAliDevice(java.lang.String, java.lang.String, java.lang.String)  
 	 */
 	@Override
-	public ResponseObject readAliDevice(String functionId, String deviceId, String value) {
+	public ResponseObject readAliDevice(String functionId, String deviceId) {
 		logger.warn("===ali server is break===");
 		return serverError();
 	
 	}
  	@Override
-	public ResponseObject delAliDevice(Object value, String deviceId) {
- 
+	public ResponseObject delAliDevice(String deviceId) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
+	@Override
+	public ResponseObject queryCountDown(String deviceId) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
+	@Override
+	public ResponseObject getAliDevTimerByIdAndDeviceId(String deviceId, Integer timerId) {
 		logger.warn("===ali server is break===");
 		return serverError();
 	}

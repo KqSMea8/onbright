@@ -1,5 +1,6 @@
 package com.bright.apollo.service;
 
+import com.bright.apollo.job.TimerJob;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.CronTrigger;
 import org.quartz.JobBuilder;
@@ -36,6 +37,8 @@ public class QuartzService {
 	private static String SERVER_JOB_GROUP_NAME = "OBJobGroup";
 	private static String SERVER_TRIGGER_GROUP_NAME = "OBTriggerGroup";
 	private static String SERVER_REMOTE_OPEN_TASK = "RemoteOpen";
+	private static String SERVER_TIMER_JOB_NAME = "OBTimerJob";
+	private static String SERVER_TRIGGER_TIMER_JOB_NAME = "OBTimerJobTrigger";
 	@Autowired
 	private SchedulerFactoryBean schedulerFactory;
 
@@ -144,6 +147,54 @@ public class QuartzService {
 		} catch (Exception e) {
 			log.info("===the quartz job exist===");
 			log.error("message:" + e.getMessage());
+		}
+	}
+
+	public void startTimerSchedule(int timerId,String cronString){
+		try {
+
+			// 得到默认的调度器
+
+			Scheduler scheduler = schedulerFactory.getScheduler();
+
+			// 定义当前调度器的具体作业对象
+
+			JobDetail jobDetail = JobBuilder
+					.newJob(TimerJob.class)
+					.withIdentity(
+							String.format("%d", timerId),
+							SERVER_TIMER_JOB_NAME).build();
+
+			// 定义当前具体作业对象的参数
+
+			JobDataMap jobDataMap = jobDetail.getJobDataMap();
+
+			jobDataMap.put("timerId", String.format("%d", timerId));
+
+			log.info("====cronString:"+cronString);
+			// 作业的触发器
+
+			CronTrigger cronTrigger = TriggerBuilder
+					.newTrigger()
+					.withIdentity(
+							String.format("%d", timerId),
+							SERVER_TRIGGER_TIMER_JOB_NAME)
+					.withSchedule(
+							CronScheduleBuilder.cronSchedule(cronString))
+					.build();
+
+			// 注册作业和触发器
+
+			scheduler.scheduleJob(jobDetail, cronTrigger);
+
+			// 开始调度任务
+
+			scheduler.start();
+
+		} catch (SchedulerException e) {
+
+			e.printStackTrace();
+
 		}
 	}
 

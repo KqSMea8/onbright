@@ -242,7 +242,7 @@ public class TopicServer {
 		logger.info(" ====== pubIRTopic end ====== ");
 	}
 
-	public JSONObject requestDev(JSONObject object, String deviceSerial,String value) throws Exception {
+	public JSONObject requestDev(net.sf.json.JSONObject object, String deviceSerial,String value) throws Exception {
 		logger.info(" ====== requestDev start ====== ");
 		RRpcRequest rrpcRequest = new RRpcRequest();
 		// 设备所属产品的Key
@@ -255,10 +255,11 @@ public class TopicServer {
 
 		}
 		logger.info(" TopicService.requestDev() productkey: " + productKey + " devicename:" + deviceName + " object: "
-				+ value);
+				+ object.toString());
+		logger.info(" =================== "+object.toString());
 		rrpcRequest.setProductKey(productKey);
 		rrpcRequest.setDeviceName(deviceName); // 设备名称
-		rrpcRequest.setRequestBase64Byte(Base64.encodeBase64String(value.getBytes())); // 发给设备的数据，要求二进制数据做一次Base64编码
+		rrpcRequest.setRequestBase64Byte(Base64.encodeBase64String(object.toString().getBytes())); // 发给设备的数据，要求二进制数据做一次Base64编码
 		rrpcRequest.setTimeout(3500); // 超时时间，单位毫秒，如果超过这个时间设备没反应则返回"TIMEOUT"
 		RRpcResponse rrpcResponse = null;
 		rrpcResponse = sendRPCRequest(rrpcRequest, eAliRegionEnum, rrpcResponse);

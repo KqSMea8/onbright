@@ -101,6 +101,16 @@ public class AliDeviceServiceImpl implements AliDeviceService {
 	}
 
 	@Override
+	public TAliDevTimer getAliDevTimerByIdAndDeviceId(String oboxSerialId, Integer id) {
+		return mapper.getAliDevTimerByIdAndDeviceId(oboxSerialId,id);
+	}
+
+	@Override
+	public TAliDevTimer getAliDevTimerById(int id) {
+		return mapper.getAliDevTimerByDId(id);
+	}
+
+	@Override
 	public void deleteAliDevTimerById(Integer id) {
 		mapper.deleteAliDevTimerById(id);
 	}

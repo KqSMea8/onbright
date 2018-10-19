@@ -466,7 +466,7 @@ public class CommonController {
 			String functionId = requestParam.getValue("functionId");
 			String deviceId = requestParam.getValue("deviceId");
 			String value = requestParam.getValue("value");
-			return facadeController.readAliDevice(functionId,deviceId,value);
+			return facadeController.readAliDevice(functionId,deviceId);
 		}else if(CMDEnum.query_timer.toString().equals(cmdEnum.toString())){
 			String deviceId = requestParam.getValue("deviceId");
 			return facadeController.queryAliDeviceTimer(deviceId);
@@ -474,8 +474,12 @@ public class CommonController {
 			String command = requestParam.getValue("command");
 			String deviceId = requestParam.getValue("deviceId");
 			String timer = requestParam.getValue("timer");
-			String timerValue = requestParam.getValue("timerValue");
-			return facadeController.setAliTimer(deviceId,command,timer,timerValue);
+			String timerValue = requestParam.getValue("value");
+			String timerId = requestParam.getValue("timerId");
+			if(timerId ==null||StringUtils.isEmpty(timerId)){
+				timerId = "0";
+			}
+			return facadeController.setAliTimer(deviceId,command,timer,timerValue,timerId);
 		}else if(CMDEnum.upload_config.toString().equals(cmdEnum.toString())){
 			String deviceName = requestParam.getValue("deviceName");
 			String productKey = requestParam.getValue("productKey");
@@ -485,12 +489,15 @@ public class CommonController {
 			String command = requestParam.getValue("command");
 			String deviceId = requestParam.getValue("deviceId");
 			String timer = requestParam.getValue("timer");
-			String timerValue = requestParam.getValue("timerValue");
+			String timerValue = requestParam.getValue("value");
 			return facadeController.setAliCountdown(deviceId,command,timer,timerValue);
-		}else if(CMDEnum.del_ali_dev.toString().equals(cmdEnum.toString())){
+		}else if(CMDEnum.delete_ali_dev.toString().equals(cmdEnum.toString())){
 			String deviceId = requestParam.getValue("deviceId");
-			String value = requestParam.getValue("value");
-			return facadeController.delAliDevice(value,deviceId);
+//			String value = requestParam.getValue("value");
+			return facadeController.delAliDevice(deviceId);
+		}else if(CMDEnum.query_countdown.toString().equals(cmdEnum.toString())){
+			String deviceId = requestParam.getValue("deviceId");
+			return facadeController.queryCountDown(deviceId);
 		}
 		else if (CMDEnum.test.toString().equals(cmdEnum.toString())) {
  			String serialId = requestParam.getValue("serialId");
