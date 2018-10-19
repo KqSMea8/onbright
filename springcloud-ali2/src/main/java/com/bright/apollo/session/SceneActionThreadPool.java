@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
@@ -13,6 +12,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONArray;
+import com.bright.apollo.bean.PushExceptionMsg;
 import com.bright.apollo.bean.PushSystemMsg;
 import com.bright.apollo.cache.AliDevCache;
 import com.bright.apollo.common.entity.TAliDevTimer;
@@ -26,6 +26,7 @@ import com.bright.apollo.common.entity.TUserScene;
 import com.bright.apollo.enums.AliRegionEnum;
 import com.bright.apollo.enums.CMDEnum;
 import com.bright.apollo.enums.DeviceTypeEnum;
+import com.bright.apollo.enums.ExceptionEnum;
 import com.bright.apollo.enums.NodeTypeEnum;
 import com.bright.apollo.enums.SystemEnum;
 import com.bright.apollo.service.AliDeviceService;
@@ -216,7 +217,13 @@ public class SceneActionThreadPool {
 							List<TUser> tUsers = userService.queryUserBySceneNumber(tScene.getSceneNumber());
 							for (TUser tUser : tUsers) {
 								log.info("====before push====");
-								JPushService.sendAlter(tScene.getSceneName(), tUser.getUserName(), urlString);
+								PushExceptionMsg exceptionMsg=new PushExceptionMsg
+										(ExceptionEnum.alldevice.getValue(),
+												ExceptionEnum.pic.getValue(), tScene.getSceneNumber(), tUser.getId(), null,urlString);
+								//JPushService.sendAlter(tScene.getSceneName(), tUser.getUserName(), urlString);
+								pushObserverManager
+								.sendMessage(exceptionMsg,
+										null);
 							}
 						}
 					}

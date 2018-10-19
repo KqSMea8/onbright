@@ -1,6 +1,8 @@
 package com.bright.apollo.session;
 
+import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
@@ -10,19 +12,28 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.bright.apollo.bean.PushExceptionMsg;
 import com.bright.apollo.bean.PushSystemMsg;
+import com.bright.apollo.common.entity.TException;
+import com.bright.apollo.common.entity.TMsg;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.common.entity.TScene;
+import com.bright.apollo.common.entity.TSystem;
 import com.bright.apollo.common.entity.TUser;
 import com.bright.apollo.enums.ExceptionEnum;
+import com.bright.apollo.enums.MsgEnum;
 import com.bright.apollo.enums.SystemEnum;
+import com.bright.apollo.service.ExceptionService;
+import com.bright.apollo.service.JPushService;
 import com.bright.apollo.service.OboxDeviceConfigService;
 import com.bright.apollo.service.SceneService;
+import com.bright.apollo.service.SystemService;
+import com.bright.apollo.service.TMsgService;
 import com.bright.apollo.service.UserService;
-import com.zz.common.util.StringUtils;
+import com.bright.apollo.tool.DateHelper;
 
 @Component
 public class PushExceptionPool {
@@ -35,7 +46,14 @@ public class PushExceptionPool {
 
     @Autowired
     private OboxDeviceConfigService oboxDeviceConfigService;
-
+    
+    @Autowired
+    private SystemService systemService;
+    
+    @Autowired
+    private TMsgService tMsgService;
+    @Autowired
+    private ExceptionService exceptionService;
     private static ExecutorService executor;
 
     private static final Logger logger = LoggerFactory.getLogger(PushExceptionPool.class);
@@ -71,8 +89,6 @@ public class PushExceptionPool {
                             systemMsg.getChildType().intValue()==SystemEnum.scene.getValue()
                             ){
                         TScene tScene = sceneService.getSceneBySceneNumber(systemMsg.getId());
-//                        TScene tScene = SceneBusiness.querySceneBySceneNumber(systemMsg
-//                                .getId());
                         if (tScene == null) {
                             logger.warn("===PushException tScene not exist===");
                             return;
@@ -81,8 +97,6 @@ public class PushExceptionPool {
                             logger.warn("===PushException root not exist===");
                         }
                         List<TUser> tUserList = userService.getUsersBySceneNumber(tScene.getSceneNumber());
-//                        List<TUser> tUserList = UserBusiness
-//                                .queryUserBySceneNumber(tScene.getSceneNumber());
                         sendSysMsgByUserList(set, tScene.getSceneNumber(),
                                 tScene.getSceneName(), null, tUserList,null);
                     }
@@ -95,7 +109,12 @@ public class PushExceptionPool {
                 }
                 if (msg.getType().intValue() != ExceptionEnum.securityscene
                         .getValue()) {
-                    TOboxDeviceConfig tOboxDeviceConfig = oboxDeviceConfigService.getOboxDeviceConfigById(msg.getId());
+                	TOboxDeviceConfig tOboxDeviceConfig=null;
+                	TScene tScene=null;
+                	if(!StringUtils.isEmpty(msg.getState()))
+                		tOboxDeviceConfig = oboxDeviceConfigService.getOboxDeviceConfigById(msg.getId());
+                	else
+                		tScene=sceneService.getSceneBySceneNumber(msg.getId());
 //                    TOboxDeviceConfig tOboxDeviceConfig = DeviceBusiness
 //                            .queryDeviceConfigByID(msg.getId());
 //                    TYSCamera tYSCamera = CameraBusiness.queryYSCameraById(msg
@@ -112,7 +131,10 @@ public class PushExceptionPool {
 //                    } else if (tYSCamera!=null&&!addRoot(set, tYSCamera.getLicense())) {
 //                        logger.warn("===PushException root not exist===");
 //                    }
-
+                	if(tScene==null||tOboxDeviceConfig==null){
+                		 logger.warn("===PushException device or scene not exist===");
+                		 return;
+                	}
                     if (StringUtils.isEmpty(msg.getUrl())) {
                         // 更新状态
                         tOboxDeviceConfig.setDeviceState(msg.getState());
@@ -137,11 +159,11 @@ public class PushExceptionPool {
                                 tOboxDeviceConfig.getDeviceSerialId(),
                                 tUserList,null);
                     }else{
-//                        set.add(msg.getUserId().intValue()+"");
-//                        sendMsgByUserList(set, tYSCamera.getId(),
-//                                tYSCamera.getChannelName(),
-//                                tYSCamera.getDeviceSerial(),
-//                                null,msg.getUrl());
+                        set.add(msg.getUserId().intValue()+"");
+                        sendMsgByUserList(set,msg.getId(),
+                        		tScene!=null?tScene.getSceneName():tOboxDeviceConfig.getDeviceId(),
+                        				tScene!=null?null:tOboxDeviceConfig.getDeviceSerialId(),
+                                null,msg.getUrl());
                     }
                 } else {
                     // 安防
@@ -184,7 +206,7 @@ public class PushExceptionPool {
                                           String name, String serialId, List<TUser> tUserList,String url)
                 throws Exception {
             if (tUserList == null || tUserList.size() == 0) {
-                sendSysMessage(set, relevancyId, name, serialId,url);
+               // sendSysMessage(set, relevancyId, name, serialId,url);
                 return;
             }
             for (TUser user : tUserList) {
@@ -224,56 +246,58 @@ public class PushExceptionPool {
         }
         private void sendSysMessage(Set<String> set, Integer relevancyId,
                                     String name, String serialId, String url) throws Exception {
-//            Iterator<String> iterator = set.iterator();
-//            TSystem tSystem=new TSystem(systemMsg.getType(),
-//                    systemMsg.getChildType(),  relevancyId,name);
-//            logger.info("===tSystem===:" + JSON.toJSONString(tSystem));
-//            int systemId = MsgBussiness.addSystem(tSystem);
-//            long sendTime = new Date().getTime();
-//            //	String time = DateHelper.formatDate(sendTime, DateHelper.FORMATALL);
-//            while (iterator.hasNext()) {
-//                String userId = iterator.next();
-//                TUser tUser = UserBusiness.queryUserById(Integer
-//                        .parseInt(userId));
-//                if (StringUtils.isEmpty(systemMsg.getContent())) {
-//                    logger.warn("===PushException couldn't build content===");
-//                    return;
-//                }
-//                TMsg tMsg = new TMsg(MsgEnum.system.getValue(),
-//                        Integer.parseInt(userId), systemMsg.getContent(), systemId,
-//                        sendTime,url);
-//                MsgBussiness.addMsg(tMsg);
-//                JPushService.sendAlter(systemMsg.getContent(), tUser.getUserName(), null);
-//            }
+            Iterator<String> iterator = set.iterator();
+            TSystem tSystem=new TSystem(systemMsg.getType(),
+                    systemMsg.getChildType(),  relevancyId);
+            logger.info("===tSystem===:" + JSON.toJSONString(tSystem));
+            int systemId = systemService.addSystem(tSystem);
+            long sendTime = new Date().getTime();
+            	//String time = DateHelper.formatDate(sendTime, DateHelper.FORMATALL);
+            while (iterator.hasNext()) {
+                String userId = iterator.next();
+                TUser tUser = userService.getUserByUserId(Integer
+                        .parseInt(userId));
+                if (StringUtils.isEmpty(systemMsg.getContent())) {
+                    logger.warn("===PushException couldn't build content===");
+                    return;
+                }
+                TMsg tMsg = new TMsg(MsgEnum.system.getValue(),
+                        Integer.parseInt(userId), systemMsg.getContent(), systemId!=0?systemId:tSystem.getId(),
+                        sendTime,url);
+                tMsgService.addMsg(tMsg);
+                //MsgBussiness.addMsg(tMsg);
+                JPushService.sendAlter(systemMsg.getContent(), tUser.getUserName(), null);
+            }
         }
         // 发送消息
         private void sendMessage(Set<String> set, Integer relevancyId,
                                  String name, String serialId,String url) throws Exception {
-//            Iterator<String> iterator = set.iterator();
-//            TException tException = new TException(msg.getType(),
-//                    msg.getChildType(), msg.getState(), relevancyId, serialId,
-//                    name);
-//
-//            int exceptionId = ExceptionBussiness.addException(tException);
-//            long sendTime = new Date().getTime();
-//            logger.info("===tException===:" +sendTime+"====:" +JSON.toJSONString(tException));
-//            String time = DateHelper.formatDate(sendTime, DateHelper.FORMATALL);
-//            while (iterator.hasNext()) {
-//                String userId = iterator.next();
-//                TUser tUser = UserBusiness.queryUserById(Integer
-//                        .parseInt(userId));
-//                String content = buildContent(msg, tUser.getUserName(), time,
-//                        name);
-//                if (StringUtils.isEmpty(content)) {
-//                    logger.warn("===PushException couldn't build content===");
-//                    return;
-//                }
-//                TMsg tMsg = new TMsg(MsgEnum.exception.getValue(),
-//                        Integer.parseInt(userId), content, exceptionId,
-//                        sendTime,url);
-//                MsgBussiness.addMsg(tMsg);
-//                JPushService.sendAlter(content, tUser.getUserName(), null);
-//            }
+            Iterator<String> iterator = set.iterator();
+            TException tException = new TException(msg.getType(),
+                    msg.getChildType(), msg.getState(), relevancyId, serialId,
+                    name);
+            int exceptionId =exceptionService.addException(tException);
+            //int exceptionId = ExceptionBussiness.addException(tException);
+            long sendTime = new Date().getTime();
+            logger.info("===tException===:" +sendTime+"====:" +JSON.toJSONString(tException));
+            String time = DateHelper.formatDate(sendTime, DateHelper.FORMATALL);
+            while (iterator.hasNext()) {
+                String userId = iterator.next();
+                TUser tUser = userService.getUserByUserId(Integer
+                        .parseInt(userId));
+                String content = buildContent(msg, tUser.getUserName(), time,
+                        name);
+                if (StringUtils.isEmpty(content)) {
+                    logger.warn("===PushException couldn't build content===");
+                    return;
+                }
+                TMsg tMsg = new TMsg(MsgEnum.exception.getValue(),
+                        Integer.parseInt(userId), content, tException.getId()!=null?tException.getId():exceptionId,
+                        sendTime,url);
+                tMsgService.addMsg(tMsg);
+               // MsgBussiness.addMsg(tMsg);
+                JPushService.sendAlter(content, tUser.getUserName(), url);
+            }
         }
 
         // 生成发送内容
