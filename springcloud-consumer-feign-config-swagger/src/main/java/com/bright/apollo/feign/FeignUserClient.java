@@ -19,6 +19,7 @@ import com.bright.apollo.common.entity.TUserObox;
 import com.bright.apollo.common.entity.TUserOperation;
 import com.bright.apollo.common.entity.TUserScene;
 import com.bright.apollo.hrstrix.HystrixFeignUserFallback;
+import com.bright.apollo.response.MsgExceptionDTO;
 import com.bright.apollo.response.ResponseObject;
 
 /**
@@ -286,19 +287,61 @@ public interface FeignUserClient {
 	public ResponseObject<OauthClientDetails> getClientByClientId(
 			@PathVariable(required = true, value = "clientId") String clientId);
 
-	/**  
-	 * @param deviceSerialId  
-	 * @Description:  
+	/**
+	 * @param deviceSerialId
+	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/user/deleteUserAliDev/{deviceSerialId}", method = RequestMethod.DELETE)
-	public ResponseObject deleteUserAliDev(@PathVariable(required = true, value = "deviceSerialId")  String deviceSerialId);
+	public ResponseObject deleteUserAliDev(
+			@PathVariable(required = true, value = "deviceSerialId") String deviceSerialId);
 
-	/**  
-	 * @param tUserAliDev  
-	 * @Description:  
+	/**
+	 * @param tUserAliDev
+	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/user/addUserAliDev", method = RequestMethod.POST)
 	public ResponseObject addUserAliDev(@RequestBody TUserAliDevice tUserAliDev);
+
+	/**
+	 * @param userId
+	 * @Description:
+	 */
+	@RequestMapping(value = "/msg/countMsgList/{userId}", method = RequestMethod.GET)
+	public ResponseObject<Integer> countMsgList(@PathVariable(required = true, value = "userId") Integer userId);
+
+	/**
+	 * @param id
+	 * @param parseInt
+	 * @param parseInt2
+	 * @param i
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/msg/queryMsgExceList/{userId}/{type}/{start}/{count}", method = RequestMethod.GET)
+	public ResponseObject<List<MsgExceptionDTO>> queryMsgExceList(
+			@PathVariable(required = true, value = "userId") Integer userId,
+			@PathVariable(required = true, value = "type") Integer type,
+			@PathVariable(required = true, value = "start") int start,
+			@PathVariable(required = true, value = "count") int count);
+
+	/**
+	 * @param id
+	 * @param parseInt
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/msg/countMsgExceList/{userId}/{type}", method = RequestMethod.GET)
+	public ResponseObject<Integer> countMsgExceList(@PathVariable(required = true, value = "userId") Integer userId,
+			@PathVariable(required = true, value = "type") Integer type);
+
+	/**  
+	 * @param id
+	 * @param statue  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/msg/updateMsgState/{id}/{statue}", method = RequestMethod.PUT)
+	public ResponseObject updateMsgState(@PathVariable(required = true, value = "id") Integer id,
+			@PathVariable(required = true, value = "statue") int statue);
 }

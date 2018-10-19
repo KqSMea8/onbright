@@ -56,6 +56,7 @@ import com.bright.apollo.constant.SubTableConstant;
 import com.bright.apollo.enums.ConditionTypeEnum;
 import com.bright.apollo.enums.DeviceTypeEnum;
 import com.bright.apollo.enums.IntelligentMaxEnum;
+import com.bright.apollo.enums.MsgStateEnum;
 import com.bright.apollo.enums.NodeTypeEnum;
 import com.bright.apollo.enums.RemoteUserEnum;
 import com.bright.apollo.enums.SceneTypeEnum;
@@ -80,6 +81,7 @@ import com.bright.apollo.response.AliDevInfo;
 import com.bright.apollo.response.DevcieCount;
 import com.bright.apollo.response.DeviceStatusDTO;
 import com.bright.apollo.response.IntelligentOpenRecordItemDTO;
+import com.bright.apollo.response.MsgExceptionDTO;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.response.TUserOperationDTO;
@@ -95,7 +97,6 @@ import com.bright.apollo.tool.NumberHelper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
-
 
 /**
  * @Title:
@@ -128,10 +129,9 @@ public class FacadeController extends BaseController {
 	private MsgService msgService;
 	@Autowired
 	private AliDevCache aliDevCache;
- 
+
 	@Value("${logout.url}")
 	private String logoutUrl;
-
 
 	// release obox
 	@SuppressWarnings({ "rawtypes" })
@@ -4960,8 +4960,6 @@ public class FacadeController extends BaseController {
 		return res;
 	}
 
-  
-
 	/**
 	 * @param serialId
 	 * @return
@@ -4988,7 +4986,7 @@ public class FacadeController extends BaseController {
 	@RequestMapping(value = "/queryAliDevice", method = RequestMethod.GET)
 	public ResponseObject<Map<String, Object>> queryAliDevice() {
 		ResponseObject res = new ResponseObject<Map<String, Object>>();
-		Map<String, Object> map=null;
+		Map<String, Object> map = null;
 		try {
 			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			if (StringUtils.isEmpty(principal.getUsername())) {
@@ -5006,14 +5004,14 @@ public class FacadeController extends BaseController {
 			TUser user = resUser.getData();
 			ResponseObject aliRes = feignAliClient.queryAliDevice(user.getId());
 
-            List list = (List) aliRes.getData();
-            if(list.size()>0){
-            	map=new HashMap<String, Object>();
-            	map.put("configs", list);
+			List list = (List) aliRes.getData();
+			if (list.size() > 0) {
+				map = new HashMap<String, Object>();
+				map.put("configs", list);
 				res.setData(map);
-            }else{
-                res.setData(null);
-            }
+			} else {
+				res.setData(null);
+			}
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {
@@ -5027,7 +5025,8 @@ public class FacadeController extends BaseController {
 	@ApiOperation(value = "setAliDevice", httpMethod = "GET", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/setAliDevice/{value}/{deviceId}", method = RequestMethod.GET)
-	public ResponseObject<Map<String, Object>> setAliDevice(@RequestBody Object value,@PathVariable(value = "deviceId") String deviceId) {
+	public ResponseObject<Map<String, Object>> setAliDevice(@RequestBody Object value,
+			@PathVariable(value = "deviceId") String deviceId) {
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		try {
 			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -5045,12 +5044,13 @@ public class FacadeController extends BaseController {
 			}
 
 			Map<String, Object> map = new HashMap<String, Object>();
-			ResponseObject aliRes = feignAliClient.setAliDevice(value,deviceId);
-			com.alibaba.fastjson.JSONArray jsonArray = com.alibaba.fastjson.JSONArray.parseArray((String)aliRes.getData());
+			ResponseObject aliRes = feignAliClient.setAliDevice(value, deviceId);
+			com.alibaba.fastjson.JSONArray jsonArray = com.alibaba.fastjson.JSONArray
+					.parseArray((String) aliRes.getData());
 			com.alibaba.fastjson.JSONObject jsonObject = jsonArray.getJSONObject(0);
-			jsonObject.put("deviceId",deviceId);
-			logger.info("json ====== "+jsonObject);
-			map.put("value",jsonArray);
+			jsonObject.put("deviceId", deviceId);
+			logger.info("json ====== " + jsonObject);
+			map.put("value", jsonArray);
 			res.setData(map);
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
@@ -5066,10 +5066,9 @@ public class FacadeController extends BaseController {
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/readAliDevice/{functionId}/{deviceId}/{value}", method = RequestMethod.GET)
 	public ResponseObject<Map<String, Object>> readAliDevice(@PathVariable(value = "functionId") String functionId,
-															 @PathVariable(value = "deviceId") String deviceId,
-															 @PathVariable(value = "value") String value) {
+			@PathVariable(value = "deviceId") String deviceId, @PathVariable(value = "value") String value) {
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
-		Map<String, Object> map=new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<String, Object>();
 		try {
 			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			if (StringUtils.isEmpty(principal.getUsername())) {
@@ -5085,11 +5084,12 @@ public class FacadeController extends BaseController {
 				return res;
 			}
 
-			ResponseObject aliRes = feignAliClient.readAliDevice(functionId,deviceId,value);
-			com.alibaba.fastjson.JSONArray jsonArray = com.alibaba.fastjson.JSONArray.parseArray((String)aliRes.getData());
+			ResponseObject aliRes = feignAliClient.readAliDevice(functionId, deviceId, value);
+			com.alibaba.fastjson.JSONArray jsonArray = com.alibaba.fastjson.JSONArray
+					.parseArray((String) aliRes.getData());
 			com.alibaba.fastjson.JSONObject jsonObject = jsonArray.getJSONObject(0);
- 			map.put("deviceId",deviceId);
- 			map.put("value", jsonObject);
+			map.put("deviceId", deviceId);
+			map.put("value", jsonObject);
 			res.setData(map);
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
@@ -5134,14 +5134,12 @@ public class FacadeController extends BaseController {
 		return res;
 	}
 
-
 	@ApiOperation(value = "setAliCountdown", httpMethod = "GET", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/setAliCountdown/{deviceId}/{command}/{timer}/{timerValue}", method = RequestMethod.GET)
 	public ResponseObject setAliCountdown(@PathVariable(value = "deviceId") String deviceId,
-															   @PathVariable(value = "command") String command,
-															   @PathVariable(value = "timer") String timer,
-															   @PathVariable(value = "timerValue") String timerValue) {
+			@PathVariable(value = "command") String command, @PathVariable(value = "timer") String timer,
+			@PathVariable(value = "timerValue") String timerValue) {
 		ResponseObject res = new ResponseObject();
 		try {
 			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -5158,45 +5156,45 @@ public class FacadeController extends BaseController {
 				return res;
 			}
 
-			feignAliClient.setAliCountdown(deviceId,command,timer,timerValue);
+			feignAliClient.setAliCountdown(deviceId, command, timer, timerValue);
 
 			TAliDevTimer aliDevTimer;
 			ResponseObject aldRes;
-			switch (TimerSetTypeEnum.getSetType(command)){
-				case add:
-					aldRes = feignAliClient.getAliDevTimerByDeviceSerialIdAndCountDown(deviceId);
-					aliDevTimer = (TAliDevTimer)aldRes.getData();
-					if(aliDevTimer !=null){
-						feignAliClient.delAliDevTimerByDeviceSerialId(aliDevTimer.getId());
-
-						feignQuartzClient.deleteJob(aliDevTimer.getId().toString());
-					}
-					aliDevTimer = new TAliDevTimer();
-					aliDevTimer.setTimer(timer);
-					aliDevTimer.setDeviceSerialId(deviceId);
-					aliDevTimer.setTimerValue(timerValue);
-					aliDevTimer.setIsCountdown(1);
-					ResponseObject addRes = feignAliClient.addAliDevTimer(aliDevTimer);
-					int repId = (Integer) addRes.getData();
-					feignQuartzClient.addRemoteOpenTaskSchedule(repId,timer,deviceId);
-					break;
-				case delete:
-					aldRes = feignAliClient.getAliDevTimerByDeviceSerialIdAndCountDown(deviceId);
-					aliDevTimer = (TAliDevTimer)aldRes.getData();
+			switch (TimerSetTypeEnum.getSetType(command)) {
+			case add:
+				aldRes = feignAliClient.getAliDevTimerByDeviceSerialIdAndCountDown(deviceId);
+				aliDevTimer = (TAliDevTimer) aldRes.getData();
+				if (aliDevTimer != null) {
 					feignAliClient.delAliDevTimerByDeviceSerialId(aliDevTimer.getId());
+
 					feignQuartzClient.deleteJob(aliDevTimer.getId().toString());
-					break;
-				default:
-					res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
-					res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
-					return res;
+				}
+				aliDevTimer = new TAliDevTimer();
+				aliDevTimer.setTimer(timer);
+				aliDevTimer.setDeviceSerialId(deviceId);
+				aliDevTimer.setTimerValue(timerValue);
+				aliDevTimer.setIsCountdown(1);
+				ResponseObject addRes = feignAliClient.addAliDevTimer(aliDevTimer);
+				int repId = (Integer) addRes.getData();
+				feignQuartzClient.addRemoteOpenTaskSchedule(repId, timer, deviceId);
+				break;
+			case delete:
+				aldRes = feignAliClient.getAliDevTimerByDeviceSerialIdAndCountDown(deviceId);
+				aliDevTimer = (TAliDevTimer) aldRes.getData();
+				feignAliClient.delAliDevTimerByDeviceSerialId(aliDevTimer.getId());
+				feignQuartzClient.deleteJob(aliDevTimer.getId().toString());
+				break;
+			default:
+				res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
+				res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
+				return res;
 			}
 			JSONArray jsonArray = null;
-			if(aliDevTimer!=null){
+			if (aliDevTimer != null) {
 				jsonArray = JSONArray.parseArray(aliDevTimer.getTimerValue());
 				com.alibaba.fastjson.JSONObject jsonObject = jsonArray.getJSONObject(0);
-				jsonObject.put("timer",aliDevTimer.getTimer());
-			}else{
+				jsonObject.put("timer", aliDevTimer.getTimer());
+			} else {
 				jsonArray = new JSONArray();
 			}
 			res.setData(jsonArray);
@@ -5214,9 +5212,8 @@ public class FacadeController extends BaseController {
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/setAliTimer/{deviceId}/{command}/{timer}/{timerValue}", method = RequestMethod.GET)
 	public ResponseObject<Map<String, Object>> setAliTimer(@PathVariable(value = "deviceId") String deviceId,
-															   @PathVariable(value = "command") String command,
-															   @PathVariable(value = "timer") String timer,
-															   @PathVariable(value = "timerValue") String timerValue) {
+			@PathVariable(value = "command") String command, @PathVariable(value = "timer") String timer,
+			@PathVariable(value = "timerValue") String timerValue) {
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		try {
 			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -5233,54 +5230,54 @@ public class FacadeController extends BaseController {
 				return res;
 			}
 
-			feignAliClient.setAliTimer(deviceId,command,timer,timerValue);
+			feignAliClient.setAliTimer(deviceId, command, timer, timerValue);
 			TAliDevTimer aliDevTimer;
 			Map<String, Object> map = new HashMap<String, Object>();
 			ResponseObject aldRes;
-			switch (TimerSetTypeEnum.getSetType(command)){
-				case add:
-					aldRes = feignAliClient.getAliDevTimerByDeviceSerialIdAndCountDown(deviceId);
-					aliDevTimer = (TAliDevTimer)aldRes.getData();
-					if(aliDevTimer !=null){
-						feignAliClient.delAliDevTimerByDeviceSerialId(aliDevTimer.getId());
-						feignQuartzClient.deleteJob(aliDevTimer.getId().toString());
-					}
-					aliDevTimer = new TAliDevTimer();
-					aliDevTimer.setTimer(timer);
-					aliDevTimer.setDeviceSerialId(deviceId);
-					aliDevTimer.setTimerValue(timerValue);
-					aliDevTimer.setIsCountdown(1);
-					ResponseObject addRes = feignAliClient.addAliDevTimer(aliDevTimer);
-					int repId = (Integer) addRes.getData();
-					feignQuartzClient.addRemoteOpenTaskSchedule(repId,timer,deviceId);
-					map.put("timerId",repId);
-					break;
-				case delete:
-					aldRes = feignAliClient.getAliDevTimerByDeviceSerialIdAndCountDown(deviceId);
-					aliDevTimer = (TAliDevTimer)aldRes.getData();
+			switch (TimerSetTypeEnum.getSetType(command)) {
+			case add:
+				aldRes = feignAliClient.getAliDevTimerByDeviceSerialIdAndCountDown(deviceId);
+				aliDevTimer = (TAliDevTimer) aldRes.getData();
+				if (aliDevTimer != null) {
 					feignAliClient.delAliDevTimerByDeviceSerialId(aliDevTimer.getId());
 					feignQuartzClient.deleteJob(aliDevTimer.getId().toString());
-					break;
-				case enable:
-					aldRes = feignAliClient.getAliDevTimerByDeviceSerialIdAndCountDown(deviceId);
-					aliDevTimer = (TAliDevTimer)aldRes.getData();
-					aliDevTimer.setState(1);
-					feignAliClient.updateAliDevTimer(aliDevTimer);
-					feignQuartzClient.resumeJob(aliDevTimer.getId().toString());
-					map.put("timerId",aliDevTimer.getId());
-					break;
-				case disable:
-					aldRes = feignAliClient.getAliDevTimerByDeviceSerialIdAndCountDown(deviceId);
-					aliDevTimer = (TAliDevTimer)aldRes.getData();
-					aliDevTimer.setState(0);
-					feignAliClient.updateAliDevTimer(aliDevTimer);
-					feignQuartzClient.pauseJob(aliDevTimer.getId().toString());
-					map.put("timerId",aliDevTimer.getId());
-					break;
-				default:
-					res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
-					res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
-					return res;
+				}
+				aliDevTimer = new TAliDevTimer();
+				aliDevTimer.setTimer(timer);
+				aliDevTimer.setDeviceSerialId(deviceId);
+				aliDevTimer.setTimerValue(timerValue);
+				aliDevTimer.setIsCountdown(1);
+				ResponseObject addRes = feignAliClient.addAliDevTimer(aliDevTimer);
+				int repId = (Integer) addRes.getData();
+				feignQuartzClient.addRemoteOpenTaskSchedule(repId, timer, deviceId);
+				map.put("timerId", repId);
+				break;
+			case delete:
+				aldRes = feignAliClient.getAliDevTimerByDeviceSerialIdAndCountDown(deviceId);
+				aliDevTimer = (TAliDevTimer) aldRes.getData();
+				feignAliClient.delAliDevTimerByDeviceSerialId(aliDevTimer.getId());
+				feignQuartzClient.deleteJob(aliDevTimer.getId().toString());
+				break;
+			case enable:
+				aldRes = feignAliClient.getAliDevTimerByDeviceSerialIdAndCountDown(deviceId);
+				aliDevTimer = (TAliDevTimer) aldRes.getData();
+				aliDevTimer.setState(1);
+				feignAliClient.updateAliDevTimer(aliDevTimer);
+				feignQuartzClient.resumeJob(aliDevTimer.getId().toString());
+				map.put("timerId", aliDevTimer.getId());
+				break;
+			case disable:
+				aldRes = feignAliClient.getAliDevTimerByDeviceSerialIdAndCountDown(deviceId);
+				aliDevTimer = (TAliDevTimer) aldRes.getData();
+				aliDevTimer.setState(0);
+				feignAliClient.updateAliDevTimer(aliDevTimer);
+				feignQuartzClient.pauseJob(aliDevTimer.getId().toString());
+				map.put("timerId", aliDevTimer.getId());
+				break;
+			default:
+				res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
+				res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
+				return res;
 			}
 			res.setData(map);
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
@@ -5293,13 +5290,11 @@ public class FacadeController extends BaseController {
 		return res;
 	}
 
-
 	@ApiOperation(value = "uploadAliDevice", httpMethod = "GET", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/uploadAliDevice/{deviceName}/{productKey}/{config}", method = RequestMethod.GET)
 	public ResponseObject<Map<String, Object>> uploadAliDevice(@PathVariable(value = "deviceName") String deviceName,
-														   @PathVariable(value = "productKey") String productKey,
-														   @RequestBody Object config) {
+			@PathVariable(value = "productKey") String productKey, @RequestBody Object config) {
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		try {
 			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -5315,7 +5310,7 @@ public class FacadeController extends BaseController {
 				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
 				return res;
 			}
-			feignAliClient.uploadAliDevice(deviceName,productKey,config,resUser.getData().getId());
+			feignAliClient.uploadAliDevice(deviceName, productKey, config, resUser.getData().getId());
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {
@@ -5329,7 +5324,8 @@ public class FacadeController extends BaseController {
 	@ApiOperation(value = "delAliDevice", httpMethod = "GET", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/delAliDevice", method = RequestMethod.POST)
-	public ResponseObject<Map<String, Object>> delAliDevice(@RequestBody Object value,@RequestParam(value = "deviceId") String deviceId) {
+	public ResponseObject<Map<String, Object>> delAliDevice(@RequestBody Object value,
+			@RequestParam(value = "deviceId") String deviceId) {
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		try {
 			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -5345,7 +5341,7 @@ public class FacadeController extends BaseController {
 				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
 				return res;
 			}
-			feignAliClient.delAliDevice(value,deviceId);
+			feignAliClient.delAliDevice(value, deviceId);
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {
@@ -5356,5 +5352,136 @@ public class FacadeController extends BaseController {
 		return res;
 	}
 
+	/**
+	 * @param type
+	 * @param start
+	 * @param count
+	 * @Description:
+	 */
+	@ApiOperation(value = "queryMsg", httpMethod = "GET", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/queryMsg/{type}/{start}/{count}", method = RequestMethod.GET)
+	public ResponseObject<Map<String, Object>> queryMsg(@PathVariable(value = "type", required = false) String type,
+			@PathVariable(value = "start", required = false) String start,
+			@PathVariable(value = "count", required = false) String count) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		try {
+			Map<String, Object> map = new HashMap<String, Object>();
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+			if (StringUtils.isEmpty(count)) {
+				count = "0";
+			}
+			if (StringUtils.isEmpty(start)) {
+				start = "10";
+			}
+			if (StringUtils.isEmpty(type)) {
+				ResponseObject<Integer> countMsgRes = feignUserClient.countMsgList(resUser.getData().getId());
+				if (countMsgRes == null || countMsgRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
+					res.setStatus(ResponseEnum.RequestParamError.getStatus());
+					res.setMessage(ResponseEnum.RequestParamError.getMsg());
+					return res;
+				}
+				Integer countMsg = countMsgRes.getData();
+				if (countMsg == null || countMsg.intValue() == 0) {
+					map.put("count", 0);
+					map.put("msgList", null);
+				}
 
+				ResponseObject<List<MsgExceptionDTO>> msgExceptionRes = feignUserClient.queryMsgExceList(
+						resUser.getData().getId(), Integer.parseInt(type), Integer.parseInt(start),
+						countMsg == null ? 0 : countMsg);
+				if (msgExceptionRes == null || msgExceptionRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
+					res.setStatus(ResponseEnum.RequestParamError.getStatus());
+					res.setMessage(ResponseEnum.RequestParamError.getMsg());
+					return res;
+				}
+				map.put("msgList", msgExceptionRes.getData());
+				// jsonObject.add("msgList", g2.toJsonTree(MsgExceptionDTO));
+			} else if (Integer.parseInt(type) == -1) {
+				ResponseObject<Integer> countRes = feignUserClient.countMsgExceList(resUser.getData().getId(),
+						Integer.parseInt(type));
+				// TCount tCount =
+				// MsgBussiness.countMsgExceList(resUser.getData().getUserId(),
+				// Integer.parseInt(type));
+				if (countRes == null || countRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
+					res.setStatus(ResponseEnum.RequestParamError.getStatus());
+					res.setMessage(ResponseEnum.RequestParamError.getMsg());
+					return res;
+				}
+				map.put("count", countRes.getData());
+				// jsonObject.addProperty("count", tCount.getCount());
+				if (countRes.getData().intValue() == 0) {
+					map.put("msgList", null);
+				} else {
+					ResponseObject<List<MsgExceptionDTO>> msgExceptionRes = feignUserClient.queryMsgExceList(
+							resUser.getData().getId(), Integer.parseInt(type), Integer.parseInt(start),
+							countRes.getData());
+
+					if (msgExceptionRes == null
+							|| msgExceptionRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
+						res.setStatus(ResponseEnum.RequestParamError.getStatus());
+						res.setMessage(ResponseEnum.RequestParamError.getMsg());
+						return res;
+					}
+					map.put("msgList", msgExceptionRes.getData());
+				}
+			}
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	/**  
+	 * @param id
+	 * @return  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@ApiOperation(value = "updateMsgState", httpMethod = "PUT", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/updateMsgState/{id}", method = RequestMethod.PUT)
+	public ResponseObject updateMsgState(@PathVariable(value = "id", required = true)Integer id) {
+		ResponseObject  res = new ResponseObject();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+			feignUserClient.updateMsgState(id,MsgStateEnum.read.getValue());
+			//MsgBussiness.updateMsgState(Integer.parseInt(id),MsgStateEnum.read.getValue());
+			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
 }

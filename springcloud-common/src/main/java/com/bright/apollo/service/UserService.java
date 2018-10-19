@@ -6,7 +6,6 @@ import com.bright.apollo.common.entity.TUser;
 import com.bright.apollo.common.entity.TUserDevice;
 import com.bright.apollo.common.entity.TUserObox;
 import com.bright.apollo.common.entity.TUserScene;
-import com.bright.apollo.service.base.BasicService;
 
 /**  
  *@Title:  

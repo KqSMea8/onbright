@@ -16,6 +16,7 @@ import com.bright.apollo.common.entity.TUserObox;
 import com.bright.apollo.common.entity.TUserOperation;
 import com.bright.apollo.common.entity.TUserScene;
 import com.bright.apollo.feign.FeignUserClient;
+import com.bright.apollo.response.MsgExceptionDTO;
 import com.bright.apollo.response.ResponseObject;
 
 /**  
@@ -347,6 +348,47 @@ public class HystrixFeignUserFallback extends BasicHystrixFeignFallback implemen
 	@SuppressWarnings("rawtypes")
 	@Override
 	public ResponseObject addUserAliDev(TUserAliDevice tUserAliDev) {
+		logger.warn("===user server is break===");
+		ResponseObject res = serverError();
+		return res;
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignUserClient#countMsgList(java.lang.Integer)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject<Integer> countMsgList(Integer userId) {
+		logger.warn("===user server is break===");
+		ResponseObject res = serverError();
+		return res;
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignUserClient#queryMsgExceList(java.lang.Integer, java.lang.Integer, int, int)  
+	 */
+	@Override
+	public ResponseObject<List<MsgExceptionDTO>> queryMsgExceList(Integer userId, Integer type, int start, int count) {
+		logger.warn("===user server is break===");
+		ResponseObject res = serverError();
+		return res;
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignUserClient#countMsgExceList(java.lang.Integer, java.lang.Integer)  
+	 */
+	@Override
+	public ResponseObject<Integer> countMsgExceList(Integer userId, Integer type) {
+		logger.warn("===user server is break===");
+		ResponseObject res = serverError();
+		return res;
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignUserClient#updateMsgState(java.lang.Integer, int)  
+	 */
+	@Override
+	public ResponseObject updateMsgState(Integer id, int statue) {
 		logger.warn("===user server is break===");
 		ResponseObject res = serverError();
 		return res;

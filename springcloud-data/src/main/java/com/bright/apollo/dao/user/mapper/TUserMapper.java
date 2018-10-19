@@ -12,7 +12,6 @@ import org.apache.ibatis.annotations.UpdateProvider;
 import org.springframework.stereotype.Component;
 
 import com.bright.apollo.common.entity.TUser;
-import com.bright.apollo.dao.sqlProvider.TIntelligentFingerAuthDynaSqlProvider;
 import com.bright.apollo.dao.sqlProvider.UserProvider;
 
 @Mapper
@@ -27,6 +26,11 @@ public interface TUserMapper {
 
 	@Select(" select * from t_user tu " + " inner join t_user_scene tus on tu.id=tus.user_id "
 			+ " where scene_number = #{sceneNumber} ")
+	@Results(value = { @Result(property = "userName", column = "user_name"), @Result(property = "id", column = "id"),
+			@Result(property = "nickname", column = "nickname"),
+			@Result(property = "headimgurl", column = "headimgurl"),
+			@Result(property = "password", column = "password"), @Result(property = "openId", column = "open_id"),
+			@Result(property = "lastOpTime", column = "last_op_time") })
 	List<TUser> getUsersBySceneNumber(@Param("sceneNumber") int sceneNumber);
 
 	@Select("select * from t_user where user_name=#{userName}")
