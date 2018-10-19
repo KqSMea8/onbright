@@ -40,6 +40,7 @@ public class PushServiceImpl implements PushService {
             String accessToken = (String)redisBussines.getObject("token_userId_"+uId);
             logger.info("====== accessToken ====== "+accessToken +" ====== userId ====== "+uId);
             if(!StringUtils.isEmpty(accessToken)){
+                logger.info(" ====== send mqtt message ====== ");
                 mqttGateWay.sendToMqtt("ob-smart."+accessToken,sendStr.toString());
             }
 
