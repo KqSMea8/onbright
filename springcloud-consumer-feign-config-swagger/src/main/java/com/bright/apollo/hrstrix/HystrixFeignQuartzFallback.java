@@ -67,5 +67,11 @@ public class HystrixFeignQuartzFallback extends BasicHystrixFeignFallback implem
 		logger.warn("===quartz server is break===");
 		return serverError();
 	}
- 
+
+	@Override
+	public ResponseObject startTimerSchedule(Integer timerId, String cronString) {
+		logger.warn("===quartz server is break===");
+		return serverError();
+	}
+
 }

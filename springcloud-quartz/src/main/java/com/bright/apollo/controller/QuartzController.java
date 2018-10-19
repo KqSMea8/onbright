@@ -114,4 +114,23 @@ public class QuartzController {
 		return res;
 	
 	}
+
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/startTimerSchedule/{timerId}/{cronString}", method = RequestMethod.POST, produces = "application/json")
+	public ResponseObject startTimerSchedule(
+			@PathVariable(value="timerId",required=true) Integer timerId,
+			@PathVariable(value="cronString",required=true) String cronString
+	) {
+		ResponseObject res=new ResponseObject();
+		try {
+			quartzService.startTimerSchedule(timerId,cronString);
+			res.setStatus(ResponseEnum.AddSuccess.getStatus());
+			res.setMessage(ResponseEnum.AddSuccess.getMsg());
+		} catch (Exception e) {
+			log.error("===error msg:"+e.getMessage());
+			res.setStatus(ResponseEnum.RequestTimeout.getStatus());
+			res.setMessage(ResponseEnum.RequestTimeout.getMsg());
+		}
+		return res;
+	}
 }

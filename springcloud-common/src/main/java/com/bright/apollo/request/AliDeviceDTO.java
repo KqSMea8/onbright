@@ -39,6 +39,7 @@ public class AliDeviceDTO extends TAliDeviceConfig implements Serializable {
 
     @Expose
     @SerializedName("online")
+    @JsonProperty(value="online")
     private boolean online;
 
     public JSONArray getDeviceAction() {

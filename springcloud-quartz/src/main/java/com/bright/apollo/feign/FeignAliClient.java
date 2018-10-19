@@ -26,5 +26,9 @@ public interface FeignAliClient {
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/aliScene/addSceneAction/{sceneNumber}", method = RequestMethod.POST)
 	ResponseObject addSceneAction(@PathVariable(value = "sceneNumber")Integer sceneNumber);
+
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/aliScene/addTimerAction/{timerId}", method = RequestMethod.POST)
+	ResponseObject addTimerAction(@PathVariable(value = "timerId")Integer timerId);
 	
 }

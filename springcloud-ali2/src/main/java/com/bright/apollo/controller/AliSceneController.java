@@ -64,6 +64,24 @@ public class AliSceneController {
 	}
 
 	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/addTimerAction/{timerId}", method = RequestMethod.POST)
+	public ResponseObject addTimerAction(@PathVariable(value = "timerId") Integer timerId) {
+		ResponseObject res = new ResponseObject();
+		try {
+			sceneActionThreadPool.addTimerAction(timerId);
+			// OboxResp resp = topicServer.request(cmd, inMsgByte,
+			// deviceSerial);
+			res.setStatus(ResponseEnum.AddSuccess.getStatus());
+			res.setMessage(ResponseEnum.AddSuccess.getMsg());
+		} catch (Exception e) {
+			e.printStackTrace();
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/setLocalScene/{sceneStatus}/{oboxSceneNumber}/{sceneName}/{oboxSerialId}", method = RequestMethod.PUT)
 	public ResponseObject setLocalScene(@PathVariable(value = "sceneStatus") Byte sceneStatus,
 			@PathVariable(value = "oboxSceneNumber") Integer oboxSceneNumber,

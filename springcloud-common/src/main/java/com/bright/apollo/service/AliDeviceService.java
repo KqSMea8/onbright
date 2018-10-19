@@ -44,6 +44,10 @@ public interface AliDeviceService {
 
     TAliDevTimer getAliDevTimerByDeviceSerialIdAndCountDown(String oboxSerialId);
 
+    TAliDevTimer getAliDevTimerByIdAndDeviceId(String oboxSerialId,Integer id);
+
+    TAliDevTimer getAliDevTimerById(int id);
+
     void deleteAliDevTimerById(Integer id);
 
     int addAliDevTimer(TAliDevTimer aliDevTimer);

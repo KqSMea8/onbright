@@ -27,4 +27,10 @@ public class HystrixFeignAli2Fallback extends BasicHystrixFeignFallback implemen
 		return serverError();
 	}
 
+	@Override
+	public ResponseObject addTimerAction(Integer timerId) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
 }

@@ -233,6 +233,7 @@ public class AliMessageHandler {
 				}
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
  			logger.info("------ MNService WorkerFunc Exception ------" + e.getMessage());
 		}
 
