@@ -889,7 +889,7 @@ public class AliServerController {
 			}
 			net.sf.json.JSONObject object = new net.sf.json.JSONObject();
 			object.put("command", "set");
-			object.element("functionId",array);
+			object.element("value",array);
 //			object.put("value", value);
 			topicServer.requestDev(object,deviceId,array.toJSONString());
 			TAliDeviceConfig aliDeviceConfig = aliDeviceConfigService.getAliDeviceConfigBySerializeId(deviceId);
