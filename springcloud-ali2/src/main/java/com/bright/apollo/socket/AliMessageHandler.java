@@ -90,7 +90,7 @@ public class AliMessageHandler {
 				logger.info(" productKey ------ " + object.get("productKey"));
 				logger.info(" deviceName ------ " + object.get("deviceName"));
 				// String obox_serial_id = object.getString("deviceName");
-				if (object.getString("status").equals("offline")) {
+				/*if (object.getString("status").equals("offline")) {
 					if(!StringUtils.isEmpty(object.getString("productKey"))&&(iotOboxConncetion.getOboxSouthChinaName().equals(object.getString("productKey"))||
 							iotOboxConncetion.getOboxAmericaName().equals(object.getString("productKey"))
 							)){
@@ -213,7 +213,7 @@ public class AliMessageHandler {
 						}
 					}
 
-				}
+				}*/
 
 				logger.info("status PopMessage Body: " + aString); // 获取原始消息
 			} else if (messageType.equals("upload")) {
