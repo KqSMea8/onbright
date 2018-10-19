@@ -242,21 +242,21 @@ public class CommandHandler {
 				object2.put("command", "time_sync");
 				topServer.pubTopicDev(object2, object.getString("productKey"), object.getString("deviceName"),
 						eAliRegionEnum);
-				TAliDeviceUS tAliDeviceUS = aliDeviceService.getAliUSDeviceByProductKeyAndDeviceName(
+//				TAliDeviceUS tAliDeviceUS = aliDeviceService.getAliUSDeviceByProductKeyAndDeviceName(
+//						object.getString("productKey"), !StringUtils.isEmpty(object.getString("deviceName"))
+//								? object.getString("deviceName") : "available");
+//				if (tAliDeviceUS != null) {
+//					tAliDeviceUS.setOffline(0);
+//					aliDeviceService.updateAliUSDevice(tAliDeviceUS);
+//				} else {
+				TAliDevice tAliDevice = aliDeviceService.getAliDeviceByProductKeyAndDeviceName(
 						object.getString("productKey"), !StringUtils.isEmpty(object.getString("deviceName"))
 								? object.getString("deviceName") : "available");
-				if (tAliDeviceUS != null) {
-					tAliDeviceUS.setOffline(0);
-					aliDeviceService.updateAliUSDevice(tAliDeviceUS);
-				} else {
-					TAliDevice tAliDevice = aliDeviceService.getAliDeviceByProductKeyAndDeviceName(
-							object.getString("productKey"), !StringUtils.isEmpty(object.getString("deviceName"))
-									? object.getString("deviceName") : "available");
-					if (tAliDevice != null) {
-						tAliDevice.setOffline(0);
-						aliDeviceService.updateAliDevice(tAliDevice);
-					}
+				if (tAliDevice != null) {
+					tAliDevice.setOffline(0);
+					aliDeviceService.updateAliDevice(tAliDevice);
 				}
+//				}
 				pushMsg(object.getString("productKey"), object.getString("deviceName"), true);
 			}
 
@@ -282,15 +282,6 @@ public class CommandHandler {
 					deviceSerialId = tAliDevice.getOboxSerialId();
 					aliDevCache.saveDevInfo(tAliDevice.getProductKey(), tAliDevice.getOboxSerialId(),
 							tAliDevice.getDeviceName(), AliRegionEnum.SOURTHCHINA);
-				} else {
-					return;
-				}
-			} else {
-				TAliDeviceUS tAliDeviceUS = aliDeviceService.getAliUSDeviceByProductKeyAndDeviceName(productKey, deviceName);
-				if (!tAliDeviceUS.getDeviceSerialId().equals("available")) {
-					deviceSerialId = tAliDeviceUS.getDeviceSerialId();
-					aliDevCache.saveDevInfo(tAliDeviceUS.getProductKey(), tAliDeviceUS.getDeviceSerialId(),
-							tAliDeviceUS.getDeviceName(), AliRegionEnum.AMERICA);
 				} else {
 					return;
 				}
