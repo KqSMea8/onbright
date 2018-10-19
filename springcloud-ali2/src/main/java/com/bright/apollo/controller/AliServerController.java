@@ -879,6 +879,14 @@ public class AliServerController {
 		try {
 			String val = (String)value;
 			JSONArray array = JSONArray.parseArray(val);
+			for (int i = 0; i < array.size(); i++) {
+				com.alibaba.fastjson.JSONObject jsonObject = array.getJSONObject(i);
+				if (jsonObject.getBoolean("data")) {
+					jsonObject.put("data", true);
+				}else {
+					jsonObject.put("data", false);
+				}
+			}
 			net.sf.json.JSONObject object = new net.sf.json.JSONObject();
 			object.put("command", "set");
 			object.element("functionId",array);
