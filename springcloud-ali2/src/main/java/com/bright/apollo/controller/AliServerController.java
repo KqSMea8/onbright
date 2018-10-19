@@ -894,10 +894,11 @@ public class AliServerController {
 			topicServer.requestDev(object,deviceId,array.toJSONString());
 			TAliDeviceConfig aliDeviceConfig = aliDeviceConfigService.getAliDeviceConfigBySerializeId(deviceId);
 			if(aliDeviceConfig !=null){
-				aliDeviceConfig.setState(val);
+				aliDeviceConfig.setState(array.toJSONString());
 				aliDeviceConfigService.update(aliDeviceConfig);
 			}
-			res.setData(val);
+			logger.info("array ====== "+array.toJSONString());
+			res.setData(array.toJSONString());
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {
