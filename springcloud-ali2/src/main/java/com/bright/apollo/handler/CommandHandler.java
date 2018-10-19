@@ -229,7 +229,10 @@ public class CommandHandler {
 			body1[6] = (byte) date.get(Calendar.HOUR_OF_DAY); // 小时
 			body1[7] = (byte) date.get(Calendar.MINUTE); // 分钟
 			body1[8] = (byte) date.get(Calendar.SECOND); // 秒
-			if (ALIDevTypeEnum.getTypebyValue(object.getString("productKey")).equals(ALIDevTypeEnum.OBOX)) {
+			logger.info("contentBytes ========"+object.toString());
+			if (!StringUtils.isEmpty(object.getString("productKey"))&&(iotOboxConncetion.getOboxSouthChinaName().equals(object.getString("productKey"))||
+					iotOboxConncetion.getOboxAmericaName().equals(object.getString("productKey"))
+			)) {
 				topServer.pubTopic(CMDEnum.time, body1, object.getString("productKey"),
 						object.getString("deviceName"), eAliRegionEnum);
 			} else {
