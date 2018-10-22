@@ -50,6 +50,10 @@ public class CommandHandler {
 
 	@Autowired
 	private UploadHandler uploadHandler;
+
+	@Autowired
+	private IRUploadHandler iruploadHandler;
+
 	@Autowired
 	@Lazy
 	private IotDevConncetion iotOboxConncetion;
@@ -83,6 +87,7 @@ public class CommandHandler {
 		try {
 			if (cmdHandlers.get(AliCmdTypeEnum.UPLOAD.getCmd()) == null) {
 				cmdHandlers.put(AliCmdTypeEnum.UPLOAD.getCmd(), uploadHandler);
+				cmdHandlers.put(AliCmdTypeEnum.IRUPLOAD.getCmd(), iruploadHandler);
 			}
 
 			logger.info("======topic msg=====:key:" + ProductKey + " device:" + DeviceName + " payload" + aString);
@@ -90,7 +95,7 @@ public class CommandHandler {
 			JSONObject object = new JSONObject(aString);
 			logger.info("command ==== "+object.isNull("command"));
 			if (object.isNull("command")) {
-				return;
+				object.put("command","upload");
 			}
 			AliBaseHandler handler = cmdHandlers.get(object.getString("command"));
 			if (handler == null) {
