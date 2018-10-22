@@ -141,8 +141,7 @@ public class CommandHandler {
 	}
 
 	/**
-	 * @param jsonObject
-	 * @param sourthchina
+
 	 * @throws Exception 
 	 * @throws JSONException 
 	 * @Description:

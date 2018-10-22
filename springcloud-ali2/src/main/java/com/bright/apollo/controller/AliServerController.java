@@ -1039,13 +1039,16 @@ public class AliServerController {
 			}
 			aliDeviceService.deleteAliDeviceUser(aliDeviceConfig.getDeviceSerialId());
 			TAliDevice aliDevice = aliDeviceService.getAliDeviceBySerializeId(aliDeviceConfig.getDeviceSerialId());
-			if(aliDevice!=null&&!aliDevice.getDeviceName().equals(deviceName)&&!aliDevice.getProductKey().equals(productKey)){
+			
+			if(aliDevice!=null&&!aliDevice.getDeviceName().equals(deviceName)&&aliDevice.getProductKey().equals(productKey)){
+				logger.info("========= upload available ====== ");
 				aliDevice.setOboxSerialId("available");
 				aliDeviceService.updateAliDevice(aliDevice);
 				aliDevCache.DelDevInfo(aliDeviceConfig.getDeviceSerialId());
 			}
 			TAliDevice taliDevice = aliDeviceService.getAliDeviceByProductKeyAndDeviceName(productKey,deviceName);
 			if(taliDevice != null){
+				logger.info("========= upload deviceId ====== ");
 				taliDevice.setOboxSerialId(object.getString("deviceId"));
 				aliDeviceService.updateAliDevice(taliDevice);
 				aliDevCache.saveDevInfo(productKey,object.getString("deviceId"),deviceName,AliRegionEnum.SOURTHCHINA);

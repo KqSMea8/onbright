@@ -15,6 +15,15 @@ import java.util.List;
 public interface AliDeviceMapper {
 
     @Select("select * from t_ali_device where obox_serial_id = #{oboxSerialId}")
+	@Results(value = {
+			@Result(property = "Id",column = "id"),
+			@Result(property = "oboxSerialId",column = "obox_serial_id"),
+			@Result(property = "lastOpTime",column = "last_op_time"),
+			@Result(property = "deviceName",column = "DeviceName"),
+			@Result(property = "deviceSecret",column = "DeviceSecret"),
+			@Result(property = "productKey",column = "productKey"),
+			@Result(property = "offline",column = "offline")
+	})
     TAliDevice getAliDeviceBySerializeId(@Param("oboxSerialId") String oboxSerialId);
 
     @Select("select * from t_ali_device_us where device_serial_id = #{oboxSerialId}")
