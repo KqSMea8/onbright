@@ -11,37 +11,37 @@ import org.springframework.integration.mqtt.outbound.MqttPahoMessageHandler;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
 
-//@Configuration
-//public class MqttOutBoundConfiguration {
+@Configuration
+public class MqttOutBoundConfiguration {
 
 //    @Autowired
 //    private MqttProperties mqttProperties;
 
-//    @Bean
-//    public MessageChannel outChannel() {
-//        return new DirectChannel();
-//    }
-//
-//    @Bean
-//    public MqttPahoClientFactory mqttClientFactory(){
-//        DefaultMqttPahoClientFactory defaultMqttPahoClientFactory = new DefaultMqttPahoClientFactory();
-//        defaultMqttPahoClientFactory.setServerURIs("tcp://47.99.107.215:1883");
-//        defaultMqttPahoClientFactory.setCleanSession(false);
-//        defaultMqttPahoClientFactory.setUserName("admin");
-//        defaultMqttPahoClientFactory.setPassword("admin");
-//        return defaultMqttPahoClientFactory;
-//    }
-//
-//
-//    @Bean(name = "mqttPahoMessageHandler")
-//    @ServiceActivator(inputChannel = "outChannel")
-//    public MessageHandler mqttOutbound(){
-//        MqttPahoMessageHandler mqttPahoMessageHandler =
-//                new MqttPahoMessageHandler("aliOutbound",mqttClientFactory());
-//        mqttPahoMessageHandler.setAsync(true);
-//        mqttPahoMessageHandler.setDefaultTopic("topic1");
-//        return mqttPahoMessageHandler;
-//    }
+    @Bean
+    public MessageChannel outChannel() {
+        return new DirectChannel();
+    }
+
+    @Bean
+    public MqttPahoClientFactory mqttClientFactory(){
+        DefaultMqttPahoClientFactory defaultMqttPahoClientFactory = new DefaultMqttPahoClientFactory();
+        defaultMqttPahoClientFactory.setServerURIs("tcp://localhost.215:1883");
+        defaultMqttPahoClientFactory.setCleanSession(false);
+        defaultMqttPahoClientFactory.setUserName("admin");
+        defaultMqttPahoClientFactory.setPassword("admin");
+        return defaultMqttPahoClientFactory;
+    }
 
 
-//}
+    @Bean(name = "mqttPahoMessageHandler")
+    @ServiceActivator(inputChannel = "outChannel")
+    public MessageHandler mqttOutbound(){
+        MqttPahoMessageHandler mqttPahoMessageHandler =
+                new MqttPahoMessageHandler("aliOutbound",mqttClientFactory());
+        mqttPahoMessageHandler.setAsync(true);
+        mqttPahoMessageHandler.setDefaultTopic("topic1");
+        return mqttPahoMessageHandler;
+    }
+
+
+}
