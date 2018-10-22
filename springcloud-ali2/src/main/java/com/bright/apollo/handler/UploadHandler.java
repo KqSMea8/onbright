@@ -44,13 +44,13 @@ public class UploadHandler extends AliBaseHandler {
                 pushMessage.setType(PushMessageType.WIFI_TRANS.getValue());
                 pushMessage.setOnLine(true);
 
-                JSONObject jsonObject = new JSONObject();
+                net.sf.json.JSONObject jsonObject = new net.sf.json.JSONObject();
                 jsonObject.put("deviceId", tAliDeviceConfig.getDeviceSerialId());
                 jsonObject.put("type", tAliDeviceConfig.getType());
                 jsonObject.put("name", tAliDeviceConfig.getName());
                 jsonObject.put("action", JSONArray.parseArray(tAliDeviceConfig.getAction()));
                 jsonObject.put("state", JSONArray.parseArray(tAliDeviceConfig.getState()));
-
+                logger.info("upload json  ====== "+jsonObject);
                 pushMessage.setData(jsonObject.toString());
 
                 pushMsg(deviceSerialId, pushMessage);
@@ -140,7 +140,7 @@ public class UploadHandler extends AliBaseHandler {
     }
 
     private void pushMsg(String deviceSerialId,PushMessage pushMessage) throws Exception {
-
+        logger.info("upload pushMessage ====== "+pushMessage.toString());
         List<TUserAliDevice> list=userAliDevService.queryAliUserId(deviceSerialId);
         Set<Integer> setuser=new ConcurrentSkipListSet<Integer>();
         for (TUserAliDevice tUserAliDevice : list) {
