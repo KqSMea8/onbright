@@ -225,8 +225,6 @@ public class AliMessageHandler {
 				if(!StringUtils.isEmpty(topicArray[1])&&(iotOboxConncetion.getOboxSouthChinaName().equals(topicArray[1])||
 						iotOboxConncetion.getOboxAmericaName().equals(topicArray[1])
 						)){
-				//if (ALIDevTypeEnum.getTypebyValue(topicArray[1]).equals(ALIDevTypeEnum.OBOX)) {
-
 					 cmdHandlerManager.processTopic(topicArray[1],topicArray[2],aString);
 				} else {
 					commandHandler.process(topicArray[1], topicArray[2], aString);

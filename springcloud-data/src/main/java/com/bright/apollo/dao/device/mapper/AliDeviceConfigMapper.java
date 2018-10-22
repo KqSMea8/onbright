@@ -49,6 +49,7 @@ public interface AliDeviceConfigMapper {
 	@InsertProvider(type=AliDeviceConfigProvider.class,method="addAliDevConfig")
 	@Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
 	void addAliDevConfig(TAliDeviceConfig tAliDeviceConfig);
+
     @Select(" select tadc.* from t_user_ali_device tuad " +
             " inner join t_ali_device_config tadc on tuad.device_serial_id=tadc.device_serial_id where tuad.user_id = #{userId} ")
     @Results(value = {

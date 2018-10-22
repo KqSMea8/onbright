@@ -1,7 +1,8 @@
 package com.bright.apollo.enums;
 
 public enum AliCmdTypeEnum {
-    UPLOAD("upload");
+    UPLOAD("upload"),
+    IRUPLOAD("irupload");
 
     private String cmd;
 
