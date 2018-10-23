@@ -873,6 +873,7 @@ public class AliServerController {
 		return res;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/setAliDevice", method = RequestMethod.POST)
 	public ResponseObject setAliDevice(@RequestParam(required = true, value = "value") Object value,@RequestParam(required = true, value = "deviceId") String deviceId) {
 		ResponseObject res = new ResponseObject();

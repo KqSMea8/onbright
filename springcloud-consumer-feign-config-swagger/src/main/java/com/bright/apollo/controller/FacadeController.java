@@ -34,6 +34,7 @@ import com.bright.apollo.common.dto.OboxResp;
 import com.bright.apollo.common.dto.OboxResp.Type;
 import com.bright.apollo.common.entity.OauthClientDetails;
 import com.bright.apollo.common.entity.TAliDevTimer;
+import com.bright.apollo.common.entity.TAliDeviceConfig;
 import com.bright.apollo.common.entity.TCreateTableLog;
 import com.bright.apollo.common.entity.TDeviceStatus;
 import com.bright.apollo.common.entity.TIntelligentFingerAbandonRemoteUser;
@@ -992,7 +993,7 @@ public class FacadeController extends BaseController {
 					} else if (sceneActionDTO.getNodeType().equals(NodeTypeEnum.status.getValue())) {
 						ResponseObject<TScene> scRes = feignSceneClient
 								.getSceneBySceneNumber(sceneActionDTO.getSceneNumber());
-						if (scRes != null && scRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+						if (scRes != null && scRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()
 								&& scRes.getData() != null) {
 							tSceneAction.setActionid(scRes.getData().getSceneNumber().intValue() + "");
 							tSceneAction.setNodeType(NodeTypeEnum.status.getValue());
@@ -1001,13 +1002,23 @@ public class FacadeController extends BaseController {
 					} else if (sceneActionDTO.getNodeType().equals(NodeTypeEnum.nvr.getValue())) {
 						ResponseObject<TNvr> nvrRes = feignDeviceClient.getNvrByIP(sceneActionDTO.getDeviceSerialId());
 						if (nvrRes != null && nvrRes.getData() != null
-								&& nvrRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
+								&& nvrRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()) {
 							tSceneAction.setActionid(nvrRes.getData().getId().intValue() + "");
 							tSceneAction.setNodeType(NodeTypeEnum.nvr.getValue());
 							feignSceneClient.addSceneAction(tSceneAction);
 						}
 					} else if (sceneActionDTO.getNodeType().equals(NodeTypeEnum.security.getValue())) {
-
+						
+					}
+					//add wifi device
+					else if(sceneActionDTO.getNodeType().equals(NodeTypeEnum.wifi.getValue())){
+						ResponseObject<TAliDeviceConfig> aliDeviceRes = feignDeviceClient.queryAliDevConfigBySerial(sceneActionDTO.getDeviceSerialId());
+						if (aliDeviceRes != null && aliDeviceRes.getData() != null
+								&& aliDeviceRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
+							tSceneAction.setActionid(aliDeviceRes.getData().getDeviceSerialId());
+							tSceneAction.setNodeType(NodeTypeEnum.wifi.getValue());
+							feignSceneClient.addSceneAction(tSceneAction);
+						}
 					}
 				}
 			}
@@ -1226,6 +1237,15 @@ public class FacadeController extends BaseController {
 							feignSceneClient.addSceneAction(tSceneAction);
 							// SceneBusiness.addSceneAction(tSceneAction);
 						}
+					}else if (sceneActionDTO.getNodeType().equals(NodeTypeEnum.wifi.getValue())) {
+						ResponseObject<TAliDeviceConfig> aliDeviceRes = feignDeviceClient.queryAliDevConfigBySerial(sceneActionDTO.getDeviceSerialId());
+						if (aliDeviceRes != null && aliDeviceRes.getData() != null
+								&& aliDeviceRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
+							tSceneAction.setActionid(aliDeviceRes.getData().getDeviceSerialId());
+							tSceneAction.setNodeType(NodeTypeEnum.wifi.getValue());
+							feignSceneClient.addSceneAction(tSceneAction);
+						}
+					
 					}
 				}
 			}

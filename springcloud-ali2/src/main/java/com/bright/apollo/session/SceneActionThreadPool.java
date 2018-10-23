@@ -6,7 +6,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.apache.log4j.Logger;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -17,6 +16,7 @@ import com.bright.apollo.bean.PushSystemMsg;
 import com.bright.apollo.cache.AliDevCache;
 import com.bright.apollo.common.entity.TAliDevTimer;
 import com.bright.apollo.common.entity.TAliDevice;
+import com.bright.apollo.common.entity.TAliDeviceConfig;
 import com.bright.apollo.common.entity.TAliDeviceUS;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.common.entity.TScene;
@@ -29,8 +29,8 @@ import com.bright.apollo.enums.DeviceTypeEnum;
 import com.bright.apollo.enums.ExceptionEnum;
 import com.bright.apollo.enums.NodeTypeEnum;
 import com.bright.apollo.enums.SystemEnum;
+import com.bright.apollo.service.AliDeviceConfigService;
 import com.bright.apollo.service.AliDeviceService;
-import com.bright.apollo.service.JPushService;
 import com.bright.apollo.service.MsgService;
 import com.bright.apollo.service.OboxDeviceConfigService;
 import com.bright.apollo.service.SceneActionService;
@@ -61,7 +61,7 @@ public class SceneActionThreadPool {
 
 	@Autowired
 	private OboxDeviceConfigService oboxDeviceConfigService;
-
+	
 	@Autowired
 	private SceneService sceneService;
 	
@@ -73,6 +73,9 @@ public class SceneActionThreadPool {
 	
 	@Autowired
 	private MsgService msgService;
+	
+	@Autowired
+	private AliDeviceConfigService aliDeviceConfigService;
 	
 	@Autowired
 	private PushObserverManager pushObserverManager;
@@ -205,6 +208,28 @@ public class SceneActionThreadPool {
 										oboxDeviceConfig.getOboxSerialId());
 								//TimeUnit.MILLISECONDS.sleep(250);
 							}
+						}
+					}//add wifi
+					else if (tSceneAction.getNodeType().equals(NodeTypeEnum.wifi.getValue())) {
+						TAliDeviceConfig aliDeviceConfig = aliDeviceConfigService.getAliDeviceConfigBySerializeId(tSceneAction.getActionid());
+						if (aliDeviceConfig != null) {
+							JSONArray array = JSONArray.parseArray(tSceneAction.getAction());
+							for (int i = 0; i < array.size(); i++) {
+								com.alibaba.fastjson.JSONObject jsonObject = array.getJSONObject(i);
+								if (jsonObject.getBoolean("data")) {
+									jsonObject.put("data", true);
+								}else {
+									jsonObject.put("data", false);
+								}
+							}
+							net.sf.json.JSONObject object = new net.sf.json.JSONObject();
+							object.put("command", "set");
+							object.element("value",array);
+//							object.put("value", value);
+							topicServer.requestDev(object,tSceneAction.getActionid(),array.toJSONString());
+							aliDeviceConfig.setState(array.toJSONString());
+							aliDeviceConfigService.update(aliDeviceConfig);
+							log.info("array ====== "+array.toJSONString());
 						}
 					}
 				}

@@ -12,7 +12,9 @@ public enum NodeTypeEnum {
 
     nvr("04"),
 
-    security("05")//监听
+    security("05"),//监听
+    
+    wifi("06")
     ;
 
     private String value;
