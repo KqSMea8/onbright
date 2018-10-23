@@ -411,4 +411,38 @@ public interface FeignAliClient {
 	 */
 	@RequestMapping(value = "/aliService/getAliDevTimerByIdAndDeviceId/{deviceId}/{timerId}", method = RequestMethod.GET)
 	ResponseObject getAliDevTimerByIdAndDeviceId(@PathVariable(value = "deviceId") String deviceId,@PathVariable(value = "timerId") Integer timerId);
+
+
+	/**
+	 * @Description:获取遥控器列表
+	 */
+	@RequestMapping(value = "/aliDevice/getIrList", method = RequestMethod.POST)
+	ResponseObject getIrList(@RequestParam(required = true, value = "brandId") String brandId,
+							 @RequestParam(required = true, value = "deviceType") String deviceType);
+
+
+	/**
+	 * @Description:进入学习状态
+	 */
+	@RequestMapping(value = "/aliDevice/toLearn", method = RequestMethod.POST)
+	ResponseObject toLearn(@RequestParam(required = true, value = "serialId") String serialId,
+						   @RequestParam(required = true, value = "timeOut") String timeOut,
+						   @RequestParam(required = true, value = "index") Integer index,
+						   @RequestParam(required = true, value = "keyOrName") String keyOrName,
+						   @RequestParam(required = true, value = "learnKeyType") String learnKeyType);
+
+	/**
+	 * @Description:修改/新增红外方案
+	 */
+	@RequestMapping(value = "/aliDevice/modifyIR", method = RequestMethod.POST)
+	ResponseObject modifyIR(@RequestParam(required = true, value = "serialId") String serialId,
+							@RequestParam(required = true, value = "irProgram") String irProgram);
+
+	/**
+	 * @Description:修改/新增红外方案
+	 */
+	@RequestMapping(value = "/aliDevice/controllIR", method = RequestMethod.POST)
+	ResponseObject controllIR(@RequestParam(required = true, value = "serialId") String serialId,
+							  @RequestParam(required = true, value = "index") Integer index,
+							  @RequestParam(required = true, value = "key") String key);
 }

@@ -1039,7 +1039,7 @@ public class AliServerController {
 			}
 			aliDeviceService.deleteAliDeviceUser(aliDeviceConfig.getDeviceSerialId());
 			TAliDevice aliDevice = aliDeviceService.getAliDeviceBySerializeId(aliDeviceConfig.getDeviceSerialId());
-			
+
 			if(aliDevice!=null&&!aliDevice.getDeviceName().equals(deviceName)&&aliDevice.getProductKey().equals(productKey)){
 				logger.info("========= upload available ====== ");
 				aliDevice.setOboxSerialId("available");

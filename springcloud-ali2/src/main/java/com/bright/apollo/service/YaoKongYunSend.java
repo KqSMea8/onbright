@@ -79,7 +79,7 @@ public class YaoKongYunSend {
                 }
             }
         }
-//        String deviceId = sdkManager.getDeviceId();
+        String deviceId = sdkManager.getDeviceId();
 //        nameValuePairs.add(new BasicNameValuePair("f", deviceId));
 //        String appid = sdkManager.getAppId();
 //        nameValuePairs.add(new BasicNameValuePair("appid", appid));

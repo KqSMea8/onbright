@@ -268,10 +268,12 @@ public class AliDeviceController {
 		return res;
 	}
 
-	@RequestMapping(value = "/sendlearn", method = RequestMethod.POST)
-	ResponseObject<List<Map<String, String>>> sendLearn2IR(@RequestBody(required = true) Object object) {
+	@RequestMapping(value = "/controllIR", method = RequestMethod.POST)
+	ResponseObject<List<Map<String, String>>> sendLearn2IR(@RequestParam(required = true, value = "serialId") String serialId,
+														   @RequestParam(required = true, value = "index") Integer index,
+														   @RequestParam(required = true, value = "key") String key) {
 		ResponseObject<List<Map<String, String>>> res = new ResponseObject<List<Map<String, String>>>();
-		Map<String, Object> requestMap = (Map<String, Object>) object;
+		Map<String, Object> requestMap = new HashMap<String, Object>();
 		try {
 			topServer.pubIRTopic(null, null, (String) requestMap.get("deviceId"), requestMap);
 			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
@@ -286,13 +288,17 @@ public class AliDeviceController {
 
 	// 进入学习
 	@RequestMapping(value = "/toLearn", method = RequestMethod.POST)
-	ResponseObject<List<Map<String, String>>> learnCode(@RequestBody(required = true) Object object) {
+	ResponseObject<List<Map<String, String>>> learnCode(@RequestParam(required = true, value = "serialId") String serialId,
+														@RequestParam(required = true, value = "timeOut") String timeOut,
+														@RequestParam(required = true, value = "index") Integer index,
+														@RequestParam(required = true, value = "keyOrName") String keyOrName,
+														@RequestParam(required = true, value = "learnKeyType") String learnKeyType) {
 		ResponseObject<List<Map<String, String>>> res = new ResponseObject<List<Map<String, String>>>();
-		Map<String, Object> requestMap = (Map<String, Object>) object;
+		Map<String, Object> requestMap = new HashMap<String, Object>();
 		try {
-			String brandId = (String) requestMap.get("brandId");// 品牌ID
+			requestMap.put("serialId",serialId);
 			String deviceId = (String) requestMap.get("deviceId");// 设备ID
-			aliDevCache.setKey("ir_" + deviceId, brandId, 30000);
+			aliDevCache.setKey("ir_" + deviceId, serialId, 30000);
 			topServer.pubIRTopic(null, null, deviceId, requestMap);
 			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
 			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
@@ -306,12 +312,11 @@ public class AliDeviceController {
 
 	// 修改/新增红外方案
 	@RequestMapping(value = "/modifyIR", method = RequestMethod.POST)
-	ResponseObject<List<Map<String, String>>> modifyIR(@RequestBody(required = true) Object object) {
+	ResponseObject<List<Map<String, String>>> modifyIR(@RequestParam(required = true, value = "serialId") String serialId,
+													   @RequestParam(required = true, value = "irProgram") String irProgram) {
 		ResponseObject<List<Map<String, String>>> res = new ResponseObject<List<Map<String, String>>>();
-		Map<String, Object> requestMap = (Map<String, Object>) object;
 		try {
-			String serialId = (String) requestMap.get("serialId");// 设备ID
-			Map<String, Object> irprogram = (Map<String, Object>) requestMap.get("ir_ program");// 标准按键
+
 			// todo 更新套数
 			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
 			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
@@ -325,12 +330,13 @@ public class AliDeviceController {
 
 	// 获取遥控器列表
 	@RequestMapping(value = "/getIrList", method = RequestMethod.POST)
-	ResponseObject<List<Map<String, String>>> getIrList(@RequestBody(required = true) Object object) {
+	ResponseObject<List<Map<String, String>>> getIrList(@RequestParam(required = true, value = "brandId") String brandId,
+														@RequestParam(required = true, value = "deviceType") String deviceType) {
 		ResponseObject<List<Map<String, String>>> res = new ResponseObject<List<Map<String, String>>>();
-		Map<String, Object> requestMap = (Map<String, Object>) object;
+//		Map<String, Object> requestMap = (Map<String, Object>) object;
 		try {
-			String brandId = (String) requestMap.get("brandId");// 品牌ID
-			String deviceType = (String) requestMap.get("deviceType");// 设备类型
+//			String brandId = (String) requestMap.get("brandId");// 品牌ID
+//			String deviceType = (String) requestMap.get("deviceType");// 设备类型
 			List<TYaoKongYunBrand> brandList = yaoKongYunService.getYaoKongYunByTIdAndDeviceType(brandId, deviceType);
 
 			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());

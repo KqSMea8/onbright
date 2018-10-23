@@ -268,22 +268,32 @@ public enum CMDEnum {
 	
 	query_node_real_status("0100", "2100"),
 	//遥控云
-	query_remote_control,
+	query_remote_control,//获取遥控器列表
 	
-	register_device, 
+	register_device, //获取遥控云遥控类型
 	
 	query_device_type, 
 	
-	query_brand, 
+	query_brand, //获取遥控云品牌类型
 	
-	query_remote_control_id, 
+	query_remote_control_id, //获取某个遥控器对应的详情码库
 	
-	query_remote_control_src, 
+	query_remote_control_src, //根据品牌ID、设备类型一键匹配遥控器列表
 	
-	bind_remote_control, 
+	bind_remote_control, //绑定/解绑红外
 	
-	query_bind_remote_control, 
-	
+	query_bind_remote_control, //获取绑定红外
+
+	modify_ir_program,//修改红外转发器方案
+
+	to_key_learn,//进入学习状态
+
+	to_pair_code,//进入对码模式
+
+	send_test_code,//发送测试码
+
+	control_device,//控制(红外)
+
 	setting_security_scene,  
 	
 	query_groupid_by_addr, 
@@ -371,7 +381,6 @@ public enum CMDEnum {
 
 	query_countdown,
 
-	
 	setting_remote_led("8103","a103"),
 	my_test;
 		
