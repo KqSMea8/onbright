@@ -96,7 +96,7 @@ public class AliDeviceController {
 				region = AliRegionEnum.SOURTHCHINA;
 				aliDevInfo.setKitCenter(region.getValue());
 				List<TAliDevice> tAliDeviceList = null;
-				if (!type.equals(ALIDevTypeEnum.OBOX)) {
+				if (!type.equals(AliIotDevTypeEnum.OBOX.name())) {
 					tAliDeviceList = aliDeviceService.getAliDeviceByProductKeyAndDeviceSerialId(
 							iotOboxConncetion.getDeviceSouthChinaName(), "available");
 				} else {
@@ -170,13 +170,13 @@ public class AliDeviceController {
 			if (!isFound) {
 				TAliDevice tAliDevice;
 				if (region.equals(AliRegionEnum.AMERICA)) {
-					if (type.equals(ALIDevTypeEnum.OBOX)) {
+					if (type.equals(AliIotDevTypeEnum.OBOX.name())) {
 						tAliDevice = aliService.registDevice(iotOboxConncetion.getOboxAmericaName(), null, region);
 					} else {
 						tAliDevice = aliService.registDevice(iotOboxConncetion.getDeviceAmericaName(), null, region);
 					}
 				} else {
-					if (type.equals(ALIDevTypeEnum.OBOX)) {
+					if (type.equals(AliIotDevTypeEnum.OBOX.name())) {
 						tAliDevice =aliService.registDevice(iotOboxConncetion.getOboxSouthChinaName(), null, region);
 					} else {
 						tAliDevice = aliService.registDevice(iotOboxConncetion.getDeviceSouthChinaName(), null, region);
