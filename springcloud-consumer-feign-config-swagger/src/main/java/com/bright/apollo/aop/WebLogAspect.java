@@ -98,7 +98,7 @@ public class WebLogAspect {
             }
             Integer userId = tUser.getId();
             String tokenUserId = (String)redisBussines.getObject("token_userId_"+userId);
-            if(StringUtils.isEmpty(tokenUserId)||!accessToken.equals(accessToken)){
+            if(StringUtils.isEmpty(tokenUserId)||!accessToken.equals(tokenUserId)){
                 redisBussines.setValueWithExpire("token_userId_"+userId,accessToken,60 * 60 * 24 * 7);
             }
             logger.info(" ====== accessToken ======= "+accessToken);
