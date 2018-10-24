@@ -19,7 +19,7 @@ import com.netflix.zuul.context.RequestContext;
  * @Since:2018年7月2日
  * @Version:1.1.0
  */
-@Component
+//@Component
 public class PostRequestLogFilter extends ZuulFilter {
 	private static final Logger logger = LoggerFactory.getLogger(PostRequestLogFilter.class);
 	@Override
