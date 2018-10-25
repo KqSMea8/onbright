@@ -628,20 +628,35 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                             value = ColorEnum.getRegion(value).getValue();
                             deviceState = "03fe"+ids[1]+"00"+value+"01";
                         }else if(name.equals("SetColorTemperature")){
-                            Integer v = Integer.valueOf(value);
-                            if(v==0){//暖光
+                            if(value.equals("min")){
                                 String middle = ByteHelper.int2HexString(0);
                                 deviceState = "03fd0"+ids[1]+"00ff"+middle+"0001";
-                            }else if(v==100){//冷光
-                                String middle = ByteHelper.int2HexString(100);
+                            }else if(value.equals("max")){
+                                String middle = ByteHelper.int2HexString(64);
                                 deviceState = "03fd0"+ids[1]+"00ff"+middle+"0001";
-                            }else if(v<2700||v>6500){
-                                deviceState = null;
                             }else{
-                                String t = value.substring(0,2);
-                                Integer temperature = Integer.valueOf(t)-27;
-                                temperature = temperature*4;
-                                String middle = ByteHelper.int2HexString(temperature);
+                                Integer v = Integer.valueOf(value);
+                                if(v==0){//暖光
+                                    String middle = ByteHelper.int2HexString(0);
+                                    deviceState = "03fd0"+ids[1]+"00ff"+middle+"0001";
+                                }else if(v==100){//冷光
+                                    String middle = ByteHelper.int2HexString(100);
+                                    deviceState = "03fd0"+ids[1]+"00ff"+middle+"0001";
+                                }else if(v<2700||v>6500){
+                                    deviceState = null;
+                                }else{
+                                    String t = value.substring(0,2);
+                                    Integer temperature = Integer.valueOf(t)-27;
+                                    temperature = temperature*4;
+                                    String middle = ByteHelper.int2HexString(temperature);
+                                    deviceState = "03fd0"+ids[1]+"00ff"+middle+"0001";
+                                }
+                            }
+                        }else if(name.equals("SetMode")){
+                            if(value.equals("夜灯")){
+                                deviceState = "02080"+ids[1]+"00";
+                            }else if(value.equals("自然")){
+                                String middle = ByteHelper.int2HexString(50);
                                 deviceState = "03fd0"+ids[1]+"00ff"+middle+"0001";
                             }
                         }
