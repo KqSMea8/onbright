@@ -131,11 +131,11 @@ public class PushExceptionPool {
 //                    } else if (tYSCamera!=null&&!addRoot(set, tYSCamera.getLicense())) {
 //                        logger.warn("===PushException root not exist===");
 //                    }
-                	if(tScene==null||tOboxDeviceConfig==null){
+                	if(tScene==null&&tOboxDeviceConfig==null){
                 		 logger.warn("===PushException device or scene not exist===");
                 		 return;
                 	}
-                    if (StringUtils.isEmpty(msg.getUrl())) {
+                    if (StringUtils.isEmpty(msg.getUrl())&&tOboxDeviceConfig!=null) {
                         // 更新状态
                         tOboxDeviceConfig.setDeviceState(msg.getState());
                         addOrUpdateDeviceState(

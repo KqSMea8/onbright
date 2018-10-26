@@ -244,7 +244,9 @@ public class SceneActionThreadPool {
 						if (tScene.getMsgAlter() == 1 || tScene.getMsgAlter() == 3) {
 							List<TUser> tUsers = userService.queryUserBySceneNumber(tScene.getSceneNumber());
 							for (TUser tUser : tUsers) {
-								log.info("====before push====");
+								//安防
+								/*log.info("====before push====");
+							 
 								PushExceptionMsg exceptionMsg=new PushExceptionMsg
 										(ExceptionEnum.alldevice.getValue(),
 												ExceptionEnum.pic.getValue(), tScene.getSceneNumber(), tUser.getId(), null,urlString);
@@ -252,7 +254,8 @@ public class SceneActionThreadPool {
 								pushObserverManager
 								.sendMessage(exceptionMsg,
 										null);
-								log.info("====after push====");
+							 
+								log.info("====after push====");*/
 							}
 						}
 					}
@@ -278,8 +281,7 @@ public class SceneActionThreadPool {
 												SystemEnum.scene
 														.getValue(),
 												sceneNumber, null,
-												sceneNumber
-														+ ",请注意！【昂宝电子】");
+												sceneNumber+ ",请注意！【昂宝电子】");
 										log.info("====before push====");
 										pushObserverManager
 												.sendMessage(null,
