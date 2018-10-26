@@ -629,10 +629,10 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                             value = ColorEnum.getRegion(value).getValue();
                             if(colorname.equals("Yellow")){
                                 deviceState = "03fe0"+ids[1]+"00"+value+"01";
-                                deviceState += "-03fd0"+ids[1]+"000001";
+                                deviceState += "-03fd0"+ids[1]+"00000001";
                             }else if(colorname.equals("White")){
                                 deviceState = "03fe0"+ids[1]+"00"+value+"01";
-                                deviceState += "-03fd0"+ids[1]+"006401";
+                                deviceState += "-03fd0"+ids[1]+"00640001";
                             }else{
                                 deviceState = "03fe0"+ids[1]+"00"+value+"01";
                             }
