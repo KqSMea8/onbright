@@ -297,9 +297,9 @@ public class AliDeviceController {
 		Map<String, Object> requestMap = new HashMap<String, Object>();
 		try {
 			requestMap.put("serialId",serialId);
-			String deviceId = (String) requestMap.get("deviceId");// 设备ID
-			aliDevCache.setKey("ir_" + deviceId, serialId, 30000);
-			topServer.pubIRTopic(null, null, deviceId, requestMap);
+//			String deviceId = (String) requestMap.get("deviceId");// 设备ID
+			aliDevCache.setKey("ir_" + serialId, serialId, 30000);
+			topServer.pubIRTopic(null, null, serialId, requestMap);
 			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
 			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
 		} catch (Exception e) {

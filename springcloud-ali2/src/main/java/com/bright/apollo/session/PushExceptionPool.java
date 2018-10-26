@@ -102,11 +102,11 @@ public class PushExceptionPool {
                     }
                     return;
                 }
-                logger.info("===msg===:" + JSON.toJSON(msg));
                 if (msg == null || msg.getId() == null) {
                     logger.warn("===PushException error data===");
                     return;
                 }
+                logger.info("===msg===:" + msg.toString());
                 if (msg.getType().intValue() != ExceptionEnum.securityscene
                         .getValue()) {
                 	TOboxDeviceConfig tOboxDeviceConfig=null;

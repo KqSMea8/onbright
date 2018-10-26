@@ -18,6 +18,7 @@ import com.bright.apollo.common.dto.OboxResp.Type;
 import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
+import com.bright.apollo.service.SmsService;
  
 
 /**  
@@ -30,6 +31,8 @@ import com.bright.apollo.response.ResponseObject;
 @RestController
 @RequestMapping("test")
 public class TestController {
+	@Autowired
+	private SmsService smsService;
 	@Autowired
 	private UserCacheService userCacheService;
 	@GetMapping("/register/{mobile}")
@@ -57,5 +60,12 @@ public class TestController {
 	public String  testpost(@PathVariable(required=true,value="word") String word) {
 	 
 		 return "uostop"+word;
+	}
+	@SuppressWarnings({ "rawtypes" })
+ 	@RequestMapping(value = "/test/sms", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String  testsms() {
+		smsService.sendAuthCode(123456, "15879618946");
+		 return "uostop";
 	}
 }

@@ -9,7 +9,7 @@ spring:
       fail-fast: true
       username: root
       password: booszy
-      profile: pro
+      profile: test
 eureka:
   client:
     serviceUrl:

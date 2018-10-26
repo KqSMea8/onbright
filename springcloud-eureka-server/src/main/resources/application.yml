@@ -1,5 +1,7 @@
 server:
   port: 8761
+  tomcat:
+    min-spare-threads: 100
 spring:
   profiles:
     active: dev

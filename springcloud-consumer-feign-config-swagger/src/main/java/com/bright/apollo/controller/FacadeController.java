@@ -89,6 +89,7 @@ import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.response.TUserOperationDTO;
 import com.bright.apollo.response.UserFingerDTO;
 import com.bright.apollo.service.MsgService;
+import com.bright.apollo.service.SmsService;
 import com.bright.apollo.tool.Base64Util;
 import com.bright.apollo.tool.ByteHelper;
 import com.bright.apollo.tool.DateHelper;
@@ -127,8 +128,12 @@ public class FacadeController extends BaseController {
 	private FeignQuartzClient feignQuartzClient;
 	@Autowired
 	private CmdCache cmdCache;
+	//@Autowired
+	//private MsgService msgService;
+	
 	@Autowired
-	private MsgService msgService;
+	private SmsService smsService;
+	
 	@Autowired
 	private AliDevCache aliDevCache;
 
@@ -3084,7 +3089,8 @@ public class FacadeController extends BaseController {
 			// 返回 code(验证码)
 			String validateCode = (Math.random() * 9 + 1) * 100000 + "";
 			cmdCache.addMobileValidateCode(mobile, pin, serialId, validateCode);
-			msgService.sendCode(mobile, validateCode);
+			smsService.sendCode(mobile, validateCode);
+			//msgService.sendCode(mobile, validateCode);
 			res.setStatus(ResponseEnum.AddSuccess.getStatus());
 			res.setMessage(ResponseEnum.AddSuccess.getMsg());
 		} catch (Exception e) {
@@ -3875,7 +3881,8 @@ public class FacadeController extends BaseController {
 				return res;
 			}
 			TIntelligentFingerRemoteUser remoteUser = remoteRes.getData();
-			msgService.sendNotice(mobile, "你的临时授权码是：" + remoteUser.getPwd());
+			smsService.sendNotice(mobile,remoteUser.getPwd());
+			//msgService.sendNotice(mobile, "你的临时授权码是：" + );
 			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
 			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
 		} catch (Exception e) {
@@ -4993,7 +5000,7 @@ public class FacadeController extends BaseController {
 	public ResponseObject test(@PathVariable(value = "access_token") String access_token) {
 		ResponseObject res = new ResponseObject();
 		try {
-			// consumerTokenServices.revokeToken(access_token);
+			
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());

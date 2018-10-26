@@ -585,7 +585,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
 
     private Map<String,Object> compositeCommand(TMallTemplate tMallTemplate, TOboxDeviceConfig oboxDeviceConfig,Map<String,Object> playloadMap,Map<String,Object> header){
         String name = (String)header.get("name");
-        String value = (String)playloadMap.get("value");
+        String value = String.valueOf(playloadMap.get("value"));
         String deviceId = (String)playloadMap.get("deviceId");
         String deviceType = (String)playloadMap.get("deviceType");
         String lightProperties = tMallTemplate.getLightActions();
