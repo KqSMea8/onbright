@@ -11,6 +11,7 @@ import com.bright.apollo.common.entity.TUser;
  * @Since:2018年3月9日
  * @Version:1.1.0
  */
+@Deprecated
 public interface MsgService {
 	static final String appKey = "key-c798706a897d37c8757f966806ce61e3";
 	static final String batch_send = "http://sms-api.luosimao.com/v1/send_batch.json";

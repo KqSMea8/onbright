@@ -31,10 +31,10 @@ import com.bright.apollo.enums.NodeTypeEnum;
 import com.bright.apollo.enums.SystemEnum;
 import com.bright.apollo.service.AliDeviceConfigService;
 import com.bright.apollo.service.AliDeviceService;
-import com.bright.apollo.service.MsgService;
 import com.bright.apollo.service.OboxDeviceConfigService;
 import com.bright.apollo.service.SceneActionService;
 import com.bright.apollo.service.SceneService;
+import com.bright.apollo.service.SmsService;
 import com.bright.apollo.service.TopicServer;
 import com.bright.apollo.service.UserSceneService;
 import com.bright.apollo.service.UserService;
@@ -71,8 +71,11 @@ public class SceneActionThreadPool {
 	@Autowired
 	private UserService userService;
 	
+	//@Autowired
+	//private MsgService msgService;
+	
 	@Autowired
-	private MsgService msgService;
+	private SmsService smsService;
 	
 	@Autowired
 	private AliDeviceConfigService aliDeviceConfigService;
@@ -266,9 +269,11 @@ public class SceneActionThreadPool {
 									if (MobileUtil.checkMobile(user.getUserName())) {
 										log.info("===tUserPhones:"
 												+ user.getUserName());
-										msgService.sendAlter(
-												tScene.getSceneName(),
+										smsService.sendScene(tScene.getSceneName(),
 												user.getUserName());
+										//msgService.sendAlter(
+										//		tScene.getSceneName(),
+										//		user.getUserName());
 										PushSystemMsg systemMsg = new PushSystemMsg(
 												SystemEnum.system
 														.getValue(),

@@ -40,7 +40,16 @@
 			<artifactId>springcloud-tool</artifactId>
 			<version>${tool-version}</version>
 		</dependency>
-
-
+		<!--ali sms  -->
+		<dependency>
+			<groupId>com.aliyun</groupId>
+			<artifactId>aliyun-java-sdk-core</artifactId>
+			<version>${ali-core-version}</version>
+ 		</dependency>
+		<dependency>
+			<groupId>com.aliyun</groupId>
+			<artifactId>aliyun-java-sdk-dysmsapi</artifactId>
+			<version>${ali-sms-version}</version>
+		</dependency>
 	</dependencies>
 </project>

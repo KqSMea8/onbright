@@ -65,4 +65,10 @@ public class PushExceptionMsg {
         this.url=url;
         this.userId=userId;
     }
+	@Override
+	public String toString() {
+		return "PushExceptionMsg [type=" + type + ", childType=" + childType + ", id=" + id + ", state=" + state
+				+ ", url=" + url + ", userId=" + userId + "]";
+	}
+    
 }

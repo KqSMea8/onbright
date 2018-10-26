@@ -21,6 +21,7 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
  *@Since:2018年3月9日  
  *@Version:1.1.0  
  */
+@Deprecated
 @Service
 public class MsgServiceImpl implements MsgService {
 
