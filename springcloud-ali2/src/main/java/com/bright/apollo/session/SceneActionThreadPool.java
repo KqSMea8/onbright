@@ -281,7 +281,7 @@ public class SceneActionThreadPool {
 												SystemEnum.scene
 														.getValue(),
 												sceneNumber, null,
-												sceneNumber+ ",请注意！【昂宝电子】");
+												tScene.getSceneName()+ ",请注意！【昂宝电子】");
 										log.info("====before push====");
 										pushObserverManager
 												.sendMessage(null,

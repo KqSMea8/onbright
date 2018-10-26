@@ -38,7 +38,7 @@ public class TestController {
 				SystemEnum.scene
 						.getValue(),
 						506, null,
-						506+"");
+						"会所嫩模已经触发,请注意！【昂宝电子】");
  		pushObserverManager
 				.sendMessage(null,
 						systemMsg);
