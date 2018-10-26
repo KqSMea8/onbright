@@ -630,7 +630,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                             if(colorname.equals("Yellow")){
                                 deviceState = "03fe0"+ids[1]+"00"+value+"01";
                                 deviceState += "-03fd0"+ids[1]+"000001";
-                            }else if(colorname.equals("Yellow")){
+                            }else if(colorname.equals("White")){
                                 deviceState = "03fe0"+ids[1]+"00"+value+"01";
                                 deviceState += "-03fd0"+ids[1]+"006401";
                             }else{
