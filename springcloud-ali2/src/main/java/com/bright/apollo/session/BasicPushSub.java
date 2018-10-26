@@ -54,4 +54,13 @@ public abstract class BasicPushSub {
             pushObserver.update(message,msg);
         }
     }
+
+	public List<BasicPushObserver> getList() {
+		return list;
+	}
+
+	public void setList(List<BasicPushObserver> list) {
+		this.list = list;
+	}
+    
 }

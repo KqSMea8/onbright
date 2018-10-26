@@ -55,17 +55,16 @@ public class PushExceptionPool {
     @Autowired
     private ExceptionService exceptionService;
     private static ExecutorService executor;
-
     private static final Logger logger = LoggerFactory.getLogger(PushExceptionPool.class);
 
-    public PushExceptionPool() {
-
-        executor = Executors
-                .newFixedThreadPool(5);
-    }
-
+   
+   
     public void handlerMsg(PushExceptionMsg msg, PushSystemMsg systemMsg) {
     	logger.info("====handlerMsg init====");
+    	if(executor==null){
+    		 executor = Executors
+    	                .newFixedThreadPool(5);
+    	}
         executor.submit(new handlerMessage(msg,systemMsg));
     }
 
@@ -366,4 +365,55 @@ public class PushExceptionPool {
             return sb.toString();
         }
     }
+
+	/*public SceneService getSceneService() {
+		return sceneService;
+	}
+
+	public void setSceneService(SceneService sceneService) {
+		this.sceneService = sceneService;
+	}
+
+	public UserService getUserService() {
+		return userService;
+	}
+
+	public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
+
+	public OboxDeviceConfigService getOboxDeviceConfigService() {
+		return oboxDeviceConfigService;
+	}
+
+	public void setOboxDeviceConfigService(OboxDeviceConfigService oboxDeviceConfigService) {
+		this.oboxDeviceConfigService = oboxDeviceConfigService;
+	}
+
+	public SystemService getSystemService() {
+		return systemService;
+	}
+
+	public void setSystemService(SystemService systemService) {
+		this.systemService = systemService;
+	}
+
+	public TMsgService gettMsgService() {
+		return tMsgService;
+	}
+
+	public void settMsgService(TMsgService tMsgService) {
+		this.tMsgService = tMsgService;
+	}
+
+	public ExceptionService getExceptionService() {
+		return exceptionService;
+	}
+
+	public void setExceptionService(ExceptionService exceptionService) {
+		this.exceptionService = exceptionService;
+	}*/
+    
+    //======================================初始化失败
+    
 }
