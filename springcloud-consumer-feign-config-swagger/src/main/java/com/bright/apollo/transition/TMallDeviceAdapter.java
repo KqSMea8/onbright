@@ -585,7 +585,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
 
     private Map<String,Object> compositeCommand(TMallTemplate tMallTemplate, TOboxDeviceConfig oboxDeviceConfig,Map<String,Object> playloadMap,Map<String,Object> header){
         String name = (String)header.get("name");
-        String value = (String)playloadMap.get("value");
+        String value = String.valueOf(playloadMap.get("value"));
         String deviceId = (String)playloadMap.get("deviceId");
         String deviceType = (String)playloadMap.get("deviceType");
         String lightProperties = tMallTemplate.getLightActions();
@@ -622,26 +622,49 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                                 value = "64";
                             }else if(value.equals("min")){
                                 value = "01";
+                            }else{
+                                value =ByteHelper.int2HexString(Integer.valueOf(value));
                             }
                             deviceState = "03fd0"+ids[1]+"00"+value+"ff0001";
                         }else if(name.equals("SetColor")){
+                            String colorname = ColorEnum.getRegion(value).getName();
                             value = ColorEnum.getRegion(value).getValue();
-                            deviceState = "03fe"+ids[1]+"00"+value+"01";
+                            if(colorname.equals("Yellow")){
+                                deviceState = "03fe0"+ids[1]+"00"+value+"01";
+                                deviceState += "-03fd0"+ids[1]+"00ff000001";
+                            }else if(colorname.equals("White")){
+                                deviceState = "03fe0"+ids[1]+"00"+value+"01";
+                                deviceState += "-03fd0"+ids[1]+"00ff640001";
+                            }else{
+                                deviceState = "03fe0"+ids[1]+"00"+value+"01";
+                            }
                         }else if(name.equals("SetColorTemperature")){
-                            Integer v = Integer.valueOf(value);
-                            if(v==0){//暖光
+                            if(value.equals("min")){
                                 String middle = ByteHelper.int2HexString(0);
                                 deviceState = "03fd0"+ids[1]+"00ff"+middle+"0001";
-                            }else if(v==100){//冷光
+                            }else if(value.equals("max")){
                                 String middle = ByteHelper.int2HexString(100);
                                 deviceState = "03fd0"+ids[1]+"00ff"+middle+"0001";
-                            }else if(v<2700||v>6500){
-                                deviceState = null;
                             }else{
-                                String t = value.substring(0,2);
-                                Integer temperature = Integer.valueOf(t)-27;
-                                temperature = temperature*4;
-                                String middle = ByteHelper.int2HexString(temperature);
+                                Integer v = Integer.valueOf(value);
+                                if(v>=0&&v<=100){//暖光
+                                    String middle = ByteHelper.int2HexString(v);
+                                    deviceState = "03fd0"+ids[1]+"00ff"+middle+"0001";
+                                }else if(v<2700||v>6500){
+                                    deviceState = null;
+                                }else{
+                                    String t = value.substring(0,2);
+                                    Integer temperature = Integer.valueOf(t)-27;
+                                    temperature = temperature*4;
+                                    String middle = ByteHelper.int2HexString(temperature);
+                                    deviceState = "03fd0"+ids[1]+"00ff"+middle+"0001";
+                                }
+                            }
+                        }else if(name.equals("SetMode")){
+                            if(value.equals("夜灯")||value.equals("nightLight")){
+                                deviceState = "02080"+ids[1]+"00";
+                            }else if(value.indexOf("自然")>=0){
+                                String middle = ByteHelper.int2HexString(50);
                                 deviceState = "03fd0"+ids[1]+"00ff"+middle+"0001";
                             }
                         }
@@ -692,11 +715,9 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                             deviceState = changeColorState(deviceState,value);
                         }else if(name.equals("SetColorTemperature")){
                             Integer v = Integer.valueOf(value);
-                            if(v==0){//暖光
-                                String middle = ByteHelper.int2HexString(0);
-                                deviceState = changeColorTemperature(deviceState,middle);
-                            }else if(v==254){//冷光
-                                String middle = ByteHelper.int2HexString(254);
+                            if(v>=0&&v<=100){//暖光到冷光
+                                v = v*25;
+                                String middle = ByteHelper.int2HexString(v);
                                 deviceState = changeColorTemperature(deviceState,middle);
                             }else if(v<2700||v>6500){
                                 deviceState = null;
