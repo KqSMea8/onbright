@@ -632,7 +632,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                                 String middle = ByteHelper.int2HexString(0);
                                 deviceState = "03fd0"+ids[1]+"00ff"+middle+"0001";
                             }else if(value.equals("max")){
-                                String middle = ByteHelper.int2HexString(64);
+                                String middle = ByteHelper.int2HexString(100);
                                 deviceState = "03fd0"+ids[1]+"00ff"+middle+"0001";
                             }else{
                                 Integer v = Integer.valueOf(value);
