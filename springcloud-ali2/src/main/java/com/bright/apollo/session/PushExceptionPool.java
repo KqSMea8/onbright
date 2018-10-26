@@ -65,7 +65,7 @@ public class PushExceptionPool {
     }
 
     public void handlerMsg(PushExceptionMsg msg, PushSystemMsg systemMsg) {
-
+    	logger.info("====handlerMsg init====");
         executor.submit(new handlerMessage(msg,systemMsg));
     }
 
@@ -81,10 +81,11 @@ public class PushExceptionPool {
 
         @Override
         public void run() {
+        	logger.info("====handlerMsg start====");
             try {
                 Set<String> set = new HashSet<String>();
                 if(systemMsg!=null){
-                    logger.info("===systemMsg===:" + JSON.toJSON(systemMsg));
+                    logger.info("===systemMsg===:" + systemMsg);
                     if(systemMsg.getType().intValue()==SystemEnum.system.getValue()&&
                             systemMsg.getChildType().intValue()==SystemEnum.scene.getValue()
                             ){

@@ -252,6 +252,7 @@ public class SceneActionThreadPool {
 								pushObserverManager
 								.sendMessage(exceptionMsg,
 										null);
+								log.info("====after push====");
 							}
 						}
 					}
@@ -271,9 +272,6 @@ public class SceneActionThreadPool {
 												+ user.getUserName());
 										smsService.sendScene(tScene.getSceneName(),
 												user.getUserName());
-										//msgService.sendAlter(
-										//		tScene.getSceneName(),
-										//		user.getUserName());
 										PushSystemMsg systemMsg = new PushSystemMsg(
 												SystemEnum.system
 														.getValue(),
@@ -282,9 +280,11 @@ public class SceneActionThreadPool {
 												sceneNumber, null,
 												sceneNumber
 														+ ",请注意！【昂宝电子】");
+										log.info("====before push====");
 										pushObserverManager
 												.sendMessage(null,
 														systemMsg);
+										log.info("====after push====");
 										tScene.setAlterNeed((byte)0);
 									}
 								}
