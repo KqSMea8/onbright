@@ -1,28 +1,27 @@
-/*package com.bright.apollo.filter;
+package com.bright.apollo.filter;
 
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintWriter;
+import java.io.InputStream;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
  
  
-*//**
+/**
  * @Title:
  * @Description:
  * @Author:JettyLiu
  * @Since:2018年7月2日
  * @Version:1.1.0
- *//*
-@Component
+ */
+//@Component
 public class PostRequestLogFilter extends ZuulFilter {
- 
+	private static final Logger logger = LoggerFactory.getLogger(PostRequestLogFilter.class);
 	@Override
 	public String filterType() {
 		return "post";
@@ -40,17 +39,14 @@ public class PostRequestLogFilter extends ZuulFilter {
 
 	@Override
 	public Object run() {
-		RequestContext ctx = RequestContext.getCurrentContext();
-		HttpServletResponse response = ctx.getResponse();
+		InputStream stream = RequestContext.getCurrentContext().getResponseDataStream();
 		try {
-			PrintWriter writer = response.getWriter();
-			 
-			OutputStream outputStream = response.getOutputStream();
-			 
+			 String body = IOUtils.toString(stream);
+			 logger.info("===respone:"+body);
 		} catch (IOException e) {
-			System.out.println("errorMsg:"+e.getMessage());
+			logger.error("errorMsg:"+e.getMessage());
 		}
-		System.out.println("=============POST=============");
+		 
     	return null;
 	}
-}*/
+}
