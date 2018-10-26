@@ -2,6 +2,7 @@ package com.bright.apollo.session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import com.bright.apollo.bean.PushExceptionMsg;
@@ -13,6 +14,7 @@ public class PushConcreteObs implements BasicPushObserver {
 	private static final Logger logger = LoggerFactory.getLogger(PushConcreteObs.class);
 
     @Autowired
+    @Lazy
     private PushExceptionPool pushExceptionPool;
 
     @Override
@@ -32,6 +34,9 @@ public class PushConcreteObs implements BasicPushObserver {
     public void update(PushExceptionMsg message, PushSystemMsg msg) {
         logger.info("===Push Exception Msg===");
         logger.info("===pushExceptionPool:"+pushExceptionPool);
+        if(pushExceptionPool==null){
+        	pushExceptionPool=new PushExceptionPool();
+        }
         pushExceptionPool.handlerMsg(message,msg);
     }
 }
