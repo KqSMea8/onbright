@@ -622,6 +622,8 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                                 value = "64";
                             }else if(value.equals("min")){
                                 value = "01";
+                            }else{
+                                value =ByteHelper.int2HexString(Integer.valueOf(value));
                             }
                             deviceState = "03fd0"+ids[1]+"00"+value+"ff0001";
                         }else if(name.equals("SetColor")){
@@ -629,15 +631,13 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                             value = ColorEnum.getRegion(value).getValue();
                             if(colorname.equals("Yellow")){
                                 deviceState = "03fe0"+ids[1]+"00"+value+"01";
-                                deviceState += "-03fd0"+ids[1]+"00000001";
+                                deviceState += "-03fd0"+ids[1]+"00ff000001";
                             }else if(colorname.equals("White")){
                                 deviceState = "03fe0"+ids[1]+"00"+value+"01";
-                                deviceState += "-03fd0"+ids[1]+"00640001";
+                                deviceState += "-03fd0"+ids[1]+"00ff640001";
                             }else{
                                 deviceState = "03fe0"+ids[1]+"00"+value+"01";
                             }
-
-
                         }else if(name.equals("SetColorTemperature")){
                             if(value.equals("min")){
                                 String middle = ByteHelper.int2HexString(0);
