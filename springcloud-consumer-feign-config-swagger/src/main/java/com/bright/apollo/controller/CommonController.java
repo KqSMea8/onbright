@@ -539,6 +539,11 @@ public class CommonController {
 			String index = requestParam.getValue("index");
 			String key = requestParam.getValue("key");
 			return facadeController.controllIR(serialId,Integer.valueOf(index),key);
+		}else if (CMDEnum.query_msg.toString().equals(cmdEnum.toString())) {
+			String count = requestParam.getValue("count");
+			String type = requestParam.getValue("type");
+			String start = requestParam.getValue("start");
+			return facadeController.queryMsg(type,start,count);
 		}else if (CMDEnum.test.toString().equals(cmdEnum.toString())) {
  			String serialId = requestParam.getValue("serialId");
 			if (!StringUtils.isEmpty(serialId)) {

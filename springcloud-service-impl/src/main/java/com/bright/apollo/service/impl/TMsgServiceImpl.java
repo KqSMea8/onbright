@@ -45,7 +45,7 @@ public class TMsgServiceImpl implements TMsgService{
 		if(type==-1){
 			return mapper.queryMsgExceList(userId, type,start,count);
 		}else{
-			return mapper.queryMsgSysList(userId, type,start,count);
+			return mapper.queryAllMsgSysList(userId,start,count);
 		}
 		
 	}

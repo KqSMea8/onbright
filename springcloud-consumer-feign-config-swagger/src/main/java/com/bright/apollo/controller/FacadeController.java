@@ -5477,7 +5477,7 @@ public class FacadeController extends BaseController {
 			if (StringUtils.isEmpty(start)) {
 				start = "10";
 			}
-			if (StringUtils.isEmpty(type)) {
+		//	if (StringUtils.isEmpty(type)) {
 				ResponseObject<Integer> countMsgRes = feignUserClient.countMsgList(resUser.getData().getId());
 				if (countMsgRes == null || countMsgRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
 					res.setStatus(ResponseEnum.RequestParamError.getStatus());
@@ -5491,7 +5491,7 @@ public class FacadeController extends BaseController {
 				}
 
 				ResponseObject<List<MsgExceptionDTO>> msgExceptionRes = feignUserClient.queryMsgExceList(
-						resUser.getData().getId(), Integer.parseInt(type), Integer.parseInt(start),
+						resUser.getData().getId(), 0, Integer.parseInt(start),
 						countMsg == null ? 0 : countMsg);
 				if (msgExceptionRes == null || msgExceptionRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
 					res.setStatus(ResponseEnum.RequestParamError.getStatus());
@@ -5499,20 +5499,15 @@ public class FacadeController extends BaseController {
 					return res;
 				}
 				map.put("msgList", msgExceptionRes.getData());
-				// jsonObject.add("msgList", g2.toJsonTree(MsgExceptionDTO));
-			} else if (Integer.parseInt(type) == -1) {
+		/*	} else if (Integer.parseInt(type) == -1) {
 				ResponseObject<Integer> countRes = feignUserClient.countMsgExceList(resUser.getData().getId(),
 						Integer.parseInt(type));
-				// TCount tCount =
-				// MsgBussiness.countMsgExceList(resUser.getData().getUserId(),
-				// Integer.parseInt(type));
 				if (countRes == null || countRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
 					res.setStatus(ResponseEnum.RequestParamError.getStatus());
 					res.setMessage(ResponseEnum.RequestParamError.getMsg());
 					return res;
 				}
 				map.put("count", countRes.getData());
-				// jsonObject.addProperty("count", tCount.getCount());
 				if (countRes.getData().intValue() == 0) {
 					map.put("msgList", null);
 				} else {
@@ -5528,7 +5523,8 @@ public class FacadeController extends BaseController {
 					}
 					map.put("msgList", msgExceptionRes.getData());
 				}
-			}
+			}*/
+			res.setData(map);
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {
