@@ -5699,4 +5699,73 @@ public class FacadeController extends BaseController {
 		}
 		return res;
 	}
+
+	/**  
+	 * @return  
+	 * @Description:  
+	 */
+	@ApiOperation(value = "queryGroup", httpMethod = "GET", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/queryGroup", method = RequestMethod.GET)
+	public ResponseObject<Map<String, Object>> queryGroup() {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+			 //group is device
+			res=feignDeviceClient.queryGroup(resUser.getData().getId());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	/**  
+	 * @param groupName
+	 * @return  
+	 * @Description:  
+	 */
+	@ApiOperation(value = "addServerGroup", httpMethod = "POST", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/addServerGroup/{groupName}", method = RequestMethod.POST)
+	public ResponseObject<Map<String, Object>> addServerGroup(@PathVariable(value="groupName")String groupName,
+			@RequestParam(name="mList",required=false) List<String> mList) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+			res=feignDeviceClient.addServerGroup(groupName,mList);
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	 
 }

@@ -1,12 +1,14 @@
 package com.bright.apollo.feign;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bright.apollo.common.entity.TAliDeviceConfig;
 import com.bright.apollo.common.entity.TDeviceStatus;
@@ -443,6 +445,23 @@ public interface FeignDeviceClient {
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/ali/updateAliDevConfig", method = RequestMethod.PUT)
 	ResponseObject updateAliDevConfig(@RequestBody TAliDeviceConfig tAliDeviceConfig);
+
+	/**  
+	 * @param userId
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/group/queryGroup/{userId}", method = RequestMethod.GET)
+	ResponseObject<Map<String, Object>> queryGroup(@PathVariable(value = "userId")Integer userId);
+
+	/**  
+	 * @param groupName
+	 * @param mList
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/group/addServerGroup/{groupName}", method = RequestMethod.POST)
+	ResponseObject<Map<String, Object>> addServerGroup(@PathVariable(value = "groupName")String groupName,@RequestParam(value="mList",required=false) List<String> mList);
 
  
  

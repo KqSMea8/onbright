@@ -486,5 +486,14 @@ public class TOboxDeviceConfig implements Serializable{
     public void setOnline(Integer online) {
         this.online = online;
     }
+
+	@Override
+	public String toString() {
+		return "TOboxDeviceConfig [id=" + id + ", oboxId=" + oboxId + ", deviceId=" + deviceId + ", deviceState="
+				+ deviceState + ", deviceType=" + deviceType + ", deviceChildType=" + deviceChildType
+				+ ", deviceVersion=" + deviceVersion + ", lastOpTime=" + lastOpTime + ", deviceSerialId="
+				+ deviceSerialId + ", deviceRfAddr=" + deviceRfAddr + ", groupAddr=" + groupAddr + ", oboxSerialId="
+				+ oboxSerialId + ", online=" + online + "]";
+	}
     
 }

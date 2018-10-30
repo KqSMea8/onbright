@@ -1,6 +1,7 @@
 package com.bright.apollo.hrstrix;
 
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -506,6 +507,26 @@ public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implem
 	@SuppressWarnings("rawtypes")
 	@Override
 	public ResponseObject updateAliDevConfig(TAliDeviceConfig tAliDeviceConfig) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#queryGroup(java.lang.Integer)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<Map<String, Object>> queryGroup(Integer userId) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#addServerGroup(java.lang.String, java.util.List)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<Map<String, Object>> addServerGroup(String groupName, List<String> mList) {
 		logger.warn("===device server is break===");
 		return serverError();
 	}
