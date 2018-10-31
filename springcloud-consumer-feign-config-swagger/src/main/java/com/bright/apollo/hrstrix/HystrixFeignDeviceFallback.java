@@ -522,11 +522,21 @@ public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implem
 	}
 
 	/* (non-Javadoc)  
-	 * @see com.bright.apollo.feign.FeignDeviceClient#addServerGroup(java.lang.String, java.util.List)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#addServerGroup(java.lang.String, java.lang.Integer, java.util.List)  
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public ResponseObject<Map<String, Object>> addServerGroup(String groupName, List<String> mList) {
+	public ResponseObject<Map<String, Object>> addServerGroup(String groupName, Integer userId, List<String> mList) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#deleteServerGroup(java.lang.String)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<Map<String, Object>> deleteServerGroup(Integer groupId) {
 		logger.warn("===device server is break===");
 		return serverError();
 	}

@@ -2,14 +2,19 @@ package com.bright.apollo.dao.device.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectKey;
+import org.apache.ibatis.annotations.UpdateProvider;
 import org.springframework.stereotype.Component;
 
 import com.bright.apollo.common.entity.TServerGroup;
+import com.bright.apollo.dao.sqlProvider.ServerGroupProvider;
 
 /**  
  *@Title:  
@@ -57,5 +62,22 @@ public interface TServerGroupMapper {
 			@Result(property = "groupStyle",column = "group_style"),
 	})
 	List<TServerGroup> queryServerGroupByAddr(@Param("addr")String addr);
+
+	/**  
+	 * @param tServerGroup
+	 * @return  
+	 * @Description:  
+	 */
+	@SelectKey(statement = "select LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = int.class)
+	@InsertProvider(type=ServerGroupProvider.class,method="addServerGroup")
+	@Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
+	int addServerGroup(TServerGroup tServerGroup);
+
+	/**  
+	 * @param tServerGroup  
+	 * @Description:  
+	 */
+	@UpdateProvider(type=ServerGroupProvider.class,method="updateServerGroup")
+	void updateServerGroup(TServerGroup tServerGroup);
 
 }

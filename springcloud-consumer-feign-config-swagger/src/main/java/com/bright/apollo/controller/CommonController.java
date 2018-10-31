@@ -551,39 +551,46 @@ public class CommonController {
 			String oboxSerialId = requestParam.getValue("obox_serial_id");
 			String groupAddr = requestParam.getValue("groupAddr");
 			if (!StringUtils.isEmpty(operateType)) {
-				//00/01/02/03/04／05/06
-				//删除／设置／覆盖成员/添加成员／删除成员/改名/执行
-				/*if(operateType.equals("00")){
-					
-				}else if(operateType.equals("01")){
-					
-				}else if(operateType.equals("02")){
-					
-				}else if(operateType.equals("03")){
-					
-				}else if(operateType.equals("04")){
-					
-				}else if(operateType.equals("05")){
-					
-				}else if(operateType.equals("06")){
-					
-				}*/
+				// 00/01/02/03/04／05/06
+				// 删除／设置／覆盖成员/添加成员／删除成员/改名/执行
+				/*
+				 * if(operateType.equals("00")){
+				 * 
+				 * }else if(operateType.equals("01")){
+				 * 
+				 * }else if(operateType.equals("02")){
+				 * 
+				 * }else if(operateType.equals("03")){
+				 * 
+				 * }else if(operateType.equals("04")){
+				 * 
+				 * }else if(operateType.equals("05")){
+				 * 
+				 * }else if(operateType.equals("06")){
+				 * 
+				 * }
+				 */
 				OperateTypeEnum operation = OperateTypeEnum.getEnum(operateType);
 				if (!operation.equals(OperateTypeEnum.set)) {
-					if (StringUtils.isEmpty(groupId)) {
-						if (StringUtils.isEmpty(oboxSerialId)
-								|| StringUtils.isEmpty(groupAddr)) {
-							res = new ResponseObject();
-							res.setStatus(ResponseEnum.RequestParamError.getStatus());
-							res.setMessage(ResponseEnum.RequestParamError.getMsg());
-							return res;
+					/*
+					 * if (StringUtils.isEmpty(groupId)) { if
+					 * (StringUtils.isEmpty(oboxSerialId)||
+					 * StringUtils.isEmpty(groupAddr)) { res = new
+					 * ResponseObject();
+					 * res.setStatus(ResponseEnum.RequestParamError.getStatus())
+					 * ;
+					 * res.setMessage(ResponseEnum.RequestParamError.getMsg());
+					 * return res; } }
+					 */
+					if(operateType.equals(OperateTypeEnum.delete)){
+						if(!StringUtils.isEmpty(groupId)&&!NumberHelper.isNumeric(groupId)){
+							return facadeController.deleteServerGroup(Integer.parseInt(groupId));
 						}
 					}
-				}else{
-					if (StringUtils.isEmpty(groupName)) {
-						List<String> mList = (List<String>) ObjectUtils
-								.fromJsonToObject(groupMember, List.class);
-						return facadeController.addServerGroup(groupName,mList);
+				} else {
+					if (!StringUtils.isEmpty(groupName)) {
+						List<String> mList = (List<String>) ObjectUtils.fromJsonToObject(groupMember, List.class);
+						return facadeController.addServerGroup(groupName, mList);
 					}
 				}
 			}
@@ -621,9 +628,9 @@ public class CommonController {
 		}
 		return list;
 	}
+
 	public static void main(String[] args) {
-		List<String> mList = (List<String>) ObjectUtils
-				.fromJsonToObject(null, List.class);
+		List<String> mList = (List<String>) ObjectUtils.fromJsonToObject(null, List.class);
 		System.out.println(mList);
 	}
 }

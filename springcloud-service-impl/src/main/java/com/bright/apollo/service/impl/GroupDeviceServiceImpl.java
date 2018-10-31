@@ -27,4 +27,12 @@ public class GroupDeviceServiceImpl implements GroupDeviceService{
 		  
 		return mapper.queryDeviceGroupByGroupId(groupId);
 	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.GroupDeviceService#queryDeviceGroup(java.lang.Integer, java.lang.String)  
+	 */
+	@Override
+	public TGroupDevice queryDeviceGroup(Integer groupId, String deviceSerialId) {
+ 		return mapper.queryDeviceGroup(groupId,deviceSerialId);
+	}
 }

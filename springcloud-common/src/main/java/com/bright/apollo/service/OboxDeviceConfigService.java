@@ -78,4 +78,11 @@ public interface OboxDeviceConfigService {
 	 */
 	void deleteTOboxDeviceConfigById(Integer id);
 
+	/**  
+	 * @param groupId
+	 * @return  
+	 * @Description:  
+	 */
+	List<TOboxDeviceConfig> queryDeviceByGroupId(Integer groupId);
+
 }

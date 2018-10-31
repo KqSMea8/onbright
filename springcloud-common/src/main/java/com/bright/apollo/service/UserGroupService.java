@@ -20,4 +20,10 @@ public interface UserGroupService {
 	 */
 	List<TUSerGroup> queryUserGroup(Integer userId);
 
+	/**  
+	 * @param tUserGroup  
+	 * @Description:  
+	 */
+	int addUserGroup(TUSerGroup tUserGroup);
+
 }

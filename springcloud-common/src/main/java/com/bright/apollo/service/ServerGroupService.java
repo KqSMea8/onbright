@@ -27,4 +27,16 @@ public interface ServerGroupService {
 	 */
 	List<TServerGroup> queryServerGroupByAddr(String addr);
 
+	/**  
+	 * @param tServerGroup  
+	 * @Description:  
+	 */
+	int addServerGroup(TServerGroup tServerGroup);
+
+	/**  
+	 * @param tServerGroup  
+	 * @Description:  
+	 */
+	void updateServerGroup(TServerGroup tServerGroup);
+
 }

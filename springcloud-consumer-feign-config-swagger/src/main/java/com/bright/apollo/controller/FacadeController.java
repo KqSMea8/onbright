@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,7 +87,6 @@ import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.response.TUserOperationDTO;
 import com.bright.apollo.response.UserFingerDTO;
-import com.bright.apollo.service.MsgService;
 import com.bright.apollo.service.SmsService;
 import com.bright.apollo.tool.Base64Util;
 import com.bright.apollo.tool.ByteHelper;
@@ -5758,7 +5756,7 @@ public class FacadeController extends BaseController {
 				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
 				return res;
 			}
-			res=feignDeviceClient.addServerGroup(groupName,mList);
+			res=feignDeviceClient.addServerGroup(groupName,resUser.getData().getId(),mList);
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
@@ -5767,5 +5765,37 @@ public class FacadeController extends BaseController {
 		return res;
 	}
 
-	 
+	/**  
+	 * @param groupId
+	 * @return  
+	 * @Description:  
+	 */
+	@ApiOperation(value = "deleteServerGroup", httpMethod = "DELETE", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/deleteServerGroup/{groupId}", method = RequestMethod.DELETE)
+	public ResponseObject<Map<String, Object>> deleteServerGroup(@PathVariable(value="groupId")Integer groupId) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+			res=feignDeviceClient.deleteServerGroup(groupId);
+			//res=feignDeviceClient.addServerGroup(groupName,resUser.getData().getId(),mList);
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
 }

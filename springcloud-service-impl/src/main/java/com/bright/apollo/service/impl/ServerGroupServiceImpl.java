@@ -35,5 +35,20 @@ public class ServerGroupServiceImpl implements ServerGroupService{
 	public List<TServerGroup> queryServerGroupByAddr(String addr) {
  		return mapper.queryServerGroupByAddr(addr);
 	}
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.ServerGroupService#addServerGroup(com.bright.apollo.common.entity.TServerGroup)  
+	 */
+	@Override
+	public int addServerGroup(TServerGroup tServerGroup) {
+		  
+		return mapper.addServerGroup(tServerGroup);
+	}
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.ServerGroupService#updateServerGroup(com.bright.apollo.common.entity.TServerGroup)  
+	 */
+	@Override
+	public void updateServerGroup(TServerGroup tServerGroup) {
+		mapper.updateServerGroup(tServerGroup);
+	}
 
 }

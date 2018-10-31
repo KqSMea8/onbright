@@ -14,10 +14,18 @@ import com.bright.apollo.common.entity.TGroupDevice;
 public interface GroupDeviceService {
 
 	/**  
-	 * @param id
+	 * @param groupId
 	 * @return  
 	 * @Description:  
 	 */
-	List<TGroupDevice> queryDeviceGroupByGroupId(Integer id);
+	List<TGroupDevice> queryDeviceGroupByGroupId(Integer groupId);
+
+	/**  
+	 * @param groupId
+	 * @param deviceSerialId
+	 * @return  
+	 * @Description:  
+	 */
+	TGroupDevice queryDeviceGroup(Integer groupId, String deviceSerialId);
 
 }

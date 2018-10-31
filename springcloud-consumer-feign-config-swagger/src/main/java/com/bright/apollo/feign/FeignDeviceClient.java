@@ -422,48 +422,55 @@ public interface FeignDeviceClient {
 	@RequestMapping(value = "/intelligentFinger/batchTIntelligentFingerPush", method = RequestMethod.POST)
 	ResponseObject batchTIntelligentFingerPush(@RequestBody List<TIntelligentFingerPush> pushList);
 
-	/**  
+	/**
 	 * @param deviceId
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
 	@RequestMapping(value = "/ali/queryAliDevConfigBySerial/{deviceId}", method = RequestMethod.GET)
-	ResponseObject<TAliDeviceConfig> queryAliDevConfigBySerial(@PathVariable(value = "deviceId")String deviceId);
+	ResponseObject<TAliDeviceConfig> queryAliDevConfigBySerial(@PathVariable(value = "deviceId") String deviceId);
 
-	/**  
-	 * @param tAliDeviceConfig  
-	 * @Description:  
+	/**
+	 * @param tAliDeviceConfig
+	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/ali/addAliDevConfig", method = RequestMethod.POST)
 	ResponseObject addAliDevConfig(@RequestBody TAliDeviceConfig tAliDeviceConfig);
 
-	/**  
-	 * @param tAliDeviceConfig  
-	 * @Description:  
+	/**
+	 * @param tAliDeviceConfig
+	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/ali/updateAliDevConfig", method = RequestMethod.PUT)
 	ResponseObject updateAliDevConfig(@RequestBody TAliDeviceConfig tAliDeviceConfig);
 
-	/**  
+	/**
 	 * @param userId
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
 	@RequestMapping(value = "/group/queryGroup/{userId}", method = RequestMethod.GET)
-	ResponseObject<Map<String, Object>> queryGroup(@PathVariable(value = "userId")Integer userId);
+	ResponseObject<Map<String, Object>> queryGroup(@PathVariable(value = "userId") Integer userId);
 
-	/**  
+	/**
 	 * @param groupName
 	 * @param mList
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/group/addServerGroup/{groupName}/{userId}", method = RequestMethod.POST)
+	ResponseObject<Map<String, Object>> addServerGroup(@PathVariable(value = "groupName") String groupName,
+			@PathVariable(value = "userId") Integer userId,
+			@RequestParam(value = "mList", required = false) List<String> mList);
+
+	/**  
+	 * @param groupId
 	 * @return  
 	 * @Description:  
 	 */
-	@RequestMapping(value = "/group/addServerGroup/{groupName}", method = RequestMethod.POST)
-	ResponseObject<Map<String, Object>> addServerGroup(@PathVariable(value = "groupName")String groupName,@RequestParam(value="mList",required=false) List<String> mList);
-
- 
- 
+	@RequestMapping(value = "/group/deleteServerGroup/{groupId}", method = RequestMethod.DELETE)
+	ResponseObject<Map<String, Object>> deleteServerGroup(@PathVariable(value = "groupId")Integer groupId);
 
 }

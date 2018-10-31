@@ -1209,5 +1209,25 @@ public class AliServerController {
 		}
 		return res;
 	}
-
+	/**
+	 * @param obox
+	 * @param setGroup
+	 * @param setBytes
+	 * @Description:
+	 */
+	@RequestMapping(value = "/sendCmd", method = RequestMethod.POST)
+	ResponseObject<OboxResp> sendCmd(@RequestParam(value = "obox") TObox obox,
+			@RequestParam(value = "setGroup") CMDEnum setGroup, @RequestParam(value = "setBytes") byte[] setBytes){
+		ResponseObject<OboxResp> res = new ResponseObject<OboxResp>();
+		try {
+			topicServer.request(setGroup, setBytes, obox.getOboxSerialId());
+			res.setStatus(ResponseEnum.AddSuccess.getStatus());
+			res.setMessage(ResponseEnum.AddSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
 }

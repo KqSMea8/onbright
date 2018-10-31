@@ -35,4 +35,18 @@ public interface GroupDeviceMapper {
 			})
 	List<TGroupDevice> queryDeviceGroupByGroupId(@Param("groupId")Integer groupId);
 
+	/**  
+	 * @param groupId
+	 * @param deviceSerialId
+	 * @return  
+	 * @Description:  
+	 */
+	@Select("select * from t_group_device where group_id=#{groupId} and device_serial_id=#{deviceSerialId}")
+    @Results(value = {
+			@Result(property = "groupId",column = "group_id"),
+			@Result(property = "deviceSerialId",column = "device_serial_id"),
+			@Result(property = "lastOpTime",column = "last_op_time")
+			})
+	TGroupDevice queryDeviceGroup(@Param("groupId")Integer groupId, @Param("deviceSerialId")String deviceSerialId);
+
 }

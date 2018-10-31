@@ -28,5 +28,12 @@ public class UserGroupServiceImpl implements UserGroupService{
 	public List<TUSerGroup> queryUserGroup(Integer userId) {
  		return mapper.queryUserGroup(userId);
 	}
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.UserGroupService#addUserGroup(com.bright.apollo.common.entity.TUSerGroup)  
+	 */
+	@Override
+	public int addUserGroup(TUSerGroup tUserGroup) {
+ 		return mapper.addUserGroup(tUserGroup);
+	}
 
 }

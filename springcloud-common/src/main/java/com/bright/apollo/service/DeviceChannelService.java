@@ -1,5 +1,7 @@
 package com.bright.apollo.service;
 
+import java.util.List;
+
 import com.bright.apollo.common.entity.TDeviceChannel;
 
 public interface DeviceChannelService {
@@ -22,6 +24,13 @@ public interface DeviceChannelService {
 	 * @Description:  
 	 */
 	void updateDeviceChannel(TDeviceChannel tDeviceChannel);
+
+	/**  
+	 * @param deviceId
+	 * @return  
+	 * @Description:  
+	 */
+	List<TDeviceChannel> getDeivceChannelById(Integer deviceId);
 
 
 }
