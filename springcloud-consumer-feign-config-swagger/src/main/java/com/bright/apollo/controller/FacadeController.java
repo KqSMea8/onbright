@@ -214,15 +214,15 @@ public class FacadeController extends BaseController {
 
 	/*
 	 * // control scene
-	 * 
+	 *
 	 * @SuppressWarnings({ "rawtypes" })
-	 * 
+	 *
 	 * @ApiOperation(value = "control  scene,the scene must is a server scene ",
 	 * httpMethod = "PUT", produces = "application/json")
-	 * 
+	 *
 	 * @ApiResponse(code = 200, message = "SelectSuccess", response =
 	 * ResponseObject.class)
-	 * 
+	 *
 	 * @RequestMapping(value = "/scene/{sceneNumber}", method =
 	 * RequestMethod.PUT) public ResponseObject
 	 * controlScene(@PathVariable(required = true, value = "sceneNumber")
@@ -240,7 +240,7 @@ public class FacadeController extends BaseController {
 	 * (scene.getSceneRun() == 0) { // old code scene.setSceneRun((byte) 1);
 	 * SceneInfo sceneInfo = sceneRes.getData(); sceneInfo.setScene(scene); //
 	 * rewrite
-	 * 
+	 *
 	 * ResponseObject updateScene = feignSceneClient.updateScene(sceneNumber,
 	 * sceneInfo); if (updateScene == null || updateScene.getStatus() !=
 	 * ResponseEnum.SelectSuccess.getStatus()) {
@@ -250,11 +250,11 @@ public class FacadeController extends BaseController {
 	 * feignAliClient.controlServerScene(sceneNumber); if (resp != null &&
 	 * resp.getStatus() == ResponseEnum.SelectSuccess.getStatus()) { return
 	 * resp; } scene.setSceneRun((byte) 0); sceneInfo.setScene(scene);
-	 * 
+	 *
 	 * feignSceneClient.updateScene(sceneNumber, sceneInfo);
-	 * 
+	 *
 	 * } }
-	 * 
+	 *
 	 * } catch (Exception e) { logger.error(e.getMessage());
 	 * res.setStatus(ResponseEnum.RequestTimeout.getStatus());
 	 * res.setMessage(ResponseEnum.RequestTimeout.getMsg()); } return res; }
@@ -656,14 +656,14 @@ public class FacadeController extends BaseController {
 	 * @ApiOperation(value =
 	 * "get scene by user and page,the pageIndex default value is 0,the pageSize defalt value is 10"
 	 * , httpMethod = "GET", produces = "application/json")
-	 * 
+	 *
 	 * @ApiResponse(code = 200, message = "SelectSuccess", response =
 	 * ResponseObject.class)
-	 * 
+	 *
 	 * @RequestMapping(value = "/scene/{pageIndex}/{pageSize}", method =
 	 * RequestMethod.GET) public ResponseObject<List<SceneInfo>>
 	 * getSceneByUserAndPage(@PathVariable Integer pageIndex,
-	 * 
+	 *
 	 * @PathVariable Integer pageSize) { ResponseObject<List<SceneInfo>> res =
 	 * new ResponseObject<List<SceneInfo>>(); try { UserDetails principal =
 	 * (UserDetails)
@@ -679,7 +679,7 @@ public class FacadeController extends BaseController {
 	 * feignSceneClient.getSceneByUserAndPage(tUser.getId(), pageIndex,
 	 * pageSize); } else { res.setStatus(ResponseEnum.UnKonwUser.getStatus());
 	 * res.setMessage(ResponseEnum.UnKonwUser.getMsg()); }
-	 * 
+	 *
 	 * } catch (Exception e) { logger.error(e.getMessage());
 	 * res.setStatus(ResponseEnum.RequestTimeout.getStatus());
 	 * res.setMessage(ResponseEnum.RequestTimeout.getMsg()); } return res; }
@@ -1009,7 +1009,7 @@ public class FacadeController extends BaseController {
 							feignSceneClient.addSceneAction(tSceneAction);
 						}
 					} else if (sceneActionDTO.getNodeType().equals(NodeTypeEnum.security.getValue())) {
-						
+
 					}
 					//add wifi device
 					else if(sceneActionDTO.getNodeType().equals(NodeTypeEnum.wifi.getValue())){
@@ -1163,13 +1163,13 @@ public class FacadeController extends BaseController {
 						 * // group TServerGroup tServerGroup =
 						 * queryGroupByWeight( tUser,
 						 * Integer.parseInt(sceneActionDTO .getGroupId()));
-						 * 
+						 *
 						 * if (tServerGroup != null) {
 						 * tSceneAction.setActionID(tServerGroup.getId());
 						 * tSceneAction.setNodeType(NodeTypeEnum.group
 						 * .getValue());
 						 * SceneBusiness.addSceneAction(tSceneAction); }
-						 * 
+						 *
 						 */} else if (sceneActionDTO.getNodeType().equals(NodeTypeEnum.single.getValue())) {
 						ResponseObject<TOboxDeviceConfig> deviceRes = feignDeviceClient.getDeviceByUserAndSerialId(
 								resUser.getData().getId(), sceneActionDTO.getDeviceSerialId());
@@ -1246,7 +1246,7 @@ public class FacadeController extends BaseController {
 							tSceneAction.setNodeType(NodeTypeEnum.wifi.getValue());
 							feignSceneClient.addSceneAction(tSceneAction);
 						}
-					
+
 					}
 				}
 			}
@@ -1493,7 +1493,7 @@ public class FacadeController extends BaseController {
 								 * sceneActionDTO.getAction())) {
 								 * sceneActionDTO.setActionType(2);
 								 * needDTOs.add(sceneActionDTO); }
-								 * 
+								 *
 								 * isFound = true; break; } }
 								 */} else if (sceneActionDTO.getNodeType().equals(NodeTypeEnum.camera.getValue())
 										&& tSceneAction.getNodeType().equals(NodeTypeEnum.camera.getValue())) {
@@ -5701,6 +5701,39 @@ public class FacadeController extends BaseController {
 		return res;
 	}
 
+	/**
+	 * @return
+	 * @Description:
+	 */
+	@ApiOperation(value = "queryGroup", httpMethod = "GET", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/queryGroup", method = RequestMethod.GET)
+	public ResponseObject<Map<String, Object>> queryGroup() {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+			//group is device
+			res=feignDeviceClient.queryGroup(resUser.getData().getId());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
 	@ApiOperation(value = "getIrTypeList", httpMethod = "POST", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/getIrTypeList", method = RequestMethod.POST)
@@ -5734,7 +5767,9 @@ public class FacadeController extends BaseController {
 	@ApiOperation(value = "getIrBrandList", httpMethod = "POST", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/getIrBrandList", method = RequestMethod.POST)
-	public ResponseObject<Map<String, Object>> getIrBrandList(@RequestParam(required = true, value = "deviceType") String deviceType) {
+	public ResponseObject<Map<String, Object>> getIrBrandList(@RequestParam(required = true, value = "brandId") String brandId,
+															  @RequestParam(required = true, value = "deviceType") String deviceType,
+															  @RequestParam(required = true, value = "appkey") String appkey) {
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		try {
 			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -5754,6 +5789,74 @@ public class FacadeController extends BaseController {
 			feignAliClient.getIrList(brandId,deviceType,appkey);
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	/**
+	 * @param groupName
+	 * @return
+	 * @Description:
+	 */
+	@ApiOperation(value = "addServerGroup", httpMethod = "POST", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/addServerGroup/{groupName}", method = RequestMethod.POST)
+	public ResponseObject<Map<String, Object>> addServerGroup(@PathVariable(value="groupName")String groupName,
+															  @RequestParam(name="mList",required=false) List<String> mList) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+			res=feignDeviceClient.addServerGroup(groupName,resUser.getData().getId(),mList);
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	/**
+	 * @param groupId
+	 * @return
+	 * @Description:
+	 */
+	@ApiOperation(value = "deleteServerGroup", httpMethod = "DELETE", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/deleteServerGroup/{groupId}", method = RequestMethod.DELETE)
+	public ResponseObject<Map<String, Object>> deleteServerGroup(@PathVariable(value="groupId")Integer groupId) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+			res=feignDeviceClient.deleteServerGroup(groupId);
+			//res=feignDeviceClient.addServerGroup(groupName,resUser.getData().getId(),mList);
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());

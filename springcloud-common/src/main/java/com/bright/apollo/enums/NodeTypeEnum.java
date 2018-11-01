@@ -14,7 +14,9 @@ public enum NodeTypeEnum {
 
     security("05"),//监听
     
-    wifi("06")
+    wifi("06"),//wifi socket
+    
+    wifi_ir("07")
     ;
 
     private String value;

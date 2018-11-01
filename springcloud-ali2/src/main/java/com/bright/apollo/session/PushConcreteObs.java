@@ -31,6 +31,11 @@ public class PushConcreteObs implements BasicPushObserver {
     @Override
     public void update(PushExceptionMsg message, PushSystemMsg msg) {
         logger.info("===Push Exception Msg===");
+        logger.info("===pushExceptionPool:"+pushExceptionPool);
+
         pushExceptionPool.handlerMsg(message,msg);
     }
+
+	
+    
 }

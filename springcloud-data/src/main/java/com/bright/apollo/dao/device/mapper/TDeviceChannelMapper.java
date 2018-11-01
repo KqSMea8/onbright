@@ -1,5 +1,7 @@
 package com.bright.apollo.dao.device.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -48,4 +50,20 @@ public interface TDeviceChannelMapper   {
     @Update("update t_device_channel set signal_intensity= #{signalIntensity }" +
 			" where obox_id = #{oboxId} and device_id = #{deviceId}")
 	void updateDeviceChannel(TDeviceChannel tDeviceChannel);
+
+	/**  
+	 * @param deviceId
+	 * @return  
+	 * @Description:  
+	 */
+    @Select("select * from t_device_channel where device_id=#{deviceId} ")
+    @Results(value = {
+			@Result(property = "oboxId",column = "obox_id"),
+			@Result(property = "deviceId",column = "device_id"),
+			@Result(property = "lastOpTime",column = "last_op_time"),
+			@Result(property = "signalIntensity",column = "signal_intensity")
+			})
+	List<TDeviceChannel> getDeivceChannelById(@Param("deviceId")Integer deviceId);
+
+ 
 }

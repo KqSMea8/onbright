@@ -112,4 +112,29 @@ public interface TMsgMapper {
 	@Update("update set state=#{statue} from t_msg where id =#{id} ")
 	void updateMsgState(@Param("id")Integer id,@Param("statue") int statue);
 
+	/**  
+	 * @param userId
+	 * @param start
+	 * @param count
+	 * @return  
+	 * @Description:  
+	 */
+	@Select("select b.type,b.child_type,b.relevancy_id,a.send_time as time,"
+			+ "a.content,a.id,a.state,b.name as `name`,a.url  from t_msg a,t_system b where a.user_id=#{userId} "
+			+ " and a.relevancy_id=b.id limit #{start},#{count}")
+	@Results(value = {
+            @Result(property = "type",column = "type"),
+            @Result(property = "child_type",column = "child_type"),
+            @Result(property = "relevancy_id",column = "relevancy_id"),
+            @Result(property = "time",column = "time"),
+            @Result(property = "content",column = "content"),
+            @Result(property = "id",column = "id"),
+            @Result(property = "state",column = "state"),
+            @Result(property = "name",column = "name"),
+            @Result(property = "serialId",column = "serialId"),
+            @Result(property = "url",column = "url")
+    })
+	List<MsgExceptionDTO> queryAllMsgSysList(@Param("userId") Integer userId,
+			@Param("start") int start, @Param("count") int count);
+ 
 }

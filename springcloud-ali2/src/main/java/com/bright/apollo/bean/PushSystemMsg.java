@@ -45,4 +45,10 @@ public class PushSystemMsg {
         this.userId = userId;
         this.content = content;
     }
+	@Override
+	public String toString() {
+		return "PushSystemMsg [type=" + type + ", childType=" + childType + ", id=" + id + ", userId=" + userId
+				+ ", content=" + content + "]";
+	}
+    
 }

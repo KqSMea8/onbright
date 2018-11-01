@@ -163,5 +163,13 @@ public class OboxDeviceConfigServiceImpl  implements OboxDeviceConfigService {
 		odcMapper.deleteTOboxDeviceConfigById(id);
 	}
 
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.OboxDeviceConfigService#queryDeviceByGroupId(java.lang.Integer)  
+	 */
+	@Override
+	public List<TOboxDeviceConfig> queryDeviceByGroupId(Integer groupId) {
+ 		return odcMapper.queryDeviceByGroupId(groupId);
+	}
+
 
 }

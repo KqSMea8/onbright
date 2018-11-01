@@ -17,6 +17,8 @@
 		<!--<mqtt-version>0.0.1-SNAPSHOT</mqtt-version> -->
 		<jersey-version>1.19</jersey-version>
 		<quartz-version>2.2.3</quartz-version>
+		<ali-sms-version>1.1.0</ali-sms-version>
+		<ali-core-version>4.0.6</ali-core-version>
 	</properties>
 	<parent>
 		<groupId>org.springframework.boot</groupId>

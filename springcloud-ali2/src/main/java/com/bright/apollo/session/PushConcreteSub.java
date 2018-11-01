@@ -17,7 +17,7 @@ public class PushConcreteSub extends BasicPushSub{
         this.nodifyObservers(message,clientSession);
     }
     public void sendMessage(PushExceptionMsg message , PushSystemMsg msg){
-    	logger.info("===nodifyObservers===:"+message.toString());
+    	logger.info("===PushExceptionMsg===:"+message+"  ======msg:"+msg);
         //状态发生改变，通知各个观察者
         this.nodifyObservers(message,msg);
     }

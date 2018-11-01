@@ -34,7 +34,7 @@ import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.service.CreateTableLogService;
 import com.bright.apollo.service.CreateTableSqlService;
-import com.bright.apollo.service.MsgService;
+import com.bright.apollo.service.SmsService;
 import com.bright.apollo.service.UserAliDevService;
 import com.bright.apollo.service.UserDeviceService;
 import com.bright.apollo.service.UserOboxService;
@@ -65,7 +65,9 @@ public class UserController {
 	@Autowired
 	private UserCacheService userCacheService;
 	@Autowired
-	private MsgService msgService;
+	private SmsService smsService;
+	//@Autowired
+	//private MsgService msgService;
 	@Autowired
 	private WxService wxService;
 	@Autowired
@@ -99,7 +101,8 @@ public class UserController {
 				return res;
 			}
 			int code = RandomUtil.makeCode();
-			msgService.sendAuthCode(code, mobile);
+			smsService.sendAuthCode(code, mobile);
+			//msgService.sendAuthCode(code, mobile);
 			userCacheService.saveCode(mobile, code);
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
@@ -228,7 +231,8 @@ public class UserController {
 				return res;
 			}
 			int code = RandomUtil.makeCode();
-			msgService.sendCode(code, mobile);
+			smsService.sendCode(mobile, code+"");
+			//msgService.sendCode(code, mobile);
 			userCacheService.saveCode(mobile, code);
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());

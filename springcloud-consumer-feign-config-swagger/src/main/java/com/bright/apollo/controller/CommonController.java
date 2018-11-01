@@ -10,11 +10,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.bright.apollo.common.entity.TAliDevice;
-import com.bright.apollo.common.entity.TAliDeviceConfig;
-import com.bright.apollo.request.*;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bright.apollo.common.entity.TScene;
 import com.bright.apollo.enums.CMDEnum;
+import com.bright.apollo.enums.OperateTypeEnum;
 import com.bright.apollo.enums.SceneTypeEnum;
+import com.bright.apollo.request.OboxDTO;
+import com.bright.apollo.request.RequestParam;
+import com.bright.apollo.request.SceneDTO;
+import com.bright.apollo.request.TIntelligentFingerPushDTO;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.tool.MobileUtil;
@@ -50,8 +50,8 @@ public class CommonController {
 	private FacadeController facadeController;
 	@Autowired
 	private SceneController sceneController;
-//	@Autowired
-//	private DeviceController deviceController;
+	// @Autowired
+	// private DeviceController deviceController;
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping("/common")
@@ -214,7 +214,7 @@ public class CommonController {
 					return facadeController.enableScene(Integer.parseInt(sceneNumber), sceneStatus);
 				} else if (sceneStatus.equals("10") || sceneStatus.equals("11") || sceneStatus.equals("12")
 						|| sceneStatus.equals("13")) {
-					 return sceneController.updateSceneSendSetting(Integer.parseInt(sceneNumber),sceneStatus);
+					return sceneController.updateSceneSendSetting(Integer.parseInt(sceneNumber), sceneStatus);
 				}
 			}
 		} else if (CMDEnum.modify_device.toString().equals(cmdEnum.toString())) {
@@ -340,8 +340,7 @@ public class CommonController {
 			String serialId = requestParam.getValue("serialId");
 			String mobile = requestParam.getValue("mobile");
 			String pushInfo = requestParam.getValue("pushInfo");
-			if (StringUtils.isEmpty(serialId)   || StringUtils.isEmpty(pushInfo)
-				 ) {
+			if (StringUtils.isEmpty(serialId) || StringUtils.isEmpty(pushInfo)) {
 			} else {
 				return facadeController.updateIntelligentRemoteUser(serialId, mobile,
 						getObjectList(pushInfo, TIntelligentFingerPushDTO.class));
@@ -417,85 +416,81 @@ public class CommonController {
 		} else if (CMDEnum.query_scenenumber_by_addr.toString().equals(cmdEnum.toString())) {
 			String oboxSceneNumber = requestParam.getValue("obox_scene_number");
 			String oboxSerialId = requestParam.getValue("obox_serial_id");
-			if (!StringUtils.isEmpty(oboxSceneNumber)
-					&& !StringUtils.isEmpty(oboxSerialId)
-					&& NumberHelper.isNumeric(oboxSceneNumber)
-					&& Integer.parseInt(oboxSceneNumber)>0) {
-				return facadeController.querySceneNumberByAddr(oboxSceneNumber,oboxSerialId);
+			if (!StringUtils.isEmpty(oboxSceneNumber) && !StringUtils.isEmpty(oboxSerialId)
+					&& NumberHelper.isNumeric(oboxSceneNumber) && Integer.parseInt(oboxSceneNumber) > 0) {
+				return facadeController.querySceneNumberByAddr(oboxSceneNumber, oboxSerialId);
 			}
-		}else if (CMDEnum.delete_obox.toString().equals(cmdEnum.toString())) {
+		} else if (CMDEnum.delete_obox.toString().equals(cmdEnum.toString())) {
 			// modify
 			String obox_serial_id = requestParam.getValue("obox_serial_id");
-			if(!StringUtils.isEmpty(obox_serial_id)){
+			if (!StringUtils.isEmpty(obox_serial_id)) {
 				return facadeController.deleteObox(obox_serial_id);
 			}
 		} else if (CMDEnum.set_pwd.toString().equals(cmdEnum.toString())) {
-			//String type = requestParam.getValue("type");
+			// String type = requestParam.getValue("type");
 			String pwd = requestParam.getValue("pwd");
-			if(!StringUtils.isEmpty(pwd)){
+			if (!StringUtils.isEmpty(pwd)) {
 				return facadeController.modifyUserPwd(pwd);
 			}
-		}else if (CMDEnum.setting_remote_led.toString().equals(cmdEnum.toString())) {
- 			String type = requestParam.getValue("type");
- 			String obox_serial_id = requestParam.getValue("obox_serial_id");
- 			String serialId = requestParam.getValue("serialId");
- 			String status = requestParam.getValue("status");
- 			String addr = requestParam.getValue("addr");
- 			//addr
-			if(!StringUtils.isEmpty(type)&&!StringUtils.isEmpty(obox_serial_id)){
-				 if(type.equals("1")){
-					 //add
-					 return facadeController.addRemoteLed(obox_serial_id);
-				 }else if(type.equals("2")&&!StringUtils.isEmpty(serialId)){
-					 //del
-					 return facadeController.delRemoteLed(obox_serial_id,serialId);
-				 }else if(type.equals("3")&&!StringUtils.isEmpty(serialId)
-						 &&!StringUtils.isEmpty(status)
-						 ){
-					 //control
-					 return facadeController.controlRemoteLed(obox_serial_id,serialId,status);
-				 }
+		} else if (CMDEnum.setting_remote_led.toString().equals(cmdEnum.toString())) {
+			String type = requestParam.getValue("type");
+			String obox_serial_id = requestParam.getValue("obox_serial_id");
+			String serialId = requestParam.getValue("serialId");
+			String status = requestParam.getValue("status");
+			String addr = requestParam.getValue("addr");
+			// addr
+			if (!StringUtils.isEmpty(type) && !StringUtils.isEmpty(obox_serial_id)) {
+				if (type.equals("1")) {
+					// add
+					return facadeController.addRemoteLed(obox_serial_id);
+				} else if (type.equals("2") && !StringUtils.isEmpty(serialId)) {
+					// del
+					return facadeController.delRemoteLed(obox_serial_id, serialId);
+				} else if (type.equals("3") && !StringUtils.isEmpty(serialId) && !StringUtils.isEmpty(status)) {
+					// control
+					return facadeController.controlRemoteLed(obox_serial_id, serialId, status);
+				}
 			}
-		}else if(CMDEnum.query_ali_dev.toString().equals(cmdEnum.toString())){//阿里wifi设备查询
+		} else if (CMDEnum.query_ali_dev.toString().equals(cmdEnum.toString())) {// 阿里wifi设备查询
 			return facadeController.queryAliDevice();
-		}else if(CMDEnum.set_ali_dev.toString().equals(cmdEnum.toString())){
+		} else if (CMDEnum.set_ali_dev.toString().equals(cmdEnum.toString())) {
 			String value = requestParam.getValue("value");
 			String deviceId = requestParam.getValue("deviceId");
-			return facadeController.setAliDevice(value,deviceId);
-		}else if(CMDEnum.read_ali_dev.toString().equals(cmdEnum.toString())){
+			return facadeController.setAliDevice(value, deviceId);
+		} else if (CMDEnum.read_ali_dev.toString().equals(cmdEnum.toString())) {
 			String functionId = requestParam.getValue("functionId");
 			String deviceId = requestParam.getValue("deviceId");
 			String value = requestParam.getValue("value");
-			return facadeController.readAliDevice(functionId,deviceId);
-		}else if(CMDEnum.query_timer.toString().equals(cmdEnum.toString())){
+			return facadeController.readAliDevice(functionId, deviceId);
+		} else if (CMDEnum.query_timer.toString().equals(cmdEnum.toString())) {
 			String deviceId = requestParam.getValue("deviceId");
 			return facadeController.queryAliDeviceTimer(deviceId);
-		}else if(CMDEnum.set_timer.toString().equals(cmdEnum.toString())){
+		} else if (CMDEnum.set_timer.toString().equals(cmdEnum.toString())) {
 			String command = requestParam.getValue("command");
 			String deviceId = requestParam.getValue("deviceId");
 			String timer = requestParam.getValue("timer");
 			String timerValue = requestParam.getValue("value");
 			String timerId = requestParam.getValue("timerId");
-			if(timerId ==null||StringUtils.isEmpty(timerId)){
+			if (timerId == null || StringUtils.isEmpty(timerId)) {
 				timerId = "0";
 			}
-			return facadeController.setAliTimer(deviceId,command,timer,timerValue,timerId);
-		}else if(CMDEnum.upload_config.toString().equals(cmdEnum.toString())){
+			return facadeController.setAliTimer(deviceId, command, timer, timerValue, timerId);
+		} else if (CMDEnum.upload_config.toString().equals(cmdEnum.toString())) {
 			String deviceName = requestParam.getValue("deviceName");
 			String productKey = requestParam.getValue("productKey");
 			String config = requestParam.getValue("config");
-			return facadeController.uploadAliDevice(deviceName,productKey,config);
-		}else if(CMDEnum.set_countdown.toString().equals(cmdEnum.toString())){
+			return facadeController.uploadAliDevice(deviceName, productKey, config);
+		} else if (CMDEnum.set_countdown.toString().equals(cmdEnum.toString())) {
 			String command = requestParam.getValue("command");
 			String deviceId = requestParam.getValue("deviceId");
 			String timer = requestParam.getValue("timer");
 			String timerValue = requestParam.getValue("value");
-			return facadeController.setAliCountdown(deviceId,command,timer,timerValue);
-		}else if(CMDEnum.delete_ali_dev.toString().equals(cmdEnum.toString())){
+			return facadeController.setAliCountdown(deviceId, command, timer, timerValue);
+		} else if (CMDEnum.delete_ali_dev.toString().equals(cmdEnum.toString())) {
 			String deviceId = requestParam.getValue("deviceId");
-//			String value = requestParam.getValue("value");
+			// String value = requestParam.getValue("value");
 			return facadeController.delAliDevice(deviceId);
-		}else if(CMDEnum.query_countdown.toString().equals(cmdEnum.toString())){
+		} else if (CMDEnum.query_countdown.toString().equals(cmdEnum.toString())) {
 			String deviceId = requestParam.getValue("deviceId");
 			return facadeController.queryCountDown(deviceId);
 		}else if(CMDEnum.query_ir_testcode.toString().equals(cmdEnum.toString())){//手动匹配遥控方案
@@ -504,17 +499,20 @@ public class CommonController {
             String appkey = requestParam.getValue("appkey");
 			return facadeController.getIrList(brandId,deviceType,appkey);
 		}else if(CMDEnum.query_ir_brand.toString().equals(cmdEnum.toString())){//获取遥控云品牌类型
+			String brandId = requestParam.getValue("brandId");
 			String deviceType = requestParam.getValue("deviceType");
-			return null;
-		}else if(CMDEnum.query_remote_control_id.toString().equals(cmdEnum.toString())){//获取某个遥控器对应的详情码库
+			String appkey = requestParam.getValue("appkey");
+			return facadeController.getIrBrandList(brandId, deviceType,appkey);
+		}else if (CMDEnum.query_remote_control_id.toString().equals(cmdEnum.toString())) {// 获取某个遥控器对应的详情码库
 
 			return null;
-		}else if(CMDEnum.query_remote_control_src.toString().equals(cmdEnum.toString())){//根据品牌ID、设备类型一键匹配遥控器列表
+		} else if (CMDEnum.query_remote_control_src.toString().equals(cmdEnum.toString())) {// 根据品牌ID、设备类型一键匹配遥控器列表
 
 			return null;
-		}else if(CMDEnum.bind_remote_control.toString().equals(cmdEnum.toString())){//绑定/解绑红外
+		} else if (CMDEnum.bind_remote_control.toString().equals(cmdEnum.toString())) {// 绑定/解绑红外
 
 			return null;
+
 		}else if(CMDEnum.modify_ir_program.toString().equals(cmdEnum.toString())){//修改/新增红外方案编辑页面
 			String serialId = requestParam.getValue("serialId");
 			String irProgram = requestParam.getValue("ir_ program");
@@ -522,26 +520,92 @@ public class CommonController {
 		}else if(CMDEnum.query_ir_device_type.toString().equals(cmdEnum.toString())){//获取遥控云遥控类型
 			return facadeController.getIrTypeList();
 		}else if(CMDEnum.to_key_learn.toString().equals(cmdEnum.toString())){//进入学习状态
+			return null;
+		} else if (CMDEnum.modify_ir_program.toString().equals(cmdEnum.toString())) {// 修改红外转发器方案
+			String serialId = requestParam.getValue("serialId");
+			String irProgram = requestParam.getValue("ir_ program");
+			return facadeController.modifyIR(serialId, irProgram);
+		} else if (CMDEnum.to_key_learn.toString().equals(cmdEnum.toString())) {// 进入学习状态
 			String serialId = requestParam.getValue("serialId");
 			String timeOut = requestParam.getValue("timeOut");
 			String index = requestParam.getValue("index");
 			String keyOrName = requestParam.getValue("key_or_name");
 			String learnKeyType = requestParam.getValue("key_or_name");
-			return facadeController.toLearn(serialId,timeOut,Integer.valueOf(index),keyOrName,learnKeyType);
-		}else if(CMDEnum.to_pair_code.toString().equals(cmdEnum.toString())){//进入对码模式
+			return facadeController.toLearn(serialId, timeOut, Integer.valueOf(index), keyOrName, learnKeyType);
+		} else if (CMDEnum.to_pair_code.toString().equals(cmdEnum.toString())) {// 进入对码模式
 
 			return null;
-		}else if(CMDEnum.send_test_code.toString().equals(cmdEnum.toString())){//发送测试码
+		} else if (CMDEnum.send_test_code.toString().equals(cmdEnum.toString())) {// 发送测试码
 
 			return null;
-		}else if(CMDEnum.control_device.toString().equals(cmdEnum.toString())){//控制(红外)
+		} else if (CMDEnum.control_device.toString().equals(cmdEnum.toString())) {// 控制(红外)
 			String serialId = requestParam.getValue("serialId");
 			String index = requestParam.getValue("index");
 			String key = requestParam.getValue("key");
 			String keyType = requestParam.getValue("keyType");
 			return facadeController.controllIR(serialId,Integer.valueOf(index),key);
-		}else if (CMDEnum.test.toString().equals(cmdEnum.toString())) {
- 			String serialId = requestParam.getValue("serialId");
+		}else if (CMDEnum.query_msg.toString().equals(cmdEnum.toString())) {
+			String count = requestParam.getValue("count");
+			String type = requestParam.getValue("type");
+			String start = requestParam.getValue("start");
+			return facadeController.queryMsg(type, start, count);
+		} else if (CMDEnum.query_group.toString().equals(cmdEnum.toString())) {
+			return facadeController.queryGroup();
+		} else if (CMDEnum.set_group.toString().equals(cmdEnum.toString())) {
+			String groupId = requestParam.getValue("group_id");
+			String groupName = requestParam.getValue("group_name");
+			String groupState = requestParam.getValue("group_state");
+			String operateType = requestParam.getValue("operate_type");
+			String groupMember = requestParam.getValue("group_member");
+			String groupStyle = requestParam.getValue("group_style");
+			String oboxSerialId = requestParam.getValue("obox_serial_id");
+			String groupAddr = requestParam.getValue("groupAddr");
+			if (!StringUtils.isEmpty(operateType)) {
+				// 00/01/02/03/04／05/06
+				// 删除／设置／覆盖成员/添加成员／删除成员/改名/执行
+				/*
+				 * if(operateType.equals("00")){
+				 * 
+				 * }else if(operateType.equals("01")){
+				 * 
+				 * }else if(operateType.equals("02")){
+				 * 
+				 * }else if(operateType.equals("03")){
+				 * 
+				 * }else if(operateType.equals("04")){
+				 * 
+				 * }else if(operateType.equals("05")){
+				 * 
+				 * }else if(operateType.equals("06")){
+				 * 
+				 * }
+				 */
+				OperateTypeEnum operation = OperateTypeEnum.getEnum(operateType);
+				if (!operation.equals(OperateTypeEnum.set)) {
+					/*
+					 * if (StringUtils.isEmpty(groupId)) { if
+					 * (StringUtils.isEmpty(oboxSerialId)||
+					 * StringUtils.isEmpty(groupAddr)) { res = new
+					 * ResponseObject();
+					 * res.setStatus(ResponseEnum.RequestParamError.getStatus())
+					 * ;
+					 * res.setMessage(ResponseEnum.RequestParamError.getMsg());
+					 * return res; } }
+					 */
+					if(operateType.equals(OperateTypeEnum.delete)){
+						if(!StringUtils.isEmpty(groupId)&&!NumberHelper.isNumeric(groupId)){
+							return facadeController.deleteServerGroup(Integer.parseInt(groupId));
+						}
+					}
+				} else {
+					if (!StringUtils.isEmpty(groupName)) {
+						List<String> mList = (List<String>) ObjectUtils.fromJsonToObject(groupMember, List.class);
+						return facadeController.addServerGroup(groupName, mList);
+					}
+				}
+			}
+		} else if (CMDEnum.test.toString().equals(cmdEnum.toString())) {
+			String serialId = requestParam.getValue("serialId");
 			if (!StringUtils.isEmpty(serialId)) {
 				return facadeController.test(serialId);
 			}
@@ -573,5 +637,10 @@ public class CommonController {
 			e.printStackTrace();
 		}
 		return list;
+	}
+
+	public static void main(String[] args) {
+		List<String> mList = (List<String>) ObjectUtils.fromJsonToObject(null, List.class);
+		System.out.println(mList);
 	}
 }

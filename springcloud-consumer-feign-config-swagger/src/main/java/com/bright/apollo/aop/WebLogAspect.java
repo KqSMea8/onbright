@@ -104,7 +104,7 @@ public class WebLogAspect {
             logger.info(" ====== accessToken ======= "+accessToken);
             logger.info(" ====== token_userId ======= "+redisBussines.getObject("token_userId_"+userId));
             String[] topics = adapter.getTopic();
-            topicName = "ob-smart."+accessToken;
+            topicName = "ob-smart."+tokenUserId;
             for(int i=0;i<topics.length;i++){
                 if(!topicName.equals(topics[i])){
                     logger.info("====== create topic ====== "+topicName);

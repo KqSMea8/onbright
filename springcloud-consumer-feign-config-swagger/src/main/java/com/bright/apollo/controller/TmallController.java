@@ -256,7 +256,15 @@ public class TmallController {
 						adapter.setRedisBussines(redisBussines);
 						paramMap = adapter.TMall2Obright();
 						logger.info("paramMap ====== "+paramMap);
-						facadeController.controlRemoteLed(oboxDeviceConfig.getOboxSerialId(),deviceId,(String)paramMap.get("deviceState"));
+						String specdeviceState = (String)paramMap.get("deviceState");
+						if(specdeviceState.indexOf("-")>=0){
+							String[] stateArr = specdeviceState.split("-");
+							facadeController.controlRemoteLed(oboxDeviceConfig.getOboxSerialId(),deviceId,stateArr[0]);
+							facadeController.controlRemoteLed(oboxDeviceConfig.getOboxSerialId(),deviceId,stateArr[1]);
+						}else{
+							facadeController.controlRemoteLed(oboxDeviceConfig.getOboxSerialId(),deviceId,(String)paramMap.get("deviceState"));
+						}
+
 					}else{
 						adapter = new TMallDeviceAdapter(playLoadMap,tMallTemplate,oboxDeviceConfig,header);
 						adapter.setRedisBussines(redisBussines);

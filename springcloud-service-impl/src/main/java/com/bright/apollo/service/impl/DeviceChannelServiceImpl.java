@@ -3,6 +3,9 @@ package com.bright.apollo.service.impl;
 import com.bright.apollo.common.entity.TDeviceChannel;
 import com.bright.apollo.dao.device.mapper.TDeviceChannelMapper;
 import com.bright.apollo.service.DeviceChannelService;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,5 +46,13 @@ public class DeviceChannelServiceImpl  implements DeviceChannelService {
 	public void updateDeviceChannel(TDeviceChannel tDeviceChannel) {
 		deviceChannelMapper.updateDeviceChannel(tDeviceChannel);
 		
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.DeviceChannelService#getDeivceChannelById(java.lang.Integer)  
+	 */
+	@Override
+	public List<TDeviceChannel> getDeivceChannelById(Integer deviceId) {
+ 		return deviceChannelMapper.getDeivceChannelById(deviceId);
 	}
 }

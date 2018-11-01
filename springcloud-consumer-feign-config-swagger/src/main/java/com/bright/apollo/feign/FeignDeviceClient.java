@@ -1,12 +1,14 @@
 package com.bright.apollo.feign;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bright.apollo.common.entity.TAliDeviceConfig;
 import com.bright.apollo.common.entity.TDeviceStatus;
@@ -420,31 +422,55 @@ public interface FeignDeviceClient {
 	@RequestMapping(value = "/intelligentFinger/batchTIntelligentFingerPush", method = RequestMethod.POST)
 	ResponseObject batchTIntelligentFingerPush(@RequestBody List<TIntelligentFingerPush> pushList);
 
-	/**  
+	/**
 	 * @param deviceId
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
 	@RequestMapping(value = "/ali/queryAliDevConfigBySerial/{deviceId}", method = RequestMethod.GET)
-	ResponseObject<TAliDeviceConfig> queryAliDevConfigBySerial(@PathVariable(value = "deviceId")String deviceId);
+	ResponseObject<TAliDeviceConfig> queryAliDevConfigBySerial(@PathVariable(value = "deviceId") String deviceId);
 
-	/**  
-	 * @param tAliDeviceConfig  
-	 * @Description:  
+	/**
+	 * @param tAliDeviceConfig
+	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/ali/addAliDevConfig", method = RequestMethod.POST)
 	ResponseObject addAliDevConfig(@RequestBody TAliDeviceConfig tAliDeviceConfig);
 
-	/**  
-	 * @param tAliDeviceConfig  
-	 * @Description:  
+	/**
+	 * @param tAliDeviceConfig
+	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/ali/updateAliDevConfig", method = RequestMethod.PUT)
 	ResponseObject updateAliDevConfig(@RequestBody TAliDeviceConfig tAliDeviceConfig);
 
- 
- 
+	/**
+	 * @param userId
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/group/queryGroup/{userId}", method = RequestMethod.GET)
+	ResponseObject<Map<String, Object>> queryGroup(@PathVariable(value = "userId") Integer userId);
+
+	/**
+	 * @param groupName
+	 * @param mList
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/group/addServerGroup/{groupName}/{userId}", method = RequestMethod.POST)
+	ResponseObject<Map<String, Object>> addServerGroup(@PathVariable(value = "groupName") String groupName,
+			@PathVariable(value = "userId") Integer userId,
+			@RequestParam(value = "mList", required = false) List<String> mList);
+
+	/**  
+	 * @param groupId
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/group/deleteServerGroup/{groupId}", method = RequestMethod.DELETE)
+	ResponseObject<Map<String, Object>> deleteServerGroup(@PathVariable(value = "groupId")Integer groupId);
 
 }
