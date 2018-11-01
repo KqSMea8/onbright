@@ -23,7 +23,9 @@ import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.common.entity.TServerGroup;
 import com.bright.apollo.common.entity.TUSerGroup;
 import com.bright.apollo.enums.CMDEnum;
+import com.bright.apollo.enums.DeviceTypeEnum;
 import com.bright.apollo.feign.FeignAliClient;
+import com.bright.apollo.pool.GroupActionPool;
 import com.bright.apollo.request.GroupDTO;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
@@ -62,6 +64,8 @@ public class GroupController {
 	private CmdCache cmdCache;
 	@Autowired
 	private FeignAliClient feignAliClient;
+	@Autowired
+	private GroupActionPool groupActionPool;
 	private final static String serverAddr = "020000ffff";
 
 	/**
@@ -249,7 +253,7 @@ public class GroupController {
 						map.put("groups", groupDTO4);
 						res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
 						res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
-					}else {
+					} else {
 						GroupDTO groupDTO5 = new GroupDTO(serverGroup);
 						groupDTO5.setGroupMember(replyList);
 						map.put("groups", groupDTO5);
@@ -259,17 +263,17 @@ public class GroupController {
 					}
 				} else {
 					userGroupService.deleteUserGroup(userId, groupId);
-					//UserBusiness.deleteUserGroup(Integer.parseInt(uid),
-					//		tServerGroup.getId());
+					// UserBusiness.deleteUserGroup(Integer.parseInt(uid),
+					// tServerGroup.getId());
 					serverGroupService.deleteServerGroup(groupId);
-					//DeviceBusiness.deleteServerGroup(tServerGroup);
+					// DeviceBusiness.deleteServerGroup(tServerGroup);
 					GroupDTO groupDTO6 = new GroupDTO(serverGroup);
 					groupDTO6.setGroupMember(replyList);
 					map.put("groups", groupDTO6);
 					res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
 					res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
-					//rightReply.add("groups", g2.toJsonTree(groupDTO6));
-					//return rightReply;
+					// rightReply.add("groups", g2.toJsonTree(groupDTO6));
+					// return rightReply;
 				}
 			}
 		} catch (Exception e) {
@@ -278,9 +282,306 @@ public class GroupController {
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
-
 	}
 
+	/**
+	 * @param groupId
+	 * @param userId
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/coverChildGroup/{groupId}/{userId}", method = RequestMethod.PUT)
+	ResponseObject<Map<String, Object>> coverChildGroup(@PathVariable(value = "groupId") Integer groupId,
+			@PathVariable(value = "userId") Integer userId,
+			@RequestParam(name = "mList", required = false) List<String> mList) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		try {
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("operate_type", "02");
+			TServerGroup tServerGroup = serverGroupService.querySererGroupById(groupId);
+			if (tServerGroup == null) {
+				res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
+				res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
+			} else {
+				List<TOboxDeviceConfig> tOboxDeviceConfigs = oboxDeviceConfigService.queryDeviceByGroupId(groupId);
+				List<TOboxDeviceConfig> replyList = new ArrayList<TOboxDeviceConfig>();
+				if (tOboxDeviceConfigs != null && !tOboxDeviceConfigs.isEmpty()) {
+					deleteMember(tOboxDeviceConfigs, replyList, tServerGroup);
+					replyList.clear();
+					for (TOboxDeviceConfig deviceConfig : tOboxDeviceConfigs) {
+						TGroupDevice tGroupDevice = groupDeviceService.queryDeviceGroup(tServerGroup.getId(),
+								deviceConfig.getDeviceSerialId());
+						if (tGroupDevice != null) {
+							replyList.add(deviceConfig);
+						}
+					}
+				}
+				if (mList != null && mList.size() > 0) {
+					List<TOboxDeviceConfig> configs = new ArrayList<TOboxDeviceConfig>();
+					String devicetype = "";
+					String deviceChildType = "";
+					boolean isSameType = true;
+					for (int i = 0; i < mList.size(); i++) {
+						String string = mList.get(i);
+						TOboxDeviceConfig tOboxDeviceConfig = oboxDeviceConfigService
+								.queryDeviceConfigBySerialID(string);
+						if (tOboxDeviceConfig != null) {
+							if (configs.isEmpty()) {
+								devicetype = tOboxDeviceConfig.getDeviceType();
+								deviceChildType = tOboxDeviceConfig.getDeviceChildType();
+							} else {
+								if (devicetype.equals(tOboxDeviceConfig.getDeviceType())
+										&& deviceChildType.equals(tOboxDeviceConfig.getDeviceChildType())) {
+
+								} else {
+									isSameType = false;
+								}
+							}
+							configs.add(tOboxDeviceConfig);
+						}
+					}
+					tServerGroup.setGroupType(devicetype);
+					if (isSameType) {
+						tServerGroup.setGroupChildType(deviceChildType);
+					} else {
+						tServerGroup.setGroupChildType("01");
+					}
+					addMember(configs, replyList, tServerGroup);
+				}
+				serverGroupService.updateServerGroup(tServerGroup);
+				GroupDTO groupDTO8 = new GroupDTO(tServerGroup);
+				groupDTO8.setGroupMember(replyList);
+				map.put("groups", groupDTO8);
+				res.setData(map);
+				res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+				res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+			}
+		} catch (Exception e) {
+			logger.error("===coverChildGroup error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	/**
+	 * @param groupId
+	 * @param userId
+	 * @param mList
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/removeChildGroup/{groupId}/{userId}", method = RequestMethod.DELETE)
+	ResponseObject<Map<String, Object>> removeChildGroup(@PathVariable(value = "groupId") Integer groupId,
+			@PathVariable(value = "userId") Integer userId,
+			@RequestParam(name = "mList", required = false) List<String> mList) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		try {
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("operate_type", "04");
+			TServerGroup tServerGroup = serverGroupService.querySererGroupById(groupId);
+			if (tServerGroup == null) {
+				res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
+				res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
+			} else {
+				List<TOboxDeviceConfig> configs = new ArrayList<TOboxDeviceConfig>();
+				List<TOboxDeviceConfig> replyList = new ArrayList<TOboxDeviceConfig>();
+				if (mList != null && mList.size() > 0) {
+					for (String string : mList) {
+						TOboxDeviceConfig tOboxDeviceConfig = oboxDeviceConfigService
+								.queryDeviceConfigBySerialID(string);
+						if (tOboxDeviceConfig != null) {
+							configs.add(tOboxDeviceConfig);
+						}
+					}
+				}
+				if (!configs.isEmpty()) {
+					deleteMember(configs, replyList, tServerGroup);
+				}
+				GroupDTO groupDTO9 = new GroupDTO(tServerGroup);
+				groupDTO9.setGroupMember(replyList);
+				map.put("groups", groupDTO9);
+				res.setData(map);
+				res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+				res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
+			}
+		} catch (Exception e) {
+			logger.error("===removeChildGroup error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	/**
+	 * @param groupId
+	 * @param userId
+	 * @param mList
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/addChildGroup/{groupId}/{userId}", method = RequestMethod.POST)
+	ResponseObject<Map<String, Object>> addChildGroup(@PathVariable(value = "groupId") Integer groupId,
+			@PathVariable(value = "userId") Integer userId,
+			@RequestParam(name = "mList", required = false) List<String> mList) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		try {
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("operate_type", "03");
+			TServerGroup tServerGroup = serverGroupService.querySererGroupById(groupId);
+			if (tServerGroup == null) {
+				res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
+				res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
+			} else {
+				List<TOboxDeviceConfig> replyList = new ArrayList<TOboxDeviceConfig>();
+				List<TOboxDeviceConfig> configs2 = new ArrayList<TOboxDeviceConfig>();
+				for (String string : mList) {
+					TOboxDeviceConfig tOboxDeviceConfig = oboxDeviceConfigService.queryDeviceConfigBySerialID(string);
+					if (tOboxDeviceConfig != null) {
+						configs2.add(tOboxDeviceConfig);
+					}
+				}
+				addMember(configs2, replyList, tServerGroup);
+				List<TOboxDeviceConfig> tOboxDeviceConfigs = oboxDeviceConfigService.queryDeviceByGroupId(groupId);
+				Boolean isSameType = true;
+				String devicetype = "";
+				String deviceChildType = "";
+				if (!tOboxDeviceConfigs.isEmpty()) {
+					for (int i = 0; i < tOboxDeviceConfigs.size(); i++) {
+						TOboxDeviceConfig config = tOboxDeviceConfigs.get(i);
+						if (i == 0) {
+							devicetype = config.getDeviceType();
+							deviceChildType = config.getDeviceChildType();
+						} else {
+							if (devicetype.equals(config.getDeviceType())
+									&& deviceChildType.equals(config.getDeviceChildType())) {
+							} else {
+								isSameType = false;
+							}
+						}
+					}
+					tServerGroup.setGroupType(devicetype);
+					if (isSameType) {
+						tServerGroup.setGroupChildType(deviceChildType);
+					} else {
+						tServerGroup.setGroupChildType("01");
+					}
+				}
+				serverGroupService.updateServerGroup(tServerGroup);
+				GroupDTO groupDTO10 = new GroupDTO(tServerGroup);
+				groupDTO10.setGroupMember(replyList);
+				map.put("groups", groupDTO10);
+				res.setStatus(ResponseEnum.AddSuccess.getStatus());
+				res.setMessage(ResponseEnum.AddSuccess.getMsg());
+			}
+		} catch (Exception e) {
+			logger.error("===addChildGroup error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	/**
+	 * @param groupId
+	 * @param groupName
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/reNameGroup/{groupId}/{groupName}", method = RequestMethod.PUT)
+	ResponseObject<Map<String, Object>> reNameGroup(@PathVariable(value = "groupId") Integer groupId,
+			@PathVariable(value = "groupName") String groupName){
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		try {
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("operate_type", "05");
+			TServerGroup tServerGroup = serverGroupService.querySererGroupById(groupId);
+			if (tServerGroup == null) {
+				res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
+				res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
+			} else {
+				tServerGroup.setGroupName(groupName);
+				serverGroupService.updateServerGroup(tServerGroup);
+				List<TOboxDeviceConfig> replyList = new ArrayList<TOboxDeviceConfig>();
+				GroupDTO groupDTO11 = new GroupDTO(tServerGroup);
+				groupDTO11.setGroupMember(replyList);
+				map.put("groups", groupDTO11);
+				res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+				res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+			}
+		} catch (Exception e) {
+			logger.error("===reNameGroup error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	
+	/**  
+	 * @param groupId
+	 * @param groupState
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/actionGroup/{groupId}/{groupState}", method = RequestMethod.PUT)
+	ResponseObject<Map<String, Object>> actionGroup(@PathVariable(value = "groupId") Integer groupId,
+			@PathVariable(value = "groupState") String groupState){
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		try {
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("operate_type", "06");
+			TServerGroup tServerGroup = serverGroupService.querySererGroupById(groupId);
+			if (tServerGroup == null) {
+				res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
+				res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
+			} else {
+				List<TOboxDeviceConfig> replyList = new ArrayList<TOboxDeviceConfig>();
+				groupActionPool.setGroup(groupState, groupId);
+				if (groupState.substring(0, 2).equals("ff")
+						|| groupState.substring(0, 2).equals("FF")) {
+					List<TGroupDevice> tGroupDevices = groupDeviceService
+							.queryDeviceGroupByGroupId(tServerGroup.getId());
+					boolean isFound = false;
+					for (TGroupDevice tGroupDevice : tGroupDevices) {
+						TOboxDeviceConfig tOboxDeviceConfig = oboxDeviceConfigService.queryDeviceConfigBySerialID(tGroupDevice.getDeviceSerialId());
+						//.queryDeviceConfigByID(tGroupDevice
+						//				.getDeviceId());
+						if (tOboxDeviceConfig != null) {
+							if (!tOboxDeviceConfig.getDeviceState()
+									.substring(0, 2).equals("00")
+									&& !tOboxDeviceConfig.getDeviceState()
+											.substring(0, 2).equals("ff")) {
+								isFound = true;
+								tServerGroup.setGroupState(tOboxDeviceConfig
+										.getDeviceState());
+								break;
+							}
+						}
+					}
+					if (!isFound) {
+						if (tServerGroup.getGroupChildType().equals(DeviceTypeEnum.led_rgb.getValue())) {
+							tServerGroup.setGroupState("32"+groupState.substring(2, groupState.length()));
+						}else {
+							tServerGroup.setGroupState("c8"+groupState.substring(2, groupState.length()));
+						}
+					}
+				}
+				serverGroupService.updateServerGroup(tServerGroup);
+				GroupDTO groupDTO12 = new GroupDTO(tServerGroup);
+				groupDTO12.setGroupMember(replyList);
+				map.put("groups", groupDTO12);
+				res.setData(map);
+				res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+				res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+				//rightReply.add("groups", g2.toJsonTree(groupDTO12));
+				//return rightReply;
+			}
+		} catch (Exception e) {
+			logger.error("===actionGroup error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
 	/**
 	 * @param tOboxDeviceConfigs
 	 * @param replyList

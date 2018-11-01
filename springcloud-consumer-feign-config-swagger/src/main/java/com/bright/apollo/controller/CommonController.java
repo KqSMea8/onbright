@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bright.apollo.common.entity.TScene;
 import com.bright.apollo.enums.CMDEnum;
+import com.bright.apollo.enums.ErrorEnum;
 import com.bright.apollo.enums.OperateTypeEnum;
 import com.bright.apollo.enums.SceneTypeEnum;
 import com.bright.apollo.request.OboxDTO;
@@ -582,18 +583,50 @@ public class CommonController {
 					 * res.setMessage(ResponseEnum.RequestParamError.getMsg());
 					 * return res; } }
 					 */
-					if(operateType.equals(OperateTypeEnum.delete)){
-						if(!StringUtils.isEmpty(groupId)&&!NumberHelper.isNumeric(groupId)){
+					if (operateType.equals(OperateTypeEnum.delete)) {
+						if (!StringUtils.isEmpty(groupId) && !NumberHelper.isNumeric(groupId)) {
 							return facadeController.deleteServerGroup(Integer.parseInt(groupId));
 						}
-					}else if(operateType.equals(OperateTypeEnum.coverChild)){
-						if(!StringUtils.isEmpty(groupId)&&!NumberHelper.isNumeric(groupId)){
-							return facadeController.deleteServerGroup(Integer.parseInt(groupId));
+					} else if (operateType.equals(OperateTypeEnum.coverChild)) {
+						if (!StringUtils.isEmpty(groupId) && !NumberHelper.isNumeric(groupId)) {
+							List<String> mList = null;
+							if (!StringUtils.isEmpty(groupMember))
+								mList = (List<String>) ObjectUtils.fromJsonToObject(groupMember, List.class);
+							return facadeController.coverChildGroup(Integer.parseInt(groupId), mList);
+						}
+					} else if (operateType.equals(OperateTypeEnum.removeChild)) {
+						if (!StringUtils.isEmpty(groupId) && !NumberHelper.isNumeric(groupId)
+								&& !StringUtils.isEmpty(groupMember)) {
+							List<String> mList = null;
+							if (!StringUtils.isEmpty(groupMember))
+								mList = (List<String>) ObjectUtils.fromJsonToObject(groupMember, List.class);
+							return facadeController.removeChildGroup(Integer.parseInt(groupId), mList);
+						}
+					}else if (operateType.equals(OperateTypeEnum.addChild)) {
+						if (!StringUtils.isEmpty(groupId) && !NumberHelper.isNumeric(groupId)
+								&& !StringUtils.isEmpty(groupMember)) {
+							List<String> mList = null;
+							if (!StringUtils.isEmpty(groupMember))
+								mList = (List<String>) ObjectUtils.fromJsonToObject(groupMember, List.class);
+							return facadeController.addChildGroup(Integer.parseInt(groupId), mList);
+						}
+					
+					}else if (operateType.equals(OperateTypeEnum.rename)) {
+						if (!StringUtils.isEmpty(groupId) && !NumberHelper.isNumeric(groupId)
+								&& !StringUtils.isEmpty(groupName)) {
+							return facadeController.reNameGroup(Integer.parseInt(groupId), groupName);
+						}
+					}else if (operateType.equals(OperateTypeEnum.action)) {
+						if (!StringUtils.isEmpty(groupId) && !NumberHelper.isNumeric(groupId)
+								&& !StringUtils.isEmpty(groupState)) {
+							return facadeController.actionGroup(Integer.parseInt(groupId), groupState);
 						}
 					}
 				} else {
 					if (!StringUtils.isEmpty(groupName)) {
-						List<String> mList = (List<String>) ObjectUtils.fromJsonToObject(groupMember, List.class);
+						List<String> mList = null;
+						if (!StringUtils.isEmpty(groupMember))
+							mList = (List<String>) ObjectUtils.fromJsonToObject(groupMember, List.class);
 						return facadeController.addServerGroup(groupName, mList);
 					}
 				}

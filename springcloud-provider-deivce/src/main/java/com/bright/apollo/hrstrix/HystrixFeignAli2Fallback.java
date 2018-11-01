@@ -26,7 +26,7 @@ public class HystrixFeignAli2Fallback extends BasicHystrixFeignFallback implemen
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public ResponseObject<OboxResp> sendCmd(TObox obox, CMDEnum setGroup, byte[] setBytes) {
+	public ResponseObject<OboxResp> sendCmd(TObox obox, CMDEnum cmd, byte[] setBytes) {
 		logger.warn("===ali server is break===");
 		return serverError();
 	}

@@ -467,11 +467,67 @@ public interface FeignDeviceClient {
 
 	/**
 	 * @param groupId
+	 * @param userId
 	 * @return
 	 * @Description:
 	 */
 	@RequestMapping(value = "/group/deleteServerGroup/{groupId}/{userId}", method = RequestMethod.DELETE)
 	ResponseObject<Map<String, Object>> deleteServerGroup(@PathVariable(value = "groupId") Integer groupId,
 			@PathVariable(value = "userId") Integer userId);
+
+	/**
+	 * @param groupId
+	 * @param userId
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/group/coverChildGroup/{groupId}/{userId}", method = RequestMethod.PUT)
+	ResponseObject<Map<String, Object>> coverChildGroup(@PathVariable(value = "groupId") Integer groupId,
+			@PathVariable(value = "userId") Integer userId,
+			@RequestParam(name = "mList", required = false) List<String> mList);
+
+	/**
+	 * @param groupId
+	 * @param userId
+	 * @param mList
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/group/removeChildGroup/{groupId}/{userId}", method = RequestMethod.DELETE)
+	ResponseObject<Map<String, Object>> removeChildGroup(@PathVariable(value = "groupId") Integer groupId,
+			@PathVariable(value = "userId") Integer userId,
+			@RequestParam(name = "mList", required = false) List<String> mList);
+
+	/**
+	 * @param groupId
+	 * @param userId
+	 * @param mList
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/group/addChildGroup/{groupId}/{userId}", method = RequestMethod.POST)
+	ResponseObject<Map<String, Object>> addChildGroup(@PathVariable(value = "groupId") Integer groupId,
+			@PathVariable(value = "userId") Integer userId,
+			@RequestParam(name = "mList", required = false) List<String> mList);
+
+	/**
+	 * @param groupId
+	 * @param groupName
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/group/reNameGroup/{groupId}/{groupName}", method = RequestMethod.PUT)
+	ResponseObject<Map<String, Object>> reNameGroup(@PathVariable(value = "groupId") Integer groupId,
+			@PathVariable(value = "groupName") String groupName);
+
+	/**  
+	 * @param groupId
+	 * @param groupState
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/group/actionGroup/{groupId}/{groupState}", method = RequestMethod.PUT)
+	ResponseObject<Map<String, Object>> actionGroup(@PathVariable(value = "groupId") Integer groupId,
+			@PathVariable(value = "groupState") String groupState);
 
 }

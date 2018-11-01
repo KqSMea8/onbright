@@ -20,62 +20,49 @@ import com.bright.apollo.dao.mapper.base.BaseMapper;
 @Mapper
 @Component
 public interface TOboxMapper extends BaseMapper<TObox, TOboxExample, Integer> {
-	
-	
-  
-	/**  
+
+	/**
 	 * @param userId
 	 * @param pageStart
 	 * @param pageEnd
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
-	List<TObox> queryOboxByUserId(@Param("userId") Integer userId,@Param("pageStart") int pageStart,@Param("pageEnd") int pageEnd);
+	List<TObox> queryOboxByUserId(@Param("userId") Integer userId, @Param("pageStart") int pageStart,
+			@Param("pageEnd") int pageEnd);
 
-	/**  
+	/**
 	 * @param userId
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
 	int queryCountOboxByUserId(Integer userId);
-	
+
 	@Select("select * from t_obox where obox_serial_id = #{oboxSerialId} ")
-	@Results(value = {
-            @Result(column="id"   ,property="id"),
-            @Result(column="obox_name" ,  property="oboxName"),
-            @Result(column="obox_pwd" ,  property="oboxPwd"),
-            @Result(column="obox_version" ,  property="oboxVersion"),
-            @Result(column="last_op_time" ,  property="lastOpTime"),
-            @Result(column="obox_status" ,  property="oboxStatus"),
-            @Result(column="license"  , property="license"),
-            @Result(column="obox_ip" ,  property="oboxIp" ),
-            @Result(column="obox_addr"  , property="oboxAddr" ),
-            @Result(column="obox_person"  , property="oboxPerson"),
-            @Result(column="obox_activate" ,  property="oboxActivate"),
-            @Result(column="obox_control" ,  property="oboxControl"),
-            @Result(column="obox_serial_id" ,  property="oboxSerialId")
-    })
+	@Results(value = { @Result(column = "id", property = "id"), @Result(column = "obox_name", property = "oboxName"),
+			@Result(column = "obox_pwd", property = "oboxPwd"),
+			@Result(column = "obox_version", property = "oboxVersion"),
+			@Result(column = "last_op_time", property = "lastOpTime"),
+			@Result(column = "obox_status", property = "oboxStatus"), @Result(column = "license", property = "license"),
+			@Result(column = "obox_ip", property = "oboxIp"), @Result(column = "obox_addr", property = "oboxAddr"),
+			@Result(column = "obox_person", property = "oboxPerson"),
+			@Result(column = "obox_activate", property = "oboxActivate"),
+			@Result(column = "obox_control", property = "oboxControl"),
+			@Result(column = "obox_serial_id", property = "oboxSerialId") })
 	TObox queryOboxsByOboxSerialId(@Param("oboxSerialId") String oboxSerialId) throws Exception;
 
-	@Update("update t_obox set obox_name = #{oboxName},\n" +
-			"obox_serial_id = #{oboxSerialId },\n" +
-			"obox_version = #{oboxVersion },\n" +
-			"obox_status = #{oboxStatus}  where  obox_serial_id = #{oboxSerialId} ")
+	@Update("update t_obox set obox_name = #{oboxName},\n" + "obox_serial_id = #{oboxSerialId },\n"
+			+ "obox_version = #{oboxVersion },\n"
+			+ "obox_status = #{oboxStatus}  where  obox_serial_id = #{oboxSerialId} ")
 	void updateObox(TObox obox);
-	@Results(value = {
-			@Result(column="id"   ,property="id"),
-            @Result(column="obox_name" ,  property="oboxName"),
-            @Result(column="obox_version" ,  property="oboxVersion"),
-            @Result(column="last_op_time" ,  property="lastOpTime"),
-            @Result(column="obox_status" ,  property="oboxStatus"),
-            @Result(column="obox_ip" ,  property="oboxIp" ),
-            @Result(column="obox_serial_id" ,  property="oboxSerialId")
-    })
-	@Select("select tb.* from t_device_channel tdc\n" +
-			"inner join t_obox tb on tdc.obox_id=tb.obox_id\n" +
-			"where tdc.device_id=#{deviceId}\n" +
-			"order by signal_intensity desc\n" +
-			"limit 1,1 ")
+
+	@Results(value = { @Result(column = "id", property = "id"), @Result(column = "obox_name", property = "oboxName"),
+			@Result(column = "obox_version", property = "oboxVersion"),
+			@Result(column = "last_op_time", property = "lastOpTime"),
+			@Result(column = "obox_status", property = "oboxStatus"), @Result(column = "obox_ip", property = "oboxIp"),
+			@Result(column = "obox_serial_id", property = "oboxSerialId") })
+	@Select("select tb.* from t_device_channel tdc\n" + "inner join t_obox tb on tdc.obox_id=tb.obox_id\n"
+			+ "where tdc.device_id=#{deviceId}\n" + "order by signal_intensity desc\n" + "limit 1,1 ")
 	TObox queryOboxsByDeviceChannelId(@Param("deviceId") int deviceId) throws Exception;
 
 	@Delete("delete from t_obox where id = #{id} ")
@@ -84,63 +71,64 @@ public interface TOboxMapper extends BaseMapper<TObox, TOboxExample, Integer> {
 	@Select("select * from t_obox where id = #{id}")
 	TObox queryOboxsById(@Param("id") int id);
 
-	@Select("select * from t_obox tob\n" +
-			"inner join t_obox_device_config todc on tob.id=todc.obox_id\n" +
-			"inner join t_device_channel tdc on tdc.device_id=todc.id\n" +
-			"where todc.id =#{oboxDeviceId} and tob.id = #{oboxId} ")
-	List<TObox> getOboxsByDeviceChannel(@Param("oboxDeviceId") int oboxDeviceId,@Param("oboxId") int oboxId);
+	@Select("select * from t_obox tob\n" + "inner join t_obox_device_config todc on tob.id=todc.obox_id\n"
+			+ "inner join t_device_channel tdc on tdc.device_id=todc.id\n"
+			+ "where todc.id =#{oboxDeviceId} and tob.id = #{oboxId} ")
+	List<TObox> getOboxsByDeviceChannel(@Param("oboxDeviceId") int oboxDeviceId, @Param("oboxId") int oboxId);
 
-	/**  
+	/**
 	 * @param userId
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
-	@Results(value = {
-            @Result(column="id"   ,property="id"),
-            @Result(column="obox_name" ,  property="oboxName"),
-            @Result(column="obox_version" ,  property="oboxVersion"),
-            @Result(column="last_op_time" ,  property="lastOpTime"),
-            @Result(column="obox_status" ,  property="oboxStatus"),
-            @Result(column="obox_ip" ,  property="oboxIp" ),
-            @Result(column="obox_serial_id" ,  property="oboxSerialId")
-    })
-	@Select(" select * from t_obox todc " +
-			" inner join t_user_obox tud on todc.obox_serial_id = tud.obox_serial_id" +
-			" inner join t_user tu on tu.id = tud.user_id" +
-			" where tud.user_id = #{userId}")
+	@Results(value = { @Result(column = "id", property = "id"), @Result(column = "obox_name", property = "oboxName"),
+			@Result(column = "obox_version", property = "oboxVersion"),
+			@Result(column = "last_op_time", property = "lastOpTime"),
+			@Result(column = "obox_status", property = "oboxStatus"), @Result(column = "obox_ip", property = "oboxIp"),
+			@Result(column = "obox_serial_id", property = "oboxSerialId") })
+	@Select(" select * from t_obox todc " + " inner join t_user_obox tud on todc.obox_serial_id = tud.obox_serial_id"
+			+ " inner join t_user tu on tu.id = tud.user_id" + " where tud.user_id = #{userId}")
 	List<TObox> getOboxByUserId(@Param("userId") Integer userId);
 
-	/**  
+	/**
 	 * @param obox
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
-	 @Insert("insert into t_obox(obox_name,\n" +
-				"obox_serial_id,\n" +
-				"obox_version,\n" +
-				"obox_status,\n" +
-				"obox_ip) values(#{oboxName},#{oboxSerialId},#{oboxVersion},#{oboxStatus},#{oboxIp})")
-	@Options(useGeneratedKeys=true, keyProperty="id", keyColumn="id")
+	@Insert("insert into t_obox(obox_name,\n" + "obox_serial_id,\n" + "obox_version,\n" + "obox_status,\n"
+			+ "obox_ip) values(#{oboxName},#{oboxSerialId},#{oboxVersion},#{oboxStatus},#{oboxIp})")
+	@Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
 	int addObox(TObox obox);
 
-	/**  
+	/**
 	 * @param userId
 	 * @param oboxSerialId
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
-	 @Select("SELECT * FROM t_obox a WHERE  EXISTS "
-	 		+ "(SELECT 1 FROM t_user_obox b WHERE a.obox_serial_id=b.obox_serial_id and b.user_id = #{userId})"
-	 		+ " AND obox_serial_id = #{oboxSerialId} ")
-	 @Results(value = {
-	            @Result(column="id"   ,property="id"),
-	            @Result(column="obox_name" ,  property="oboxName"),
-	            @Result(column="obox_version" ,  property="oboxVersion"),
-	            @Result(column="last_op_time" ,  property="lastOpTime"),
-	            @Result(column="obox_status" ,  property="oboxStatus"),
-	            @Result(column="obox_ip" ,  property="oboxIp" ),
-	            @Result(column="obox_serial_id" ,  property="oboxSerialId")
-	    })
+	@Select("SELECT * FROM t_obox a WHERE  EXISTS "
+			+ "(SELECT 1 FROM t_user_obox b WHERE a.obox_serial_id=b.obox_serial_id and b.user_id = #{userId})"
+			+ " AND obox_serial_id = #{oboxSerialId} ")
+	@Results(value = { @Result(column = "id", property = "id"), @Result(column = "obox_name", property = "oboxName"),
+			@Result(column = "obox_version", property = "oboxVersion"),
+			@Result(column = "last_op_time", property = "lastOpTime"),
+			@Result(column = "obox_status", property = "oboxStatus"), @Result(column = "obox_ip", property = "oboxIp"),
+			@Result(column = "obox_serial_id", property = "oboxSerialId") })
 	TObox getOboxByUserAndoboxSerialId(@Param("userId") Integer userId, @Param("oboxSerialId") String oboxSerialId);
+
+	/**
+	 * @param groupId
+	 * @return
+	 * @Description:
+	 */
+	@Select("SELECT * FROM t_obox a where  EXISTS (SELECT 1 FROM t_device_channel"
+			+ " b where a.obox_id=b.obox_id and EXISTS"
+			+ " (SELECT 1 FROM t_group_device c where c.device_id=b.device_id and c.group_id = #{groupId}))")
+	@Results(value = { @Result(column = "id", property = "id"), @Result(column = "obox_name", property = "oboxName"),
+			@Result(column = "obox_version", property = "oboxVersion"),
+			@Result(column = "last_op_time", property = "lastOpTime"),
+			@Result(column = "obox_status", property = "oboxStatus"), @Result(column = "obox_ip", property = "oboxIp"),
+			@Result(column = "obox_serial_id", property = "oboxSerialId") })
+	List<TObox> queryOboxByGroupId(@Param("groupId") Integer groupId);
 
 }

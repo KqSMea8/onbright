@@ -82,5 +82,12 @@ public interface OboxService extends BasicService{
 	 */
 	TObox getOboxByUserAndoboxSerialId(Integer userId, String oboxSerialId);
 
+	/**  
+	 * @param groupId
+	 * @return  
+	 * @Description:  
+	 */
+	List<TObox> queryOboxByGroupId(Integer groupId);
+
 
 }
