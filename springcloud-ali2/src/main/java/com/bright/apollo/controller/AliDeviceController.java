@@ -329,7 +329,7 @@ public class AliDeviceController {
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		try {
 			JSONObject object = new JSONObject((String)irProgram);
-			Map<String, Object> map = new HashMap<>();
+			Map<String, Object> map = new HashMap<String, Object>();
 			Integer index = Integer.valueOf(object.get("index").toString());
 			JSONArray keysArr = new JSONArray();
 			JSONArray extendsArr = new JSONArray();
@@ -375,7 +375,7 @@ public class AliDeviceController {
 							 @RequestParam(required = true, value = "deviceType") String deviceType,
 							 @RequestParam(required = true, value = "appkey") String appkey) {
 		ResponseObject res = new ResponseObject();
-		Map<String,Object> resMap = new HashMap<>();
+		Map<String,Object> resMap = new HashMap<String,Object>();
 		try {
 
 			TYaokonyunDevice yaokonyunDevice = getYaoKongDevice();
@@ -449,7 +449,7 @@ public class AliDeviceController {
 	@RequestMapping(value = "/getIrBrandList", method = RequestMethod.POST)
 	ResponseObject getIrBrandList(@RequestParam(required = true, value = "deviceType") String deviceType) {
 		ResponseObject res = new ResponseObject();
-		Map<String,Object> resMap = new HashMap<>();
+		Map<String,Object> resMap = new HashMap<String,Object>();
 		try {
 
 			List<TYaoKongYunBrand> yaoKongYunBrandList = yaoKongYunService.getYaoKongYunBrandByDeviceType(deviceType);
@@ -494,7 +494,7 @@ public class AliDeviceController {
 	ResponseObject getIrTypeList() {
 		ResponseObject res = new ResponseObject();
 		try {
-			Map<String,Object> resMap = new HashMap<>();
+			Map<String,Object> resMap = new HashMap<String,Object>();
 			List<TYaokonyunDeviceType> yaokonyunDeviceTypeList = yaoKongYunService.getYaoKongYunDeviceType();
 			if(yaokonyunDeviceTypeList.size()>0){
 				resMap.put("sm",yaokonyunDeviceTypeList.size());
