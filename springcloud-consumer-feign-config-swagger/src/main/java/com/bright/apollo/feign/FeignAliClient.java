@@ -414,11 +414,12 @@ public interface FeignAliClient {
 
 
 	/**
-	 * @Description:获取遥控器列表
+	 * @Description:手动匹配遥控方案
 	 */
 	@RequestMapping(value = "/aliDevice/getIrList", method = RequestMethod.POST)
 	ResponseObject getIrList(@RequestParam(required = true, value = "brandId") String brandId,
-							 @RequestParam(required = true, value = "deviceType") String deviceType);
+							 @RequestParam(required = true, value = "deviceType") String deviceType,
+							 @RequestParam(required = true, value = "appkey") String appkey);
 
 
 	/**
@@ -432,17 +433,28 @@ public interface FeignAliClient {
 						   @RequestParam(required = true, value = "learnKeyType") String learnKeyType);
 
 	/**
-	 * @Description:修改/新增红外方案
+	 * @Description:修改/新增红外方案编辑页面
 	 */
 	@RequestMapping(value = "/aliDevice/modifyIR", method = RequestMethod.POST)
 	ResponseObject modifyIR(@RequestParam(required = true, value = "serialId") String serialId,
-							@RequestParam(required = true, value = "irProgram") String irProgram);
+							@RequestBody(required = true) Object irProgram);
 
 	/**
-	 * @Description:修改/新增红外方案
+	 * @Description:控制
 	 */
 	@RequestMapping(value = "/aliDevice/controllIR", method = RequestMethod.POST)
 	ResponseObject controllIR(@RequestParam(required = true, value = "serialId") String serialId,
 							  @RequestParam(required = true, value = "index") Integer index,
 							  @RequestParam(required = true, value = "key") String key);
+	/**
+	 * @Description:获取遥控云遥控类型
+	 */
+	@RequestMapping(value = "/aliDevice/getIrTypeList", method = RequestMethod.POST)
+	ResponseObject getIrTypeList();
+
+    /**
+     * @Description:获取遥控云品牌类型
+     */
+    @RequestMapping(value = "/aliDevice/getIrBrandList", method = RequestMethod.POST)
+    ResponseObject getIrBrandList(@RequestParam(required = true, value = "deviceType") String deviceType);
 }

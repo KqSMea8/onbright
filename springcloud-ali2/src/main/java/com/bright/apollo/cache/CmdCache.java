@@ -43,4 +43,8 @@ public class CmdCache {
 	public String getIntelligentForgetPwd(String key) {
 		return redisBussines.get(String.valueOf(key)+"_sp");
 	}
+
+	public String getIrTestCodeAppKeyBrandIdDeviceType(String key) {
+		return redisBussines.get(String.valueOf(key)+"_sp");
+	}
 }

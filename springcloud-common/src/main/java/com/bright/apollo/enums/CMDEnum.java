@@ -268,13 +268,11 @@ public enum CMDEnum {
 	
 	query_node_real_status("0100", "2100"),
 	//遥控云
-	query_remote_control,//获取遥控器列表
+	query_ir_testcode,//手动匹配遥控方案
 	
-	register_device, //获取遥控云遥控类型
-	
-	query_device_type, 
-	
-	query_brand, //获取遥控云品牌类型
+	query_ir_device_type, //获取遥控云遥控类型
+
+	query_ir_brand, //获取遥控云品牌类型
 	
 	query_remote_control_id, //获取某个遥控器对应的详情码库
 	

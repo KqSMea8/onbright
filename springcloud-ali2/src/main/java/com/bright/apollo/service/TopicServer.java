@@ -284,6 +284,7 @@ public class TopicServer {
 			}
 		} else {
 			logger.info(" ====== requestDev end ====== ");
+
 			return null;
 		}
 	}

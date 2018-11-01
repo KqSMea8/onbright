@@ -6,6 +6,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.bright.apollo.bean.*;
+import com.bright.apollo.cache.CmdCache;
+import com.bright.apollo.common.entity.*;
+import com.bright.apollo.service.*;
+import com.bright.apollo.util.IndexUtils;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import net.sf.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +28,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bright.apollo.cache.AliDevCache;
-import com.bright.apollo.common.entity.TAliDevice;
-import com.bright.apollo.common.entity.TAliDeviceUS;
-import com.bright.apollo.common.entity.TObox;
-import com.bright.apollo.common.entity.TYaoKongYunBrand;
-import com.bright.apollo.common.entity.TYaokonyunDevice;
 import com.bright.apollo.enums.ALIDevTypeEnum;
 import com.bright.apollo.enums.AliIotDevTypeEnum;
 import com.bright.apollo.enums.AliRegionEnum;
@@ -31,10 +35,6 @@ import com.bright.apollo.mqtt.MqttGateWay;
 import com.bright.apollo.response.AliDevInfo;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
-import com.bright.apollo.service.AliDeviceService;
-import com.bright.apollo.service.CMDMessageService;
-import com.bright.apollo.service.TopicServer;
-import com.bright.apollo.service.YaoKongYunService;
 import com.bright.apollo.service.AliRequest.AliService;
 import com.bright.apollo.tool.ByteHelper;
 import com.bright.apollo.tool.MD5;
@@ -64,8 +64,20 @@ public class AliDeviceController {
 
 	@Autowired
 	private YaoKongYunService yaoKongYunService;
+
 	@Autowired
 	private IotDevConncetion iotOboxConncetion;
+
+	@Autowired
+	private YaoKongYunSend yaoKongYunSend;
+
+	@Autowired
+	private YaoKongYunConfig yaoKongYunConfig;
+
+	@Autowired
+	private CmdCache cmdCache;
+
+
 	private static final Logger logger = LoggerFactory.getLogger(AliDeviceController.class);
 
 	@RequestMapping(value = "/sendToMqtt", method = RequestMethod.GET)
@@ -275,7 +287,7 @@ public class AliDeviceController {
 		ResponseObject<List<Map<String, String>>> res = new ResponseObject<List<Map<String, String>>>();
 		Map<String, Object> requestMap = new HashMap<String, Object>();
 		try {
-			topServer.pubIRTopic(null, null, (String) requestMap.get("deviceId"), requestMap);
+			topServer.pubIRTopic(null, null, serialId, requestMap);
 			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
 			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
 		} catch (Exception e) {
@@ -310,14 +322,43 @@ public class AliDeviceController {
 		return res;
 	}
 
-	// 修改/新增红外方案
+	// 修改/新增红外方案编辑页面
 	@RequestMapping(value = "/modifyIR", method = RequestMethod.POST)
-	ResponseObject<List<Map<String, String>>> modifyIR(@RequestParam(required = true, value = "serialId") String serialId,
-													   @RequestParam(required = true, value = "irProgram") String irProgram) {
-		ResponseObject<List<Map<String, String>>> res = new ResponseObject<List<Map<String, String>>>();
+	ResponseObject<Map<String, Object>> modifyIR(@RequestParam(required = true, value = "serialId") String serialId,
+													   @RequestBody(required = true) Object irProgram) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		try {
-
-			// todo 更新套数
+			JSONObject object = new JSONObject((String)irProgram);
+			Map<String, Object> map = new HashMap<String, Object>();
+			Integer index = Integer.valueOf(object.get("index").toString());
+			JSONArray keysArr = new JSONArray();
+			JSONArray extendsArr = new JSONArray();
+			net.sf.json.JSONObject keysJson = new net.sf.json.JSONObject();
+			net.sf.json.JSONObject extendsJson = new net.sf.json.JSONObject();
+			if(index==0){//新增
+				keysJson.element("key","");
+				keysArr.add(keysJson);
+				extendsJson.element("name","");
+				extendsArr.add(keysJson);
+				map.put("keys",keysArr);
+				map.put("extends",extendsArr);
+				map.put("t",object.get("t"));
+				map.put("index",index);
+				res.setData(map);
+			}else{//修改
+				List<TYaokonyunKeyCode> keyCodeList = yaoKongYunService.getYaoKongKeyCodeByIndex(index);
+				map.put("t",object.get("t"));
+				map.put("index",index);
+				for(TYaokonyunKeyCode keyCode : keyCodeList){
+					keysJson.element("key",keyCode.getKeyName());
+					keysArr.add(keysJson);
+					extendsJson.element("name",keyCode.getCustomName());
+					extendsArr.add(keysJson);
+					map.put("keys",keysArr);
+					map.put("extends",extendsArr);
+				}
+				res.setData(map);
+			}
 			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
 			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
 		} catch (Exception e) {
@@ -328,19 +369,156 @@ public class AliDeviceController {
 		return res;
 	}
 
-	// 获取遥控器列表
+	// 手动匹配遥控方案
 	@RequestMapping(value = "/getIrList", method = RequestMethod.POST)
-	ResponseObject<List<Map<String, String>>> getIrList(@RequestParam(required = true, value = "brandId") String brandId,
-														@RequestParam(required = true, value = "deviceType") String deviceType) {
-		ResponseObject<List<Map<String, String>>> res = new ResponseObject<List<Map<String, String>>>();
-//		Map<String, Object> requestMap = (Map<String, Object>) object;
+	ResponseObject getIrList(@RequestParam(required = true, value = "brandId") String brandId,
+							 @RequestParam(required = true, value = "deviceType") String deviceType,
+							 @RequestParam(required = true, value = "appkey") String appkey) {
+		ResponseObject res = new ResponseObject();
+		Map<String,Object> resMap = new HashMap<String,Object>();
 		try {
-//			String brandId = (String) requestMap.get("brandId");// 品牌ID
-//			String deviceType = (String) requestMap.get("deviceType");// 设备类型
-			List<TYaoKongYunBrand> brandList = yaoKongYunService.getYaoKongYunByTIdAndDeviceType(brandId, deviceType);
 
-			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
-			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+			TYaokonyunDevice yaokonyunDevice = getYaoKongDevice();
+			List<String> strings = new ArrayList<String>();
+			strings.add("bid="+brandId);
+			strings.add("t="+deviceType);
+			strings.add("v=4");
+			strings.add("zip=1");
+			String result = yaoKongYunSend
+					.postMethod(strings,yaokonyunDevice,yaoKongYunConfig.getUrlPrefix()+"?c=l");
+			Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+			MatchRemoteControlResult remoteControlResult = gson.fromJson(result,MatchRemoteControlResult.class);
+			String cacheIdx = cmdCache.getIrTestCodeAppKeyBrandIdDeviceType(appkey+"_"+brandId+"_"+deviceType);
+			Integer index;
+			if(cacheIdx==null||cacheIdx.equals("")){
+
+				index= IndexUtils.getIdx();
+			}else{
+				index = Integer.valueOf(cacheIdx);
+			}
+
+
+			if(remoteControlResult==null||remoteControlResult.getSm()==0){
+				resMap.put("sm",0);
+				resMap.put("rs",new ArrayList());
+			}else{
+				List<MatchRemoteControl>  list = remoteControlResult.getRs();
+				List<TYaokonyunRemoteControl> remoteControlList = new ArrayList<TYaokonyunRemoteControl>();
+				List<QueryRemoteBySrcDTO> dtoList = new ArrayList<QueryRemoteBySrcDTO>();
+				for(MatchRemoteControl matchRemoteControl :list){
+					TYaokonyunRemoteControl tYaokonyunRemoteControl = new TYaokonyunRemoteControl(matchRemoteControl);
+					remoteControlList.add(tYaokonyunRemoteControl);
+					QueryRemoteBySrcDTO dot = new QueryRemoteBySrcDTO(matchRemoteControl);
+					dot.setIndex(index);//todo 从缓存取套数id
+					dtoList.add(dot);
+				}
+				List<TYaokonyunRemoteControl> existsRIds = yaoKongYunService.getYaokonyunRemoteControlByIds();
+				if(existsRIds.size()>0){
+					for(TYaokonyunRemoteControl existsRemote: existsRIds){
+						for(int i=0;i<remoteControlList.size();i++){
+							TYaokonyunRemoteControl yaokonyunRemoteControl = remoteControlList.get(i);
+							if(existsRemote.getBeRmodel().equals(yaokonyunRemoteControl.getBeRmodel())
+								&&existsRemote.getName().equals(yaokonyunRemoteControl.getName())
+								&&existsRemote.getRmodel().equals(yaokonyunRemoteControl.getRmodel())
+								&&existsRemote.getT_id().equals(yaokonyunRemoteControl.getT_id())
+								&&existsRemote.getVersion().equals(yaokonyunRemoteControl.getVersion())	){
+								remoteControlList.remove(i);
+							}
+						}
+					}
+				}
+				for(TYaokonyunRemoteControl yaokonyunRemoteControl:remoteControlList){
+					yaokonyunRemoteControl.setLastOpTime(new Date());
+					yaoKongYunService.addYaokonyunRemoteControl(yaokonyunRemoteControl);
+				}
+				resMap.put("sm",dtoList.size());
+				resMap.put("rs",dtoList);
+			}
+			res.setData(resMap);
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			e.printStackTrace();
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	// 获取遥控云品牌类型
+	@RequestMapping(value = "/getIrBrandList", method = RequestMethod.POST)
+	ResponseObject getIrBrandList(@RequestParam(required = true, value = "deviceType") String deviceType) {
+		ResponseObject res = new ResponseObject();
+		Map<String,Object> resMap = new HashMap<String,Object>();
+		try {
+
+			List<TYaoKongYunBrand> yaoKongYunBrandList = yaoKongYunService.getYaoKongYunBrandByDeviceType(deviceType);
+			if(yaoKongYunBrandList!=null&&yaoKongYunBrandList.size()>0){
+				resMap.put("sm",yaoKongYunBrandList.size());
+				resMap.put("rs",yaoKongYunBrandList);
+			}else{
+				TYaokonyunDevice yaokonyunDevice = getYaoKongDevice();
+				List<String> strings = new ArrayList<String>();
+				strings.add("t="+deviceType);
+				String result = yaoKongYunSend
+						.postMethod(strings,yaokonyunDevice,yaoKongYunConfig.getUrlPrefix()+"?c=f");
+				Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+				BrandResult brandResult = gson.fromJson(result,BrandResult.class);
+				List<Brand> brandList = brandResult.getRs();
+				for(Brand brand : brandList){
+					TYaoKongYunBrand yaoKongYunBrand = new TYaoKongYunBrand();
+					yaoKongYunBrand.setbId(brand.getBid());
+					yaoKongYunBrand.setCommon(brand.getCommon());
+					yaoKongYunBrand.setDeviceType(Integer.valueOf(deviceType));
+					yaoKongYunBrand.setLastOpTime(new Date());
+					yaoKongYunBrand.setName(brand.getName());
+					yaoKongYunService.addTYaoKongYunBrand(yaoKongYunBrand);
+				}
+				resMap.put("sm",brandList.size());
+				resMap.put("rs",brandList);
+			}
+
+			res.setData(resMap);
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			e.printStackTrace();
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+
+	@RequestMapping(value = "/getIrTypeList", method = RequestMethod.POST)
+	ResponseObject getIrTypeList() {
+		ResponseObject res = new ResponseObject();
+		try {
+			Map<String,Object> resMap = new HashMap<String,Object>();
+			List<TYaokonyunDeviceType> yaokonyunDeviceTypeList = yaoKongYunService.getYaoKongYunDeviceType();
+			if(yaokonyunDeviceTypeList.size()>0){
+				resMap.put("sm",yaokonyunDeviceTypeList.size());
+				resMap.put("rs",yaokonyunDeviceTypeList);
+			}else{
+				TYaokonyunDevice yaokonyunDevice = getYaoKongDevice();
+				String result = yaoKongYunSend.postMethod(null,yaokonyunDevice,yaoKongYunConfig.getUrlPrefix()+"?c=t&appid="+yaokonyunDevice.getAppId()+"f="+yaokonyunDevice.getDeviceId());
+				Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+				DeviceTypeResult deviceTypeResult = gson.fromJson(result,DeviceTypeResult.class);
+				List<DeviceType> deviceTypeList = deviceTypeResult.getRs();
+				for (DeviceType deviceType:deviceTypeList) {
+					TYaokonyunDeviceType yaokonyunDeviceType = new TYaokonyunDeviceType();
+					yaokonyunDeviceType.setLastOpTime(new Date());
+					yaokonyunDeviceType.setName(deviceType.getName());
+					yaokonyunDeviceType.settId(deviceType.getTid());
+					yaoKongYunService.addTYaokonyunDeviceType(yaokonyunDeviceType);
+				}
+				resMap.put("sm",deviceTypeList.size());
+				resMap.put("rs",deviceTypeList);
+			}
+
+			res.setData(resMap);
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {
 			e.printStackTrace();
 			res.setStatus(ResponseEnum.Error.getStatus());
@@ -373,17 +551,22 @@ public class AliDeviceController {
 		TYaokonyunDevice yaokonyunDevice = null;
 		yaokonyunDevice = yaoKongYunService.getYaoKongYunDevice();
 		if (yaokonyunDevice == null) {
-			createYaoKongYunDevice();
+			yaokonyunDevice = createYaoKongYunDevice();
+			List<String> strings = new ArrayList<>();
+			strings.add("appid="+yaokonyunDevice.getAppId());
+			strings.add("f="+yaokonyunDevice.getDeviceId());
+			yaoKongYunSend.postMethod(null,yaokonyunDevice,yaoKongYunConfig.getUrlPrefix()+"?c=r");
 		}
-		aliDevCache.setKey("createYaoKonYun",
-				yaokonyunDevice.getAppId() + ":" + yaokonyunDevice.getDeviceId() + ":" + yaokonyunDevice.getUseTime(),
-				60 * 60 * 24 * 7);
+//		aliDevCache.setKey("createYaoKonYun",
+//				yaokonyunDevice.getAppId() + ":" + yaokonyunDevice.getDeviceId() + ":" + yaokonyunDevice.getUseTime(),
+//				60 * 60 * 24 * 7);
 		return yaokonyunDevice;
 	}
 
 	private TYaokonyunDevice createYaoKongYunDevice() throws Exception {
 		TYaokonyunDevice device = new TYaokonyunDevice();
 		device.setDeviceId(MD5.getMD5Str(new Date().getTime() + ""));
+		device.setAppId("15027861733449");
 		yaoKongYunService.addYaoKongDevice(device);
 		return yaoKongYunService.getYaoKongYunDevice();
 	}

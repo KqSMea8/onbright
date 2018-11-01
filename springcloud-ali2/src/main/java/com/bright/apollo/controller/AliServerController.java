@@ -5,16 +5,6 @@ import java.util.List;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import com.alibaba.fastjson.JSONArray;
-import com.bright.apollo.cache.AliDevCache;
-import com.bright.apollo.common.entity.*;
-import com.bright.apollo.enums.AliRegionEnum;
-import com.bright.apollo.request.AliDeviceDTO;
-import com.bright.apollo.service.*;
-import com.bright.apollo.service.AliRequest.BaseRequest;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,14 +17,29 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSONArray;
+import com.bright.apollo.cache.AliDevCache;
 import com.bright.apollo.cache.CmdCache;
 import com.bright.apollo.common.dto.OboxResp;
+import com.bright.apollo.common.entity.TAliDevTimer;
+import com.bright.apollo.common.entity.TAliDevice;
+import com.bright.apollo.common.entity.TAliDeviceConfig;
+import com.bright.apollo.common.entity.TObox;
+import com.bright.apollo.common.entity.TOboxDeviceConfig;
+import com.bright.apollo.common.entity.TUserAliDev;
+import com.bright.apollo.enums.AliRegionEnum;
 import com.bright.apollo.enums.CMDEnum;
 import com.bright.apollo.enums.NodeTypeEnum;
+import com.bright.apollo.request.AliDeviceDTO;
 import com.bright.apollo.request.SceneActionDTO;
 import com.bright.apollo.request.SceneConditionDTO;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
+import com.bright.apollo.service.AliDeviceConfigService;
+import com.bright.apollo.service.AliDeviceService;
+import com.bright.apollo.service.OboxDeviceConfigService;
+import com.bright.apollo.service.TopicServer;
+import com.bright.apollo.service.AliRequest.BaseRequest;
 import com.bright.apollo.session.SceneActionThreadPool;
 import com.bright.apollo.tool.ByteHelper;
 import com.bright.apollo.util.FingerUtil;
@@ -892,7 +897,12 @@ public class AliServerController {
 			object.put("command", "set");
 			object.element("value",array);
 //			object.put("value", value);
-			topicServer.requestDev(object,deviceId,array.toJSONString());
+			JSONObject resJson = topicServer.requestDev(object,deviceId,array.toJSONString());
+			if(resJson==null){
+				res.setStatus(ResponseEnum.RequestTimeout.getStatus());
+				res.setMessage(ResponseEnum.RequestTimeout.getMsg());
+				return res;
+			}
 			TAliDeviceConfig aliDeviceConfig = aliDeviceConfigService.getAliDeviceConfigBySerializeId(deviceId);
 			if(aliDeviceConfig !=null){
 				aliDeviceConfig.setState(array.toJSONString());

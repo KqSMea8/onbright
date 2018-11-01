@@ -1,5 +1,6 @@
 package com.bright.apollo.service;
 
+import com.bright.apollo.common.entity.TYaokonyunDevice;
 import com.bright.apollo.util.Encrypt;
 import org.apache.http.*;
 import org.apache.http.client.HttpClient;
@@ -28,6 +29,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLDecoder;
 import java.util.*;
 import java.util.zip.GZIPInputStream;
 
@@ -59,12 +61,12 @@ public class YaoKongYunSend {
     }
 
 
-    public void createDevice(){
-        Map<String,Object> initMap = sendInit();
+    public Map<String,Object> createDevice(){
+        return sendInit();
 
     }
 
-    public String postMethod(String url, List<String> list) {
+    public String postMethod(List<String> list,TYaokonyunDevice yaokonyunDevice,String url) {
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>() ;
         String total = "" ;
         if(list!=null&&!list.isEmpty()&&list.size()>0){
@@ -79,12 +81,12 @@ public class YaoKongYunSend {
                 }
             }
         }
-//        String deviceId = sdkManager.getDeviceId();
-//        nameValuePairs.add(new BasicNameValuePair("f", deviceId));
-//        String appid = sdkManager.getAppId();
-//        nameValuePairs.add(new BasicNameValuePair("appid", appid));
+        String deviceId = yaokonyunDevice.getDeviceId();
+        nameValuePairs.add(new BasicNameValuePair("f", deviceId));
+        String appid = yaokonyunDevice.getAppId();
+        nameValuePairs.add(new BasicNameValuePair("appid", appid));
         String time = new Date().getTime() + "" ;
-        total = total + time ;
+        total = total + deviceId + time ;
         String auth = Encrypt.encryptSpecial(total);
         HttpClient httpClient = new DefaultHttpClient();
         try {

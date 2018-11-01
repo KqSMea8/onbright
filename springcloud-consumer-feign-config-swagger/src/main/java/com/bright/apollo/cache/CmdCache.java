@@ -107,5 +107,9 @@ public class CmdCache {
 		redisBussines.setValueWithExpire(String.valueOf(sessionKey)+"_sp", pwd, token_time);
 		
 	}
+
+	public void addIrTestCodeAppKeyBrandIdDeviceType(String appKey, String brandId, String deviceType, Integer index) {
+		redisBussines.setValueWithExpire(appKey+"_"+brandId+"_"+deviceType, index, medium_time);
+	}
 	
 }

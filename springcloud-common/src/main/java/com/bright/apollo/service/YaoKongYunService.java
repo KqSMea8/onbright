@@ -1,8 +1,6 @@
 package com.bright.apollo.service;
 
-import com.bright.apollo.common.entity.TAliDeviceConfig;
-import com.bright.apollo.common.entity.TYaoKongYunBrand;
-import com.bright.apollo.common.entity.TYaokonyunDevice;
+import com.bright.apollo.common.entity.*;
 
 import java.util.List;
 
@@ -10,7 +8,7 @@ public interface YaoKongYunService {
 
     List<TYaoKongYunBrand> getYaoKongYunByTId(Integer tId);
 
-    List<TYaoKongYunBrand> getYaoKongYunByTIdAndDeviceType(String tId,String deviceType);
+    TYaoKongYunBrand getYaoKongYunByTIdAndDeviceType(String tId,String deviceType);
 
     TYaokonyunDevice getYaoKongYunDevice();
 
@@ -18,4 +16,17 @@ public interface YaoKongYunService {
 
     void addYaoKongDevice(TYaokonyunDevice yaokonyunDevice);
 
+    List<TYaokonyunKeyCode> getYaoKongKeyCodeByIndex(Integer index);
+
+    List<TYaokonyunDeviceType> getYaoKongYunDeviceType();
+
+    void addTYaokonyunDeviceType(TYaokonyunDeviceType yaokonyunDeviceType);
+
+    List<TYaokonyunRemoteControl> getYaokonyunRemoteControlByIds();
+
+    void addYaokonyunRemoteControl(TYaokonyunRemoteControl yaokonyunRemoteControl);
+
+    List<TYaoKongYunBrand> getYaoKongYunBrandByDeviceType(String deviceTypeId);
+
+    void addTYaoKongYunBrand(TYaoKongYunBrand yaoKongYunBrand);
 }
