@@ -465,12 +465,13 @@ public interface FeignDeviceClient {
 			@PathVariable(value = "userId") Integer userId,
 			@RequestParam(value = "mList", required = false) List<String> mList);
 
-	/**  
+	/**
 	 * @param groupId
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
-	@RequestMapping(value = "/group/deleteServerGroup/{groupId}", method = RequestMethod.DELETE)
-	ResponseObject<Map<String, Object>> deleteServerGroup(@PathVariable(value = "groupId")Integer groupId);
+	@RequestMapping(value = "/group/deleteServerGroup/{groupId}/{userId}", method = RequestMethod.DELETE)
+	ResponseObject<Map<String, Object>> deleteServerGroup(@PathVariable(value = "groupId") Integer groupId,
+			@PathVariable(value = "userId") Integer userId);
 
 }

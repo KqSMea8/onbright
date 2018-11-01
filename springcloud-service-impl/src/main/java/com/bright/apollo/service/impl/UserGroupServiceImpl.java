@@ -35,5 +35,12 @@ public class UserGroupServiceImpl implements UserGroupService{
 	public int addUserGroup(TUSerGroup tUserGroup) {
  		return mapper.addUserGroup(tUserGroup);
 	}
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.UserGroupService#deleteUserGroup(java.lang.Integer, java.lang.Integer)  
+	 */
+	@Override
+	public int deleteUserGroup(Integer userId, Integer groupId) {
+		return mapper.deleteUserGroup(userId,groupId);
+	}
 
 }
