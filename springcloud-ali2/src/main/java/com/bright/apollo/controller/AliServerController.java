@@ -892,7 +892,12 @@ public class AliServerController {
 			object.put("command", "set");
 			object.element("value",array);
 //			object.put("value", value);
-			topicServer.requestDev(object,deviceId,array.toJSONString());
+			JSONObject resJson = topicServer.requestDev(object,deviceId,array.toJSONString());
+			if(resJson==null){
+				res.setStatus(ResponseEnum.RequestTimeout.getStatus());
+				res.setMessage(ResponseEnum.RequestTimeout.getMsg());
+				return res;
+			}
 			TAliDeviceConfig aliDeviceConfig = aliDeviceConfigService.getAliDeviceConfigBySerializeId(deviceId);
 			if(aliDeviceConfig !=null){
 				aliDeviceConfig.setState(array.toJSONString());

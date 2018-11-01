@@ -1,8 +1,7 @@
 package com.bright.apollo.service.impl;
 
 
-import com.bright.apollo.common.entity.TYaoKongYunBrand;
-import com.bright.apollo.common.entity.TYaokonyunDevice;
+import com.bright.apollo.common.entity.*;
 import com.bright.apollo.dao.device.mapper.YaoKongYunMapper;
 import com.bright.apollo.service.YaoKongYunService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,7 @@ public class YaoKongYunServiceImpl implements YaoKongYunService {
     }
 
     @Override
-    public List<TYaoKongYunBrand> getYaoKongYunByTIdAndDeviceType(String tId, String deviceType) {
+    public TYaoKongYunBrand getYaoKongYunByTIdAndDeviceType(String tId, String deviceType) {
         return yaoKongYunMapper.getYaoKongYunByTIdAndDeviceType(tId,deviceType);
     }
 
@@ -39,5 +38,40 @@ public class YaoKongYunServiceImpl implements YaoKongYunService {
     @Override
     public void addYaoKongDevice(TYaokonyunDevice yaokonyunDevice) {
         yaoKongYunMapper.addYaoKongYunDevice(yaokonyunDevice);
+    }
+
+    @Override
+    public List<TYaokonyunKeyCode> getYaoKongKeyCodeByIndex(Integer index) {
+        return yaoKongYunMapper.getYaoKongKeyCodeByIndex(index);
+    }
+
+    @Override
+    public List<TYaokonyunDeviceType> getYaoKongYunDeviceType() {
+        return yaoKongYunMapper.getYaoKongYunDeviceType();
+    }
+
+    @Override
+    public void addTYaokonyunDeviceType(TYaokonyunDeviceType yaokonyunDeviceType) {
+        yaoKongYunMapper.addTYaokonyunDeviceType(yaokonyunDeviceType);
+    }
+
+    @Override
+    public List<TYaokonyunRemoteControl> getYaokonyunRemoteControlByIds() {
+        return yaoKongYunMapper.getYaokonyunRemoteControlByIds();
+    }
+
+    @Override
+    public void addYaokonyunRemoteControl(TYaokonyunRemoteControl yaokonyunRemoteControl) {
+        yaoKongYunMapper.addYaokonyunRemoteControl(yaokonyunRemoteControl);
+    }
+
+    @Override
+    public List<TYaoKongYunBrand> getYaoKongYunBrandByDeviceType(String deviceTypeId) {
+        return yaoKongYunMapper.getYaoKongYunBrandByDeviceType(deviceTypeId);
+    }
+
+    @Override
+    public void addTYaoKongYunBrand(TYaoKongYunBrand yaoKongYunBrand) {
+        yaoKongYunMapper.addTYaoKongYunBrand(yaoKongYunBrand);
     }
 }

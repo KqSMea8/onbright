@@ -1,12 +1,32 @@
 package com.bright.apollo.common.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Date;
 
 public class TYaoKongYunBrand {
+
+    @JsonIgnore
     private Date lastOpTime;
+    @Expose
+    @SerializedName("bid")
+    @JsonProperty(value="bid")
     private Integer bId;
+
+    @Expose
+    @SerializedName("name")
+    @JsonProperty(value="name")
     private String name;
+
+    @JsonIgnore
     private Integer deviceType;
+
+    @Expose
+    @SerializedName("common")
+    @JsonProperty(value="common")
     private Integer common;
 
     public Date getLastOpTime() {
