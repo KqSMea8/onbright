@@ -586,6 +586,10 @@ public class CommonController {
 						if(!StringUtils.isEmpty(groupId)&&!NumberHelper.isNumeric(groupId)){
 							return facadeController.deleteServerGroup(Integer.parseInt(groupId));
 						}
+					}else if(operateType.equals(OperateTypeEnum.coverChild)){
+						if(!StringUtils.isEmpty(groupId)&&!NumberHelper.isNumeric(groupId)){
+							return facadeController.deleteServerGroup(Integer.parseInt(groupId));
+						}
 					}
 				} else {
 					if (!StringUtils.isEmpty(groupName)) {

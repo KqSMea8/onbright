@@ -26,4 +26,11 @@ public interface UserGroupService {
 	 */
 	int addUserGroup(TUSerGroup tUserGroup);
 
+	/**  
+	 * @param userId
+	 * @param id  
+	 * @Description:  
+	 */
+	int deleteUserGroup(Integer userId, Integer groupId);
+
 }

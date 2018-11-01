@@ -50,5 +50,12 @@ public class ServerGroupServiceImpl implements ServerGroupService{
 	public void updateServerGroup(TServerGroup tServerGroup) {
 		mapper.updateServerGroup(tServerGroup);
 	}
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.ServerGroupService#deleteServerGroup(java.lang.Integer)  
+	 */
+	@Override
+	public int deleteServerGroup(Integer groupId) {
+		return mapper.deleteServerGroup(groupId);
+	}
 
 }

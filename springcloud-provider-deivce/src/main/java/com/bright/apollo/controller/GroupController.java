@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.bright.apollo.cache.CmdCache;
 import com.bright.apollo.common.entity.TDeviceChannel;
 import com.bright.apollo.common.entity.TGroupDevice;
@@ -213,22 +214,62 @@ public class GroupController {
 	 * @return
 	 * @Description:
 	 */
-	@RequestMapping(value = "/deleteServerGroup/{groupId}", method = RequestMethod.DELETE)
-	ResponseObject<Map<String, Object>> deleteServerGroup(@PathVariable(value = "groupId") Integer groupId) {
+	@RequestMapping(value = "/deleteServerGroup/{groupId}/{userId}", method = RequestMethod.DELETE)
+	ResponseObject<Map<String, Object>> deleteServerGroup(@PathVariable(value = "groupId") Integer groupId,
+			@PathVariable(value = "userId") Integer userId) {
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		try {
 			logger.info("===deleteServerGroup args groupId:" + groupId);
 			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("operate_type", "00");
 			TServerGroup serverGroup = serverGroupService.querySererGroupById(groupId);
 			if (serverGroup == null) {
 				res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
 				res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
 			} else {
 				List<TOboxDeviceConfig> tOboxDeviceConfigs = oboxDeviceConfigService.queryDeviceByGroupId(groupId);
-				if (tOboxDeviceConfigs!=null&&!tOboxDeviceConfigs.isEmpty()) {
-					List<TOboxDeviceConfig> replyList = new ArrayList<TOboxDeviceConfig>();
-					deleteMember(tOboxDeviceConfigs, replyList,
-							 serverGroup);
+				List<TOboxDeviceConfig> replyList = new ArrayList<TOboxDeviceConfig>();
+				if (tOboxDeviceConfigs != null && !tOboxDeviceConfigs.isEmpty()) {
+					deleteMember(tOboxDeviceConfigs, replyList, serverGroup);
+					replyList.clear();
+					boolean deleteSuccess = true;
+					for (TOboxDeviceConfig deviceConfig : tOboxDeviceConfigs) {
+						TGroupDevice tGroupDevice = groupDeviceService.queryDeviceGroup(serverGroup.getId(),
+								deviceConfig.getDeviceSerialId());
+						if (tGroupDevice != null) {
+							deleteSuccess = false;
+							replyList.add(deviceConfig);
+						}
+					}
+					if (deleteSuccess) {
+						userGroupService.deleteUserGroup(userId, serverGroup.getId());
+						serverGroupService.deleteServerGroup(serverGroup.getId());
+						GroupDTO groupDTO4 = new GroupDTO(serverGroup);
+						groupDTO4.setGroupMember(replyList);
+						map.put("groups", groupDTO4);
+						res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+						res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
+					}else {
+						GroupDTO groupDTO5 = new GroupDTO(serverGroup);
+						groupDTO5.setGroupMember(replyList);
+						map.put("groups", groupDTO5);
+						res.setData(map);
+						res.setStatus(ResponseEnum.SendOboxFail.getStatus());
+						res.setMessage(ResponseEnum.SendOboxFail.getMsg());
+					}
+				} else {
+					userGroupService.deleteUserGroup(userId, groupId);
+					//UserBusiness.deleteUserGroup(Integer.parseInt(uid),
+					//		tServerGroup.getId());
+					serverGroupService.deleteServerGroup(groupId);
+					//DeviceBusiness.deleteServerGroup(tServerGroup);
+					GroupDTO groupDTO6 = new GroupDTO(serverGroup);
+					groupDTO6.setGroupMember(replyList);
+					map.put("groups", groupDTO6);
+					res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+					res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
+					//rightReply.add("groups", g2.toJsonTree(groupDTO6));
+					//return rightReply;
 				}
 			}
 		} catch (Exception e) {
@@ -238,6 +279,94 @@ public class GroupController {
 		}
 		return res;
 
+	}
+
+	/**
+	 * @param tOboxDeviceConfigs
+	 * @param replyList
+	 * @param serverGroup
+	 * @Description:
+	 */
+	private void deleteMember(List<TOboxDeviceConfig> deleteList, List<TOboxDeviceConfig> successList,
+			TServerGroup tServerGroup) {
+		try {
+			boolean isDone = false;
+			while (!isDone) {
+				for (int i = 0; i < deleteList.size(); i++) {
+					TOboxDeviceConfig tOboxDeviceConfig = deleteList.get(i);
+					if (tOboxDeviceConfig.getIsSend() == 0) {
+						byte[] oboxSerildIdBytes = ByteHelper.hexStringToBytes(tOboxDeviceConfig.getOboxSerialId());
+						byte[] setBytes = new byte[15];
+						System.arraycopy(oboxSerildIdBytes, 0, setBytes, 0, oboxSerildIdBytes.length);
+						setBytes[5] = 0x00;
+						setBytes[6] = (byte) Integer.parseInt(tOboxDeviceConfig.getDeviceRfAddr(), 16);
+						setBytes[7] = 0x01;
+
+						byte[] serverBytes = ByteHelper.hexStringToBytes(serverAddr);
+						System.arraycopy(serverBytes, 0, setBytes, 8, serverBytes.length);
+
+						byte[] groupBytes = ByteHelper.hexStringToBytes(tServerGroup.getGroupAddr());
+						System.arraycopy(groupBytes, 0, setBytes, 13, groupBytes.length);
+						TObox bestOBOXChannel = null;
+						boolean isFound = false;
+						List<TDeviceChannel> tDeviceChannels = deviceChannelService
+								.getDeivceChannelById(tOboxDeviceConfig.getId());
+						for (TDeviceChannel tDeviceChannel : tDeviceChannels) {
+							TObox obox = oboxService.queryOboxById(tDeviceChannel.getOboxId());
+							if (obox != null && obox.getOboxStatus() == 1) {
+								// ClientSession clientSession = sessionManager
+								// .getClientSession(obox
+								// .getOboxSerialId());
+								// if (clientSession != null) {
+								bestOBOXChannel = obox;
+								// if (clientSession.getAvaibleByte() == 0) {
+								// clientSession.setAvaibleByte(~0);
+								feignAliClient.sendCmd(bestOBOXChannel, CMDEnum.set_group, setBytes);
+								// CMDMessageService.send(obox,
+								// CMDEnum.set_group, setBytes, 0,
+								// 0);
+								tOboxDeviceConfig.setIsSend(1);
+								tOboxDeviceConfig.setSendTime(tOboxDeviceConfig.getSendTime() + 1);
+								isFound = true;
+								break;
+								// }
+								// }
+							}
+						}
+
+						if (!isFound) {
+							if (bestOBOXChannel == null) {
+								tOboxDeviceConfig.setIsSend(1);
+								tOboxDeviceConfig.setSendTime(tOboxDeviceConfig.getSendTime() + 1);
+							}
+						}
+					}
+					if (i + 1 == deleteList.size()) {
+						isDone = true;
+						for (TOboxDeviceConfig deviceConfig : deleteList) {
+							if (deviceConfig.getIsSend() == 0) {
+								isDone = false;
+								break;
+							}
+						}
+						if (isDone) {
+							break;
+						}
+					}
+				}
+			}
+			Thread.sleep(350);
+			for (TOboxDeviceConfig deviceConfig : deleteList) {
+				TGroupDevice tGroupDevice = groupDeviceService.queryDeviceGroup(tServerGroup.getId(),
+						deviceConfig.getDeviceSerialId());
+				if (tGroupDevice == null) {
+					successList.add(deviceConfig);
+				}
+			}
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			// e.printStackTrace();
+		}
 	}
 
 	/**

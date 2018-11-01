@@ -39,4 +39,10 @@ public interface ServerGroupService {
 	 */
 	void updateServerGroup(TServerGroup tServerGroup);
 
+	/**  
+	 * @param groupId  
+	 * @Description:  
+	 */
+	int deleteServerGroup(Integer groupId);
+
 }

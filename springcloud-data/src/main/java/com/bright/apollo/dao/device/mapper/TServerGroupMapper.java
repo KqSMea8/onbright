@@ -2,6 +2,7 @@ package com.bright.apollo.dao.device.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
@@ -79,5 +80,13 @@ public interface TServerGroupMapper {
 	 */
 	@UpdateProvider(type=ServerGroupProvider.class,method="updateServerGroup")
 	void updateServerGroup(TServerGroup tServerGroup);
+
+	/**  
+	 * @param groupId
+	 * @return  
+	 * @Description:  
+	 */
+	@Delete("delete from t_server_group where id = #{groupId} ")
+	int deleteServerGroup(@Param("groupId")Integer groupId);
 
 }
