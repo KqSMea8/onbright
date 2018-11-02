@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bright.apollo.common.entity.TScene;
 import com.bright.apollo.enums.CMDEnum;
-import com.bright.apollo.enums.ErrorEnum;
 import com.bright.apollo.enums.OperateTypeEnum;
 import com.bright.apollo.enums.SceneTypeEnum;
 import com.bright.apollo.request.OboxDTO;

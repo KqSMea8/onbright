@@ -16,6 +16,7 @@ import com.bright.apollo.common.entity.TIntelligentFingerRemoteUser;
 import com.bright.apollo.common.entity.TIntelligentFingerUser;
 import com.bright.apollo.common.entity.TNvr;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
+import com.bright.apollo.common.entity.TServerGroup;
 import com.bright.apollo.common.entity.TYSCamera;
 import com.bright.apollo.feign.FeignDeviceClient;
 import com.bright.apollo.request.IntelligentFingerWarnDTO;
@@ -588,6 +589,16 @@ public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implem
 	@SuppressWarnings("unchecked")
 	@Override
 	public ResponseObject<Map<String, Object>> actionGroup(Integer groupId, String groupState) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#queryGroupByUserAndGroup(java.lang.Integer, java.lang.Integer)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<TServerGroup> queryGroupByUserAndGroup(Integer userId, Integer groupId) {
 		logger.warn("===device server is break===");
 		return serverError();
 	}

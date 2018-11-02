@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import javax.ws.rs.HEAD;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +47,7 @@ import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.common.entity.TScene;
 import com.bright.apollo.common.entity.TSceneAction;
 import com.bright.apollo.common.entity.TSceneCondition;
+import com.bright.apollo.common.entity.TServerGroup;
 import com.bright.apollo.common.entity.TUser;
 import com.bright.apollo.common.entity.TUserDevice;
 import com.bright.apollo.common.entity.TUserObox;
@@ -979,6 +978,16 @@ public class FacadeController extends BaseController {
 					logger.info("====nodeType:" + sceneActionDTO.getNodeType());
 					if (sceneActionDTO.getNodeType().equals(NodeTypeEnum.group.getValue())) {
 						// remove group
+						// group
+						ResponseObject<TServerGroup> groupRes = feignDeviceClient.queryGroupByUserAndGroup(
+								resUser.getData().getId(), Integer.parseInt(sceneActionDTO.getGroupId()));
+						if (groupRes != null && groupRes.getData() != null
+								&& groupRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()) {
+							TServerGroup tServerGroup = groupRes.getData();
+							tSceneAction.setActionid(tServerGroup.getId().intValue()+"");
+							tSceneAction.setNodeType(NodeTypeEnum.group.getValue());
+							feignSceneClient.addSceneAction(tSceneAction);
+						}
 					} else if (sceneActionDTO.getNodeType().equals(NodeTypeEnum.single.getValue())) {
 						ResponseObject<TOboxDeviceConfig> deviceRes = feignDeviceClient
 								.getDevice(sceneActionDTO.getDeviceSerialId());
@@ -1166,18 +1175,15 @@ public class FacadeController extends BaseController {
 					tSceneAction.setSceneNumber(tScene.getSceneNumber());
 
 					if (sceneActionDTO.getNodeType().equals(NodeTypeEnum.group.getValue())) {
-						/*
-						 * // group TServerGroup tServerGroup =
-						 * queryGroupByWeight( tUser,
-						 * Integer.parseInt(sceneActionDTO .getGroupId()));
-						 *
-						 * if (tServerGroup != null) {
-						 * tSceneAction.setActionID(tServerGroup.getId());
-						 * tSceneAction.setNodeType(NodeTypeEnum.group
-						 * .getValue());
-						 * SceneBusiness.addSceneAction(tSceneAction); }
-						 *
-						 */} else if (sceneActionDTO.getNodeType().equals(NodeTypeEnum.single.getValue())) {
+						ResponseObject<TServerGroup> groupRes = feignDeviceClient.queryGroupByUserAndGroup(
+								resUser.getData().getId(), Integer.parseInt(sceneActionDTO.getGroupId()));
+						if (groupRes != null && groupRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()
+								&& groupRes.getData() != null) {
+							tSceneAction.setActionid(groupRes.getData().getId().intValue()+"");
+							tSceneAction.setNodeType(NodeTypeEnum.single.getValue());
+							feignSceneClient.addSceneAction(tSceneAction);
+						}
+					} else if (sceneActionDTO.getNodeType().equals(NodeTypeEnum.single.getValue())) {
 						ResponseObject<TOboxDeviceConfig> deviceRes = feignDeviceClient.getDeviceByUserAndSerialId(
 								resUser.getData().getId(), sceneActionDTO.getDeviceSerialId());
 						// TOboxDeviceConfig tOboxDeviceConfig =
@@ -1441,8 +1447,6 @@ public class FacadeController extends BaseController {
 			if (tActionDTOs != null) {
 				ResponseObject<List<TSceneAction>> sceneActionsRes = feignSceneClient
 						.getSceneActionsBySceneNumber(tScene.getSceneNumber());
-				// List<TSceneAction> dbActions =
-				// SceneBusiness.querySceneActionsBySceneNumber(tScene.getSceneNumber());
 				List<SceneActionDTO> needDTOs = new ArrayList<SceneActionDTO>();
 				if (sceneActionsRes != null && sceneActionsRes.getData() != null
 						&& sceneActionsRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()) {
@@ -1474,36 +1478,40 @@ public class FacadeController extends BaseController {
 								}
 							} else if (sceneActionDTO.getNodeType().equals(NodeTypeEnum.group.getValue())
 									&& tSceneAction.getNodeType().equals(NodeTypeEnum.group.getValue())) {
-								/*
-								 * TServerGroup tServerGroup = null; if
-								 * (!StringUtils.isEmpty(sceneActionDTO.
-								 * getGroupId()) &&
-								 * Integer.parseInt(sceneActionDTO.getGroupId())
-								 * != 0) { tServerGroup =
-								 * queryGroupByWeight(tUser,
-								 * Integer.parseInt(sceneActionDTO.getGroupId())
-								 * ); } else { if
-								 * (!StringUtils.isEmpty(sceneActionDTO.
-								 * getOboxSerialId()) &&
-								 * !StringUtils.isEmpty(sceneActionDTO.
-								 * getOboxGroupAddr())) { TServerOboxGroup
-								 * tServerOboxGroup =
-								 * DeviceBusiness.queryOBOXGroupByAddr(
-								 * sceneActionDTO.getOboxSerialId(),
-								 * sceneActionDTO.getOboxGroupAddr()); if
-								 * (tServerOboxGroup != null) { tServerGroup =
-								 * DeviceBusiness
-								 * .querySererGroupById(tServerOboxGroup.
-								 * getServerId()); } } } if (tServerGroup !=
-								 * null) { if (tServerGroup.getId().intValue()
-								 * == tSceneAction.getActionid().intValue()) {
-								 * if (!tSceneAction.getAction().equals(
-								 * sceneActionDTO.getAction())) {
-								 * sceneActionDTO.setActionType(2);
-								 * needDTOs.add(sceneActionDTO); }
-								 *
-								 * isFound = true; break; } }
-								 */} else if (sceneActionDTO.getNodeType().equals(NodeTypeEnum.camera.getValue())
+
+								TServerGroup tServerGroup = null;
+								if (!StringUtils.isEmpty(sceneActionDTO
+										.getGroupId())
+										&& Integer.parseInt(sceneActionDTO
+												.getGroupId()) != 0) {
+									ResponseObject<TServerGroup> groupRes = feignDeviceClient.queryGroupByUserAndGroup(
+											resUser.getData().getId(), Integer.parseInt(sceneActionDTO.getGroupId()));
+									if(groupRes!=null)
+										tServerGroup=groupRes.getData();
+								} else {
+									if (!StringUtils.isEmpty(sceneActionDTO
+											.getOboxSerialId())
+											&& !StringUtils
+													.isEmpty(sceneActionDTO
+															.getOboxGroupAddr())) {
+										
+									}
+								}
+								if (tServerGroup != null) {
+									if (tServerGroup.getId().intValue() == Integer.parseInt(tSceneAction
+											.getActionid())) {
+										if (!tSceneAction.getAction().equals(
+												sceneActionDTO.getAction())) {
+											sceneActionDTO.setActionType(2);
+											needDTOs.add(sceneActionDTO);
+										}
+
+										isFound = true;
+										break;
+									}
+								}
+							
+							} else if (sceneActionDTO.getNodeType().equals(NodeTypeEnum.camera.getValue())
 										&& tSceneAction.getNodeType().equals(NodeTypeEnum.camera.getValue())) {
 								ResponseObject<TYSCamera> ysCameraRes = feignDeviceClient
 										.getYSCameraBySerialId(tSceneAction.getActionid());
@@ -5600,7 +5608,7 @@ public class FacadeController extends BaseController {
 				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
 				return res;
 			}
-			feignAliClient.getIrList(brandId,deviceType,appkey);
+			feignAliClient.getIrList(brandId, deviceType, appkey);
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {

@@ -223,6 +223,8 @@ public class CMDHandlerManager {
 	@Autowired
 	private RemoteLedHandler remoteLedHandler;
 	
+	@Autowired
+	private GroupCMDHandler groupCMDHandler;
 	public CMDHandlerManager() {
 		cmdHandlers = new HashMap<String, BasicHandler>();
 	}
@@ -241,6 +243,9 @@ public class CMDHandlerManager {
 		// RemoterChannelHandler());
 		// cmdHandlers.put(Command.REMOTERBUTTON.getValue(), new
 		// RemoterButtonHandler());
+		if (cmdHandlers.get(Command.GROUPCHANGE.getValue()) == null) {
+			cmdHandlers.put(Command.GROUPCHANGE.getValue(), groupCMDHandler);
+		}
 		if (cmdHandlers.get(Command.SETTINGREMOTELED.getValue()) == null) {
 			cmdHandlers.put(Command.SETTINGREMOTELED.getValue(), remoteLedHandler);
 		}

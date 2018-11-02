@@ -19,6 +19,7 @@ import com.bright.apollo.common.entity.TIntelligentFingerRemoteUser;
 import com.bright.apollo.common.entity.TIntelligentFingerUser;
 import com.bright.apollo.common.entity.TNvr;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
+import com.bright.apollo.common.entity.TServerGroup;
 import com.bright.apollo.common.entity.TYSCamera;
 import com.bright.apollo.hrstrix.HystrixFeignDeviceFallback;
 import com.bright.apollo.request.IntelligentFingerWarnDTO;
@@ -520,14 +521,24 @@ public interface FeignDeviceClient {
 	ResponseObject<Map<String, Object>> reNameGroup(@PathVariable(value = "groupId") Integer groupId,
 			@PathVariable(value = "groupName") String groupName);
 
-	/**  
+	/**
 	 * @param groupId
 	 * @param groupState
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
 	@RequestMapping(value = "/group/actionGroup/{groupId}/{groupState}", method = RequestMethod.PUT)
 	ResponseObject<Map<String, Object>> actionGroup(@PathVariable(value = "groupId") Integer groupId,
 			@PathVariable(value = "groupState") String groupState);
+
+	/**
+	 * @param userId
+	 * @param groupId
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/group/queryGroupByUserAndGroup/{userId}/{groupId}", method = RequestMethod.GET)
+	ResponseObject<TServerGroup> queryGroupByUserAndGroup(@PathVariable(value = "userId") Integer userId,
+			@PathVariable(value = "groupId") Integer groupId);
 
 }

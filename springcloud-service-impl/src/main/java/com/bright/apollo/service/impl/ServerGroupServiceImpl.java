@@ -57,5 +57,12 @@ public class ServerGroupServiceImpl implements ServerGroupService{
 	public int deleteServerGroup(Integer groupId) {
 		return mapper.deleteServerGroup(groupId);
 	}
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.ServerGroupService#queryGroupByUserAndGroup(java.lang.Integer, java.lang.Integer)  
+	 */
+	@Override
+	public TServerGroup queryGroupByUserAndGroup(Integer userId, Integer groupId) {
+ 		return mapper.queryGroupByUserAndGroup(userId,groupId);
+	}
 
 }

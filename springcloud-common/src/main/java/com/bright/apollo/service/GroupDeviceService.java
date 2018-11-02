@@ -28,4 +28,17 @@ public interface GroupDeviceService {
 	 */
 	TGroupDevice queryDeviceGroup(Integer groupId, String deviceSerialId);
 
+	/**  
+	 * @param groupDevice  
+	 * @Description:  
+	 */
+	int addDeviceGroup(TGroupDevice groupDevice);
+
+	/**  
+	 * @param groupId
+	 * @param deviceSerialId  
+	 * @Description:  
+	 */
+	int deleteDeviceGroup(Integer groupId, String deviceSerialId);
+
 }

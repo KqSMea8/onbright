@@ -47,4 +47,21 @@ public class CmdCache {
 	public String getIrTestCodeAppKeyBrandIdDeviceType(String key) {
 		return redisBussines.get(String.valueOf(key)+"_sp");
 	}
+	/**  
+	 * @param key
+	 * @return  
+	 * @Description:  
+	 */
+	public String getValue(String key) {
+		 
+		return redisBussines.get(String.valueOf(key));
+	}
+	/**  
+	 * @param key
+	 * @Description:  
+	 */
+	public void deleteKey(String key) {
+		redisBussines.delete(key);
+		
+	}
 }

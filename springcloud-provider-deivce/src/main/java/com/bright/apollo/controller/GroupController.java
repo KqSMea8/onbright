@@ -583,6 +583,28 @@ public class GroupController {
 		return res;
 	}
 	/**
+	 * @param userId
+	 * @param groupId
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/queryGroupByUserAndGroup/{userId}/{groupId}", method = RequestMethod.GET)
+	ResponseObject<TServerGroup> queryGroupByUserAndGroup(@PathVariable(value = "userId") Integer userId,
+			@PathVariable(value = "groupId") Integer groupId){
+
+		ResponseObject<TServerGroup> res = new ResponseObject<TServerGroup>();
+		try {
+			res.setData(serverGroupService.queryGroupByUserAndGroup(userId,groupId));
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===actionGroup error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	/**
 	 * @param tOboxDeviceConfigs
 	 * @param replyList
 	 * @param serverGroup

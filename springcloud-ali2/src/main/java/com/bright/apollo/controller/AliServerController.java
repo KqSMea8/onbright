@@ -26,6 +26,7 @@ import com.bright.apollo.common.entity.TAliDevice;
 import com.bright.apollo.common.entity.TAliDeviceConfig;
 import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
+import com.bright.apollo.common.entity.TServerGroup;
 import com.bright.apollo.common.entity.TUserAliDev;
 import com.bright.apollo.enums.AliRegionEnum;
 import com.bright.apollo.enums.CMDEnum;
@@ -38,6 +39,7 @@ import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.service.AliDeviceConfigService;
 import com.bright.apollo.service.AliDeviceService;
 import com.bright.apollo.service.OboxDeviceConfigService;
+import com.bright.apollo.service.ServerGroupService;
 import com.bright.apollo.service.TopicServer;
 import com.bright.apollo.service.AliRequest.BaseRequest;
 import com.bright.apollo.session.SceneActionThreadPool;
@@ -67,6 +69,9 @@ public class AliServerController {
 
 	@Autowired
 	private AliDeviceService aliDeviceService;
+	
+	@Autowired
+	private ServerGroupService serverGroupService;
 
 	@Autowired
 	private AliDevCache aliDevCache;
@@ -420,8 +425,7 @@ public class AliServerController {
 			@PathVariable(required = true, value = "oboxSerialId") String oboxSerialId) {
 		ResponseObject res = new ResponseObject();
 		try {
-			new Thread(new sceneAction(nodeActionDTOs, sceneNumber, oboxSerialId, oboxDeviceConfigService, topicServer,
-					cmdCache)).start();
+			new Thread(new sceneAction(nodeActionDTOs, sceneNumber, oboxSerialId)).start();
 			res.setStatus(ResponseEnum.AddSuccess.getStatus());
 			res.setMessage(ResponseEnum.AddSuccess.getMsg());
 		} catch (Exception e) {
@@ -648,7 +652,7 @@ public class AliServerController {
 		}
 		return res;
 	}
-	static class sceneAction implements Runnable {
+	class sceneAction implements Runnable {
 
 		private List<SceneActionDTO> lists;
 
@@ -656,21 +660,20 @@ public class AliServerController {
 
 		private String oboxSerialId;
 
-		private TopicServer topicServer;
+		/*private TopicServer topicServer;
 
 		private OboxDeviceConfigService oboxDeviceConfigService;
 
-		private CmdCache cmdCache;
+		private CmdCache cmdCache;*/
 
-		public sceneAction(List<SceneActionDTO> lists, int sceneNumber, String oboxSerialId,
-				OboxDeviceConfigService oboxDeviceConfigService, TopicServer topicServer, CmdCache cmdCache) {
+		public sceneAction(List<SceneActionDTO> lists, int sceneNumber, String oboxSerialId) {
 			// TODO Auto-generated constructor stub
 			this.lists = lists;
 			this.sceneNumber = sceneNumber;
 			this.oboxSerialId = oboxSerialId;
-			this.oboxDeviceConfigService = oboxDeviceConfigService;
+			/*this.oboxDeviceConfigService = oboxDeviceConfigService;
 			this.topicServer = topicServer;
-			this.cmdCache = cmdCache;
+			this.cmdCache = cmdCache;*/
 		}
 
 		@Override
@@ -704,29 +707,16 @@ public class AliServerController {
 							comBytes[1] |= 0x03;
 						}
 					} else if (sceneActionDTO.getNodeType().equals(NodeTypeEnum.group.getValue())) {
-						/*
-						 * TServerGroup tServerGroup = DeviceBusiness
-						 * .querySererGroupById(Integer
-						 * .parseInt(sceneActionDTO.getGroupId())); if
-						 * (tServerGroup != null) { if
-						 * (tServerGroup.getGroupStyle().equals("00")) { //
-						 * local group TServerOboxGroup tServerOboxGroup =
-						 * DeviceBusiness .queryOBOXGroupByServerID(tServerGroup
-						 * .getId()); if (sceneActionDTO.getActionType() == 1) {
-						 * // add comBytes[1] |= 0x01; } else if
-						 * (sceneActionDTO.getActionType() == 2) { // modify
-						 * comBytes[1] |= 0x02; } byte[] action = ByteHelper
-						 * .hexStringToBytes(sceneActionDTO .getAction());
-						 * byte[] serial = ByteHelper
-						 * .hexStringToBytes(tServerOboxGroup
-						 * .getOboxSerialId()); System.arraycopy(serial, 0,
-						 * comBytes, 3, serial.length); byte[] addrBytes =
-						 * ByteHelper .hexStringToBytes(tServerOboxGroup
-						 * .getGroupAddr()); System.arraycopy(addrBytes, 0,
-						 * comBytes, 8, addrBytes.length); comBytes[9] = (byte)
-						 * 0xff; System.arraycopy(action, 0, comBytes, 10,
-						 * action.length); } } else { comBytes[1] |= 0x03; }
-						 */}
+						TServerGroup tServerGroup = serverGroupService.querySererGroupById(Integer
+										.parseInt(sceneActionDTO.getGroupId()));
+						if (tServerGroup != null) {
+							if (tServerGroup.getGroupStyle().equals("00")) {
+								
+							}
+						} else {
+							comBytes[1] |= 0x03;
+						}
+					}
 
 					if (i + 1 < lists.size()) {
 						SceneActionDTO sceneActionDTO1 = lists.get(i + 1);
@@ -751,33 +741,16 @@ public class AliServerController {
 								comBytes[1] |= 0x0c;
 							}
 						} else if (sceneActionDTO1.getNodeType().equals(NodeTypeEnum.group.getValue())) {
-							/*
-							 * TServerGroup tServerGroup = DeviceBusiness
-							 * .querySererGroupById(Integer
-							 * .parseInt(sceneActionDTO1 .getGroupId())); if
-							 * (tServerGroup != null) { if
-							 * (tServerGroup.getGroupStyle().equals("00")) { //
-							 * local group TServerOboxGroup tServerOboxGroup =
-							 * DeviceBusiness
-							 * .queryOBOXGroupByServerID(tServerGroup .getId());
-							 * if (tServerGroup != null) { if
-							 * (sceneActionDTO1.getActionType() == 1) { // add
-							 * comBytes[1] |= 0x04; } else if (sceneActionDTO1
-							 * .getActionType() == 2) { // modify comBytes[1] |=
-							 * 0x08; } byte[] action = ByteHelper
-							 * .hexStringToBytes(sceneActionDTO1 .getAction());
-							 * byte[] serial = ByteHelper
-							 * .hexStringToBytes(tServerOboxGroup
-							 * .getOboxSerialId()); System.arraycopy(serial, 0,
-							 * comBytes, 18, serial.length); byte[] addrBytes =
-							 * ByteHelper .hexStringToBytes(tServerOboxGroup
-							 * .getGroupAddr()); System.arraycopy(addrBytes, 0,
-							 * comBytes, 23, addrBytes.length); comBytes[24] =
-							 * (byte) 0xff; System.arraycopy(action, 0,
-							 * comBytes, 25, action.length); } } } else {
-							 * comBytes[1] |= 0x0c; }
-							 * 
-							 */}
+							TServerGroup tServerGroup = serverGroupService.querySererGroupById(Integer
+									.parseInt(sceneActionDTO.getGroupId()));
+							if (tServerGroup != null) {
+								if (tServerGroup.getGroupStyle().equals("00")) {
+									
+								}
+							} else {
+								comBytes[1] |= 0x0c;
+							}
+						}
 
 						if (i + 2 < lists.size()) {
 							SceneActionDTO sceneActionDTO2 = lists.get(i + 2);
@@ -803,34 +776,18 @@ public class AliServerController {
 									comBytes[1] |= 0x30;
 								}
 							} else if (sceneActionDTO2.getNodeType().equals(NodeTypeEnum.group.getValue())) {
-								/*
-								 * TServerGroup tServerGroup = DeviceBusiness
-								 * .querySererGroupById(Integer
-								 * .parseInt(sceneActionDTO2 .getGroupId())); if
-								 * (tServerGroup != null) { if
-								 * (tServerGroup.getGroupStyle().equals( "00"))
-								 * { // local group TServerOboxGroup
-								 * tServerOboxGroup = DeviceBusiness
-								 * .queryOBOXGroupByServerID(tServerGroup
-								 * .getId()); if (tServerGroup != null) { if
-								 * (sceneActionDTO2.getActionType() == 1) { //
-								 * add comBytes[1] |= 0x10; } else if
-								 * (sceneActionDTO2 .getActionType() == 2) { //
-								 * modify comBytes[1] |= 0x20; } byte[] action =
-								 * ByteHelper .hexStringToBytes(sceneActionDTO2
-								 * .getAction()); byte[] serial = ByteHelper
-								 * .hexStringToBytes(tServerOboxGroup
-								 * .getOboxSerialId()); System.arraycopy(serial,
-								 * 0, comBytes, 33, serial.length); byte[]
-								 * addrBytes = ByteHelper
-								 * .hexStringToBytes(tServerOboxGroup
-								 * .getGroupAddr()); System.arraycopy(addrBytes,
-								 * 0, comBytes, 38, addrBytes.length);
-								 * comBytes[39] = (byte) 0xff;
-								 * System.arraycopy(action, 0, comBytes, 40,
-								 * action.length); } } } else { comBytes[1] |=
-								 * 0x30; }
-								 */}
+								TServerGroup tServerGroup = serverGroupService.querySererGroupById(Integer
+										.parseInt(sceneActionDTO.getGroupId()));
+								if (tServerGroup != null) {
+									if (tServerGroup.getGroupStyle().equals(
+											"00")) {
+										
+									}
+								} else {
+									comBytes[1] |= 0x30;
+								}
+							
+							}
 
 						}
 					}

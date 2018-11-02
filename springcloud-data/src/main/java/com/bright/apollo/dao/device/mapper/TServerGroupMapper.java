@@ -89,4 +89,26 @@ public interface TServerGroupMapper {
 	@Delete("delete from t_server_group where id = #{groupId} ")
 	int deleteServerGroup(@Param("groupId")Integer groupId);
 
+	/**  
+	 * @param userId
+	 * @param groupId
+	 * @return  
+	 * @Description:  
+	 */
+	@Select("select a.id,a.group_name,a.group_addr,a.group_type,"
+			+ "a.group_style,a.group_child_type,a.group_state"
+			+ " from t_server_group a where EXISTS (select 1 from "
+			+ "t_user_group where user_id=#{userId} and group_id=? and a.id=#{groupId})")
+	@Results(value = {
+			@Result(property = "id",column = "id"),
+			@Result(property = "groupName",column = "group_name"),
+			@Result(property = "last_op_time",column = "lastOpTime"),
+			@Result(property = "groupState",column = "group_state"),
+			@Result(property = "groupType",column = "group_type"),
+			@Result(property = "groupChildType",column = "group_child_type"),
+			@Result(property = "groupAddr",column = "group_addr"),
+			@Result(property = "groupStyle",column = "group_style"),
+	})
+	TServerGroup queryGroupByUserAndGroup(@Param("userId")Integer userId, @Param("groupId")Integer groupId);
+
 }
