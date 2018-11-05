@@ -561,25 +561,6 @@ public class CommonController {
 			String oboxSerialId = requestParam.getValue("obox_serial_id");
 			String groupAddr = requestParam.getValue("groupAddr");
 			if (!StringUtils.isEmpty(operateType)) {
-				// 00/01/02/03/04／05/06
-				// 删除／设置／覆盖成员/添加成员／删除成员/改名/执行
-				/*
-				 * if(operateType.equals("00")){
-				 * 
-				 * }else if(operateType.equals("01")){
-				 * 
-				 * }else if(operateType.equals("02")){
-				 * 
-				 * }else if(operateType.equals("03")){
-				 * 
-				 * }else if(operateType.equals("04")){
-				 * 
-				 * }else if(operateType.equals("05")){
-				 * 
-				 * }else if(operateType.equals("06")){
-				 * 
-				 * }
-				 */
 				OperateTypeEnum operation = OperateTypeEnum.getEnum(operateType);
 				if (!operation.equals(OperateTypeEnum.set)) {
 					/*
@@ -592,27 +573,27 @@ public class CommonController {
 					 * res.setMessage(ResponseEnum.RequestParamError.getMsg());
 					 * return res; } }
 					 */
-					if (operateType.equals(OperateTypeEnum.delete)) {
-						if (!StringUtils.isEmpty(groupId) && !NumberHelper.isNumeric(groupId)) {
+					if (operateType.equals(OperateTypeEnum.delete.getValue())) {
+						if (!StringUtils.isEmpty(groupId) && NumberHelper.isNumeric(groupId)) {
 							return facadeController.deleteServerGroup(Integer.parseInt(groupId));
 						}
-					} else if (operateType.equals(OperateTypeEnum.coverChild)) {
-						if (!StringUtils.isEmpty(groupId) && !NumberHelper.isNumeric(groupId)) {
+					} else if (operateType.equals(OperateTypeEnum.coverChild.getValue())) {
+						if (!StringUtils.isEmpty(groupId) && NumberHelper.isNumeric(groupId)) {
 							List<String> mList = null;
 							if (!StringUtils.isEmpty(groupMember))
 								mList = (List<String>) ObjectUtils.fromJsonToObject(groupMember, List.class);
 							return facadeController.coverChildGroup(Integer.parseInt(groupId), mList);
 						}
-					} else if (operateType.equals(OperateTypeEnum.removeChild)) {
-						if (!StringUtils.isEmpty(groupId) && !NumberHelper.isNumeric(groupId)
+					} else if (operateType.equals(OperateTypeEnum.removeChild.getValue())) {
+						if (!StringUtils.isEmpty(groupId) && NumberHelper.isNumeric(groupId)
 								&& !StringUtils.isEmpty(groupMember)) {
 							List<String> mList = null;
 							if (!StringUtils.isEmpty(groupMember))
 								mList = (List<String>) ObjectUtils.fromJsonToObject(groupMember, List.class);
 							return facadeController.removeChildGroup(Integer.parseInt(groupId), mList);
 						}
-					}else if (operateType.equals(OperateTypeEnum.addChild)) {
-						if (!StringUtils.isEmpty(groupId) && !NumberHelper.isNumeric(groupId)
+					}else if (operateType.equals(OperateTypeEnum.addChild.getValue())) {
+						if (!StringUtils.isEmpty(groupId) && NumberHelper.isNumeric(groupId)
 								&& !StringUtils.isEmpty(groupMember)) {
 							List<String> mList = null;
 							if (!StringUtils.isEmpty(groupMember))
@@ -620,13 +601,13 @@ public class CommonController {
 							return facadeController.addChildGroup(Integer.parseInt(groupId), mList);
 						}
 					
-					}else if (operateType.equals(OperateTypeEnum.rename)) {
-						if (!StringUtils.isEmpty(groupId) && !NumberHelper.isNumeric(groupId)
+					}else if (operateType.equals(OperateTypeEnum.rename.getValue())) {
+						if (!StringUtils.isEmpty(groupId) && NumberHelper.isNumeric(groupId)
 								&& !StringUtils.isEmpty(groupName)) {
 							return facadeController.reNameGroup(Integer.parseInt(groupId), groupName);
 						}
-					}else if (operateType.equals(OperateTypeEnum.action)) {
-						if (!StringUtils.isEmpty(groupId) && !NumberHelper.isNumeric(groupId)
+					}else if (operateType.equals(OperateTypeEnum.action.getValue())) {
+						if (!StringUtils.isEmpty(groupId) && NumberHelper.isNumeric(groupId)
 								&& !StringUtils.isEmpty(groupState)) {
 							return facadeController.actionGroup(Integer.parseInt(groupId), groupState);
 						}

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TServerGroup implements Serializable{
     /**  
@@ -18,6 +19,7 @@ public class TServerGroup implements Serializable{
      *
      * @mbg.generated Mon Oct 29 16:21:22 CST 2018
      */
+	@JsonProperty(value="group_id")
     private Integer id;
 
     /**
@@ -27,6 +29,7 @@ public class TServerGroup implements Serializable{
      *
      * @mbg.generated Mon Oct 29 16:21:22 CST 2018
      */
+    @JsonProperty(value="group_name")
     private String groupName;
 
     /**
@@ -45,6 +48,7 @@ public class TServerGroup implements Serializable{
      *
      * @mbg.generated Mon Oct 29 16:21:22 CST 2018
      */
+    @JsonProperty(value="group_state")
     private String groupState;
 
     /**
@@ -54,6 +58,7 @@ public class TServerGroup implements Serializable{
      *
      * @mbg.generated Mon Oct 29 16:21:22 CST 2018
      */
+    @JsonProperty(value="group_type")
     private String groupType;
 
     /**
@@ -63,6 +68,7 @@ public class TServerGroup implements Serializable{
      *
      * @mbg.generated Mon Oct 29 16:21:22 CST 2018
      */
+    @JsonProperty(value="group_child_type")
     private String groupChildType;
  
 
@@ -73,6 +79,7 @@ public class TServerGroup implements Serializable{
      *
      * @mbg.generated Mon Oct 29 16:21:22 CST 2018
      */
+    @JsonProperty(value="groupAddr")
     private String groupAddr;
 
     /**
@@ -82,6 +89,7 @@ public class TServerGroup implements Serializable{
      *
      * @mbg.generated Mon Oct 29 16:21:22 CST 2018
      */
+    @JsonProperty(value="group_style")
     private String groupStyle;
 
     /**

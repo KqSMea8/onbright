@@ -158,7 +158,7 @@ public class GroupController {
 			userGroupService.addUserGroup(tUserGroup);
 			List<TOboxDeviceConfig> replyList = new ArrayList<TOboxDeviceConfig>();
 			List<TOboxDeviceConfig> configs = new ArrayList<TOboxDeviceConfig>();
-			if (mList == null && mList.size() == 0) {
+			if (mList != null && mList.size() > 0) {
 				for (int i = 0; i < mList.size(); i++) {
 					String string = mList.get(i);
 					TOboxDeviceConfig tOboxDeviceConfig = oboxDeviceConfigService.getDeviceByUserAndSerialId(userId,
