@@ -41,7 +41,7 @@ public class LoginAuthenticationSecurityConfig
 	private String defaultMobileLoginParameter;
 	@Value("${login.mobile.httpMethod}")
 	private String defaultMobileLoginHttpMethod;
-	private static final String antUrl = "/login/**";
+	//private static final String antUrl = "/login/**";
 	@Autowired
 	private UserDetailsService userDetailsService;
 	@Autowired
@@ -67,7 +67,7 @@ public class LoginAuthenticationSecurityConfig
 		String url = smsLoginVo.getUrl();
 		String parameter = smsLoginParamVo.getMobile();
 		String httpMethod = smsLoginVo.getHttpMethod();
-		LoginAuthenticationFilter loginAuthenticationFilter = new LoginAuthenticationFilter(antUrl,
+		LoginAuthenticationFilter loginAuthenticationFilter = new LoginAuthenticationFilter(wxLoginVo.getAntUrl(),
 				StringUtils.isBlank(parameter) ? defaultMobileLoginUrl : parameter, wxLoginParamVo.getOpenId(),
 				wxLoginParamVo.getCode(), StringUtils.isBlank(httpMethod) ? defaultMobileLoginHttpMethod : httpMethod);
 

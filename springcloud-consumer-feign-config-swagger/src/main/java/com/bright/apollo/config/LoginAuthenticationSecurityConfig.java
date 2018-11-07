@@ -36,7 +36,6 @@ public class LoginAuthenticationSecurityConfig  extends SecurityConfigurerAdapte
 
 
     private static final Logger logger = LoggerFactory.getLogger(LoginAuthenticationSecurityConfig.class.getName());
-	private static final String antUrl="/login/**";
     @Value("${login.mobile.url}")
     private String defaultMobileLoginUrl;
     @Value("${login.mobile.parameter}")
@@ -68,7 +67,7 @@ public class LoginAuthenticationSecurityConfig  extends SecurityConfigurerAdapte
 		String url = smsLoginVo.getUrl();
 		String parameter = smsLoginParamVo.getMobile();
 		String httpMethod = smsLoginVo.getHttpMethod();
-		LoginAuthenticationFilter loginAuthenticationFilter = new LoginAuthenticationFilter(antUrl,
+		LoginAuthenticationFilter loginAuthenticationFilter = new LoginAuthenticationFilter(wxLoginVo.getAntUrl(),
 				StringUtils.isBlank(parameter) ? defaultMobileLoginUrl : parameter, wxLoginParamVo.getOpenId(),
 				wxLoginParamVo.getCode(), StringUtils.isBlank(httpMethod) ? defaultMobileLoginHttpMethod : httpMethod);
 

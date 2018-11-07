@@ -13,6 +13,7 @@ SmsLoginParam:
 WxLogin:
   url: /login/wx
   codeUrl: /login/wx/code
+  antUrl: /login/**
   httpMethod: POST
 WxLoginParam:
   wxToken: wxToken
