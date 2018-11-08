@@ -100,7 +100,7 @@ public class TmallController {
 		String accessToken = (String)payload.get("accessToken");
 		logger.info(" ===== accessToken ====== "+accessToken);
 		OAuth2Authentication defaultOAuth2AccessToken = redisBussines.getObject("auth:"+accessToken,OAuth2Authentication.class);
-//		SecurityContextHolder.getContext().setAuthentication(defaultOAuth2AccessToken.getUserAuthentication());
+		SecurityContextHolder.getContext().setAuthentication(defaultOAuth2AccessToken.getUserAuthentication());
 		logger.info(" ===== redisToken ====== "+defaultOAuth2AccessToken);
 
 		if(requestHeaderMap.get("namespace").equals("AliGenie.Iot.Device.Discovery")){//天猫精灵发现设备
