@@ -864,16 +864,16 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         Integer integerM = Integer.valueOf(val);
         Integer andM = 0;
         if(child.equals("1")){
-            andM = integerM & 0xFe;
+            andM = 0xFC;
         }else if(child.equals("2")){
-            andM = integerM & 0xFd;
+            andM = 0xF3;
         }else if(child.equals("3")){
-            andM = integerM & 0xFb;
+            andM = 0xCF;
         }
         String returnVal = String.valueOf(andM);
-        if(returnVal.length()<2){
+        /*if(returnVal.length()<2){
             returnVal = "0"+returnVal;
-        }
+        }*/
         return returnVal;
     }
 
@@ -881,16 +881,16 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         Integer integerM = Integer.valueOf(val);
         Integer andM = 0;
         if(child.equals("1")){
-            andM = integerM | 0x01;
+            andM = 0xFE;
         }else if(child.equals("2")){
-            andM = integerM | 0x02;
+            andM = 0xF7;
         }else if(child.equals("3")){
-            andM = integerM | 0x04;
+            andM = 0xDF;
         }
         String returnVal = String.valueOf(andM);
-        if(returnVal.length()<2){
-            returnVal = "0"+returnVal;
-        }
+//        if(returnVal.length()<2){
+//            returnVal = "0"+returnVal;
+//        }
         return returnVal;
     }
 
