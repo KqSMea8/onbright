@@ -808,35 +808,27 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
     }
 
     private String andOpt(String val,String child){
-        Integer andM = 0;
+        String andM = "";
         if(child.equals("1")){
-            andM = 0xFC;
+            andM = "FC";
         }else if(child.equals("2")){
-            andM = 0xF3;
+            andM = "F3";
         }else if(child.equals("3")){
-            andM = 0xCF;
+            andM = "CF";
         }
-        String returnVal = String.valueOf(andM);
-        /*if(returnVal.length()<2){
-            returnVal = "0"+returnVal;
-        }*/
-        return returnVal;
+        return andM;
     }
 
     private String orOpt(String val,String child){
-        Integer andM = 0;
+        String andM = "";
         if(child.equals("1")){
-            andM = 0xFE;
+            andM = "FE";
         }else if(child.equals("2")){
-            andM = 0xF7;
+            andM = "F7";
         }else if(child.equals("3")){
-            andM = 0xDF;
+            andM = "DF";
         }
-        String returnVal = String.valueOf(andM);
-//        if(returnVal.length()<2){
-//            returnVal = "0"+returnVal;
-//        }
-        return returnVal;
+        return andM;
     }
 
     private String changeState(String deviceState,String value){
