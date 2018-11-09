@@ -239,7 +239,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
             tMallDeviceAdapter.setModel("两键键开关");
             tMallDeviceAdapter.setDeviceName("两键开关");
             tMallDeviceAdapter.setIcon(mutipleOutleticon);
-        }else if(deviceType.equals("switch")&&(childType.equals("17")||childType.equals("2b"))){
+        }else if(deviceType.equals("switch")&&(childType.equals("17")||childType.equals("2b")||childType.equals("53"))){
             tMallDeviceAdapter.setModel("三键开关");
             tMallDeviceAdapter.setDeviceName("三键开关");
             tMallDeviceAdapter.setIcon(mutipleOutleticon);
@@ -344,7 +344,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                 jsonArray.put(dfMap);
                 singleswitch.setProperties(jsonArray);
                 return singleswitch;
-            }else if(deviceChildType.equals("02")||deviceChildType.equals("15")){//一路开关
+            }else if(deviceChildType.equals("02")||deviceChildType.equals("15")||deviceChildType.equals("51")){//一路开关
                 oboxDeviceConfig.setDeviceType("switch");
                 SingleSwitch singleswitch = new SingleSwitch();
                 setProperty(singleswitch,oboxDeviceConfig);
@@ -743,7 +743,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
 
                 }
             }else if((name).equals(propertyArr[0])&&obdeviceType.equals("04")
-                    &&(obChildType.equals("2b")||obChildType.equals("53")||obChildType.equals("2a")||obChildType.equals("51"))){//2键及以上的开关
+                    &&(obChildType.equals("2b")||obChildType.equals("53")||obChildType.equals("2a"))){//2键及以上的开关
                 deviceState = changeMutipleOutLet(deviceState,value,deviceId,"24");
             }else if((name).equals(propertyArr[0])&&obdeviceType.equals("04")&&(obChildType.equals("17")
                     ||obChildType.equals("16"))){
