@@ -271,7 +271,10 @@ public class TmallController {
 						adapter.setRedisBussines(redisBussines);
 						paramMap = adapter.TMall2Obright();
 						logger.info("paramMap ====== "+paramMap);
-						facadeController.controlDevice(deviceId,(String)paramMap.get("deviceState"));
+						String status = (String)paramMap.get("deviceState");
+						if(status!=null){
+							facadeController.controlDevice(deviceId,status);
+						}
 					}
 				}
 			}catch (Exception e){
