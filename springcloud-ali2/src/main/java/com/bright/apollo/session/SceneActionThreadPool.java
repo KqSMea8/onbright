@@ -32,7 +32,6 @@ import com.bright.apollo.enums.NodeTypeEnum;
 import com.bright.apollo.enums.SystemEnum;
 import com.bright.apollo.service.AliDeviceConfigService;
 import com.bright.apollo.service.AliDeviceService;
-import com.bright.apollo.service.CMDMessageService;
 import com.bright.apollo.service.OboxDeviceConfigService;
 import com.bright.apollo.service.OboxService;
 import com.bright.apollo.service.SceneActionService;
