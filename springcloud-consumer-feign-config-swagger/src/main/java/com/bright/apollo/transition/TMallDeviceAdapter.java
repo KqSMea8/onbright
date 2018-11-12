@@ -508,10 +508,10 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
             Integer state = middle & 0x01;
             setOnOffState(map,state);
         }else if(child.equals("2")){
-            Integer state = middle & 0x02;
+            Integer state = middle & 0x04;
             setOnOffState(map,state);
         }else if(child.equals("3")){
-            Integer state = middle & 0x04;
+            Integer state = middle & 0x10;
             setOnOffState(map,state);
         }
         return map;
