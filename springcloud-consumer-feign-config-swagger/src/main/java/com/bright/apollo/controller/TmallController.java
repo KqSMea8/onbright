@@ -100,7 +100,7 @@ public class TmallController {
 		String accessToken = (String)payload.get("accessToken");
 		logger.info(" ===== accessToken ====== "+accessToken);
 		OAuth2Authentication defaultOAuth2AccessToken = redisBussines.getObject("auth:"+accessToken,OAuth2Authentication.class);
-//		SecurityContextHolder.getContext().setAuthentication(defaultOAuth2AccessToken.getUserAuthentication());
+		SecurityContextHolder.getContext().setAuthentication(defaultOAuth2AccessToken.getUserAuthentication());
 		logger.info(" ===== redisToken ====== "+defaultOAuth2AccessToken);
 
 		if(requestHeaderMap.get("namespace").equals("AliGenie.Iot.Device.Discovery")){//天猫精灵发现设备
@@ -204,7 +204,7 @@ public class TmallController {
 			//====== 生成httpsClient end ======
 
 			try {
-				try {
+				/*try {
 					lock.lock();
 					String redisId = redisBussines.get("tmall_accept_id_"+deviceId);
 					if(StringUtils.isEmpty(redisId)){
@@ -217,15 +217,15 @@ public class TmallController {
 					logger.info(" ====== lock ===== setredis exception ====== "+e.getMessage());
 				}finally {
 					lock.unlock();
-				}
+				}*/
 
 				ResponseObject<TOboxDeviceConfig> responseObject = feignDeviceClient.getDevice(deviceId);
 				TOboxDeviceConfig oboxDeviceConfig = responseObject.getData();
 				if(oboxDeviceConfig !=null &&!oboxDeviceConfig.equals("")){
 					String deviceType = oboxDeviceConfig.getDeviceType();
-					String childType = oboxDeviceConfig.getDeviceChildType();
+//					String childType = oboxDeviceConfig.getDeviceChildType();
 					Map<String,Object> paramMap = null;
-					String acceptIds = "";
+					/*String acceptIds = "";
 					Thread.sleep(500);
 					acceptIds =redisBussines.get("tmall_accept_id_"+deviceId);
 					String[] idArr = null;
@@ -251,7 +251,8 @@ public class TmallController {
 								facadeController.controlDevice(deviceId,"00000000000000");
 							}
 
-					}else if(deviceType.equals("16")){
+					}else */
+						if(deviceType.equals("16")){
 						adapter = new TMallDeviceAdapter(playLoadMap,tMallTemplate,oboxDeviceConfig,header);
 						adapter.setRedisBussines(redisBussines);
 						paramMap = adapter.TMall2Obright();
@@ -270,7 +271,10 @@ public class TmallController {
 						adapter.setRedisBussines(redisBussines);
 						paramMap = adapter.TMall2Obright();
 						logger.info("paramMap ====== "+paramMap);
-						facadeController.controlDevice(deviceId,(String)paramMap.get("deviceState"));
+						String status = (String)paramMap.get("deviceState");
+						if(status!=null){
+							facadeController.controlDevice(deviceId,status);
+						}
 					}
 				}
 			}catch (Exception e){

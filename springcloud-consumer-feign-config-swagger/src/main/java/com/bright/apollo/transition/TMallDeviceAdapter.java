@@ -239,7 +239,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
             tMallDeviceAdapter.setModel("两键键开关");
             tMallDeviceAdapter.setDeviceName("两键开关");
             tMallDeviceAdapter.setIcon(mutipleOutleticon);
-        }else if(deviceType.equals("switch")&&(childType.equals("17")||childType.equals("2b"))){
+        }else if(deviceType.equals("switch")&&(childType.equals("17")||childType.equals("2b")||childType.equals("53"))){
             tMallDeviceAdapter.setModel("三键开关");
             tMallDeviceAdapter.setDeviceName("三键开关");
             tMallDeviceAdapter.setIcon(mutipleOutleticon);
@@ -344,7 +344,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
                 jsonArray.put(dfMap);
                 singleswitch.setProperties(jsonArray);
                 return singleswitch;
-            }else if(deviceChildType.equals("02")||deviceChildType.equals("15")){//一路开关
+            }else if(deviceChildType.equals("02")||deviceChildType.equals("15")||deviceChildType.equals("51")){//一路开关
                 oboxDeviceConfig.setDeviceType("switch");
                 SingleSwitch singleswitch = new SingleSwitch();
                 setProperty(singleswitch,oboxDeviceConfig);
@@ -508,10 +508,10 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
             Integer state = middle & 0x01;
             setOnOffState(map,state);
         }else if(child.equals("2")){
-            Integer state = middle & 0x02;
+            Integer state = middle & 0x04;
             setOnOffState(map,state);
         }else if(child.equals("3")){
-            Integer state = middle & 0x04;
+            Integer state = middle & 0x10;
             setOnOffState(map,state);
         }
         return map;
@@ -773,125 +773,62 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
     private String changeMutipleOutLet(String deviceState ,String value,String deviceId,String partition){
         String[] deviceIdArr = deviceId.split("_");
         String middle = "";
-        String id = deviceIdArr[0];
         String child = "";
         String val = null;
 
-//        lock.lock();
         if(deviceIdArr.length>1){
             child = deviceIdArr[1];
         }else{
-//            if(value.equals("off")){
-//                redisBussines.setValueWithExpire("tmall_device_all"+id,"000000000000",2);
-//            }else if(value.equals("on")){
-//                if(partition.equals("12")){
-//                    redisBussines.setValueWithExpire("tmall_device_all"+id,"03000000000",2);
-//                }else{
-//                    redisBussines.setValueWithExpire("tmall_device_all"+id,"000700000000",2);
-//                }
-//
-//            }
             return null;
         }
         String reVal = "";
-//        try{
-//            String exist = redisBussines.get("tmall_device_"+id);
-            String beginStr = null;
-            String endStr = null;
-//            if(exist!=null&&!exist.equals("")&&(exist.equals("000000000000")||exist.equals("000700000000")||exist.equals("03000000000"))){
-//                return exist;
-//            }else {
-                if(partition.equals("24")){
-//                    if(exist!=null&&!exist.equals("")){
-//                        middle = exist.substring(2,4);
-//                        beginStr = exist.substring(0,2);
-//                        endStr = exist.substring(4,exist.length());
-//                    }else{
-                        middle = deviceState.substring(2,4);
-                        beginStr = deviceState.substring(0,2);
-                        endStr = deviceState.substring(4,deviceState.length());
-//                    }
-                    if(value.equals("off")){
-                        val = andOpt(middle,child);
-                    }else if(value.equals("on")){
-                        val = orOpt(middle,child);
-                    }
-                    reVal = beginStr+val+endStr;
-                }else if(partition.equals("12")){
-//                    if(exist!=null&&!exist.equals("")){
-//                        beginStr = exist.substring(0,2);
-//                        endStr = exist.substring(2,exist.length());
-//                    }else{
-                        beginStr = deviceState.substring(0,2);
-                        endStr = deviceState.substring(2,deviceState.length());
-//                    }
-                    if(value.equals("off")){
-                        val = andOpt(beginStr,child);
-                    }else if(value.equals("on")){
-                        val = orOpt(beginStr,child);
-                    }
-                    reVal = val+endStr;
-                }
-//                redisBussines.setValueWithExpire("tmall_device_"+id,reVal,2);
-//            }
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }finally {
-//            lock.unlock();
-//        }
-
-//        long start = System.currentTimeMillis();
-//        long end = 0;
-//        String combindVal = "";
-//        while(true){
-//            end = System.currentTimeMillis();
-//            combindVal = redisBussines.get("tmall_device_all"+id);
-//            if(combindVal!=null && (combindVal.equals("000700000000")||combindVal.equals("000000000000")||combindVal.equals("030000000000"))){
-//                break;
-//            }else if(end-start>3000){
-//                break;
-//            }
-//        }
-//        if(combindVal!=null){
-//            return combindVal;
-//        }else{
-//
-//        }
+        String beginStr = null;
+        String endStr = null;
+        if(partition.equals("24")){
+                middle = deviceState.substring(2,4);
+                beginStr = deviceState.substring(0,2);
+                endStr = deviceState.substring(4,deviceState.length());
+            if(value.equals("off")){
+                val = andOpt(middle,child);
+            }else if(value.equals("on")){
+                val = orOpt(middle,child);
+            }
+            reVal = beginStr+val+endStr;
+        }else if(partition.equals("12")){
+                beginStr = deviceState.substring(0,2);
+                endStr = deviceState.substring(2,deviceState.length());
+            if(value.equals("off")){
+                val = andOpt(beginStr,child);
+            }else if(value.equals("on")){
+                val = orOpt(beginStr,child);
+            }
+            reVal = val+endStr;
+        }
         return reVal;
     }
 
     private String andOpt(String val,String child){
-        Integer integerM = Integer.valueOf(val);
-        Integer andM = 0;
+        String andM = "";
         if(child.equals("1")){
-            andM = integerM & 0xFe;
+            andM = "FC";
         }else if(child.equals("2")){
-            andM = integerM & 0xFd;
+            andM = "F3";
         }else if(child.equals("3")){
-            andM = integerM & 0xFb;
+            andM = "CF";
         }
-        String returnVal = String.valueOf(andM);
-        if(returnVal.length()<2){
-            returnVal = "0"+returnVal;
-        }
-        return returnVal;
+        return andM;
     }
 
     private String orOpt(String val,String child){
-        Integer integerM = Integer.valueOf(val);
-        Integer andM = 0;
+        String andM = "";
         if(child.equals("1")){
-            andM = integerM | 0x01;
+            andM = "FE";
         }else if(child.equals("2")){
-            andM = integerM | 0x02;
+            andM = "F7";
         }else if(child.equals("3")){
-            andM = integerM | 0x04;
+            andM = "DF";
         }
-        String returnVal = String.valueOf(andM);
-        if(returnVal.length()<2){
-            returnVal = "0"+returnVal;
-        }
-        return returnVal;
+        return andM;
     }
 
     private String changeState(String deviceState,String value){
