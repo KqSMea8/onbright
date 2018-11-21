@@ -621,7 +621,8 @@ public class CommonController {
 					}
 				}
 			}
-		} else if (CMDEnum.test.toString().equals(cmdEnum.toString())) {
+		} 
+		else if (CMDEnum.test.toString().equals(cmdEnum.toString())) {
 			String serialId = requestParam.getValue("serialId");
 			if (!StringUtils.isEmpty(serialId)) {
 				return facadeController.test(serialId);
