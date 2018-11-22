@@ -20,6 +20,7 @@ public class WxLoginVo {
 	
 	private String httpMethod;
 	
+	private String antUrl;
 	public String getUrl() {
 		return url;
 	}
@@ -42,6 +43,14 @@ public class WxLoginVo {
 
 	public void setCodeUrl(String codeUrl) {
 		this.codeUrl = codeUrl;
+	}
+
+	public String getAntUrl() {
+		return antUrl;
+	}
+
+	public void setAntUrl(String antUrl) {
+		this.antUrl = antUrl;
 	}
 	
 }

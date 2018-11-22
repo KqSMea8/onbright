@@ -45,4 +45,12 @@ public interface ServerGroupService {
 	 */
 	int deleteServerGroup(Integer groupId);
 
+	/**  
+	 * @param userId
+	 * @param groupId
+	 * @return  
+	 * @Description:  
+	 */
+	TServerGroup queryGroupByUserAndGroup(Integer userId, Integer groupId);
+
 }

@@ -9,43 +9,46 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import com.alibaba.fastjson.JSONArray;
-import com.bright.apollo.bean.PushExceptionMsg;
 import com.bright.apollo.bean.PushSystemMsg;
 import com.bright.apollo.cache.AliDevCache;
 import com.bright.apollo.common.entity.TAliDevTimer;
 import com.bright.apollo.common.entity.TAliDevice;
 import com.bright.apollo.common.entity.TAliDeviceConfig;
 import com.bright.apollo.common.entity.TAliDeviceUS;
+import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.common.entity.TScene;
 import com.bright.apollo.common.entity.TSceneAction;
+import com.bright.apollo.common.entity.TServerGroup;
 import com.bright.apollo.common.entity.TUser;
 import com.bright.apollo.common.entity.TUserScene;
 import com.bright.apollo.enums.AliRegionEnum;
 import com.bright.apollo.enums.CMDEnum;
 import com.bright.apollo.enums.DeviceTypeEnum;
-import com.bright.apollo.enums.ExceptionEnum;
 import com.bright.apollo.enums.NodeTypeEnum;
 import com.bright.apollo.enums.SystemEnum;
 import com.bright.apollo.service.AliDeviceConfigService;
 import com.bright.apollo.service.AliDeviceService;
+import com.bright.apollo.service.CMDMessageService;
 import com.bright.apollo.service.OboxDeviceConfigService;
+import com.bright.apollo.service.OboxService;
 import com.bright.apollo.service.SceneActionService;
 import com.bright.apollo.service.SceneService;
+import com.bright.apollo.service.ServerGroupService;
 import com.bright.apollo.service.SmsService;
 import com.bright.apollo.service.TopicServer;
 import com.bright.apollo.service.UserSceneService;
 import com.bright.apollo.service.UserService;
 import com.bright.apollo.tool.ByteHelper;
 import com.bright.apollo.tool.MobileUtil;
-import com.zz.common.util.StringUtils;
 
 @Component
 public class SceneActionThreadPool {
 	private static ExecutorService executor;
-
+	private final static String serverAddr = "020000ffff";
 	@Autowired
 	private AliDeviceService aliDeviceService;
 
@@ -57,32 +60,35 @@ public class SceneActionThreadPool {
 	private TopicServer topicServer;
 
 	@Autowired
+	private OboxService oboxService;
+	
+	@Autowired
 	private SceneActionService sceneActionService;
 
 	@Autowired
 	private OboxDeviceConfigService oboxDeviceConfigService;
-	
+
 	@Autowired
 	private SceneService sceneService;
-	
+
 	@Autowired
 	private UserSceneService userSceneService;
 
 	@Autowired
 	private UserService userService;
-	
-	//@Autowired
-	//private MsgService msgService;
-	
+
+	@Autowired
+	private ServerGroupService serverGroupService;
+
 	@Autowired
 	private SmsService smsService;
-	
+
 	@Autowired
 	private AliDeviceConfigService aliDeviceConfigService;
-	
+
 	@Autowired
 	private PushObserverManager pushObserverManager;
-	
+
 	private final Logger log = Logger.getLogger(SceneActionThreadPool.class);
 
 	public SceneActionThreadPool() {
@@ -203,37 +209,86 @@ public class SceneActionThreadPool {
 							byte[] sBytes = ByteHelper.hexStringToBytes(tSceneAction.getAction());
 							System.arraycopy(sBytes, 0, bodyBytes, 7, sBytes.length);
 							if (topicServer != null) {
-								CMDEnum cmd=CMDEnum.setting_node_status;
-								if(oboxDeviceConfig.getDeviceType().equals(DeviceTypeEnum.remote_led.getValue())){
-									cmd=CMDEnum.setting_remote_led;
+								CMDEnum cmd = CMDEnum.setting_node_status;
+								if (oboxDeviceConfig.getDeviceType().equals(DeviceTypeEnum.remote_led.getValue())) {
+									cmd = CMDEnum.setting_remote_led;
 								}
-								topicServer.pubTopic(cmd, bodyBytes,
-										oboxDeviceConfig.getOboxSerialId());
-								//TimeUnit.MILLISECONDS.sleep(250);
+								topicServer.pubTopic(cmd, bodyBytes, oboxDeviceConfig.getOboxSerialId());
+								// TimeUnit.MILLISECONDS.sleep(250);
 							}
 						}
-					}//add wifi
+					} // add wifi
 					else if (tSceneAction.getNodeType().equals(NodeTypeEnum.wifi.getValue())) {
-						TAliDeviceConfig aliDeviceConfig = aliDeviceConfigService.getAliDeviceConfigBySerializeId(tSceneAction.getActionid());
+						TAliDeviceConfig aliDeviceConfig = aliDeviceConfigService
+								.getAliDeviceConfigBySerializeId(tSceneAction.getActionid());
 						if (aliDeviceConfig != null) {
 							JSONArray array = JSONArray.parseArray(tSceneAction.getAction());
 							for (int i = 0; i < array.size(); i++) {
 								com.alibaba.fastjson.JSONObject jsonObject = array.getJSONObject(i);
 								if (jsonObject.getBoolean("data")) {
 									jsonObject.put("data", true);
-								}else {
+								} else {
 									jsonObject.put("data", false);
 								}
 							}
 							net.sf.json.JSONObject object = new net.sf.json.JSONObject();
 							object.put("command", "set");
-							object.element("value",array);
-//							object.put("value", value);
-							topicServer.requestDev(object,tSceneAction.getActionid(),array.toJSONString());
+							object.element("value", array);
+							// object.put("value", value);
+							topicServer.requestDev(object, tSceneAction.getActionid(), array.toJSONString());
 							aliDeviceConfig.setState(array.toJSONString());
 							aliDeviceConfigService.update(aliDeviceConfig);
-							log.info("array ====== "+array.toJSONString());
+							log.info("array ====== " + array.toJSONString());
 						}
+					} else if (tSceneAction.getNodeType().equals(NodeTypeEnum.group.getValue())) {
+						TServerGroup tServerGroup = serverGroupService
+								.querySererGroupById(Integer.parseInt(tSceneAction.getActionid()));
+						if (tServerGroup != null) {
+							if (tServerGroup.getGroupStyle().equals("00")) {
+							} else {
+								// TKey tKey =
+								// OboxBusiness.queryKeyByID(tServerGroup.getLicense());
+								// if (tKey != null) {
+								List<TObox> tOboxs =oboxService.queryOboxByGroupId(tServerGroup.getId());
+ 								int count = 0;
+								for (TObox tObox : tOboxs) {
+									ClientSession clientSession = sessionManager
+											.getClientSession(tObox.getOboxSerialId());
+									//if (clientSession != null) {
+	 
+										//clientSession.setAvaibleByte(~0);
+
+										byte[] bodyBytes = new byte[16];
+										byte[] oboxSerialIdBytes = ByteHelper.hexStringToBytes(serverAddr);
+										System.arraycopy(oboxSerialIdBytes, 0, bodyBytes, 0, oboxSerialIdBytes.length);
+										byte[] addrBytes = ByteHelper.hexStringToBytes(tServerGroup.getGroupAddr());
+										System.arraycopy(addrBytes, 0, bodyBytes, 5, addrBytes.length);
+
+										byte[] stateBytes = ByteHelper.hexStringToBytes(tSceneAction.getAction());
+										System.arraycopy(stateBytes, 0, bodyBytes, 7, stateBytes.length);
+										log.info("=======brefore send========");
+										log.info("====SceneActionThreadPool obox_serial_id:" + tObox.getOboxSerialId());
+										log.info("====SceneActionThreadPool startTime:" + startTime);
+										topicServer.pubTopic(CMDEnum.setting_node_status, bodyBytes, tObox.getOboxSerialId());
+										/*CMDMessageService.send(tObox, CMDEnum.setting_node_status, bodyBytes, 0, 0);
+										if (topicServer != null) {
+											CMDEnum cmd = CMDEnum.setting_node_status;
+											if (oboxDeviceConfig.getDeviceType().equals(DeviceTypeEnum.remote_led.getValue())) {
+												cmd = CMDEnum.setting_remote_led;
+											}
+											
+											// TimeUnit.MILLISECONDS.sleep(250);
+										}*/
+										// }
+									//}  
+								}
+								 
+								// }
+							}
+						}/* else {
+							tSceneAction.setIsSend(1);
+							tSceneAction.setSendTime(2);
+						}*/
 					}
 				}
 				TScene tScene = sceneService.getSceneBySceneNumber(sceneNumber);
@@ -244,50 +299,42 @@ public class SceneActionThreadPool {
 						if (tScene.getMsgAlter() == 1 || tScene.getMsgAlter() == 3) {
 							List<TUser> tUsers = userService.queryUserBySceneNumber(tScene.getSceneNumber());
 							for (TUser tUser : tUsers) {
-								//安防
-								/*log.info("====before push====");
-							 
-								PushExceptionMsg exceptionMsg=new PushExceptionMsg
-										(ExceptionEnum.alldevice.getValue(),
-												ExceptionEnum.pic.getValue(), tScene.getSceneNumber(), tUser.getId(), null,urlString);
-								//JPushService.sendAlter(tScene.getSceneName(), tUser.getUserName(), urlString);
-								pushObserverManager
-								.sendMessage(exceptionMsg,
-										null);
-							 
-								log.info("====after push====");*/
+								// 安防
+								/*
+								 * log.info("====before push====");
+								 * 
+								 * PushExceptionMsg exceptionMsg=new
+								 * PushExceptionMsg
+								 * (ExceptionEnum.alldevice.getValue(),
+								 * ExceptionEnum.pic.getValue(),
+								 * tScene.getSceneNumber(), tUser.getId(),
+								 * null,urlString);
+								 * //JPushService.sendAlter(tScene.getSceneName(
+								 * ), tUser.getUserName(), urlString);
+								 * pushObserverManager
+								 * .sendMessage(exceptionMsg, null);
+								 * 
+								 * log.info("====after push====");
+								 */
 							}
 						}
 					}
-					List<TUserScene> tUserScenes = userSceneService
-							.getUserSceneBySceneNum(tScene
-									.getSceneNumber());
+					List<TUserScene> tUserScenes = userSceneService.getUserSceneBySceneNum(tScene.getSceneNumber());
 					if (!tUserScenes.isEmpty()) {
 						for (TUserScene tUserScene : tUserScenes) {
-							TUser user = userService
-									.getUserByUserId(tUserScene
-											.getUserId());
+							TUser user = userService.getUserByUserId(tUserScene.getUserId());
 							if (user != null) {
-								if (tScene.getMsgAlter() == 2
-										|| tScene.getMsgAlter() == 3) {
+								if (tScene.getMsgAlter() == 2 || tScene.getMsgAlter() == 3) {
 									if (MobileUtil.checkMobile(user.getUserName())) {
-										log.info("===tUserPhones:"
-												+ user.getUserName());
-										smsService.sendScene(tScene.getSceneName(),
-												user.getUserName());
-										PushSystemMsg systemMsg = new PushSystemMsg(
-												SystemEnum.system
-														.getValue(),
-												SystemEnum.scene
-														.getValue(),
-												sceneNumber, null,
-												tScene.getSceneName()+ ",请注意！【昂宝电子】");
+										log.info("===tUserPhones:" + user.getUserName());
+										smsService.sendScene(tScene.getSceneName(), user.getUserName());
+										PushSystemMsg systemMsg = new PushSystemMsg(SystemEnum.system.getValue(),
+												SystemEnum.scene.getValue(), sceneNumber, null,
+												tScene.getSceneName() + ",请注意！【昂宝电子】");
 										log.info("====before push====");
-										pushObserverManager
-												.sendMessage(null,
-														systemMsg);
+										pushObserverManager.sendMessage(null, systemMsg);
 										log.info("====after push====");
-										tScene.setAlterNeed((byte)0);
+										tScene.setAlterNeed((byte) 0);
 									}
 								}
 							}

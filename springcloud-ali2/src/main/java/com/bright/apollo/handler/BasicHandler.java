@@ -48,6 +48,10 @@ public abstract class BasicHandler {
 	@Autowired
 	protected OboxDeviceConfigService oboxDeviceConfigService;
 	@Autowired
+	protected GroupDeviceService groupDeviceService;
+	@Autowired
+	protected ServerGroupService serverGroupService;
+	@Autowired
 	protected UserDeviceService userDeviceService;
 	@Autowired
 	protected DeviceChannelService deviceChannelService;
@@ -260,6 +264,47 @@ public abstract class BasicHandler {
 	public void setPushservice(PushService pushservice) {
 		this.pushservice = pushservice;
 	}
+	
+	public PushObserverManager getPushObserverManager() {
+		return pushObserverManager;
+	}
+
+	public void setPushObserverManager(PushObserverManager pushObserverManager) {
+		this.pushObserverManager = pushObserverManager;
+	}
+
+	public ServerGroupService getServerGroupService() {
+		return serverGroupService;
+	}
+
+	public void setServerGroupService(ServerGroupService serverGroupService) {
+		this.serverGroupService = serverGroupService;
+	}
+
+	public DeviceStatusService getDeviceStatusService() {
+		return deviceStatusService;
+	}
+
+	public void setDeviceStatusService(DeviceStatusService deviceStatusService) {
+		this.deviceStatusService = deviceStatusService;
+	}
+
+	public AliDeviceConfigService getAliDeviceConfigService() {
+		return aliDeviceConfigService;
+	}
+
+	public void setAliDeviceConfigService(AliDeviceConfigService aliDeviceConfigService) {
+		this.aliDeviceConfigService = aliDeviceConfigService;
+	}
+
+	public AliDeviceService getAliDeviceService() {
+		return aliDeviceService;
+	}
+
+	public void setAliDeviceService(AliDeviceService aliDeviceService) {
+		this.aliDeviceService = aliDeviceService;
+	}
+
 	public static List<TIntelligentFingerPush> initPush(String serialId) {
 		List<TIntelligentFingerPush> list = new ArrayList<TIntelligentFingerPush>();
 		TIntelligentFingerPush push = new TIntelligentFingerPush(serialId, FingerWarnEnum.jimmy.getCmd(),

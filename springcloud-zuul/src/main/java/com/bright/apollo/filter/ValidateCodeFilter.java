@@ -107,7 +107,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 			}
 
 		} else if (pathMatcher.match(wxLoginVo.getUrl(), request.getRequestURI())) {
-			// wx login
+			// wx login  for phone use wx login
 			try {
 				String wxToken = request.getParameter(wxLoginParamVo.getWxToken());
 				String openId = request.getParameter(wxLoginParamVo.getOpenId());
@@ -134,14 +134,14 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 				throw new InternalAuthenticationServiceException(e.getMessage());
 			}
 		} else if (pathMatcher.match(wxLoginVo.getCodeUrl(), request.getRequestURI())) {
-			// login/wx/code
+			// login/wx/code   for wx mini program
 			try {
 				String code = request.getParameter(wxLoginParamVo.getCode());
 				logger.info("===code:" + code);
 				if (StringUtils.isEmpty(code)) {
 					throw new InternalAuthenticationServiceException("code is null");
 				}
-				/*JSONObject wxToken = wxService.getWxToken(code, wxLoginParamVo.getAppId(), wxLoginParamVo.getSecret(),
+				JSONObject wxToken = wxService.getWxToken(code, wxLoginParamVo.getAppId(), wxLoginParamVo.getSecret(),
 						wxLoginParamVo.getGrantType(), wxLoginParamVo.getWxLoginUrl());
 				logger.info("===wxToken:"+wxToken);
 				if (wxToken == null || !wxToken.has("session_key") || !wxToken.has("openid")) {
@@ -154,8 +154,8 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 					}
 					cacheHelper.addOpenId(code, openId);
 					filterChain.doFilter(request, response);
-				}*/
-				cacheHelper.addOpenId(code, "o40G45XVBWdf8HKQCkN-9W74vNBk");
+				}
+			//	cacheHelper.addOpenId(code, "o40G45XVBWdf8HKQCkN-9W74vNBk");
 				filterChain.doFilter(request, response);
 			} catch (Exception e) {
 				logger.error("====error msg:" + e.getMessage());

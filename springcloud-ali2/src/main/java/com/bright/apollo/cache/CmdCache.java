@@ -100,4 +100,21 @@ public class CmdCache {
 	public void addIrName(String index,String name) {
 		redisBussines.setValueWithExpire("remoteName_"+index, name, medium_time);
 	}
+	/**  
+	 * @param key
+	 * @return  
+	 * @Description:  
+	 */
+	public String getValue(String key) {
+		 
+		return redisBussines.get(String.valueOf(key));
+	}
+	/**  
+	 * @param key
+	 * @Description:  
+	 */
+	public void deleteKey(String key) {
+		redisBussines.delete(key);
+		
+	}
 }

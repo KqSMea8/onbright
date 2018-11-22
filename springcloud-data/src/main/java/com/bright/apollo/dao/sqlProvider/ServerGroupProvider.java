@@ -45,22 +45,22 @@ public class ServerGroupProvider {
 			{
 				UPDATE("t_server_group");
 				if (!StringUtils.isEmpty(tServerGroup.getGroupName())) {
-					SET("group_name", "#{groupName}");
+					SET("group_name=#{groupName}");
 				}
 				if (!StringUtils.isEmpty(tServerGroup.getGroupState())) {
-					SET("group_state", "#{groupState}");
+					SET("group_state=#{groupState}");
 				}
 				if (!StringUtils.isEmpty(tServerGroup.getGroupType())) {
-					SET("group_type", "#{groupType}");
+					SET("group_type=#{groupType}");
 				}
 				if (!StringUtils.isEmpty(tServerGroup.getGroupChildType())) {
-					SET("group_child_type", "#{groupChildType}");
+					SET("group_child_type=#{groupChildType}");
 				}
 				if (!StringUtils.isEmpty(tServerGroup.getGroupAddr())) {
-					SET("group_addr", "#{groupAddr}");
+					SET("group_addr=#{groupAddr}");
 				}
 				if (!StringUtils.isEmpty(tServerGroup.getGroupStyle())) {
-					SET("group_style", "#{groupStyle}");
+					SET("group_style=#{groupStyle}");
 				}
 				WHERE("id=#{id}");
 			}

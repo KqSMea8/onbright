@@ -7,6 +7,7 @@ import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.cloud.netflix.hystrix.EnableHystrix;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 /**  
  *@Title:  
@@ -20,6 +21,7 @@ import org.springframework.cloud.netflix.hystrix.EnableHystrix;
 @EnableFeignClients
 @EnableCircuitBreaker
 @EnableHystrix
+@EnableAsync
 @MapperScan("com.bright.apollo.dao")
 public class DeviceApplication {
 	public static void main(String[] args) {

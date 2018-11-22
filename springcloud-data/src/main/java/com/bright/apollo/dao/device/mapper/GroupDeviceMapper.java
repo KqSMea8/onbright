@@ -2,14 +2,20 @@ package com.bright.apollo.dao.device.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectKey;
 import org.springframework.stereotype.Component;
 
 import com.bright.apollo.common.entity.TGroupDevice;
+import com.bright.apollo.dao.sqlProvider.AliDeviceConfigProvider;
+import com.bright.apollo.dao.sqlProvider.GroupDeviceProvider;
 
 /**  
  *@Title:  
@@ -48,5 +54,22 @@ public interface GroupDeviceMapper {
 			@Result(property = "lastOpTime",column = "last_op_time")
 			})
 	TGroupDevice queryDeviceGroup(@Param("groupId")Integer groupId, @Param("deviceSerialId")String deviceSerialId);
+
+	/**  
+	 * @param groupDevice
+	 * @return  
+	 * @Description:  
+	 */
+	@InsertProvider(type=GroupDeviceProvider.class,method="addDeviceGroup")
+	int addDeviceGroup(TGroupDevice groupDevice);
+
+	/**  
+	 * @param groupId
+	 * @param deviceSerialId
+	 * @return  
+	 * @Description:  
+	 */
+	@Delete("delete from t_group_device where device_serial_id = #{deviceSerialId} and group_id=#{groupId} ")
+	int deleteDeviceGroup(@Param("groupId")Integer groupId, @Param("deviceSerialId")String deviceSerialId);
 
 }

@@ -3,6 +3,7 @@ package com.bright.apollo.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.bright.apollo.common.entity.TGroupDevice;
 import com.bright.apollo.dao.device.mapper.GroupDeviceMapper;
@@ -15,6 +16,7 @@ import com.bright.apollo.service.GroupDeviceService;
  *@Since:2018年10月30日  
  *@Version:1.1.0  
  */
+@Service
 public class GroupDeviceServiceImpl implements GroupDeviceService{
 	@Autowired
 	private GroupDeviceMapper mapper;
@@ -34,5 +36,22 @@ public class GroupDeviceServiceImpl implements GroupDeviceService{
 	@Override
 	public TGroupDevice queryDeviceGroup(Integer groupId, String deviceSerialId) {
  		return mapper.queryDeviceGroup(groupId,deviceSerialId);
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.GroupDeviceService#addDeviceGroup(com.bright.apollo.common.entity.TGroupDevice)  
+	 */
+	@Override
+	public int addDeviceGroup(TGroupDevice groupDevice) {
+		 
+		return mapper.addDeviceGroup(groupDevice);
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.GroupDeviceService#deleteDeviceGroup(java.lang.Integer, java.lang.String)  
+	 */
+	@Override
+	public int deleteDeviceGroup(Integer groupId, String deviceSerialId) {  
+		return mapper.deleteDeviceGroup(groupId,deviceSerialId);
 	}
 }

@@ -163,4 +163,13 @@ public class OboxServiceImpl implements OboxService {
  		return oboxMapper.getOboxByUserAndoboxSerialId(userId,oboxSerialId);
 	}
 
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.OboxService#queryOboxByGroupId(java.lang.Integer)  
+	 */
+	@Override
+	public List<TObox> queryOboxByGroupId(Integer groupId) {
+		 
+		return oboxMapper.queryOboxByGroupId(groupId);
+	}
+
 }

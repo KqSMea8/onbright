@@ -766,7 +766,7 @@ public class AliDeviceController {
 		yaokonyunDevice = yaoKongYunService.getYaoKongYunDevice();
 		if (yaokonyunDevice == null) {
 			yaokonyunDevice = createYaoKongYunDevice();
-			List<String> strings = new ArrayList<>();
+			List<String> strings = new ArrayList<String>();
 			strings.add("appid="+yaokonyunDevice.getAppId());
 			strings.add("f="+yaokonyunDevice.getDeviceId());
 			yaoKongYunSend.postMethod(null,yaokonyunDevice,yaoKongYunConfig.getUrlPrefix()+"?c=r");
