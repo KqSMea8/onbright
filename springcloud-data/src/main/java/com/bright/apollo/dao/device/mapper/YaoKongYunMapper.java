@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 @Repository
@@ -76,14 +77,14 @@ public interface YaoKongYunMapper {
             @Result(property = "name",column = "name"),
             @Result(property = "beRmodel",column = "be_rmodel"),
             @Result(property = "t_id",column = "t_id"),
-            @Result(property = "version",column = "version"),
+            @Result(property = "version",column = "version")
     })
     List<TYaokonyunRemoteControl> getYaokonyunRemoteControlByIds();
 
 
     @Insert(" insert into t_yaokonyun_remote_control(t_id,version,name,be_rmodel, " +
-            " rmodel,rdesc,order_no,zip,r_id,last_op_time) " +
-            " values(#{t_id},#{version},#{name},#{beRmodel},#{rmodel},#{rdesc},#{order_no},#{zip},#{r_id},#{lastOpTime})")
+            " rmodel,rdesc,order_no,zip,r_id,last_op_time,src) " +
+            " values(#{t_id},#{version},#{name},#{beRmodel},#{rmodel},#{rdesc},#{order_no},#{zip},#{r_id},#{lastOpTime},#{src})")
     void addYaokonyunRemoteControl(TYaokonyunRemoteControl yaokonyunRemoteControl);
 
     @Select("SELECT * FROM t_yaokonyun_brand where device_type=#{deviceTypeId}")
@@ -92,7 +93,7 @@ public interface YaoKongYunMapper {
             @Result(property = "bId",column = "b_id"),
             @Result(property = "name",column = "name"),
             @Result(property = "deviceType",column = "device_type"),
-            @Result(property = "common",column = "common"),
+            @Result(property = "common",column = "common")
     })
     List<TYaoKongYunBrand> getYaoKongYunBrandByDeviceType(@Param("deviceTypeId") String deviceTypeId);
 
@@ -101,4 +102,52 @@ public interface YaoKongYunMapper {
             " values(#{bId},#{name},#{deviceType},#{common},#{lastOpTime})")
     void addTYaoKongYunBrand(TYaoKongYunBrand yaoKongYunBrand);
 
+    @Select("SELECT id,src FROM t_yaokonyun_remote_control where r_id = #{remoteId}  ")
+    @Results(value = {
+            @Result(property = "id",column = "id"),
+            @Result(property = "src",column = "src")
+    })
+    TYaokonyunRemoteControl getYaokonyunRemoteControlByBrandId(@Param("remoteId")String remoteId);
+
+
+    @Insert(" insert into t_yaokonyun_key_code(src,`index`,analysisSrc,`key`,serialId,key_name,custom_name,remote_id, " +
+            " last_op_time,t_id,name,brandId,rmodel,version) " +
+            " values(#{src},#{index},#{analysisSrc},#{key},#{serialId},#{keyName},#{customName},#{remoteId},#{lastOpTime},#{tId},#{name},#{brandId},#{rmodel},#{version})")
+    void addTYaokonyunKeyCode(TYaokonyunKeyCode yaokonyunKeyCode);
+
+
+    @Select("select src,`key` from t_yaokonyun_key_code where `index` = #{index}")
+    @Results(value = {
+            @Result(property = "src",column = "src"),
+            @Result(property = "key",column = "key")
+    })
+    List<TYaokonyunKeyCode> getYaoKongKeyCodeByRemoteId(@Param("index")Integer index);
+
+
+    @Delete(" delete from t_yaokonyun_key_code where serialId = #{serialId} and index = #{index}")
+    void deleteTYaokonyunKeyCode(@Param("serialId")String serialId,@Param("index")String index);
+
+    @Delete(" delete from t_yaokonyun_key_code where serialId = #{serialId} and index = #{index} and key_name = #{keyName}")
+    void deleteTYaokonyunKeyCodeByKeyName(@Param("serialId")String serialId,@Param("index")String index,@Param("keyName")String keyName);
+
+    @Delete(" delete from t_yaokonyun_key_code where serialId = #{serialId} and index = #{index} and custom_name = #{customName}")
+    void deleteTYaokonyunKeyCodeByCustomName(@Param("serialId")String serialId,@Param("index")String index,@Param("customName")String customName);
+
+    @Delete(" delete from t_yaokonyun_key_code where serialId = #{serialId} ")
+    void deleteTYaokonyunKeyCodeBySerialId(@Param("serialId")String serialId);
+
+    @Select("select * from t_yaokonyun_key_code where serialId = #{serialId}")
+    @Results(value = {
+            @Result(property = "key",column = "key"),
+            @Result(property = "index",column = "index"),
+            @Result(property = "name",column = "name"),
+            @Result(property = "tId",column = "t_id"),
+            @Result(property = "keyName",column = "key_name"),
+            @Result(property = "customName",column = "custom_name")
+    })
+    List<TYaokonyunKeyCode> getYaoKongKeyCodeBySerialId(@Param("serialId")String serialId);
+
+
+    @Update(" update t_yaokonyun_key_code set name = #{name} where serialId = #{serialId} and `index` = #{index}")
+    void updateYaoKongKeyCodeNameBySerialIdAndIndex(@Param("serialId")String serialId,@Param("index")String index,@Param("name")String name);
 }

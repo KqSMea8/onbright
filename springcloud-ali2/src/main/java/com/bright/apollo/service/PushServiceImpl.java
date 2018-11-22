@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.bright.apollo.common.entity.PushMessage;
 import com.bright.apollo.mqtt.MqttGateWay;
 import com.bright.apollo.redis.RedisBussines;
+import com.bright.apollo.response.ResponseObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 @Component
@@ -29,8 +31,6 @@ public class PushServiceImpl implements PushService {
         StringBuilder sendStr = new StringBuilder();
         if(message!=null){
             sendStr.append("STR"+JSON.toJSONString(message)+"END");
-//            mqttGateWay.sendToMqtt("ob-smart.67A5AA91-880A-48F8-93C2-D91A2D32EEF3","STR===test67A5AA91-880A-48F8-93C2-D91A2D32EEF3===END");
-//            mqttGateWay.sendToMqtt("ob-smart.22DDBCF6-E304-4AD9-B9A2-13C4ED915A30","STR===22DDBCF6-E304-4AD9-B9A2-13C4ED915A30===END");
         }
         logger.info("====== sendStr ======  "+sendStr);
         Iterator<Integer> iterator = users.iterator();
@@ -43,17 +43,37 @@ public class PushServiceImpl implements PushService {
                 logger.info(" ====== send mqtt message ====== ");
                 mqttGateWay.sendToMqtt("ob-smart."+accessToken,sendStr.toString());
             }
-
-//            appKeyUserId = redisBussines.get("appkey_userId"+uId);
-//            if(!StringUtils.isEmpty(appKeyUserId)){
-//                String [] appKeyUserIdArr = appKeyUserId.split(":");
-//                for(int i=0;i<appKeyUserIdArr.length;i++){
-//                    if(appKeyUserIdArr[i] !=null&& !appKeyUserIdArr[i].equals("")){
-//                        mqttGateWay.sendToMqtt("ob-smart."+appKeyUserIdArr[i],sendStr.toString());
-//                    }
-//                }
-//            }
         }
+    }
 
+    @Override
+    public void pairIrRemotecode(Map<String,Object> map, Integer userId) {
+        String accessToken = (String)redisBussines.getObject("token_userId_"+userId);
+        StringBuilder sendStr = new StringBuilder();
+        if(map!=null){
+            sendStr.append("STR"+map.toString()+"END");
+        }
+        logger.info("pairIrRemotecode ====== Str ======= "+sendStr);
+        logger.info("====== accessToken ====== "+accessToken +" ====== userId ====== "+userId);
+        if(!StringUtils.isEmpty(accessToken)){
+            logger.info(" ====== send mqtt message ====== ");
+            mqttGateWay.sendToMqtt("ob-smart."+accessToken,sendStr.toString());
+        }
+        /*StringBuilder sendStr = new StringBuilder();
+        if(message!=null){
+            sendStr.append("STR"+JSON.toJSONString(message)+"END");
+        }
+        logger.info("====== sendStr ======  "+sendStr);
+        Iterator<Integer> iterator = users.iterator();
+        String tokenUserIdVal = "";
+        while (iterator.hasNext()){
+            Integer uId = iterator.next();
+            String accessToken = (String)redisBussines.getObject("token_userId_"+uId);
+            logger.info("====== accessToken ====== "+accessToken +" ====== userId ====== "+uId);
+            if(!StringUtils.isEmpty(accessToken)){
+                logger.info(" ====== send mqtt message ====== ");
+                mqttGateWay.sendToMqtt("ob-smart."+accessToken,sendStr.toString());
+            }
+        }*/
     }
 }

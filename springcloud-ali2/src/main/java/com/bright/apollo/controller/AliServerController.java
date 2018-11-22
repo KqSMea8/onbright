@@ -69,6 +69,9 @@ public class AliServerController {
 	@Autowired
 	private BaseRequest baseRequest;
 
+	@Autowired
+	private YaoKongYunService yaoKongYunService;
+
 //	@Autowired
 //	private QuartzService quartzService;
 
@@ -1163,6 +1166,7 @@ public class AliServerController {
 
 			aliDeviceService.deleteAliDeviceUser(deviceId);
 			aliDeviceConfigService.deleteAliDeviceConfig(deviceId);
+			yaoKongYunService.deleteTYaokonyunKeyCodeBySerialId(deviceId);//红外转发器码库删除
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {

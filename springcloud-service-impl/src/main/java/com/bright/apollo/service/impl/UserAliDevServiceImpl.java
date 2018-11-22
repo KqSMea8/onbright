@@ -46,4 +46,9 @@ public class UserAliDevServiceImpl implements UserAliDevService{
 		
 	}
 
+	@Override
+	public TUserAliDevice queryAliDeviceBySerialiId(String deviceSerialId) {
+		return mapper.queryAliDeviceBySerialiId(deviceSerialId);
+	}
+
 }

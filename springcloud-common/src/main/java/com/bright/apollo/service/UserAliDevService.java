@@ -31,4 +31,6 @@ public interface UserAliDevService {
 	 */
 	List<TUserAliDevice> queryAliUserId(String deviceSerialId);
 
+	TUserAliDevice queryAliDeviceBySerialiId(String deviceSerialId);
+
 }

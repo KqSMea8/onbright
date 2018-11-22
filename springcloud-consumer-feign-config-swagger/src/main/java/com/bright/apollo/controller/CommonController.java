@@ -493,57 +493,63 @@ public class CommonController {
 		} else if (CMDEnum.query_countdown.toString().equals(cmdEnum.toString())) {
 			String deviceId = requestParam.getValue("deviceId");
 			return facadeController.queryCountDown(deviceId);
-		}else if(CMDEnum.query_ir_testcode.toString().equals(cmdEnum.toString())){//手动匹配遥控方案
-			String brandId = requestParam.getValue("brandId");
-			String deviceType = requestParam.getValue("deviceType");
-            String appkey = requestParam.getValue("appkey");
-			return facadeController.getIrList(brandId,deviceType,appkey);
-		}else if(CMDEnum.query_ir_brand.toString().equals(cmdEnum.toString())){//获取遥控云品牌类型
-			String brandId = requestParam.getValue("brandId");
-			String deviceType = requestParam.getValue("deviceType");
-			String appkey = requestParam.getValue("appkey");
-			return facadeController.getIrBrandList(brandId, deviceType,appkey);
-		}else if (CMDEnum.query_remote_control_id.toString().equals(cmdEnum.toString())) {// 获取某个遥控器对应的详情码库
-
-			return null;
-		} else if (CMDEnum.query_remote_control_src.toString().equals(cmdEnum.toString())) {// 根据品牌ID、设备类型一键匹配遥控器列表
-
-			return null;
-		} else if (CMDEnum.bind_remote_control.toString().equals(cmdEnum.toString())) {// 绑定/解绑红外
-
-			return null;
-
-		}else if(CMDEnum.modify_ir_program.toString().equals(cmdEnum.toString())){//修改/新增红外方案编辑页面
-			String serialId = requestParam.getValue("serialId");
-			String irProgram = requestParam.getValue("ir_ program");
-			return facadeController.modifyIR(serialId,irProgram);
 		}else if(CMDEnum.query_ir_device_type.toString().equals(cmdEnum.toString())){//获取遥控云遥控类型
 			return facadeController.getIrTypeList();
-		}else if(CMDEnum.to_key_learn.toString().equals(cmdEnum.toString())){//进入学习状态
-			return null;
-		} else if (CMDEnum.modify_ir_program.toString().equals(cmdEnum.toString())) {// 修改红外转发器方案
+		}else if(CMDEnum.query_ir_brand.toString().equals(cmdEnum.toString())){//获取遥控云品牌类型
+			String deviceType = requestParam.getValue("deviceType");
+			return facadeController.getIrBrandList(deviceType);
+		}else if(CMDEnum.query_ir_device.toString().equals(cmdEnum.toString())){//获取红外遥控方案
 			String serialId = requestParam.getValue("serialId");
-			String irProgram = requestParam.getValue("ir_ program");
-			return facadeController.modifyIR(serialId, irProgram);
-		} else if (CMDEnum.to_key_learn.toString().equals(cmdEnum.toString())) {// 进入学习状态
+			facadeController.queryIrDevice(serialId);
+		}else if(CMDEnum.control_ir_device.toString().equals(cmdEnum.toString())){//控制转发命令
 			String serialId = requestParam.getValue("serialId");
-			String timeOut = requestParam.getValue("timeOut");
 			String index = requestParam.getValue("index");
-			String keyOrName = requestParam.getValue("key_or_name");
-			String learnKeyType = requestParam.getValue("key_or_name");
-			return facadeController.toLearn(serialId, timeOut, Integer.valueOf(index), keyOrName, learnKeyType);
-		} else if (CMDEnum.to_pair_code.toString().equals(cmdEnum.toString())) {// 进入对码模式
-
-			return null;
-		} else if (CMDEnum.send_test_code.toString().equals(cmdEnum.toString())) {// 发送测试码
-
-			return null;
-		} else if (CMDEnum.control_device.toString().equals(cmdEnum.toString())) {// 控制(红外)
+			String key = requestParam.getValue("key");
+			facadeController.controllIR(serialId,Integer.valueOf(index),key);
+		}else if(CMDEnum.delete_ir_device.toString().equals(cmdEnum.toString())){//删除红外遥控方案
+			String serialId = requestParam.getValue("serialId");
+			String index = requestParam.getValue("index");
+			facadeController.deleteIrDevice(serialId,index);
+		}else if(CMDEnum.rename_ir_device.toString().equals(cmdEnum.toString())){//重命名红外遥控方案
+			String serialId = requestParam.getValue("serialId");
+			String index = requestParam.getValue("index");
+			String name = requestParam.getValue("name");
+		}else if(CMDEnum.delete_ir_device_key.toString().equals(cmdEnum.toString())){//删除方案中特定按键
 			String serialId = requestParam.getValue("serialId");
 			String index = requestParam.getValue("index");
 			String key = requestParam.getValue("key");
 			String keyType = requestParam.getValue("keyType");
-			return facadeController.controllIR(serialId,Integer.valueOf(index),key);
+			facadeController.deleteIrDeviceKey(serialId,index,key,keyType);
+		}else if(CMDEnum.query_ir_testcode.toString().equals(cmdEnum.toString())){//手动匹配遥控方案
+			String brandId = requestParam.getValue("brandId");
+			String deviceType = requestParam.getValue("deviceType");
+			return facadeController.getIrList(brandId,deviceType);
+		}else if(CMDEnum.pair_ir_remotecode.toString().equals(cmdEnum.toString())){//一键匹配遥控方案
+			String brandId = requestParam.getValue("brandId");
+			String serialId = requestParam.getValue("serialId");
+			String timeout = requestParam.getValue("timeout");
+			return facadeController.pairIrRemotecode(brandId,serialId,Integer.valueOf(timeout));
+		}else if (CMDEnum.bind_ir_remotecode.toString().equals(cmdEnum.toString())) {// 手动匹配/一键匹配遥控方案——绑定码库方案
+			String deviceType = requestParam.getValue("deviceType");
+			String brandId = requestParam.getValue("brandId");
+			String remoteId = requestParam.getValue("remoteId");
+			String name = requestParam.getValue("name");
+			String serialId = requestParam.getValue("serialId");
+			return facadeController.bindIrRemotecode(brandId,deviceType,remoteId,name,serialId);
+		}else if (CMDEnum.create_ir_device.toString().equals(cmdEnum.toString())) {//学习遥控方案——新建自定义遥控器
+
+
+		}else if (CMDEnum.learn_ir_device_key.toString().equals(cmdEnum.toString())) {//学习遥控方案——进入按键学习模式
+			String keyType = requestParam.getValue("keyType");
+			String key = requestParam.getValue("key");
+			String timeout = requestParam.getValue("timeout");
+			String serialId = requestParam.getValue("serialId");
+			String index = requestParam.getValue("index");
+			return facadeController.learnIrDeviceKey(serialId,index,keyType,key,timeout);
+		}else if(CMDEnum.modify_ir_program.toString().equals(cmdEnum.toString())){//修改/新增红外方案编辑页面
+			String serialId = requestParam.getValue("serialId");
+			String irProgram = requestParam.getValue("ir_ program");
+			return facadeController.modifyIR(serialId,irProgram);
 		}else if (CMDEnum.query_msg.toString().equals(cmdEnum.toString())) {
 			String count = requestParam.getValue("count");
 			String type = requestParam.getValue("type");

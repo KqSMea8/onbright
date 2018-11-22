@@ -100,7 +100,7 @@ public class TmallController {
 		String accessToken = (String)payload.get("accessToken");
 		logger.info(" ===== accessToken ====== "+accessToken);
 		OAuth2Authentication defaultOAuth2AccessToken = redisBussines.getObject("auth:"+accessToken,OAuth2Authentication.class);
-//		SecurityContextHolder.getContext().setAuthentication(defaultOAuth2AccessToken.getUserAuthentication());
+		SecurityContextHolder.getContext().setAuthentication(defaultOAuth2AccessToken.getUserAuthentication());
 		logger.info(" ===== redisToken ====== "+defaultOAuth2AccessToken);
 
 		if(requestHeaderMap.get("namespace").equals("AliGenie.Iot.Device.Discovery")){//天猫精灵发现设备
@@ -204,54 +204,14 @@ public class TmallController {
 			//====== 生成httpsClient end ======
 
 			try {
-				try {
-					lock.lock();
-					String redisId = redisBussines.get("tmall_accept_id_"+deviceId);
-					if(StringUtils.isEmpty(redisId)){
-						redisBussines.setValueWithExpire("tmall_accept_id_"+deviceId,originalId,3);
-					}else{
-						redisBussines.setValueWithExpire("tmall_accept_id_"+deviceId,redisId+","+originalId,3);
-					}
 
-				}catch (Exception e){
-					logger.info(" ====== lock ===== setredis exception ====== "+e.getMessage());
-				}finally {
-					lock.unlock();
-				}
 
 				ResponseObject<TOboxDeviceConfig> responseObject = feignDeviceClient.getDevice(deviceId);
 				TOboxDeviceConfig oboxDeviceConfig = responseObject.getData();
 				if(oboxDeviceConfig !=null &&!oboxDeviceConfig.equals("")){
 					String deviceType = oboxDeviceConfig.getDeviceType();
-					String childType = oboxDeviceConfig.getDeviceChildType();
 					Map<String,Object> paramMap = null;
-					String acceptIds = "";
-					Thread.sleep(500);
-					acceptIds =redisBussines.get("tmall_accept_id_"+deviceId);
-					String[] idArr = null;
-					if (acceptIds!=null){
-						idArr = acceptIds.split(",");
-					}
-					if(deviceType.equals("04")&&
-							(childType.equals("2b")||childType.equals("53")||
-							childType.equals("2a")||childType.equals("17") ||
-							childType.equals("16"))&&idArr!=null&&idArr.length>1){
-							if(name.equals("TurnOn")){
-								logger.info("=========== controll ======= on ======= "+originalId);
-								if(childType.equals("2a") ){
-									facadeController.controlDevice(deviceId,"03000000000000");
-								}else if(childType.equals("16")){
-									facadeController.controlDevice(deviceId,"00030000000000");
-								}else{
-									facadeController.controlDevice(deviceId,"00070000000000");
-								}
-
-							}else if(name.equals("TurnOff")){
-								logger.info("=========== controll ======= off ====== "+originalId);
-								facadeController.controlDevice(deviceId,"00000000000000");
-							}
-
-					}else if(deviceType.equals("16")){
+						if(deviceType.equals("16")){
 						adapter = new TMallDeviceAdapter(playLoadMap,tMallTemplate,oboxDeviceConfig,header);
 						adapter.setRedisBussines(redisBussines);
 						paramMap = adapter.TMall2Obright();
@@ -269,8 +229,10 @@ public class TmallController {
 						adapter = new TMallDeviceAdapter(playLoadMap,tMallTemplate,oboxDeviceConfig,header);
 						adapter.setRedisBussines(redisBussines);
 						paramMap = adapter.TMall2Obright();
-						logger.info("paramMap ====== "+paramMap);
-						facadeController.controlDevice(deviceId,(String)paramMap.get("deviceState"));
+						String status = (String)paramMap.get("deviceState");
+						if(status!=null){
+							facadeController.controlDevice(deviceId,status);
+						}
 					}
 				}
 			}catch (Exception e){

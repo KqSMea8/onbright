@@ -118,7 +118,7 @@ public class RedisBussines {
 
      //插入list
      public <T> void  setList(String listName,List<T> list){
-         List<T> redisList = (List<T>)redisTemplate.opsForValue().get(listName);
+         List<T> redisList = (List<T>)redisTemplate.opsForList().range(listName,0,-1);
          if (redisList !=null){
              redisTemplate.delete(listName);
          }

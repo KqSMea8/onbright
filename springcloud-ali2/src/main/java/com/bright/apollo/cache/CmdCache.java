@@ -5,6 +5,8 @@ import org.springframework.stereotype.Component;
 
 import com.bright.apollo.redis.RedisBussines;
 
+import java.util.List;
+
 /**  
  *@Title:  
  *@Description:  
@@ -14,6 +16,9 @@ import com.bright.apollo.redis.RedisBussines;
  */
 @Component
 public class CmdCache {
+
+	private static int medium_time=5*60;
+
 	@Autowired
 	private RedisBussines redisBussines;
 	public void saveAddLocalSceneInfo(String sceneName,String oboxSerialId,String sceneGroup,int oboxSceneNumber,int sceneNumebr) {
@@ -45,6 +50,54 @@ public class CmdCache {
 	}
 
 	public String getIrTestCodeAppKeyBrandIdDeviceType(String key) {
-		return redisBussines.get(String.valueOf(key)+"_sp");
+		return redisBussines.get(key);
+	}
+
+	public void setIRDeviceInfoList(String listName,List list){
+		redisBussines.setList(listName,list);
+	}
+
+	public List getIRDeviceInfoList(String listName){
+		return redisBussines.getList(listName);
+	}
+
+	public void addIrTestCodeSerialId(String  serialId,String index) {
+		redisBussines.setValueWithExpire("serialId_"+index, serialId, medium_time);
+	}
+
+	public void addIrIndexBySerialId(String  serialId,String index) {
+		redisBussines.setValueWithExpire("indexBySerialId_"+serialId, index, medium_time);
+	}
+
+	public void addIrTestCodeKeyNameType(String index, String  keyNameType) {
+		redisBussines.setValueWithExpire("keyNameType_"+index, keyNameType, medium_time);
+	}
+
+	public void addIrTestCodeKeyName(String index, String  keyName) {
+		redisBussines.setValueWithExpire("keyName_"+index, keyName, medium_time);
+	}
+
+	public void addIrIndex(String index) {
+		redisBussines.setValueWithExpire("index_"+index, index, medium_time);
+	}
+
+	public void addIrBrandId(String index,String brandId) {
+		redisBussines.setValueWithExpire("brandId_"+index, brandId, medium_time);
+	}
+
+	public void addIrBrandIdBySerialId(String serialId,String brandId) {
+		redisBussines.setValueWithExpire("brandId_"+serialId, brandId, medium_time);
+	}
+
+	public void addIrDeviceType(String index,String deviceType) {
+		redisBussines.setValueWithExpire("deviceType_"+index, deviceType, medium_time);
+	}
+
+	public void addIrDeviceTypeBySerialId(String serialId,String deviceType) {
+		redisBussines.setValueWithExpire("deviceType_"+serialId, deviceType, medium_time);
+	}
+
+	public void addIrName(String index,String name) {
+		redisBussines.setValueWithExpire("remoteName_"+index, name, medium_time);
 	}
 }

@@ -5574,8 +5574,7 @@ public class FacadeController extends BaseController {
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/getIrList", method = RequestMethod.POST)
 	public ResponseObject<Map<String, Object>> getIrList(@RequestParam(required = true, value = "brandId") String brandId,
-														 @RequestParam(required = true, value = "deviceType") String deviceType,
-														 @RequestParam(required = true, value = "appkey") String appkey) {
+														 @RequestParam(required = true, value = "deviceType") String deviceType) {
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		try {
 			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -5592,10 +5591,8 @@ public class FacadeController extends BaseController {
 				return res;
 			}
 
-			cmdCache.addIrTestCodeAppKeyBrandIdDeviceType(appkey,brandId,deviceType,IndexUtils.getIdx());
-			feignAliClient.getIrList(brandId,deviceType,appkey);
-			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
-			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+			res = feignAliClient.getIrList(brandId,deviceType);
+
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
@@ -5603,6 +5600,40 @@ public class FacadeController extends BaseController {
 		}
 		return res;
 	}
+
+
+	@ApiOperation(value = "pairIrRemotecode", httpMethod = "POST", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/pairIrRemotecode", method = RequestMethod.POST)
+	public ResponseObject<Map<String, Object>> pairIrRemotecode(@RequestParam(required = true, value = "brandId") String brandId,
+																@RequestParam(required = true, value = "serialId") String serialId,
+																@RequestParam(required = true, value = "timeout") Integer timeout) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+
+			res = feignAliClient.pairIrRemotecode(brandId,serialId,timeout);
+
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
 
 	@ApiOperation(value = "toLearn", httpMethod = "POST", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
@@ -5701,6 +5732,69 @@ public class FacadeController extends BaseController {
 		return res;
 	}
 
+	@ApiOperation(value = "deleteIrDevice", httpMethod = "POST", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/deleteIrDevice", method = RequestMethod.POST)
+	public ResponseObject<Map<String, Object>> deleteIrDevice(@RequestParam(required = true, value = "serialId") String serialId,
+															  @RequestParam(required = true, value = "index") String index) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+			feignAliClient.deleteIrDevice(serialId,index);
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	@ApiOperation(value = "deleteIrDeviceKey", httpMethod = "POST", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/deleteIrDeviceKey", method = RequestMethod.POST)
+	public ResponseObject<Map<String, Object>> deleteIrDeviceKey(@RequestParam(required = true, value = "serialId") String serialId,
+																 @RequestParam(required = true, value = "index") String index,
+																 @RequestParam(required = true, value = "key") String key,
+																 @RequestParam(required = true, value = "keyType") String keyType) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+			res = feignAliClient.deleteIrDeviceKey(serialId,index,key,keyType);
+
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
 	/**
 	 * @return
 	 * @Description:
@@ -5753,9 +5847,7 @@ public class FacadeController extends BaseController {
 				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
 				return res;
 			}
-
-			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
-			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+			res = feignAliClient.getIrTypeList();
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
@@ -5767,9 +5859,7 @@ public class FacadeController extends BaseController {
 	@ApiOperation(value = "getIrBrandList", httpMethod = "POST", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/getIrBrandList", method = RequestMethod.POST)
-	public ResponseObject<Map<String, Object>> getIrBrandList(@RequestParam(required = true, value = "brandId") String brandId,
-															  @RequestParam(required = true, value = "deviceType") String deviceType,
-															  @RequestParam(required = true, value = "appkey") String appkey) {
+	public ResponseObject<Map<String, Object>> getIrBrandList(@RequestParam(required = true, value = "deviceType") String deviceType) {
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		try {
 			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -5786,9 +5876,7 @@ public class FacadeController extends BaseController {
 				return res;
 			}
 
-			feignAliClient.getIrList(brandId,deviceType,appkey);
-			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
-			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+			res = feignAliClient.getIrBrandList(deviceType);
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
@@ -5796,6 +5884,132 @@ public class FacadeController extends BaseController {
 		}
 		return res;
 	}
+
+	// 手动匹配/一键匹配遥控方案——绑定码库方案
+	@ApiOperation(value = "bindIrRemotecode", httpMethod = "POST", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/bindIrRemotecode", method = RequestMethod.POST)
+	public ResponseObject<Map<String, Object>> bindIrRemotecode(@RequestParam(required = true, value = "brandId") String brandId,
+																@RequestParam(required = true, value = "deviceType") String deviceType,
+																@RequestParam(required = true, value = "remoteId") String remoteId,
+																@RequestParam(required = true, value = "name") String name,
+																@RequestParam(required = true, value = "serialId") String serialId) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+			res = feignAliClient.bindIrRemotecode(brandId,deviceType,remoteId,name,serialId);
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	//学习遥控方案——进入按键学习模式
+	@ApiOperation(value = "learnIrDeviceKey", httpMethod = "POST", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/learnIrDeviceKey", method = RequestMethod.POST)
+	public ResponseObject<Map<String, Object>> learnIrDeviceKey(@RequestParam(required = true, value = "serialId") String serialId,
+																@RequestParam(required = true, value = "index") String index,
+																@RequestParam(required = true, value = "keyType") String keyType,
+																@RequestParam(required = true, value = "key") String key,
+																@RequestParam(required = true, value = "timeout") String timeout) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+			res = feignAliClient.learnIrDeviceKey(serialId,index,keyType,key,timeout);
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+    //获取红外遥控方案
+    @ApiOperation(value = "queryIrDevice", httpMethod = "POST", produces = "application/json")
+    @ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+    @RequestMapping(value = "/queryIrDevice", method = RequestMethod.POST)
+    public ResponseObject<Map<String, Object>> queryIrDevice(@RequestParam(required = true, value = "serialId") String serialId) {
+        ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+        try {
+            UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if (StringUtils.isEmpty(principal.getUsername())) {
+                res.setStatus(ResponseEnum.RequestParamError.getStatus());
+                res.setMessage(ResponseEnum.RequestParamError.getMsg());
+                return res;
+            }
+            ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+            if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+                    || resUser.getData() == null) {
+                res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+                res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+                return res;
+            }
+            res = feignAliClient.queryIrDevice(serialId);
+        } catch (Exception e) {
+            logger.error("===error msg:" + e.getMessage());
+            res.setStatus(ResponseEnum.Error.getStatus());
+            res.setMessage(ResponseEnum.Error.getMsg());
+        }
+        return res;
+    }
+
+    //获取红外遥控方案
+    @ApiOperation(value = "renameIrDevice", httpMethod = "POST", produces = "application/json")
+    @ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+    @RequestMapping(value = "/renameIrDevice", method = RequestMethod.POST)
+    public ResponseObject<Map<String, Object>> renameIrDevice(@RequestParam(required = true, value = "serialId") String serialId,
+                                                              @RequestParam(required = true, value = "index") String index,
+                                                              @RequestParam(required = true, value = "name") String name) {
+        ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+        try {
+            UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if (StringUtils.isEmpty(principal.getUsername())) {
+                res.setStatus(ResponseEnum.RequestParamError.getStatus());
+                res.setMessage(ResponseEnum.RequestParamError.getMsg());
+                return res;
+            }
+            ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+            if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+                    || resUser.getData() == null) {
+                res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+                res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+                return res;
+            }
+            res = feignAliClient.queryIrDevice(serialId);
+        } catch (Exception e) {
+            logger.error("===error msg:" + e.getMessage());
+            res.setStatus(ResponseEnum.Error.getStatus());
+            res.setMessage(ResponseEnum.Error.getMsg());
+        }
+        return res;
+    }
 
 	/**
 	 * @param groupName
