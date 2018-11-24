@@ -292,8 +292,8 @@ public class SceneActionThreadPool {
 				}
 				TScene tScene = sceneService.getSceneBySceneNumber(sceneNumber);
 				if (tScene != null) {
-					tScene.setSceneRun((byte) 0);
-					sceneService.updateScene(tScene);
+					//tScene.setSceneRun((byte) 0);
+					//sceneService.updateScene(tScene);
 					if (tScene.getMsgAlter() != 0) {
 						if (tScene.getMsgAlter() == 1 || tScene.getMsgAlter() == 3) {
 							List<TUser> tUsers = userService.queryUserBySceneNumber(tScene.getSceneNumber());
@@ -342,6 +342,12 @@ public class SceneActionThreadPool {
 				}
 			} catch (Exception e) {
 				log.error("===error msg:" + e.getMessage());
+			}finally {
+				TScene tScene = sceneService.getSceneBySceneNumber(sceneNumber);
+				if (tScene != null) {
+					tScene.setSceneRun((byte) 0);
+					sceneService.updateScene(tScene);
+				}
 			}
 		}
 	}
