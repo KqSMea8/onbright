@@ -49,8 +49,16 @@ public interface TUserAliDeviceMapper {
 			+ "b where b.device_serial_id=#{deviceSerialId} "
 			+ "and a.device_serial_id=b.device_serial_id")
 	@Results(value = {
-            @Result(property = "userId",column = "user_id")
-    })
+			@Result(property = "userId",column = "user_id")
+	})
 	public List<TUserAliDevice> queryAliUserId(@Param("deviceSerialId") String deviceSerialId);
+
+
+	@Select("select user_id from t_user_ali_device "
+			+ " where device_serial_id=#{deviceSerialId} ")
+	@Results(value = {
+			@Result(property = "userId",column = "user_id")
+	})
+	TUserAliDevice queryAliDeviceBySerialiId(String deviceSerialId);
 
 }

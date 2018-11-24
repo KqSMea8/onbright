@@ -1,25 +1,17 @@
 package com.bright.apollo.handler;
 
-import com.bright.apollo.common.entity.PushMessage;
-import com.bright.apollo.common.entity.TUserAliDevice;
-import com.bright.apollo.common.entity.TYaoKongYunBrand;
+import com.alibaba.fastjson.JSONArray;
+import com.bright.apollo.bean.MatchRemoteControlResult;
+import com.bright.apollo.cache.CmdCache;
+import com.bright.apollo.common.entity.*;
 import com.bright.apollo.service.PushService;
 import com.bright.apollo.service.UserAliDevService;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.config.CookieSpecs;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.config.Registry;
-import org.apache.http.config.RegistryBuilder;
-import org.apache.http.conn.socket.ConnectionSocketFactory;
-import org.apache.http.conn.socket.PlainConnectionSocketFactory;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
+import com.bright.apollo.service.YaoKongYunSend;
+import com.bright.apollo.tool.ByteHelper;
+import com.bright.apollo.tool.MD5;
+import com.bright.apollo.util.IndexUtils;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +31,12 @@ public class IRUploadHandler extends AliBaseHandler {
 
     @Autowired
     private UserAliDevService userAliDevService;
+
+    @Autowired
+    private CmdCache cmdCache;
+
+    @Autowired
+    private YaoKongYunSend yaoKongYunSend;
 
 
     @Override
@@ -68,8 +66,8 @@ public class IRUploadHandler extends AliBaseHandler {
 //                pushMsg(deviceSerialId, pushMessage);
 //            }
             //tudo 红外
-            jsonObject = ali2IR(deviceSerialId,object);
-            topicServer.pubIRTopic(null,null,deviceSerialId,jsonObject);
+            ali2IR(deviceSerialId,object);
+//            topicServer.pubIRTopic(null,null,deviceSerialId,jsonObject);
         }catch (Exception e){
             e.printStackTrace();
 //            jsonObject = new JSONObject();
@@ -85,80 +83,135 @@ public class IRUploadHandler extends AliBaseHandler {
     }
 
     //红外方法
-    private Map<String,Object> ali2IR(String deviceSerialId, JSONObject object) throws Exception {
+    private void ali2IR(String deviceSerialId, JSONObject object) throws Exception {
 
         logger.info(" ======= UploadHandler ali2IR start ====== ");
 
-        org.json.JSONArray jsonArray = null;
-        jsonArray = object.getJSONArray("value");
-        logger.info("UploadHandler jsonArray ====== "+ jsonArray);
-        logger.info("aliDevCache ====== "+aliDevCache);
-        String bId = aliDevCache.getValue("ir_"+deviceSerialId);//品牌ID
-        if(bId==null||bId.equals("")){
-            bId = "478";
+//        org.json.JSONArray jsonArray = null;
+//        jsonArray = object.getJSONArray("value");
+//        logger.info("UploadHandler jsonArray ====== "+ jsonArray);
+//        logger.info("aliDevCache ====== "+aliDevCache);
+//        String bId = aliDevCache.getValue("ir_"+deviceSerialId);//品牌ID
+//        if(bId==null||bId.equals("")){
+//            bId = "478";
+//        }
+//        List<TYaoKongYunBrand> yaoKongYunBrandList = yaoKongYunService.getYaoKongYunByTId(Integer.valueOf(bId));
+//        TYaoKongYunBrand yaoKongYunBrand = null;
+//        if(yaoKongYunBrandList !=null){
+//            yaoKongYunBrand = yaoKongYunBrandList.get(0);
+//        }else{
+//            yaoKongYunBrand = new TYaoKongYunBrand();
+//        }
+        Integer functionId = (Integer) object.get("functionId");
+        String data = (String) object.get("data");
+//        Integer functionId = Integer.valueOf(js.get("functionId").toString());
+        byte[] strByte = ByteHelper.hexStringToBytes(data);
+        String resStr = new String(strByte);//红外返回码
+        String index = cmdCache.getIrTestCodeAppKeyBrandIdDeviceType("index_"+deviceSerialId);
+        String brandId = cmdCache.getIrTestCodeAppKeyBrandIdDeviceType("brandId_"+index)==null?
+                cmdCache.getIrTestCodeAppKeyBrandIdDeviceType("brandId_"+deviceSerialId):cmdCache.getIrTestCodeAppKeyBrandIdDeviceType("brandId_"+index);
+        String deviceType = cmdCache.getIrTestCodeAppKeyBrandIdDeviceType("deviceType_"+index);
+//        String remoteName = cmdCache.getIrTestCodeAppKeyBrandIdDeviceType("remoteName_"+index);
+        logger.info("serialId ====== "+deviceSerialId);
+        logger.info("index ====== "+index);
+        logger.info("brandId ====== "+brandId);
+        logger.info("deviceType ====== "+deviceType);
+//        logger.info("name ====== "+remoteName);
+        Map<String,Object> resMap = new HashMap<String, Object>();
+        TUserAliDevice userAliDevice = userAliDevService.queryAliDeviceBySerialiId(deviceSerialId);
+        if(functionId==2){//学习红外上传
+            QueryRemoteBySrcDTO dto = new QueryRemoteBySrcDTO();
+            dto.setType(Integer.valueOf(deviceType));
+            dto.setBrandType(Integer.valueOf(brandId));
+            dto.setIndex(Integer.valueOf(index));
+            com.alibaba.fastjson.JSONObject jsonObject = new com.alibaba.fastjson.JSONObject();
+            jsonObject.put("key",resStr);
+            JSONArray jsonArray = new JSONArray();
+            jsonArray.add(jsonObject);
+            dto.setKeys(jsonArray);
+            dto.setExtendsKeys(new JSONArray());
+
+            resMap.put("type",20);
+            resMap.put("success",true);
+            resMap.put("serialId",deviceSerialId);
+            resMap.put("remote",dto);
+
+            pushservice.pairIrRemotecode(resMap,userAliDevice.getUserId());
+        }else if(functionId==3){//一键匹配红外上传
+            resMap = getRemoteControlList(brandId,"7",resStr);
+            resMap.put("type",21);
+            resMap.put("success",true);
+            resMap.put("serialId",deviceSerialId);
+            pushservice.pairIrRemotecode(resMap,userAliDevice.getUserId());
+
         }
-        List<TYaoKongYunBrand> yaoKongYunBrandList = yaoKongYunService.getYaoKongYunByTId(Integer.valueOf(bId));
-        TYaoKongYunBrand yaoKongYunBrand = null;
-        if(yaoKongYunBrandList !=null){
-            yaoKongYunBrand = yaoKongYunBrandList.get(0);
+//        return null;
+    }
+
+    private Map<String,Object> getRemoteControlList(String brandId,String deviceType,String src) throws Exception {
+        Map<String,Object> resMap = new HashMap<String,Object>();
+        TYaokonyunDevice yaokonyunDevice = getYaoKongDevice();
+        List<String> strings = new ArrayList<String>();
+        strings.add("bid="+brandId);
+        strings.add("t=7");
+        strings.add("r="+src);
+        strings.add("v=4");
+        strings.add("zip=1");
+        String result = yaoKongYunSend
+                .postMethod(strings,yaokonyunDevice,yaoKongYunConfig.getUrlPrefix()+"?c=l");
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+        MatchRemoteControlResult remoteControlResult = gson.fromJson(result,MatchRemoteControlResult.class);
+
+        if(remoteControlResult==null||remoteControlResult.getSm()==0){
+            resMap.put("sm",0);
+            resMap.put("rs",new ArrayList());
         }else{
-            yaoKongYunBrand = new TYaoKongYunBrand();
+            List<MatchRemoteControl>  list = remoteControlResult.getRs();
+            List<TYaokonyunRemoteControl> remoteControlList = new ArrayList<TYaokonyunRemoteControl>();
+            List<QueryRemoteBySrcDTO> dtoList = new ArrayList<QueryRemoteBySrcDTO>();
+            List<QueryRemoteBySrcDTO2> dtoSrcList = new ArrayList<QueryRemoteBySrcDTO2>();
+            for(MatchRemoteControl matchRemoteControl :list){
+                TYaokonyunRemoteControl tYaokonyunRemoteControl = new TYaokonyunRemoteControl(matchRemoteControl);
+                remoteControlList.add(tYaokonyunRemoteControl);
+                QueryRemoteBySrcDTO dto = new QueryRemoteBySrcDTO(matchRemoteControl);
+                QueryRemoteBySrcDTO2 srcDto = new QueryRemoteBySrcDTO2(matchRemoteControl);
+                Integer idx = IndexUtils.getIdx();
+                dto.setIndex(idx);
+                dto.setBrandType(Integer.valueOf(brandId));
+                srcDto.setIndex(idx);
+                srcDto.setBrandType(Integer.valueOf(brandId));
+                dtoList.add(dto);
+                dtoSrcList.add(srcDto);
+            }
+            cmdCache.setIRDeviceInfoList(brandId+"_"+deviceType+"_"+"_remoteControlList",dtoList);
+            cmdCache.setIRDeviceInfoList(brandId+"_"+deviceType+"_"+"_remoteControlListSrc",dtoSrcList);
+            resMap.put("rs",dtoList);
         }
-        JSONObject js = jsonArray.getJSONObject(0);
-        Integer functionId = Integer.valueOf(js.get("functionId").toString());
-        if(functionId==3){//下载测试码
-            RequestConfig requestConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD_STRICT).build();
-            HttpPost httpPost =new HttpPost(yaoKongYunConfig.getUrlPrefix());
-            Registry<ConnectionSocketFactory>
-                    socketFactoryRegistry =RegistryBuilder.<ConnectionSocketFactory>create().
-                    register("http", PlainConnectionSocketFactory.INSTANCE).build();
-            PoolingHttpClientConnectionManager connectionManager =
-                    new PoolingHttpClientConnectionManager(socketFactoryRegistry);
-            CloseableHttpClient httpClient = HttpClients.custom().
-                    setConnectionManager(connectionManager)
-                    .setDefaultRequestConfig(requestConfig).build();
-            List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-            nvps.add(new BasicNameValuePair("c", "m"));
-            nvps.add(new BasicNameValuePair("appid", yaoKongYunConfig.getAppId()));
-            nvps.add(new BasicNameValuePair("f", yaoKongYunConfig.getDeviceId()));
-            String data = (String)js.get("data");
-            nvps.add(new BasicNameValuePair("r", data));
-            nvps.add(new BasicNameValuePair("zip", "1"));
-            nvps.add(new BasicNameValuePair("bid", String.valueOf(yaoKongYunBrand.getbId())));
-            nvps.add(new BasicNameValuePair("t", String.valueOf(yaoKongYunBrand.getDeviceType())));
-            httpPost.setEntity(new UrlEncodedFormEntity(nvps));
-            CloseableHttpResponse closeableHttpResponse = httpClient.execute(httpPost);
-            logger.info("UploadHandler closeableHttpResponse ====== "+ closeableHttpResponse);
-
-            return getStateJson("3");
-        }else if(functionId==4){//遥控器学习码
-            //todo 保存遥控器学习码
-
-            return getStateJson("4");
-
-        }
-        return null;
+        return resMap;
     }
 
-    private Map<String,Object> getStateJson(String functionId) throws JSONException {
-        Map<String,Object> jsonObject = new HashMap<String, Object>();
-        Map<String,Object> valueObject = new HashMap<String, Object>();
-        jsonObject.put("respCode","200");
-        valueObject.put("functionId",functionId);
-        valueObject.put("data","true");
-        jsonObject.put("value",valueObject);
-        logger.info(" ======= UploadHandler getStateJson ====== "+jsonObject);
-        return jsonObject;
+    private TYaokonyunDevice getYaoKongDevice() throws Exception {
+        TYaokonyunDevice yaokonyunDevice = null;
+        yaokonyunDevice = yaoKongYunService.getYaoKongYunDevice();
+        if (yaokonyunDevice == null) {
+            yaokonyunDevice = createYaoKongYunDevice();
+            List<String> strings = new ArrayList<String>();
+            strings.add("appid="+yaokonyunDevice.getAppId());
+            strings.add("f="+yaokonyunDevice.getDeviceId());
+            yaoKongYunSend.postMethod(null,yaokonyunDevice,yaoKongYunConfig.getUrlPrefix()+"?c=r");
+        }
+
+        return yaokonyunDevice;
     }
 
-    private void pushMsg(String deviceSerialId,PushMessage pushMessage) throws Exception {
-        logger.info("upload pushMessage ====== "+pushMessage.toString());
-        List<TUserAliDevice> list=userAliDevService.queryAliUserId(deviceSerialId);
-        Set<Integer> setuser=new ConcurrentSkipListSet<Integer>();
-        for (TUserAliDevice tUserAliDevice : list) {
-            setuser.add(tUserAliDevice.getUserId());
-        }
-        pushservice.pushToApp(pushMessage, setuser);
+    private TYaokonyunDevice createYaoKongYunDevice() throws Exception {
+        TYaokonyunDevice device = new TYaokonyunDevice();
+        device.setDeviceId(MD5.getMD5Str(new Date().getTime() + ""));
+        device.setAppId("15027861733449");
+        yaoKongYunService.addYaoKongDevice(device);
+        return yaoKongYunService.getYaoKongYunDevice();
     }
+
+
 
 }

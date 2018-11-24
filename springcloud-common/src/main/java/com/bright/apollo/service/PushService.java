@@ -1,8 +1,10 @@
 package com.bright.apollo.service;
 
+import java.util.Map;
 import java.util.Set;
 
 import com.bright.apollo.common.entity.PushMessage;
+import com.bright.apollo.response.ResponseObject;
 
 /**  
  *@Title:  
@@ -13,4 +15,5 @@ import com.bright.apollo.common.entity.PushMessage;
  */
 public interface PushService {
 	void pushToApp(PushMessage message,Set<Integer> users );
+	void pairIrRemotecode(Map<String,Object> map, Integer userId);
 }

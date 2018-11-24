@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import com.bright.apollo.service.*;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,11 +37,6 @@ import com.bright.apollo.request.SceneActionDTO;
 import com.bright.apollo.request.SceneConditionDTO;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
-import com.bright.apollo.service.AliDeviceConfigService;
-import com.bright.apollo.service.AliDeviceService;
-import com.bright.apollo.service.OboxDeviceConfigService;
-import com.bright.apollo.service.ServerGroupService;
-import com.bright.apollo.service.TopicServer;
 import com.bright.apollo.service.AliRequest.BaseRequest;
 import com.bright.apollo.session.SceneActionThreadPool;
 import com.bright.apollo.tool.ByteHelper;
@@ -78,6 +74,9 @@ public class AliServerController {
 
 	@Autowired
 	private BaseRequest baseRequest;
+
+	@Autowired
+	private YaoKongYunService yaoKongYunService;
 
 //	@Autowired
 //	private QuartzService quartzService;
@@ -1125,6 +1124,7 @@ public class AliServerController {
 
 			aliDeviceService.deleteAliDeviceUser(deviceId);
 			aliDeviceConfigService.deleteAliDeviceConfig(deviceId);
+			yaoKongYunService.deleteTYaokonyunKeyCodeBySerialId(deviceId);//红外转发器码库删除
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {

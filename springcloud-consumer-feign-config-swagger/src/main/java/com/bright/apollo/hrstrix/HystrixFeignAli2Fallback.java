@@ -423,10 +423,11 @@ public class HystrixFeignAli2Fallback extends BasicHystrixFeignFallback implemen
 	}
 
 	@Override
-	public ResponseObject getIrList(String brandId, String deviceType,String appKey) {
+	public ResponseObject getIrList(String brandId, String deviceType) {
 		logger.warn("===ali server is break===");
 		return serverError();
 	}
+
 
 	@Override
 	public ResponseObject toLearn(String serialId, String timeOut, Integer index, String keyOrName, String learnKeyType) {
@@ -455,6 +456,48 @@ public class HystrixFeignAli2Fallback extends BasicHystrixFeignFallback implemen
 
 	@Override
 	public ResponseObject getIrBrandList(String deviceType) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
+	@Override
+	public ResponseObject bindIrRemotecode(String brandId, String deviceType, String remoteId, String name, String serialId) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
+	@Override
+	public ResponseObject deleteIrDevice(String serialId, String index) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
+	@Override
+	public ResponseObject deleteIrDeviceKey(String serialId, String index, String key, String keyType) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
+	@Override
+	public ResponseObject pairIrRemotecode(String brandId, String serialId, Integer timeout) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
+	@Override
+	public ResponseObject learnIrDeviceKey(String serialId, String index, String keyType, String key, String timeout) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
+	@Override
+	public ResponseObject queryIrDevice(String serialId) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
+	@Override
+	public ResponseObject renameIrDevice(String serialId, String index, String name) {
 		logger.warn("===ali server is break===");
 		return serverError();
 	}

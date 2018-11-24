@@ -26,6 +26,66 @@ public class TYaokonyunKeyCode {
 
     private String keyName;
 
+    private Integer remoteId;
+
+    private Integer brandId;
+
+    private Integer tId;
+
+    private String name;
+
+    private String rmodel;
+
+    private Integer version;
+
+    public Integer getBrandId() {
+        return brandId;
+    }
+
+    public void setBrandId(Integer brandId) {
+        this.brandId = brandId;
+    }
+
+    public Integer gettId() {
+        return tId;
+    }
+
+    public void settId(Integer tId) {
+        this.tId = tId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getRmodel() {
+        return rmodel;
+    }
+
+    public void setRmodel(String rmodel) {
+        this.rmodel = rmodel;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    public Integer getRemoteId() {
+        return remoteId;
+    }
+
+    public void setRemoteId(Integer remoteId) {
+        this.remoteId = remoteId;
+    }
+
     public String getCustomName() {
         return customName;
     }

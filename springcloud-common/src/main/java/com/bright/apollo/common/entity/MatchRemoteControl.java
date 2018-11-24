@@ -7,6 +7,8 @@ import java.util.HashMap;
 
 public class MatchRemoteControl extends RcDevice{
 
+    private static final long serialVersionUID = -3332l;
+
     public HashMap<String, KeyCode> getRcCommand() {
         return rcCommand;
     }

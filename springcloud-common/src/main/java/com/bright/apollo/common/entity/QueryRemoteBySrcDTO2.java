@@ -7,16 +7,15 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-public class QueryRemoteBySrcDTO implements Serializable {
+public class QueryRemoteBySrcDTO2 implements Serializable {
 //    @Expose
 //    @SerializedName("rc_command")
 //    @JsonProperty(value="rc_command")
 //    private HashMap<String,KeyCode> rcCommand;
-    private static final long serialVersionUID = -1l;
+    private static final long serialVersionUID = -2l;
 
     public JSONArray getKeys() {
         return keys;
@@ -91,10 +90,12 @@ public class QueryRemoteBySrcDTO implements Serializable {
     @JsonProperty(value="index")
     private Integer index;
 
-    public QueryRemoteBySrcDTO() {
+    public QueryRemoteBySrcDTO2() {
         super();
     }
-    public QueryRemoteBySrcDTO(MatchRemoteControl matchRemoteControl) {
+
+
+    public QueryRemoteBySrcDTO2(MatchRemoteControl matchRemoteControl) {
         super();
         this.rid=matchRemoteControl.getRid();
         this.name=matchRemoteControl.getName();
@@ -102,43 +103,13 @@ public class QueryRemoteBySrcDTO implements Serializable {
         this.version=matchRemoteControl.getVersion();
         this.rmodel=matchRemoteControl.getRmodel();
         Map<String, KeyCode> keyCodeMap =matchRemoteControl.getRcCommand();
-        Iterator<String> iterator = keyCodeMap.keySet().iterator();
-        String key = null;
-        while (iterator.hasNext()){
-            key = iterator.next();
-        }
         JSONArray keyArray = new JSONArray();
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("key",key);
+        jsonObject.put("keyCodeMap",keyCodeMap);
         keyArray.add(jsonObject);
         this.keys = keyArray;
         this.extendsKeys = new JSONArray();
     }
-
-    public QueryRemoteBySrcDTO(TYaokonyunKeyCode yaokonyunKeyCode) {
-        super();
-        this.name=yaokonyunKeyCode.getName();
-        String key = yaokonyunKeyCode.getKeyName();
-        String extendsKey = yaokonyunKeyCode.getCustomName();
-        JSONArray keyArray = new JSONArray();
-        JSONArray extendsKeyArray = new JSONArray();
-        if(key!=null && !key.equals("")){
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("key",key);
-            keyArray.add(jsonObject);
-        }
-        if(extendsKey !=null&&!extendsKey.equals("")){
-            JSONObject extendsJsonObject = new JSONObject();
-            extendsJsonObject.put("key",extendsKey);
-            extendsKeyArray.add(extendsJsonObject);
-        }
-        this.keys = keyArray;
-        this.extendsKeys = extendsKeyArray;
-        this.index = yaokonyunKeyCode.getIndex();
-        this.type = yaokonyunKeyCode.gettId();
-        this.brandType = yaokonyunKeyCode.getBrandId();
-    }
-
 
     public String getRmodel() {
         return rmodel;

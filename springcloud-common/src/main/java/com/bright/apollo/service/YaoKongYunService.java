@@ -3,6 +3,7 @@ package com.bright.apollo.service;
 import com.bright.apollo.common.entity.*;
 
 import java.util.List;
+import java.util.Map;
 
 public interface YaoKongYunService {
 
@@ -29,4 +30,20 @@ public interface YaoKongYunService {
     List<TYaoKongYunBrand> getYaoKongYunBrandByDeviceType(String deviceTypeId);
 
     void addTYaoKongYunBrand(TYaoKongYunBrand yaoKongYunBrand);
+
+    TYaokonyunRemoteControl getYaokonyunRemoteControlByRemoteId(String remoteId);
+
+    void addTYaokonyunKeyCode(TYaokonyunKeyCode yaokonyunKeyCode);
+
+    List<TYaokonyunKeyCode> getYaoKongKeyCodeByRemoteId(Integer index);
+
+    void deleteTYaokonyunKeyCode(String serialId,String index);
+
+    void deleteTYaokonyunKeyCodeByKeyName(String serialId,String index,String keyName,String keyType);
+
+    void deleteTYaokonyunKeyCodeBySerialId(String serialId);
+
+    List<TYaokonyunKeyCode> getYaoKongKeyCodeBySerialId(String serialId);
+
+    void updateYaoKongKeyCodeNameBySerialIdAndIndex(String serialId,String index,String name);
 }
