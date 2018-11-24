@@ -984,7 +984,7 @@ public class FacadeController extends BaseController {
 						if (groupRes != null && groupRes.getData() != null
 								&& groupRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()) {
 							TServerGroup tServerGroup = groupRes.getData();
-							tSceneAction.setActionid(tServerGroup.getId().intValue()+"");
+							tSceneAction.setActionid(tServerGroup.getId().intValue() + "");
 							tSceneAction.setNodeType(NodeTypeEnum.group.getValue());
 							feignSceneClient.addSceneAction(tSceneAction);
 						}
@@ -1179,7 +1179,7 @@ public class FacadeController extends BaseController {
 								resUser.getData().getId(), Integer.parseInt(sceneActionDTO.getGroupId()));
 						if (groupRes != null && groupRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()
 								&& groupRes.getData() != null) {
-							tSceneAction.setActionid(groupRes.getData().getId().intValue()+"");
+							tSceneAction.setActionid(groupRes.getData().getId().intValue() + "");
 							tSceneAction.setNodeType(NodeTypeEnum.single.getValue());
 							feignSceneClient.addSceneAction(tSceneAction);
 						}
@@ -1480,28 +1480,22 @@ public class FacadeController extends BaseController {
 									&& tSceneAction.getNodeType().equals(NodeTypeEnum.group.getValue())) {
 
 								TServerGroup tServerGroup = null;
-								if (!StringUtils.isEmpty(sceneActionDTO
-										.getGroupId())
-										&& Integer.parseInt(sceneActionDTO
-												.getGroupId()) != 0) {
+								if (!StringUtils.isEmpty(sceneActionDTO.getGroupId())
+										&& Integer.parseInt(sceneActionDTO.getGroupId()) != 0) {
 									ResponseObject<TServerGroup> groupRes = feignDeviceClient.queryGroupByUserAndGroup(
 											resUser.getData().getId(), Integer.parseInt(sceneActionDTO.getGroupId()));
-									if(groupRes!=null)
-										tServerGroup=groupRes.getData();
+									if (groupRes != null)
+										tServerGroup = groupRes.getData();
 								} else {
-									if (!StringUtils.isEmpty(sceneActionDTO
-											.getOboxSerialId())
-											&& !StringUtils
-													.isEmpty(sceneActionDTO
-															.getOboxGroupAddr())) {
-										
+									if (!StringUtils.isEmpty(sceneActionDTO.getOboxSerialId())
+											&& !StringUtils.isEmpty(sceneActionDTO.getOboxGroupAddr())) {
+
 									}
 								}
 								if (tServerGroup != null) {
-									if (tServerGroup.getId().intValue() == Integer.parseInt(tSceneAction
-											.getActionid())) {
-										if (!tSceneAction.getAction().equals(
-												sceneActionDTO.getAction())) {
+									if (tServerGroup.getId().intValue() == Integer
+											.parseInt(tSceneAction.getActionid())) {
+										if (!tSceneAction.getAction().equals(sceneActionDTO.getAction())) {
 											sceneActionDTO.setActionType(2);
 											needDTOs.add(sceneActionDTO);
 										}
@@ -1510,9 +1504,9 @@ public class FacadeController extends BaseController {
 										break;
 									}
 								}
-							
+
 							} else if (sceneActionDTO.getNodeType().equals(NodeTypeEnum.camera.getValue())
-										&& tSceneAction.getNodeType().equals(NodeTypeEnum.camera.getValue())) {
+									&& tSceneAction.getNodeType().equals(NodeTypeEnum.camera.getValue())) {
 								ResponseObject<TYSCamera> ysCameraRes = feignDeviceClient
 										.getYSCameraBySerialId(tSceneAction.getActionid());
 								// TYSCamera tysCamera =
@@ -6057,6 +6051,164 @@ public class FacadeController extends BaseController {
 			}
 			res = feignDeviceClient.actionGroup(groupId, groupState);
 			// res=feignDeviceClient.addServerGroup(groupName,resUser.getData().getId(),mList);
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	/**
+	 * @param mList
+	 * @Description:
+	 */
+	@ApiOperation(value = "createLocaltion", httpMethod = "PUT", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/createLocation/{building}/{room}", method = RequestMethod.POST)
+	public ResponseObject<Map<String, Object>> createLocation(@PathVariable(value = "building") String building,
+			@PathVariable(value = "room") String room, @RequestBody(required = false) List<String> mList) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+			return feignDeviceClient.createLocation(resUser.getData().getId(), building, room, mList);
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	/**
+	 * @param location
+	 * @Description:
+	 */
+	@ApiOperation(value = "deleteLocation", httpMethod = "DELETE", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/deleteLocation/{location}", method = RequestMethod.DELETE)
+	public ResponseObject<Map<String, Object>> deleteLocation(@PathVariable(value = "location") Integer location) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+			return feignDeviceClient.deleteLocation(location,resUser.getData().getId());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	/**
+	 * @param serialId
+	 * @param location
+	 * @param xAxis
+	 * @param yAxis
+	 * @param action
+	 * @return
+	 * @Description:
+	 */
+	@ApiOperation(value = "addDeviceLocation", httpMethod = "POST", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/addDeviceLocation/{serialId}/{location}/{xAxis}/{yAxis}/{action}", method = RequestMethod.POST)
+	public ResponseObject<Map<String, Object>> addDeviceLocation(@PathVariable(value = "serialId")String serialId, 
+			@PathVariable(value = "location")Integer location, 
+			@PathVariable(value = "xAxis")Integer xAxis,
+			@PathVariable(value = "yAxis")Integer yAxis,
+			@PathVariable(value = "action")String action) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+			 return feignDeviceClient.addDeviceLocation(serialId,location,xAxis,yAxis);
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	/**  
+	 * @param serialId
+	 * @param parseInt
+	 * @param parseInt2
+	 * @param parseInt3
+	 * @param action
+	 * @return  
+	 * @Description:  
+	 */
+	public ResponseObject deleteDeviceLocation(String serialId, int parseInt, int parseInt2, int parseInt3,
+			String action) {
+		// TODO Auto-generated method stub  
+		return null;
+	}
+
+	/**  
+	 * @param parseInt
+	 * @return  
+	 * @Description:  
+	 */
+	@ApiOperation(value = "updateLocation", httpMethod = "PUT", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/updateLocation/{location}", method = RequestMethod.PUT)
+	public ResponseObject<Map<String, Object>> updateLocation(@PathVariable(value = "location")Integer location,
+			@RequestParam(value = "building",required=false) String building,
+			@RequestParam(name="room",required=false) String room,
+			@RequestBody(required=true)List<String> mList) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+			return feignDeviceClient.updateLocation(location,resUser.getData().getId(),building,room,mList);
+			 //return feignDeviceClient.addDeviceLocation(serialId,location,xAxis,yAxis);
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());

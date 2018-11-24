@@ -493,17 +493,17 @@ public class CommonController {
 		} else if (CMDEnum.query_countdown.toString().equals(cmdEnum.toString())) {
 			String deviceId = requestParam.getValue("deviceId");
 			return facadeController.queryCountDown(deviceId);
-		}else if(CMDEnum.query_ir_testcode.toString().equals(cmdEnum.toString())){//手动匹配遥控方案
-			String brandId = requestParam.getValue("brandId");
-			String deviceType = requestParam.getValue("deviceType");
-            String appkey = requestParam.getValue("appkey");
-			return facadeController.getIrList(brandId,deviceType,appkey);
-		}else if(CMDEnum.query_ir_brand.toString().equals(cmdEnum.toString())){//获取遥控云品牌类型
+		} else if (CMDEnum.query_ir_testcode.toString().equals(cmdEnum.toString())) {// 手动匹配遥控方案
 			String brandId = requestParam.getValue("brandId");
 			String deviceType = requestParam.getValue("deviceType");
 			String appkey = requestParam.getValue("appkey");
-			return facadeController.getIrBrandList(brandId, deviceType,appkey);
-		}else if (CMDEnum.query_remote_control_id.toString().equals(cmdEnum.toString())) {// 获取某个遥控器对应的详情码库
+			return facadeController.getIrList(brandId, deviceType, appkey);
+		} else if (CMDEnum.query_ir_brand.toString().equals(cmdEnum.toString())) {// 获取遥控云品牌类型
+			String brandId = requestParam.getValue("brandId");
+			String deviceType = requestParam.getValue("deviceType");
+			String appkey = requestParam.getValue("appkey");
+			return facadeController.getIrBrandList(brandId, deviceType, appkey);
+		} else if (CMDEnum.query_remote_control_id.toString().equals(cmdEnum.toString())) {// 获取某个遥控器对应的详情码库
 
 			return null;
 		} else if (CMDEnum.query_remote_control_src.toString().equals(cmdEnum.toString())) {// 根据品牌ID、设备类型一键匹配遥控器列表
@@ -513,13 +513,13 @@ public class CommonController {
 
 			return null;
 
-		}else if(CMDEnum.modify_ir_program.toString().equals(cmdEnum.toString())){//修改/新增红外方案编辑页面
+		} else if (CMDEnum.modify_ir_program.toString().equals(cmdEnum.toString())) {// 修改/新增红外方案编辑页面
 			String serialId = requestParam.getValue("serialId");
 			String irProgram = requestParam.getValue("ir_ program");
-			return facadeController.modifyIR(serialId,irProgram);
-		}else if(CMDEnum.query_ir_device_type.toString().equals(cmdEnum.toString())){//获取遥控云遥控类型
+			return facadeController.modifyIR(serialId, irProgram);
+		} else if (CMDEnum.query_ir_device_type.toString().equals(cmdEnum.toString())) {// 获取遥控云遥控类型
 			return facadeController.getIrTypeList();
-		}else if(CMDEnum.to_key_learn.toString().equals(cmdEnum.toString())){//进入学习状态
+		} else if (CMDEnum.to_key_learn.toString().equals(cmdEnum.toString())) {// 进入学习状态
 			return null;
 		} else if (CMDEnum.modify_ir_program.toString().equals(cmdEnum.toString())) {// 修改红外转发器方案
 			String serialId = requestParam.getValue("serialId");
@@ -543,8 +543,8 @@ public class CommonController {
 			String index = requestParam.getValue("index");
 			String key = requestParam.getValue("key");
 			String keyType = requestParam.getValue("keyType");
-			return facadeController.controllIR(serialId,Integer.valueOf(index),key);
-		}else if (CMDEnum.query_msg.toString().equals(cmdEnum.toString())) {
+			return facadeController.controllIR(serialId, Integer.valueOf(index), key);
+		} else if (CMDEnum.query_msg.toString().equals(cmdEnum.toString())) {
 			String count = requestParam.getValue("count");
 			String type = requestParam.getValue("type");
 			String start = requestParam.getValue("start");
@@ -592,7 +592,7 @@ public class CommonController {
 								mList = (List<String>) ObjectUtils.fromJsonToObject(groupMember, List.class);
 							return facadeController.removeChildGroup(Integer.parseInt(groupId), mList);
 						}
-					}else if (operateType.equals(OperateTypeEnum.addChild.getValue())) {
+					} else if (operateType.equals(OperateTypeEnum.addChild.getValue())) {
 						if (!StringUtils.isEmpty(groupId) && NumberHelper.isNumeric(groupId)
 								&& !StringUtils.isEmpty(groupMember)) {
 							List<String> mList = null;
@@ -600,13 +600,13 @@ public class CommonController {
 								mList = (List<String>) ObjectUtils.fromJsonToObject(groupMember, List.class);
 							return facadeController.addChildGroup(Integer.parseInt(groupId), mList);
 						}
-					
-					}else if (operateType.equals(OperateTypeEnum.rename.getValue())) {
+
+					} else if (operateType.equals(OperateTypeEnum.rename.getValue())) {
 						if (!StringUtils.isEmpty(groupId) && NumberHelper.isNumeric(groupId)
 								&& !StringUtils.isEmpty(groupName)) {
 							return facadeController.reNameGroup(Integer.parseInt(groupId), groupName);
 						}
-					}else if (operateType.equals(OperateTypeEnum.action.getValue())) {
+					} else if (operateType.equals(OperateTypeEnum.action.getValue())) {
 						if (!StringUtils.isEmpty(groupId) && NumberHelper.isNumeric(groupId)
 								&& !StringUtils.isEmpty(groupState)) {
 							return facadeController.actionGroup(Integer.parseInt(groupId), groupState);
@@ -620,6 +620,47 @@ public class CommonController {
 						return facadeController.addServerGroup(groupName, mList);
 					}
 				}
+			}
+		} else if (CMDEnum.create_location.toString().equals(cmdEnum.toString())) {
+			String serialId = requestParam.getValue("serialId");
+			String location = requestParam.getValue("location");
+			String building = requestParam.getValue("building");
+			String room = requestParam.getValue("room");
+			String action = requestParam.getValue("action");
+			List<String> mList = (List<String>) ObjectUtils.fromJsonToObject(serialId, List.class);
+			if (StringUtils.isEmpty(location) && action.endsWith("01") && !StringUtils.isEmpty(building)
+					&& !StringUtils.isEmpty(room)) {
+				// create
+				return facadeController.createLocation(building, room, mList);
+			} else if (!StringUtils.isEmpty(location) && action.endsWith("00") && NumberHelper.isNumeric(location)) {// 删除，先删除device与location的映射,然后把location删了
+				// delete
+				return facadeController.deleteLocation(Integer.parseInt(location));
+			}else if(!StringUtils.isEmpty(location) && action.endsWith("01")){
+				return facadeController.updateLocation(Integer.parseInt(location),building,room,mList);
+			}
+		} else if (CMDEnum.set_device_location.toString().equals(cmdEnum.toString())) {
+			String serialId = requestParam.getValue("serialId");
+			String location = requestParam.getValue("location");
+			String x_axis = requestParam.getValue("x_axis");
+			String y_axis = requestParam.getValue("y_axis");
+			String action = requestParam.getValue("action");
+			/*
+			 * Assert.notNull(accessToken, "access_token can't be null!");
+			 * Assert.notNull(serialId, "serialId can't be null!");
+			 * Assert.notNull(location, "location can't be null!");
+			 * Assert.notNull(x_axis, "x_axis can't be null!");
+			 * Assert.notNull(y_axis, "y_axis can't be null!");
+			 * Assert.notNull(action, "action can't be null!");
+			 */
+			if (!StringUtils.isEmpty(serialId) && !StringUtils.isEmpty(location) && !StringUtils.isEmpty(x_axis)
+					&& !StringUtils.isEmpty(y_axis) && !StringUtils.isEmpty(action) && NumberHelper.isNumeric(location)
+					&& NumberHelper.isNumeric(x_axis) && NumberHelper.isNumeric(y_axis)) {
+				if(action.equals("00"))
+					return facadeController.deleteDeviceLocation(serialId, Integer.parseInt(location),
+						Integer.parseInt(x_axis), Integer.parseInt(y_axis), action);
+				else if(action.equals("01"))
+					return facadeController.addDeviceLocation(serialId, Integer.parseInt(location),
+							Integer.parseInt(x_axis), Integer.parseInt(y_axis), action);
 			}
 		} else if (CMDEnum.test.toString().equals(cmdEnum.toString())) {
 			String serialId = requestParam.getValue("serialId");
