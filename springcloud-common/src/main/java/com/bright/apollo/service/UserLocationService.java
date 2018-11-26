@@ -1,5 +1,7 @@
 package com.bright.apollo.service;
 
+import java.util.List;
+
 import com.bright.apollo.common.entity.TUserLocation;
 
 /**  
@@ -22,5 +24,12 @@ public interface UserLocationService {
 	 * @Description:  
 	 */
 	void deleteUserLocation(Integer location);
+
+	/**  
+	 * @param userId
+	 * @return  
+	 * @Description:  
+	 */
+	List<TUserLocation> queryUserLocationByUser(Integer userId);
 
 }

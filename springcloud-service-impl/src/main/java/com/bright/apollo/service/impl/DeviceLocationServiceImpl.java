@@ -46,4 +46,13 @@ public class DeviceLocationServiceImpl implements DeviceLocationService{
 		mapper.deleteDeviceLocation(id);
 		
 	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.DeviceLocationService#queryDevicesByLocationAndSerialIdAndType(java.lang.Integer, java.lang.String, java.lang.String)  
+	 */
+	@Override
+	public TDeviceLocation queryDevicesByLocationAndSerialIdAndType(Integer location, String serialId, String type) {
+		 
+		return mapper.queryDevicesByLocationAndSerialIdAndType(location,serialId,type);
+	}
 }

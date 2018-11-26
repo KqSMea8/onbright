@@ -1,6 +1,7 @@
 package com.bright.apollo.controller;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +9,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +29,9 @@ import com.bright.apollo.service.LocationService;
 import com.bright.apollo.service.OboxDeviceConfigService;
 import com.bright.apollo.service.OboxService;
 import com.bright.apollo.service.UserLocationService;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.zz.common.util.StringUtils;
 
 /**
@@ -36,6 +41,7 @@ import com.zz.common.util.StringUtils;
  * @Since:2018年11月23日
  * @Version:1.1.0
  */
+@Controller
 @RequestMapping("location")
 @RestController
 public class LocationController {
@@ -248,7 +254,7 @@ public class LocationController {
 			// TLocation tLocation = queryLocationByWeight(user,
 			// Integer.parseInt(location));
 			if (tLocation != null) {
-				//搭建完图片服务器再做处理
+				// 搭建完图片服务器再做处理
 				if (tLocation.getDownloadUrl() != null) {
 					File dFile = new File("/data" + tLocation.getDownloadUrl().replace("%20", " "));
 					if (dFile != null) {
@@ -285,51 +291,54 @@ public class LocationController {
 		return res;
 	}
 
-	 
 	@RequestMapping(value = "/updateLocation/{location}/{userId}", method = RequestMethod.PUT)
 	ResponseObject<Map<String, Object>> updateLocation(@PathVariable(value = "location") Integer location,
 			@PathVariable(value = "userId") Integer userId,
-			@RequestParam(value = "building",required=false) String building,
-			@RequestParam(name="room",required=false) String room,
-			@RequestBody(required=true)List<String> mList
-			) {
+			@RequestParam(value = "building", required = false) String building,
+			@RequestParam(name = "room", required = false) String room,
+			@RequestBody(required = true) List<String> mList) {
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		Map<String, Object> map = new HashMap<String, Object>();
 		// String location = null;
 		try {
-			//覆盖，先删除location里面的设备(删映射)，再添加进去（添加映射）。
-			//Assert.notNull(serialId, "serialId can't be null!");
+			// 覆盖，先删除location里面的设备(删映射)，再添加进去（添加映射）。
+			// Assert.notNull(serialId, "serialId can't be null!");
 			List<TDeviceLocation> devices = deviceLocationService.queryDevicesByLocation(location);
-			//List<TDeviceLocation> devices = DeviceBusiness.queryDevicesByLocation(Integer.parseInt(location));
+			// List<TDeviceLocation> devices =
+			// DeviceBusiness.queryDevicesByLocation(Integer.parseInt(location));
 			if (devices != null) {
 				for (TDeviceLocation device : devices) {
 					deviceLocationService.deleteDeviceLocation(device.getId());
-					//DeviceBusiness.deleteDeviceLocation(device.getId());
+					// DeviceBusiness.deleteDeviceLocation(device.getId());
 				}
 			}
 			TLocation tLocation = locationService.queryLocationByUserIdAndId(userId, location);
-			//TLocation tLocation = queryLocationByWeight(user, Integer.parseInt(location));
+			// TLocation tLocation = queryLocationByWeight(user,
+			// Integer.parseInt(location));
 			if (tLocation == null) {
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
 				return res;
-			}else {
+			} else {
 				if (!StringUtils.isEmpty(building) || !StringUtils.isEmpty(room)) {
 					tLocation.setBuilding(building);
 					tLocation.setRoom(room);
 					locationService.updateLocation(tLocation);
-					//DeviceBusiness.updateLocation(tLocation);
-				}				
+					// DeviceBusiness.updateLocation(tLocation);
+				}
 			}
-			if (mList!=null&&mList.size()>0) {
-				//@SuppressWarnings("unchecked")
-				//List<String> mList = (List<String>) ObjectUtils.fromJsonToObject(serialId, List.class);
+			if (mList != null && mList.size() > 0) {
+				// @SuppressWarnings("unchecked")
+				// List<String> mList = (List<String>)
+				// ObjectUtils.fromJsonToObject(serialId, List.class);
 				for (String string : mList) {
-					TOboxDeviceConfig tOboxDeviceConfig = oboxDeviceConfigService.getDeviceByUserAndSerialId(userId, string);
-					//TOboxDeviceConfig tOboxDeviceConfig = queryDeviceByWeight(user, string);
+					TOboxDeviceConfig tOboxDeviceConfig = oboxDeviceConfigService.getDeviceByUserAndSerialId(userId,
+							string);
+					// TOboxDeviceConfig tOboxDeviceConfig =
+					// queryDeviceByWeight(user, string);
 					if (tOboxDeviceConfig == null) {
-						TObox tObox =oboxService.getOboxByUserAndoboxSerialId(userId, string);
-						//TObox tObox = queryOboxByWeight(user, string);
+						TObox tObox = oboxService.getOboxByUserAndoboxSerialId(userId, string);
+						// TObox tObox = queryOboxByWeight(user, string);
 						if (tObox == null) {
 							res.setStatus(ResponseEnum.RequestParamError.getStatus());
 							res.setMessage(ResponseEnum.RequestParamError.getMsg());
@@ -342,7 +351,7 @@ public class LocationController {
 							tDeviceLocation.setSerialId(tObox.getOboxSerialId());
 							tDeviceLocation.setDeviceType("0a");
 							deviceLocationService.addDeviceLocation(tDeviceLocation);
-							//DeviceBusiness.addDeviceLocation(tDeviceLocation);
+							// DeviceBusiness.addDeviceLocation(tDeviceLocation);
 						}
 					} else {// 设备为device的情况
 						TDeviceLocation tDeviceLocation = new TDeviceLocation();
@@ -353,10 +362,10 @@ public class LocationController {
 						tDeviceLocation.setSerialId(tOboxDeviceConfig.getDeviceSerialId());
 						tDeviceLocation.setDeviceType(tOboxDeviceConfig.getDeviceType());
 						deviceLocationService.addDeviceLocation(tDeviceLocation);
-						//DeviceBusiness.addDeviceLocation(tDeviceLocation);
+						// DeviceBusiness.addDeviceLocation(tDeviceLocation);
 					}
 				}
-			}else {
+			} else {
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
 				return res;
@@ -382,22 +391,179 @@ public class LocationController {
 	 * @return
 	 * @Description:
 	 */
-	@RequestMapping(value = "/addDeviceLocation/{serialId}/{location}/{xAxis}/{yAxis}", method = RequestMethod.POST)
-	ResponseObject<Map<String, Object>> addDeviceLocation(@PathVariable(value = "serialId") String serialId,
+	@RequestMapping(value = "/addDeviceLocation/{userId}/{serialId}/{location}/{xAxis}/{yAxis}", method = RequestMethod.POST)
+	ResponseObject<Map<String, Object>> addDeviceLocation(@PathVariable(value = "userId") Integer userId,@PathVariable(value = "serialId") String serialId,
 			@PathVariable(value = "location") Integer location, @PathVariable(value = "xAxis") Integer xAxis,
 			@PathVariable(value = "yAxis") Integer yAxis) {
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
-		Map<String, Object> map = new HashMap<String, Object>();
+		//Map<String, Object> map = new HashMap<String, Object>();
 		// String location = null;
 		try {
-
+			TLocation tLocation = locationService.queryLocationByUserIdAndId(userId, location);
+			if (tLocation == null) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			TOboxDeviceConfig tOboxDeviceConfig = oboxDeviceConfigService.getDeviceByUserAndSerialId(userId, serialId);
+			TObox tObox = oboxService.getOboxByUserAndoboxSerialId(userId, serialId);
+			//if (tObox == null && tOboxDeviceConfig == null) {}
+			if (tObox != null||tOboxDeviceConfig!=null) {
+				TDeviceLocation location2 = deviceLocationService.queryDevicesByLocationAndSerialIdAndType(location,
+						serialId, "0a");
+				if(location2==null)
+					location2 = deviceLocationService.queryDevicesByLocationAndSerialIdAndType(location,
+							serialId, "00");
+				// TDeviceLocation location2 =
+				// DeviceBusiness.queryDeviceLocation(tLocation.getId(),
+				// tObox.getOboxId(), "0a");
+				if (location2 != null) {
+					location2.setxAxis(xAxis);
+					location2.setyAxis(yAxis);
+					//DeviceBusiness.updateDeviceLocation(location2);
+					deviceLocationService.addDeviceLocation(location2);
+					//deviceLocationService.deleteDeviceLocation(location2.getId());
+					//DeviceBusiness.deleteDeviceLocation(location2.getId());
+				} else {
+					TDeviceLocation tDeviceLocation = new TDeviceLocation();
+					tDeviceLocation.setLocation(tLocation.getId());
+					tDeviceLocation.setxAxis(xAxis);
+					tDeviceLocation.setyAxis(yAxis);
+					tDeviceLocation.setSerialId(serialId);
+					tDeviceLocation.setDeviceType(tObox != null?"0a":"00");
+					deviceLocationService.addDeviceLocation(location2);
+					//DeviceBusiness.addDeviceLocation(tDeviceLocation);
+				}
+			}/*else if(tOboxDeviceConfig!=null){
+				TDeviceLocation location2 = deviceLocationService.queryDevicesByLocationAndSerialIdAndType(location,
+						serialId, "00");
+				//TDeviceLocation location2 = DeviceBusiness.queryDeviceLocation(tLocation.getId(), tOboxDeviceConfig.getId(), "00");
+				if (location2 != null) {
+					location2.setxAxis(xAxis);
+					location2.setyAxis(yAxis);
+					//DeviceBusiness.updateDeviceLocation(location2);
+					deviceLocationService.addDeviceLocation(location2);
+					//deviceLocationService.deleteDeviceLocation(location2.getId());
+				}else {
+					TDeviceLocation tDeviceLocation = new TDeviceLocation();
+					tDeviceLocation.setLocation(tLocation.getId());
+					tDeviceLocation.setxAxis(xAxis);
+					tDeviceLocation.setyAxis(yAxis);
+					tDeviceLocation.setSerialId(serialId);
+					tDeviceLocation.setDeviceType("0a");
+					deviceLocationService.addDeviceLocation(location2);
+					res.setStatus(ResponseEnum.RequestParamError.getStatus());
+					res.setMessage(ResponseEnum.RequestParamError.getMsg());
+					return res;
+				}
+			}*/else{
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
 		} catch (Exception e) {
 			logger.error("===addDeviceLocation error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
-
 	}
 
+	/**
+	 * @param serialId
+	 * @param location
+	 * @param xAxis
+	 * @param yAxis
+	 * @return
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/deleteDeviceLocation/{userId}/{serialId}/{location}", method = RequestMethod.DELETE)
+	ResponseObject deleteDeviceLocation(@PathVariable(value = "userId") Integer userId,
+			@PathVariable(value = "serialId") String serialId, @PathVariable(value = "location") Integer location) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		// String location = null;
+		try {
+			TLocation tLocation = locationService.queryLocationByUserIdAndId(userId, location);
+			if (tLocation == null) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			TOboxDeviceConfig tOboxDeviceConfig = oboxDeviceConfigService.getDeviceByUserAndSerialId(userId, serialId);
+			TObox tObox = oboxService.getOboxByUserAndoboxSerialId(userId, serialId);
+			//if (tObox == null && tOboxDeviceConfig == null) {}
+			if (tObox != null||tOboxDeviceConfig!=null) {
+				TDeviceLocation location2 = deviceLocationService.queryDevicesByLocationAndSerialIdAndType(location,
+						serialId, "0a");
+				if(location2==null)
+					location2 = deviceLocationService.queryDevicesByLocationAndSerialIdAndType(location,
+							serialId, "00");
+				// TDeviceLocation location2 =
+				// DeviceBusiness.queryDeviceLocation(tLocation.getId(),
+				// tObox.getOboxId(), "0a");
+				if (location2 != null) {
+					deviceLocationService.deleteDeviceLocation(location2.getId());
+					//DeviceBusiness.deleteDeviceLocation(location2.getId());
+				} else {
+					res.setStatus(ResponseEnum.RequestParamError.getStatus());
+					res.setMessage(ResponseEnum.RequestParamError.getMsg());
+					return res;
+				}
+			}/*else if(tOboxDeviceConfig!=null){
+				TDeviceLocation location2 = deviceLocationService.queryDevicesByLocationAndSerialIdAndType(location,
+						serialId, "00");
+				//TDeviceLocation location2 = DeviceBusiness.queryDeviceLocation(tLocation.getId(), tOboxDeviceConfig.getId(), "00");
+				if (location2 != null) {
+					deviceLocationService.deleteDeviceLocation(location2.getId());
+				}else {
+					res.setStatus(ResponseEnum.RequestParamError.getStatus());
+					res.setMessage(ResponseEnum.RequestParamError.getMsg());
+					return res;
+				}
+			}*/else{
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===deleteDeviceLocation error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	/**  
+	 * @param userId
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/queryLocation/{userId}", method = RequestMethod.GET)
+	ResponseObject<Map<String, Object>> queryLocation(@PathVariable(value = "userId")Integer userId){
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		List<TLocation> oList = new ArrayList<TLocation>();
+		Map<String, Object> map=new HashMap<String, Object>();
+		try {
+			List<TUserLocation> tUserLocations = userLocationService.queryUserLocationByUser(userId);
+			for (TUserLocation tUserLocation : tUserLocations) {
+				TLocation tLocation = locationService.queryLocationById(tUserLocation.getLocationId());
+				if (tLocation != null) {
+					oList.add(tLocation);
+				}
+			}
+			map.put("locations", oList);
+			res.setData(map);
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===queryLocation error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
 }

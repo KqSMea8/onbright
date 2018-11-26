@@ -32,4 +32,13 @@ public interface DeviceLocationService {
 	 */
 	void deleteDeviceLocation(Integer id);
 
+	/**  
+	 * @param location
+	 * @param serialId
+	 * @param type
+	 * @return  
+	 * @Description:  
+	 */
+	TDeviceLocation queryDevicesByLocationAndSerialIdAndType(Integer location, String serialId, String type);
+
 }

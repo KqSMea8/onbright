@@ -1,5 +1,7 @@
 package com.bright.apollo.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +34,13 @@ public class UserLocationServiceImpl implements UserLocationService{
 	public void deleteUserLocation(Integer location) {
 		mapper.deleteUserLocation(location);
 		
+	}
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.UserLocationService#queryUserLocationByUser(java.lang.Integer)  
+	 */
+	@Override
+	public List<TUserLocation> queryUserLocationByUser(Integer userId) {  
+		return mapper.queryUserLocationByUser(userId);
 	}
 
 }

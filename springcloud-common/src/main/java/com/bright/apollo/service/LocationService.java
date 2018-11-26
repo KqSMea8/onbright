@@ -47,4 +47,11 @@ public interface LocationService {
 	 */
 	void updateLocation(TLocation tLocation);
 
+	/**  
+	 * @param locationId
+	 * @return  
+	 * @Description:  
+	 */
+	TLocation queryLocationById(Integer locationId);
+
 }

@@ -42,21 +42,21 @@ public interface TLocationMapper {
 	TLocation queryLocat1ionByUserId(@Param("building") String building, @Param("room") String room,
 			@Param("userId") Integer userId);
 
-	/**  
+	/**
 	 * @param tLocation
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
 	@SelectKey(statement = "select LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = int.class)
-	@InsertProvider(type=LocationProvider.class,method="addLocation")
+	@InsertProvider(type = LocationProvider.class, method = "addLocation")
 	@Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
 	int addLocation(TLocation tLocation);
 
-	/**  
+	/**
 	 * @param userId
 	 * @param location
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
 	@Select("select a.* from t_location a where  "
 			+ "EXISTS (select 1 from t_user_location where a.id=location_id and user_id=#{userId} and location_id= #{location})")
@@ -64,20 +64,32 @@ public interface TLocationMapper {
 			@Result(property = "lastOpTime", column = "last_op_time"), @Result(property = "room", column = "room"),
 			@Result(property = "downloadUrl", column = "download_url"),
 			@Result(property = "license", column = "license"), @Result(property = "thumUrl", column = "thum_url") })
-	TLocation queryLocationByUserIdAndId(@Param("userId")Integer userId, @Param("location")Integer location);
+	TLocation queryLocationByUserIdAndId(@Param("userId") Integer userId, @Param("location") Integer location);
 
-	/**  
-	 * @param location  
-	 * @Description:  
+	/**
+	 * @param location
+	 * @Description:
 	 */
 	@Delete("delete from t_location where id =#{location}")
-	void deleteLocation(@Param("location")Integer location);
+	void deleteLocation(@Param("location") Integer location);
 
-	/**  
-	 * @param tLocation  
-	 * @Description:  
+	/**
+	 * @param tLocation
+	 * @Description:
 	 */
-	@UpdateProvider(type=LocationProvider.class,method="updateLocation")
+	@UpdateProvider(type = LocationProvider.class, method = "updateLocation")
 	void updateLocation(TLocation tLocation);
+
+	/**
+	 * @param locationId
+	 * @return
+	 * @Description:
+	 */
+	@Select("select * from t_location where id=#{locationId} ")
+	@Results(value = { @Result(property = "id", column = "id"), @Result(property = "building", column = "building"),
+			@Result(property = "lastOpTime", column = "last_op_time"), @Result(property = "room", column = "room"),
+			@Result(property = "downloadUrl", column = "download_url"),
+			@Result(property = "license", column = "license"), @Result(property = "thumUrl", column = "thum_url") })
+	TLocation queryLocationById(@Param("locationId") Integer locationId);
 
 }
