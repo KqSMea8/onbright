@@ -541,4 +541,48 @@ public interface FeignDeviceClient {
 	ResponseObject<TServerGroup> queryGroupByUserAndGroup(@PathVariable(value = "userId") Integer userId,
 			@PathVariable(value = "groupId") Integer groupId);
 
+	/**
+	 * @param userId
+	 * @param building
+	 * @param room
+	 * @param mList
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/location/createLocation/{userId}/{building}/{room}", method = RequestMethod.POST)
+	ResponseObject<Map<String, Object>> createLocation(@PathVariable(value = "userId") Integer userId,
+			@PathVariable(value = "building") String building, @PathVariable(value = "room") String room,
+			@RequestBody(required = false) List<String> mList);
+
+	/**
+	 * @param location
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/location/deleteLocation/{location}/{userId}", method = RequestMethod.DELETE)
+	ResponseObject<Map<String, Object>> deleteLocation(@PathVariable(value = "location") Integer location,
+			@PathVariable(value = "userId") Integer userId);
+
+	/**
+	 * @param serialId
+	 * @param location
+	 * @param xAxis
+	 * @param yAxis
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/location/addDeviceLocation/{serialId}/{location}/{xAxis}/{yAxis}", method = RequestMethod.POST)
+	ResponseObject<Map<String, Object>> addDeviceLocation(@PathVariable(value = "serialId") String serialId,
+			@PathVariable(value = "location") Integer location, 
+			@PathVariable(value = "xAxis")Integer xAxis, 
+			@PathVariable(value = "yAxis")Integer yAxis);
+
+	@RequestMapping(value = "/location/updateLocation/{location}/{userId}", method = RequestMethod.PUT)
+	ResponseObject<Map<String, Object>> updateLocation(@PathVariable(value = "location") Integer location,
+			@PathVariable(value = "userId") Integer userId,
+			@RequestParam(value = "building",required=false) String building,
+			@RequestParam(name="room",required=false) String room,
+			@RequestBody(required=true)List<String> mList
+			) ;
+
 }

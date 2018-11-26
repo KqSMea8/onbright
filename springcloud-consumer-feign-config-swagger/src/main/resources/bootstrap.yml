@@ -11,9 +11,12 @@ spring:
       password: booszy
       profile: pro
 eureka:
+<<<<<<< HEAD
   client:
     service-url:
       defaultZone: http://root:booszy@localhost:8761/eureka
+=======
+>>>>>>> cf2abee9d372ce7b78d5eaa75eb4e1105e16e98e
   instance:
     prefer-ip-address: true
     instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${spring.application.instance_id:${server.port}}

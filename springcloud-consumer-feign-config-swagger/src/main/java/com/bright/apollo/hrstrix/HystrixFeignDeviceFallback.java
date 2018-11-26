@@ -602,4 +602,48 @@ public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implem
 		logger.warn("===device server is break===");
 		return serverError();
 	}
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#createLocation(java.lang.Integer, java.lang.String, java.lang.String, java.util.List)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<Map<String, Object>> createLocation(Integer userId, String building, String room,
+			List<String> mList) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#addDeviceLocation(java.lang.String, java.lang.Integer, java.lang.Integer, java.lang.Integer)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<Map<String, Object>> addDeviceLocation(String serialId, Integer location, Integer xAxis,
+			Integer yAxis) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#deleteLocation(java.lang.Integer, java.lang.Integer)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<Map<String, Object>> deleteLocation(Integer location, Integer userId) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#updateLocation(java.lang.Integer, java.lang.Integer, java.lang.String, java.lang.String, java.util.List)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<Map<String, Object>> updateLocation(Integer location, Integer userId, String building,
+			String room, List<String> mList) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
 }

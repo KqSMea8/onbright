@@ -117,7 +117,7 @@ public class IRUploadHandler extends AliBaseHandler {
         logger.info("brandId ====== "+brandId);
         logger.info("deviceType ====== "+deviceType);
 //        logger.info("name ====== "+remoteName);
-        Map<String,Object> resMap = new HashMap<>();
+        Map<String,Object> resMap = new HashMap<String, Object>();
         TUserAliDevice userAliDevice = userAliDevService.queryAliDeviceBySerialiId(deviceSerialId);
         if(functionId==2){//学习红外上传
             QueryRemoteBySrcDTO dto = new QueryRemoteBySrcDTO();
@@ -195,7 +195,7 @@ public class IRUploadHandler extends AliBaseHandler {
         yaokonyunDevice = yaoKongYunService.getYaoKongYunDevice();
         if (yaokonyunDevice == null) {
             yaokonyunDevice = createYaoKongYunDevice();
-            List<String> strings = new ArrayList<>();
+            List<String> strings = new ArrayList<String>();
             strings.add("appid="+yaokonyunDevice.getAppId());
             strings.add("f="+yaokonyunDevice.getDeviceId());
             yaoKongYunSend.postMethod(null,yaokonyunDevice,yaoKongYunConfig.getUrlPrefix()+"?c=r");

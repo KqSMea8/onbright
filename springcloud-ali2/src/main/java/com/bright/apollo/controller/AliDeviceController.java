@@ -562,7 +562,7 @@ public class AliDeviceController {
         ResponseObject res = new ResponseObject();
         try {
             Map<String,Object> resMap = new HashMap<String,Object>();
-            List<QueryRemoteBySrcDTO> dtoList = new ArrayList<>();
+            List<QueryRemoteBySrcDTO> dtoList = new ArrayList<QueryRemoteBySrcDTO>();
             List<TYaokonyunKeyCode> yaokonyunKeyCodeList = yaoKongYunService.getYaoKongKeyCodeBySerialId(serialId);
             for(TYaokonyunKeyCode keyCode:yaokonyunKeyCodeList){
                 dtoList.add(new QueryRemoteBySrcDTO(keyCode));
