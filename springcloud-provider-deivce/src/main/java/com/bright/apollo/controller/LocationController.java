@@ -29,9 +29,6 @@ import com.bright.apollo.service.LocationService;
 import com.bright.apollo.service.OboxDeviceConfigService;
 import com.bright.apollo.service.OboxService;
 import com.bright.apollo.service.UserLocationService;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 import com.zz.common.util.StringUtils;
 
 /**
