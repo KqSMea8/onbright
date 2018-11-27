@@ -39,4 +39,10 @@ datasource:
     type: com.alibaba.druid.pool.DruidDataSource
 logout:
   url: https://alicloud.on-bright.com/oauth/token
-  
+PicPath:
+  tempPath: /home/ftpuser/temp
+  realPath: /home/ftpuser/images
+  ftpAddress: 172.16.45.167
+  ftpName: ftpuser
+  ftpPwd: 6142405ff4af4a90741255cf51d43eb9
+  ftpPort: 21

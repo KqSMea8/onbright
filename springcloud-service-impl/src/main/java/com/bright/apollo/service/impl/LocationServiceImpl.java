@@ -60,4 +60,13 @@ public class LocationServiceImpl implements LocationService{
 		mapper.updateLocation(tLocation);
 		
 	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.LocationService#queryLocationById(java.lang.Integer)  
+	 */
+	@Override
+	public TLocation queryLocationById(Integer locationId) {
+		 
+		return mapper.queryLocationById(locationId);
+	}
 }

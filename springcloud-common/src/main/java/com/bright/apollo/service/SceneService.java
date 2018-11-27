@@ -196,5 +196,20 @@ public interface SceneService extends BasicService{
 	 * @Description:  
 	 */
 	public int deleteSceneConditionBySerialId(String serialId);
+
+	/**  
+	 * @param location
+	 * @return  
+	 * @Description:  
+	 */
+	public List<TScene> querySceneByLocation(Integer location);
+
+	/**  
+	 * @param sceneNumber
+	 * @param userId
+	 * @return  
+	 * @Description:  
+	 */
+	public TScene querySceneBySceneNumberAndUserId(Integer sceneNumber, Integer userId);
  
 }

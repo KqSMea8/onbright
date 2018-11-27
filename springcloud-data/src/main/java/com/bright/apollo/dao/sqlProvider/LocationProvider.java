@@ -17,7 +17,7 @@ public class LocationProvider {
 		return new SQL() {
 			{
 				INSERT_INTO("t_location");
-				if (StringUtils.isEmpty(tLocation.getBuilding())) {
+				if (!StringUtils.isEmpty(tLocation.getBuilding())) {
 					VALUES("building", "#{building}");
 				}
 

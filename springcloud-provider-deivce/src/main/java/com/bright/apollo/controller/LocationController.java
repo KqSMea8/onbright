@@ -1,6 +1,7 @@
 package com.bright.apollo.controller;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +9,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,16 +19,33 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bright.apollo.common.entity.TDeviceLocation;
 import com.bright.apollo.common.entity.TLocation;
+import com.bright.apollo.common.entity.TLocationScene;
 import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
+import com.bright.apollo.common.entity.TScene;
+import com.bright.apollo.common.entity.TSceneAction;
+import com.bright.apollo.common.entity.TSceneCondition;
+import com.bright.apollo.common.entity.TServerGroup;
 import com.bright.apollo.common.entity.TUserLocation;
+import com.bright.apollo.enums.ConditionTypeEnum;
+import com.bright.apollo.enums.NodeTypeEnum;
+import com.bright.apollo.request.SceneActionDTO;
+import com.bright.apollo.request.SceneConditionDTO;
+import com.bright.apollo.request.SceneDTO;
+import com.bright.apollo.response.DeviceDTO;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.service.DeviceLocationService;
+import com.bright.apollo.service.LocationSceneService;
 import com.bright.apollo.service.LocationService;
 import com.bright.apollo.service.OboxDeviceConfigService;
 import com.bright.apollo.service.OboxService;
+import com.bright.apollo.service.SceneActionService;
+import com.bright.apollo.service.SceneConditionService;
+import com.bright.apollo.service.SceneService;
+import com.bright.apollo.service.ServerGroupService;
 import com.bright.apollo.service.UserLocationService;
+import com.bright.apollo.tool.NumberHelper;
 import com.zz.common.util.StringUtils;
 
 /**
@@ -36,6 +55,7 @@ import com.zz.common.util.StringUtils;
  * @Since:2018年11月23日
  * @Version:1.1.0
  */
+@Controller
 @RequestMapping("location")
 @RestController
 public class LocationController {
@@ -50,7 +70,16 @@ public class LocationController {
 	private DeviceLocationService deviceLocationService;
 	@Autowired
 	private UserLocationService userLocationService;
-
+	@Autowired
+	private SceneService sceneService;
+	@Autowired
+	private SceneConditionService sceneConditionService;
+	@Autowired
+	private SceneActionService sceneActionService;
+	@Autowired
+	private ServerGroupService serverGroupService;
+	@Autowired
+	private LocationSceneService locationSceneService;
 	/**
 	 * @param userId
 	 * @param building
@@ -248,7 +277,7 @@ public class LocationController {
 			// TLocation tLocation = queryLocationByWeight(user,
 			// Integer.parseInt(location));
 			if (tLocation != null) {
-				//搭建完图片服务器再做处理
+				// 搭建完图片服务器再做处理
 				if (tLocation.getDownloadUrl() != null) {
 					File dFile = new File("/data" + tLocation.getDownloadUrl().replace("%20", " "));
 					if (dFile != null) {
@@ -285,51 +314,54 @@ public class LocationController {
 		return res;
 	}
 
-	 
 	@RequestMapping(value = "/updateLocation/{location}/{userId}", method = RequestMethod.PUT)
 	ResponseObject<Map<String, Object>> updateLocation(@PathVariable(value = "location") Integer location,
 			@PathVariable(value = "userId") Integer userId,
-			@RequestParam(value = "building",required=false) String building,
-			@RequestParam(name="room",required=false) String room,
-			@RequestBody(required=true)List<String> mList
-			) {
+			@RequestParam(value = "building", required = false) String building,
+			@RequestParam(name = "room", required = false) String room,
+			@RequestBody(required = false) List<String> mList) {
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		Map<String, Object> map = new HashMap<String, Object>();
 		// String location = null;
 		try {
-			//覆盖，先删除location里面的设备(删映射)，再添加进去（添加映射）。
-			//Assert.notNull(serialId, "serialId can't be null!");
+			// 覆盖，先删除location里面的设备(删映射)，再添加进去（添加映射）。
+			// Assert.notNull(serialId, "serialId can't be null!");
 			List<TDeviceLocation> devices = deviceLocationService.queryDevicesByLocation(location);
-			//List<TDeviceLocation> devices = DeviceBusiness.queryDevicesByLocation(Integer.parseInt(location));
+			// List<TDeviceLocation> devices =
+			// DeviceBusiness.queryDevicesByLocation(Integer.parseInt(location));
 			if (devices != null) {
 				for (TDeviceLocation device : devices) {
 					deviceLocationService.deleteDeviceLocation(device.getId());
-					//DeviceBusiness.deleteDeviceLocation(device.getId());
+					// DeviceBusiness.deleteDeviceLocation(device.getId());
 				}
 			}
 			TLocation tLocation = locationService.queryLocationByUserIdAndId(userId, location);
-			//TLocation tLocation = queryLocationByWeight(user, Integer.parseInt(location));
+			// TLocation tLocation = queryLocationByWeight(user,
+			// Integer.parseInt(location));
 			if (tLocation == null) {
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
 				return res;
-			}else {
+			} else {
 				if (!StringUtils.isEmpty(building) || !StringUtils.isEmpty(room)) {
 					tLocation.setBuilding(building);
 					tLocation.setRoom(room);
 					locationService.updateLocation(tLocation);
-					//DeviceBusiness.updateLocation(tLocation);
-				}				
+					// DeviceBusiness.updateLocation(tLocation);
+				}
 			}
-			if (mList!=null&&mList.size()>0) {
-				//@SuppressWarnings("unchecked")
-				//List<String> mList = (List<String>) ObjectUtils.fromJsonToObject(serialId, List.class);
+			if (mList != null && mList.size() > 0) {
+				// @SuppressWarnings("unchecked")
+				// List<String> mList = (List<String>)
+				// ObjectUtils.fromJsonToObject(serialId, List.class);
 				for (String string : mList) {
-					TOboxDeviceConfig tOboxDeviceConfig = oboxDeviceConfigService.getDeviceByUserAndSerialId(userId, string);
-					//TOboxDeviceConfig tOboxDeviceConfig = queryDeviceByWeight(user, string);
+					TOboxDeviceConfig tOboxDeviceConfig = oboxDeviceConfigService.getDeviceByUserAndSerialId(userId,
+							string);
+					// TOboxDeviceConfig tOboxDeviceConfig =
+					// queryDeviceByWeight(user, string);
 					if (tOboxDeviceConfig == null) {
-						TObox tObox =oboxService.getOboxByUserAndoboxSerialId(userId, string);
-						//TObox tObox = queryOboxByWeight(user, string);
+						TObox tObox = oboxService.getOboxByUserAndoboxSerialId(userId, string);
+						// TObox tObox = queryOboxByWeight(user, string);
 						if (tObox == null) {
 							res.setStatus(ResponseEnum.RequestParamError.getStatus());
 							res.setMessage(ResponseEnum.RequestParamError.getMsg());
@@ -342,7 +374,7 @@ public class LocationController {
 							tDeviceLocation.setSerialId(tObox.getOboxSerialId());
 							tDeviceLocation.setDeviceType("0a");
 							deviceLocationService.addDeviceLocation(tDeviceLocation);
-							//DeviceBusiness.addDeviceLocation(tDeviceLocation);
+							// DeviceBusiness.addDeviceLocation(tDeviceLocation);
 						}
 					} else {// 设备为device的情况
 						TDeviceLocation tDeviceLocation = new TDeviceLocation();
@@ -353,10 +385,10 @@ public class LocationController {
 						tDeviceLocation.setSerialId(tOboxDeviceConfig.getDeviceSerialId());
 						tDeviceLocation.setDeviceType(tOboxDeviceConfig.getDeviceType());
 						deviceLocationService.addDeviceLocation(tDeviceLocation);
-						//DeviceBusiness.addDeviceLocation(tDeviceLocation);
+						// DeviceBusiness.addDeviceLocation(tDeviceLocation);
 					}
 				}
-			}else {
+			} else {
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
 				return res;
@@ -382,22 +414,450 @@ public class LocationController {
 	 * @return
 	 * @Description:
 	 */
-	@RequestMapping(value = "/addDeviceLocation/{serialId}/{location}/{xAxis}/{yAxis}", method = RequestMethod.POST)
-	ResponseObject<Map<String, Object>> addDeviceLocation(@PathVariable(value = "serialId") String serialId,
-			@PathVariable(value = "location") Integer location, @PathVariable(value = "xAxis") Integer xAxis,
-			@PathVariable(value = "yAxis") Integer yAxis) {
+	@RequestMapping(value = "/addDeviceLocation/{userId}/{serialId}/{location}/{xAxis}/{yAxis}", method = RequestMethod.POST)
+	ResponseObject<Map<String, Object>> addDeviceLocation(@PathVariable(value = "userId") Integer userId,
+			@PathVariable(value = "serialId") String serialId, @PathVariable(value = "location") Integer location,
+			@PathVariable(value = "xAxis") Integer xAxis, @PathVariable(value = "yAxis") Integer yAxis) {
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
-		Map<String, Object> map = new HashMap<String, Object>();
+		// Map<String, Object> map = new HashMap<String, Object>();
 		// String location = null;
 		try {
-
+			TLocation tLocation = locationService.queryLocationByUserIdAndId(userId, location);
+			if (tLocation == null) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			TOboxDeviceConfig tOboxDeviceConfig = oboxDeviceConfigService.getDeviceByUserAndSerialId(userId, serialId);
+			TObox tObox = oboxService.getOboxByUserAndoboxSerialId(userId, serialId);
+			// if (tObox == null && tOboxDeviceConfig == null) {}
+			if (tObox != null || tOboxDeviceConfig != null) {
+				TDeviceLocation location2 = deviceLocationService.queryDevicesByLocationAndSerialIdAndType(location,
+						serialId, "0a");
+				if (location2 == null)
+					location2 = deviceLocationService.queryDevicesByLocationAndSerialIdAndType(location, serialId,
+							"00");
+				// TDeviceLocation location2 =
+				// DeviceBusiness.queryDeviceLocation(tLocation.getId(),
+				// tObox.getOboxId(), "0a");
+				if (location2 != null) {
+					location2.setxAxis(xAxis);
+					location2.setyAxis(yAxis);
+					// DeviceBusiness.updateDeviceLocation(location2);
+					deviceLocationService.addDeviceLocation(location2);
+					// deviceLocationService.deleteDeviceLocation(location2.getId());
+					// DeviceBusiness.deleteDeviceLocation(location2.getId());
+				} else {
+					TDeviceLocation tDeviceLocation = new TDeviceLocation();
+					tDeviceLocation.setLocation(tLocation.getId());
+					tDeviceLocation.setxAxis(xAxis);
+					tDeviceLocation.setyAxis(yAxis);
+					tDeviceLocation.setSerialId(serialId);
+					tDeviceLocation.setDeviceType(tObox != null ? "0a" : "00");
+					deviceLocationService.addDeviceLocation(location2);
+					// DeviceBusiness.addDeviceLocation(tDeviceLocation);
+				}
+			} /*
+				 * else if(tOboxDeviceConfig!=null){ TDeviceLocation location2 =
+				 * deviceLocationService.
+				 * queryDevicesByLocationAndSerialIdAndType(location, serialId,
+				 * "00"); //TDeviceLocation location2 =
+				 * DeviceBusiness.queryDeviceLocation(tLocation.getId(),
+				 * tOboxDeviceConfig.getId(), "00"); if (location2 != null) {
+				 * location2.setxAxis(xAxis); location2.setyAxis(yAxis);
+				 * //DeviceBusiness.updateDeviceLocation(location2);
+				 * deviceLocationService.addDeviceLocation(location2);
+				 * //deviceLocationService.deleteDeviceLocation(location2.getId(
+				 * )); }else { TDeviceLocation tDeviceLocation = new
+				 * TDeviceLocation();
+				 * tDeviceLocation.setLocation(tLocation.getId());
+				 * tDeviceLocation.setxAxis(xAxis);
+				 * tDeviceLocation.setyAxis(yAxis);
+				 * tDeviceLocation.setSerialId(serialId);
+				 * tDeviceLocation.setDeviceType("0a");
+				 * deviceLocationService.addDeviceLocation(location2);
+				 * res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				 * res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				 * return res; } }
+				 */else {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
 		} catch (Exception e) {
 			logger.error("===addDeviceLocation error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
-
 	}
 
+	/**
+	 * @param serialId
+	 * @param location
+	 * @param xAxis
+	 * @param yAxis
+	 * @return
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/deleteDeviceLocation/{userId}/{serialId}/{location}", method = RequestMethod.DELETE)
+	ResponseObject deleteDeviceLocation(@PathVariable(value = "userId") Integer userId,
+			@PathVariable(value = "serialId") String serialId, @PathVariable(value = "location") Integer location) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		// String location = null;
+		try {
+			TLocation tLocation = locationService.queryLocationByUserIdAndId(userId, location);
+			if (tLocation == null) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			TOboxDeviceConfig tOboxDeviceConfig = oboxDeviceConfigService.getDeviceByUserAndSerialId(userId, serialId);
+			TObox tObox = oboxService.getOboxByUserAndoboxSerialId(userId, serialId);
+			// if (tObox == null && tOboxDeviceConfig == null) {}
+			if (tObox != null || tOboxDeviceConfig != null) {
+				TDeviceLocation location2 = deviceLocationService.queryDevicesByLocationAndSerialIdAndType(location,
+						serialId, "0a");
+				if (location2 == null)
+					location2 = deviceLocationService.queryDevicesByLocationAndSerialIdAndType(location, serialId,
+							"00");
+				// TDeviceLocation location2 =
+				// DeviceBusiness.queryDeviceLocation(tLocation.getId(),
+				// tObox.getOboxId(), "0a");
+				if (location2 != null) {
+					deviceLocationService.deleteDeviceLocation(location2.getId());
+					// DeviceBusiness.deleteDeviceLocation(location2.getId());
+				} else {
+					res.setStatus(ResponseEnum.RequestParamError.getStatus());
+					res.setMessage(ResponseEnum.RequestParamError.getMsg());
+					return res;
+				}
+			} /*
+				 * else if(tOboxDeviceConfig!=null){ TDeviceLocation location2 =
+				 * deviceLocationService.
+				 * queryDevicesByLocationAndSerialIdAndType(location, serialId,
+				 * "00"); //TDeviceLocation location2 =
+				 * DeviceBusiness.queryDeviceLocation(tLocation.getId(),
+				 * tOboxDeviceConfig.getId(), "00"); if (location2 != null) {
+				 * deviceLocationService.deleteDeviceLocation(location2.getId())
+				 * ; }else {
+				 * res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				 * res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				 * return res; } }
+				 */else {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===deleteDeviceLocation error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	/**
+	 * @param userId
+	 * @param locationId
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/queryLocation/{userId}/{locationId}", method = RequestMethod.GET)
+	ResponseObject<Map<String, Object>> queryLocation(@PathVariable(value = "userId") Integer userId,
+			@PathVariable(value = "locationId") Integer locationId) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		List<TLocation> oList = new ArrayList<TLocation>();
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			TLocation tLocation = locationService.queryLocationByUserIdAndId(userId, locationId);
+			if (tLocation != null)
+				oList.add(tLocation);
+			/*
+			 * List<TUserLocation> tUserLocations =
+			 * userLocationService.queryUserLocationByUser(userId); for
+			 * (TUserLocation tUserLocation : tUserLocations) { TLocation
+			 * tLocation =
+			 * locationService.queryLocationById(tUserLocation.getLocationId());
+			 * if (tLocation != null) { oList.add(tLocation); } }
+			 */
+			map.put("locations", oList);
+			res.setData(map);
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===queryLocation error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	/**
+	 * @param userId
+	 * @param location
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/queryDeviceLocation/{userId}/{locationId}", method = RequestMethod.GET)
+	ResponseObject<Map<String, Object>> queryDeviceLocation(@PathVariable(value = "userId") Integer userId,
+			@PathVariable(value = "locationId") Integer locationId) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			List<DeviceDTO> ouDeviceDTOs = new ArrayList<DeviceDTO>();
+			List<TDeviceLocation> tDeviceLocations = deviceLocationService.queryDevicesByLocation(locationId);
+			//List<TDeviceLocation> tDeviceLocations = DeviceBusiness.queryDevicesByLocation(Integer.parseInt(location));
+			for (TDeviceLocation tDeviceLocation : tDeviceLocations) {
+				if (tDeviceLocation.getDeviceType().equals("00")) {
+					TOboxDeviceConfig tOboxDeviceConfig = oboxDeviceConfigService.queryDeviceConfigBySerialID(tDeviceLocation.getSerialId());
+					//TOboxDeviceConfig tOboxDeviceConfig = DeviceBusiness.queryDeviceConfigByID(tDeviceLocation.getDeviceId());
+					if (tOboxDeviceConfig != null) {
+						DeviceDTO dto = new DeviceDTO(tOboxDeviceConfig);
+						dto.setxAxis(tDeviceLocation.getxAxis());
+						dto.setyAxis(tDeviceLocation.getyAxis());
+						ouDeviceDTOs.add(dto);
+					}
+				}else {
+					TObox tObox = oboxService.queryOboxsByOboxSerialId(tDeviceLocation.getSerialId());
+					//TObox tObox = OboxBusiness.queryOboxById(tDeviceLocation.getDeviceId());
+					if (tObox != null) {
+						DeviceDTO dto = new DeviceDTO();
+						dto.setDeviceSerialId(tObox.getOboxSerialId());
+						dto.setDeviceType("0a");
+						dto.setxAxis(tDeviceLocation.getxAxis());
+						dto.setyAxis(tDeviceLocation.getyAxis());
+						ouDeviceDTOs.add(dto);
+					}
+				}
+			}
+			//Gson g2 = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+			//JsonObject jsonObject = respRight();
+			map.put("devices", ouDeviceDTOs);
+			res.setData(map);
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+			//jsonObject.add("devices", g2.toJsonTree(ouDeviceDTOs));
+			//return jsonObject;
+		} catch (Exception e) {
+			logger.error("===queryDeviceLocation error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	/**
+	 * @param userId
+	 * @param location
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/querySceneLocation/{userId}/{location}", method = RequestMethod.GET)
+	ResponseObject<Map<String, Object>> querySceneLocation(@PathVariable(value = "userId") Integer userId,
+			@PathVariable(value = "location") Integer location){
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			TLocation tLocation = locationService.queryLocationById(location);
+			if(tLocation==null){
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			List<TScene> tScenes =sceneService.querySceneByLocation(location);
+			//List<TScene> tScenes = SceneBusiness.querySceneByLocation(tLocation.getId());
+			List<SceneDTO> tDtos = new ArrayList<SceneDTO>();
+			
+			if (tScenes != null) {
+				for (TScene tScene : tScenes) {
+					SceneDTO sceneDTO = new SceneDTO(tScene);
+					
+					List<List<SceneConditionDTO>> conditions = new ArrayList<List<SceneConditionDTO>>();
+					List<TSceneCondition> tSceneConditions = sceneConditionService.getSceneConditionBySceneNum(tScene.getSceneNumber());
+					//List<TSceneCondition> tSceneConditions = SceneBusiness.querySceneConditionsBySceneNumber(tScene.getSceneNumber());
+					for (int i = 0; i < 3; i++) {
+						List<SceneConditionDTO> tConditionDTOs = new ArrayList<SceneConditionDTO>();
+						for (TSceneCondition tSceneCondition : tSceneConditions) {
+							if (tSceneCondition.getConditionGroup() == i) {
+								SceneConditionDTO sceneConditionDTO = new SceneConditionDTO();
+								sceneConditionDTO.setCondition(tSceneCondition.getCond());
+								sceneConditionDTO.setConditionType(ConditionTypeEnum.time.getValue());
+								if (tSceneCondition.getSerialid() != null) {
+									//node condition
+									TOboxDeviceConfig tOboxDeviceConfig = oboxDeviceConfigService.queryDeviceConfigBySerialID(tSceneCondition.getSerialid());
+									//TOboxDeviceConfig tOboxDeviceConfig = DeviceBusiness.queryDeviceConfigBySerialID(tSceneCondition.getSerialId());
+									if (tOboxDeviceConfig != null) {
+										sceneConditionDTO.setConditionID(tOboxDeviceConfig.getDeviceId());
+										sceneConditionDTO.setDeviceRfAddr(tOboxDeviceConfig.getDeviceRfAddr());
+										sceneConditionDTO.setDeviceSerialId(tOboxDeviceConfig.getDeviceSerialId());
+										sceneConditionDTO.setOboxSerialId(tOboxDeviceConfig.getOboxSerialId());
+										sceneConditionDTO.setDeviceChildType(tOboxDeviceConfig.getDeviceChildType());
+										sceneConditionDTO.setDeviceType(tOboxDeviceConfig.getDeviceType());
+										sceneConditionDTO.setConditionType(ConditionTypeEnum.device.getValue());
+									}else {/*
+										TRemoter tRemoter = DeviceBusiness.queryRemoter(tSceneCondition.getSerialId());
+										if (tRemoter != null) {
+											sceneConditionDTO.setDeviceSerialId(tRemoter.getRemoter());
+											sceneConditionDTO.setConditionType(ConditionTypeEnum.remoter.getValue());
+										}
+									*/}
+								}else {
+									//time condition
+
+								}
+								tConditionDTOs.add(sceneConditionDTO);
+							}
+						}
+						if (tConditionDTOs.size() != 0) {
+							conditions.add(tConditionDTOs);
+						}
+					}
+					sceneDTO.setConditions(conditions);
+					List<SceneActionDTO> tActionDTOs = new ArrayList<SceneActionDTO>();
+					List<TSceneAction> tSceneActions = sceneActionService.getSceneActionBySceneNumber(tScene.getSceneNumber());
+					//List<TSceneAction> tSceneActions = SceneBusiness.querySceneActionsBySceneNumber(tScene.getSceneNumber());
+					if (tSceneActions != null) {
+						for (TSceneAction tSceneAction : tSceneActions) {
+							if (tSceneAction.getNodeType().equals("00")) {
+								TOboxDeviceConfig tOboxDeviceConfig = oboxDeviceConfigService.queryDeviceConfigBySerialID(tSceneAction.getActionid());
+								//TOboxDeviceConfig tOboxDeviceConfig = DeviceBusiness.queryDeviceConfigByID(tSceneAction.getActionID());
+								if (tOboxDeviceConfig != null) {
+									SceneActionDTO sceneActionDTO = new SceneActionDTO();
+									sceneActionDTO.setAction(tSceneAction.getAction());
+									sceneActionDTO.setActionName(tOboxDeviceConfig.getDeviceId());
+									sceneActionDTO.setDeviceRfAddr(tOboxDeviceConfig.getDeviceRfAddr());
+									sceneActionDTO.setDeviceSerialId(tOboxDeviceConfig.getDeviceSerialId());
+									sceneActionDTO.setOboxSerialId(tOboxDeviceConfig.getOboxSerialId());
+									sceneActionDTO.setDeviceChildType(tOboxDeviceConfig.getDeviceChildType());
+									sceneActionDTO.setDeviceType(tOboxDeviceConfig.getDeviceType());
+									sceneActionDTO.setNodeType(NodeTypeEnum.single.getValue());
+									tActionDTOs.add(sceneActionDTO);
+								}
+							}else {
+								TServerGroup tServerGroup = null;
+								if(NumberHelper.isNumeric(tSceneAction.getActionid()))
+									tServerGroup = serverGroupService.querySererGroupById(Integer.parseInt(tSceneAction.getActionid()));
+								//TServerGroup tServerGroup = DeviceBusiness.querySererGroupById(tSceneAction.getActionID());
+								if (tServerGroup != null) {
+									SceneActionDTO sceneActionDTO = new SceneActionDTO();
+									sceneActionDTO.setAction(tSceneAction.getAction());
+									sceneActionDTO.setActionName(tServerGroup.getGroupName());
+									sceneActionDTO.setDeviceChildType(tServerGroup.getGroupChildType());
+									sceneActionDTO.setDeviceType(tServerGroup.getGroupType());
+									sceneActionDTO.setGroupId(String.valueOf(tServerGroup.getId()));
+									sceneActionDTO.setNodeType(NodeTypeEnum.group.getValue());
+									tActionDTOs.add(sceneActionDTO);
+								}
+							}
+
+						}
+					}
+					sceneDTO.setActions(tActionDTOs);
+					
+					tDtos.add(sceneDTO);
+				}
+			}
+			map.put("scenes", tDtos);
+			res.setData(map);
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+			//JsonObject respJsonObject = respRight();
+
+			//respJsonObject.add(RespFiledEnum.scenes.name(), new Gson().toJsonTree(tDtos));
+			
+			//return respJsonObject;
+		} catch (Exception e) {
+			logger.error("===querySceneLocation error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	/**  
+	 * @param userId
+	 * @param location
+	 * @param sceneNumber
+	 * @return  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/setSceneLocation/{userId}/{location}/{sceneNumber}", method = RequestMethod.POST)
+	ResponseObject setSceneLocation(@PathVariable(value = "userId")Integer userId,
+			@PathVariable(value = "location")Integer location, 
+			@PathVariable(value = "sceneNumber")Integer sceneNumber){
+		ResponseObject  res = new ResponseObject();
+		try {
+			TLocation tLocation = locationService.queryLocationByUserIdAndId(userId, location);
+			//TLocation tLocation = queryLocationByWeight(user, Integer.parseInt(location));
+			if (tLocation == null) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			TScene tScene = sceneService.querySceneBySceneNumberAndUserId(sceneNumber,userId);
+			//TScene tScene = querySceneByWeight(user, Integer.parseInt(sceneNumber));
+			if (tScene == null) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			TLocationScene tLocationScene = new TLocationScene();
+			tLocationScene.setLocationId(tLocation.getId());
+			tLocationScene.setSceneNumber(tScene.getSceneNumber());
+			locationSceneService.addSceneLocation(tLocationScene);
+			//SceneBusiness.addSceneLocation(tLocationScene);
+			
+			 
+			res.setStatus(ResponseEnum.AddSuccess.getStatus());
+			res.setMessage(ResponseEnum.AddSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===setSceneLocation error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	/**  
+	 * @param userId
+	 * @param location
+	 * @param sceneNumber
+	 * @return  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/deleteSceneLocation/{userId}/{location}/{sceneNumber}", method = RequestMethod.DELETE)
+	ResponseObject deleteSceneLocation(@PathVariable(value = "userId")Integer userId,
+			@PathVariable(value = "location")Integer location, 
+			@PathVariable(value = "sceneNumber")Integer sceneNumber){
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+ 		try {
+ 			TLocation tLocation = locationService.queryLocationByUserIdAndId(userId, location);
+			//TLocation tLocation = queryLocationByWeight(user, Integer.parseInt(location));
+			if (tLocation == null) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			TScene tScene = sceneService.querySceneBySceneNumberAndUserId(sceneNumber,userId);
+			//TScene tScene = querySceneByWeight(user, Integer.parseInt(sceneNumber));
+			if (tScene == null) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			locationSceneService.deleteSceneLocation(tScene.getSceneNumber(), location);
+			//SceneBusiness.deleteSceneLocation(tScene.getSceneNumber(), tLocation.getId());
+ 		} catch (Exception e) {
+			logger.error("===setSceneLocation error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	
+	}
 }

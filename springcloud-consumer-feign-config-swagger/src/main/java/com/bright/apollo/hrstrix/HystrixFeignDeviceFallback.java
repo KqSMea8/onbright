@@ -646,4 +646,65 @@ public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implem
 		logger.warn("===device server is break===");
 		return serverError();
 	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#deleteDeviceLocation(java.lang.Integer, java.lang.String, java.lang.Integer)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject deleteDeviceLocation(Integer userId, String serialId, Integer location) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+ 
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#queryLocation(java.lang.Integer, java.lang.Integer)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<Map<String, Object>> queryLocation(Integer userId, Integer locationId) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#queryDeviceLocation(java.lang.Integer, java.lang.Integer)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<Map<String, Object>> queryDeviceLocation(Integer userId, Integer locationId) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#querySceneLocation(java.lang.Integer, java.lang.Integer)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<Map<String, Object>> querySceneLocation(Integer userId, Integer location) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#setSceneLocation(java.lang.Integer, java.lang.Integer, java.lang.Integer)  
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public ResponseObject setSceneLocation(Integer userId, Integer location, Integer sceneNumber) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#deleteSceneLocation(java.lang.Integer, java.lang.Integer, java.lang.Integer)  
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public ResponseObject deleteSceneLocation(Integer userId, Integer location,
+			Integer sceneNumber) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
 }

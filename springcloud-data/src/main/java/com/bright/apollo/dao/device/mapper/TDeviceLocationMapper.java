@@ -50,11 +50,27 @@ public interface TDeviceLocationMapper {
 			@Result(property = "lastOpTime", column = "last_op_time") })
 	List<TDeviceLocation> queryDevicesByLocation(@Param("location") Integer location);
 
-	/**  
-	 * @param id  
-	 * @Description:  
+	/**
+	 * @param id
+	 * @Description:
 	 */
 	@Delete("delete from t_device_location where id =#{id}")
-	void deleteDeviceLocation(@Param("id")Integer id);
+	void deleteDeviceLocation(@Param("id") Integer id);
+
+	/**
+	 * @param location
+	 * @param serialId
+	 * @param type
+	 * @return
+	 * @Description:
+	 */
+	@Select("select * from t_device_location where location=#{location} and serialId=#{serialId} and device_type=#{type}")
+	@Results(value = { @Result(property = "id", column = "id"), @Result(property = "location", column = "location"),
+			@Result(property = "xAxis", column = "x_axis"), @Result(property = "yAxis", column = "y_axis"),
+			@Result(property = "serialId", column = "serialId"),
+			@Result(property = "deviceType", column = "device_type"),
+			@Result(property = "lastOpTime", column = "last_op_time") })
+	TDeviceLocation queryDevicesByLocationAndSerialIdAndType(@Param("location") Integer location,
+			@Param("serialId") String serialId, @Param("type") String type);
 
 }
