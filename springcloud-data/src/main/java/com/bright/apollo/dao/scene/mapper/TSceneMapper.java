@@ -157,4 +157,44 @@ public interface TSceneMapper {
 			@Result(column = "scene_group", property = "sceneGroup") })
 	List<TScene> getSceneByUserIdAndPage(@Param("userId") Integer userId, @Param("start") int start,
 			@Param("count") int count);
+
+	/**  
+	 * @param location
+	 * @return  
+	 * @Description:  
+	 */
+	@Select("select a.* "
+			+ "from t_scene a where  EXISTS(select 1 from t_location_scene "
+			+ "b where a.scene_number=b.scene_number and b.location_id=#{location})")
+	@Results(value = { @Result(column = "scene_name", property = "sceneName"),
+			@Result(column = "scene_number", property = "sceneNumber"),
+			@Result(column = "obox_serial_id", property = "oboxSerialId"),
+			@Result(column = "obox_scene_number", property = "oboxSceneNumber"),
+			@Result(column = "last_op_time", property = "lastOpTime"),
+			@Result(column = "scene_status", property = "sceneStatus"),
+			@Result(column = "scene_type", property = "sceneType"),
+			@Result(column = "msg_alter", property = "msgAlter"), @Result(column = "scene_run", property = "sceneRun"),
+			@Result(column = "license", property = "license"), @Result(column = "alter_need", property = "alterNeed"),
+			@Result(column = "scene_group", property = "sceneGroup") })
+	List<TScene> querySceneByLocation(@Param("location")Integer location);
+
+	/**  
+	 * @param sceneNumber
+	 * @param userId
+	 * @return  
+	 * @Description:  
+	 */
+	@Select("select a.*from t_scene a where  EXISTS (select 1 from "
+			+ "t_user_scene b where a.scene_number=b.scene_number and b.user_id=#{userId} and b.scene_number=#{sceneNumber})")
+	@Results(value = { @Result(column = "scene_name", property = "sceneName"),
+			@Result(column = "scene_number", property = "sceneNumber"),
+			@Result(column = "obox_serial_id", property = "oboxSerialId"),
+			@Result(column = "obox_scene_number", property = "oboxSceneNumber"),
+			@Result(column = "last_op_time", property = "lastOpTime"),
+			@Result(column = "scene_status", property = "sceneStatus"),
+			@Result(column = "scene_type", property = "sceneType"),
+			@Result(column = "msg_alter", property = "msgAlter"), @Result(column = "scene_run", property = "sceneRun"),
+			@Result(column = "license", property = "license"), @Result(column = "alter_need", property = "alterNeed"),
+			@Result(column = "scene_group", property = "sceneGroup") })
+	TScene querySceneBySceneNumberAndUserId(@Param("sceneNumber")Integer sceneNumber, @Param("userId")Integer userId);
 }

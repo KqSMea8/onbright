@@ -392,7 +392,13 @@ public enum CMDEnum {
 	query_countdown,
 
 	setting_remote_led("8103","a103"),
-	my_test;
+	my_test, 
+	
+	modify_location, 
+	
+	delete_location, 
+	
+	delete_scene_location;
 		
 	
 	private String sendCMD;

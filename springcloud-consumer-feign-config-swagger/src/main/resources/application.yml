@@ -32,6 +32,3 @@ WxLoginParam:
   code: code
   wxLoginUrl: https://api.weixin.qq.com/sns/oauth2/access_token?appid=
   grantType: authorization_code
-PicPath:
-  tempPath: /temp
-  realPath: /images

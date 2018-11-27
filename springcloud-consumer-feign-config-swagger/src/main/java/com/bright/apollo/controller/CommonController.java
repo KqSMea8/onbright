@@ -627,37 +627,56 @@ public class CommonController {
 				}
 			}
 		} else if (CMDEnum.create_location.toString().equals(cmdEnum.toString())) {
+			/*
+			 * String serialId = requestParam.getValue("serialId"); String
+			 * location = requestParam.getValue("location"); String building =
+			 * requestParam.getValue("building"); String room =
+			 * requestParam.getValue("room"); String action =
+			 * requestParam.getValue("action"); List<String> mList =
+			 * (List<String>) ObjectUtils.fromJsonToObject(serialId,
+			 * List.class); if (StringUtils.isEmpty(location) &&
+			 * action.endsWith("01") && !StringUtils.isEmpty(building) &&
+			 * !StringUtils.isEmpty(room)) { // create return
+			 * facadeController.createLocation(building, room, mList); } else if
+			 * (!StringUtils.isEmpty(location) && action.endsWith("00") &&
+			 * NumberHelper.isNumeric(location)) {//
+			 * 删除，先删除device与location的映射,然后把location删了 // delete return
+			 * facadeController.deleteLocation(Integer.parseInt(location)); }
+			 * else if (!StringUtils.isEmpty(location) && action.endsWith("01"))
+			 * { //update return
+			 * facadeController.updateLocation(Integer.parseInt(location),
+			 * building, room, mList); }
+			 */
 			String serialId = requestParam.getValue("serialId");
+			String building = requestParam.getValue("building");
+			String room = requestParam.getValue("room");
+			List<String> mList = (List<String>) ObjectUtils.fromJsonToObject(serialId, List.class);
+			if (!StringUtils.isEmpty(building) && !StringUtils.isEmpty(room))
+				// create
+				return facadeController.createLocation(building, room, mList);
+
+		} else if (CMDEnum.modify_location.toString().equals(cmdEnum.toString())) {
 			String location = requestParam.getValue("location");
 			String building = requestParam.getValue("building");
 			String room = requestParam.getValue("room");
-			String action = requestParam.getValue("action");
-			List<String> mList = (List<String>) ObjectUtils.fromJsonToObject(serialId, List.class);
-			if (StringUtils.isEmpty(location) && action.endsWith("01") && !StringUtils.isEmpty(building)
-					&& !StringUtils.isEmpty(room)) {
-				// create
-				return facadeController.createLocation(building, room, mList);
-			} else if (!StringUtils.isEmpty(location) && action.endsWith("00") && NumberHelper.isNumeric(location)) {// 删除，先删除device与location的映射,然后把location删了
-				// delete
-				return facadeController.deleteLocation(Integer.parseInt(location));
-			} else if (!StringUtils.isEmpty(location) && action.endsWith("01")) {
-				//update
-				return facadeController.updateLocation(Integer.parseInt(location), building, room, mList);
-			}
-		} else if (CMDEnum.set_device_location.toString().equals(cmdEnum.toString())) {
 			String serialId = requestParam.getValue("serialId");
+			List<String> mList = (List<String>) ObjectUtils.fromJsonToObject(serialId, List.class);
+			if (!StringUtils.isEmpty(location) && NumberHelper.isNumeric(location))
+				// create
+				return facadeController.updateLocation(Integer.parseInt(location), building, room, mList);
+
+		} else if (CMDEnum.delete_location.toString().equals(cmdEnum.toString())) {
+			String location = requestParam.getValue("location");
+			if (!StringUtils.isEmpty(location) && NumberHelper.isNumeric(location))
+				// create
+				return facadeController.deleteLocation(Integer.parseInt(location));
+
+		} else if (CMDEnum.set_device_location.toString().equals(cmdEnum.toString())) {
+			/*String serialId = requestParam.getValue("serialId");
 			String location = requestParam.getValue("location");
 			String x_axis = requestParam.getValue("x_axis");
 			String y_axis = requestParam.getValue("y_axis");
 			String action = requestParam.getValue("action");
-			/*
-			 * Assert.notNull(accessToken, "access_token can't be null!");
-			 * Assert.notNull(serialId, "serialId can't be null!");
-			 * Assert.notNull(location, "location can't be null!");
-			 * Assert.notNull(x_axis, "x_axis can't be null!");
-			 * Assert.notNull(y_axis, "y_axis can't be null!");
-			 * Assert.notNull(action, "action can't be null!");
-			 */
 			if (!StringUtils.isEmpty(serialId) && !StringUtils.isEmpty(location) && !StringUtils.isEmpty(x_axis)
 					&& !StringUtils.isEmpty(y_axis) && !StringUtils.isEmpty(action) && NumberHelper.isNumeric(location)
 					&& NumberHelper.isNumeric(x_axis) && NumberHelper.isNumeric(y_axis)) {
@@ -666,11 +685,46 @@ public class CommonController {
 				else if (action.equals("01"))
 					return facadeController.addDeviceLocation(serialId, Integer.parseInt(location),
 							Integer.parseInt(x_axis), Integer.parseInt(y_axis), action);
+			}*/
+			String serialId = requestParam.getValue("serialId");
+			String location = requestParam.getValue("location");
+			String x_axis = requestParam.getValue("x_axis");
+			String y_axis = requestParam.getValue("y_axis");
+			//String action = requestParam.getValue("action");
+			if (!StringUtils.isEmpty(serialId) && !StringUtils.isEmpty(location) && !StringUtils.isEmpty(x_axis)
+					&& !StringUtils.isEmpty(y_axis) && NumberHelper.isNumeric(location)
+					&& NumberHelper.isNumeric(x_axis) && NumberHelper.isNumeric(y_axis)) {
+				//if (action.equals("00"))
+				//	return facadeController.deleteDeviceLocation(serialId, Integer.parseInt(location));
+				//else if (action.equals("01"))
+					return facadeController.addDeviceLocation(serialId, Integer.parseInt(location),
+							Integer.parseInt(x_axis), Integer.parseInt(y_axis));
 			}
-		}else if (CMDEnum.query_location.toString().equals(cmdEnum.toString())) {
-			return facadeController.queryLocation();
-		}
-		else if (CMDEnum.test.toString().equals(cmdEnum.toString())) {
+		} else if (CMDEnum.query_location.toString().equals(cmdEnum.toString())) {
+			String location = requestParam.getValue("location");
+			if (!StringUtils.isEmpty(location) && NumberHelper.isNumeric(location))
+				return facadeController.queryLocation(Integer.parseInt(location));
+		} else if (CMDEnum.query_device_location.toString().equals(cmdEnum.toString())) {
+			String location = requestParam.getValue("location");
+			if (!StringUtils.isEmpty(location) && NumberHelper.isNumeric(location))
+ 				return facadeController.queryDeviceLocation(Integer.parseInt(location));
+		} else if (CMDEnum.query_scene_location.toString().equals(cmdEnum.toString())) {
+			String location = requestParam.getValue("location");
+			if (!StringUtils.isEmpty(location) && NumberHelper.isNumeric(location))
+				return facadeController.querySceneLocation(Integer.parseInt(location));
+		} else if (CMDEnum.set_scene_location.toString().equals(cmdEnum.toString())) {
+			String location = requestParam.getValue("location");
+			String sceneNumber = requestParam.getValue("scene_number");
+			if (!StringUtils.isEmpty(location) && NumberHelper.isNumeric(location)&&
+					!StringUtils.isEmpty(sceneNumber) && NumberHelper.isNumeric(sceneNumber))
+				return facadeController.setSceneLocation(Integer.parseInt(location),Integer.parseInt(sceneNumber));
+		}else if (CMDEnum.delete_scene_location.toString().equals(cmdEnum.toString())) {
+			String location = requestParam.getValue("location");
+			String sceneNumber = requestParam.getValue("scene_number");
+			if (!StringUtils.isEmpty(location) && NumberHelper.isNumeric(location)&&
+					!StringUtils.isEmpty(sceneNumber) && NumberHelper.isNumeric(sceneNumber))
+				return facadeController.deleteSceneLocation(Integer.parseInt(location),Integer.parseInt(sceneNumber));
+		}else if (CMDEnum.test.toString().equals(cmdEnum.toString())) {
 			String serialId = requestParam.getValue("serialId");
 			if (!StringUtils.isEmpty(serialId)) {
 				return facadeController.test(serialId);
