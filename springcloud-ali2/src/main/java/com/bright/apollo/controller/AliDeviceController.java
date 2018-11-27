@@ -351,7 +351,7 @@ public class AliDeviceController {
 		}
 	}
 
-	public List<QueryRemoteBySrcDTO> getRemoteControlList(String brandId,String deviceType) throws Exception {
+	public Map<String,Object> getRemoteControlList(String brandId,String deviceType) throws Exception {
 		Map<String,Object> resMap = new HashMap<String,Object>();
 		TYaokonyunDevice yaokonyunDevice = getYaoKongDevice();
 		List<String> strings = new ArrayList<String>();
@@ -365,9 +365,10 @@ public class AliDeviceController {
 		MatchRemoteControlResult remoteControlResult = gson.fromJson(result,MatchRemoteControlResult.class);
 
 		if(remoteControlResult==null||remoteControlResult.getSm()==0){
-			resMap.put("sm",0);
+//			resMap.put("sm",0);
 			resMap.put("rs",new ArrayList());
-			return new ArrayList<QueryRemoteBySrcDTO>();
+//			return new ArrayList<QueryRemoteBySrcDTO>();
+//			return resMap;
 		}else{
 			List<MatchRemoteControl>  list = remoteControlResult.getRs();
 			List<TYaokonyunRemoteControl> remoteControlList = new ArrayList<TYaokonyunRemoteControl>();
@@ -391,11 +392,11 @@ public class AliDeviceController {
 			}
 			cmdCache.setIRDeviceInfoList(brandId+"_"+deviceType+"_"+"_remoteControlList",dtoList);
 			cmdCache.setIRDeviceInfoList(brandId+"_"+deviceType+"_"+"_remoteControlListSrc",dtoSrcList);
-			resMap.put("sm",dtoList.size());
+//			resMap.put("sm",dtoList.size());
 			resMap.put("rs",dtoList);
-			return dtoList;
+//			return dtoList;
 		}
-//		return resMap;
+		return resMap;
 	}
 
 	// 删除红外遥控方案
