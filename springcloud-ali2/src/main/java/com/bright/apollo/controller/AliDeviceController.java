@@ -524,9 +524,9 @@ public class AliDeviceController {
 			Map<String,Object> resMap = new HashMap<String,Object>();
 			List<TYaokonyunDeviceType> yaokonyunDeviceTypeList = yaoKongYunService.getYaoKongYunDeviceType();
 			if(yaokonyunDeviceTypeList.size()>0){
-				resMap.put("sm",yaokonyunDeviceTypeList.size());
+//				resMap.put("sm",yaokonyunDeviceTypeList.size());
 				resMap.put("rs",yaokonyunDeviceTypeList);
-				res.setData(yaokonyunDeviceTypeList);
+//				res.setData(yaokonyunDeviceTypeList);
 			}else{
 				TYaokonyunDevice yaokonyunDevice = getYaoKongDevice();
 				String result = yaoKongYunSend.postMethod(null,yaokonyunDevice,yaoKongYunConfig.getUrlPrefix()+"?c=t&appid="+yaokonyunDevice.getAppId()+"f="+yaokonyunDevice.getDeviceId());
@@ -540,12 +540,12 @@ public class AliDeviceController {
 					yaokonyunDeviceType.settId(deviceType.getTid());
 					yaoKongYunService.addTYaokonyunDeviceType(yaokonyunDeviceType);
 				}
-				resMap.put("sm",deviceTypeList.size());
+//				resMap.put("sm",deviceTypeList.size());
 				resMap.put("rs",deviceTypeList);
-				res.setData(deviceTypeList);
+//				res.setData(deviceTypeList);
 			}
 
-//			res.setData(resMap);
+			res.setData(resMap);
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {

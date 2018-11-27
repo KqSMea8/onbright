@@ -500,7 +500,7 @@ public class CommonController {
 			return facadeController.getIrBrandList(deviceType);
 		}else if(CMDEnum.query_ir_device.toString().equals(cmdEnum.toString())){//获取红外遥控方案
 			String serialId = requestParam.getValue("serialId");
-			facadeController.queryIrDevice(serialId);
+			return wufacadeController.queryIrDevice(serialId);
 		}else if(CMDEnum.control_ir_device.toString().equals(cmdEnum.toString())){//控制转发命令
 			String serialId = requestParam.getValue("serialId");
 			String index = requestParam.getValue("index");
