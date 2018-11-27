@@ -502,6 +502,12 @@ public class HystrixFeignAli2Fallback extends BasicHystrixFeignFallback implemen
 		return serverError();
 	}
 
+	@Override
+	public ResponseObject createIrDevice(String serialId, String deviceType, String name, String brandId) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
 //	@Override
 //	public ResponseObject registAliDevice(String zone, String type) {
 //		logger.warn("===ali server is break===");

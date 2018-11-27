@@ -515,4 +515,13 @@ public interface FeignAliClient {
     ResponseObject renameIrDevice(@RequestParam(required = true, value = "serialId") String serialId,
                                   @RequestParam(required = true, value = "index") String index,
                                   @RequestParam(required = true, value = "name") String name);
+
+	/**
+	 * @Description:学习遥控方案——新建自定义遥控器
+	 */
+	@RequestMapping(value = "/aliDevice/createIrDevice", method = RequestMethod.POST)
+	ResponseObject createIrDevice(@RequestParam(required = true, value = "serialId") String serialId,
+								  @RequestParam(required = true, value = "deviceType") String deviceType,
+								  @RequestParam(required = true, value = "name") String name,
+								  @RequestParam(required = true, value = "brandId") String brandId);
 }

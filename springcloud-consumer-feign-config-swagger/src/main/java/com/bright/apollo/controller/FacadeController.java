@@ -6038,6 +6038,39 @@ public class FacadeController extends BaseController {
 		return res;
 	}
 
+	//学习遥控方案——新建自定义遥控器
+	@ApiOperation(value = "createIrDevice", httpMethod = "POST", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/createIrDevice", method = RequestMethod.POST)
+	public ResponseObject<Map<String, Object>> createIrDevice(
+			@RequestParam(required = true, value = "serialId") String serialId,
+			@RequestParam(required = true, value = "deviceType") String deviceType,
+			@RequestParam(required = true, value = "name") String name,
+			@RequestParam(required = true, value = "brandId") String brandId) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+			res = feignAliClient.queryIrDevice(serialId);
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
 	/**
 	 * @param groupName
 	 * @return
