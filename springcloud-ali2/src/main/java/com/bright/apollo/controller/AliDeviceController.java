@@ -606,7 +606,7 @@ public class AliDeviceController {
                                   @RequestParam(required = true, value = "name") String name,
                                   @RequestParam(required = true, value = "brandId") String brandId) {
         ResponseObject res = new ResponseObject();
-        Map<String,Object> resMap = new HashMap<>();
+        Map<String,Object> resMap = new HashMap<String,Object>();
         try {
             cmdCache.addIrBrandIdBySerialId(serialId,brandId);
             cmdCache.addIrDeviceTypeBySerialId(serialId,deviceType);
