@@ -445,9 +445,9 @@ public class AliDeviceController {
 
 			List<TYaoKongYunBrand> yaoKongYunBrandList = yaoKongYunService.getYaoKongYunBrandByDeviceType(deviceType);
 			if(yaoKongYunBrandList!=null&&yaoKongYunBrandList.size()>0){
-				resMap.put("sm",yaoKongYunBrandList.size());
+//				resMap.put("sm",yaoKongYunBrandList.size());
 				resMap.put("rs",yaoKongYunBrandList);
-				res.setData(yaoKongYunBrandList);
+//				res.setData(yaoKongYunBrandList);
 			}else{
 				TYaokonyunDevice yaokonyunDevice = getYaoKongDevice();
 				List<String> strings = new ArrayList<String>();
@@ -466,12 +466,12 @@ public class AliDeviceController {
 					yaoKongYunBrand.setName(brand.getName());
 					yaoKongYunService.addTYaoKongYunBrand(yaoKongYunBrand);
 				}
-				resMap.put("sm",brandList.size());
+//				resMap.put("sm",brandList.size());
 				resMap.put("rs",brandList);
-				res.setData(brandList);
+//				res.setData(brandList);
 			}
 
-//			res.setData(resMap);
+			res.setData(resMap);
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {
@@ -568,7 +568,8 @@ public class AliDeviceController {
             for(TYaokonyunKeyCode keyCode:yaokonyunKeyCodeList){
                 dtoList.add(new QueryRemoteBySrcDTO(keyCode));
             }
-            res.setData(dtoList);
+            resMap.put("rs",dtoList);
+            res.setData(resMap);
             res.setStatus(ResponseEnum.SelectSuccess.getStatus());
             res.setMessage(ResponseEnum.SelectSuccess.getMsg());
         } catch (Exception e) {
@@ -605,6 +606,7 @@ public class AliDeviceController {
                                   @RequestParam(required = true, value = "name") String name,
                                   @RequestParam(required = true, value = "brandId") String brandId) {
         ResponseObject res = new ResponseObject();
+        Map<String,Object> resMap = new HashMap<>();
         try {
             cmdCache.addIrBrandIdBySerialId(serialId,brandId);
             cmdCache.addIrDeviceTypeBySerialId(serialId,deviceType);
@@ -618,7 +620,8 @@ public class AliDeviceController {
             dto.setRid("");
             dto.setRmodel("");
             dto.setVersion(0);
-            res.setData(dto);
+			resMap.put("remote",dto);
+            res.setData(resMap);
             res.setStatus(ResponseEnum.SelectSuccess.getStatus());
             res.setMessage(ResponseEnum.SelectSuccess.getMsg());
         } catch (Exception e) {
