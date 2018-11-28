@@ -12,5 +12,5 @@ import com.bright.apollo.vo.PicPathVo;
  *@Version:1.1.0  
  */
 public interface FtpService {
-	public boolean uploadFile(String originFileName,InputStream input,PicPathVo pathVo);
+	public String uploadFile(String originFileName,InputStream input,PicPathVo pathVo);
 }

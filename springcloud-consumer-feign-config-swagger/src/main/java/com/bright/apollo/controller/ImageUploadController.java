@@ -1,24 +1,26 @@
 package com.bright.apollo.controller;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.util.Map;
 
-import org.apache.commons.lang.math.RandomUtils;
+import javax.imageio.ImageIO;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.bright.apollo.common.entity.TUser;
+import com.bright.apollo.feign.FeignUserClient;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.service.FtpService;
-import com.bright.apollo.tool.MD5;
 import com.bright.apollo.vo.PicPathVo;
 
 import io.swagger.annotations.Api;
@@ -41,6 +43,8 @@ public class ImageUploadController {
 	private PicPathVo picPathVo;
 	@Autowired
 	private FtpService ftpService;
+	@Autowired
+	private FeignUserClient feignUserClient;
 	@ApiOperation(value = "uploadPic", httpMethod = "POST", produces = "application/json")
 	@ApiResponse(code = 200, message = "Success", response = ResponseObject.class)
 	@RequestMapping(value = "/uploadPic", method = RequestMethod.POST)
@@ -53,7 +57,28 @@ public class ImageUploadController {
 			) {
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		try {
-			//file.get
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+			if(file!=null){
+				String uploadFile = ftpService.uploadFile(file.getOriginalFilename(), file.getInputStream(), picPathVo);
+				if(!StringUtils.isEmpty(uploadFile)){
+					res.setStatus(ResponseEnum.AddSuccess.getStatus());
+					res.setMessage(ResponseEnum.AddSuccess.getMsg());
+					return res;
+				}
+				logger.warn("===upload pic fature===");
+			}
 		} catch (Exception e) {
 			logger.error("===error msg:"+e.getMessage());
 			res.setStatus(ResponseEnum.RequestTimeout.getStatus());
