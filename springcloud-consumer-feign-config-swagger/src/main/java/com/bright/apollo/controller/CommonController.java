@@ -537,7 +537,11 @@ public class CommonController {
 			String serialId = requestParam.getValue("serialId");
 			return facadeController.bindIrRemotecode(brandId, deviceType, remoteId, name, serialId);
 		} else if (CMDEnum.create_ir_device.toString().equals(cmdEnum.toString())) {// 学习遥控方案——新建自定义遥控器
-
+			String deviceType = requestParam.getValue("deviceType");
+			String brandId = requestParam.getValue("brandId");
+			String serialId = requestParam.getValue("serialId");
+			String name = requestParam.getValue("name");
+			return facadeController.createIrDevice(serialId,deviceType,name,brandId);
 		} else if (CMDEnum.learn_ir_device_key.toString().equals(cmdEnum.toString())) {// 学习遥控方案——进入按键学习模式
 			String keyType = requestParam.getValue("keyType");
 			String key = requestParam.getValue("key");
