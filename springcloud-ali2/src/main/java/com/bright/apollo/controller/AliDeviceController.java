@@ -585,7 +585,9 @@ public class AliDeviceController {
 				map.put("extendsKeys",new com.alibaba.fastjson.JSONArray());
 
             }
-			dtoList.add(new QueryRemoteBySrcDTO(map));
+            if(yaokonyunKeyCodeList.size()>0){
+				dtoList.add(new QueryRemoteBySrcDTO(map));
+			}
             resMap.put("rs",dtoList);
             res.setData(resMap);
             res.setStatus(ResponseEnum.SelectSuccess.getStatus());
