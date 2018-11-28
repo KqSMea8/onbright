@@ -288,18 +288,25 @@ public class AliDeviceController {
 		ResponseObject<List<Map<String, String>>> res = new ResponseObject<List<Map<String, String>>>();
 		Map<String, Object> requestMap = new HashMap<String, Object>();
 		try {
-			requestMap.put("command","set");
-			com.alibaba.fastjson.JSONArray jsonArray = new com.alibaba.fastjson.JSONArray();
-			com.alibaba.fastjson.JSONObject json = new com.alibaba.fastjson.JSONObject();
-			com.alibaba.fastjson.JSONObject dataJson = new com.alibaba.fastjson.JSONObject();
-			json.put("functionId",1);
-			jsonArray.add(json);
-			dataJson.put("data",ByteHelper.bytesToHexString(key.getBytes()));
-			jsonArray.add(dataJson);
-			requestMap.put("value",jsonArray);
-			JSONObject jsonObject = topServer.pubIrRPC(requestMap);
-			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
-			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+			TYaokonyunKeyCode yaokonyunKeyCode = yaoKongYunService.getYaoKongKeyCodeByKeyAndSerialIdAndIndex(index,serialId,key);
+			if(yaokonyunKeyCode==null){
+				res.setStatus(ResponseEnum.NoIRKey.getStatus());
+				res.setMessage(ResponseEnum.NoIRKey.getMsg());
+			}else{
+				requestMap.put("command","set");
+				com.alibaba.fastjson.JSONArray jsonArray = new com.alibaba.fastjson.JSONArray();
+				com.alibaba.fastjson.JSONObject json = new com.alibaba.fastjson.JSONObject();
+				com.alibaba.fastjson.JSONObject dataJson = new com.alibaba.fastjson.JSONObject();
+				json.put("functionId",1);
+				jsonArray.add(json);
+				dataJson.put("data",ByteHelper.bytesToHexString(key.getBytes()));
+				jsonArray.add(dataJson);
+				requestMap.put("value",jsonArray);
+				JSONObject jsonObject = topServer.pubIrRPC(requestMap);
+				res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+				res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			res.setStatus(ResponseEnum.Error.getStatus());
@@ -778,12 +785,14 @@ public class AliDeviceController {
 				}
 
 			}
+			Map<String,Object> dataMap = new HashMap<String, Object>();
+			dataMap.put("remote",resMap);
 			resMap.put("index",idx);
 			resMap.put("name",name);
 			resMap.put("brandType",brandId);
 			resMap.put("keys",jsonArray);
 			resMap.put("extendsKeys",new JSONArray());
-			res.setData(resMap);
+			res.setData(dataMap);
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {

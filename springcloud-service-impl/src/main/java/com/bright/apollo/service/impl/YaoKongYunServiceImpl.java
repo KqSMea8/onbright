@@ -119,4 +119,9 @@ public class YaoKongYunServiceImpl implements YaoKongYunService {
     public void updateYaoKongKeyCodeNameBySerialIdAndIndex(String serialId, String index, String name) {
         yaoKongYunMapper.updateYaoKongKeyCodeNameBySerialIdAndIndex(serialId,index,name);
     }
+
+    @Override
+    public TYaokonyunKeyCode getYaoKongKeyCodeByKeyAndSerialIdAndIndex(Integer index, String serialId, String key) {
+        return yaoKongYunMapper.getYaoKongKeyCodeByKeyAndSerialIdAndIndex(index,serialId,key);
+    }
 }

@@ -150,4 +150,11 @@ public interface YaoKongYunMapper {
 
     @Update(" update t_yaokonyun_key_code set name = #{name} where serialId = #{serialId} and `index` = #{index}")
     void updateYaoKongKeyCodeNameBySerialIdAndIndex(@Param("serialId")String serialId,@Param("index")String index,@Param("name")String name);
+
+
+    @Select("select id from t_yaokonyun_key_code where `index` = #{index} and serialId = #{serialId} and `key` = #{key} ")
+    @Results(value = {
+            @Result(property = "id",column = "id")
+    })
+    TYaokonyunKeyCode getYaoKongKeyCodeByKeyAndSerialIdAndIndex(@Param("index")Integer index,@Param("serialId")String serialId,@Param("key")String key);
 }
