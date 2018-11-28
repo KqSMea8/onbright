@@ -568,9 +568,24 @@ public class AliDeviceController {
             Map<String,Object> resMap = new HashMap<String,Object>();
             List<QueryRemoteBySrcDTO> dtoList = new ArrayList<QueryRemoteBySrcDTO>();
             List<TYaokonyunKeyCode> yaokonyunKeyCodeList = yaoKongYunService.getYaoKongKeyCodeBySerialId(serialId);
+            com.alibaba.fastjson.JSONArray keyArray = new com.alibaba.fastjson.JSONArray();
+            Map<String,Object> map = new HashMap<String, Object>();
             for(TYaokonyunKeyCode keyCode:yaokonyunKeyCodeList){
-                dtoList.add(new QueryRemoteBySrcDTO(keyCode));
+            	com.alibaba.fastjson.JSONObject jsonObject = new com.alibaba.fastjson.JSONObject();
+				String key = keyCode.getKey();
+				jsonObject.put("key",key);
+				keyArray.add(jsonObject);
+				map.put("version",keyCode.getVersion());
+				map.put("rmodel",keyCode.getRmodel());
+				map.put("name",keyCode.getName());
+				map.put("index",keyCode.getIndex());
+				map.put("type",keyCode.gettId());
+				map.put("brandType",keyCode.getBrandId());
+				map.put("keys",keyArray);
+				map.put("extendsKeys",new com.alibaba.fastjson.JSONArray());
+
             }
+			dtoList.add(new QueryRemoteBySrcDTO(map));
             resMap.put("rs",dtoList);
             res.setData(resMap);
             res.setStatus(ResponseEnum.SelectSuccess.getStatus());
@@ -883,13 +898,13 @@ public class AliDeviceController {
 					LinkedTreeMap treeMap = keyCodeMap.get(key);
 					String src = (String) treeMap.get("src");
 					TYaokonyunKeyCode yaokonyunKeyCode = new TYaokonyunKeyCode();
-					if(!keyName.equals("")&&remoteControlSrc !=null && src.equals(remoteControlSrc)){
+//					if(!keyName.equals("")&&remoteControlSrc !=null && src.equals(remoteControlSrc)){
 //							if(keyNameType.equals("0")){//标准按键
 						yaokonyunKeyCode.setKeyName("0");
 //							}else{//拓展按键
 //								yaokonyunKeyCode.setCustomName(keyName);
 //							}
-					}
+//					}
 					yaokonyunKeyCode.setIndex(idx);
 					yaokonyunKeyCode.setLastOpTime(new Date());
 					yaokonyunKeyCode.setBrandId(Integer.valueOf(brandId));

@@ -115,31 +115,31 @@ public class QueryRemoteBySrcDTO implements Serializable {
         this.extendsKeys = new JSONArray();
     }
 
-    public QueryRemoteBySrcDTO(TYaokonyunKeyCode yaokonyunKeyCode) {
+    public QueryRemoteBySrcDTO(Map<String,Object> map) {
         super();
         this.rid="";
-        this.version=yaokonyunKeyCode.getVersion();
-        this.rmodel=yaokonyunKeyCode.getRmodel();
-        this.name=yaokonyunKeyCode.getName();
-        String key = yaokonyunKeyCode.getKeyName();
-        String extendsKey = yaokonyunKeyCode.getCustomName();
-        JSONArray keyArray = new JSONArray();
-        JSONArray extendsKeyArray = new JSONArray();
-        if(key!=null && !key.equals("")){
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("key",key);
-            keyArray.add(jsonObject);
-        }
-        if(extendsKey !=null&&!extendsKey.equals("")){
-            JSONObject extendsJsonObject = new JSONObject();
-            extendsJsonObject.put("key",extendsKey);
-            extendsKeyArray.add(extendsJsonObject);
-        }
-        this.keys = keyArray;
-        this.extendsKeys = extendsKeyArray;
-        this.index = yaokonyunKeyCode.getIndex();
-        this.type = yaokonyunKeyCode.gettId();
-        this.brandType = yaokonyunKeyCode.getBrandId();
+        this.version=(Integer) map.get("version");
+        this.rmodel=(String)map.get("rmodel");
+        this.name=(String)map.get("name");
+//        String key = yaokonyunKeyCode.getKeyName();
+//        String extendsKey = yaokonyunKeyCode.getCustomName();
+//        JSONArray keyArray = new JSONArray();
+//        JSONArray extendsKeyArray = new JSONArray();
+//        if(key!=null && !key.equals("")){
+//            JSONObject jsonObject = new JSONObject();
+//            jsonObject.put("key",key);
+//            keyArray.add(jsonObject);
+//        }
+//        if(extendsKey !=null&&!extendsKey.equals("")){
+//            JSONObject extendsJsonObject = new JSONObject();
+//            extendsJsonObject.put("key",extendsKey);
+//            extendsKeyArray.add(extendsJsonObject);
+//        }
+        this.keys = (JSONArray) map.get("keys");
+        this.extendsKeys = (JSONArray) map.get("extendsKeys");
+        this.index = (Integer) map.get("index");
+        this.type = (Integer) map.get("type");
+        this.brandType = (Integer) map.get("brandType");
     }
 
 
