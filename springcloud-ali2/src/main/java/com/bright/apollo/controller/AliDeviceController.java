@@ -608,19 +608,35 @@ public class AliDeviceController {
         ResponseObject res = new ResponseObject();
         Map<String,Object> resMap = new HashMap<String,Object>();
         try {
-            cmdCache.addIrBrandIdBySerialId(serialId,brandId);
-            cmdCache.addIrDeviceTypeBySerialId(serialId,deviceType);
+//            cmdCache.addIrBrandIdBySerialId(serialId,brandId);
+//            cmdCache.addIrDeviceTypeBySerialId(serialId,deviceType);
+			Integer idx = IndexUtils.getIdx();
+			TYaokonyunKeyCode yaokonyunKeyCode = new TYaokonyunKeyCode();
+			yaokonyunKeyCode.setKeyName("");
+			yaokonyunKeyCode.setCustomName("");
+			yaokonyunKeyCode.setIndex(idx);
+			yaokonyunKeyCode.setLastOpTime(new Date());
+			yaokonyunKeyCode.setBrandId(Integer.valueOf(brandId));
+			yaokonyunKeyCode.setRmodel("");
+			yaokonyunKeyCode.settId(Integer.valueOf(deviceType));
+			yaokonyunKeyCode.setName(name);
+			yaokonyunKeyCode.setVersion(0);
+			yaokonyunKeyCode.setSrc("");
+			yaokonyunKeyCode.setSerialId(serialId);
+			yaokonyunKeyCode.setKey("");
+			yaoKongYunService.addTYaokonyunKeyCode(yaokonyunKeyCode);
             QueryRemoteBySrcDTO dto = new QueryRemoteBySrcDTO();
             dto.setName(name);
             dto.setKeys(new com.alibaba.fastjson.JSONArray());
             dto.setExtendsKeys(new com.alibaba.fastjson.JSONArray());
-            dto.setIndex(0);
+            dto.setIndex(idx);
             dto.setBrandType(Integer.valueOf(brandId));
             dto.setType(Integer.valueOf(deviceType));
             dto.setRid("");
             dto.setRmodel("");
             dto.setVersion(0);
 			resMap.put("remote",dto);
+
             res.setData(resMap);
             res.setStatus(ResponseEnum.SelectSuccess.getStatus());
             res.setMessage(ResponseEnum.SelectSuccess.getMsg());

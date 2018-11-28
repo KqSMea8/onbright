@@ -117,6 +117,9 @@ public class QueryRemoteBySrcDTO implements Serializable {
 
     public QueryRemoteBySrcDTO(TYaokonyunKeyCode yaokonyunKeyCode) {
         super();
+        this.rid="";
+        this.version=yaokonyunKeyCode.getVersion();
+        this.rmodel=yaokonyunKeyCode.getRmodel();
         this.name=yaokonyunKeyCode.getName();
         String key = yaokonyunKeyCode.getKeyName();
         String extendsKey = yaokonyunKeyCode.getCustomName();
