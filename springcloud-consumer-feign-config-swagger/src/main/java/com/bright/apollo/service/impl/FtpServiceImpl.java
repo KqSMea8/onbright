@@ -49,9 +49,11 @@ public class FtpServiceImpl implements FtpService {
 			String makeFileName = makeFileName(originFileName);
 			String makePath = makePath(makeFileName, pathVo.getRealPath());
 			logger.info("===makeFileName:"+makeFileName+"===makePath:"+makePath);
-			ftp.makeDirectory(makePath);
- 			ftp.changeWorkingDirectory(makePath);
-			ftp.storeFile(makeFileName, input);
+			boolean makeDirectory = ftp.makeDirectory(makePath);
+ 			boolean changeWorkingDirectory = ftp.changeWorkingDirectory(makePath);
+			boolean storeFile = ftp.storeFile(makeFileName, input);
+			logger.info("===makeDirectory:"+makeDirectory+"===changeWorkingDirectory:"+changeWorkingDirectory
+					+"===storeFile:"+storeFile);
 			input.close();
 			ftp.logout();
 			return makePath;
@@ -107,5 +109,8 @@ public class FtpServiceImpl implements FtpService {
 															// upload\3\5
 		logger.info("===save pic url===");
 		return dir;
+	}
+	public static void main(String[] args) {
+		System.out.println(makePath("ffdsfdfafafa","/home/ftpuser/images"));
 	}
 }
