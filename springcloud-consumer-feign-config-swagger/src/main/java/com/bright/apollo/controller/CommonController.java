@@ -505,21 +505,22 @@ public class CommonController {
 			String serialId = requestParam.getValue("serialId");
 			String index = requestParam.getValue("index");
 			String key = requestParam.getValue("key");
-			facadeController.controllIR(serialId, Integer.valueOf(index), key);
+			return facadeController.controllIR(serialId, Integer.valueOf(index), key);
 		} else if (CMDEnum.delete_ir_device.toString().equals(cmdEnum.toString())) {// 删除红外遥控方案
 			String serialId = requestParam.getValue("serialId");
 			String index = requestParam.getValue("index");
-			facadeController.deleteIrDevice(serialId, index);
+			return facadeController.deleteIrDevice(serialId, index);
 		} else if (CMDEnum.rename_ir_device.toString().equals(cmdEnum.toString())) {// 重命名红外遥控方案
 			String serialId = requestParam.getValue("serialId");
 			String index = requestParam.getValue("index");
 			String name = requestParam.getValue("name");
+			return facadeController.renameIrDevice(serialId,index,name);
 		} else if (CMDEnum.delete_ir_device_key.toString().equals(cmdEnum.toString())) {// 删除方案中特定按键
 			String serialId = requestParam.getValue("serialId");
 			String index = requestParam.getValue("index");
 			String key = requestParam.getValue("key");
 			String keyType = requestParam.getValue("keyType");
-			facadeController.deleteIrDeviceKey(serialId, index, key, keyType);
+			return facadeController.deleteIrDeviceKey(serialId, index, key, keyType);
 		} else if (CMDEnum.query_ir_testcode.toString().equals(cmdEnum.toString())) {// 手动匹配遥控方案
 			String brandId = requestParam.getValue("brandId");
 			String deviceType = requestParam.getValue("deviceType");

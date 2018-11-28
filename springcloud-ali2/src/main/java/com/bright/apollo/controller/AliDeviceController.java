@@ -291,8 +291,11 @@ public class AliDeviceController {
 			requestMap.put("command","set");
 			com.alibaba.fastjson.JSONArray jsonArray = new com.alibaba.fastjson.JSONArray();
 			com.alibaba.fastjson.JSONObject json = new com.alibaba.fastjson.JSONObject();
+			com.alibaba.fastjson.JSONObject dataJson = new com.alibaba.fastjson.JSONObject();
 			json.put("functionId",1);
 			jsonArray.add(json);
+			dataJson.put("data",ByteHelper.bytesToHexString(key.getBytes()));
+			jsonArray.add(dataJson);
 			requestMap.put("value",jsonArray);
 			JSONObject jsonObject = topServer.pubIrRPC(requestMap);
 			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
