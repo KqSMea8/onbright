@@ -693,7 +693,7 @@ public class AliDeviceController {
 			}
 
 			String keyNameType = cmdCache.getIrTestCodeAppKeyBrandIdDeviceType("keyNameType_"+idx.toString());
-			keyName = cmdCache.getIrTestCodeAppKeyBrandIdDeviceType("keyName_"+idx.toString());
+//			keyName = cmdCache.getIrTestCodeAppKeyBrandIdDeviceType("keyName_"+idx.toString());
 
 			List<TYaokonyunKeyCode> yaokonyunKeyCodeList = yaoKongYunService.getYaoKongKeyCodeByRemoteId(idx);
 			if(yaokonyunKeyCodeList.size()>0){
@@ -716,6 +716,19 @@ public class AliDeviceController {
 				List<Map<String, LinkedTreeMap>> mapList = gson.fromJson("["+remoteControl.getRcCommand()+"]",List.class);
 
 				if(mapList.size()>0){
+					SaveThread saveThread = new SaveThread();
+					saveThread.setMapList(mapList);
+					saveThread.setBrandId(brandId);
+					saveThread.setDeviceType(deviceType);
+					saveThread.setIdx(idx);
+					saveThread.setKeyName(keyName);
+					saveThread.setName(name);
+					saveThread.setRemoteControlSrc(remoteControlSrc);
+					saveThread.setRmodel(rmodel);
+					saveThread.setSerialId(serialId);
+					saveThread.setVersion(version);
+					Thread t = new Thread(saveThread);
+					t.start();
 					Map<String, LinkedTreeMap> keyCodeMap = mapList.get(0);
 					Iterator<String> iterator = keyCodeMap.keySet().iterator();
 					while (iterator.hasNext()){
@@ -723,30 +736,30 @@ public class AliDeviceController {
 						String key = iterator.next();
 						jsonObject.put("key",key);
 						jsonArray.add(jsonObject);
-						LinkedTreeMap treeMap = keyCodeMap.get(key);
-						String src = (String) treeMap.get("src");
-						TYaokonyunKeyCode yaokonyunKeyCode = new TYaokonyunKeyCode();
-						if(!keyName.equals("")&&remoteControlSrc !=null && src.equals(remoteControlSrc)){
-							if(keyNameType.equals("0")){//标准按键
-								yaokonyunKeyCode.setKeyName(keyName);
-							}else{//拓展按键
-								yaokonyunKeyCode.setCustomName(keyName);
-							}
-						}
-						yaokonyunKeyCode.setIndex(idx);
-						yaokonyunKeyCode.setLastOpTime(new Date());
-						yaokonyunKeyCode.setBrandId(Integer.valueOf(brandId));
-						yaokonyunKeyCode.setRmodel(rmodel);
-						yaokonyunKeyCode.settId(Integer.valueOf(deviceType));
-						yaokonyunKeyCode.setName(name);
-						yaokonyunKeyCode.setVersion(version);
-//						yaokonyunKeyCode.setRemoteId(yaokonyunRemoteControl.getId());
-						yaokonyunKeyCode.setSrc(src);
-						yaokonyunKeyCode.setSerialId(serialId);
-						yaokonyunKeyCode.setKey(key);
-						yaoKongYunService.addTYaokonyunKeyCode(yaokonyunKeyCode);
+//						LinkedTreeMap treeMap = keyCodeMap.get(key);
+//						String src = (String) treeMap.get("src");
+//						TYaokonyunKeyCode yaokonyunKeyCode = new TYaokonyunKeyCode();
+//						if(!keyName.equals("")&&remoteControlSrc !=null && src.equals(remoteControlSrc)){
+//							if(keyNameType.equals("0")){//标准按键
+//								yaokonyunKeyCode.setKeyName(keyName);
+//							}else{//拓展按键
+//								yaokonyunKeyCode.setCustomName(keyName);
+//							}
+//						}
+//						yaokonyunKeyCode.setIndex(idx);
+//						yaokonyunKeyCode.setLastOpTime(new Date());
+//						yaokonyunKeyCode.setBrandId(Integer.valueOf(brandId));
+//						yaokonyunKeyCode.setRmodel(rmodel);
+//						yaokonyunKeyCode.settId(Integer.valueOf(deviceType));
+//						yaokonyunKeyCode.setName(name);
+//						yaokonyunKeyCode.setVersion(version);
+//						yaokonyunKeyCode.setSrc(src);
+//						yaokonyunKeyCode.setSerialId(serialId);
+//						yaokonyunKeyCode.setKey(key);
+//						yaoKongYunService.addTYaokonyunKeyCode(yaokonyunKeyCode);
 					}
 				}
+
 			}
 			resMap.put("index",idx);
 			resMap.put("name",name);
@@ -762,6 +775,135 @@ public class AliDeviceController {
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
+	}
+
+	class SaveThread implements Runnable{
+		public List<Map<String, LinkedTreeMap>> getMapList() {
+			return mapList;
+		}
+
+		public void setMapList(List<Map<String, LinkedTreeMap>> mapList) {
+			this.mapList = mapList;
+		}
+
+		private List<Map<String, LinkedTreeMap>> mapList;
+
+		public String getKeyName() {
+			return keyName;
+		}
+
+		public void setKeyName(String keyName) {
+			this.keyName = keyName;
+		}
+
+		public String getRemoteControlSrc() {
+			return remoteControlSrc;
+		}
+
+		public void setRemoteControlSrc(String remoteControlSrc) {
+			this.remoteControlSrc = remoteControlSrc;
+		}
+
+		public Integer getIdx() {
+			return idx;
+		}
+
+		public void setIdx(Integer idx) {
+			this.idx = idx;
+		}
+
+		public String getBrandId() {
+			return brandId;
+		}
+
+		public void setBrandId(String brandId) {
+			this.brandId = brandId;
+		}
+
+		public String getRmodel() {
+			return rmodel;
+		}
+
+		public void setRmodel(String rmodel) {
+			this.rmodel = rmodel;
+		}
+
+		public String getDeviceType() {
+			return deviceType;
+		}
+
+		public void setDeviceType(String deviceType) {
+			this.deviceType = deviceType;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		public Integer getVersion() {
+			return version;
+		}
+
+		public void setVersion(Integer version) {
+			this.version = version;
+		}
+
+		public String getSerialId() {
+			return serialId;
+		}
+
+		public void setSerialId(String serialId) {
+			this.serialId = serialId;
+		}
+
+		private String keyName;
+		private String remoteControlSrc;
+		private Integer idx;
+		private String brandId;
+		private String rmodel;
+		private String deviceType;
+		private String name;
+		private Integer version;
+		private String serialId;
+
+		@Override
+		public void run() {
+//			if(mapList.size()>0){
+				Map<String, LinkedTreeMap> keyCodeMap = mapList.get(0);
+				Iterator<String> iterator = keyCodeMap.keySet().iterator();
+				while (iterator.hasNext()){
+					com.alibaba.fastjson.JSONObject jsonObject = new com.alibaba.fastjson.JSONObject();
+					String key = iterator.next();
+//					jsonObject.put("key",key);
+//					jsonArray.add(jsonObject);
+					LinkedTreeMap treeMap = keyCodeMap.get(key);
+					String src = (String) treeMap.get("src");
+					TYaokonyunKeyCode yaokonyunKeyCode = new TYaokonyunKeyCode();
+					if(!keyName.equals("")&&remoteControlSrc !=null && src.equals(remoteControlSrc)){
+//							if(keyNameType.equals("0")){//标准按键
+						yaokonyunKeyCode.setKeyName("0");
+//							}else{//拓展按键
+//								yaokonyunKeyCode.setCustomName(keyName);
+//							}
+					}
+					yaokonyunKeyCode.setIndex(idx);
+					yaokonyunKeyCode.setLastOpTime(new Date());
+					yaokonyunKeyCode.setBrandId(Integer.valueOf(brandId));
+					yaokonyunKeyCode.setRmodel(rmodel);
+					yaokonyunKeyCode.settId(Integer.valueOf(deviceType));
+					yaokonyunKeyCode.setName(name);
+					yaokonyunKeyCode.setVersion(version);
+					yaokonyunKeyCode.setSrc(src);
+					yaokonyunKeyCode.setSerialId(serialId);
+					yaokonyunKeyCode.setKey(key);
+					yaoKongYunService.addTYaokonyunKeyCode(yaokonyunKeyCode);
+				}
+//			}
+		}
 	}
 
 	private TYaokonyunDevice initYaoKongDevice() throws Exception {
