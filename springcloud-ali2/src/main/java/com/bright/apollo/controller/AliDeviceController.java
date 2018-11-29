@@ -417,8 +417,8 @@ public class AliDeviceController {
 		try {
 
 			yaoKongYunService.deleteTYaokonyunKeyCode(serialId,index);
-			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
-			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
 		} catch (Exception e) {
 			e.printStackTrace();
 			res.setStatus(ResponseEnum.Error.getStatus());
@@ -575,9 +575,13 @@ public class AliDeviceController {
             Map<String,Object> resMap = new HashMap<String,Object>();
             List<QueryRemoteBySrcDTO> dtoList = new ArrayList<QueryRemoteBySrcDTO>();
             List<TYaokonyunKeyCode> yaokonyunKeyCodeList = yaoKongYunService.getYaoKongKeyCodeBySerialId(serialId);
-            com.alibaba.fastjson.JSONArray keyArray = new com.alibaba.fastjson.JSONArray();
-            Map<String,Object> map = new HashMap<String, Object>();
-            for(TYaokonyunKeyCode keyCode:yaokonyunKeyCodeList){
+            List<Map<String,Object>> mapList = new ArrayList<Map<String,Object>>();
+			List<Map<String,Object>> filterList = new ArrayList<Map<String,Object>>();
+            com.alibaba.fastjson.JSONArray keyArray = null;
+			Map<String,Object> map = null;
+			for(TYaokonyunKeyCode keyCode:yaokonyunKeyCodeList){
+				map = new HashMap<String, Object>();
+				keyArray = new com.alibaba.fastjson.JSONArray();
             	com.alibaba.fastjson.JSONObject jsonObject = new com.alibaba.fastjson.JSONObject();
 				String key = keyCode.getKey();
 				jsonObject.put("key",key);
@@ -585,16 +589,52 @@ public class AliDeviceController {
 				map.put("version",keyCode.getVersion());
 				map.put("rmodel",keyCode.getRmodel());
 				map.put("name",keyCode.getName());
-				map.put("index",keyCode.getIndex());
+				Integer index = keyCode.getIndex();
+				map.put("index",index);
 				map.put("type",keyCode.gettId());
 				map.put("brandType",keyCode.getBrandId());
 				map.put("keys",keyArray);
 				map.put("extendsKeys",new com.alibaba.fastjson.JSONArray());
-
+				mapList.add(map);
             }
-            if(yaokonyunKeyCodeList.size()>0){
-				dtoList.add(new QueryRemoteBySrcDTO(map));
+			String idxs = "";
+            if(mapList.size()>0){
+				for(Map<String,Object> dtomap :mapList){
+					com.alibaba.fastjson.JSONArray dtoArray = (com.alibaba.fastjson.JSONArray)dtomap.get("keys");
+					Integer dtoIdx = (Integer)dtomap.get("index");
+					if(filterList.size()==0){
+						filterList.add(dtomap);
+						idxs += dtoIdx+",";
+					}else{
+						for(int i=0;i<filterList.size();i++){
+							Map<String,Object> filterMap = filterList.get(i);
+							com.alibaba.fastjson.JSONArray filterArray = (com.alibaba.fastjson.JSONArray)filterMap.get("keys");
+							Integer filterIdx = (Integer) filterMap.get("index");
+							System.out.println("idx === "+idxs);
+							System.out.println("filterIdx === "+filterIdx);
+							if(filterIdx.equals(57958825)){
+
+							}
+							System.out.println(idxs.indexOf(filterIdx.toString())<0);
+							if(filterIdx.equals(dtoIdx)
+									&&!filterArray.equals(dtoArray)){
+								com.alibaba.fastjson.JSONObject dtoJson = dtoArray.getJSONObject(0);
+								filterArray.add(dtoJson);
+							}else if(idxs.indexOf(dtoIdx.toString())<0){
+								filterList.add(dtomap);
+								idxs += dtoIdx+",";
+							}
+						}
+					}
+
+				}
+
+				for(Map<String,Object> dtomap :filterList){
+					dtoList.add(new QueryRemoteBySrcDTO(dtomap));
+				}
+
 			}
+
             resMap.put("rs",dtoList);
             res.setData(resMap);
             res.setStatus(ResponseEnum.SelectSuccess.getStatus());

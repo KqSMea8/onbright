@@ -93,7 +93,7 @@ public class YaoKongYunServiceImpl implements YaoKongYunService {
 
     @Override
     public void deleteTYaokonyunKeyCode(String serialId, String index) {
-        yaoKongYunMapper.deleteTYaokonyunKeyCode(serialId,index);
+        yaoKongYunMapper.deleteTYaokonyunKeyCode(serialId,Integer.valueOf(index));
     }
 
     @Override

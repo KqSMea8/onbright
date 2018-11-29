@@ -124,10 +124,10 @@ public interface YaoKongYunMapper {
     List<TYaokonyunKeyCode> getYaoKongKeyCodeByRemoteId(@Param("index")Integer index);
 
 
-    @Delete(" delete from t_yaokonyun_key_code where serialId = #{serialId} and index = #{index}")
-    void deleteTYaokonyunKeyCode(@Param("serialId")String serialId,@Param("index")String index);
+    @Delete(" delete from t_yaokonyun_key_code where serialId = #{serialId} and `index` = #{index} ")
+    void deleteTYaokonyunKeyCode(@Param("serialId")String serialId,@Param("index")Integer index);
 
-    @Delete(" delete from t_yaokonyun_key_code where serialId = #{serialId} and index = #{index} and key_name = #{keyName}")
+    @Delete(" delete from t_yaokonyun_key_code where serialId = #{serialId} and index = #{index} and key_name = #{keyName} ")
     void deleteTYaokonyunKeyCodeByKeyName(@Param("serialId")String serialId,@Param("index")String index,@Param("keyName")String keyName);
 
     @Delete(" delete from t_yaokonyun_key_code where serialId = #{serialId} and index = #{index} and custom_name = #{customName}")

@@ -6029,7 +6029,7 @@ public class FacadeController extends BaseController {
 				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
 				return res;
 			}
-			res = feignAliClient.queryIrDevice(serialId);
+			res = feignAliClient.renameIrDevice(serialId,index,name);
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
