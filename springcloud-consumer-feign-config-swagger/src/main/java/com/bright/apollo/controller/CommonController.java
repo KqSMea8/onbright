@@ -695,15 +695,18 @@ public class CommonController {
 			String location = requestParam.getValue("location");
 			String x_axis = requestParam.getValue("x_axis");
 			String y_axis = requestParam.getValue("y_axis");
+			String deviceType = requestParam.getValue("device_type");
 			//String action = requestParam.getValue("action");
 			if (!StringUtils.isEmpty(serialId) && !StringUtils.isEmpty(location) && !StringUtils.isEmpty(x_axis)
 					&& !StringUtils.isEmpty(y_axis) && NumberHelper.isNumeric(location)
-					&& NumberHelper.isNumeric(x_axis) && NumberHelper.isNumeric(y_axis)) {
+					&& NumberHelper.isNumeric(x_axis) && NumberHelper.isNumeric(y_axis)
+					&& !StringUtils.isEmpty(deviceType)) {
 				//if (action.equals("00"))
 				//	return facadeController.deleteDeviceLocation(serialId, Integer.parseInt(location));
 				//else if (action.equals("01"))
+				//device_type 
 					return facadeController.addDeviceLocation(serialId, Integer.parseInt(location),
-							Integer.parseInt(x_axis), Integer.parseInt(y_axis));
+							Integer.parseInt(x_axis), Integer.parseInt(y_axis),deviceType);
 			}
 		} else if (CMDEnum.query_location.toString().equals(cmdEnum.toString())) {
 			String location = requestParam.getValue("location");

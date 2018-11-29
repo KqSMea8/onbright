@@ -414,10 +414,12 @@ public class LocationController {
 	 * @return
 	 * @Description:
 	 */
-	@RequestMapping(value = "/addDeviceLocation/{userId}/{serialId}/{location}/{xAxis}/{yAxis}", method = RequestMethod.POST)
+	@RequestMapping(value = "/addDeviceLocation/{userId}/{serialId}/{location}/{xAxis}/{yAxis}/{deviceType}", method = RequestMethod.POST)
 	ResponseObject<Map<String, Object>> addDeviceLocation(@PathVariable(value = "userId") Integer userId,
 			@PathVariable(value = "serialId") String serialId, @PathVariable(value = "location") Integer location,
-			@PathVariable(value = "xAxis") Integer xAxis, @PathVariable(value = "yAxis") Integer yAxis) {
+			@PathVariable(value = "xAxis") Integer xAxis, @PathVariable(value = "yAxis") Integer yAxis,
+			 @PathVariable(value = "deviceType") String deviceType
+			) {
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		// Map<String, Object> map = new HashMap<String, Object>();
 		// String location = null;
@@ -433,10 +435,8 @@ public class LocationController {
 			// if (tObox == null && tOboxDeviceConfig == null) {}
 			if (tObox != null || tOboxDeviceConfig != null) {
 				TDeviceLocation location2 = deviceLocationService.queryDevicesByLocationAndSerialIdAndType(location,
-						serialId, "0a");
-				if (location2 == null)
-					location2 = deviceLocationService.queryDevicesByLocationAndSerialIdAndType(location, serialId,
-							"00");
+						serialId,deviceType);
+				 
 				// TDeviceLocation location2 =
 				// DeviceBusiness.queryDeviceLocation(tLocation.getId(),
 				// tObox.getOboxId(), "0a");

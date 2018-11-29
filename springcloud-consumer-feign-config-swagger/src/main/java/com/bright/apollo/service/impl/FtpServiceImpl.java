@@ -47,13 +47,17 @@ public class FtpServiceImpl implements FtpService {
 			}
 			ftp.setFileType(FTPClient.BINARY_FILE_TYPE);
 			String makeFileName = makeFileName(originFileName);
-			String makePath = makePath(makeFileName, "");
+			String makePath = makePath(makeFileName);
 			logger.info("===makeFileName:"+makeFileName+"===makePath:"+makePath);
-			boolean makeDirectory = ftp.makeDirectory(makePath);
- 			boolean changeWorkingDirectory = ftp.changeWorkingDirectory(pathVo.getRealPath()+makePath);
-			boolean storeFile = ftp.storeFile(makeFileName, input);
-			logger.info("===makeDirectory:"+makeDirectory+"===changeWorkingDirectory:"+changeWorkingDirectory
-					+"===storeFile:"+storeFile);
+			String[] split = makePath.split("/");
+			for(int i=0;i<split.length;i++){
+				ftp.makeDirectory(split[i]);
+				ftp.changeWorkingDirectory(split[i]);
+			}
+			//ftp.makeDirectory(makePath);
+ 			//ftp.changeWorkingDirectory(makePath);
+			ftp.storeFile(makeFileName, input);
+		 
 			input.close();
 			ftp.logout();
 			return makePath;
@@ -99,18 +103,18 @@ public class FtpServiceImpl implements FtpService {
 	 *            文件存储路径
 	 * @return 新的存储目录
 	 */
-	private static String makePath(String filename, String savePath) {
+	private static String makePath(String filename) {
 		// 得到文件名的hashCode的值，得到的就是filename这个字符串对象在内存中的地址
 		int hashcode = filename.hashCode();
 		int dir1 = hashcode & 0xf; // 0--15
 		int dir2 = (hashcode & 0xf0) >> 4; // 0-15
 		// 构造新的保存目录 在windows中使用\\ mac中用/
-		String dir = savePath + "/" + dir1 + "/" + dir2; // upload\2\3
+		String dir =  dir1 + "/" + dir2; // upload\2\3
 															// upload\3\5
 		logger.info("===save pic url===");
 		return dir;
 	}
 	public static void main(String[] args) {
-		System.out.println(makePath("ffdsfdfafafa","/home/ftpuser/images"));
+		//System.out.println(makePath("ffdsfdfafafa","/home/ftpuser/images"));
 	}
 }

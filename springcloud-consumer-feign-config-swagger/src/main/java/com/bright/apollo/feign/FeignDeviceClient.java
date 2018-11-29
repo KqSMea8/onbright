@@ -571,10 +571,10 @@ public interface FeignDeviceClient {
 	 * @return
 	 * @Description:
 	 */
-	@RequestMapping(value = "/location/addDeviceLocation/{serialId}/{location}/{xAxis}/{yAxis}", method = RequestMethod.POST)
-	ResponseObject<Map<String, Object>> addDeviceLocation(@PathVariable(value = "serialId") String serialId,
+	@RequestMapping(value = "/location/addDeviceLocation/{userId}/{serialId}/{location}/{xAxis}/{yAxis}/{deviceType}", method = RequestMethod.POST)
+	ResponseObject<Map<String, Object>> addDeviceLocation(@PathVariable(value = "userId") Integer userId,@PathVariable(value = "serialId") String serialId,
 			@PathVariable(value = "location") Integer location, @PathVariable(value = "xAxis") Integer xAxis,
-			@PathVariable(value = "yAxis") Integer yAxis);
+			@PathVariable(value = "yAxis") Integer yAxis, @PathVariable(value = "yAxis") String deviceType);
 
 	@RequestMapping(value = "/location/updateLocation/{location}/{userId}", method = RequestMethod.PUT)
 	ResponseObject<Map<String, Object>> updateLocation(@PathVariable(value = "location") Integer location,
@@ -624,30 +624,30 @@ public interface FeignDeviceClient {
 	ResponseObject<Map<String, Object>> querySceneLocation(@PathVariable(value = "userId") Integer userId,
 			@PathVariable(value = "location") Integer location);
 
-	/**  
+	/**
 	 * @param userId
 	 * @param location
 	 * @param sceneNumber
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/location/setSceneLocation/{userId}/{location}/{sceneNumber}", method = RequestMethod.POST)
-	ResponseObject setSceneLocation(@PathVariable(value = "userId")Integer userId,
-			@PathVariable(value = "location")Integer location, 
-			@PathVariable(value = "sceneNumber")Integer sceneNumber);
+	ResponseObject setSceneLocation(@PathVariable(value = "userId") Integer userId,
+			@PathVariable(value = "location") Integer location,
+			@PathVariable(value = "sceneNumber") Integer sceneNumber);
 
-	/**  
+	/**
 	 * @param userId
 	 * @param location
 	 * @param sceneNumber
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/location/deleteSceneLocation/{userId}/{location}/{sceneNumber}", method = RequestMethod.DELETE)
-	ResponseObject deleteSceneLocation(@PathVariable(value = "userId")Integer userId,
-			@PathVariable(value = "location")Integer location, 
-			@PathVariable(value = "sceneNumber")Integer sceneNumber);
+	ResponseObject deleteSceneLocation(@PathVariable(value = "userId") Integer userId,
+			@PathVariable(value = "location") Integer location,
+			@PathVariable(value = "sceneNumber") Integer sceneNumber);
 
 }

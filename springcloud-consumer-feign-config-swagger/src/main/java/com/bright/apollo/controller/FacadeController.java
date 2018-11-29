@@ -6393,10 +6393,12 @@ public class FacadeController extends BaseController {
 	 */
 	@ApiOperation(value = "addDeviceLocation", httpMethod = "POST", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
-	@RequestMapping(value = "/addDeviceLocation/{serialId}/{location}/{xAxis}/{yAxis}/{action}", method = RequestMethod.POST)
+	@RequestMapping(value = "/addDeviceLocation/{serialId}/{location}/{xAxis}/{yAxis}/{deviceType}", method = RequestMethod.POST)
 	public ResponseObject<Map<String, Object>> addDeviceLocation(@PathVariable(value = "serialId") String serialId,
 			@PathVariable(value = "location") Integer location, @PathVariable(value = "xAxis") Integer xAxis,
-			@PathVariable(value = "yAxis") Integer yAxis) {
+			@PathVariable(value = "yAxis") Integer yAxis,
+			@PathVariable(value = "deviceType") String deviceType
+			) {
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		try {
 			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -6412,7 +6414,7 @@ public class FacadeController extends BaseController {
 				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
 				return res;
 			}
-			return feignDeviceClient.addDeviceLocation(serialId, location, xAxis, yAxis);
+			return feignDeviceClient.addDeviceLocation(resUser.getData().getId(),serialId, location, xAxis, yAxis,deviceType);
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
