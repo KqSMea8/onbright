@@ -5737,9 +5737,9 @@ public class FacadeController extends BaseController {
 				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
 				return res;
 			}
-			feignAliClient.controllIR(serialId, index, key);
-			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
-			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+			return feignAliClient.controllIR(serialId, index, key);
+//			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+//			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
@@ -6029,7 +6029,7 @@ public class FacadeController extends BaseController {
 				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
 				return res;
 			}
-			res = feignAliClient.queryIrDevice(serialId);
+			res = feignAliClient.renameIrDevice(serialId,index,name);
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());

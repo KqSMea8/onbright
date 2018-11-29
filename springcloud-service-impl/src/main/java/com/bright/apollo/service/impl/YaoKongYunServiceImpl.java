@@ -93,15 +93,15 @@ public class YaoKongYunServiceImpl implements YaoKongYunService {
 
     @Override
     public void deleteTYaokonyunKeyCode(String serialId, String index) {
-        yaoKongYunMapper.deleteTYaokonyunKeyCode(serialId,index);
+        yaoKongYunMapper.deleteTYaokonyunKeyCode(serialId,Integer.valueOf(index));
     }
 
     @Override
     public void deleteTYaokonyunKeyCodeByKeyName(String serialId, String index, String keyName,String keyType) {
         if(keyType.equals("0")){
-            yaoKongYunMapper.deleteTYaokonyunKeyCodeByKeyName(serialId,index,keyName);
+            yaoKongYunMapper.deleteTYaokonyunKeyCodeByKeyName(serialId,Integer.valueOf(index),keyName);
         }else if(keyType.equals("1")){
-            yaoKongYunMapper.deleteTYaokonyunKeyCodeByCustomName(serialId,index,keyName);
+            yaoKongYunMapper.deleteTYaokonyunKeyCodeByCustomName(serialId,Integer.valueOf(index),keyName);
         }
     }
 
@@ -118,5 +118,10 @@ public class YaoKongYunServiceImpl implements YaoKongYunService {
     @Override
     public void updateYaoKongKeyCodeNameBySerialIdAndIndex(String serialId, String index, String name) {
         yaoKongYunMapper.updateYaoKongKeyCodeNameBySerialIdAndIndex(serialId,index,name);
+    }
+
+    @Override
+    public TYaokonyunKeyCode getYaoKongKeyCodeByKeyAndSerialIdAndIndex(Integer index, String serialId, String key) {
+        return yaoKongYunMapper.getYaoKongKeyCodeByKeyAndSerialIdAndIndex(index,serialId,key);
     }
 }

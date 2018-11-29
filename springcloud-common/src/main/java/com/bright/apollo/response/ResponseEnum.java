@@ -16,6 +16,7 @@ public enum ResponseEnum {
 	AuthenticationSuccess(200,"Authentication success"),
 	
 	AuthenticationError(401,"Authentication does not pass"),
+	NoIRKey(401,"have not key"),
 	ErrorMobile(410,"error moble"),
 	ExistMobile(411,"the mobile is exist"),
 	NoExistMobile(412,"the mobile is not exist"),

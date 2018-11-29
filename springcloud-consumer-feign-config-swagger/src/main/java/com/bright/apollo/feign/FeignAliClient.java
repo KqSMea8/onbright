@@ -475,7 +475,7 @@ public interface FeignAliClient {
 								  @RequestParam(required = true, value = "index") String index);
 
 	/**
-	 * @Description:获取遥控云品牌类型
+	 * @Description:删除方案中特定按键
 	 */
 	@RequestMapping(value = "/aliDevice/deleteIrDeviceKey", method = RequestMethod.POST)
 	ResponseObject deleteIrDeviceKey(@RequestParam(required = true, value = "serialId") String serialId,
@@ -524,4 +524,6 @@ public interface FeignAliClient {
 								  @RequestParam(required = true, value = "deviceType") String deviceType,
 								  @RequestParam(required = true, value = "name") String name,
 								  @RequestParam(required = true, value = "brandId") String brandId);
+
+
 }
