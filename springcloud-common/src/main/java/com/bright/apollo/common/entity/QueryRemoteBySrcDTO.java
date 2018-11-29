@@ -32,8 +32,8 @@ public class QueryRemoteBySrcDTO implements Serializable {
     private JSONArray keys;
 
     @Expose
-    @SerializedName("brandType")
-    @JsonProperty(value="brandType")
+    @SerializedName("brandId")
+    @JsonProperty(value="brandId")
     private Integer brandType;//遥控器品牌Id
 
     public Integer getBrandType() {

@@ -163,7 +163,7 @@ public class IRUploadHandler extends AliBaseHandler {
         MatchRemoteControlResult remoteControlResult = gson.fromJson(result,MatchRemoteControlResult.class);
 
         if(remoteControlResult==null||remoteControlResult.getSm()==0){
-            resMap.put("sm",0);
+//            resMap.put("sm",0);
             resMap.put("rs",new ArrayList());
         }else{
             List<MatchRemoteControl>  list = remoteControlResult.getRs();

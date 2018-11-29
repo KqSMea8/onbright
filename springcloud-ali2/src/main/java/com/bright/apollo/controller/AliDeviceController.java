@@ -705,8 +705,8 @@ public class AliDeviceController {
 			resMap.put("remote",dto);
 
             res.setData(resMap);
-            res.setStatus(ResponseEnum.SelectSuccess.getStatus());
-            res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+            res.setStatus(ResponseEnum.AddSuccess.getStatus());
+            res.setMessage(ResponseEnum.AddSuccess.getMsg());
         } catch (Exception e) {
             e.printStackTrace();
             res.setStatus(ResponseEnum.Error.getStatus());
