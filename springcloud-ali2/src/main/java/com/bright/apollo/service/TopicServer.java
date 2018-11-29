@@ -197,7 +197,7 @@ public class TopicServer {
 
 	}
 
-	public JSONObject pubIrRPC(Map<String, Object> map) throws Exception {
+	public JSONObject pubIrRPC(Map<String, Object> map,String deviceSerial) throws Exception {
 		logger.info(" ====== pubIRTopic start ====== ");
 		String mString = null;
 //		if(data != null){
@@ -205,10 +205,10 @@ public class TopicServer {
 //		}
 		RRpcRequest rrpcRequest = new RRpcRequest();
 //		PubRequest request = new PubRequest();
-//		String productKey = AliDevCache.getProductKey(deviceSerial);
-//		String deviceName = AliDevCache.getDeviceName(deviceSerial);
-		String productKey = "a1IKqm2m8sW";
-		String deviceName = "ZVm5WfsCtbaAUBtOLvB4";
+		String productKey = AliDevCache.getProductKey(deviceSerial);
+		String deviceName = AliDevCache.getDeviceName(deviceSerial);
+//		String productKey = "a1IKqm2m8sW";
+//		String deviceName = "nh4TFEzNGQ3t9vyNPFE8"; //ZVm5WfsCtbaAUBtOLvB4
 //		String region = AliDevCache.getProductRegion(deviceSerial);
 		String region = AliRegionEnum.SOURTHCHINA.getValue();
 //		if (StringUtils.isEmpty(productKey)) {
@@ -218,7 +218,8 @@ public class TopicServer {
 		rrpcRequest.setProductKey(productKey);
 		rrpcRequest.setDeviceName(deviceName);
 		String jsonObject = new Gson().toJson(map);
-		logger.info("jsonObject ======= "+jsonObject);
+		logger.info(" TopicService.pubIrRPC() productkey: " + productKey + " devicename:" + deviceName + " object: "
+				+ jsonObject.toString());
 
 //		if(mString !=null){
 //			rrpcRequest.setMessageContent(Base64.encodeBase64String(mString.getBytes()));
@@ -241,7 +242,8 @@ public class TopicServer {
 				aString = new String(contentBytes, "utf-8");
 				System.out.println("TopicService.requestDev() success resp:" + aString);
 				logger.info(" ====== requestDev end response success ====== ");
-				return new JSONObject(aString);
+				JSONObject json = new JSONObject(aString);
+				return json;
 			}
 		}
 		logger.info(" ====== requestDev end response error ====== ");

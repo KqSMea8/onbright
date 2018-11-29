@@ -302,7 +302,7 @@ public class AliDeviceController {
 				dataJson.put("data",ByteHelper.bytesToHexString(key.getBytes()));
 				jsonArray.add(dataJson);
 				requestMap.put("value",jsonArray);
-				JSONObject jsonObject = topServer.pubIrRPC(requestMap);
+				topServer.pubIrRPC(requestMap,serialId);
 				res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
 				res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
 			}
@@ -349,15 +349,13 @@ public class AliDeviceController {
 			json.put("functionId",5);
 			jsonArray.add(json);
 			resMap.put("value",jsonArray);
-			JSONObject jsonObject = topServer.pubIrRPC(resMap);
-			logger.info(" ====== jsonObject ====== "+jsonObject);
-			res.setData(jsonObject);
+			topServer.pubIrRPC(resMap,serialId);
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {
 			e.printStackTrace();
-			res.setStatus(ResponseEnum.Error.getStatus());
-			res.setMessage(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.PairCodeFailed.getStatus());
+			res.setMessage(ResponseEnum.PairCodeFailed.getMsg());
 		}
 	}
 
@@ -514,15 +512,13 @@ public class AliDeviceController {
 			json.put("data",timeout);
 			jsonArray.add(json);
 			resMap.put("value",jsonArray);
-			JSONObject jsonObject = topServer.pubIrRPC(resMap);
-			logger.info("response ===== "+jsonObject);
-			res.setData(jsonObject);
+			topServer.pubIrRPC(resMap,serialId);
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {
 			e.printStackTrace();
-			res.setStatus(ResponseEnum.Error.getStatus());
-			res.setMessage(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.LearnKeyFailed.getStatus());
+			res.setMessage(ResponseEnum.LearnKeyFailed.getMsg());
 		}
 		return res;
 	}
@@ -610,12 +606,9 @@ public class AliDeviceController {
 							Map<String,Object> filterMap = filterList.get(i);
 							com.alibaba.fastjson.JSONArray filterArray = (com.alibaba.fastjson.JSONArray)filterMap.get("keys");
 							Integer filterIdx = (Integer) filterMap.get("index");
-							System.out.println("idx === "+idxs);
-							System.out.println("filterIdx === "+filterIdx);
 							if(filterIdx.equals(57958825)){
 
 							}
-							System.out.println(idxs.indexOf(filterIdx.toString())<0);
 							if(filterIdx.equals(dtoIdx)
 									&&!filterArray.equals(dtoArray)){
 								com.alibaba.fastjson.JSONObject dtoJson = dtoArray.getJSONObject(0);
@@ -632,7 +625,6 @@ public class AliDeviceController {
 				for(Map<String,Object> dtomap :filterList){
 					dtoList.add(new QueryRemoteBySrcDTO(dtomap));
 				}
-
 			}
 
             resMap.put("rs",dtoList);
@@ -701,7 +693,7 @@ public class AliDeviceController {
             dto.setType(Integer.valueOf(deviceType));
             dto.setRid("");
             dto.setRmodel("");
-            dto.setVersion(0);
+            dto.setVersion("0");
 			resMap.put("remote",dto);
 
             res.setData(resMap);

@@ -72,7 +72,7 @@ public class QueryRemoteBySrcDTO implements Serializable {
     @Expose
     @SerializedName("version")
     @JsonProperty(value="version")
-    private Integer version;//版本
+    private String version;//版本
     @Expose
     @SerializedName("rmodel")
     @JsonProperty(value="rmodel")
@@ -99,7 +99,7 @@ public class QueryRemoteBySrcDTO implements Serializable {
         this.rid=matchRemoteControl.getRid();
         this.name=matchRemoteControl.getName();
         this.type=matchRemoteControl.gettId();
-        this.version=matchRemoteControl.getVersion();
+        this.version=matchRemoteControl.getVersion().toString();
         this.rmodel=matchRemoteControl.getRmodel();
         Map<String, KeyCode> keyCodeMap =matchRemoteControl.getRcCommand();
         Iterator<String> iterator = keyCodeMap.keySet().iterator();
@@ -118,7 +118,7 @@ public class QueryRemoteBySrcDTO implements Serializable {
     public QueryRemoteBySrcDTO(Map<String,Object> map) {
         super();
         this.rid="";
-        this.version=(Integer) map.get("version");
+        this.version=(String) map.get("version");
         this.rmodel=(String)map.get("rmodel");
         this.name=(String)map.get("name");
 //        String key = yaokonyunKeyCode.getKeyName();
@@ -180,11 +180,11 @@ public class QueryRemoteBySrcDTO implements Serializable {
         this.type = type;
     }
 
-    public Integer getVersion() {
+    public String getVersion() {
         return version;
     }
 
-    public void setVersion(Integer version) {
+    public void setVersion(String version) {
         this.version = version;
     }
 }
