@@ -127,11 +127,11 @@ public interface YaoKongYunMapper {
     @Delete(" delete from t_yaokonyun_key_code where serialId = #{serialId} and `index` = #{index} ")
     void deleteTYaokonyunKeyCode(@Param("serialId")String serialId,@Param("index")Integer index);
 
-    @Delete(" delete from t_yaokonyun_key_code where serialId = #{serialId} and index = #{index} and key_name = #{keyName} ")
-    void deleteTYaokonyunKeyCodeByKeyName(@Param("serialId")String serialId,@Param("index")String index,@Param("keyName")String keyName);
+    @Delete(" delete from t_yaokonyun_key_code where serialId = #{serialId} and `index` = #{index} and `key` = #{key} ")
+    void deleteTYaokonyunKeyCodeByKeyName(@Param("serialId")String serialId,@Param("index")Integer index,@Param("key")String keyName);
 
-    @Delete(" delete from t_yaokonyun_key_code where serialId = #{serialId} and index = #{index} and custom_name = #{customName}")
-    void deleteTYaokonyunKeyCodeByCustomName(@Param("serialId")String serialId,@Param("index")String index,@Param("customName")String customName);
+    @Delete(" delete from t_yaokonyun_key_code where serialId = #{serialId} and `index` = #{index} and `key` = #{key}")
+    void deleteTYaokonyunKeyCodeByCustomName(@Param("serialId")String serialId,@Param("index")Integer index,@Param("key")String customName);
 
     @Delete(" delete from t_yaokonyun_key_code where serialId = #{serialId} ")
     void deleteTYaokonyunKeyCodeBySerialId(@Param("serialId")String serialId);
