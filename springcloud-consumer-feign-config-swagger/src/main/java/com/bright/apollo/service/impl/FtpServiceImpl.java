@@ -47,10 +47,10 @@ public class FtpServiceImpl implements FtpService {
 			}
 			ftp.setFileType(FTPClient.BINARY_FILE_TYPE);
 			String makeFileName = makeFileName(originFileName);
-			String makePath = makePath(makeFileName, pathVo.getRealPath());
+			String makePath = makePath(makeFileName, "");
 			logger.info("===makeFileName:"+makeFileName+"===makePath:"+makePath);
 			boolean makeDirectory = ftp.makeDirectory(makePath);
- 			boolean changeWorkingDirectory = ftp.changeWorkingDirectory(makePath);
+ 			boolean changeWorkingDirectory = ftp.changeWorkingDirectory(pathVo.getRealPath()+makePath);
 			boolean storeFile = ftp.storeFile(makeFileName, input);
 			logger.info("===makeDirectory:"+makeDirectory+"===changeWorkingDirectory:"+changeWorkingDirectory
 					+"===storeFile:"+storeFile);
