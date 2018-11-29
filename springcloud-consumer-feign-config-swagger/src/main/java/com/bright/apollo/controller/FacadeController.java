@@ -5966,8 +5966,6 @@ public class FacadeController extends BaseController {
 			}
 			res = feignAliClient.learnIrDeviceKey(serialId, index, keyType, key, timeout);
 
-			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
-			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());

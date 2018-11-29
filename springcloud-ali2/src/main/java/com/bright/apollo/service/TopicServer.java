@@ -245,8 +245,12 @@ public class TopicServer {
 				JSONObject json = new JSONObject(aString);
 				return json;
 			}
-		}
-		logger.info(" ====== requestDev end response error ====== ");
+		}else{
+            logger.info(" ====== requestDev end response error ====== ");
+            Exception exception = new Exception();
+		    throw exception;
+        }
+
 		return new JSONObject();
 	}
 
