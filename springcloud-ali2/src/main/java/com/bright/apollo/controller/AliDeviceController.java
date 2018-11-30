@@ -282,30 +282,29 @@ public class AliDeviceController {
 	}
 
 	@RequestMapping(value = "/controllIR", method = RequestMethod.POST)
-	ResponseObject<List<Map<String, String>>> controllIR(@RequestParam(required = true, value = "serialId") String serialId,
+	ResponseObject controllIR(@RequestParam(required = true, value = "serialId") String serialId,
 														   @RequestParam(required = true, value = "index") Integer index,
 														   @RequestParam(required = true, value = "key") String key) {
-		ResponseObject<List<Map<String, String>>> res = new ResponseObject<List<Map<String, String>>>();
+		ResponseObject res = new ResponseObject();
 		Map<String, Object> requestMap = new HashMap<String, Object>();
 		try {
 			TYaokonyunKeyCode yaokonyunKeyCode = yaoKongYunService.getYaoKongKeyCodeByKeyAndSerialIdAndIndex(index,serialId,key);
-			if(yaokonyunKeyCode==null){
-				res.setStatus(ResponseEnum.NoIRKey.getStatus());
-				res.setMessage(ResponseEnum.NoIRKey.getMsg());
-			}else{
+//			if(yaokonyunKeyCode==null){
+//				res.setStatus(ResponseEnum.NoIRKey.getStatus());
+//				res.setMessage(ResponseEnum.NoIRKey.getMsg());
+//			}else{
 				requestMap.put("command","set");
 				com.alibaba.fastjson.JSONArray jsonArray = new com.alibaba.fastjson.JSONArray();
 				com.alibaba.fastjson.JSONObject json = new com.alibaba.fastjson.JSONObject();
 				com.alibaba.fastjson.JSONObject dataJson = new com.alibaba.fastjson.JSONObject();
 				json.put("functionId",1);
 				jsonArray.add(json);
-				dataJson.put("data",ByteHelper.bytesToHexString(key.getBytes()));
-				jsonArray.add(dataJson);
+				json.put("data",ByteHelper.bytesToHexString(key.getBytes()));
 				requestMap.put("value",jsonArray);
 				topServer.pubIrRPC(requestMap,serialId);
 				res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
 				res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
-			}
+//			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -335,7 +334,7 @@ public class AliDeviceController {
 
 	// 一键匹配遥控方案——进入空调对码模式
 	@RequestMapping(value = "/pairIrRemotecode", method = RequestMethod.POST)
-	void pairIrRemotecode(@RequestParam(required = true, value = "brandId") String brandId,
+	ResponseObject pairIrRemotecode(@RequestParam(required = true, value = "brandId") String brandId,
 						  @RequestParam(required = true, value = "serialId") String serialId,
 						  @RequestParam(required = true, value = "timeout") Integer timeout) {
 		ResponseObject res = new ResponseObject();
@@ -357,6 +356,7 @@ public class AliDeviceController {
 			res.setStatus(ResponseEnum.PairCodeFailed.getStatus());
 			res.setMessage(ResponseEnum.PairCodeFailed.getMsg());
 		}
+		return res;
 	}
 
 	public Map<String,Object> getRemoteControlList(String brandId,String deviceType) throws Exception {
@@ -509,7 +509,7 @@ public class AliDeviceController {
 			com.alibaba.fastjson.JSONArray jsonArray = new com.alibaba.fastjson.JSONArray();
 			com.alibaba.fastjson.JSONObject json = new com.alibaba.fastjson.JSONObject();
 			json.put("functionId",4);
-			json.put("data",timeout);
+			json.put("data",Integer.valueOf(timeout));
 			jsonArray.add(json);
 			resMap.put("value",jsonArray);
 			topServer.pubIrRPC(resMap,serialId);
@@ -730,7 +730,7 @@ public class AliDeviceController {
 			List<QueryRemoteBySrcDTO2> list = cmdCache.getIRDeviceInfoList(brandId+"_"+deviceType+"_"+"_remoteControlListSrc");
 
 			for(QueryRemoteBySrcDTO2 dto : list){
-				version = dto.getVersion();
+				version = Integer.valueOf(dto.getVersion());
 				idx = dto.getIndex();
 				rmodel = dto.getRmodel();
 				String rid = dto.getRid();

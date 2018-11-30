@@ -125,6 +125,7 @@ public class RedisBussines {
          for( T t :list){
              redisTemplate.opsForList().rightPush(listName,t);
          }
+         redisTemplate.expire(listName,5*60,TimeUnit.SECONDS);
      }
 
     //取list
