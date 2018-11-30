@@ -1,15 +1,10 @@
 package com.bright.apollo.service.impl;
 
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.SocketException;
-import java.net.URL;
-
-import javax.imageio.ImageIO;
 
 import org.apache.commons.lang.math.RandomUtils;
 import org.apache.commons.net.ftp.FTPClient;
@@ -22,6 +17,8 @@ import com.bright.apollo.service.FtpService;
 import com.bright.apollo.tool.MD5;
 import com.bright.apollo.vo.PicPathVo;
 
+import io.swagger.models.auth.In;
+import net.coobird.thumbnailator.Thumbnails;
 /**
  * @Title:
  * @Description:
@@ -40,11 +37,12 @@ public class FtpServiceImpl implements FtpService {
 	 * java.io.InputStream, com.bright.apollo.vo.PicPathVo)
 	 */
 	@Override
-	public String uploadFile(String originFileName, InputStream input, PicPathVo pathVo) {
-		FTPClient ftp =null;
+	public String[] uploadFile(String originFileName, InputStream input, PicPathVo pathVo) {
+		FTPClient ftp = null;
+		String[] imagepaths = new String[2];
 		try {
 			ftp = loginFtp(pathVo);
-			if(ftp==null)
+			if (ftp == null)
 				return null;
 			String makeFileName = makeFileName(originFileName);
 			String makePath = makePath(makeFileName);
@@ -56,82 +54,72 @@ public class FtpServiceImpl implements FtpService {
 			}
 			String[] split2 = originFileName.split(".");
 			String savafile = split2.length == 2 ? makeFileName + "." + split2[1] : makeFileName + ".jpg";
-			boolean storeFile = ftp.storeFile(savafile, input);
+			String zipfile = split2.length == 2 ? makeFileName + "_thum." + split2[1] : makeFileName + "_thum.jpg";
+			String picPath=uploadPic(ftp,makePath,savafile,input);
+			String zipPath=compressPic(ftp, zipfile, input, pathVo);
+			imagepaths[0]=picPath;
+			imagepaths[1]=zipPath;
 			input.close();
-			ftp.logout();
-			if (storeFile)
-				return "images/" + makePath + "savafile";
 		} catch (IOException e) {
 			logger.error("===error msg:" + e.getMessage());
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 		} finally {
-			if (ftp!=null&&ftp.isConnected()) {
+			if (ftp != null && ftp.isConnected()) {
 				try {
+					ftp.logout();
 					ftp.disconnect();
 				} catch (IOException ioe) {
 					logger.error("===error msg:" + ioe.getMessage());
 				}
 			}
 		}
-		return null;
+		return imagepaths;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.bright.apollo.service.FtpService#uploadZipFile(java.lang.String,
-	 * java.io.InputStream, com.bright.apollo.vo.PicPathVo)
+	/**  
+	 * @param savafile
+	 * @param input  
+	 * @Description:  
 	 */
-	@Override
-	public String uploadZipFile(String originFileName, InputStream InputStream, PicPathVo pathVo) {
-		FTPClient ftp=null;
-		try {		
-			ftp= loginFtp(pathVo);
-			if(ftp==null)
-				return null;
-			// 0, 448, 0.9f
-			Image srcFile = ImageIO.read(InputStream);
-			int w = srcFile.getWidth(null);
-			int h = srcFile.getHeight(null);
-			double bili;
-			bili = 448 / (double) h;
-			int width = (int) (w * bili);
-			BufferedImage tag = new BufferedImage(width, 448, BufferedImage.TYPE_INT_RGB);
-			tag.getGraphics().drawImage(srcFile, 0, 0, width, 448, null);
-			ByteArrayOutputStream os = new ByteArrayOutputStream();
-			ImageIO.write(tag, "gif", os);
-			InputStream is = (InputStream)new ByteArrayInputStream(os.toByteArray());
-			String[] split = originFileName.split(".");
-            String newFileName=split.length==2?split[0]+"_thum."+split[1]:makeFileName(originFileName)+"_thum.jpg";
-            String[] split2 = originFileName.split("/");
-            for (int i = 0; i < split2.length-1; i++) {
-				//ftp.makeDirectory(split[i]);
-				ftp.changeWorkingDirectory(split[i]);
-			}
-            String[] split3 = newFileName.split("/");
-            boolean storeFile = ftp.storeFile(split3.length>0?split3[split3.length-1]:newFileName, is);
-            is.close();
-            os.close();
-			ftp.logout();
+	private  String uploadPic(FTPClient ftp,String makePath,String savafile, InputStream input) {
+ 		try {
+			boolean storeFile = ftp.storeFile(savafile, input);
+			input.close();
 			if (storeFile)
-				return split3.length>0?newFileName:"images/" + newFileName + "savafile";
+				return "images/" + makePath + savafile; 
 		} catch (IOException e) {
+			logger.error("===error msg:" + e.getMessage());
+		}
+		return null;		
+	}
+	@SuppressWarnings("restriction")
+	private String compressPic(FTPClient ftp,String makeFileName,InputStream input, PicPathVo pathVo){
+		File file =null;
+		try{
+ 
+				Thumbnails.of(input)
+				.scale(1f)
+	           .outputQuality(0.5f)
+	           .toFile(pathVo.getTempPath()+makeFileName);
+				//ftp upload
+				file = new File(pathVo.getTempPath()+makeFileName);
+				InputStream in = new FileInputStream(file);   
+				in.close();
+ 				return uploadPic(ftp,pathVo.getRealPath(),makeFileName,in);
+ 		} catch (IOException e) {
 			logger.error("===error msg:" + e.getMessage());
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
-		}finally {
-			if (ftp!=null&&ftp.isConnected()) {
-				try {
-					ftp.disconnect();
-				} catch (IOException ioe) {
-					logger.error("===error msg:" + ioe.getMessage());
-				}
-			}
+		} finally {
+			
+			if(file!=null)
+				file.delete();
 		}
 		return null;
-	}
-	private FTPClient loginFtp(PicPathVo pathVo) throws NumberFormatException, SocketException, IOException{
+	  }
+
+	private FTPClient loginFtp(PicPathVo pathVo) throws NumberFormatException, SocketException, IOException {
 		FTPClient ftp = new FTPClient();
 		ftp.setControlEncoding("utf-8");
 		int reply;
@@ -146,6 +134,7 @@ public class FtpServiceImpl implements FtpService {
 		ftp.setFileType(FTPClient.BINARY_FILE_TYPE);
 		return ftp;
 	}
+
 	/**
 	 * @Method: makeFileName
 	 * @Description: 生成上传文件的文件名，文件名以：uuid+"_"+文件的原始名称
@@ -184,12 +173,17 @@ public class FtpServiceImpl implements FtpService {
 		return dir;
 	}
 
-	public static void main(String[] args) throws IOException { 
-		String url="images/15/3/4376164045528554996_9ffe82f5c5f31c8d0ab89aa38978d92e.jpg";
+	public static void main(String[] args) throws IOException {/*
+		String url = "images/15/3/4376164045528554996_9ffe82f5c5f31c8d0ab89aa38978d92e.jpg";
 		String[] split = url.split("/");
 		for (int i = 0; i < split.length; i++) {
 			System.out.println(split[i]);
 		}
+	*/
+		Thumbnails.of("C:"+File.separator+"Users"+File.separator+"lenovo"+File.separator+"Desktop"+File.separator+"1fcc5f2ddd3953681ed0e0b8731ec6fc.jpg")
+		.scale(1f)
+       .outputQuality(0.5f)
+       .toFile("C:"+File.separator+"Users"+File.separator+"lenovo"+File.separator+"Desktop"+File.separator+"111.jpg");
 	}
 
 }
