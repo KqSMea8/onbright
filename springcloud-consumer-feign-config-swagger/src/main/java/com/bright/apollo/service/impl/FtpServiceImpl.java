@@ -2,6 +2,7 @@ package com.bright.apollo.service.impl;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.SocketException;
@@ -19,6 +20,7 @@ import com.bright.apollo.vo.PicPathVo;
 
 import io.swagger.models.auth.In;
 import net.coobird.thumbnailator.Thumbnails;
+
 /**
  * @Title:
  * @Description:
@@ -55,10 +57,11 @@ public class FtpServiceImpl implements FtpService {
 			String[] split2 = originFileName.split(".");
 			String savafile = split2.length == 2 ? makeFileName + "." + split2[1] : makeFileName + ".jpg";
 			String zipfile = split2.length == 2 ? makeFileName + "_thum." + split2[1] : makeFileName + "_thum.jpg";
-			String picPath=uploadPic(ftp,makePath,savafile,input);
-			String zipPath=compressPic(ftp, zipfile, input, pathVo);
-			imagepaths[0]=picPath;
-			imagepaths[1]=zipPath;
+			String picPath = uploadPic(ftp, makePath, savafile, input);
+			String zipPath = compressPic(ftp, zipfile, pathVo.getTempPath()
+					+ "/" + savafile, pathVo);
+			imagepaths[0] = picPath;
+			imagepaths[1] = zipPath;
 			input.close();
 		} catch (IOException e) {
 			logger.error("===error msg:" + e.getMessage());
@@ -77,47 +80,46 @@ public class FtpServiceImpl implements FtpService {
 		return imagepaths;
 	}
 
-	/**  
+	/**
 	 * @param savafile
-	 * @param input  
-	 * @Description:  
+	 * @param input
+	 * @Description:
 	 */
-	private  String uploadPic(FTPClient ftp,String makePath,String savafile, InputStream input) {
- 		try {
+	private String uploadPic(FTPClient ftp, String makePath, String savafile, InputStream input) {
+		try {
 			boolean storeFile = ftp.storeFile(savafile, input);
 			input.close();
 			if (storeFile)
-				return "images/" + makePath + savafile; 
+				return "images/" + makePath + savafile;
 		} catch (IOException e) {
 			logger.error("===error msg:" + e.getMessage());
 		}
-		return null;		
+		return null;
 	}
-	@SuppressWarnings("restriction")
-	private String compressPic(FTPClient ftp,String makeFileName,InputStream input, PicPathVo pathVo){
-		File file =null;
-		try{
- 
-				Thumbnails.of(input)
-				.scale(1f)
-	           .outputQuality(0.5f)
-	           .toFile(pathVo.getTempPath()+makeFileName);
-				//ftp upload
-				file = new File(pathVo.getTempPath()+makeFileName);
-				InputStream in = new FileInputStream(file);   
-				in.close();
- 				return uploadPic(ftp,pathVo.getRealPath(),makeFileName,in);
- 		} catch (IOException e) {
+
+ 	private String compressPic(FTPClient ftp, String makeFileName, String oldFilePath, PicPathVo pathVo) {
+		File file = null;
+		File file2 = new File(oldFilePath);
+		try {
+			Thumbnails.of(file2).scale(1f).outputQuality(0.5f).toFile(pathVo.getTempPath() + makeFileName);
+			// ftp upload
+			file = new File(pathVo.getTempPath() + makeFileName);
+			InputStream in = new FileInputStream(file);
+			in.close();
+			return uploadPic(ftp, pathVo.getRealPath(), makeFileName, in);
+		} catch (IOException e) {
 			logger.error("===error msg:" + e.getMessage());
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 		} finally {
-			
-			if(file!=null)
+			if(file2!=null){
+				file2.delete();
+			}
+			if (file != null)
 				file.delete();
 		}
 		return null;
-	  }
+	}
 
 	private FTPClient loginFtp(PicPathVo pathVo) throws NumberFormatException, SocketException, IOException {
 		FTPClient ftp = new FTPClient();
@@ -173,17 +175,19 @@ public class FtpServiceImpl implements FtpService {
 		return dir;
 	}
 
-	public static void main(String[] args) throws IOException {/*
-		String url = "images/15/3/4376164045528554996_9ffe82f5c5f31c8d0ab89aa38978d92e.jpg";
-		String[] split = url.split("/");
-		for (int i = 0; i < split.length; i++) {
-			System.out.println(split[i]);
-		}
-	*/
-		Thumbnails.of("C:"+File.separator+"Users"+File.separator+"lenovo"+File.separator+"Desktop"+File.separator+"1fcc5f2ddd3953681ed0e0b8731ec6fc.jpg")
-		.scale(1f)
-       .outputQuality(0.5f)
-       .toFile("C:"+File.separator+"Users"+File.separator+"lenovo"+File.separator+"Desktop"+File.separator+"111.jpg");
+	public static void main(String[] args)
+			throws IOException {/*
+								 * String url =
+								 * "images/15/3/4376164045528554996_9ffe82f5c5f31c8d0ab89aa38978d92e.jpg";
+								 * String[] split = url.split("/"); for (int i =
+								 * 0; i < split.length; i++) {
+								 * System.out.println(split[i]); }
+								 */
+		Thumbnails
+				.of("C:" + File.separator + "Users" + File.separator + "lenovo" + File.separator + "Desktop"
+						+ File.separator + "1fcc5f2ddd3953681ed0e0b8731ec6fc.jpg")
+				.scale(1f).outputQuality(0.5f).toFile("C:" + File.separator + "Users" + File.separator + "lenovo"
+						+ File.separator + "Desktop" + File.separator + "111.jpg");
 	}
 
 }
