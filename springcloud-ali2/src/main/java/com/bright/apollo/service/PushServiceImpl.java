@@ -59,21 +59,5 @@ public class PushServiceImpl implements PushService {
             logger.info(" ====== send mqtt message ====== ");
             mqttGateWay.sendToMqtt("ob-smart."+accessToken,sendStr.toString());
         }
-        /*StringBuilder sendStr = new StringBuilder();
-        if(message!=null){
-            sendStr.append("STR"+JSON.toJSONString(message)+"END");
-        }
-        logger.info("====== sendStr ======  "+sendStr);
-        Iterator<Integer> iterator = users.iterator();
-        String tokenUserIdVal = "";
-        while (iterator.hasNext()){
-            Integer uId = iterator.next();
-            String accessToken = (String)redisBussines.getObject("token_userId_"+uId);
-            logger.info("====== accessToken ====== "+accessToken +" ====== userId ====== "+uId);
-            if(!StringUtils.isEmpty(accessToken)){
-                logger.info(" ====== send mqtt message ====== ");
-                mqttGateWay.sendToMqtt("ob-smart."+accessToken,sendStr.toString());
-            }
-        }*/
     }
 }

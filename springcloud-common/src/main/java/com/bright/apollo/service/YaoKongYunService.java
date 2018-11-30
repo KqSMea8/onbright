@@ -48,4 +48,6 @@ public interface YaoKongYunService {
     void updateYaoKongKeyCodeNameBySerialIdAndIndex(String serialId,String index,String name);
 
     TYaokonyunKeyCode getYaoKongKeyCodeByKeyAndSerialIdAndIndex(Integer index,String serialId,String key);
+
+    void updateYaoKongKeyCodeNameBySerialIdAndIndexAndKey(String serialId,String index,String key,String codeSrc);
 }

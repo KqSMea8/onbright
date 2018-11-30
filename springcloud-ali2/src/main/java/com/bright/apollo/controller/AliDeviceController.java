@@ -501,7 +501,8 @@ public class AliDeviceController {
 		ResponseObject res = new ResponseObject();
 		Map<String,Object> resMap = new HashMap<String,Object>();
 		try {
-			cmdCache.addIrTestCodeSerialId(serialId,index);
+//			cmdCache.addIrTestCodeSerialId(serialId,index);
+            cmdCache.addIrIndexBySerialId(serialId,index);
 			cmdCache.addIrTestCodeKeyName(index,key);
 			cmdCache.addIrTestCodeKeyNameType(index,keyType);
 			cmdCache.addIrIndex(index);

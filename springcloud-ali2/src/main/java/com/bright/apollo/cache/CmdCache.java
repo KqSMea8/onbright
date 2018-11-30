@@ -66,7 +66,7 @@ public class CmdCache {
 	}
 
 	public void addIrIndexBySerialId(String  serialId,String index) {
-		redisBussines.setValueWithExpire("indexBySerialId_"+serialId, index, medium_time);
+		redisBussines.setValueWithExpire("index_"+serialId, index, medium_time);
 	}
 
 	public void addIrTestCodeKeyNameType(String index, String  keyNameType) {
