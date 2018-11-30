@@ -2,6 +2,7 @@ package com.bright.apollo.service.impl;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,7 +40,7 @@ public class FtpServiceImpl implements FtpService {
 	 * java.io.InputStream, com.bright.apollo.vo.PicPathVo)
 	 */
 	@Override
-	public String[] uploadFile(String originFileName, InputStream input, PicPathVo pathVo) {
+	public String[] uploadFile(String originFileName, String oldPath, PicPathVo pathVo) {
 		FTPClient ftp = null;
 		String[] imagepaths = new String[2];
 		try {
@@ -57,12 +58,12 @@ public class FtpServiceImpl implements FtpService {
 			String[] split2 = originFileName.split(".");
 			String savafile = split2.length == 2 ? makeFileName + "." + split2[1] : makeFileName + ".jpg";
 			String zipfile = split2.length == 2 ? makeFileName + "_thum." + split2[1] : makeFileName + "_thum.jpg";
-			String picPath = uploadPic(ftp, makePath, savafile, input);
-			String zipPath = compressPic(ftp, zipfile, pathVo.getTempPath()
-					+ "/" + savafile, pathVo);
+			File file =new File(oldPath);
+			String picPath = uploadPic(ftp, makePath, savafile, file);
+			String zipPath = compressPic(ftp, zipfile, file, pathVo);
 			imagepaths[0] = picPath;
 			imagepaths[1] = zipPath;
-			input.close();
+			file.delete();
 		} catch (IOException e) {
 			logger.error("===error msg:" + e.getMessage());
 		} catch (Exception e) {
@@ -85,8 +86,9 @@ public class FtpServiceImpl implements FtpService {
 	 * @param input
 	 * @Description:
 	 */
-	private String uploadPic(FTPClient ftp, String makePath, String savafile, InputStream input) {
+	private String uploadPic(FTPClient ftp, String makePath, String savafile, File file) {
 		try {
+			InputStream input = new FileInputStream(file);
 			boolean storeFile = ftp.storeFile(savafile, input);
 			input.close();
 			if (storeFile)
@@ -97,26 +99,21 @@ public class FtpServiceImpl implements FtpService {
 		return null;
 	}
 
- 	private String compressPic(FTPClient ftp, String makeFileName, String oldFilePath, PicPathVo pathVo) {
-		File file = null;
-		File file2 = new File(oldFilePath);
-		try {
-			Thumbnails.of(file2).scale(1f).outputQuality(0.5f).toFile(pathVo.getTempPath() + makeFileName);
+ 	private String compressPic(FTPClient ftp, String makeFileName,File file, PicPathVo pathVo) {
+		File file2 = null;
+ 		try {
+			Thumbnails.of(file).scale(1f).outputQuality(0.5f).toFile(pathVo.getTempPath() + makeFileName);
 			// ftp upload
-			file = new File(pathVo.getTempPath() + makeFileName);
-			InputStream in = new FileInputStream(file);
-			in.close();
-			return uploadPic(ftp, pathVo.getRealPath(), makeFileName, in);
+			file2 = new File(pathVo.getTempPath() + makeFileName);
+ 			
+			return uploadPic(ftp, pathVo.getRealPath(), makeFileName, file2);
 		} catch (IOException e) {
 			logger.error("===error msg:" + e.getMessage());
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 		} finally {
-			if(file2!=null){
-				file2.delete();
-			}
-			if (file != null)
-				file.delete();
+ 			 if(file2!=null)
+ 				file2.delete();
 		}
 		return null;
 	}
@@ -188,6 +185,38 @@ public class FtpServiceImpl implements FtpService {
 						+ File.separator + "1fcc5f2ddd3953681ed0e0b8731ec6fc.jpg")
 				.scale(1f).outputQuality(0.5f).toFile("C:" + File.separator + "Users" + File.separator + "lenovo"
 						+ File.separator + "Desktop" + File.separator + "111.jpg");
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.FtpService#saveToTemp(java.lang.String, java.io.InputStream, com.bright.apollo.vo.PicPathVo)  
+	 */
+	@Override
+	public String saveToTemp(String originFileName, InputStream in, PicPathVo pathVo) {
+ 		try {
+			FileOutputStream out = new FileOutputStream(pathVo.getTempPath()
+					+ "/" + originFileName);
+			// 创建一个缓冲区
+			byte buffer[] = new byte[1024];
+			// 判断输入流中的数据是否已经读完的标识
+			int len = 0;
+			// 循环将输入流读入到缓冲区当中，(len=in.read(buffer))>0就表示in里面还有数据
+			while ((len = in.read(buffer)) > 0) {
+				// 使用FileOutputStream输出流将缓冲区的数据写入到指定的目录(savePath + "\\"
+				// + filename)当中
+				out.write(buffer, 0, len);
+			}
+			// 关闭输入流
+			in.close();
+			// 关闭输出流
+			out.close();
+			return pathVo.getTempPath()
+					+ "/" + originFileName;
+		} catch (FileNotFoundException e) {
+			logger.error("===error msg:" + e.getMessage());
+		} catch (IOException e) {
+			logger.error("===error msg:" + e.getMessage());
+		}
+		return null;
 	}
 
 }

@@ -71,7 +71,8 @@ public class ImageUploadController {
 				return res;
 			}
 			if(file!=null){
-				String[] uploadFile = ftpService.uploadFile(file.getOriginalFilename(), file.getInputStream(), picPathVo);
+				String saveToTemp = ftpService.saveToTemp(file.getOriginalFilename(), file.getInputStream(), picPathVo);
+				String[] uploadFile = ftpService.uploadFile(file.getOriginalFilename(), saveToTemp, picPathVo);
 				if(uploadFile!=null){
  					logger.info("===uploadFile:"+uploadFile);
 					res.setStatus(ResponseEnum.AddSuccess.getStatus());
