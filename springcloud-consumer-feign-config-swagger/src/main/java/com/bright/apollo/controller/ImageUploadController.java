@@ -73,6 +73,8 @@ public class ImageUploadController {
 			if(file!=null){
 				String uploadFile = ftpService.uploadFile(file.getOriginalFilename(), file.getInputStream(), picPathVo);
 				if(!StringUtils.isEmpty(uploadFile)){
+					String uploadZipFile = ftpService.uploadZipFile(uploadFile, file.getInputStream(), picPathVo);
+					logger.info("===uploadZipFile:"+uploadZipFile);
 					res.setStatus(ResponseEnum.AddSuccess.getStatus());
 					res.setMessage(ResponseEnum.AddSuccess.getMsg());
 					return res;
