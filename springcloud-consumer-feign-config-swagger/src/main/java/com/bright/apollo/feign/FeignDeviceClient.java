@@ -17,6 +17,7 @@ import com.bright.apollo.common.entity.TIntelligentFingerAuth;
 import com.bright.apollo.common.entity.TIntelligentFingerPush;
 import com.bright.apollo.common.entity.TIntelligentFingerRemoteUser;
 import com.bright.apollo.common.entity.TIntelligentFingerUser;
+import com.bright.apollo.common.entity.TLocation;
 import com.bright.apollo.common.entity.TNvr;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.common.entity.TServerGroup;
@@ -650,4 +651,5 @@ public interface FeignDeviceClient {
 			@PathVariable(value = "location") Integer location,
 			@PathVariable(value = "sceneNumber") Integer sceneNumber);
 
+	 
 }

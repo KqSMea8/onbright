@@ -858,6 +858,6 @@ public class LocationController {
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
-	
 	}
+	 
 }

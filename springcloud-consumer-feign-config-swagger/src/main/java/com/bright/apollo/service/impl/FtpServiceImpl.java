@@ -64,8 +64,6 @@ public class FtpServiceImpl implements FtpService {
 			imagepaths[0] = picPath;
 			imagepaths[1] = zipPath;
 			file.delete();
-		} catch (IOException e) {
-			logger.error("===error msg:" + e.getMessage());
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 		} finally {
@@ -217,6 +215,32 @@ public class FtpServiceImpl implements FtpService {
 			logger.error("===error msg:" + e.getMessage());
 		}
 		return null;
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.FtpService#deleteFtpFile(java.lang.String, com.bright.apollo.vo.PicPathVo)  
+	 */
+	@Override
+	public boolean deleteFtpFile(String path, PicPathVo pathVo) {
+		FTPClient ftp=null;
+		try {
+			ftp = loginFtp(pathVo);
+			if(ftp==null)
+				return false;
+			//遍历
+			String[] split = path.split("/");
+			if(split.length>0){
+				for (int i = 0; i < split.length; i++) {
+					if(!split[i].contains("."))
+						ftp.changeWorkingDirectory(split[i]);
+					else
+						return ftp.deleteFile(split[i]);
+				}
+			}
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+		}  
+		return false;
 	}
 
 }

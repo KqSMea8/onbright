@@ -14,6 +14,7 @@ import com.bright.apollo.common.entity.TIntelligentFingerAuth;
 import com.bright.apollo.common.entity.TIntelligentFingerPush;
 import com.bright.apollo.common.entity.TIntelligentFingerRemoteUser;
 import com.bright.apollo.common.entity.TIntelligentFingerUser;
+import com.bright.apollo.common.entity.TLocation;
 import com.bright.apollo.common.entity.TNvr;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.common.entity.TServerGroup;
@@ -706,4 +707,5 @@ public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implem
 		logger.warn("===device server is break===");
 		return serverError();
 	}
+ 
 }
