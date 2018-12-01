@@ -21,6 +21,7 @@ import com.bright.apollo.common.entity.TLocation;
 import com.bright.apollo.common.entity.TNvr;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.common.entity.TServerGroup;
+import com.bright.apollo.common.entity.TUserLocation;
 import com.bright.apollo.common.entity.TYSCamera;
 import com.bright.apollo.hrstrix.HystrixFeignDeviceFallback;
 import com.bright.apollo.request.IntelligentFingerWarnDTO;
@@ -650,6 +651,29 @@ public interface FeignDeviceClient {
 	ResponseObject deleteSceneLocation(@PathVariable(value = "userId") Integer userId,
 			@PathVariable(value = "location") Integer location,
 			@PathVariable(value = "sceneNumber") Integer sceneNumber);
+
+	/**  
+	 * @param tLocation  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/location/updateLocationByObj", method = RequestMethod.PUT)
+	ResponseObject updateLocationByObj(@RequestBody TLocation tLocation);
+
+	/**  
+	 * @param tLocation  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/location/addLocation", method = RequestMethod.POST)
+	ResponseObject<TLocation> addLocation(@RequestBody TLocation tLocation);
+
+	/**  
+	 * @param tUserLocation  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/location/addUserLocation", method = RequestMethod.POST)
+	ResponseObject addUserLocation(@RequestBody TUserLocation tUserLocation);
 
 	 
 }

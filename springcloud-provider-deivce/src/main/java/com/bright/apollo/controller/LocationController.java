@@ -278,7 +278,7 @@ public class LocationController {
 			// Integer.parseInt(location));
 			if (tLocation != null) {
 				// 搭建完图片服务器再做处理
-				if (tLocation.getDownloadUrl() != null) {
+				/*if (tLocation.getDownloadUrl() != null) {
 					File dFile = new File("/data" + tLocation.getDownloadUrl().replace("%20", " "));
 					if (dFile != null) {
 						dFile.delete();
@@ -289,7 +289,7 @@ public class LocationController {
 					if (tFile != null) {
 						tFile.delete();
 					}
-				}
+				}*/
 				userLocationService.deleteUserLocation(tLocation.getId());
 				// UserBusiness.deleteUserLocation(tLocation.getId());
 				locationService.deleteLocation(tLocation.getId());
@@ -852,6 +852,8 @@ public class LocationController {
 			}
 			locationSceneService.deleteSceneLocation(tScene.getSceneNumber(), location);
 			//SceneBusiness.deleteSceneLocation(tScene.getSceneNumber(), tLocation.getId());
+			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
  		} catch (Exception e) {
 			logger.error("===setSceneLocation error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
@@ -859,5 +861,80 @@ public class LocationController {
 		}
 		return res;
 	}
-	 
+	/**  
+	 * @param tLocation  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/updateLocationByObj", method = RequestMethod.PUT)
+	ResponseObject updateLocationByObj(@RequestBody TLocation tLocation){
+
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+ 		try {
+ 			//TLocation tLocation = queryLocationByWeight(user, Integer.parseInt(location));
+			if (tLocation == null) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			locationService.updateLocation(tLocation);
+			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+  		} catch (Exception e) {
+			logger.error("===updateLocationByObj error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	/**  
+	 * @param tLocation  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/addLocation", method = RequestMethod.POST)
+	ResponseObject<TLocation> addLocation(@RequestBody TLocation tLocation){
+		ResponseObject<TLocation> res = new ResponseObject<TLocation>();
+ 		try {
+			if (tLocation == null) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			locationService.addLocation(tLocation);
+			res.setData(tLocation);
+			res.setStatus(ResponseEnum.AddSuccess.getStatus());
+			res.setMessage(ResponseEnum.AddSuccess.getMsg());
+  		} catch (Exception e) {
+			logger.error("===updateLocationByObj error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	/**  
+	 * @param tUserLocation  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/addUserLocation", method = RequestMethod.POST)
+	ResponseObject addUserLocation(@RequestBody TUserLocation tUserLocation){
+
+		ResponseObject res = new ResponseObject();
+ 		try {
+			if (tUserLocation == null) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			userLocationService.addUserLocation(tUserLocation);
+			res.setStatus(ResponseEnum.AddSuccess.getStatus());
+			res.setMessage(ResponseEnum.AddSuccess.getMsg());
+  		} catch (Exception e) {
+			logger.error("===updateLocationByObj error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	
+	}
 }

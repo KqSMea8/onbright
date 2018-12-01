@@ -41,6 +41,7 @@ import com.bright.apollo.common.entity.TIntelligentFingerAuth;
 import com.bright.apollo.common.entity.TIntelligentFingerPush;
 import com.bright.apollo.common.entity.TIntelligentFingerRemoteUser;
 import com.bright.apollo.common.entity.TIntelligentFingerUser;
+import com.bright.apollo.common.entity.TLocation;
 import com.bright.apollo.common.entity.TNvr;
 import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
@@ -88,6 +89,7 @@ import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.response.TUserOperationDTO;
 import com.bright.apollo.response.UserFingerDTO;
+import com.bright.apollo.service.FtpService;
 import com.bright.apollo.service.MsgService;
 import com.bright.apollo.service.SmsService;
 import com.bright.apollo.tool.Base64Util;
@@ -96,6 +98,7 @@ import com.bright.apollo.tool.DateHelper;
 import com.bright.apollo.tool.MD5;
 import com.bright.apollo.tool.MobileUtil;
 import com.bright.apollo.tool.NumberHelper;
+import com.bright.apollo.vo.PicPathVo;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -137,7 +140,10 @@ public class FacadeController extends BaseController {
 
 	@Autowired
 	private AliDevCache aliDevCache;
-
+	@Autowired
+	private PicPathVo picPathVo;
+	@Autowired
+	private FtpService ftpService;
 	@Value("${logout.url}")
 	private String logoutUrl;
 
@@ -6357,6 +6363,7 @@ public class FacadeController extends BaseController {
 	@RequestMapping(value = "/deleteLocation/{location}", method = RequestMethod.DELETE)
 	public ResponseObject<Map<String, Object>> deleteLocation(@PathVariable(value = "location") Integer location) {
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		TLocation tLocation=null;
 		try {
 			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			if (StringUtils.isEmpty(principal.getUsername())) {
@@ -6371,11 +6378,19 @@ public class FacadeController extends BaseController {
 				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
 				return res;
 			}
+			ResponseObject<Map<String, Object>> locationRes = feignDeviceClient.queryLocation(resUser.getData().getId(), location);
+			if(locationRes.getData()!=null&&locationRes.getData().get("locations")!=null){
+				tLocation=((List<TLocation>)locationRes.getData().get("locations")).get(0);
+			}
 			return feignDeviceClient.deleteLocation(location, resUser.getData().getId());
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
+		}finally{
+			if(tLocation!=null){
+				ftpService.deleteFtpFile(picPathVo, tLocation.getDownloadUrl(),tLocation.getThumUrl());
+			}
 		}
 		return res;
 	}

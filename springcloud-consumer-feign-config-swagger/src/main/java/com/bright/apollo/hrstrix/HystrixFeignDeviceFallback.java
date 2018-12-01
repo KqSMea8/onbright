@@ -18,6 +18,7 @@ import com.bright.apollo.common.entity.TLocation;
 import com.bright.apollo.common.entity.TNvr;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.common.entity.TServerGroup;
+import com.bright.apollo.common.entity.TUserLocation;
 import com.bright.apollo.common.entity.TYSCamera;
 import com.bright.apollo.feign.FeignDeviceClient;
 import com.bright.apollo.request.IntelligentFingerWarnDTO;
@@ -704,6 +705,36 @@ public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implem
 	@Override
 	public ResponseObject<Map<String, Object>> addDeviceLocation(Integer userId, String serialId, Integer location,
 			Integer xAxis, Integer yAxis, String deviceType) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#updateLocationByObj(com.bright.apollo.common.entity.TLocation)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject updateLocationByObj(TLocation tLocation) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#addLocation(com.bright.apollo.common.entity.TLocation)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<TLocation> addLocation(TLocation tLocation) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#addUserLocation(com.bright.apollo.common.entity.TUserLocation)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject addUserLocation(TUserLocation tUserLocation) {
 		logger.warn("===device server is break===");
 		return serverError();
 	}

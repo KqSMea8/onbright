@@ -221,25 +221,40 @@ public class FtpServiceImpl implements FtpService {
 	 * @see com.bright.apollo.service.FtpService#deleteFtpFile(java.lang.String, com.bright.apollo.vo.PicPathVo)  
 	 */
 	@Override
-	public boolean deleteFtpFile(String path, PicPathVo pathVo) {
+	public boolean deleteFtpFile(PicPathVo pathVo,String...path) {
 		FTPClient ftp=null;
 		try {
 			ftp = loginFtp(pathVo);
 			if(ftp==null)
 				return false;
 			//遍历
-			String[] split = path.split("/");
-			if(split.length>0){
-				for (int i = 0; i < split.length; i++) {
-					if(!split[i].contains("."))
-						ftp.changeWorkingDirectory(split[i]);
-					else
-						return ftp.deleteFile(split[i]);
+			if(path!=null&&path.length>0){
+				for (int i = 0; i < path.length; i++) {
+					String[] split = path[i].split("/");
+					if(split.length>0){
+						for (int j = 0; j < split.length; j++) {
+							if(!split[j].contains("."))
+								ftp.changeWorkingDirectory(split[j]);
+							else
+								ftp.deleteFile(split[i]);
+						}
+					}
 				}
+				return true;
 			}
+			
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
-		}  
+		}   finally {
+			if (ftp != null && ftp.isConnected()) {
+				try {
+					ftp.logout();
+					ftp.disconnect();
+				} catch (IOException ioe) {
+					logger.error("===error msg:" + ioe.getMessage());
+				}
+			}
+		}
 		return false;
 	}
 

@@ -1,5 +1,6 @@
 package com.bright.apollo.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.bright.apollo.common.entity.TLocation;
 import com.bright.apollo.common.entity.TUser;
+import com.bright.apollo.common.entity.TUserLocation;
 import com.bright.apollo.feign.FeignDeviceClient;
 import com.bright.apollo.feign.FeignUserClient;
 import com.bright.apollo.response.ResponseEnum;
@@ -61,6 +62,7 @@ public class ImageUploadController {
 			@RequestParam(required = false, value = "action", defaultValue = "00") String action) {
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		try {
+			Map<String, Object> map = new HashMap<String, Object>();
 			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			if (StringUtils.isEmpty(principal.getUsername())) {
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
@@ -77,10 +79,28 @@ public class ImageUploadController {
 			if (file != null) {
 				String saveToTemp = ftpService.saveToTemp(file.getOriginalFilename(), file.getInputStream(), picPathVo);
 				String[] uploadFile = ftpService.uploadFile(file.getOriginalFilename(), saveToTemp, picPathVo);
-				if (uploadFile != null) {
+				if (uploadFile != null && uploadFile.length == 2) {
+					TLocation tLocation = null;
 					logger.info("===uploadFile:" + uploadFile);
 					if (action.equals("00")) {
-						// add
+						tLocation = new TLocation();
+						tLocation.setDownloadUrl(uploadFile[0]);
+						tLocation.setThumUrl(uploadFile[1]);
+						tLocation.setBuilding(building);
+						tLocation.setRoom(room);
+						ResponseObject<TLocation> locationRes = feignDeviceClient.addLocation(tLocation);
+						if (locationRes == null && locationRes.getData() == null) {
+							res.setStatus(ResponseEnum.RequestParamError.getStatus());
+							res.setMessage(ResponseEnum.RequestParamError.getMsg());
+							return res;
+						}
+						tLocation = locationRes.getData();
+						TUserLocation tUserLocation = new TUserLocation();
+						tUserLocation.setLocationId(tLocation.getId());
+						tUserLocation.setUserId(resUser.getData().getId());
+						feignDeviceClient.addUserLocation(tUserLocation);
+						res.setStatus(ResponseEnum.AddSuccess.getStatus());
+						res.setMessage(ResponseEnum.AddSuccess.getMsg());
 					} else {
 						if (location == null || location == 0) {
 							res.setStatus(ResponseEnum.RequestParamError.getStatus());
@@ -90,56 +110,41 @@ public class ImageUploadController {
 						ResponseObject<Map<String, Object>> locationRes = feignDeviceClient
 								.queryLocation(resUser.getData().getId(), location);
 						if (locationRes == null || locationRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()
-								|| locationRes.getData() == null||
-								locationRes.getData().get("locations")==null
-								) {
+								|| locationRes.getData() == null || locationRes.getData().get("locations") == null) {
 							res.setStatus(ResponseEnum.RequestParamError.getStatus());
 							res.setMessage(ResponseEnum.RequestParamError.getMsg());
 							return res;
 						}
 						Map<String, Object> data = locationRes.getData();
-						List<TLocation> list=(List<TLocation>) data.get("locations");
-						if(list==null||list.size()<=0){
+						List<TLocation> list = (List<TLocation>) data.get("locations");
+						if (list == null || list.size() <= 0) {
 							res.setStatus(ResponseEnum.RequestParamError.getStatus());
 							res.setMessage(ResponseEnum.RequestParamError.getMsg());
 							return res;
 						}
-						
+						tLocation = list.get(0);
+						ftpService.deleteFtpFile(picPathVo, tLocation.getDownloadUrl(), tLocation.getThumUrl());
+						tLocation.setDownloadUrl(uploadFile[0]);
+						tLocation.setThumUrl(uploadFile[1]);
+						if (!StringUtils.isEmpty(building))
+							tLocation.setBuilding(building);
+						if (!StringUtils.isEmpty(room))
+							tLocation.setRoom(room);
+						feignDeviceClient.updateLocationByObj(tLocation);
+						res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+						res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
 					}
-					res.setStatus(ResponseEnum.AddSuccess.getStatus());
-					res.setMessage(ResponseEnum.AddSuccess.getMsg());
+					map.put("url", tLocation.getDownloadUrl());
+					map.put("thum_url", tLocation.getThumUrl());
+					map.put("location", tLocation.getId());
+					res.setData(map);
+
 					return res;
 				}
 				logger.warn("===upload pic fature===");
-			}
-		} catch (Exception e) {
-			logger.error("===error msg:" + e.getMessage());
-			res.setStatus(ResponseEnum.RequestTimeout.getStatus());
-			res.setMessage(ResponseEnum.RequestTimeout.getMsg());
-		}
-		return res;
-	}
-	@ApiOperation(value = "deletePic", httpMethod = "DELETE", produces = "application/json")
-	@ApiResponse(code = 200, message = "Success", response = ResponseObject.class)
-	@RequestMapping(value = "/deletePic", method = RequestMethod.DELETE)
-	public ResponseObject<Map<String, Object>> deletePic(
-			@RequestParam(required=true,name="path")String path) {
-		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
-		try {
-			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			if (StringUtils.isEmpty(principal.getUsername())) {
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
-				return res;
 			}
-			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
-			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
-					|| resUser.getData() == null) {
-				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
-				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
-				return res;
-			}
-			ftpService.deleteFtpFile(path, picPathVo);
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.RequestTimeout.getStatus());
@@ -147,4 +152,5 @@ public class ImageUploadController {
 		}
 		return res;
 	}
+
 }
