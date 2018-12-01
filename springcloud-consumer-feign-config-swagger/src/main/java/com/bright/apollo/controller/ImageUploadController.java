@@ -121,9 +121,9 @@ public class ImageUploadController {
 	}
 	@ApiOperation(value = "deletePic", httpMethod = "DELETE", produces = "application/json")
 	@ApiResponse(code = 200, message = "Success", response = ResponseObject.class)
-	@RequestMapping(value = "/deletePic/{path}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/deletePic", method = RequestMethod.DELETE)
 	public ResponseObject<Map<String, Object>> deletePic(
-			@PathVariable(required=true,name="path")String path) {
+			@RequestParam(required=true,name="path")String path) {
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		try {
 			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
