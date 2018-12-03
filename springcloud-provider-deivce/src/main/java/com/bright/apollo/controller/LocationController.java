@@ -453,7 +453,7 @@ public class LocationController {
 					tDeviceLocation.setxAxis(xAxis);
 					tDeviceLocation.setyAxis(yAxis);
 					tDeviceLocation.setSerialId(serialId);
-					tDeviceLocation.setDeviceType(tObox != null ? "0a" : "00");
+					tDeviceLocation.setDeviceType(tObox != null ? "0a" : tOboxDeviceConfig.getDeviceType());
 					deviceLocationService.addDeviceLocation(location2);
 					// DeviceBusiness.addDeviceLocation(tDeviceLocation);
 				}
@@ -614,7 +614,7 @@ public class LocationController {
 			List<TDeviceLocation> tDeviceLocations = deviceLocationService.queryDevicesByLocation(locationId);
 			//List<TDeviceLocation> tDeviceLocations = DeviceBusiness.queryDevicesByLocation(Integer.parseInt(location));
 			for (TDeviceLocation tDeviceLocation : tDeviceLocations) {
-				if (tDeviceLocation.getDeviceType().equals("00")) {
+				if (!tDeviceLocation.getDeviceType().equals("0a")) {
 					TOboxDeviceConfig tOboxDeviceConfig = oboxDeviceConfigService.queryDeviceConfigBySerialID(tDeviceLocation.getSerialId());
 					//TOboxDeviceConfig tOboxDeviceConfig = DeviceBusiness.queryDeviceConfigByID(tDeviceLocation.getDeviceId());
 					if (tOboxDeviceConfig != null) {
@@ -723,7 +723,7 @@ public class LocationController {
 					//List<TSceneAction> tSceneActions = SceneBusiness.querySceneActionsBySceneNumber(tScene.getSceneNumber());
 					if (tSceneActions != null) {
 						for (TSceneAction tSceneAction : tSceneActions) {
-							if (tSceneAction.getNodeType().equals("00")) {
+							if (tSceneAction.getNodeType().equals(NodeTypeEnum.single.getValue())) {
 								TOboxDeviceConfig tOboxDeviceConfig = oboxDeviceConfigService.queryDeviceConfigBySerialID(tSceneAction.getActionid());
 								//TOboxDeviceConfig tOboxDeviceConfig = DeviceBusiness.queryDeviceConfigByID(tSceneAction.getActionID());
 								if (tOboxDeviceConfig != null) {

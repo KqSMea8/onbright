@@ -767,8 +767,9 @@ public class CommonController {
 		return list;
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void main(String[] args) {
-		List<String> mList = (List<String>) ObjectUtils.fromJsonToObject(null, List.class);
+		List<String> mList = ((List<String>) ObjectUtils.fromJsonToObject(null, List.class));
 		System.out.println(mList);
 	}
 }

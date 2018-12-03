@@ -6358,6 +6358,7 @@ public class FacadeController extends BaseController {
 	 * @param location
 	 * @Description:
 	 */
+	@SuppressWarnings("unchecked")
 	@ApiOperation(value = "deleteLocation", httpMethod = "DELETE", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/deleteLocation/{location}", method = RequestMethod.DELETE)
