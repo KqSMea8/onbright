@@ -67,7 +67,8 @@ public class IRUploadHandler extends AliBaseHandler {
         String index = cmdCache.getIrTestCodeAppKeyBrandIdDeviceType("index_"+deviceSerialId);
         String brandId = cmdCache.getIrTestCodeAppKeyBrandIdDeviceType("brandId_"+index)==null?
                 cmdCache.getIrTestCodeAppKeyBrandIdDeviceType("brandId_"+deviceSerialId):cmdCache.getIrTestCodeAppKeyBrandIdDeviceType("brandId_"+index);
-        String deviceType = cmdCache.getIrTestCodeAppKeyBrandIdDeviceType("deviceType_"+index);
+        String deviceType = cmdCache.getIrTestCodeAppKeyBrandIdDeviceType("deviceType_"+index)==null?cmdCache.getIrTestCodeAppKeyBrandIdDeviceType("deviceType_"+deviceSerialId):
+                cmdCache.getIrTestCodeAppKeyBrandIdDeviceType("deviceType_"+index);
         String key = cmdCache.getIrTestCodeAppKeyBrandIdDeviceType("keyName_"+index);
 //        String remoteName = cmdCache.getIrTestCodeAppKeyBrandIdDeviceType("remoteName_"+index);
         logger.info("serialId ====== "+deviceSerialId);
@@ -80,10 +81,10 @@ public class IRUploadHandler extends AliBaseHandler {
         TUserAliDevice userAliDevice = userAliDevService.queryAliDeviceBySerialiId(deviceSerialId);
         if(functionId==2){//学习红外上传
             com.alibaba.fastjson.JSONObject mqttJson = new com.alibaba.fastjson.JSONObject();
-            com.alibaba.fastjson.JSONObject jsonObject = new com.alibaba.fastjson.JSONObject();
-            jsonObject.put("key",key);
+//            com.alibaba.fastjson.JSONObject jsonObject = new com.alibaba.fastjson.JSONObject();
+//            jsonObject.put("key",key);
             JSONArray jsonArray = new JSONArray();
-            jsonArray.add(jsonObject);
+//            jsonArray.add(jsonObject);
             mqttJson.put("keys",jsonArray);
             mqttJson.put("extendsKeys",new JSONArray());
             mqttJson.put("index",Integer.valueOf(index==null?"0":index));
@@ -101,7 +102,7 @@ public class IRUploadHandler extends AliBaseHandler {
             resMap.put("type",21);
             resMap.put("success",true);
             resMap.put("serialId",deviceSerialId);
-            yaoKongYunService.updateYaoKongKeyCodeNameBySerialIdAndIndexAndKey(deviceSerialId,index,key,data);//保存src
+//            yaoKongYunService.updateYaoKongKeyCodeNameBySerialIdAndIndexAndKey(deviceSerialId,index,key,data);//保存src
             pushservice.pairIrRemotecode(resMap,userAliDevice.getUserId());
 
         }
@@ -112,13 +113,12 @@ public class IRUploadHandler extends AliBaseHandler {
         com.alibaba.fastjson.JSONObject resMap = new com.alibaba.fastjson.JSONObject();
         TYaokonyunDevice yaokonyunDevice = getYaoKongDevice();
         List<String> strings = new ArrayList<String>();
-        strings.add("bid="+brandId);
+        strings.add("bid=104");
         strings.add("t=7");
-        strings.add("r="+src);
-        strings.add("v=4");
+        strings.add("r=1,38000,341,169,24,64,23,22,23,22,23,64,24,21,24,21,24,63,24,21,24,21,24,63,24,21,24,63,24,21,24,21,24,21,24,21,24,21,24,21,24,21,25,21,24,21,24,21,24,21,24,21,24,21,24,21,24,21,24,21,24,63,24,21,24,64,24,21,23,22,23,64,24,21,24");
         strings.add("zip=1");
         String result = yaoKongYunSend
-                .postMethod(strings,yaokonyunDevice,yaoKongYunConfig.getUrlPrefix()+"?c=l");
+                .postMethod(strings,yaokonyunDevice,yaoKongYunConfig.getUrlPrefix()+"?c=m");
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         MatchRemoteControlResult remoteControlResult = gson.fromJson(result,MatchRemoteControlResult.class);
 
@@ -137,9 +137,9 @@ public class IRUploadHandler extends AliBaseHandler {
                 QueryRemoteBySrcDTO2 srcDto = new QueryRemoteBySrcDTO2(matchRemoteControl);
                 Integer idx = IndexUtils.getIdx();
                 dto.setIndex(idx);
-                dto.setBrandType(Integer.valueOf(brandId));
+                dto.setBrandType(Integer.valueOf(brandId==null?"0":brandId));
                 srcDto.setIndex(idx);
-                srcDto.setBrandType(Integer.valueOf(brandId));
+                srcDto.setBrandType(Integer.valueOf(brandId==null?"0":brandId));
                 dtoList.add(dto);
                 dtoSrcList.add(srcDto);
             }

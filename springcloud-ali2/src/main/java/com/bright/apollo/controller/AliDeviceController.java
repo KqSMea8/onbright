@@ -390,7 +390,6 @@ public class AliDeviceController {
 				Integer idx = IndexUtils.getIdx();
 				cmdCache.addIrBrandId(idx.toString(),brandId);
 				cmdCache.addIrDeviceType(idx.toString(),deviceType);
-//				cmdCache.addIrTestCodeSerialId(serialId);
 				dto.setIndex(idx);
 				dto.setBrandType(Integer.valueOf(brandId));
 				srcDto.setIndex(idx);
@@ -400,9 +399,7 @@ public class AliDeviceController {
 			}
 			cmdCache.setIRDeviceInfoList(brandId+"_"+deviceType+"_"+"_remoteControlList",dtoList);
 			cmdCache.setIRDeviceInfoList(brandId+"_"+deviceType+"_"+"_remoteControlListSrc",dtoSrcList);
-//			resMap.put("sm",dtoList.size());
 			resMap.put("rs",dtoList);
-//			return dtoList;
 		}
 		return resMap;
 	}
@@ -501,7 +498,6 @@ public class AliDeviceController {
 		ResponseObject res = new ResponseObject();
 		Map<String,Object> resMap = new HashMap<String,Object>();
 		try {
-//			cmdCache.addIrTestCodeSerialId(serialId,index);
             cmdCache.addIrIndexBySerialId(serialId,index);
 			cmdCache.addIrTestCodeKeyName(index,key);
 			cmdCache.addIrTestCodeKeyNameType(index,keyType);
@@ -668,8 +664,8 @@ public class AliDeviceController {
         ResponseObject res = new ResponseObject();
         Map<String,Object> resMap = new HashMap<String,Object>();
         try {
-//            cmdCache.addIrBrandIdBySerialId(serialId,brandId);
-//            cmdCache.addIrDeviceTypeBySerialId(serialId,deviceType);
+            cmdCache.addIrBrandIdBySerialId(serialId,brandId);
+            cmdCache.addIrDeviceTypeBySerialId(serialId,deviceType);
 			Integer idx = IndexUtils.getIdx();
 			TYaokonyunKeyCode yaokonyunKeyCode = new TYaokonyunKeyCode();
 			yaokonyunKeyCode.setKeyName("");
