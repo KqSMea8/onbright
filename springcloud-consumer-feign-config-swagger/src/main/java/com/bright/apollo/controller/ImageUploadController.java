@@ -107,22 +107,22 @@ public class ImageUploadController {
 							res.setMessage(ResponseEnum.RequestParamError.getMsg());
 							return res;
 						}
-						ResponseObject<Map<String, Object>> locationRes = feignDeviceClient
-								.queryLocation(resUser.getData().getId(), location);
-						if (locationRes == null || locationRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()
-								|| locationRes.getData() == null || locationRes.getData().get("locations") == null) {
+						ResponseObject<TLocation> locationRes = feignDeviceClient
+								.queryLocationByUserAndLocation(resUser.getData().getId(), location);
+						if (locationRes == null 
+								|| locationRes.getData() == null  ) {
 							res.setStatus(ResponseEnum.RequestParamError.getStatus());
 							res.setMessage(ResponseEnum.RequestParamError.getMsg());
 							return res;
 						}
-						Map<String, Object> data = locationRes.getData();
+						/*Map<String, Object> data = locationRes.getData();
 						List<TLocation> list = (List<TLocation>) data.get("locations");
 						if (list == null || list.size() <= 0) {
 							res.setStatus(ResponseEnum.RequestParamError.getStatus());
 							res.setMessage(ResponseEnum.RequestParamError.getMsg());
 							return res;
-						}
-						tLocation = list.get(0);
+						}*/
+						tLocation = locationRes.getData();
 						ftpService.deleteFtpFile(picPathVo, tLocation.getDownloadUrl(), tLocation.getThumUrl());
 						tLocation.setDownloadUrl(uploadFile[0]);
 						tLocation.setThumUrl(uploadFile[1]);
