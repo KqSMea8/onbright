@@ -6379,9 +6379,9 @@ public class FacadeController extends BaseController {
 				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
 				return res;
 			}
-			ResponseObject<Map<String, Object>> locationRes = feignDeviceClient.queryLocation(resUser.getData().getId(), location);
-			if(locationRes.getData()!=null&&locationRes.getData().get("locations")!=null){
-				tLocation=((List<TLocation>)locationRes.getData().get("locations")).get(0);
+			ResponseObject<TLocation> locationRes = feignDeviceClient.queryLocationByUserAndLocation(resUser.getData().getId(), location);
+			if(locationRes.getData()!=null&&locationRes.getData()!=null){
+				tLocation=locationRes.getData();
 			}
 			return feignDeviceClient.deleteLocation(location, resUser.getData().getId());
 		} catch (Exception e) {
@@ -6516,9 +6516,8 @@ public class FacadeController extends BaseController {
 	 */
 	@ApiOperation(value = "queryLocation", httpMethod = "GET", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
-	@RequestMapping(value = "/queryLocation/{locationId}", method = RequestMethod.GET)
-	public ResponseObject<Map<String, Object>> queryLocation(
-			@PathVariable(required = true, name = "locationId") Integer locationId) {
+	@RequestMapping(value = "/queryLocation", method = RequestMethod.GET)
+	public ResponseObject<Map<String, Object>> queryLocation() {
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		try {
 			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -6534,7 +6533,7 @@ public class FacadeController extends BaseController {
 				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
 				return res;
 			}
-			return feignDeviceClient.queryLocation(resUser.getData().getId(), locationId);
+			return feignDeviceClient.queryLocation(resUser.getData().getId());
 			// return feignDeviceClient.updateLocation(location,
 			// resUser.getData().getId(), building, room, mList);
 			// return

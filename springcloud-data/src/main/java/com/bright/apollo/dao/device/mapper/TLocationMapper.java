@@ -1,5 +1,7 @@
 package com.bright.apollo.dao.device.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Mapper;
@@ -91,5 +93,18 @@ public interface TLocationMapper {
 			@Result(property = "downloadUrl", column = "download_url"),
 			@Result(property = "license", column = "license"), @Result(property = "thumUrl", column = "thum_url") })
 	TLocation queryLocationById(@Param("locationId") Integer locationId);
+
+	/**  
+	 * @param userId
+	 * @return  
+	 * @Description:  
+	 */
+	@Select("SELECT b.* FROM t_user_location AS a INNER JOIN "
+			+ " t_location AS b ON b.id=a.location_id and a.user_id=#{userId}")
+	@Results(value = { @Result(property = "id", column = "id"), @Result(property = "building", column = "building"),
+			@Result(property = "lastOpTime", column = "last_op_time"), @Result(property = "room", column = "room"),
+			@Result(property = "downloadUrl", column = "download_url"),
+			@Result(property = "license", column = "license"), @Result(property = "thumUrl", column = "thum_url") })
+	List<TLocation> queryLocationByUser(@Param("userId") Integer userId);
 
 }

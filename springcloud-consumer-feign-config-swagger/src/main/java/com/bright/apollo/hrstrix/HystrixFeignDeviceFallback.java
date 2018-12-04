@@ -651,7 +651,7 @@ public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implem
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public ResponseObject<Map<String, Object>> queryLocation(Integer userId, Integer locationId) {
+	public ResponseObject<Map<String, Object>> queryLocation(Integer userId) {
 		logger.warn("===device server is break===");
 		return serverError();
 	}
@@ -735,6 +735,16 @@ public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implem
 	@SuppressWarnings("rawtypes")
 	@Override
 	public ResponseObject addUserLocation(TUserLocation tUserLocation) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#queryLocationByUserAndLocation(java.lang.Integer, java.lang.Integer)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<TLocation> queryLocationByUserAndLocation(Integer userId, Integer location) {
 		logger.warn("===device server is break===");
 		return serverError();
 	}

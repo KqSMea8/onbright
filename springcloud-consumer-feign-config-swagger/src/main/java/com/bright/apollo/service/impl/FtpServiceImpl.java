@@ -19,7 +19,6 @@ import com.bright.apollo.service.FtpService;
 import com.bright.apollo.tool.MD5;
 import com.bright.apollo.vo.PicPathVo;
 
-import io.swagger.models.auth.In;
 import net.coobird.thumbnailator.Thumbnails;
 
 /**

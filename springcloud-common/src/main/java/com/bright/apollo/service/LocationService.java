@@ -1,5 +1,7 @@
 package com.bright.apollo.service;
 
+import java.util.List;
+
 import com.bright.apollo.common.entity.TLocation;
 
 /**  
@@ -53,5 +55,12 @@ public interface LocationService {
 	 * @Description:  
 	 */
 	TLocation queryLocationById(Integer locationId);
+
+	/**  
+	 * @param userId
+	 * @return  
+	 * @Description:  
+	 */
+	List<TLocation> queryLocationByUser(Integer userId);
 
 }

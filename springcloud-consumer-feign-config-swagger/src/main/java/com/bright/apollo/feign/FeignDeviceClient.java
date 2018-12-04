@@ -602,9 +602,8 @@ public interface FeignDeviceClient {
 	 * @return
 	 * @Description:
 	 */
-	@RequestMapping(value = "/location/queryLocation/{userId}/{locationId}", method = RequestMethod.GET)
-	ResponseObject<Map<String, Object>> queryLocation(@PathVariable(value = "userId") Integer userId,
-			@PathVariable(value = "locationId") Integer locationId);
+	@RequestMapping(value = "/location/queryLocation/{userId}", method = RequestMethod.GET)
+	ResponseObject<Map<String, Object>> queryLocation(@PathVariable(value = "userId") Integer userId);
 
 	/**
 	 * @param userId
@@ -674,6 +673,15 @@ public interface FeignDeviceClient {
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/location/addUserLocation", method = RequestMethod.POST)
 	ResponseObject addUserLocation(@RequestBody TUserLocation tUserLocation);
+
+	/**  
+	 * @param userId
+	 * @param location
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/location/queryLocationByUserAndLocation/{userId}/{location}", method = RequestMethod.GET)
+	ResponseObject<TLocation> queryLocationByUserAndLocation(@PathVariable(value = "userId")Integer userId, @PathVariable(value = "location")Integer location);
 
 	 
 }

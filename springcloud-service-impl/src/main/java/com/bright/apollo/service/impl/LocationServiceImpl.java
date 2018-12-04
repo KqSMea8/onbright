@@ -1,5 +1,7 @@
 package com.bright.apollo.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -68,5 +70,13 @@ public class LocationServiceImpl implements LocationService{
 	public TLocation queryLocationById(Integer locationId) {
 		 
 		return mapper.queryLocationById(locationId);
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.LocationService#queryLocationByUser(java.lang.Integer)  
+	 */
+	@Override
+	public List<TLocation> queryLocationByUser(Integer userId) {
+		return mapper.queryLocationByUser(userId);
 	}
 }

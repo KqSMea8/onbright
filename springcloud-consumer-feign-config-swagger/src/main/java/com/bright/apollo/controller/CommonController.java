@@ -709,9 +709,9 @@ public class CommonController {
 							Integer.parseInt(x_axis), Integer.parseInt(y_axis),deviceType);
 			}
 		} else if (CMDEnum.query_location.toString().equals(cmdEnum.toString())) {
-			String location = requestParam.getValue("location");
-			if (!StringUtils.isEmpty(location) && NumberHelper.isNumeric(location))
-				return facadeController.queryLocation(Integer.parseInt(location));
+			//String location = requestParam.getValue("location");
+			//if (!StringUtils.isEmpty(location) && NumberHelper.isNumeric(location))
+				return facadeController.queryLocation();
 		} else if (CMDEnum.query_device_location.toString().equals(cmdEnum.toString())) {
 			String location = requestParam.getValue("location");
 			if (!StringUtils.isEmpty(location) && NumberHelper.isNumeric(location))
