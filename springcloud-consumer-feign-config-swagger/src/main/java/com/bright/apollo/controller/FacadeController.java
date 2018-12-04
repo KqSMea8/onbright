@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.fastjson.JSONArray;
 import com.bright.apollo.cache.AliDevCache;
@@ -6325,10 +6326,12 @@ public class FacadeController extends BaseController {
 	 * @param mList
 	 * @Description:
 	 */
-	@ApiOperation(value = "createLocaltion", httpMethod = "PUT", produces = "application/json")
+	@ApiOperation(value = "createLocaltion", httpMethod = "POST", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/createLocation/{building}/{room}", method = RequestMethod.POST)
-	public ResponseObject<Map<String, Object>> createLocation(@PathVariable(value = "building") String building,
+	public ResponseObject<Map<String, Object>> createLocation(
+			@RequestParam(value = "file", required = false) MultipartFile file,
+			@PathVariable(value = "building") String building,
 			@PathVariable(value = "room") String room, @RequestBody(required = false) List<String> mList) {
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		try {
@@ -6346,6 +6349,8 @@ public class FacadeController extends BaseController {
 				return res;
 			}
 			return feignDeviceClient.createLocation(resUser.getData().getId(), building, room, mList);
+			//return mList!=null?feignDeviceClient.createLocation(resUser.getData().getId(), building, room, mList):
+			//	feignDeviceClient.createLocationWithOutDevice(resUser.getData().getId(), building, room);;
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());

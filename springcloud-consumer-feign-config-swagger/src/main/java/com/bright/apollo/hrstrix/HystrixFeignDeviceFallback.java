@@ -748,5 +748,15 @@ public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implem
 		logger.warn("===device server is break===");
 		return serverError();
 	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#createLocationWithOutDevice(java.lang.Integer, java.lang.String, java.lang.String)  
+	 */
+	@Override
+	public ResponseObject<Map<String, Object>> createLocationWithOutDevice(Integer userId, String building,
+			String room) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
  
 }

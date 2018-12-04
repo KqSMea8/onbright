@@ -1,5 +1,6 @@
 package com.bright.apollo.controller;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,6 +11,10 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +34,7 @@ import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.tool.MobileUtil;
 import com.bright.apollo.tool.NumberHelper;
+import com.bright.apollo.vo.PicPathVo;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -52,11 +58,12 @@ public class CommonController {
 	private SceneController sceneController;
 	// @Autowired
 	// private DeviceController deviceController;
-
+	@Autowired
+	private PicPathVo picPathVo;
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping("/common")
 	public ResponseObject common(HttpServletRequest request, HttpServletResponse response)
-			throws AppException, UnsupportedEncodingException {
+			throws AppException, UnsupportedEncodingException, FileUploadException {
 		ResponseObject res = null;
 		request.setCharacterEncoding("UTF-8");
 		// printRequest(request);
@@ -632,36 +639,18 @@ public class CommonController {
 				}
 			}
 		} else if (CMDEnum.create_location.toString().equals(cmdEnum.toString())) {
-			/*
-			 * String serialId = requestParam.getValue("serialId"); String
-			 * location = requestParam.getValue("location"); String building =
-			 * requestParam.getValue("building"); String room =
-			 * requestParam.getValue("room"); String action =
-			 * requestParam.getValue("action"); List<String> mList =
-			 * (List<String>) ObjectUtils.fromJsonToObject(serialId,
-			 * List.class); if (StringUtils.isEmpty(location) &&
-			 * action.endsWith("01") && !StringUtils.isEmpty(building) &&
-			 * !StringUtils.isEmpty(room)) { // create return
-			 * facadeController.createLocation(building, room, mList); } else if
-			 * (!StringUtils.isEmpty(location) && action.endsWith("00") &&
-			 * NumberHelper.isNumeric(location)) {//
-			 * 删除，先删除device与location的映射,然后把location删了 // delete return
-			 * facadeController.deleteLocation(Integer.parseInt(location)); }
-			 * else if (!StringUtils.isEmpty(location) && action.endsWith("01"))
-			 * { //update return
-			 * facadeController.updateLocation(Integer.parseInt(location),
-			 * building, room, mList); }
-			 */
-			String serialId = requestParam.getValue("serialId");
+			 //不走create_location
+		/*	String serialId = requestParam.getValue("serialId");
 			String building = requestParam.getValue("building");
 			String room = requestParam.getValue("room");
-			List<String> mList = (List<String>) ObjectUtils.fromJsonToObject(serialId, List.class);
+			List<String> mList = (List<String>) ObjectUtils.fromJsonToObject(serialId, List.class);   
+			
+			
 			if (!StringUtils.isEmpty(building) && !StringUtils.isEmpty(room))
 				// create
-				return facadeController.createLocation(building, room, mList);
-
-		} else if (CMDEnum.modify_location.toString().equals(cmdEnum.toString())) {
-			String location = requestParam.getValue("location");
+				return facadeController.createLocation(building, room, mList);*/
+ 		} else if (CMDEnum.modify_location.toString().equals(cmdEnum.toString())) {
+			/*String location = requestParam.getValue("location");
 			String building = requestParam.getValue("building");
 			String room = requestParam.getValue("room");
 			String serialId = requestParam.getValue("serialId");
@@ -669,8 +658,7 @@ public class CommonController {
 			if (!StringUtils.isEmpty(location) && NumberHelper.isNumeric(location))
 				// create
 				return facadeController.updateLocation(Integer.parseInt(location), building, room, mList);
-
-		} else if (CMDEnum.delete_location.toString().equals(cmdEnum.toString())) {
+		*/} else if (CMDEnum.delete_location.toString().equals(cmdEnum.toString())) {
 			String location = requestParam.getValue("location");
 			if (!StringUtils.isEmpty(location) && NumberHelper.isNumeric(location))
 				// create

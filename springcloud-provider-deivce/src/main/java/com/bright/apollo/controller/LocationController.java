@@ -92,7 +92,8 @@ public class LocationController {
 	@RequestMapping(value = "/createLocation/{userId}/{building}/{room}", method = RequestMethod.POST)
 	ResponseObject<Map<String, Object>> createLocation(@PathVariable(value = "userId") Integer userId,
 			@PathVariable(value = "building") String building, @PathVariable(value = "room") String room,
-			@RequestBody(required = false) List<String> mList) {
+			//@RequestBody(required = false) List<String> mList
+			@RequestParam(required=false,name="mList")List<String> mList) {
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		Map<String, Object> map = new HashMap<String, Object>();
 		String location = null;
@@ -237,7 +238,7 @@ public class LocationController {
 					 * UserBusiness.addUserLocation(tUserLocation); }
 					 */
 					TUserLocation tUserLocation = new TUserLocation();
-					tUserLocation.setLocationId(tLocationId);
+					tUserLocation.setLocationId(Integer.parseInt(location));
 					tUserLocation.setUserId(userId);
 					userLocationService.addUserLocation(tUserLocation);
 					// UserBusiness.addUserLocation(tUserLocation);

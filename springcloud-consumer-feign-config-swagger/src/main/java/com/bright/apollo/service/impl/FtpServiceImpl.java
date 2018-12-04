@@ -14,6 +14,7 @@ import org.apache.commons.net.ftp.FTPReply;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.bright.apollo.service.FtpService;
 import com.bright.apollo.tool.MD5;
@@ -229,13 +230,15 @@ public class FtpServiceImpl implements FtpService {
 			//遍历
 			if(path!=null&&path.length>0){
 				for (int i = 0; i < path.length; i++) {
-					String[] split = path[i].split("/");
-					if(split.length>0){
-						for (int j = 0; j < split.length; j++) {
-							if(!split[j].contains("."))
-								ftp.changeWorkingDirectory(split[j]);
-							else
-								ftp.deleteFile(split[i]);
+					if(!StringUtils.isEmpty(path[i])){
+						String[] split = path[i].split("/");
+						if(split.length>0){
+							for (int j = 0; j < split.length; j++) {
+								if(!split[j].contains("."))
+									ftp.changeWorkingDirectory(split[j]);
+								else
+									ftp.deleteFile(split[i]);
+							}
 						}
 					}
 				}
