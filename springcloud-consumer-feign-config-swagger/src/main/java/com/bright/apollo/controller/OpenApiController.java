@@ -1,13 +1,16 @@
 package com.bright.apollo.controller;
 import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -42,10 +45,10 @@ public class OpenApiController {
 	 * 6.分配房间给mobile用户
 	 */
 	@SuppressWarnings("rawtypes")
-	@ApiOperation(value = "impowerRomeToUser", httpMethod = "POST", produces = "application/json")
+	@ApiOperation(value = "checkInHotel", httpMethod = "POST", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
-	@RequestMapping(value = "/impowerRomeToUser", method = RequestMethod.POST)
-	public ResponseObject impowerUser(@RequestBody(required=true) Map<String, Object> map) {
+	@RequestMapping(value = "/checkInHotel", method = RequestMethod.POST)
+	public ResponseObject checkInHotel( @RequestBody(required=true) Map<String, Object>map) {
 		ResponseObject res=new  ResponseObject();
 		try {
 			//校验数据

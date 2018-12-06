@@ -369,7 +369,8 @@ public class FacadeController extends BaseController {
 			@PathVariable(value = "oboxSerialId", required = true) String oboxSerialId,
 			@RequestParam(value = "deviceType", required = false) String deviceType,
 			@RequestParam(value = "deviceChildType", required = false) String deviceChildType,
-			@RequestParam(value = "serialId", required = false) String serialId) {
+			@RequestParam(value = "serialId", required = false) String serialId,
+			@RequestParam(value = "address", required = false) String address) {
 		ResponseObject res = new ResponseObject();
 		try {
 			ResponseObject<TObox> resObox = feignOboxClient.getObox(oboxSerialId);
@@ -405,29 +406,9 @@ public class FacadeController extends BaseController {
 				}
 				// search device by user
 				ResponseObject<OboxResp> releaseObox = feignAliClient.scanByUnStop(oboxSerialId, deviceType,
-						deviceChildType, serialId, countOfDevice);
+						deviceChildType, serialId, countOfDevice,address);
 				if (releaseObox != null && releaseObox.getStatus() == ResponseEnum.AddSuccess.getStatus()) {
-					// OboxResp oboxResp = releaseObox.getData();
-					/*
-					 * if (oboxResp.getType() != Type.success) { if
-					 * (oboxResp.getType() == Type.obox_process_failure ||
-					 * oboxResp.getType() == Type.socket_write_error) {
-					 * res.setStatus(ResponseEnum.SendOboxFail.getStatus());
-					 * res.setMessage(ResponseEnum.SendOboxFail.getMsg()); }
-					 * else if (oboxResp.getType() == Type.reply_timeout) {
-					 * res.setStatus(ResponseEnum.SendOboxTimeOut.getStatus());
-					 * res.setMessage(ResponseEnum.SendOboxTimeOut.getMsg()); }
-					 * else {
-					 * res.setStatus(ResponseEnum.SendOboxUnKnowFail.getStatus()
-					 * );
-					 * res.setMessage(ResponseEnum.SendOboxUnKnowFail.getMsg());
-					 * } } else {
-					 */
-					res.setStatus(ResponseEnum.AddSuccess.getStatus());
-					res.setMessage(ResponseEnum.AddSuccess.getMsg());
-					// res.setData(null);
-					// }
-				} else {
+				 
 					res.setStatus(ResponseEnum.SendOboxError.getStatus());
 					res.setMessage(ResponseEnum.SendOboxError.getMsg());
 				}
@@ -795,7 +776,7 @@ public class FacadeController extends BaseController {
 					return res;
 				}
 				TScene dbScene = null;
-				if (dbScene == null) {
+				//if (dbScene == null) {
 					ResponseObject<TScene> dbSceneRes = feignSceneClient
 							.getScenesByOboxSerialIdAndOboxSceneNumber(oboxSerialId, oboxSceneNumber);
 					if (dbSceneRes != null) {
@@ -805,7 +786,7 @@ public class FacadeController extends BaseController {
 						tUserScene.setUserId(resUser.getData().getId());
 						feignUserClient.addUserScene(tUserScene);
 					}
-				}
+				//}
 				tScene.setOboxSceneNumber(oboxSceneNumber);
 				tScene.setSceneName(sceneName);
 				tScene.setSceneType(sceneType);

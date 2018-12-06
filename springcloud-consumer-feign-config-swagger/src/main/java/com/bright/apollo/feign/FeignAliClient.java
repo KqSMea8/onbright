@@ -71,7 +71,8 @@ public interface FeignAliClient {
 			@RequestParam(required = false, value = "deviceType") String deviceType,
 			@RequestParam(required = false, value = "deviceChildType") String deviceChildType,
 			@RequestParam(required = false, value = "serialId") String serialId,
-			@RequestParam(required = true, value = "countOfDevice") Integer countOfDevice);
+			@RequestParam(required = true, value = "countOfDevice") Integer countOfDevice,
+			@RequestParam(required = false, value = "address") String address);
 
 	/**
 	 * @param oboxSerialId

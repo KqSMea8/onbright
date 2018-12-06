@@ -1,6 +1,5 @@
 package com.bright.apollo.controller;
 
-import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,10 +10,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +30,6 @@ import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.tool.MobileUtil;
 import com.bright.apollo.tool.NumberHelper;
-import com.bright.apollo.vo.PicPathVo;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -58,8 +53,8 @@ public class CommonController {
 	private SceneController sceneController;
 	// @Autowired
 	// private DeviceController deviceController;
-	@Autowired
-	private PicPathVo picPathVo;
+//	@Autowired
+//	private PicPathVo picPathVo;
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping("/common")
 	public ResponseObject common(HttpServletRequest request, HttpServletResponse response)
@@ -160,7 +155,7 @@ public class CommonController {
 			} else if (state.equals("02")) {
 				return facadeController.searchDevicesByNewStyle(requestParam.getValue("obox_serial_id"),
 						requestParam.getValue("device_type"), requestParam.getValue("device_child_type"),
-						requestParam.getValue("serialId"));
+						requestParam.getValue("serialId"),requestParam.getValue("address"));
 			} else if (state.equals("03")) {
 				return facadeController.searchDevicesByInitiative(requestParam.getValue("obox_serial_id"),
 						requestParam.getValue("device_type"), requestParam.getValue("device_child_type"),
