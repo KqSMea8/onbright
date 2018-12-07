@@ -411,7 +411,7 @@ public class FacadeController extends BaseController {
 				 
 					res.setStatus(ResponseEnum.AddSuccess.getStatus());
 					res.setMessage(ResponseEnum.AddSuccess.getMsg());
-				}{
+				}else{
 					res.setStatus(ResponseEnum.SendOboxError.getStatus());
 					res.setMessage(ResponseEnum.SendOboxError.getMsg());
 				}
