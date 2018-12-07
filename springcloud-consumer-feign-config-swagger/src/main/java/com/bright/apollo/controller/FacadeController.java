@@ -409,6 +409,9 @@ public class FacadeController extends BaseController {
 						deviceChildType, serialId, countOfDevice,address);
 				if (releaseObox != null && releaseObox.getStatus() == ResponseEnum.AddSuccess.getStatus()) {
 				 
+					res.setStatus(ResponseEnum.AddSuccess.getStatus());
+					res.setMessage(ResponseEnum.AddSuccess.getMsg());
+				}{
 					res.setStatus(ResponseEnum.SendOboxError.getStatus());
 					res.setMessage(ResponseEnum.SendOboxError.getMsg());
 				}
