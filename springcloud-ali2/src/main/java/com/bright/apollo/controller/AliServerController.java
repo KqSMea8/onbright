@@ -204,7 +204,7 @@ public class AliServerController {
 			sendbodyBytes[2] = (byte) ((countOfDevice.intValue() >> 8) & 0x0000ff);
 			sendbodyBytes[3] = (byte) ((countOfDevice.intValue() >> 16) & 0x0000ff);
 			if(!StringUtils.isEmpty(address)){
-				sendbodyBytes[5] = (byte) Integer.parseInt("0e", 16);
+				sendbodyBytes[5] = (byte) Integer.parseInt("0f", 16);
 				sendbodyBytes[11] = (byte) Integer.parseInt(address, 16);
 				sendbodyBytes[4] = (byte) Integer.parseInt(StringUtils.isEmpty(timeOut)?shortTimeout:timeOut, 16);
 			}else{
