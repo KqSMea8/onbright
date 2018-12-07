@@ -203,7 +203,7 @@ public class AliServerController {
 			sendbodyBytes[2] = (byte) ((countOfDevice.intValue() >> 8) & 0x0000ff);
 			sendbodyBytes[3] = (byte) ((countOfDevice.intValue() >> 16) & 0x0000ff);
 			if(!StringUtils.isEmpty(address)){
-				sendbodyBytes[5] = (byte) (0xffff00);
+				sendbodyBytes[5] = (byte) Integer.parseInt("0e", 16);
 				sendbodyBytes[11] = (byte) Integer.parseInt(address, 16);
 				sendbodyBytes[4] = (byte) Integer.parseInt(shortTimeout, 16);
 			}else{
@@ -1206,4 +1206,31 @@ public class AliServerController {
 		}
 		return res;
 	}
+	
+	
+	public static void main(String[] args) {
+		
+		Integer countOfDevice=11;
+		String address="1";
+		String serialId="af5a010000";
+		byte[] sendbodyBytes = new byte[15];
+		sendbodyBytes[0] = (byte) Integer.parseInt("02", 16);
+		sendbodyBytes[1] = (byte) (countOfDevice.intValue() & 0x0000ff);
+		sendbodyBytes[2] = (byte) ((countOfDevice.intValue() >> 8) & 0x0000ff);
+		sendbodyBytes[3] = (byte) ((countOfDevice.intValue() >> 16) & 0x0000ff);
+		if(!StringUtils.isEmpty(address)){
+			sendbodyBytes[5] = (byte) Integer.parseInt("0e", 16);
+			sendbodyBytes[11] = (byte) Integer.parseInt(address, 16);
+			sendbodyBytes[4] = (byte) Integer.parseInt(shortTimeout, 16);
+		}else{
+			sendbodyBytes[4] = (byte) Integer.parseInt(timeout, 16);
+		}
+	 
+		if (!StringUtils.isEmpty(serialId)) {
+			byte[] oboxSerialIdBytes = ByteHelper.hexStringToBytes(serialId);
+			System.arraycopy(oboxSerialIdBytes, 0, sendbodyBytes, 6, oboxSerialIdBytes.length);
+		}
+		System.out.println(sendbodyBytes);
+	}
+	
 }
