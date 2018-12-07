@@ -155,7 +155,7 @@ public class CommonController {
 			} else if (state.equals("02")) {
 				return facadeController.searchDevicesByNewStyle(requestParam.getValue("obox_serial_id"),
 						requestParam.getValue("device_type"), requestParam.getValue("device_child_type"),
-						requestParam.getValue("serialId"),requestParam.getValue("address"));
+						requestParam.getValue("serialId"),requestParam.getValue("address"),requestParam.getValue("timeOut"));
 			} else if (state.equals("03")) {
 				return facadeController.searchDevicesByInitiative(requestParam.getValue("obox_serial_id"),
 						requestParam.getValue("device_type"), requestParam.getValue("device_child_type"),

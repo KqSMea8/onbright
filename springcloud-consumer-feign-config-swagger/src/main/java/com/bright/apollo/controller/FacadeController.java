@@ -370,7 +370,8 @@ public class FacadeController extends BaseController {
 			@RequestParam(value = "deviceType", required = false) String deviceType,
 			@RequestParam(value = "deviceChildType", required = false) String deviceChildType,
 			@RequestParam(value = "serialId", required = false) String serialId,
-			@RequestParam(value = "address", required = false) String address) {
+			@RequestParam(value = "address", required = false) String address,
+			@RequestParam(value = "timeOut", required = false) String timeOut) {
 		ResponseObject res = new ResponseObject();
 		try {
 			ResponseObject<TObox> resObox = feignOboxClient.getObox(oboxSerialId);
@@ -406,7 +407,7 @@ public class FacadeController extends BaseController {
 				}
 				// search device by user
 				ResponseObject<OboxResp> releaseObox = feignAliClient.scanByUnStop(oboxSerialId, deviceType,
-						deviceChildType, serialId, countOfDevice,address);
+						deviceChildType, serialId, countOfDevice,address,timeOut);
 				if (releaseObox != null && releaseObox.getStatus() == ResponseEnum.AddSuccess.getStatus()) {
 				 
 					res.setStatus(ResponseEnum.AddSuccess.getStatus());
