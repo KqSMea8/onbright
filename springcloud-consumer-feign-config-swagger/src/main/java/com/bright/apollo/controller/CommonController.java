@@ -550,11 +550,7 @@ public class CommonController {
 			String serialId = requestParam.getValue("serialId");
 			String index = requestParam.getValue("index");
 			return facadeController.learnIrDeviceKey(serialId, index, keyType, key, timeout);
-		} else if (CMDEnum.modify_ir_program.toString().equals(cmdEnum.toString())) {// 修改/新增红外方案编辑页面
-			String serialId = requestParam.getValue("serialId");
-			String irProgram = requestParam.getValue("ir_ program");
-			return facadeController.modifyIR(serialId, irProgram);
-		} else if (CMDEnum.query_msg.toString().equals(cmdEnum.toString())) {
+		}else if (CMDEnum.query_msg.toString().equals(cmdEnum.toString())) {
 			String count = requestParam.getValue("count");
 			String type = requestParam.getValue("type");
 			String start = requestParam.getValue("start");

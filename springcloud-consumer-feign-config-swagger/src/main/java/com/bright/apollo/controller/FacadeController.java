@@ -5720,6 +5720,8 @@ public class FacadeController extends BaseController {
 		return res;
 	}
 
+
+	@SuppressWarnings({ "rawtypes" })
 	@ApiOperation(value = "controllIR", httpMethod = "POST", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/controllIR", method = RequestMethod.POST)

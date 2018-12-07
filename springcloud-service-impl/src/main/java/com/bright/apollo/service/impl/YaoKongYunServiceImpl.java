@@ -129,4 +129,19 @@ public class YaoKongYunServiceImpl implements YaoKongYunService {
     public void updateYaoKongKeyCodeNameBySerialIdAndIndexAndKey(String serialId, String index, String key, String codeSrc) {
         yaoKongYunMapper.updateYaoKongKeyCodeNameBySerialIdAndIndexAndKey(serialId,Integer.valueOf(index),key,codeSrc);
     }
+
+    @Override
+    public List<Map<String, Object>> getUserIRDevice(Integer userId) {
+        return yaoKongYunMapper.getUserIRDevice(userId);
+    }
+
+    @Override
+    public List<TYaokonyunKeyCode> getIRDeviceByIndex(Integer index) {
+        return yaoKongYunMapper.getIRDeviceByIndex(index);
+    }
+
+    @Override
+    public TYaokonyunKeyCode getIRDeviceByIndexAndKey(Integer index, String key) {
+        return yaoKongYunMapper.getIRDeviceByIndexAndKey(index,key);
+    }
 }
