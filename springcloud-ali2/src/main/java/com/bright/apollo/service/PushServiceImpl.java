@@ -1,19 +1,19 @@
 package com.bright.apollo.service;
 
-import com.alibaba.fastjson.JSON;
-import com.bright.apollo.common.entity.PushMessage;
-import com.bright.apollo.mqtt.MqttGateWay;
-import com.bright.apollo.redis.RedisBussines;
-import com.bright.apollo.response.ResponseObject;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import com.alibaba.fastjson.JSON;
+import com.bright.apollo.common.entity.PushMessage;
+import com.bright.apollo.mqtt.MqttGateWay;
+import com.bright.apollo.redis.RedisBussines;
 
 @Component
 public class PushServiceImpl implements PushService {
@@ -31,8 +31,12 @@ public class PushServiceImpl implements PushService {
         StringBuilder sendStr = new StringBuilder();
         if(message!=null){
             sendStr.append("STR"+JSON.toJSONString(message)+"END");
+        }else{
+        	logger.warn("===send To App Mesaage is null===");
+        	return;
         }
-        logger.info("====== sendStr ======  "+sendStr);
+        logger.info("===ToApp===type:"+message.getType()+"===serialId:"+message.getSerialId());
+        logger.info("====== sendStr ======"+sendStr);
         Iterator<Integer> iterator = users.iterator();
         String tokenUserIdVal = "";
         while (iterator.hasNext()){
