@@ -33,6 +33,29 @@ public class TMallTemplate {
     @Value("${tmallControllProperties.light}")
     private String lightControllProperties;
 
+
+    public String getTvProperties() {
+        return tvProperties;
+    }
+
+    public void setTvProperties(String tvProperties) {
+        this.tvProperties = tvProperties;
+    }
+
+    public String getAirconditionProperties() {
+        return airconditionProperties;
+    }
+
+    public void setAirconditionProperties(String airconditionProperties) {
+        this.airconditionProperties = airconditionProperties;
+    }
+
+    @Value("${tmallControllProperties.tv}")
+    private String tvProperties;
+
+    @Value("${tmallControllProperties.aircondition}")
+    private String airconditionProperties;
+
     public String getLightControllProperties() {
         return lightControllProperties;
     }

@@ -2,6 +2,7 @@ package com.bright.apollo.service;
 
 import com.bright.apollo.common.entity.*;
 
+import javax.swing.*;
 import java.util.List;
 import java.util.Map;
 
@@ -50,4 +51,10 @@ public interface YaoKongYunService {
     TYaokonyunKeyCode getYaoKongKeyCodeByKeyAndSerialIdAndIndex(Integer index,String serialId,String key);
 
     void updateYaoKongKeyCodeNameBySerialIdAndIndexAndKey(String serialId,String index,String key,String codeSrc);
+
+    List<Map<String,Object>> getUserIRDevice(Integer userId);
+
+    List<TYaokonyunKeyCode> getIRDeviceByIndex(Integer index);
+
+    TYaokonyunKeyCode getIRDeviceByIndexAndKey(Integer index,String key);
 }

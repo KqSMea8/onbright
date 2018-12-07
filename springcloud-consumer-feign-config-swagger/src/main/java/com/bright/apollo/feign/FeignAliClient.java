@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.bright.apollo.common.entity.TAliDevTimer;
+import com.bright.apollo.common.entity.TYaokonyunKeyCode;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -526,5 +527,23 @@ public interface FeignAliClient {
 								  @RequestParam(required = true, value = "name") String name,
 								  @RequestParam(required = true, value = "brandId") String brandId);
 
+
+	/**
+	 * @Description:
+	 */
+	@RequestMapping(value = "/aliDevice/getUserIRDevice", method = RequestMethod.POST)
+	ResponseObject getUserIRDevice(@RequestParam(required = true, value = "userId") Integer userId);
+
+	/**
+	 * @Description:
+	 */
+	@RequestMapping(value = "/aliDevice/getIRDeviceByIndex", method = RequestMethod.POST)
+	ResponseObject getIRDeviceByIndex(@RequestParam(required = true, value = "index") Integer index);
+
+	/**
+	 * @Description:
+	 */
+	@RequestMapping(value = "/aliDevice/getIRDeviceByIndexAndKey", method = RequestMethod.POST)
+	ResponseObject<TYaokonyunKeyCode> getIRDeviceByIndexAndKey(@RequestParam(required = true, value = "index") Integer index, @RequestParam(required = true, value = "key") String key);
 
 }

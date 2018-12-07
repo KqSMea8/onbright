@@ -281,6 +281,31 @@ public class AliDeviceController {
 		return res;
 	}
 
+	@RequestMapping(value = "/getUserIRDevice", method = RequestMethod.POST)
+	ResponseObject getUserIRDevice(@RequestParam(required = true, value = "userId") Integer userId) {
+		ResponseObject res = new ResponseObject();
+		List<Map<String,Object>> mapList = yaoKongYunService.getUserIRDevice(userId);
+		res.setData(mapList);
+		return  res;
+	}
+
+	@RequestMapping(value = "/getIRDeviceByIndex", method = RequestMethod.POST)
+	ResponseObject getIRDeviceByIndex(@RequestParam(required = true, value = "index") Integer index) {
+		ResponseObject res = new ResponseObject();
+		List<TYaokonyunKeyCode> yaokonyunKeyCode = yaoKongYunService.getIRDeviceByIndex(index);
+		res.setData(yaokonyunKeyCode);
+		return  res;
+	}
+
+	@RequestMapping(value = "/getIRDeviceByIndexAndKey", method = RequestMethod.POST)
+	ResponseObject<TYaokonyunKeyCode> getIRDeviceByIndexAndKey(@RequestParam(required = true, value = "index") Integer index,
+											@RequestParam(required = true, value = "key") String key) {
+		ResponseObject<TYaokonyunKeyCode> res = new ResponseObject<TYaokonyunKeyCode>();
+		TYaokonyunKeyCode yaokonyunKeyCode = yaoKongYunService.getIRDeviceByIndexAndKey(index,key);
+		res.setData(yaokonyunKeyCode);
+		return  res;
+	}
+
 	@RequestMapping(value = "/controllIR", method = RequestMethod.POST)
 	ResponseObject controllIR(@RequestParam(required = true, value = "serialId") String serialId,
 														   @RequestParam(required = true, value = "index") Integer index,
@@ -289,22 +314,22 @@ public class AliDeviceController {
 		Map<String, Object> requestMap = new HashMap<String, Object>();
 		try {
 			TYaokonyunKeyCode yaokonyunKeyCode = yaoKongYunService.getYaoKongKeyCodeByKeyAndSerialIdAndIndex(index,serialId,key);
-//			if(yaokonyunKeyCode==null){
-//				res.setStatus(ResponseEnum.NoIRKey.getStatus());
-//				res.setMessage(ResponseEnum.NoIRKey.getMsg());
-//			}else{
+			if(yaokonyunKeyCode==null){
+				res.setStatus(ResponseEnum.NoIRKey.getStatus());
+				res.setMessage(ResponseEnum.NoIRKey.getMsg());
+			}else{
 				requestMap.put("command","set");
 				com.alibaba.fastjson.JSONArray jsonArray = new com.alibaba.fastjson.JSONArray();
 				com.alibaba.fastjson.JSONObject json = new com.alibaba.fastjson.JSONObject();
 				com.alibaba.fastjson.JSONObject dataJson = new com.alibaba.fastjson.JSONObject();
 				json.put("functionId",1);
 				jsonArray.add(json);
-				json.put("data",ByteHelper.bytesToHexString(key.getBytes()));
+				json.put("data",ByteHelper.bytesToHexString(yaokonyunKeyCode.getSrc().getBytes()));
 				requestMap.put("value",jsonArray);
 				topServer.pubIrRPC(requestMap,serialId);
 				res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
 				res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
-//			}
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -450,9 +475,7 @@ public class AliDeviceController {
 
 			List<TYaoKongYunBrand> yaoKongYunBrandList = yaoKongYunService.getYaoKongYunBrandByDeviceType(deviceType);
 			if(yaoKongYunBrandList!=null&&yaoKongYunBrandList.size()>0){
-//				resMap.put("sm",yaoKongYunBrandList.size());
 				resMap.put("rs",yaoKongYunBrandList);
-//				res.setData(yaoKongYunBrandList);
 			}else{
 				TYaokonyunDevice yaokonyunDevice = getYaoKongDevice();
 				List<String> strings = new ArrayList<String>();
@@ -471,11 +494,8 @@ public class AliDeviceController {
 					yaoKongYunBrand.setName(brand.getName());
 					yaoKongYunService.addTYaoKongYunBrand(yaoKongYunBrand);
 				}
-//				resMap.put("sm",brandList.size());
 				resMap.put("rs",brandList);
-//				res.setData(brandList);
 			}
-
 			res.setData(resMap);
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
@@ -528,9 +548,7 @@ public class AliDeviceController {
 			Map<String,Object> resMap = new HashMap<String,Object>();
 			List<TYaokonyunDeviceType> yaokonyunDeviceTypeList = yaoKongYunService.getYaoKongYunDeviceType();
 			if(yaokonyunDeviceTypeList.size()>0){
-//				resMap.put("sm",yaokonyunDeviceTypeList.size());
 				resMap.put("rs",yaokonyunDeviceTypeList);
-//				res.setData(yaokonyunDeviceTypeList);
 			}else{
 				TYaokonyunDevice yaokonyunDevice = getYaoKongDevice();
 				String result = yaoKongYunSend.postMethod(null,yaokonyunDevice,yaoKongYunConfig.getUrlPrefix()+"?c=t&appid="+yaokonyunDevice.getAppId()+"f="+yaokonyunDevice.getDeviceId());
@@ -544,9 +562,7 @@ public class AliDeviceController {
 					yaokonyunDeviceType.settId(deviceType.getTid());
 					yaoKongYunService.addTYaokonyunDeviceType(yaokonyunDeviceType);
 				}
-//				resMap.put("sm",deviceTypeList.size());
 				resMap.put("rs",deviceTypeList);
-//				res.setData(deviceTypeList);
 			}
 
 			res.setData(resMap);
@@ -789,30 +805,8 @@ public class AliDeviceController {
 						String key = iterator.next();
 						jsonObject.put("key",key);
 						jsonArray.add(jsonObject);
-//						LinkedTreeMap treeMap = keyCodeMap.get(key);
-//						String src = (String) treeMap.get("src");
-//						TYaokonyunKeyCode yaokonyunKeyCode = new TYaokonyunKeyCode();
-//						if(!keyName.equals("")&&remoteControlSrc !=null && src.equals(remoteControlSrc)){
-//							if(keyNameType.equals("0")){//标准按键
-//								yaokonyunKeyCode.setKeyName(keyName);
-//							}else{//拓展按键
-//								yaokonyunKeyCode.setCustomName(keyName);
-//							}
-//						}
-//						yaokonyunKeyCode.setIndex(idx);
-//						yaokonyunKeyCode.setLastOpTime(new Date());
-//						yaokonyunKeyCode.setBrandId(Integer.valueOf(brandId));
-//						yaokonyunKeyCode.setRmodel(rmodel);
-//						yaokonyunKeyCode.settId(Integer.valueOf(deviceType));
-//						yaokonyunKeyCode.setName(name);
-//						yaokonyunKeyCode.setVersion(version);
-//						yaokonyunKeyCode.setSrc(src);
-//						yaokonyunKeyCode.setSerialId(serialId);
-//						yaokonyunKeyCode.setKey(key);
-//						yaoKongYunService.addTYaokonyunKeyCode(yaokonyunKeyCode);
 					}
 				}
-
 			}
 			Map<String,Object> dataMap = new HashMap<String, Object>();
 			dataMap.put("remote",resMap);
@@ -933,18 +927,9 @@ public class AliDeviceController {
 				while (iterator.hasNext()){
 					com.alibaba.fastjson.JSONObject jsonObject = new com.alibaba.fastjson.JSONObject();
 					String key = iterator.next();
-//					jsonObject.put("key",key);
-//					jsonArray.add(jsonObject);
 					LinkedTreeMap treeMap = keyCodeMap.get(key);
 					String src = (String) treeMap.get("src");
 					TYaokonyunKeyCode yaokonyunKeyCode = new TYaokonyunKeyCode();
-//					if(!keyName.equals("")&&remoteControlSrc !=null && src.equals(remoteControlSrc)){
-//							if(keyNameType.equals("0")){//标准按键
-						yaokonyunKeyCode.setKeyName("0");
-//							}else{//拓展按键
-//								yaokonyunKeyCode.setCustomName(keyName);
-//							}
-//					}
 					yaokonyunKeyCode.setIndex(idx);
 					yaokonyunKeyCode.setLastOpTime(new Date());
 					yaokonyunKeyCode.setBrandId(Integer.valueOf(brandId));
