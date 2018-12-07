@@ -554,7 +554,8 @@ public interface FeignDeviceClient {
 	@RequestMapping(value = "/location/createLocation/{userId}/{building}/{room}", method = RequestMethod.POST)
 	ResponseObject<Map<String, Object>> createLocation(@PathVariable(value = "userId") Integer userId,
 			@PathVariable(value = "building") String building, @PathVariable(value = "room") String room,
-			@RequestBody(required = false) List<String> mList);
+			@RequestParam(required=false,name="mList")List<String> mList
+			);
 
 	/**
 	 * @param location
@@ -683,5 +684,16 @@ public interface FeignDeviceClient {
 	@RequestMapping(value = "/location/queryLocationByUserAndLocation/{userId}/{location}", method = RequestMethod.GET)
 	ResponseObject<TLocation> queryLocationByUserAndLocation(@PathVariable(value = "userId")Integer userId, @PathVariable(value = "location")Integer location);
 
-	 
+/*	*//**  
+	 * @param id
+	 * @param building
+	 * @param room
+	 * @return  
+	 * @Description:  
+	 *//*
+	@RequestMapping(value = "/location/createLocationWithOutDevice/{userId}/{building}/{room}", method = RequestMethod.POST)
+	ResponseObject<Map<String, Object>> createLocationWithOutDevice(@PathVariable(value = "userId") Integer userId,
+			@PathVariable(value = "building") String building, @PathVariable(value = "room") String room);
+
+ */
 }

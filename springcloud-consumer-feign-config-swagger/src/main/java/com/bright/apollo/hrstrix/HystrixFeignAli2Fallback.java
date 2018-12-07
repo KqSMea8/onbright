@@ -76,25 +76,7 @@ public class HystrixFeignAli2Fallback extends BasicHystrixFeignFallback implemen
 		return serverError();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.bright.apollo.feign.FeignAliClient#scanByUnStop(java.lang.String,
-	 * java.lang.String, java.lang.String, java.lang.String, java.lang.Integer)
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	public ResponseObject<OboxResp> scanByUnStop(String oboxSerialId, String deviceType, String deviceChildType,
-			String serialId, Integer countOfDevice) {
-		logger.warn("===no respone===");
-		ResponseObject<OboxResp> res = new ResponseObject<OboxResp>();
-		OboxResp oboxResp = new OboxResp(OboxResp.Type.success);
-		res.setStatus(ResponseEnum.AddSuccess.getStatus());
-		res.setMessage(ResponseEnum.AddSuccess.getMsg());
-		res.setData(oboxResp);
-		return res;
-	}
+	 
 
 	/*
 	 * (non-Javadoc)
@@ -524,6 +506,21 @@ public class HystrixFeignAli2Fallback extends BasicHystrixFeignFallback implemen
 	public ResponseObject getIRDeviceByIndexAndKey(Integer index, String key) {
 		logger.warn("===ali server is break===");
 		return serverError();
+	}
+	/* (non-Javadoc)
+	 * @see com.bright.apollo.feign.FeignAliClient#scanByUnStop(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.Integer, java.lang.String)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<OboxResp> scanByUnStop(String oboxSerialId, String deviceType, String deviceChildType,
+			String serialId, Integer countOfDevice, String address) {
+		logger.warn("===no respone===");
+		ResponseObject<OboxResp> res = new ResponseObject<OboxResp>();
+		OboxResp oboxResp = new OboxResp(OboxResp.Type.success);
+		res.setStatus(ResponseEnum.AddSuccess.getStatus());
+		res.setMessage(ResponseEnum.AddSuccess.getMsg());
+		res.setData(oboxResp);
+		return res;
 	}
 
 //	@Override

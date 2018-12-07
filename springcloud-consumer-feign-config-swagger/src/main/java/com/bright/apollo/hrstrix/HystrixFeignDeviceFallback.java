@@ -749,4 +749,5 @@ public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implem
 		return serverError();
 	}
  
+ 
 }

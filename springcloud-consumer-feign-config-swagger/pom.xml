@@ -184,7 +184,7 @@
 			<artifactId>commons-net</artifactId>
 			<version>3.3</version>
 		</dependency>
-
+		<!--image -->
 		<dependency>
 			<groupId>net.coobird</groupId>
 			<artifactId>thumbnailator</artifactId>

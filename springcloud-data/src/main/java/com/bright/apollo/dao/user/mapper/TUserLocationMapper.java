@@ -32,9 +32,9 @@ public interface TUserLocationMapper {
 	 * @return  
 	 * @Description:  
 	 */
-	@SelectKey(statement = "select LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = int.class)
+	//@SelectKey(statement = "select LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = int.class)
 	@InsertProvider(type=TUserLocationProvider.class,method="addUserLocation")
-	@Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
+	//@Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
 	int addUserLocation(TUserLocation tUserLocation);
 
 	/**  

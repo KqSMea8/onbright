@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.fastjson.JSONArray;
 import com.bright.apollo.cache.AliDevCache;
@@ -368,7 +369,8 @@ public class FacadeController extends BaseController {
 			@PathVariable(value = "oboxSerialId", required = true) String oboxSerialId,
 			@RequestParam(value = "deviceType", required = false) String deviceType,
 			@RequestParam(value = "deviceChildType", required = false) String deviceChildType,
-			@RequestParam(value = "serialId", required = false) String serialId) {
+			@RequestParam(value = "serialId", required = false) String serialId,
+			@RequestParam(value = "address", required = false) String address) {
 		ResponseObject res = new ResponseObject();
 		try {
 			ResponseObject<TObox> resObox = feignOboxClient.getObox(oboxSerialId);
@@ -404,29 +406,12 @@ public class FacadeController extends BaseController {
 				}
 				// search device by user
 				ResponseObject<OboxResp> releaseObox = feignAliClient.scanByUnStop(oboxSerialId, deviceType,
-						deviceChildType, serialId, countOfDevice);
+						deviceChildType, serialId, countOfDevice,address);
 				if (releaseObox != null && releaseObox.getStatus() == ResponseEnum.AddSuccess.getStatus()) {
-					// OboxResp oboxResp = releaseObox.getData();
-					/*
-					 * if (oboxResp.getType() != Type.success) { if
-					 * (oboxResp.getType() == Type.obox_process_failure ||
-					 * oboxResp.getType() == Type.socket_write_error) {
-					 * res.setStatus(ResponseEnum.SendOboxFail.getStatus());
-					 * res.setMessage(ResponseEnum.SendOboxFail.getMsg()); }
-					 * else if (oboxResp.getType() == Type.reply_timeout) {
-					 * res.setStatus(ResponseEnum.SendOboxTimeOut.getStatus());
-					 * res.setMessage(ResponseEnum.SendOboxTimeOut.getMsg()); }
-					 * else {
-					 * res.setStatus(ResponseEnum.SendOboxUnKnowFail.getStatus()
-					 * );
-					 * res.setMessage(ResponseEnum.SendOboxUnKnowFail.getMsg());
-					 * } } else {
-					 */
+				 
 					res.setStatus(ResponseEnum.AddSuccess.getStatus());
 					res.setMessage(ResponseEnum.AddSuccess.getMsg());
-					// res.setData(null);
-					// }
-				} else {
+				}else{
 					res.setStatus(ResponseEnum.SendOboxError.getStatus());
 					res.setMessage(ResponseEnum.SendOboxError.getMsg());
 				}
@@ -794,7 +779,7 @@ public class FacadeController extends BaseController {
 					return res;
 				}
 				TScene dbScene = null;
-				if (dbScene == null) {
+				//if (dbScene == null) {
 					ResponseObject<TScene> dbSceneRes = feignSceneClient
 							.getScenesByOboxSerialIdAndOboxSceneNumber(oboxSerialId, oboxSceneNumber);
 					if (dbSceneRes != null) {
@@ -804,7 +789,7 @@ public class FacadeController extends BaseController {
 						tUserScene.setUserId(resUser.getData().getId());
 						feignUserClient.addUserScene(tUserScene);
 					}
-				}
+				//}
 				tScene.setOboxSceneNumber(oboxSceneNumber);
 				tScene.setSceneName(sceneName);
 				tScene.setSceneType(sceneType);
@@ -6327,10 +6312,12 @@ public class FacadeController extends BaseController {
 	 * @param mList
 	 * @Description:
 	 */
-	@ApiOperation(value = "createLocaltion", httpMethod = "PUT", produces = "application/json")
+	@ApiOperation(value = "createLocaltion", httpMethod = "POST", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/createLocation/{building}/{room}", method = RequestMethod.POST)
-	public ResponseObject<Map<String, Object>> createLocation(@PathVariable(value = "building") String building,
+	public ResponseObject<Map<String, Object>> createLocation(
+			@RequestParam(value = "file", required = false) MultipartFile file,
+			@PathVariable(value = "building") String building,
 			@PathVariable(value = "room") String room, @RequestBody(required = false) List<String> mList) {
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		try {
@@ -6348,6 +6335,8 @@ public class FacadeController extends BaseController {
 				return res;
 			}
 			return feignDeviceClient.createLocation(resUser.getData().getId(), building, room, mList);
+			//return mList!=null?feignDeviceClient.createLocation(resUser.getData().getId(), building, room, mList):
+			//	feignDeviceClient.createLocationWithOutDevice(resUser.getData().getId(), building, room);;
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());

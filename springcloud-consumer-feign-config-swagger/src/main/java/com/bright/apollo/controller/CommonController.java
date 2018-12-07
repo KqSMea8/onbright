@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.fileupload.FileUploadException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,11 +53,12 @@ public class CommonController {
 	private SceneController sceneController;
 	// @Autowired
 	// private DeviceController deviceController;
-
+//	@Autowired
+//	private PicPathVo picPathVo;
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping("/common")
 	public ResponseObject common(HttpServletRequest request, HttpServletResponse response)
-			throws AppException, UnsupportedEncodingException {
+			throws AppException, UnsupportedEncodingException, FileUploadException {
 		ResponseObject res = null;
 		request.setCharacterEncoding("UTF-8");
 		// printRequest(request);
@@ -153,7 +155,7 @@ public class CommonController {
 			} else if (state.equals("02")) {
 				return facadeController.searchDevicesByNewStyle(requestParam.getValue("obox_serial_id"),
 						requestParam.getValue("device_type"), requestParam.getValue("device_child_type"),
-						requestParam.getValue("serialId"));
+						requestParam.getValue("serialId"),requestParam.getValue("address"));
 			} else if (state.equals("03")) {
 				return facadeController.searchDevicesByInitiative(requestParam.getValue("obox_serial_id"),
 						requestParam.getValue("device_type"), requestParam.getValue("device_child_type"),
@@ -628,36 +630,18 @@ public class CommonController {
 				}
 			}
 		} else if (CMDEnum.create_location.toString().equals(cmdEnum.toString())) {
-			/*
-			 * String serialId = requestParam.getValue("serialId"); String
-			 * location = requestParam.getValue("location"); String building =
-			 * requestParam.getValue("building"); String room =
-			 * requestParam.getValue("room"); String action =
-			 * requestParam.getValue("action"); List<String> mList =
-			 * (List<String>) ObjectUtils.fromJsonToObject(serialId,
-			 * List.class); if (StringUtils.isEmpty(location) &&
-			 * action.endsWith("01") && !StringUtils.isEmpty(building) &&
-			 * !StringUtils.isEmpty(room)) { // create return
-			 * facadeController.createLocation(building, room, mList); } else if
-			 * (!StringUtils.isEmpty(location) && action.endsWith("00") &&
-			 * NumberHelper.isNumeric(location)) {//
-			 * 删除，先删除device与location的映射,然后把location删了 // delete return
-			 * facadeController.deleteLocation(Integer.parseInt(location)); }
-			 * else if (!StringUtils.isEmpty(location) && action.endsWith("01"))
-			 * { //update return
-			 * facadeController.updateLocation(Integer.parseInt(location),
-			 * building, room, mList); }
-			 */
-			String serialId = requestParam.getValue("serialId");
+			 //不走create_location
+		/*	String serialId = requestParam.getValue("serialId");
 			String building = requestParam.getValue("building");
 			String room = requestParam.getValue("room");
-			List<String> mList = (List<String>) ObjectUtils.fromJsonToObject(serialId, List.class);
+			List<String> mList = (List<String>) ObjectUtils.fromJsonToObject(serialId, List.class);   
+			
+			
 			if (!StringUtils.isEmpty(building) && !StringUtils.isEmpty(room))
 				// create
-				return facadeController.createLocation(building, room, mList);
-
-		} else if (CMDEnum.modify_location.toString().equals(cmdEnum.toString())) {
-			String location = requestParam.getValue("location");
+				return facadeController.createLocation(building, room, mList);*/
+ 		} else if (CMDEnum.modify_location.toString().equals(cmdEnum.toString())) {
+			/*String location = requestParam.getValue("location");
 			String building = requestParam.getValue("building");
 			String room = requestParam.getValue("room");
 			String serialId = requestParam.getValue("serialId");
@@ -665,8 +649,7 @@ public class CommonController {
 			if (!StringUtils.isEmpty(location) && NumberHelper.isNumeric(location))
 				// create
 				return facadeController.updateLocation(Integer.parseInt(location), building, room, mList);
-
-		} else if (CMDEnum.delete_location.toString().equals(cmdEnum.toString())) {
+		*/} else if (CMDEnum.delete_location.toString().equals(cmdEnum.toString())) {
 			String location = requestParam.getValue("location");
 			if (!StringUtils.isEmpty(location) && NumberHelper.isNumeric(location))
 				// create
