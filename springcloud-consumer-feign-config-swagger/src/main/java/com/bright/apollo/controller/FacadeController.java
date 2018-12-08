@@ -1704,6 +1704,7 @@ public class FacadeController extends BaseController {
 				// tobox.setOboxControl((byte) 0);
 				feignOboxClient.updateObox(tobox.getOboxSerialId(), tobox);
 				feignDeviceClient.deleleDeviceByOboxSerialId(tobox.getOboxSerialId());
+				feignUserClient.deleteUserDeviceByOboxSerialId(tobox.getOboxSerialId());
 				ResponseObject<List<TScene>> resScenes = feignSceneClient
 						.getScenesByOboxSerialId(tobox.getOboxSerialId());
 				if (resScenes == null || resScenes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
@@ -1747,15 +1748,17 @@ public class FacadeController extends BaseController {
 								.addDevice(oboxDeviceConfig.getDeviceSerialId(), oboxDeviceConfig);
 						if (resDevice != null && resDevice.getStatus() == ResponseEnum.AddSuccess.getStatus()
 								&& resDevice.getData() != null) {
-							ResponseObject<TUserDevice> userDeviceRes = feignUserClient
-									.getUserDevcieByUserIdAndSerialId(resUser.getData().getId(),
-											oboxDeviceConfig.getDeviceSerialId());
-							if (userDeviceRes == null || userDeviceRes.getData() == null) {
-								TUserDevice tUserDevice = new TUserDevice();
-								tUserDevice.setDeviceSerialId(oboxDeviceConfig.getDeviceSerialId());
-								tUserDevice.setUserId(resUser.getData().getId());
-								feignUserClient.addUserDevice(tUserDevice);
-							}
+							//ResponseObject<TUserDevice> userDeviceRes = feignUserClient
+							//		.getUserDevcieByUserIdAndSerialId(resUser.getData().getId(),
+							//				oboxDeviceConfig.getDeviceSerialId());
+							//if (userDeviceRes == null || userDeviceRes.getData() == null) {
+								//TUserDevice tUserDevice = new TUserDevice();
+								//tUserDevice.setDeviceSerialId(oboxDeviceConfig.getDeviceSerialId());
+								//tUserDevice.setUserId(resUser.getData().getId());
+								//feignUserClient.addUserDevice(tUserDevice);
+								feignUserClient.addUserDeviceBySerialIdAndOboxSerialId(oboxDeviceConfig.getDeviceSerialId(),
+										tobox.getOboxSerialId());
+							//}
 							final TOboxDeviceConfig tempDeviceConfig = oboxDeviceConfig;
 							new Thread(new Runnable() {
 								@Override
