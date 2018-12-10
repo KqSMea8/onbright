@@ -27,7 +27,7 @@ public class MqttInBoundConfiguration {
     @Bean
     public MqttPahoMessageDrivenChannelAdapter inbound(){
         MqttPahoMessageDrivenChannelAdapter adapter
-                = new MqttPahoMessageDrivenChannelAdapter("tcp://localhost:1883","aliInbound","topic1");
+                = new MqttPahoMessageDrivenChannelAdapter("tcp://172.16.45.167:1883","aliInbound","topic1");
         adapter.setCompletionTimeout(5000);
         adapter.setConverter(new DefaultPahoMessageConverter());
         adapter.setQos(1);
