@@ -829,7 +829,7 @@ public class UserController {
 	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
-	@RequestMapping(value = "/user/addUserDeviceBySerialIdAndOboxSerialId/{deviceSerialId}/{oboxSerialId}", method = RequestMethod.POST)
+	@RequestMapping(value = "/addUserDeviceBySerialIdAndOboxSerialId/{deviceSerialId}/{oboxSerialId}", method = RequestMethod.POST)
 	public ResponseObject addUserDeviceBySerialIdAndOboxSerialId(
 			@PathVariable(required = true, value = "deviceSerialId") String deviceSerialId,
 			@PathVariable(required = true, value = "oboxSerialId") String oboxSerialId){

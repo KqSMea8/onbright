@@ -1703,8 +1703,8 @@ public class FacadeController extends BaseController {
 				}
 				// tobox.setOboxControl((byte) 0);
 				feignOboxClient.updateObox(tobox.getOboxSerialId(), tobox);
-				feignDeviceClient.deleleDeviceByOboxSerialId(tobox.getOboxSerialId());
 				feignUserClient.deleteUserDeviceByOboxSerialId(tobox.getOboxSerialId());
+				feignDeviceClient.deleleDeviceByOboxSerialId(tobox.getOboxSerialId());
 				ResponseObject<List<TScene>> resScenes = feignSceneClient
 						.getScenesByOboxSerialId(tobox.getOboxSerialId());
 				if (resScenes == null || resScenes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {

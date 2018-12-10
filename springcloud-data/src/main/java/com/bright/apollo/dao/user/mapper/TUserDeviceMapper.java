@@ -126,10 +126,10 @@ public interface TUserDeviceMapper  {
 	 * @return  
 	 * @Description:  
 	 */
-	@Delete("DELETE FROM t_user_device WHERE EXISTS (SELECT"+
-			" a.* FROM t_user_device AS a INNER JOIN t_obox_device_config"+
+	@Delete("DELETE FROM t_user_device WHERE id in (SELECT t.id from(SELECT"+
+			" a.id FROM t_user_device AS a INNER JOIN t_obox_device_config"+
 			" b ON a.device_serial_id = b.device_serial_id"+
-			" AND b.obox_serial_id = #{oboxSerialId})")
+			" AND b.obox_serial_id = #{oboxSerialId})t)")
 	int deleteUserDeviceByOboxSerialId(@Param("oboxSerialId")String oboxSerialId);
 
 	/**  
