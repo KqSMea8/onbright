@@ -1741,6 +1741,7 @@ public class FacadeController extends BaseController {
 				}
 				List<TOboxDeviceConfig> oboxDeviceConfigs = oboxDTO.getDeviceConfigs();
 				if (oboxDeviceConfigs != null) {
+					logger.info("===adddevice:"+oboxDeviceConfigs.size());
 					for (TOboxDeviceConfig oboxDeviceConfig : oboxDeviceConfigs) {
 						oboxDeviceConfig.setOboxId(tobox.getId());
 						oboxDeviceConfig.setOboxSerialId(tobox.getOboxSerialId());

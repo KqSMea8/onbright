@@ -1,18 +1,21 @@
 package com.bright.apollo.service.impl;
 
+import java.util.Date;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.dao.device.mapper.TOboxDeviceConfigMapper;
 import com.bright.apollo.enums.DeviceTypeEnum;
 import com.bright.apollo.service.OboxDeviceConfigService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.Date;
-import java.util.List;
 
 @Service
 public class OboxDeviceConfigServiceImpl  implements OboxDeviceConfigService {
-
+	private static final Logger logger = LoggerFactory.getLogger(OboxDeviceConfigServiceImpl.class);
     public OboxDeviceConfigServiceImpl(){
     }
     @Autowired
@@ -35,7 +38,8 @@ public class OboxDeviceConfigServiceImpl  implements OboxDeviceConfigService {
 
     @Override
     public void deleteTOboxDeviceConfig(int id) {
-        odcMapper.deleteTOboxDeviceConfig(id);
+    	logger.info("===deleteTOboxDeviceConfig id:"+id);
+    	odcMapper.deleteTOboxDeviceConfig(id);
     }
 
     @Override
@@ -50,11 +54,13 @@ public class OboxDeviceConfigServiceImpl  implements OboxDeviceConfigService {
 
     @Override
     public void deleteTOboxDeviceConfigByOboxId(int oboxId) {
+    	logger.info("===deleteTOboxDeviceConfigByOboxId oboxId:"+oboxId);
         odcMapper.deleteTOboxDeviceConfigByOboxId(oboxId);
     }
 
     @Override
     public void deleteTOboxDeviceConfigByOboxIdAndNodeAddress(int oboxId, String nodeAddress) {
+    	logger.info("===deleteTOboxDeviceConfigByOboxIdAndNodeAddress oboxId:"+oboxId+"===nodeAddress:"+nodeAddress);
         odcMapper.deleteTOboxDeviceConfigByOboxIdAndNodeAddress(oboxId,nodeAddress);
     }
 
@@ -150,6 +156,7 @@ public class OboxDeviceConfigServiceImpl  implements OboxDeviceConfigService {
 	 */
 	@Override
 	public void deleteTOboxDeviceConfigByOboxSerialId(String serialId) {
+		logger.info("===deleteTOboxDeviceConfigByOboxSerialId serialId:"+serialId);
 		odcMapper.deleteTOboxDeviceConfigByOboxSerialId(serialId);
 		
 	}
@@ -159,7 +166,7 @@ public class OboxDeviceConfigServiceImpl  implements OboxDeviceConfigService {
 	 */
 	@Override
 	public void deleteTOboxDeviceConfigById(Integer id) {
-		 
+		logger.info("===deleteTOboxDeviceConfigById id:"+id);
 		odcMapper.deleteTOboxDeviceConfigById(id);
 	}
 
