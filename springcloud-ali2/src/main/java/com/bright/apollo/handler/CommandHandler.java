@@ -147,8 +147,9 @@ public class CommandHandler {
 	 * @Description:
 	 */
 	public void processWiFiStatus(JSONObject object, AliRegionEnum eAliRegionEnum) throws JSONException, Exception {
-		//topicService topicService = TopicService.getInstance();
+		
 		if (object.getString("status").equals("offline")) {
+			boolean isObox=false;
 			// 判断是否是obox
 			String productKey = object.getString("productKey");
 			if (StringUtils.isEmpty(productKey))
@@ -169,6 +170,7 @@ public class CommandHandler {
 					// TObox dbObox =
 					// OboxBusiness.queryOboxsByOboxSerialId(tAliDevice.getOboxSerialId());
 					if (dbObox != null) {
+						isObox=true;
 						// AliDevCache.DelDevInfo(tAliDevice.getOboxSerialId());
 						dbObox.setOboxStatus((byte) 0);
 						dbObox.setOboxIp("0.0.0.0");
@@ -190,6 +192,7 @@ public class CommandHandler {
 						// TObox dbObox =
 						// OboxBusiness.queryOboxsByOboxSerialId(tAliDeviceUS.getDeviceSerialId());
 						if (dbObox != null) {
+							isObox=true;
 							// AliDevCache.DelDevInfo(tAliDeviceUS.getDeviceSerialId());
 							dbObox.setOboxStatus((byte) 0);
 							dbObox.setOboxIp("0.0.0.0");
@@ -219,7 +222,7 @@ public class CommandHandler {
 						aliDeviceService.updateAliDevice(tAliDevice);
 					}
 				}
-				pushMsg(object.getString("productKey"), object.getString("deviceName"), false);
+				pushMsg(object.getString("productKey"), object.getString("deviceName"), isObox,false);
 			}
 		} else if (object.getString("status").equals("online")) {
 			TimeZone tz = TimeZone.getTimeZone("GMT+8:00");
@@ -261,8 +264,8 @@ public class CommandHandler {
 					tAliDevice.setOffline(0);
 					aliDeviceService.updateAliDevice(tAliDevice);
 				}
-//				}
-				pushMsg(object.getString("productKey"), object.getString("deviceName"), true);
+				TObox dbObox = oboxService.queryOboxsByOboxSerialId(tAliDevice.getOboxSerialId());
+				pushMsg(object.getString("productKey"), object.getString("deviceName"),dbObox!=null, true);
 			}
 
 		}
@@ -274,10 +277,10 @@ public class CommandHandler {
 	 * @param onLine
 	 * @Description:
 	 */
-	private void pushMsg(String productKey, String deviceName, Boolean onLine) {
+	private void pushMsg(String productKey, String deviceName,Boolean isObox ,Boolean onLine) {
 		//PushObserverManager pushObserverManager = PushObserverManager.getInstance();
 		PushMessage pushMessage = new PushMessage();
-		pushMessage.setType(PushMessageType.WIFI_ONLINE.getValue());
+		pushMessage.setType(isObox?PushMessageType.OBOX_ONLINE.getValue():PushMessageType.WIFI_ONLINE.getValue());
 		pushMessage.setOnLine(onLine);
 		String deviceSerialId = aliDevCache.getOboxSerialId(productKey, deviceName);
 		if (StringUtils.isEmpty(deviceSerialId)) {

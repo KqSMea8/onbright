@@ -446,4 +446,21 @@ public class SceneServiceImpl implements SceneService {
 		return tSceneConditionMapper.deleteSceneConditionBySerialId(serialId);
 	}
 
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.SceneService#querySceneByLocation(java.lang.Integer)  
+	 */
+	@Override
+	public List<TScene> querySceneByLocation(Integer location) {
+ 		return sceneMapper.querySceneByLocation(location);
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.SceneService#querySceneBySceneNumberAndUserId(java.lang.Integer, java.lang.Integer)  
+	 */
+	@Override
+	public TScene querySceneBySceneNumberAndUserId(Integer sceneNumber, Integer userId) {
+		 
+		return sceneMapper.querySceneBySceneNumberAndUserId(sceneNumber,userId);
+	}
+
 }

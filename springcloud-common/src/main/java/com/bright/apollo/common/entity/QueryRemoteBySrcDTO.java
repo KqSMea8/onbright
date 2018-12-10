@@ -1,30 +1,48 @@
 package com.bright.apollo.common.entity;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
-public class QueryRemoteBySrcDTO {
+public class QueryRemoteBySrcDTO implements Serializable {
 //    @Expose
 //    @SerializedName("rc_command")
 //    @JsonProperty(value="rc_command")
 //    private HashMap<String,KeyCode> rcCommand;
+    private static final long serialVersionUID = -1l;
 
-    public HashMap<String, KeyCode> getKeys() {
+    public JSONArray getKeys() {
         return keys;
     }
 
-    public void setKeys(HashMap<String, KeyCode> keys) {
+    public void setKeys(JSONArray keys) {
         this.keys = keys;
     }
 
     @Expose
     @SerializedName("keys")
     @JsonProperty(value="keys")
-    private HashMap<String,KeyCode> keys;
+    private JSONArray keys;
+
+    @Expose
+    @SerializedName("brandId")
+    @JsonProperty(value="brandId")
+    private Integer brandType;//遥控器品牌Id
+
+    public Integer getBrandType() {
+        return brandType;
+    }
+
+    public void setBrandType(Integer brandType) {
+        this.brandType = brandType;
+    }
 
     public JSONArray getExtendsKeys() {
         return extendsKeys;
@@ -48,13 +66,13 @@ public class QueryRemoteBySrcDTO {
     @JsonProperty(value="name")
     private String name;//名字
     @Expose
-    @SerializedName("t")
-    @JsonProperty(value="t")
+    @SerializedName("deviceType")
+    @JsonProperty(value="deviceType")
     private Integer type;//类型
     @Expose
     @SerializedName("version")
     @JsonProperty(value="version")
-    private Integer version;//版本
+    private String version;//版本
     @Expose
     @SerializedName("rmodel")
     @JsonProperty(value="rmodel")
@@ -81,12 +99,49 @@ public class QueryRemoteBySrcDTO {
         this.rid=matchRemoteControl.getRid();
         this.name=matchRemoteControl.getName();
         this.type=matchRemoteControl.gettId();
-        this.version=matchRemoteControl.getVersion();
+        this.version=matchRemoteControl.getVersion().toString();
         this.rmodel=matchRemoteControl.getRmodel();
-//        this.rcCommand= matchRemoteControl.getRcCommand();
-        this.keys = matchRemoteControl.getRcCommand();
+        Map<String, KeyCode> keyCodeMap =matchRemoteControl.getRcCommand();
+        Iterator<String> iterator = keyCodeMap.keySet().iterator();
+        String key = null;
+        while (iterator.hasNext()){
+            key = iterator.next();
+        }
+        JSONArray keyArray = new JSONArray();
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("key",key);
+        keyArray.add(jsonObject);
+        this.keys = keyArray;
         this.extendsKeys = new JSONArray();
     }
+
+    public QueryRemoteBySrcDTO(Map<String,Object> map) {
+        super();
+        this.rid="";
+        this.version=((Integer) map.get("version")).toString();
+        this.rmodel=(String)map.get("rmodel");
+        this.name=(String)map.get("name");
+//        String key = yaokonyunKeyCode.getKeyName();
+//        String extendsKey = yaokonyunKeyCode.getCustomName();
+//        JSONArray keyArray = new JSONArray();
+//        JSONArray extendsKeyArray = new JSONArray();
+//        if(key!=null && !key.equals("")){
+//            JSONObject jsonObject = new JSONObject();
+//            jsonObject.put("key",key);
+//            keyArray.add(jsonObject);
+//        }
+//        if(extendsKey !=null&&!extendsKey.equals("")){
+//            JSONObject extendsJsonObject = new JSONObject();
+//            extendsJsonObject.put("key",extendsKey);
+//            extendsKeyArray.add(extendsJsonObject);
+//        }
+        this.keys = (JSONArray) map.get("keys");
+        this.extendsKeys = (JSONArray) map.get("extendsKeys");
+        this.index = (Integer) map.get("index");
+        this.type = (Integer) map.get("type");
+        this.brandType = (Integer) map.get("brandType");
+    }
+
 
     public String getRmodel() {
         return rmodel;
@@ -125,11 +180,11 @@ public class QueryRemoteBySrcDTO {
         this.type = type;
     }
 
-    public Integer getVersion() {
+    public String getVersion() {
         return version;
     }
 
-    public void setVersion(Integer version) {
+    public void setVersion(String version) {
         this.version = version;
     }
 }

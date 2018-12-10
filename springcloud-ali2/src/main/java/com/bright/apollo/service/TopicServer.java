@@ -197,49 +197,61 @@ public class TopicServer {
 
 	}
 
-	public void pubIRTopic(CMDEnum cmd, byte[] data, String deviceSerial,Map<String, Object> jsonMap) throws Exception {
+	public JSONObject pubIrRPC(Map<String, Object> map,String deviceSerial) throws Exception {
 		logger.info(" ====== pubIRTopic start ====== ");
 		String mString = null;
-		if(data != null){
-			mString = com.bright.apollo.util.StringUtils.bytes2String(cmd, data, packageLength, head);
-		}
-
-		PubRequest request = new PubRequest();
-//		String productKey = AliDevCache.getProductKey(deviceSerial);
-//		String deviceName = AliDevCache.getDeviceName(deviceSerial);
-		String productKey = "b1eakXpQ1WU";
-		String deviceName = "WIFIIR";
+//		if(data != null){
+//			mString = com.bright.apollo.util.StringUtils.bytes2String(cmd, data, packageLength, head);
+//		}
+		RRpcRequest rrpcRequest = new RRpcRequest();
+//		PubRequest request = new PubRequest();
+		String productKey = AliDevCache.getProductKey(deviceSerial);
+		String deviceName = AliDevCache.getDeviceName(deviceSerial);
+//		String productKey = "a1IKqm2m8sW";
+//		String deviceName = "nh4TFEzNGQ3t9vyNPFE8"; //ZVm5WfsCtbaAUBtOLvB4
 //		String region = AliDevCache.getProductRegion(deviceSerial);
 		String region = AliRegionEnum.SOURTHCHINA.getValue();
-		if (StringUtils.isEmpty(productKey)) {
-			TAliDevice device = aliDeviceService.getAliDeviceBySerializeId(deviceSerial);
-			region = setCache(device, deviceSerial);
-		}
-		request.setProductKey(productKey);
-		List jsonArray = null;
-		Map<String,Object> datasMap = null;
-		if(jsonMap instanceof Map){
-			datasMap = (Map<String, Object>) ((Map<String,Object>)jsonMap).get("value");
-		}
+//		if (StringUtils.isEmpty(productKey)) {
+//			TAliDevice device = aliDeviceService.getAliDeviceBySerializeId(deviceSerial);
+//			region = setCache(device, deviceSerial);
+//		}
+		rrpcRequest.setProductKey(productKey);
+		rrpcRequest.setDeviceName(deviceName);
+		String jsonObject = new Gson().toJson(map);
+		logger.info(" TopicService.pubIrRPC() productkey: " + productKey + " devicename:" + deviceName + " object: "
+				+ jsonObject.toString());
 
-		String datas = (String)datasMap.get("data");
-		logger.info("datas length  ------ "+ datas.length());
-		String jsonObject = new Gson().toJson(jsonMap);
-//		String jsonObject = JSONUtils.toJSONString(jsonMap);
-		logger.info("jsonObject ======= "+jsonObject);
+//		if(mString !=null){
+//			rrpcRequest.setMessageContent(Base64.encodeBase64String(mString.getBytes()));
+//		}else{
+			rrpcRequest.setRequestBase64Byte(Base64.encodeBase64String(jsonObject.toString().getBytes()));
+//		}
 
-		if(mString !=null){
-			request.setMessageContent(Base64.encodeBase64String(mString.getBytes()));
+//		rrpcRequest.setTopicFullName("/" + productKey + "/" + deviceName + "/get");
+//		rrpcRequest.setQos(0); // QoS0 设备在线时发送 ，QoS1 设备不在线时，能在IOT HUB 上保存7天，上线后发送
+//		PubResponse response = null;
+		RRpcResponse rrpcResponse = null;
+		rrpcRequest.setTimeout(3500);
+		rrpcResponse = sendRPCRequest(rrpcRequest, region, rrpcResponse);
+		byte[] contentBytes = null;
+		String aString = null;
+		if (rrpcResponse.getSuccess()) {
+			String playLoadByte = rrpcResponse.getPayloadBase64Byte();
+			if (playLoadByte!=null) {//&&rrpcResponse.getRrpcCode().equals("SUCCESS")
+				contentBytes= Base64.decodeBase64(playLoadByte);
+				aString = new String(contentBytes, "utf-8");
+				System.out.println("TopicService.requestDev() success resp:" + aString);
+				logger.info(" ====== requestDev end response success ====== ");
+				JSONObject json = new JSONObject(aString);
+				return json;
+			}
 		}else{
-			request.setMessageContent(Base64.encodeBase64String(jsonObject.getBytes()));
-		}
+            logger.info(" ====== requestDev end response error ====== ");
+            Exception exception = new Exception();
+		    throw exception;
+        }
 
-		request.setTopicFullName("/" + productKey + "/" + deviceName + "/get");
-		request.setQos(0); // QoS0 设备在线时发送 ，QoS1 设备不在线时，能在IOT HUB 上保存7天，上线后发送
-		PubResponse response = null;
-		sendRequest(request, region, response);
-
-		logger.info(" ====== pubIRTopic end ====== ");
+		return new JSONObject();
 	}
 
 	public JSONObject requestDev(net.sf.json.JSONObject object, String deviceSerial,String value) throws Exception {

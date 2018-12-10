@@ -17,9 +17,11 @@ import com.bright.apollo.common.entity.TIntelligentFingerAuth;
 import com.bright.apollo.common.entity.TIntelligentFingerPush;
 import com.bright.apollo.common.entity.TIntelligentFingerRemoteUser;
 import com.bright.apollo.common.entity.TIntelligentFingerUser;
+import com.bright.apollo.common.entity.TLocation;
 import com.bright.apollo.common.entity.TNvr;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.common.entity.TServerGroup;
+import com.bright.apollo.common.entity.TUserLocation;
 import com.bright.apollo.common.entity.TYSCamera;
 import com.bright.apollo.hrstrix.HystrixFeignDeviceFallback;
 import com.bright.apollo.request.IntelligentFingerWarnDTO;
@@ -541,4 +543,157 @@ public interface FeignDeviceClient {
 	ResponseObject<TServerGroup> queryGroupByUserAndGroup(@PathVariable(value = "userId") Integer userId,
 			@PathVariable(value = "groupId") Integer groupId);
 
+	/**
+	 * @param userId
+	 * @param building
+	 * @param room
+	 * @param mList
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/location/createLocation/{userId}/{building}/{room}", method = RequestMethod.POST)
+	ResponseObject<Map<String, Object>> createLocation(@PathVariable(value = "userId") Integer userId,
+			@PathVariable(value = "building") String building, @PathVariable(value = "room") String room,
+			@RequestParam(required=false,name="mList")List<String> mList
+			);
+
+	/**
+	 * @param location
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/location/deleteLocation/{location}/{userId}", method = RequestMethod.DELETE)
+	ResponseObject<Map<String, Object>> deleteLocation(@PathVariable(value = "location") Integer location,
+			@PathVariable(value = "userId") Integer userId);
+
+	/**
+	 * @param serialId
+	 * @param location
+	 * @param xAxis
+	 * @param yAxis
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/location/addDeviceLocation/{userId}/{serialId}/{location}/{xAxis}/{yAxis}/{deviceType}", method = RequestMethod.POST)
+	ResponseObject<Map<String, Object>> addDeviceLocation(@PathVariable(value = "userId") Integer userId,@PathVariable(value = "serialId") String serialId,
+			@PathVariable(value = "location") Integer location, @PathVariable(value = "xAxis") Integer xAxis,
+			@PathVariable(value = "yAxis") Integer yAxis, @PathVariable(value = "yAxis") String deviceType);
+
+	@RequestMapping(value = "/location/updateLocation/{location}/{userId}", method = RequestMethod.PUT)
+	ResponseObject<Map<String, Object>> updateLocation(@PathVariable(value = "location") Integer location,
+			@PathVariable(value = "userId") Integer userId,
+			@RequestParam(value = "building", required = false) String building,
+			@RequestParam(name = "room", required = false) String room,
+			@RequestBody(required = false) List<String> mList);
+
+	/**
+	 * @param id
+	 * @param serialId
+	 * @param location
+	 * @return
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/location/deleteDeviceLocation/{userId}/{serialId}/{location}", method = RequestMethod.DELETE)
+	ResponseObject deleteDeviceLocation(@PathVariable(value = "userId") Integer userId,
+			@PathVariable(value = "serialId") String serialId, @PathVariable(value = "location") Integer location);
+
+	/**
+	 * @param userId
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/location/queryLocation/{userId}", method = RequestMethod.GET)
+	ResponseObject<Map<String, Object>> queryLocation(@PathVariable(value = "userId") Integer userId);
+
+	/**
+	 * @param userId
+	 * @param location
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/location/queryLocation/{userId}/{locationId}", method = RequestMethod.GET)
+	ResponseObject<Map<String, Object>> queryDeviceLocation(@PathVariable(value = "userId") Integer userId,
+			@PathVariable(value = "locationId") Integer locationId);
+
+	/**
+	 * @param userId
+	 * @param location
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/location/querySceneLocation/{userId}/{location}", method = RequestMethod.GET)
+	ResponseObject<Map<String, Object>> querySceneLocation(@PathVariable(value = "userId") Integer userId,
+			@PathVariable(value = "location") Integer location);
+
+	/**
+	 * @param userId
+	 * @param location
+	 * @param sceneNumber
+	 * @return
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/location/setSceneLocation/{userId}/{location}/{sceneNumber}", method = RequestMethod.POST)
+	ResponseObject setSceneLocation(@PathVariable(value = "userId") Integer userId,
+			@PathVariable(value = "location") Integer location,
+			@PathVariable(value = "sceneNumber") Integer sceneNumber);
+
+	/**
+	 * @param userId
+	 * @param location
+	 * @param sceneNumber
+	 * @return
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/location/deleteSceneLocation/{userId}/{location}/{sceneNumber}", method = RequestMethod.DELETE)
+	ResponseObject deleteSceneLocation(@PathVariable(value = "userId") Integer userId,
+			@PathVariable(value = "location") Integer location,
+			@PathVariable(value = "sceneNumber") Integer sceneNumber);
+
+	/**  
+	 * @param tLocation  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/location/updateLocationByObj", method = RequestMethod.PUT)
+	ResponseObject updateLocationByObj(@RequestBody TLocation tLocation);
+
+	/**  
+	 * @param tLocation  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/location/addLocation", method = RequestMethod.POST)
+	ResponseObject<TLocation> addLocation(@RequestBody TLocation tLocation);
+
+	/**  
+	 * @param tUserLocation  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/location/addUserLocation", method = RequestMethod.POST)
+	ResponseObject addUserLocation(@RequestBody TUserLocation tUserLocation);
+
+	/**  
+	 * @param userId
+	 * @param location
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/location/queryLocationByUserAndLocation/{userId}/{location}", method = RequestMethod.GET)
+	ResponseObject<TLocation> queryLocationByUserAndLocation(@PathVariable(value = "userId")Integer userId, @PathVariable(value = "location")Integer location);
+
+/*	*//**  
+	 * @param id
+	 * @param building
+	 * @param room
+	 * @return  
+	 * @Description:  
+	 *//*
+	@RequestMapping(value = "/location/createLocationWithOutDevice/{userId}/{building}/{room}", method = RequestMethod.POST)
+	ResponseObject<Map<String, Object>> createLocationWithOutDevice(@PathVariable(value = "userId") Integer userId,
+			@PathVariable(value = "building") String building, @PathVariable(value = "room") String room);
+
+ */
 }

@@ -4,21 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bright.apollo.cache.UserCacheService;
-import com.bright.apollo.common.dto.OboxResp;
-import com.bright.apollo.common.dto.OboxResp.Type;
-import com.bright.apollo.common.entity.TObox;
-import com.bright.apollo.response.ResponseEnum;
-import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.service.SmsService;
+import com.bright.apollo.service.impl.AsyncServiceImpl;
  
 
 /**  
@@ -33,6 +26,9 @@ import com.bright.apollo.service.SmsService;
 public class TestController {
 	@Autowired
 	private SmsService smsService;
+	@Autowired
+	private AsyncServiceImpl asyncServiceImpl;
+	
 	@Autowired
 	private UserCacheService userCacheService;
 	@GetMapping("/register/{mobile}")
@@ -66,6 +62,14 @@ public class TestController {
 	@ResponseBody
 	public String  testsms() {
 		smsService.sendAuthCode(123456, "15879618946");
+		 return "uostop";
+	}
+	
+	@SuppressWarnings({ "rawtypes" })
+ 	@RequestMapping(value = "/batch", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String  testsms111() {
+		asyncServiceImpl.testaddUserDeviceBySerialIdAndOboxSerialId();
 		 return "uostop";
 	}
 }

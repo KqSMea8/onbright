@@ -51,4 +51,22 @@ public class UserDeviceServiceImpl implements UserDeviceService {
 	public int deleteUserDeviceBySerialId(String serialId) {
 		return userDeviceMapper.deleteUserDeviceBySerialId(serialId);
 	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.UserDeviceService#deleteUserDeviceByOboxSerialId(java.lang.String)  
+	 */
+	@Override
+	public int deleteUserDeviceByOboxSerialId(String oboxSerialId) {
+		 
+		return userDeviceMapper.deleteUserDeviceByOboxSerialId(oboxSerialId);
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.UserDeviceService#batchAddUserDevice(java.util.List)  
+	 */
+	@Override
+	public void batchAddUserDevice(List<TUserDevice> userDevices) {
+		userDeviceMapper.batchAddUserDevice(userDevices);
+		
+	}
 }

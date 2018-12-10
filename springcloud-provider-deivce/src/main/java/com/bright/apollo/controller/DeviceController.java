@@ -117,8 +117,8 @@ public class DeviceController {
 				res.setData(oboxDeviceConfigService.queryDeviceConfigBySerialID(serialId));
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			logger.error("===getScene error msg:" + e.getMessage());
+			//e.printStackTrace();
+			logger.error("===addDevice error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}

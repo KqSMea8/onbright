@@ -59,6 +59,7 @@ public class MD5 {
 		String rawPassword="12345678";
 		String base64Encrypt = Base64Util.base64Encrypt(rawPassword.toString().getBytes());
  		System.out.println(getMD5Str(base64Encrypt+rawPassword));
+		//System.out.println( (byte) (0xff));
 	}
 	/**
 	 * 对字符串md5加密

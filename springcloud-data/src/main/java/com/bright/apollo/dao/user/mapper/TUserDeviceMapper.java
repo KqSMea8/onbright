@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import com.bright.apollo.common.entity.TUser;
 import com.bright.apollo.common.entity.TUserDevice;
+import com.bright.apollo.dao.sqlProvider.TUserDeviceSqlProvider;
 
 @Mapper
 @Component
@@ -118,6 +120,24 @@ public interface TUserDeviceMapper  {
 	 */
 	@Delete("delete from t_user_device where device_serial_id=#{serialId}")
 	int deleteUserDeviceBySerialId(@Param("serialId")String serialId);
+
+	/**  
+	 * @param oboxSerialId
+	 * @return  
+	 * @Description:  
+	 */
+	@Delete("DELETE FROM t_user_device WHERE id in (SELECT t.id from(SELECT"+
+			" a.id FROM t_user_device AS a INNER JOIN t_obox_device_config"+
+			" b ON a.device_serial_id = b.device_serial_id"+
+			" AND b.obox_serial_id = #{oboxSerialId})t)")
+	int deleteUserDeviceByOboxSerialId(@Param("oboxSerialId")String oboxSerialId);
+
+	/**  
+	 * @param userDevices  
+	 * @Description:  
+	 */
+	@InsertProvider(type = TUserDeviceSqlProvider.class, method = "batchAddUserDevice")
+	void batchAddUserDevice(@Param("userDevices")List<TUserDevice> userDevices);
  
 
 }

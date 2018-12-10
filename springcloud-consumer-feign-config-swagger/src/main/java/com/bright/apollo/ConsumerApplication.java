@@ -1,14 +1,21 @@
 package com.bright.apollo;
 
 
+import javax.servlet.MultipartConfigElement;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.cloud.netflix.hystrix.EnableHystrix;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+
+import com.bright.apollo.vo.PicPathVo;
 
 
 
@@ -20,11 +27,17 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @PropertySource("classpath:properties/custom.properties")
 public class ConsumerApplication {
-
+	@Autowired
+	private PicPathVo picPathVo;
 	public static void main(String[] args) {
 		SpringApplication.run(ConsumerApplication.class, args);
 	}
-
+	@Bean
+    MultipartConfigElement multipartConfigElement() {
+        MultipartConfigFactory factory = new MultipartConfigFactory();
+        factory.setLocation(picPathVo.getTempPath());
+        return factory.createMultipartConfig();
+	}
 //	@Bean
 //	public HttpMessageConverters fastJsonHttpMessageConverters(){
 //		//1、定义convert转换消息对象

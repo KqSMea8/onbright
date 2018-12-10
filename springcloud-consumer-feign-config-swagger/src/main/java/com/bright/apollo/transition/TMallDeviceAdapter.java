@@ -1,13 +1,19 @@
 package com.bright.apollo.transition;
 
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
+import com.bright.apollo.common.entity.TYaokonyunKeyCode;
+import com.bright.apollo.enums.AirconditionEnum;
 import com.bright.apollo.enums.ColorEnum;
+import com.bright.apollo.enums.TmallIRFUNEnum;
+import com.bright.apollo.feign.FeignAliClient;
 import com.bright.apollo.redis.RedisBussines;
+import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.tool.ByteHelper;
 import com.zz.common.util.ArrayUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
@@ -42,6 +48,8 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
 
     private Map<String,Object> header;
 
+    private List<TYaokonyunKeyCode> yaokonyunKeyCodeList;
+
     public TMallDeviceAdapter(TOboxDeviceConfig oboxDeviceConfig,TMallTemplate tMallTemplate){
         this.oboxDeviceConfig = oboxDeviceConfig;
         this.tMallTemplate = tMallTemplate;
@@ -51,6 +59,13 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         this.playloadMap = map;
         this.tMallTemplate = tMallTemplate;
         this.oboxDeviceConfig = oboxDeviceConfig;
+        this.header = header;
+    }
+
+    public TMallDeviceAdapter(Map<String, Object> map, TMallTemplate tMallTemplate, List<TYaokonyunKeyCode> yaokonyunKeyCodeList, Map<String,Object> header){
+        this.playloadMap = map;
+        this.tMallTemplate = tMallTemplate;
+        this.yaokonyunKeyCodeList = yaokonyunKeyCodeList;
         this.header = header;
     }
 
@@ -111,6 +126,10 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
     public static String watersensoricon = "https://raw.githubusercontent.com/onbright-canton/onbrightConfig/master/tmallImg/watersensor.png";//水浸传感器
 
     public static String curtainicon = "https://raw.githubusercontent.com/onbright-canton/onbrightConfig/master/tmallImg/curtain.png";//窗帘
+
+    public static String tvicon = "https://raw.githubusercontent.com/onbright-canton/onbrightConfig/master/tmallImg/tv.png";//电视
+
+    public static String airconditionicon = "https://raw.githubusercontent.com/onbright-canton/onbrightConfig/master/tmallImg/aircondition.png";//空调
 
 
     public String getIcon() {
@@ -200,20 +219,6 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         }
     }
 
-    //转换动作
-    private String[] actionsTransition(String[] specialAction,String[] defaultAction){
-        int idx = 0;
-        String[] actions = new String[specialAction.length+defaultAction.length];
-        for(String action : specialAction){
-            actions[idx] = action;
-            idx++;
-        }
-        for(String action : defaultAction){
-            actions[idx] = action;
-            idx++;
-        }
-        return actions;
-    }
 
     //设置设备参数
     private void setProperty(TMallDeviceAdapter tMallDeviceAdapter,TOboxDeviceConfig oboxDeviceConfig){
@@ -266,6 +271,16 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
             tMallDeviceAdapter.setModel("遥控灯1");
             tMallDeviceAdapter.setDeviceName("遥控灯1");
             tMallDeviceAdapter.setIcon(remotelighticon);
+        }else if(deviceType.equals("television")){
+            tMallDeviceAdapter.setBrand(oboxDeviceConfig.getBrandName());
+            tMallDeviceAdapter.setModel("电视机");
+            tMallDeviceAdapter.setDeviceName("电视机");
+            tMallDeviceAdapter.setIcon(tvicon);
+        }else if(deviceType.equals("aircondition")){
+            tMallDeviceAdapter.setBrand(oboxDeviceConfig.getBrandName());
+            tMallDeviceAdapter.setModel("空调");
+            tMallDeviceAdapter.setDeviceName("空调");
+            tMallDeviceAdapter.setIcon(airconditionicon);
         }else{
             tMallDeviceAdapter.setModel("");
             tMallDeviceAdapter.setIcon(icon);
@@ -294,7 +309,24 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         propertiesTransition(dfMap,lightProperties);
         jsonArray.put(dfMap);
         tMallDeviceAdapter.setProperties(jsonArray);
-//        tMallDeviceAdapter.setAction(new String[0]);//actionsTransition(lightActions,defaultActions)
+    }
+
+    //设置电视动作和属性
+    private void setTV(TMallDeviceAdapter tMallDeviceAdapter,String[] defaultActions,JSONObject dfMap ){
+        JSONArray jsonArray = new JSONArray();
+        String[] tvProperties = tMallTemplate.getTvProperties().split("\\|");
+        propertiesTransition(dfMap,tvProperties);
+        jsonArray.put(dfMap);
+        tMallDeviceAdapter.setProperties(jsonArray);
+    }
+
+    //设置空调动作和属性
+    private void setAircondition(TMallDeviceAdapter tMallDeviceAdapter,String[] defaultActions,JSONObject dfMap ){
+        JSONArray jsonArray = new JSONArray();
+        String[] airconditionProperties = tMallTemplate.getAirconditionProperties().split("\\|");
+        propertiesTransition(dfMap,airconditionProperties);
+        jsonArray.put(dfMap);
+        tMallDeviceAdapter.setProperties(jsonArray);
     }
 
     //发现设备转换
@@ -413,6 +445,20 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
             setProperty(remoteLight,oboxDeviceConfig);
             setLight(remoteLight,defaultActions,dfMap);
             return remoteLight;
+        }else if(deviceType.equals("2_2")){//电视机
+            oboxDeviceConfig.setDeviceType("television");
+            propertiesTransition(dfMap,defaultProperties);
+            TV tv = new TV();
+            setProperty(tv,oboxDeviceConfig);
+            setTV(tv,defaultActions,dfMap);
+            return tv;
+        }else if(deviceType.equals("7_7")){//空调
+            oboxDeviceConfig.setDeviceType("aircondition");
+            propertiesTransition(dfMap,defaultProperties);
+            Aircondition aircondition = new Aircondition();
+            setProperty(aircondition,oboxDeviceConfig);
+            setAircondition(aircondition,defaultActions,dfMap);
+            return aircondition;
         }
 
         return null;
@@ -456,7 +502,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         }else if(deviceType.equals("04")){//插座/开关
             if(isQuery.get("Query").equals(true)){
                 if(childType.equals("17")||childType.equals("2b")||childType.equals("53")
-                        ||childType.equals("16")||childType.equals("2a")){//开关
+                        ||childType.equals("16")||childType.equals("2a")||childType.equals("53")){//开关
                     jsonArray.put(querySwitchOnOff(deviceState,deviceId));
                 }else{//插座
                     jsonArray.put(queryOnOff(deviceState));
@@ -581,7 +627,91 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         return map;
     }
 
+    private Map<String,Object> irCompositeCommand(TMallTemplate tMallTemplate, List<TYaokonyunKeyCode> yaokonyunKeyCodeList,Map<String,Object> playloadMap,Map<String,Object> header){
+        Map<String,Object> returnMap = new HashMap<String, Object>();
+        String name = (String)header.get("name");
+        String deviceType = (String)playloadMap.get("deviceType");
+        String value = (String)playloadMap.get("value");
+        String redisKey = (String)playloadMap.get("redisKey");
+        if(redisKey==null||redisKey.equals("")){
+            redisKey = "a_s2__u0_l0_p0";//空调默认值
+        }
+        String keyValue = "";
+        TmallIRFUNEnum[] enums = TmallIRFUNEnum.values();
+        for(int i=0;i<enums.length;i++){
+            TmallIRFUNEnum e = enums[i];
+            if(e.getName().equals(name)){
+                if(name.equals(TmallIRFUNEnum.SetMode.getName())){//空调模式
+                    String[] valArr = e.getValue().split(",");
+                    for(String key: valArr){
+                        if(key.equals(value)){
+                            AirconditionEnum ae = AirconditionEnum.getRegion(value);
+                            String[] redisArr = redisKey.split("_");
+                            redisArr[0]=ae.getValue();
+                            for(int k=0;k<redisArr.length;k++){
+                                if(k==2&&ae.getName().equals("auto")){
+                                    keyValue += "_";
+                                }else{
+                                    if(redisArr[k].equals("")){
+                                        keyValue += "26_";
+                                    }else {
+                                        keyValue += redisArr[k]+"_";
+                                    }
+                                }
+                            }
+                            keyValue = keyValue.substring(0,keyValue.length()-1);
+                            break;
+                        }
+                    }
 
+                }else if(name.equals(TmallIRFUNEnum.SetWindSpeed.getName())){//空调风量
+                    String[] valArr = e.getValue().split(",");
+                    for(String val: valArr){
+                        String[] enumValArr = val.split("\\|");
+                        if(enumValArr[0].equals(value)){
+                            String begin = redisKey.substring(0,2);
+                            String end  = redisKey.substring(4,redisKey.length());
+                            keyValue = begin + enumValArr[1]+end;
+                        }
+                    }
+                }else if(name.equals(TmallIRFUNEnum.SetTemperature.getName())){//空调温度
+                    String model = redisKey.substring(0,1);
+                    if(!model.equals("a")&&!model.equals("d")){
+                        String begin = redisKey.substring(0,5);
+                        String end =  redisKey.substring(7,redisKey.length());
+                        keyValue = begin +value + end;
+                    }
+                }else if(name.equals(TmallIRFUNEnum.OpenUpAndDownSwing.getName())){//空调上下扫风
+                    String model = redisKey.substring(0,1);
+                    if(model.equals("a")||model.equals("d")){
+                        String begin = redisKey.substring(0,6);
+                        String end =  redisKey.substring(8,redisKey.length());
+                        keyValue = begin +"u1" + end;
+                    }else{
+                        String begin = redisKey.substring(0,8);
+                        String end =  redisKey.substring(10,redisKey.length());
+                        keyValue = begin +"u1" + end;
+                    }
+                }else if(name.equals(TmallIRFUNEnum.OpenLeftAndRightSwing.getName())){//空调左右扫风
+                    String model = redisKey.substring(0,1);
+                    if(model.equals("a")||model.equals("d")){
+                        String begin = redisKey.substring(0,9);
+                        String end =  redisKey.substring(11,redisKey.length());
+                        keyValue = begin +"l1" + end;
+                    }else{
+                        String begin = redisKey.substring(0,11);
+                        String end =  redisKey.substring(13,redisKey.length());
+                        keyValue = begin +"l1" + end;
+                    }
+                }else{
+                    keyValue = e.getValue();
+                }
+            }
+        }
+
+        returnMap.put("keyValue",keyValue);
+        return  returnMap;
+    }
 
     private Map<String,Object> compositeCommand(TMallTemplate tMallTemplate, TOboxDeviceConfig oboxDeviceConfig,Map<String,Object> playloadMap,Map<String,Object> header){
         String name = (String)header.get("name");
@@ -591,6 +721,8 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         String lightProperties = tMallTemplate.getLightActions();
         String dfControllProperties = tMallTemplate.getDefaultAction();
         String lightControllProperties = tMallTemplate.getLightControllProperties();
+        String tvProperties = tMallTemplate.getTvProperties();
+        String airconditionProperties = tMallTemplate.getAirconditionProperties();
         String deviceState = oboxDeviceConfig.getDeviceState();
         String obdeviceType = oboxDeviceConfig.getDeviceType();
         String obChildType = oboxDeviceConfig.getDeviceChildType();
@@ -608,6 +740,15 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         for (String lightProperty:lightPropertiesArrays){
             propertiesLists.add("light_"+lightProperty);
         }
+        String[] tvPropertiesArrays = tvProperties.split("\\|");
+        for(String tvProperty : tvPropertiesArrays){
+            propertiesLists.add(tvProperty);
+        }
+        String[] airConditionArrays = airconditionProperties.split("\\|");
+        for(String airConditionProperty : airConditionArrays){
+            propertiesLists.add(airConditionProperty);
+        }
+
         for (String properties : propertiesLists){
             String[] propertyArr =  properties.split("-");
             if(deviceType.equals("light")){
@@ -743,7 +884,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
 
                 }
             }else if((name).equals(propertyArr[0])&&obdeviceType.equals("04")
-                    &&(obChildType.equals("2b")||obChildType.equals("53")||obChildType.equals("2a"))){//2键及以上的开关
+                    &&(obChildType.equals("2b")||obChildType.equals("53")||obChildType.equals("2a")||obChildType.equals("51"))){//2键及以上的开关
                 deviceState = changeMutipleOutLet(deviceState,value,deviceId,"24");
             }else if((name).equals(propertyArr[0])&&obdeviceType.equals("04")&&(obChildType.equals("17")
                     ||obChildType.equals("16"))){
@@ -785,9 +926,10 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         String beginStr = null;
         String endStr = null;
         if(partition.equals("24")){
-                middle = deviceState.substring(2,4);
-                beginStr = deviceState.substring(0,2);
-                endStr = deviceState.substring(4,deviceState.length());
+
+            middle = deviceState.substring(2,4);
+            beginStr = deviceState.substring(0,2);
+            endStr = deviceState.substring(4,deviceState.length());
             if(value.equals("off")){
                 val = andOpt(middle,child);
             }else if(value.equals("on")){
@@ -795,8 +937,8 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
             }
             reVal = beginStr+val+endStr;
         }else if(partition.equals("12")){
-                beginStr = deviceState.substring(0,2);
-                endStr = deviceState.substring(2,deviceState.length());
+            beginStr = deviceState.substring(0,2);
+            endStr = deviceState.substring(2,deviceState.length());
             if(value.equals("off")){
                 val = andOpt(beginStr,child);
             }else if(value.equals("on")){
@@ -804,6 +946,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
             }
             reVal = val+endStr;
         }
+
         return reVal;
     }
 
@@ -870,6 +1013,10 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
     @Override
     public Map<String,Object> TMall2Obright() {
         return compositeCommand(tMallTemplate,oboxDeviceConfig,playloadMap,header);
+    }
+
+    public Map<String,Object> TMall2IR(){
+        return  irCompositeCommand(tMallTemplate,yaokonyunKeyCodeList,playloadMap,header);
     }
 
     public TMallDeviceAdapter queryDevice() throws JSONException {

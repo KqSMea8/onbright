@@ -273,16 +273,28 @@ public enum CMDEnum {
 	query_ir_device_type, //获取遥控云遥控类型
 
 	query_ir_brand, //获取遥控云品牌类型
-	
-	query_remote_control_id, //获取某个遥控器对应的详情码库
-	
-	query_remote_control_src, //根据品牌ID、设备类型一键匹配遥控器列表
-	
-	bind_remote_control, //绑定/解绑红外
-	
+
+	bind_ir_remotecode, //手动匹配/一键匹配遥控方案——绑定码库方案
+
 	query_bind_remote_control, //获取绑定红外
 
 	modify_ir_program,//修改红外转发器方案
+
+	control_ir_device,//控制转发命令
+
+	delete_ir_device,//删除红外遥控方案
+
+	rename_ir_device,//重命名红外遥控方案
+
+	delete_ir_device_key,//删除方案中特定按键
+
+	pair_ir_remotecode,//一键匹配遥控方案——进入空调对码模式
+
+	create_ir_device,//学习遥控方案——新建自定义遥控器
+
+	learn_ir_device_key,//学习遥控方案——进入按键学习模式
+
+	query_ir_device,//获取红外遥控方案
 
 	to_key_learn,//进入学习状态
 
@@ -380,7 +392,13 @@ public enum CMDEnum {
 	query_countdown,
 
 	setting_remote_led("8103","a103"),
-	my_test;
+	my_test, 
+	
+	modify_location, 
+	
+	delete_location, 
+	
+	delete_scene_location;
 		
 	
 	private String sendCMD;

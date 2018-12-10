@@ -42,6 +42,7 @@ import com.bright.apollo.service.UserOperationService;
 import com.bright.apollo.service.UserSceneService;
 import com.bright.apollo.service.UserService;
 import com.bright.apollo.service.WxService;
+import com.bright.apollo.service.impl.AsyncServiceImpl;
 import com.bright.apollo.tool.Base64Util;
 import com.bright.apollo.tool.HttpUtil;
 import com.bright.apollo.tool.MD5;
@@ -84,6 +85,8 @@ public class UserController {
 	private UserSceneService userSceneService;
 	@Autowired
 	private UserAliDevService userAliDevService;
+	@Autowired
+	private AsyncServiceImpl asyncServiceImpl;
 	@SuppressWarnings("rawtypes")
 	@GetMapping("/sendCodeToMobile/{mobile}")
 	public ResponseObject sendCodeToMobile(@PathVariable String mobile) {
@@ -792,6 +795,49 @@ public class UserController {
 		try {
 			userAliDevService.addUserAliDev(tUserAliDev);
 			res.setStatus(ResponseEnum.AddSuccess.getStatus());
+			res.setMessage(ResponseEnum.AddSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:"+e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;	
+	}
+	/**  
+	 * @param oboxSerialId  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/deleteUserDeviceByOboxSerialId/{oboxSerialId}", method = RequestMethod.DELETE)
+	public ResponseObject deleteUserDeviceByOboxSerialId(@PathVariable(required = true, value = "oboxSerialId")String oboxSerialId){
+		ResponseObject res=new ResponseObject();
+		try {
+			userDeviceService.deleteUserDeviceByOboxSerialId(oboxSerialId);
+			//userAliDevService.addUserAliDev(tUserAliDev);
+			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:"+e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;	
+	}
+	/**
+	 * @param deviceSerialId
+	 * @param oboxSerialId
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/addUserDeviceBySerialIdAndOboxSerialId/{deviceSerialId}/{oboxSerialId}", method = RequestMethod.POST)
+	public ResponseObject addUserDeviceBySerialIdAndOboxSerialId(
+			@PathVariable(required = true, value = "deviceSerialId") String deviceSerialId,
+			@PathVariable(required = true, value = "oboxSerialId") String oboxSerialId){
+		ResponseObject res=new ResponseObject();
+		try {
+			asyncServiceImpl.addUserDeviceBySerialIdAndOboxSerialId(deviceSerialId,oboxSerialId);
+			//userDeviceService.deleteUserDeviceByOboxSerialId(oboxSerialId);
+ 			res.setStatus(ResponseEnum.AddSuccess.getStatus());
 			res.setMessage(ResponseEnum.AddSuccess.getMsg());
 		} catch (Exception e) {
 			logger.error("===error msg:"+e.getMessage());

@@ -9,7 +9,12 @@
             <!-- 控制台也要使用UTF-8，不要使用GBK，否则会中文乱码 -->
             <charset>UTF-8</charset>   
         </encoder>    
-    </appender>    
+    </appender>
+    <!--<appender name="stash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <destination>localhost:5044</destination>
+        &lt;!&ndash; encoder is required &ndash;&gt;
+        <encoder charset="UTF-8" class="net.logstash.logback.encoder.LogstashEncoder" />
+    </appender>-->
     <!-- RollingFileAppender：滚动记录文件，先将日志记录到指定文件，当符合某个条件时，将日志记录到其他文件 -->
     <!-- 以下的大概意思是：1.先按日期存日志，日期变了，将前一天的日志文件名重命名为XXX%日期%索引，新的日志仍然是demo.log -->
     <!--             2.如果日期没有发生变化，但是当前日志的文件大小超过1KB时，对当前日志进行分割 重命名-->
@@ -39,7 +44,8 @@
     </appender>    
     <!-- 控制台输出日志级别 -->
     <root level="info">
-        <appender-ref ref="STDOUT" />    
+        <appender-ref ref="STDOUT" />
+        <!--<appender-ref ref="stash" />-->
     </root>    
     <!-- 指定项目中某个包，当有日志操作行为时的日志记录级别 -->
     <!-- com.bright.apollo为根包，也就是只要是发生在这个根包下面的所有日志操作行为的权限都是DEBUG -->

@@ -491,19 +491,6 @@ public class CMDHandlerManager {
 						// send server addr to obox
 						byte[] body = new byte[22];
 						body[0] = 1;
-						// if (tKey == null) {
-						// tKey = OboxBusiness.queryKeyByCompany("OBHOME");
-						// }
-						// TKey tKey = OboxBusiness.queryKeyByCompany("OB");
-						// byte [] serverSerialByte =
-						// ByteHelper.hexStringToBytes(tKey.getServerAddr());
-						// byte [] randomByte =
-						// ByteHelper.hexStringToBytes(random_number);
-						// System.arraycopy(randomByte, 0, body, 1,
-						// randomByte.length);
-						// System.arraycopy(serverSerialByte, 0, body, 17,
-						// serverSerialByte.length);
-
 						topServer.pubTopic(CMDEnum.time, body, ProductKey, DeviceName, enum1);
 						pushMessage( dbObox);
 					}
@@ -543,30 +530,7 @@ public class CMDHandlerManager {
 					}
 				}
 
-				/*
-				 * //inject the obj to the handler
-				 * if(handler.getOboxService()==null){
-				 * handler.setMsgService(msgService);
-				 * handler.setTopicServer(topServer);
-				 * handler.setFingerUtil(fingerUtil);
-				 * handler.setIntelligentFingerService(intelligentFingerService)
-				 * ; handler.setUserOperationService(userOperationService);
-				 * handler.setUserService(userService);
-				 * handler.setSceneActionThreadPool(sceneActionThreadPool);
-				 * handler.setDeviceChannelService(deviceChannelService);
-				 * handler.setOboxDeviceConfigService(oboxDeviceConfigService);
-				 * handler.setOboxService(oboxService);
-				 * handler.setSceneActionService(sceneActionService);
-				 * handler.setSceneConditionService(sceneConditionService);
-				 * handler.setSceneService(sceneService);
-				 * handler.setUserDeviceService(userDeviceService);
-				 * handler.setUserOboxService(userOboxService);
-				 * handler.setUserSceneService(userSceneService);
-				 * handler.setCmdMessageService(cmdMessageService);
-				 * handler.setSessionManager(sessionManager);
-				 * handler.setCmdCache(cmdCache);
-				 * handler.setPushservice(pushservice); }
-				 */
+				 
 				handler.process(client, msg);
 
 				// Message<String> replyMsg =

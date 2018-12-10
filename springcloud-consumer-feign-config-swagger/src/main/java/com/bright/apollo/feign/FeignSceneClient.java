@@ -1,6 +1,7 @@
 package com.bright.apollo.feign;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -255,5 +256,7 @@ public interface FeignSceneClient {
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/scene/deleteSceneConditionBySerialId/{serialId}", method = RequestMethod.DELETE)
 	ResponseObject deleteSceneConditionBySerialId(@PathVariable(value = "serialId")String serialId);
+
+ 
 
 }

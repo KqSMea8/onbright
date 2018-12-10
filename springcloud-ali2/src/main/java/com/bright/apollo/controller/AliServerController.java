@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import com.bright.apollo.service.*;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,11 +37,6 @@ import com.bright.apollo.request.SceneActionDTO;
 import com.bright.apollo.request.SceneConditionDTO;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
-import com.bright.apollo.service.AliDeviceConfigService;
-import com.bright.apollo.service.AliDeviceService;
-import com.bright.apollo.service.OboxDeviceConfigService;
-import com.bright.apollo.service.ServerGroupService;
-import com.bright.apollo.service.TopicServer;
 import com.bright.apollo.service.AliRequest.BaseRequest;
 import com.bright.apollo.session.SceneActionThreadPool;
 import com.bright.apollo.tool.ByteHelper;
@@ -63,6 +59,8 @@ public class AliServerController {
 	private FingerUtil fingerUtil;
 	// for search new device
 	private static String timeout = "30";
+	
+	private static String shortTimeout = "5";
 
 	@Autowired
 	private AliDeviceConfigService aliDeviceConfigService;
@@ -78,6 +76,9 @@ public class AliServerController {
 
 	@Autowired
 	private BaseRequest baseRequest;
+
+	@Autowired
+	private YaoKongYunService yaoKongYunService;
 
 //	@Autowired
 //	private QuartzService quartzService;
@@ -192,7 +193,9 @@ public class AliServerController {
 			@RequestParam(required = false, value = "deviceType") String deviceType,
 			@RequestParam(required = false, value = "deviceChildType") String deviceChildType,
 			@RequestParam(required = false, value = "serialId") String serialId,
-			@RequestParam(required = true, value = "countOfDevice") Integer countOfDevice) {
+			@RequestParam(required = true, value = "countOfDevice") Integer countOfDevice,
+			@RequestParam(required = false, value = "address") String address,
+			@RequestParam(required = false, value = "timeOut") String timeOut) {
 		ResponseObject<OboxResp> res = new ResponseObject<OboxResp>();
 		try {
 			byte[] sendbodyBytes = new byte[15];
@@ -200,7 +203,13 @@ public class AliServerController {
 			sendbodyBytes[1] = (byte) (countOfDevice.intValue() & 0x0000ff);
 			sendbodyBytes[2] = (byte) ((countOfDevice.intValue() >> 8) & 0x0000ff);
 			sendbodyBytes[3] = (byte) ((countOfDevice.intValue() >> 16) & 0x0000ff);
-			sendbodyBytes[4] = (byte) Integer.parseInt(timeout, 16);
+			if(!StringUtils.isEmpty(address)){
+				sendbodyBytes[5] = (byte) Integer.parseInt("0f", 16);
+				sendbodyBytes[11] = (byte) Integer.parseInt(address, 16);
+				sendbodyBytes[4] = (byte) Integer.parseInt(StringUtils.isEmpty(timeOut)?shortTimeout:timeOut, 16);
+			}else{
+				sendbodyBytes[4] = (byte) Integer.parseInt(StringUtils.isEmpty(timeOut)?timeout:timeOut, 16);
+			}
 			if (!StringUtils.isEmpty(deviceType)) {
 				sendbodyBytes[13] = (byte) Integer.parseInt(deviceType, 16);
 				if (!StringUtils.isEmpty(deviceChildType))
@@ -1008,7 +1017,7 @@ public class AliServerController {
 			aliDeviceService.deleteAliDeviceUser(aliDeviceConfig.getDeviceSerialId());
 			TAliDevice aliDevice = aliDeviceService.getAliDeviceBySerializeId(aliDeviceConfig.getDeviceSerialId());
 
-			if(aliDevice!=null&&!aliDevice.getDeviceName().equals(deviceName)&&aliDevice.getProductKey().equals(productKey)){
+			if(aliDevice!=null){//&&!aliDevice.getDeviceName().equals(deviceName)&&!aliDevice.getProductKey().equals(productKey)
 				logger.info("========= upload available ====== ");
 				aliDevice.setOboxSerialId("available");
 				aliDeviceService.updateAliDevice(aliDevice);
@@ -1125,6 +1134,7 @@ public class AliServerController {
 
 			aliDeviceService.deleteAliDeviceUser(deviceId);
 			aliDeviceConfigService.deleteAliDeviceConfig(deviceId);
+			yaoKongYunService.deleteTYaokonyunKeyCodeBySerialId(deviceId);//红外转发器码库删除
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {
@@ -1197,4 +1207,31 @@ public class AliServerController {
 		}
 		return res;
 	}
+	
+	
+	public static void main(String[] args) {
+		
+		Integer countOfDevice=11;
+		String address="1";
+		String serialId="af5a010000";
+		byte[] sendbodyBytes = new byte[15];
+		sendbodyBytes[0] = (byte) Integer.parseInt("02", 16);
+		sendbodyBytes[1] = (byte) (countOfDevice.intValue() & 0x0000ff);
+		sendbodyBytes[2] = (byte) ((countOfDevice.intValue() >> 8) & 0x0000ff);
+		sendbodyBytes[3] = (byte) ((countOfDevice.intValue() >> 16) & 0x0000ff);
+		if(!StringUtils.isEmpty(address)){
+			sendbodyBytes[5] = (byte) Integer.parseInt("0e", 16);
+			sendbodyBytes[11] = (byte) Integer.parseInt(address, 16);
+			sendbodyBytes[4] = (byte) Integer.parseInt(shortTimeout, 16);
+		}else{
+			sendbodyBytes[4] = (byte) Integer.parseInt(timeout, 16);
+		}
+	 
+		if (!StringUtils.isEmpty(serialId)) {
+			byte[] oboxSerialIdBytes = ByteHelper.hexStringToBytes(serialId);
+			System.arraycopy(oboxSerialIdBytes, 0, sendbodyBytes, 6, oboxSerialIdBytes.length);
+		}
+		System.out.println(sendbodyBytes);
+	}
+	
 }

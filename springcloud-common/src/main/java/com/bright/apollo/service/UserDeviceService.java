@@ -34,4 +34,16 @@ List<TUserDevice> getUserDevicesBySerialId(String serialId);
  * @Description:  
  */
 int deleteUserDeviceBySerialId(String serialId);
+
+/**  
+ * @param oboxSerialId  
+ * @Description:  
+ */
+int deleteUserDeviceByOboxSerialId(String oboxSerialId);
+
+/**  
+ * @param userDevices  
+ * @Description:  
+ */
+void batchAddUserDevice(List<TUserDevice> userDevices);
 }

@@ -336,12 +336,33 @@ public interface FeignUserClient {
 	public ResponseObject<Integer> countMsgExceList(@PathVariable(required = true, value = "userId") Integer userId,
 			@PathVariable(required = true, value = "type") Integer type);
 
-	/**  
+	/**
 	 * @param id
-	 * @param statue  
-	 * @Description:  
+	 * @param statue
+	 * @Description:
 	 */
+	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/msg/updateMsgState/{id}/{statue}", method = RequestMethod.PUT)
 	public ResponseObject updateMsgState(@PathVariable(required = true, value = "id") Integer id,
 			@PathVariable(required = true, value = "statue") int statue);
+
+	/**
+	 * @param oboxSerialId
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/user/deleteUserDeviceByOboxSerialId/{oboxSerialId}", method = RequestMethod.DELETE)
+	public ResponseObject deleteUserDeviceByOboxSerialId(
+			@PathVariable(required = true, value = "oboxSerialId") String oboxSerialId);
+
+	/**
+	 * @param deviceSerialId
+	 * @param oboxSerialId
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/user/addUserDeviceBySerialIdAndOboxSerialId/{deviceSerialId}/{oboxSerialId}", method = RequestMethod.POST)
+	public ResponseObject addUserDeviceBySerialIdAndOboxSerialId(
+			@PathVariable(required = true, value = "deviceSerialId") String deviceSerialId,
+			@PathVariable(required = true, value = "oboxSerialId") String oboxSerialId);
 }

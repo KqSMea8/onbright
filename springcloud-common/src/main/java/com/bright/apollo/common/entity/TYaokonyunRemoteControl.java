@@ -2,7 +2,7 @@ package com.bright.apollo.common.entity;
 
 import org.springframework.util.StringUtils;
 
-import java.util.Date;
+import java.util.*;
 
 public class TYaokonyunRemoteControl {
 
@@ -16,6 +16,14 @@ public class TYaokonyunRemoteControl {
         this.rdesc = matchRemoteControl.getRdesc();
         this.order_no = matchRemoteControl.getOrderNo();
         this.zip = matchRemoteControl.getZip();
+        Map<String,KeyCode> keyCodeMap =  matchRemoteControl.getRcCommand();
+        KeyCode keyCode = null;
+        Iterator<Map.Entry<String, KeyCode>> iterator = keyCodeMap.entrySet().iterator();
+        while (iterator.hasNext()){
+            Map.Entry entry = iterator.next();
+            keyCode = (KeyCode)entry.getValue();
+        }
+        this.src = keyCode.getSrcCode();
         if(!StringUtils.isEmpty(matchRemoteControl.getZero())){
             this.zero=matchRemoteControl.getZero();
         }
@@ -54,6 +62,16 @@ public class TYaokonyunRemoteControl {
     private String zero;
 
     private Integer num;
+
+    private String src;
+
+    public String getSrc() {
+        return src;
+    }
+
+    public void setSrc(String src) {
+        this.src = src;
+    }
 
     public Integer getId() {
         return id;

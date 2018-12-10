@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class YaoKongYunServiceImpl implements YaoKongYunService {
@@ -73,5 +74,74 @@ public class YaoKongYunServiceImpl implements YaoKongYunService {
     @Override
     public void addTYaoKongYunBrand(TYaoKongYunBrand yaoKongYunBrand) {
         yaoKongYunMapper.addTYaoKongYunBrand(yaoKongYunBrand);
+    }
+
+    @Override
+    public TYaokonyunRemoteControl getYaokonyunRemoteControlByRemoteId(String remoteId) {
+        return yaoKongYunMapper.getYaokonyunRemoteControlByBrandId(remoteId);
+    }
+
+    @Override
+    public void addTYaokonyunKeyCode(TYaokonyunKeyCode yaokonyunKeyCode) {
+        yaoKongYunMapper.addTYaokonyunKeyCode(yaokonyunKeyCode);
+    }
+
+    @Override
+    public List<TYaokonyunKeyCode> getYaoKongKeyCodeByRemoteId(Integer index) {
+        return yaoKongYunMapper.getYaoKongKeyCodeByRemoteId(index);
+    }
+
+    @Override
+    public void deleteTYaokonyunKeyCode(String serialId, String index) {
+        yaoKongYunMapper.deleteTYaokonyunKeyCode(serialId,Integer.valueOf(index));
+    }
+
+    @Override
+    public void deleteTYaokonyunKeyCodeByKeyName(String serialId, String index, String keyName,String keyType) {
+        if(keyType.equals("0")){
+            yaoKongYunMapper.deleteTYaokonyunKeyCodeByKeyName(serialId,Integer.valueOf(index),keyName);
+        }else if(keyType.equals("1")){
+            yaoKongYunMapper.deleteTYaokonyunKeyCodeByCustomName(serialId,Integer.valueOf(index),keyName);
+        }
+    }
+
+    @Override
+    public void deleteTYaokonyunKeyCodeBySerialId(String serialId) {
+            yaoKongYunMapper.deleteTYaokonyunKeyCodeBySerialId(serialId);
+    }
+
+    @Override
+    public List<TYaokonyunKeyCode> getYaoKongKeyCodeBySerialId(String serialId) {
+        return yaoKongYunMapper.getYaoKongKeyCodeBySerialId(serialId);
+    }
+
+    @Override
+    public void updateYaoKongKeyCodeNameBySerialIdAndIndex(String serialId, String index, String name) {
+        yaoKongYunMapper.updateYaoKongKeyCodeNameBySerialIdAndIndex(serialId,index,name);
+    }
+
+    @Override
+    public TYaokonyunKeyCode getYaoKongKeyCodeByKeyAndSerialIdAndIndex(Integer index, String serialId, String key) {
+        return yaoKongYunMapper.getYaoKongKeyCodeByKeyAndSerialIdAndIndex(index,serialId,key);
+    }
+
+    @Override
+    public void updateYaoKongKeyCodeNameBySerialIdAndIndexAndKey(String serialId, String index, String key, String codeSrc) {
+        yaoKongYunMapper.updateYaoKongKeyCodeNameBySerialIdAndIndexAndKey(serialId,Integer.valueOf(index),key,codeSrc);
+    }
+
+    @Override
+    public List<Map<String, Object>> getUserIRDevice(Integer userId) {
+        return yaoKongYunMapper.getUserIRDevice(userId);
+    }
+
+    @Override
+    public List<TYaokonyunKeyCode> getIRDeviceByIndex(Integer index) {
+        return yaoKongYunMapper.getIRDeviceByIndex(index);
+    }
+
+    @Override
+    public TYaokonyunKeyCode getIRDeviceByIndexAndKey(Integer index, String key) {
+        return yaoKongYunMapper.getIRDeviceByIndexAndKey(index,key);
     }
 }

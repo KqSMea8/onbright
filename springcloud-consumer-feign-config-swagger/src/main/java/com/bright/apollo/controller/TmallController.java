@@ -15,6 +15,9 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import com.bright.apollo.common.entity.TUser;
+import com.bright.apollo.common.entity.TYaokonyunKeyCode;
+import com.bright.apollo.feign.FeignAliClient;
+import io.swagger.models.auth.In;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.config.CookieSpecs;
@@ -74,6 +77,9 @@ public class TmallController {
 	private FeignUserClient feignUserClient;
 
 	@Autowired
+	private FeignAliClient feignAliClient;
+
+	@Autowired
 	private TMallTemplate tMallTemplate;
 
 	@Autowired
@@ -88,7 +94,6 @@ public class TmallController {
 	@RequestMapping(value = "/tmallCmd", method = RequestMethod.POST,produces = "application/json ;charset=UTF-8")
 	@ResponseBody
 	public Object tmallCmd(@RequestBody Object object) throws Exception {
-
 		logger.info("====== messageID ======"+object);
 		Map<String,Object> requestMap = (Map<String, Object>) object;
 		Map<String,Object> requestHeaderMap = (Map<String, Object>) requestMap.get("header");
@@ -102,9 +107,7 @@ public class TmallController {
 		OAuth2Authentication defaultOAuth2AccessToken = redisBussines.getObject("auth:"+accessToken,OAuth2Authentication.class);
 		SecurityContextHolder.getContext().setAuthentication(defaultOAuth2AccessToken.getUserAuthentication());
 		logger.info(" ===== redisToken ====== "+defaultOAuth2AccessToken);
-
 		if(requestHeaderMap.get("namespace").equals("AliGenie.Iot.Device.Discovery")){//天猫精灵发现设备
-
 			headerMap.put("namespace","AliGenie.Iot.Device.Discovery");
 			headerMap.put("name","DiscoveryDevicesResponse");
 			headerMap.put("messageId",(String)requestHeaderMap.get("messageId"));
@@ -113,14 +116,20 @@ public class TmallController {
 			User user = (User) defaultOAuth2AccessToken.getPrincipal();
 			ResponseObject<TUser> userResponseObject = feignUserClient.getUser(user.getUsername());//user.getUsername()
 			TUser tUser = userResponseObject.getData();
-
-//			logger.info(" ====== username ====== "+user.getUsername());
-
 			logger.info(" ====== userId ====== "+tUser.getId());
 			ResponseObject<List<TOboxDeviceConfig>> responseObject = feignDeviceClient.getOboxDeviceConfigByUserId(tUser.getId());//559 tUser.getId()
+			ResponseObject<List<Map<String, Object>>> responseIR = feignAliClient.getUserIRDevice(tUser.getId());
+			List<Map<String, Object>> irList = responseIR.getData();
 			List<TOboxDeviceConfig> oboxDeviceConfigList = responseObject.getData();
+			for(Map<String,Object> irMap : irList){
+				TOboxDeviceConfig deviceConfig = new TOboxDeviceConfig();
+				Integer tid = (Integer)irMap.get("t_id");
+				deviceConfig.setDeviceType(tid+"_"+tid);
+				deviceConfig.setBrandName((String) irMap.get("name"));
+				deviceConfig.setDeviceSerialId(irMap.get("index").toString());
+				oboxDeviceConfigList.add(deviceConfig);
+			}
 			JSONArray jsonArray = new JSONArray();
-
 			logger.info(" ======= oboxDeviceConfigList ======= "+oboxDeviceConfigList);
 			List<JSONObject> list = new ArrayList<JSONObject>();
 			for(TOboxDeviceConfig oboxDeviceConfig :oboxDeviceConfigList){
@@ -161,7 +170,6 @@ public class TmallController {
 					}
 				}
 			}
-
 			playloadMap.put("devices",jsonArray);
 			map.put("payload",playloadMap);
 			headerMap.put("namespace","AliGenie.Iot.Device.Discovery");
@@ -177,15 +185,11 @@ public class TmallController {
 			} catch (KeyManagementException e) {
 				e.printStackTrace();
 			}
-
 			List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-
 			Map<String,Object> playLoadMap = (Map<String, Object>) requestMap.get("payload");
-
             Map<String,Object> header = (Map<String, Object>) requestMap.get("header");
 			String name = (String)requestHeaderMap.get("name");
 			String deviceId = (String)playLoadMap.get("deviceId");
-			String originalId = deviceId;
 			String[] deviceIdArr = deviceId.split("_");
 			deviceId = deviceIdArr[0];
 
@@ -202,57 +206,27 @@ public class TmallController {
 					setConnectionManager(connectionManager)
 					.setDefaultRequestConfig(requestConfig).build();
 			//====== 生成httpsClient end ======
-
 			try {
-				/*try {
-					lock.lock();
-					String redisId = redisBussines.get("tmall_accept_id_"+deviceId);
-					if(StringUtils.isEmpty(redisId)){
-						redisBussines.setValueWithExpire("tmall_accept_id_"+deviceId,originalId,3);
-					}else{
-						redisBussines.setValueWithExpire("tmall_accept_id_"+deviceId,redisId+","+originalId,3);
-					}
-
-				}catch (Exception e){
-					logger.info(" ====== lock ===== setredis exception ====== "+e.getMessage());
-				}finally {
-					lock.unlock();
-				}*/
-
 				ResponseObject<TOboxDeviceConfig> responseObject = feignDeviceClient.getDevice(deviceId);
 				TOboxDeviceConfig oboxDeviceConfig = responseObject.getData();
-				if(oboxDeviceConfig !=null &&!oboxDeviceConfig.equals("")){
+                ResponseObject<List<TYaokonyunKeyCode>> irResponse =
+                        feignAliClient.getIRDeviceByIndex(Integer.valueOf(deviceId));
+                List<TYaokonyunKeyCode> yaokonyunKeyCodeList = irResponse.getData();
+				Map<String,Object> paramMap = null;
+                if(yaokonyunKeyCodeList.size()>0){
+                	String redisKey = redisBussines.get("tmallIR_key_"+deviceId);
+					playLoadMap.put("redisKey",redisKey);
+					adapter = new TMallDeviceAdapter(playLoadMap,tMallTemplate,yaokonyunKeyCodeList,header);
+					paramMap = adapter.TMall2IR();
+					String keyValue = (String)paramMap.get("keyValue");
+					redisBussines.set("tmallIR_key_"+deviceId,keyValue);
+					ResponseObject<TYaokonyunKeyCode> yaokonyunKeyCodeResponseObject =
+							feignAliClient.getIRDeviceByIndexAndKey(Integer.valueOf(deviceId),keyValue);
+					TYaokonyunKeyCode keyCode = yaokonyunKeyCodeResponseObject.getData();
+					facadeController.controllIR(keyCode.getSerialId(),keyCode.getIndex(),keyCode.getKey());
+				}else if((oboxDeviceConfig !=null&&!oboxDeviceConfig.equals(""))){
 					String deviceType = oboxDeviceConfig.getDeviceType();
-//					String childType = oboxDeviceConfig.getDeviceChildType();
-					Map<String,Object> paramMap = null;
-					/*String acceptIds = "";
-					Thread.sleep(500);
-					acceptIds =redisBussines.get("tmall_accept_id_"+deviceId);
-					String[] idArr = null;
-					if (acceptIds!=null){
-						idArr = acceptIds.split(",");
-					}
-					if(deviceType.equals("04")&&
-							(childType.equals("2b")||childType.equals("53")||
-							childType.equals("2a")||childType.equals("17") ||
-							childType.equals("16"))&&idArr!=null&&idArr.length>1){
-							if(name.equals("TurnOn")){
-								logger.info("=========== controll ======= on ======= "+originalId);
-								if(childType.equals("2a") ){
-									facadeController.controlDevice(deviceId,"03000000000000");
-								}else if(childType.equals("16")){
-									facadeController.controlDevice(deviceId,"00030000000000");
-								}else{
-									facadeController.controlDevice(deviceId,"00070000000000");
-								}
-
-							}else if(name.equals("TurnOff")){
-								logger.info("=========== controll ======= off ====== "+originalId);
-								facadeController.controlDevice(deviceId,"00000000000000");
-							}
-
-					}else */
-						if(deviceType.equals("16")){
+					if(deviceType.equals("16")){
 						adapter = new TMallDeviceAdapter(playLoadMap,tMallTemplate,oboxDeviceConfig,header);
 						adapter.setRedisBussines(redisBussines);
 						paramMap = adapter.TMall2Obright();
@@ -271,6 +245,7 @@ public class TmallController {
 						adapter.setRedisBussines(redisBussines);
 						paramMap = adapter.TMall2Obright();
 						logger.info("paramMap ====== "+paramMap);
+
 						String status = (String)paramMap.get("deviceState");
 						if(status!=null){
 							facadeController.controlDevice(deviceId,status);

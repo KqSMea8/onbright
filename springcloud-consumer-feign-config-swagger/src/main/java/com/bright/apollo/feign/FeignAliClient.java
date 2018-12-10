@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.bright.apollo.common.entity.TAliDevTimer;
+import com.bright.apollo.common.entity.TYaokonyunKeyCode;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -71,7 +72,9 @@ public interface FeignAliClient {
 			@RequestParam(required = false, value = "deviceType") String deviceType,
 			@RequestParam(required = false, value = "deviceChildType") String deviceChildType,
 			@RequestParam(required = false, value = "serialId") String serialId,
-			@RequestParam(required = true, value = "countOfDevice") Integer countOfDevice);
+			@RequestParam(required = true, value = "countOfDevice") Integer countOfDevice,
+			@RequestParam(required = false, value = "address") String address,
+			@RequestParam(required = false, value = "timeOut") String timeOut);
 
 	/**
 	 * @param oboxSerialId
@@ -418,8 +421,7 @@ public interface FeignAliClient {
 	 */
 	@RequestMapping(value = "/aliDevice/getIrList", method = RequestMethod.POST)
 	ResponseObject getIrList(@RequestParam(required = true, value = "brandId") String brandId,
-							 @RequestParam(required = true, value = "deviceType") String deviceType,
-							 @RequestParam(required = true, value = "appkey") String appkey);
+							 @RequestParam(required = true, value = "deviceType") String deviceType);
 
 
 	/**
@@ -457,4 +459,92 @@ public interface FeignAliClient {
      */
     @RequestMapping(value = "/aliDevice/getIrBrandList", method = RequestMethod.POST)
     ResponseObject getIrBrandList(@RequestParam(required = true, value = "deviceType") String deviceType);
+
+	/**
+	 * @Description:手动匹配/一键匹配遥控方案——绑定码库方案
+	 */
+	@RequestMapping(value = "/aliDevice/bindIrRemotecode", method = RequestMethod.POST)
+	ResponseObject bindIrRemotecode(@RequestParam(required = true, value = "brandId") String brandId,
+									@RequestParam(required = true, value = "deviceType") String deviceType,
+									@RequestParam(required = true, value = "remoteId") String remoteId,
+									@RequestParam(required = true, value = "name") String name,
+									@RequestParam(required = true, value = "serialId") String serialId);
+
+	/**
+	 * @Description:获取遥控云品牌类型
+	 */
+	@RequestMapping(value = "/aliDevice/deleteIrDevice", method = RequestMethod.POST)
+	ResponseObject deleteIrDevice(@RequestParam(required = true, value = "serialId") String serialId,
+								  @RequestParam(required = true, value = "index") String index);
+
+	/**
+	 * @Description:删除方案中特定按键
+	 */
+	@RequestMapping(value = "/aliDevice/deleteIrDeviceKey", method = RequestMethod.POST)
+	ResponseObject deleteIrDeviceKey(@RequestParam(required = true, value = "serialId") String serialId,
+									 @RequestParam(required = true, value = "index") String index,
+									 @RequestParam(required = true, value = "key") String key,
+									 @RequestParam(required = true, value = "keyType") String keyType);
+
+	/**
+	 * @Description:手动匹配/一键匹配遥控方案——绑定码库方案
+	 */
+	@RequestMapping(value = "/aliDevice/pairIrRemotecode", method = RequestMethod.POST)
+	ResponseObject pairIrRemotecode(@RequestParam(required = true, value = "brandId") String brandId,
+									@RequestParam(required = true, value = "serialId") String serialId,
+									@RequestParam(required = true, value = "timeout") Integer timeout);
+
+	/**
+     * @Description:学习遥控方案——进入按键学习模式
+     */
+    @RequestMapping(value = "/aliDevice/learnIrDeviceKey", method = RequestMethod.POST)
+    ResponseObject learnIrDeviceKey(@RequestParam(required = true, value = "serialId") String serialId,
+                                    @RequestParam(required = true, value = "index") String index,
+                                    @RequestParam(required = true, value = "keyType") String keyType,
+                                    @RequestParam(required = true, value = "key") String key,
+                                    @RequestParam(required = true, value = "timeout") String timeout);
+
+
+    /**
+     * @Description:获取红外遥控方案
+     */
+    @RequestMapping(value = "/aliDevice/queryIrDevice", method = RequestMethod.POST)
+    ResponseObject queryIrDevice(@RequestParam(required = true, value = "serialId") String serialId);
+
+    /**
+     * @Description:重命名红外遥控方案
+     */
+    @RequestMapping(value = "/aliDevice/renameIrDevice", method = RequestMethod.POST)
+    ResponseObject renameIrDevice(@RequestParam(required = true, value = "serialId") String serialId,
+                                  @RequestParam(required = true, value = "index") String index,
+                                  @RequestParam(required = true, value = "name") String name);
+
+	/**
+	 * @Description:学习遥控方案——新建自定义遥控器
+	 */
+	@RequestMapping(value = "/aliDevice/createIrDevice", method = RequestMethod.POST)
+	ResponseObject createIrDevice(@RequestParam(required = true, value = "serialId") String serialId,
+								  @RequestParam(required = true, value = "deviceType") String deviceType,
+								  @RequestParam(required = true, value = "name") String name,
+								  @RequestParam(required = true, value = "brandId") String brandId);
+
+
+	/**
+	 * @Description:
+	 */
+	@RequestMapping(value = "/aliDevice/getUserIRDevice", method = RequestMethod.POST)
+	ResponseObject getUserIRDevice(@RequestParam(required = true, value = "userId") Integer userId);
+
+	/**
+	 * @Description:
+	 */
+	@RequestMapping(value = "/aliDevice/getIRDeviceByIndex", method = RequestMethod.POST)
+	ResponseObject getIRDeviceByIndex(@RequestParam(required = true, value = "index") Integer index);
+
+	/**
+	 * @Description:
+	 */
+	@RequestMapping(value = "/aliDevice/getIRDeviceByIndexAndKey", method = RequestMethod.POST)
+	ResponseObject<TYaokonyunKeyCode> getIRDeviceByIndexAndKey(@RequestParam(required = true, value = "index") Integer index, @RequestParam(required = true, value = "key") String key);
+
 }

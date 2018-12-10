@@ -1,6 +1,7 @@
 package com.bright.apollo.dao.device.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
@@ -34,7 +35,7 @@ public interface TNvrMapper {
 			@Result(property = "license",column = "license"),
 			@Result(property = "last_op_time",column = "lastOpTime"),
 	})
-	TNvr getNvrByIP(String ip);
+	TNvr getNvrByIP(@Param("ip")String ip);
 
 	 
 }

@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName;
 
 public class RcDevice {
 
+    private static final long serialVersionUID = -3333l;
+
     @Expose(serialize = false)
     protected Integer index;//本地数据库维护
     /**

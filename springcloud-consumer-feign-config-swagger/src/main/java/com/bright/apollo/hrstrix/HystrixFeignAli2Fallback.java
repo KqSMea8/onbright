@@ -76,25 +76,7 @@ public class HystrixFeignAli2Fallback extends BasicHystrixFeignFallback implemen
 		return serverError();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.bright.apollo.feign.FeignAliClient#scanByUnStop(java.lang.String,
-	 * java.lang.String, java.lang.String, java.lang.String, java.lang.Integer)
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	public ResponseObject<OboxResp> scanByUnStop(String oboxSerialId, String deviceType, String deviceChildType,
-			String serialId, Integer countOfDevice) {
-		logger.warn("===no respone===");
-		ResponseObject<OboxResp> res = new ResponseObject<OboxResp>();
-		OboxResp oboxResp = new OboxResp(OboxResp.Type.success);
-		res.setStatus(ResponseEnum.AddSuccess.getStatus());
-		res.setMessage(ResponseEnum.AddSuccess.getMsg());
-		res.setData(oboxResp);
-		return res;
-	}
+	 
 
 	/*
 	 * (non-Javadoc)
@@ -423,10 +405,11 @@ public class HystrixFeignAli2Fallback extends BasicHystrixFeignFallback implemen
 	}
 
 	@Override
-	public ResponseObject getIrList(String brandId, String deviceType,String appKey) {
+	public ResponseObject getIrList(String brandId, String deviceType) {
 		logger.warn("===ali server is break===");
 		return serverError();
 	}
+
 
 	@Override
 	public ResponseObject toLearn(String serialId, String timeOut, Integer index, String keyOrName, String learnKeyType) {
@@ -458,6 +441,88 @@ public class HystrixFeignAli2Fallback extends BasicHystrixFeignFallback implemen
 		logger.warn("===ali server is break===");
 		return serverError();
 	}
+
+	@Override
+	public ResponseObject bindIrRemotecode(String brandId, String deviceType, String remoteId, String name, String serialId) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
+	@Override
+	public ResponseObject deleteIrDevice(String serialId, String index) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
+	@Override
+	public ResponseObject deleteIrDeviceKey(String serialId, String index, String key, String keyType) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
+	@Override
+	public ResponseObject pairIrRemotecode(String brandId, String serialId, Integer timeout) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
+	@Override
+	public ResponseObject learnIrDeviceKey(String serialId, String index, String keyType, String key, String timeout) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
+	@Override
+	public ResponseObject queryIrDevice(String serialId) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
+	@Override
+	public ResponseObject renameIrDevice(String serialId, String index, String name) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
+	@Override
+	public ResponseObject createIrDevice(String serialId, String deviceType, String name, String brandId) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
+	@Override
+	public ResponseObject getUserIRDevice(Integer userId) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
+	@Override
+	public ResponseObject getIRDeviceByIndex(Integer index) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
+	@Override
+	public ResponseObject getIRDeviceByIndexAndKey(Integer index, String key) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignAliClient#scanByUnStop(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.Integer, java.lang.String, java.lang.String)  
+	 */
+	@Override
+	public ResponseObject<OboxResp> scanByUnStop(String oboxSerialId, String deviceType, String deviceChildType,
+			String serialId, Integer countOfDevice, String address, String timeOut) {
+		logger.warn("===no respone===");
+		ResponseObject<OboxResp> res = new ResponseObject<OboxResp>();
+		OboxResp oboxResp = new OboxResp(OboxResp.Type.success);
+		res.setStatus(ResponseEnum.AddSuccess.getStatus());
+		res.setMessage(ResponseEnum.AddSuccess.getMsg());
+		res.setData(oboxResp);
+		return res;
+	}
+ 
 
 //	@Override
 //	public ResponseObject registAliDevice(String zone, String type) {

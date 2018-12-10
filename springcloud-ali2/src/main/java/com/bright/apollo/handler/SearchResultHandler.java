@@ -1,5 +1,6 @@
 package com.bright.apollo.handler;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -30,7 +31,7 @@ public class SearchResultHandler extends BasicHandler {
             return null;
         }
 
-        System.out.println("SearchResultHandler.process():"+msg.getData());
+        logger.info("SearchResultHandler.process():"+msg.getData());
         byte [] idBytes = new byte [16];
         System.arraycopy(bodyBytes, 3, idBytes, 0, idBytes.length);
         String ID = ByteHelper.bytesToHexString(idBytes);
@@ -66,13 +67,14 @@ public class SearchResultHandler extends BasicHandler {
             }
             TOboxDeviceConfig dbConfig = oboxDeviceConfigService.queryDeviceConfigBySerialID(device_serial_id);
             if (dbConfig != null && obox.getOboxSerialId().equals(dbConfig.getOboxSerialId())) {
-
+            	logger.info("==queryDeviceConfigBySerialID is not null and serialId:"+dbConfig.getDeviceSerialId());
                 TOboxDeviceConfig deviceConfig = oboxDeviceConfigService.queryOboxConfigByRFAddr(obox.getOboxId(), device_rf_addr);
                 if (deviceConfig != null) {
                     if (!deviceConfig.getDeviceRfAddr().equals(dbConfig.getDeviceRfAddr())) {
 //                        if (!deviceConfig.getGroupAddr().equals("00")) {
 //                            DeviceBusiness.deleteOBOXGroupByAddr(deviceConfig.getOboxSerialId(), deviceConfig.getGroupAddr());
 //                        }
+                    	logger.info("===delete device serialId:"+deviceConfig.getDeviceSerialId());
                         userDeviceService.deleteUserDevice(deviceConfig.getOboxSerialId());
 //                        DeviceBusiness.deleteUserDeviceByDeviceId(deviceConfig.getOboxId());
                         deviceChannelService.deleteDeviceChannel(deviceConfig.getId());
@@ -97,6 +99,7 @@ public class SearchResultHandler extends BasicHandler {
 //                        if (!deviceConfig.getGroupAddr().equals("00")) {
 //                            DeviceBusiness.deleteOBOXGroupByAddr(deviceConfig.getOboxSerialId(), deviceConfig.getGroupAddr());
 //                        }
+                    	logger.info("===delete device serialId:"+deviceConfig.getDeviceSerialId());
                         userDeviceService.deleteUserDevice(deviceConfig.getOboxSerialId());
 //                        DeviceBusiness.deleteUserDeviceByDeviceId(deviceConfig.getOboxId());
                         deviceChannelService.deleteDeviceChannel(deviceConfig.getOboxId());
@@ -109,6 +112,7 @@ public class SearchResultHandler extends BasicHandler {
 //                    if (!dbConfig.getGroupAddr().equals("00")) {
 //                        DeviceBusiness.deleteOBOXGroupByAddr(dbConfig.getOboxSerialId(), dbConfig.getGroupAddr());
 //                    }
+                	logger.info("===delete device serialId:"+dbConfig.getDeviceSerialId());
                     userDeviceService.deleteUserDevice(dbConfig.getOboxSerialId());
 //                        DeviceBusiness.deleteUserDeviceByDeviceId(deviceConfig.getOboxId());
                     deviceChannelService.deleteDeviceChannel(dbConfig.getOboxId());
@@ -188,6 +192,7 @@ public class SearchResultHandler extends BasicHandler {
                     }
                 }
 //	
+                returnIndex=(deviceConfig.getId()!=null&&deviceConfig.getId()!=0)?deviceConfig.getId():returnIndex;
                 TDeviceChannel tDeviceChannel =deviceChannelService.getDeviceChannelById(returnIndex,obox.getOboxId());
                 if(tDeviceChannel==null){
                 	tDeviceChannel.setDeviceId(returnIndex);
@@ -202,8 +207,51 @@ public class SearchResultHandler extends BasicHandler {
 
             }
         } catch (Exception e) {
-        	logger.error(e.getMessage());
+        	logger.error("===SearchResultHandler error msg:"+e.getMessage());
         }
         return null;
     }
+	public static void main(String[] args) throws UnsupportedEncodingException, Exception {
+		//0181024c616d70330000000000000000000000e9660100004494000000000da000000000000000000000000000000000000000000000
+		//0181024c616d70370000000000000000000000f26601000044940000000011a000000000000000000000000000000000000000000000
+		//0181024c616d70370000000000000000000000f26601000044940000000011a000000000000000000000000000000000000000000000
+		//0181024c616d70350000000000000000000000eb660100004494000000000fa000000000000000000000000000000000000000000000
+		//0181024c616d70320000000000000000000000a75a010000939b0000000002a000000000000000000000000000000000000000000000
+		//01000500001e000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+		byte [] bodyBytes = ByteHelper.hexStringToBytes("01020100000500af5a010000010001020000000000000000000000000000000000000000000000000000000000000000000000000000");
+
+        byte suc = bodyBytes[0];
+        
+     //   logger.info("SearchResultHandler.process():"+msg.getData());
+        byte [] idBytes = new byte [16];
+        System.arraycopy(bodyBytes, 3, idBytes, 0, idBytes.length);
+        String ID = ByteHelper.bytesToHexString(idBytes);
+        ID = ByteHelper.fromHexAscii(ID);
+
+        byte [] deviceTypeBytes = { bodyBytes[1] };
+        byte device_type_int = (byte)(deviceTypeBytes [0] & 0x1f);
+        deviceTypeBytes [0] = device_type_int;
+        String device_type = ByteHelper.bytesToHexString(deviceTypeBytes);
+
+        byte [] deviceChildTypeBytes = { bodyBytes[2] };
+        String device_child_type = ByteHelper.bytesToHexString(deviceChildTypeBytes);
+
+        byte [] serialBytes = new byte [5];
+        System.arraycopy(bodyBytes, 19, serialBytes, 0, serialBytes.length);
+        String device_serial_id = ByteHelper.bytesToHexString(serialBytes);
+
+        byte [] oboxSrialBytes = new byte[5];
+        System.arraycopy(bodyBytes, 24, oboxSrialBytes, 0, oboxSrialBytes.length);
+        String obox_serial_id = ByteHelper.bytesToHexString(oboxSrialBytes);
+
+        byte [] addrBytes = { bodyBytes[30] };
+        String device_rf_addr = ByteHelper.bytesToHexString(addrBytes);
+        
+        
+        System.out.println("ID:"+ID+"  device_type:"+device_type+" device_child_type:"+device_child_type
+        		+"  device_serial_id:"+device_serial_id+"  obox_serial_id:"+obox_serial_id
+        		+" device_rf_addr:"+device_rf_addr
+        		);
+	}
+	
 }

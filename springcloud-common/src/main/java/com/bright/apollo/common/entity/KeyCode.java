@@ -1,10 +1,15 @@
 package com.bright.apollo.common.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class KeyCode {
+import java.io.Serializable;
+
+public class KeyCode implements Serializable {
+
+    private static final long serialVersionUID = -2222l;
 
     /**
      * 键显示名称
@@ -20,13 +25,13 @@ public class KeyCode {
         this.kn = kn;
     }
 
-//    public String getSrcCode() {
-//        return srcCode;
-//    }
-//
-//    public void setSrcCode(String srcCode) {
-//        this.srcCode = srcCode;
-//    }
+    public String getSrcCode() {
+        return srcCode;
+    }
+
+    public void setSrcCode(String srcCode) {
+        this.srcCode = srcCode;
+    }
 
     public String getShortCode() {
         return shortCode;
@@ -47,10 +52,10 @@ public class KeyCode {
     /**
      * 键原始码库
      */
-//    @Expose
-//    @SerializedName("src")
-//    @JsonProperty(value="src")
-//    private String srcCode;
+    @Expose
+    @SerializedName("src")
+    @JsonIgnore
+    private String srcCode;
 
     /**
      * 短码
