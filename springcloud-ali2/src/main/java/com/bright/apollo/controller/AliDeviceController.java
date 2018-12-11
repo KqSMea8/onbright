@@ -812,7 +812,8 @@ public class AliDeviceController {
 			dataMap.put("remote",resMap);
 			resMap.put("index",idx);
 			resMap.put("name",name);
-			resMap.put("brandType",brandId);
+			resMap.put("brandId",brandId);
+			resMap.put("deviceType",deviceType);
 			resMap.put("keys",jsonArray);
 			resMap.put("extendsKeys",new JSONArray());
 			res.setData(dataMap);
