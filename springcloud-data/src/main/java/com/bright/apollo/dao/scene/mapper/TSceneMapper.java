@@ -46,7 +46,8 @@ public interface TSceneMapper {
 			@Result(column = "scene_type", property = "sceneType"),
 			@Result(column = "msg_alter", property = "msgAlter"), @Result(column = "scene_run", property = "sceneRun"),
 			@Result(column = "license", property = "license"), @Result(column = "alter_need", property = "alterNeed"),
-			@Result(column = "scene_group", property = "sceneGroup") })
+			@Result(column = "scene_group", property = "sceneGroup") ,
+			@Result(column = "signature", property = "signature") })
 	List<TScene> getSceneByOboxSerialId(@Param("oboxSerialId") String oboxSerialId);
 
 	@Delete("delete from t_scene where scene_number = #{sceneNumber}")
@@ -66,8 +67,8 @@ public interface TSceneMapper {
 	
 	@Insert("insert into t_scene (scene_name,\n" + "obox_serial_id,\n" + "obox_scene_number,\n" + "scene_status,\n"
 			+ "scene_type,\n" + "msg_alter,\n" + "last_op_time,\n" + "scene_run,\n" + "license,\n" + "alter_need,\n"
-			+ "scene_group) values(#{sceneName},#{oboxSerialId}," + "#{oboxSceneNumber},#{sceneStatus},#{sceneType},"
-			+ "#{msgAlter},#{lastOpTime},#{sceneRun},#{license}," + "#{alterNeed},#{sceneGroup})")
+			+ "scene_group,signature) values(#{sceneName},#{oboxSerialId}," + "#{oboxSceneNumber},#{sceneStatus},#{sceneType},"
+			+ "#{msgAlter},#{lastOpTime},#{sceneRun},#{license}," + "#{alterNeed},#{sceneGroup},#{signature})")
 	@SelectKey(statement = "select LAST_INSERT_ID()", keyProperty = "sceneNumber", before = false, resultType = int.class)
 	int addScene(TScene scene);
 
@@ -75,7 +76,7 @@ public interface TSceneMapper {
 			+ "obox_scene_number = #{oboxSceneNumber},\n" + "scene_status = #{sceneStatus},\n"
 			+ "scene_type = #{sceneType},\n" + "msg_alter = #{msgAlter},\n" + "last_op_time = #{lastOpTime},\n"
 			+ "scene_run = #{sceneRun},\n" + "license = #{license},\n" + "alter_need = #{alterNeed},\n"
-			+ "scene_group = #{sceneGroup}" + " where scene_number = #{sceneNumber}")
+			+ "scene_group = #{sceneGroup},signature = #{signature}" + " where scene_number = #{sceneNumber}")
 	@Options(useGeneratedKeys = true, keyProperty = "scene_number", keyColumn = "scene_number")
 	int updateScene(TScene scene);
 
@@ -89,7 +90,8 @@ public interface TSceneMapper {
 			@Result(column = "scene_type", property = "sceneType"),
 			@Result(column = "msg_alter", property = "msgAlter"), @Result(column = "scene_run", property = "sceneRun"),
 			@Result(column = "license", property = "license"), @Result(column = "alter_need", property = "alterNeed"),
-			@Result(column = "scene_group", property = "sceneGroup") })
+			@Result(column = "scene_group", property = "sceneGroup"),
+			@Result(column = "signature", property = "signature")})
 	TScene getSceneBySceneNumber(@Param("sceneNumber") int sceneNumber);
 
 	@Select("select * from t_scene")
@@ -111,7 +113,8 @@ public interface TSceneMapper {
 			@Result(column = "scene_type", property = "sceneType"),
 			@Result(column = "msg_alter", property = "msgAlter"), @Result(column = "scene_run", property = "sceneRun"),
 			@Result(column = "license", property = "license"), @Result(column = "alter_need", property = "alterNeed"),
-			@Result(column = "scene_group", property = "sceneGroup") })
+			@Result(column = "scene_group", property = "sceneGroup"),
+			@Result(column = "signature", property = "signature")})
 	TScene getTSceneByOboxSerialIdAndOboxSceneNumber(@Param("oboxSerialId") String oboxSerialId,
 			@Param("oboxSceneNumber") Integer oboxSceneNumber);
 
@@ -132,7 +135,8 @@ public interface TSceneMapper {
 			@Result(column = "scene_type", property = "sceneType"),
 			@Result(column = "msg_alter", property = "msgAlter"), @Result(column = "scene_run", property = "sceneRun"),
 			@Result(column = "license", property = "license"), @Result(column = "alter_need", property = "alterNeed"),
-			@Result(column = "scene_group", property = "sceneGroup") })
+			@Result(column = "scene_group", property = "sceneGroup") ,
+			@Result(column = "signature", property = "signature")})
 	List<TScene> getSceneByUserId(@Param("userId") Integer userId);
 
 	/**
@@ -154,7 +158,8 @@ public interface TSceneMapper {
 			@Result(column = "scene_type", property = "sceneType"),
 			@Result(column = "msg_alter", property = "msgAlter"), @Result(column = "scene_run", property = "sceneRun"),
 			@Result(column = "license", property = "license"), @Result(column = "alter_need", property = "alterNeed"),
-			@Result(column = "scene_group", property = "sceneGroup") })
+			@Result(column = "scene_group", property = "sceneGroup"),
+			@Result(column = "signature", property = "signature")})
 	List<TScene> getSceneByUserIdAndPage(@Param("userId") Integer userId, @Param("start") int start,
 			@Param("count") int count);
 
@@ -175,7 +180,8 @@ public interface TSceneMapper {
 			@Result(column = "scene_type", property = "sceneType"),
 			@Result(column = "msg_alter", property = "msgAlter"), @Result(column = "scene_run", property = "sceneRun"),
 			@Result(column = "license", property = "license"), @Result(column = "alter_need", property = "alterNeed"),
-			@Result(column = "scene_group", property = "sceneGroup") })
+			@Result(column = "scene_group", property = "sceneGroup"),
+			@Result(column = "signature", property = "signature")})
 	List<TScene> querySceneByLocation(@Param("location")Integer location);
 
 	/**  
@@ -195,6 +201,7 @@ public interface TSceneMapper {
 			@Result(column = "scene_type", property = "sceneType"),
 			@Result(column = "msg_alter", property = "msgAlter"), @Result(column = "scene_run", property = "sceneRun"),
 			@Result(column = "license", property = "license"), @Result(column = "alter_need", property = "alterNeed"),
-			@Result(column = "scene_group", property = "sceneGroup") })
+			@Result(column = "scene_group", property = "sceneGroup"),
+			@Result(column = "signature", property = "signature")})
 	TScene querySceneBySceneNumberAndUserId(@Param("sceneNumber")Integer sceneNumber, @Param("userId")Integer userId);
 }

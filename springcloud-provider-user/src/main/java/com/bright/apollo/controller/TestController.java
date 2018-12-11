@@ -57,13 +57,13 @@ public class TestController {
 	 
 		 return "uostop"+word;
 	}
-	@SuppressWarnings({ "rawtypes" })
+	/*@SuppressWarnings({ "rawtypes" })
  	@RequestMapping(value = "/test/sms", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String  testsms() {
 		smsService.sendAuthCode(123456, "15879618946");
 		 return "uostop";
-	}
+	}*/
 	
 	@SuppressWarnings({ "rawtypes" })
  	@RequestMapping(value = "/batch", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")

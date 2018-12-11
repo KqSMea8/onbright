@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bright.apollo.common.entity.OauthClientDetails;
 import com.bright.apollo.common.entity.TCreateTableLog;
@@ -39,7 +40,8 @@ public interface FeignUserClient {
 
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/user/forget/{mobile}", method = RequestMethod.GET)
-	public ResponseObject forget(@PathVariable(value = "mobile") String mobile);
+	public ResponseObject forget(@PathVariable(value = "mobile") String mobile,
+			@RequestParam(name="appId",required=false)String appId);
 
 	/**
 	 * @param serialId
@@ -220,7 +222,8 @@ public interface FeignUserClient {
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/user/sendCodeToMobile/{mobile}", method = RequestMethod.GET)
-	public ResponseObject sendCodeToMobile(@PathVariable(required = true, value = "mobile") String mobile);
+	public ResponseObject sendCodeToMobile(@PathVariable(required = true, value = "mobile") String mobile,
+			@RequestParam(required=false,value="appId")String appId);
 
 	/**
 	 * @param code

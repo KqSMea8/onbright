@@ -64,6 +64,7 @@ import com.bright.apollo.enums.MsgStateEnum;
 import com.bright.apollo.enums.NodeTypeEnum;
 import com.bright.apollo.enums.RemoteUserEnum;
 import com.bright.apollo.enums.SceneTypeEnum;
+import com.bright.apollo.enums.SignatureEnum;
 import com.bright.apollo.enums.TimerSetTypeEnum;
 import com.bright.apollo.feign.FeignAliClient;
 import com.bright.apollo.feign.FeignDeviceClient;
@@ -100,7 +101,6 @@ import com.bright.apollo.tool.MD5;
 import com.bright.apollo.tool.MobileUtil;
 import com.bright.apollo.tool.NumberHelper;
 import com.bright.apollo.vo.PicPathVo;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -407,12 +407,12 @@ public class FacadeController extends BaseController {
 				}
 				// search device by user
 				ResponseObject<OboxResp> releaseObox = feignAliClient.scanByUnStop(oboxSerialId, deviceType,
-						deviceChildType, serialId, countOfDevice,address,timeOut);
+						deviceChildType, serialId, countOfDevice, address, timeOut);
 				if (releaseObox != null && releaseObox.getStatus() == ResponseEnum.AddSuccess.getStatus()) {
-				 
+
 					res.setStatus(ResponseEnum.AddSuccess.getStatus());
 					res.setMessage(ResponseEnum.AddSuccess.getMsg());
-				}else{
+				} else {
 					res.setStatus(ResponseEnum.SendOboxError.getStatus());
 					res.setMessage(ResponseEnum.SendOboxError.getMsg());
 				}
@@ -687,7 +687,8 @@ public class FacadeController extends BaseController {
 	@ApiOperation(value = "add local scene ", httpMethod = "POST", produces = "application/json")
 	@ApiResponse(code = 200, message = "SelectSuccess", response = ResponseObject.class)
 	@RequestMapping(value = "/addLocalScene", method = RequestMethod.POST)
-	public ResponseObject<Map<String, Object>> addLocalScene(@RequestBody(required = true) SceneDTO sceneDTO) {
+	public ResponseObject<Map<String, Object>> addLocalScene(@RequestBody(required = true) SceneDTO sceneDTO,
+			@RequestParam(value = "appId", required = false) String appId) {
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
@@ -780,17 +781,17 @@ public class FacadeController extends BaseController {
 					return res;
 				}
 				TScene dbScene = null;
-				//if (dbScene == null) {
-					ResponseObject<TScene> dbSceneRes = feignSceneClient
-							.getScenesByOboxSerialIdAndOboxSceneNumber(oboxSerialId, oboxSceneNumber);
-					if (dbSceneRes != null) {
-						dbScene = dbSceneRes.getData();
-						TUserScene tUserScene = new TUserScene();
-						tUserScene.setSceneNumber(dbScene.getSceneNumber());
-						tUserScene.setUserId(resUser.getData().getId());
-						feignUserClient.addUserScene(tUserScene);
-					}
-				//}
+				// if (dbScene == null) {
+				ResponseObject<TScene> dbSceneRes = feignSceneClient
+						.getScenesByOboxSerialIdAndOboxSceneNumber(oboxSerialId, oboxSceneNumber);
+				if (dbSceneRes != null) {
+					dbScene = dbSceneRes.getData();
+					TUserScene tUserScene = new TUserScene();
+					tUserScene.setSceneNumber(dbScene.getSceneNumber());
+					tUserScene.setUserId(resUser.getData().getId());
+					feignUserClient.addUserScene(tUserScene);
+				}
+				// }
 				tScene.setOboxSceneNumber(oboxSceneNumber);
 				tScene.setSceneName(sceneName);
 				tScene.setSceneType(sceneType);
@@ -864,7 +865,9 @@ public class FacadeController extends BaseController {
 					}
 				}
 
-				if (sceneType.equals("02") || sceneType.equals("03")) {
+				if (sceneType.equals("02") || sceneType.equals("03")
+						|| (!StringUtils.isEmpty(appId) && appId.contains(SignatureEnum.MIL.getAppId()))) {
+					dbScene.setSignature(SignatureEnum.MIL.getValue());
 					dbScene.setSceneType(sceneType);
 					feignSceneClient.updateScene(dbScene);
 					// SceneBusiness.updateScene(dbScene);
@@ -899,7 +902,8 @@ public class FacadeController extends BaseController {
 	@ApiOperation(value = "add server scene ", httpMethod = "POST", produces = "application/json")
 	@ApiResponse(code = 200, message = "SelectSuccess", response = ResponseObject.class)
 	@RequestMapping(value = "/addServerScene", method = RequestMethod.POST)
-	public ResponseObject<Map<String, Object>> addServerScene(@RequestBody(required = true) SceneDTO sceneDTO) {
+	public ResponseObject<Map<String, Object>> addServerScene(@RequestBody(required = true) SceneDTO sceneDTO,
+			@RequestParam(value = "appId", required = false) String appId) {
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("scene_type", SceneTypeEnum.server.getValue());
@@ -946,6 +950,8 @@ public class FacadeController extends BaseController {
 			tScene.setSceneName(sceneName);
 			tScene.setSceneType(sceneType);
 			tScene.setSceneStatus(sceneDTO.getSceneStatus());
+			tScene.setSignature(StringUtils.isEmpty(appId) || !appId.contains(SignatureEnum.MIL.getAppId())
+					? SignatureEnum.OB.getValue() : SignatureEnum.MIL.getValue());
 			ResponseObject<TScene> sceneRes = feignSceneClient.addScene(tScene);
 			if (sceneRes == null || sceneRes.getData() == null
 					|| sceneRes.getStatus() != ResponseEnum.AddSuccess.getStatus()) {
@@ -1108,7 +1114,8 @@ public class FacadeController extends BaseController {
 	@ApiOperation(value = "modify server scene ", httpMethod = "PUT", produces = "application/json")
 	@ApiResponse(code = 200, message = "SelectSuccess", response = ResponseObject.class)
 	@RequestMapping(value = "/modifyServerScene", method = RequestMethod.PUT)
-	public ResponseObject<Map<String, Object>> modifyServerScene(@RequestBody(required = true) SceneDTO sceneDTO) {
+	public ResponseObject<Map<String, Object>> modifyServerScene(@RequestBody(required = true) SceneDTO sceneDTO,
+			@RequestParam(value = "appId", required = false) String appId) {
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
@@ -1150,6 +1157,12 @@ public class FacadeController extends BaseController {
 			if (!StringUtils.isEmpty(sceneDTO.getSceneGroup())) {
 				needUpdate = true;
 				tScene.setSceneGroup(sceneDTO.getSceneGroup());
+			}
+			byte sign = StringUtils.isEmpty(appId) || !appId.contains(SignatureEnum.MIL.getAppId())
+					? SignatureEnum.OB.getValue() : SignatureEnum.MIL.getValue();
+			if (tScene.getSignature() != sign) {
+				needUpdate = true;
+				tScene.setSignature(sign);
 			}
 			if (needUpdate) {
 				feignSceneClient.updateScene(tScene);
@@ -1369,9 +1382,11 @@ public class FacadeController extends BaseController {
 	@ApiOperation(value = "modify local scene ", httpMethod = "PUT", produces = "application/json")
 	@ApiResponse(code = 200, message = "SelectSuccess", response = ResponseObject.class)
 	@RequestMapping(value = "/modifyLocalScene", method = RequestMethod.PUT)
-	public ResponseObject<Map<String, Object>> modifyLocalScene(@RequestBody(required = true) SceneDTO sceneDTO) {
+	public ResponseObject<Map<String, Object>> modifyLocalScene(@RequestBody(required = true) SceneDTO sceneDTO,
+			@RequestParam(required = false, value = "appId") String appId) {
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		Map<String, Object> map = new HashMap<String, Object>();
+		boolean needUpdate = false;
 		try {
 			// fail safe
 			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -1412,9 +1427,17 @@ public class FacadeController extends BaseController {
 			if (sceneDTO.getMsgAlter() != null) {
 				if (sceneDTO.getMsgAlter() != tScene.getMsgAlter()) {
 					tScene.setMessageAlter(sceneDTO.getMsgAlter());
-					// SceneBusiness.updateScene(tScene);
-					feignSceneClient.updateScene(tScene);
+					needUpdate = true;
 				}
+			}
+			byte sign = StringUtils.isEmpty(appId) || !appId.contains(SignatureEnum.MIL.getAppId())
+					? SignatureEnum.OB.getValue() : SignatureEnum.MIL.getValue();
+			if (tScene.getSignature() != sign) {
+				needUpdate = true;
+				tScene.setSignature(sign);
+			}
+			if (needUpdate) {
+				feignSceneClient.updateScene(tScene);
 			}
 			String sceneName = sceneDTO.getSceneName();
 			if (!StringUtils.isEmpty(sceneName)) {
@@ -1741,7 +1764,7 @@ public class FacadeController extends BaseController {
 				}
 				List<TOboxDeviceConfig> oboxDeviceConfigs = oboxDTO.getDeviceConfigs();
 				if (oboxDeviceConfigs != null) {
-					logger.info("===adddevice:"+oboxDeviceConfigs.size());
+					logger.info("===adddevice:" + oboxDeviceConfigs.size());
 					for (TOboxDeviceConfig oboxDeviceConfig : oboxDeviceConfigs) {
 						oboxDeviceConfig.setOboxId(tobox.getId());
 						oboxDeviceConfig.setOboxSerialId(tobox.getOboxSerialId());
@@ -1749,17 +1772,19 @@ public class FacadeController extends BaseController {
 								.addDevice(oboxDeviceConfig.getDeviceSerialId(), oboxDeviceConfig);
 						if (resDevice != null && resDevice.getStatus() == ResponseEnum.AddSuccess.getStatus()
 								&& resDevice.getData() != null) {
-							//ResponseObject<TUserDevice> userDeviceRes = feignUserClient
-							//		.getUserDevcieByUserIdAndSerialId(resUser.getData().getId(),
-							//				oboxDeviceConfig.getDeviceSerialId());
-							//if (userDeviceRes == null || userDeviceRes.getData() == null) {
-								//TUserDevice tUserDevice = new TUserDevice();
-								//tUserDevice.setDeviceSerialId(oboxDeviceConfig.getDeviceSerialId());
-								//tUserDevice.setUserId(resUser.getData().getId());
-								//feignUserClient.addUserDevice(tUserDevice);
-								feignUserClient.addUserDeviceBySerialIdAndOboxSerialId(oboxDeviceConfig.getDeviceSerialId(),
-										tobox.getOboxSerialId());
-							//}
+							// ResponseObject<TUserDevice> userDeviceRes =
+							// feignUserClient
+							// .getUserDevcieByUserIdAndSerialId(resUser.getData().getId(),
+							// oboxDeviceConfig.getDeviceSerialId());
+							// if (userDeviceRes == null ||
+							// userDeviceRes.getData() == null) {
+							// TUserDevice tUserDevice = new TUserDevice();
+							// tUserDevice.setDeviceSerialId(oboxDeviceConfig.getDeviceSerialId());
+							// tUserDevice.setUserId(resUser.getData().getId());
+							// feignUserClient.addUserDevice(tUserDevice);
+							feignUserClient.addUserDeviceBySerialIdAndOboxSerialId(oboxDeviceConfig.getDeviceSerialId(),
+									tobox.getOboxSerialId());
+							// }
 							final TOboxDeviceConfig tempDeviceConfig = oboxDeviceConfig;
 							new Thread(new Runnable() {
 								@Override
@@ -3041,7 +3066,8 @@ public class FacadeController extends BaseController {
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/sendIntelligentValidateCode/{serialId}/{pin}/{mobile}", method = RequestMethod.POST)
 	public ResponseObject sendIntelligentValidateCode(@PathVariable(value = "serialId") String serialId,
-			@PathVariable(value = "pin") String pin, @PathVariable(value = "mobile") String mobile) {
+			@PathVariable(value = "pin") String pin, @PathVariable(value = "mobile") String mobile,
+			@RequestParam(required = false, value = "appId") String appId) {
 		ResponseObject res = new ResponseObject();
 		try {
 			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -3091,8 +3117,9 @@ public class FacadeController extends BaseController {
 			// 返回 code(验证码)
 			String validateCode = (Math.random() * 9 + 1) * 100000 + "";
 			cmdCache.addMobileValidateCode(mobile, pin, serialId, validateCode);
-
-			smsService.sendCode(mobile, validateCode);
+			smsService.sendCode(mobile, validateCode,
+					StringUtils.isEmpty(appId) || !appId.contains(SignatureEnum.MIL.getAppId())
+							? SignatureEnum.OB.getSign() : SignatureEnum.MIL.getSign());
 			// msgService.sendCode(mobile, validateCode);
 
 			res.setStatus(ResponseEnum.AddSuccess.getStatus());
@@ -3831,7 +3858,8 @@ public class FacadeController extends BaseController {
 	@RequestMapping(value = "/updateIntelligentRemoteUser/{serialId}/{pin}/{authToken}/{mobile}", method = RequestMethod.PUT)
 	public ResponseObject sendRemotePwd(@PathVariable(value = "serialId") String serialId,
 			@PathVariable(value = "pin") String pin, @PathVariable(value = "authToken") String authToken,
-			@PathVariable(value = "mobile") String mobile) {
+			@PathVariable(value = "mobile") String mobile,
+			@RequestParam(value = "appId", required = false) String appId) {
 		ResponseObject res = new ResponseObject();
 		try {
 			String intelligentSerialId = cmdCache.getIntelligentSerialId(authToken);
@@ -3886,7 +3914,9 @@ public class FacadeController extends BaseController {
 			}
 			TIntelligentFingerRemoteUser remoteUser = remoteRes.getData();
 
-			smsService.sendNotice(mobile, remoteUser.getPwd());
+			smsService.sendNotice(mobile, remoteUser.getPwd(),
+					StringUtils.isEmpty(appId) || !appId.contains(SignatureEnum.MIL.getAppId())
+							? SignatureEnum.OB.getSign() : SignatureEnum.MIL.getSign());
 			// msgService.sendNotice(mobile, "你的临时授权码是：" + );
 
 			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
@@ -5710,7 +5740,6 @@ public class FacadeController extends BaseController {
 		return res;
 	}
 
-
 	@SuppressWarnings({ "rawtypes" })
 	@ApiOperation(value = "controllIR", httpMethod = "POST", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
@@ -5735,8 +5764,8 @@ public class FacadeController extends BaseController {
 				return res;
 			}
 			return feignAliClient.controllIR(serialId, index, key);
-//			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
-//			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+			// res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			// res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
@@ -6024,7 +6053,7 @@ public class FacadeController extends BaseController {
 				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
 				return res;
 			}
-			res = feignAliClient.renameIrDevice(serialId,index,name);
+			res = feignAliClient.renameIrDevice(serialId, index, name);
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
@@ -6033,7 +6062,7 @@ public class FacadeController extends BaseController {
 		return res;
 	}
 
-	//学习遥控方案——新建自定义遥控器
+	// 学习遥控方案——新建自定义遥控器
 	@ApiOperation(value = "createIrDevice", httpMethod = "POST", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/createIrDevice", method = RequestMethod.POST)
@@ -6057,7 +6086,7 @@ public class FacadeController extends BaseController {
 				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
 				return res;
 			}
-			res = feignAliClient.createIrDevice(serialId,deviceType,name,brandId);
+			res = feignAliClient.createIrDevice(serialId, deviceType, name, brandId);
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
@@ -6322,8 +6351,8 @@ public class FacadeController extends BaseController {
 	@RequestMapping(value = "/createLocation/{building}/{room}", method = RequestMethod.POST)
 	public ResponseObject<Map<String, Object>> createLocation(
 			@RequestParam(value = "file", required = false) MultipartFile file,
-			@PathVariable(value = "building") String building,
-			@PathVariable(value = "room") String room, @RequestBody(required = false) List<String> mList) {
+			@PathVariable(value = "building") String building, @PathVariable(value = "room") String room,
+			@RequestBody(required = false) List<String> mList) {
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		try {
 			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -6340,8 +6369,11 @@ public class FacadeController extends BaseController {
 				return res;
 			}
 			return feignDeviceClient.createLocation(resUser.getData().getId(), building, room, mList);
-			//return mList!=null?feignDeviceClient.createLocation(resUser.getData().getId(), building, room, mList):
-			//	feignDeviceClient.createLocationWithOutDevice(resUser.getData().getId(), building, room);;
+			// return
+			// mList!=null?feignDeviceClient.createLocation(resUser.getData().getId(),
+			// building, room, mList):
+			// feignDeviceClient.createLocationWithOutDevice(resUser.getData().getId(),
+			// building, room);;
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
@@ -6360,7 +6392,7 @@ public class FacadeController extends BaseController {
 	@RequestMapping(value = "/deleteLocation/{location}", method = RequestMethod.DELETE)
 	public ResponseObject<Map<String, Object>> deleteLocation(@PathVariable(value = "location") Integer location) {
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
-		TLocation tLocation=null;
+		TLocation tLocation = null;
 		try {
 			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			if (StringUtils.isEmpty(principal.getUsername())) {
@@ -6375,18 +6407,19 @@ public class FacadeController extends BaseController {
 				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
 				return res;
 			}
-			ResponseObject<TLocation> locationRes = feignDeviceClient.queryLocationByUserAndLocation(resUser.getData().getId(), location);
-			if(locationRes.getData()!=null&&locationRes.getData()!=null){
-				tLocation=locationRes.getData();
+			ResponseObject<TLocation> locationRes = feignDeviceClient
+					.queryLocationByUserAndLocation(resUser.getData().getId(), location);
+			if (locationRes.getData() != null && locationRes.getData() != null) {
+				tLocation = locationRes.getData();
 			}
 			return feignDeviceClient.deleteLocation(location, resUser.getData().getId());
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
-		}finally{
-			if(tLocation!=null){
-				ftpService.deleteFtpFile(picPathVo, tLocation.getDownloadUrl(),tLocation.getThumUrl());
+		} finally {
+			if (tLocation != null) {
+				ftpService.deleteFtpFile(picPathVo, tLocation.getDownloadUrl(), tLocation.getThumUrl());
 			}
 		}
 		return res;
@@ -6405,9 +6438,7 @@ public class FacadeController extends BaseController {
 	@RequestMapping(value = "/addDeviceLocation/{serialId}/{location}/{xAxis}/{yAxis}/{deviceType}", method = RequestMethod.POST)
 	public ResponseObject<Map<String, Object>> addDeviceLocation(@PathVariable(value = "serialId") String serialId,
 			@PathVariable(value = "location") Integer location, @PathVariable(value = "xAxis") Integer xAxis,
-			@PathVariable(value = "yAxis") Integer yAxis,
-			@PathVariable(value = "deviceType") String deviceType
-			) {
+			@PathVariable(value = "yAxis") Integer yAxis, @PathVariable(value = "deviceType") String deviceType) {
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		try {
 			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -6423,7 +6454,8 @@ public class FacadeController extends BaseController {
 				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
 				return res;
 			}
-			return feignDeviceClient.addDeviceLocation(resUser.getData().getId(),serialId, location, xAxis, yAxis,deviceType);
+			return feignDeviceClient.addDeviceLocation(resUser.getData().getId(), serialId, location, xAxis, yAxis,
+					deviceType);
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
@@ -6580,10 +6612,10 @@ public class FacadeController extends BaseController {
 		return res;
 	}
 
-	/**  
+	/**
 	 * @param location
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
 	@ApiOperation(value = "querySceneLocation", httpMethod = "GET", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
@@ -6618,18 +6650,17 @@ public class FacadeController extends BaseController {
 		return res;
 	}
 
-	/**  
+	/**
 	 * @param location
 	 * @param sceneNumber
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
 	@ApiOperation(value = "setSceneLocation", httpMethod = "POST", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/setSceneLocation/{location}/{sceneNumber}", method = RequestMethod.POST)
-	public ResponseObject setSceneLocation(
-			@PathVariable(required = true, name = "location") Integer location, 
+	public ResponseObject setSceneLocation(@PathVariable(required = true, name = "location") Integer location,
 			@PathVariable(required = true, name = "sceneNumber") Integer sceneNumber) {
 		ResponseObject res = new ResponseObject();
 		try {
@@ -6646,7 +6677,7 @@ public class FacadeController extends BaseController {
 				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
 				return res;
 			}
-			return feignDeviceClient.setSceneLocation(resUser.getData().getId(), location,sceneNumber);
+			return feignDeviceClient.setSceneLocation(resUser.getData().getId(), location, sceneNumber);
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
@@ -6655,18 +6686,17 @@ public class FacadeController extends BaseController {
 		return res;
 	}
 
-	/**  
+	/**
 	 * @param location
 	 * @param sceneNumber
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
 	@ApiOperation(value = "deleteSceneLocation", httpMethod = "DELETE", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/deleteSceneLocation/{location}/{sceneNumber}", method = RequestMethod.DELETE)
-	public ResponseObject deleteSceneLocation(
-			@PathVariable(required = true, name = "location") Integer location, 
+	public ResponseObject deleteSceneLocation(@PathVariable(required = true, name = "location") Integer location,
 			@PathVariable(required = true, name = "sceneNumber") Integer sceneNumber) {
 		ResponseObject res = new ResponseObject();
 		try {
@@ -6683,7 +6713,7 @@ public class FacadeController extends BaseController {
 				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
 				return res;
 			}
-			return feignDeviceClient.deleteSceneLocation(resUser.getData().getId(), location,sceneNumber);
+			return feignDeviceClient.deleteSceneLocation(resUser.getData().getId(), location, sceneNumber);
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
