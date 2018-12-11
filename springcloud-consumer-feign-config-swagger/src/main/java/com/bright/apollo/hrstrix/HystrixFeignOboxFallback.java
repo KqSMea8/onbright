@@ -105,4 +105,6 @@ public class HystrixFeignOboxFallback extends BasicHystrixFeignFallback implemen
 		return serverError();
 	}
 
+ 
+
 }

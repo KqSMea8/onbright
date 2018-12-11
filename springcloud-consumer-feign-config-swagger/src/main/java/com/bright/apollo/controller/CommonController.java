@@ -714,6 +714,17 @@ public class CommonController {
 			if (!StringUtils.isEmpty(location) && NumberHelper.isNumeric(location)&&
 					!StringUtils.isEmpty(sceneNumber) && NumberHelper.isNumeric(sceneNumber))
 				return facadeController.deleteSceneLocation(Integer.parseInt(location),Integer.parseInt(sceneNumber));
+		}else if (CMDEnum.query_remote_led_name.toString().equals(cmdEnum.toString())) {
+			String serialId = requestParam.getValue("serialId");
+			if(!StringUtils.isEmpty(serialId)){
+				return facadeController.queryRemoteLedName(serialId);
+			}
+		}else if (CMDEnum.setting_remote_led_name.toString().equals(cmdEnum.toString())) {
+			String serialId = requestParam.getValue("serialId");
+			String names = requestParam.getValue("names");
+			if(!StringUtils.isEmpty(serialId)&&!StringUtils.isEmpty(names)){
+				return facadeController.setRemoteLedName(serialId,names);
+			}
 		}else if (CMDEnum.test.toString().equals(cmdEnum.toString())) {
 			String serialId = requestParam.getValue("serialId");
 			if (!StringUtils.isEmpty(serialId)) {

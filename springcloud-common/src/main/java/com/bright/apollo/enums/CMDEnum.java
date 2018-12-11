@@ -398,7 +398,11 @@ public enum CMDEnum {
 	
 	delete_location, 
 	
-	delete_scene_location;
+	delete_scene_location, 
+	
+	query_remote_led_name, 
+	
+	setting_remote_led_name;
 		
 	
 	private String sendCMD;
