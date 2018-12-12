@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.aspectj.weaver.tools.Trace;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +29,7 @@ import com.bright.apollo.common.entity.TUserOperation;
 import com.bright.apollo.common.entity.TUserScene;
 import com.bright.apollo.constant.Constant;
 import com.bright.apollo.constant.WxConstant;
+import com.bright.apollo.enums.SignatureEnum;
 import com.bright.apollo.http.HttpRequester;
 import com.bright.apollo.http.HttpRespons;
 import com.bright.apollo.response.ResponseEnum;
@@ -67,8 +69,8 @@ public class UserController {
 	private UserCacheService userCacheService;
 	@Autowired
 	private SmsService smsService;
-	//@Autowired
-	//private MsgService msgService;
+	// @Autowired
+	// private MsgService msgService;
 	@Autowired
 	private WxService wxService;
 	@Autowired
@@ -87,9 +89,11 @@ public class UserController {
 	private UserAliDevService userAliDevService;
 	@Autowired
 	private AsyncServiceImpl asyncServiceImpl;
+
 	@SuppressWarnings("rawtypes")
 	@GetMapping("/sendCodeToMobile/{mobile}")
-	public ResponseObject sendCodeToMobile(@PathVariable String mobile) {
+	public ResponseObject sendCodeToMobile(@PathVariable String mobile,
+			@RequestParam(required=false,value="appId")String appId) {
 		ResponseObject res = new ResponseObject();
 		try {
 			if (!Verify.checkCellphone(mobile)) {
@@ -104,8 +108,10 @@ public class UserController {
 				return res;
 			}
 			int code = RandomUtil.makeCode();
-			smsService.sendAuthCode(code, mobile);
-			//msgService.sendAuthCode(code, mobile);
+			 
+			smsService.sendAuthCode(code, mobile,StringUtils.isEmpty(appId) || !appId.contains(SignatureEnum.MIL.getAppId())
+					? SignatureEnum.OB.getSign() : SignatureEnum.MIL.getSign());
+			// msgService.sendAuthCode(code, mobile);
 			userCacheService.saveCode(mobile, code);
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
@@ -116,16 +122,17 @@ public class UserController {
 		}
 		return res;
 	}
+
 	@SuppressWarnings("rawtypes")
 	@GetMapping("/sendCodeToApp/{Appkey}")
-	public ResponseObject<Map<String, Object>> sendCodeToApp(@PathVariable(value="Appkey") String Appkey) {
+	public ResponseObject<Map<String, Object>> sendCodeToApp(@PathVariable(value = "Appkey") String Appkey) {
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
-		try {			 
+		try {
 			int code = RandomUtil.makeCode();
- 			userCacheService.saveCode(Appkey, code);
- 			Map<String, Object> map=new HashMap<String, Object>();
- 			map.put("code", code);
- 			res.setData(map);
+			userCacheService.saveCode(Appkey, code);
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("code", code);
+			res.setData(map);
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {
@@ -219,7 +226,8 @@ public class UserController {
 
 	@SuppressWarnings("rawtypes")
 	@GetMapping("/forget/{mobile}")
-	public ResponseObject forget(@PathVariable String mobile) {
+	public ResponseObject forget(@PathVariable(value = "mobile", required = true) String mobile,
+			@RequestParam(name = "appId", required = false) String appId) {
 		ResponseObject res = new ResponseObject();
 		try {
 			if (!Verify.checkCellphone(mobile)) {
@@ -234,8 +242,10 @@ public class UserController {
 				return res;
 			}
 			int code = RandomUtil.makeCode();
-			smsService.sendCode(mobile, code+"");
-			//msgService.sendCode(code, mobile);
+			smsService.sendCode(mobile, code + "",
+					StringUtils.isEmpty(appId) || !appId.contains(SignatureEnum.MIL.getAppId())
+							? SignatureEnum.OB.getSign() : SignatureEnum.MIL.getSign());
+			// msgService.sendCode(code, mobile);
 			userCacheService.saveCode(mobile, code);
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
@@ -252,10 +262,10 @@ public class UserController {
 		ResponseObject<TUser> res = new ResponseObject<TUser>();
 		try {
 			TUser tuser = null;
-			if(NumberHelper.isNumeric(userName))
-				tuser=userService.queryUserByName(userName);
+			if (NumberHelper.isNumeric(userName))
+				tuser = userService.queryUserByName(userName);
 			else
-				tuser=userService.queryUserByOpenId(userName);
+				tuser = userService.queryUserByOpenId(userName);
 			if (tuser == null) {
 				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
 				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
@@ -607,7 +617,7 @@ public class UserController {
 	public ResponseObject<Map<String, Object>> wxLogin(@PathVariable(required = true, value = "code") Integer code) {
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		try {
-			Map<String,Object> param=new HashMap<String, Object>();
+			Map<String, Object> param = new HashMap<String, Object>();
 			param.put("appid", WxConstant.WXAPPID);
 			param.put("secret", WxConstant.WXSECRET);
 			param.put("js_code", code);
@@ -615,30 +625,33 @@ public class UserController {
 			HttpRequester requestWX = new HttpRequester();
 			HttpRespons hr = requestWX.sendPost(WxConstant.WXURL, param);
 		} catch (Exception e) {
-			logger.error("===error msg:"+e.getMessage());
+			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
-	/**  
-	 * @param serialId  
-	 * @Description:  
+
+	/**
+	 * @param serialId
+	 * @Description:
 	 */
 	@RequestMapping(value = "/getUserDeviceExceptRoot/{serialId}", method = RequestMethod.GET)
-	public ResponseObject<List<TUserDevice>> getUserDeviceExceptRoot(@PathVariable(required = true, value = "serialId")String serialId){
-		ResponseObject<List<TUserDevice>> res=new ResponseObject<List<TUserDevice>>();
+	public ResponseObject<List<TUserDevice>> getUserDeviceExceptRoot(
+			@PathVariable(required = true, value = "serialId") String serialId) {
+		ResponseObject<List<TUserDevice>> res = new ResponseObject<List<TUserDevice>>();
 		try {
 			res.setData(userDeviceService.getUserDevicesBySerialId(serialId));
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {
-			logger.error("===error msg:"+e.getMessage());
+			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
 	}
+
 	/**
 	 * @param from
 	 * @param to
@@ -650,56 +663,58 @@ public class UserController {
 	public ResponseObject<List<TUserOperation>> queryUserOperationByDate(
 			@PathVariable(required = true, value = "from") long from,
 			@PathVariable(required = true, value = "to") long to,
-			@PathVariable(required = true, value = "serialId") String serialId){
-		ResponseObject<List<TUserOperation>> res=new ResponseObject<List<TUserOperation>>();
+			@PathVariable(required = true, value = "serialId") String serialId) {
+		ResponseObject<List<TUserOperation>> res = new ResponseObject<List<TUserOperation>>();
 		try {
-			res.setData(userOperationService.queryUserOperationByDate(from,to,serialId));
+			res.setData(userOperationService.queryUserOperationByDate(from, to, serialId));
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {
-			logger.error("===error msg:"+e.getMessage());
+			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
-	
+
 	}
+
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/register/{mobile}/{code}/{pwd}/{appkey}", method = RequestMethod.POST)
 	public ResponseObject register(@PathVariable(required = true, value = "mobile") String mobile,
 			@PathVariable(required = true, value = "code") String code,
 			@PathVariable(required = true, value = "pwd") String pwd,
-			@PathVariable(required = true, value = "appkey") String appkey){
-		ResponseObject res=new ResponseObject();
+			@PathVariable(required = true, value = "appkey") String appkey) {
+		ResponseObject res = new ResponseObject();
 		try {
-		/*	if (!Verify.checkCellphone(mobile)) {
-				res.setStatus(ResponseEnum.ErrorMobile.getStatus());
-				res.setMessage(ResponseEnum.ErrorMobile.getMsg());
-				return res;
-			}*/
+			/*
+			 * if (!Verify.checkCellphone(mobile)) {
+			 * res.setStatus(ResponseEnum.ErrorMobile.getStatus());
+			 * res.setMessage(ResponseEnum.ErrorMobile.getMsg()); return res; }
+			 */
 			TUser tUser = userService.queryUserByName(mobile);
 			if (tUser != null) {
 				res.setStatus(ResponseEnum.ExistMobile.getStatus());
 				res.setMessage(ResponseEnum.ExistMobile.getMsg());
 				return res;
-			} 
+			}
 			String saveCode = userCacheService.getCode(appkey);
-			if (StringUtils.isEmpty(saveCode)||!NumberHelper.isNumeric(saveCode) || !code.equals(saveCode)) {
+			if (StringUtils.isEmpty(saveCode) || !NumberHelper.isNumeric(saveCode) || !code.equals(saveCode)) {
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
 				return res;
 			}
 			String base64Encrypt = Base64Util.base64Encrypt(pwd.toString().getBytes());
-			userService.addUser(mobile, MD5.getMD5Str(base64Encrypt+pwd));
+			userService.addUser(mobile, MD5.getMD5Str(base64Encrypt + pwd));
 			res.setStatus(ResponseEnum.AddSuccess.getStatus());
 			res.setMessage(ResponseEnum.AddSuccess.getMsg());
 		} catch (Exception e) {
-			logger.error("===error msg:"+e.getMessage());
+			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
-		return res;	
+		return res;
 	}
+
 	/**
 	 * @param serialId
 	 * @Description:
@@ -707,20 +722,21 @@ public class UserController {
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/deleteUserDevice/{serialId}", method = RequestMethod.DELETE)
 	public ResponseObject deleteUserDeviceBySerialId(
-			@PathVariable(required = true, value = "serialId") String serialId){
-		ResponseObject res=new ResponseObject();
+			@PathVariable(required = true, value = "serialId") String serialId) {
+		ResponseObject res = new ResponseObject();
 		try {
 			userDeviceService.deleteUserDeviceBySerialId(serialId);
 			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
 			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
 		} catch (Exception e) {
-			logger.error("===error msg:"+e.getMessage());
+			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
-		return res;	
-	
+		return res;
+
 	}
+
 	/**
 	 * @param serialId
 	 * @Description:
@@ -728,101 +744,108 @@ public class UserController {
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/deleteUserObox/{serialId}", method = RequestMethod.DELETE)
 	public ResponseObject deleteUserOboxByOboxSerialId(
-			@PathVariable(required = true, value = "serialId") String serialId){
-		ResponseObject res=new ResponseObject();
+			@PathVariable(required = true, value = "serialId") String serialId) {
+		ResponseObject res = new ResponseObject();
 		try {
 			userOboxService.delectUserOboxByOboxSerialId(serialId);
 			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
 			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
 		} catch (Exception e) {
-			logger.error("===error msg:"+e.getMessage());
+			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
-		return res;	
+		return res;
 	}
-	/**  
-	 * @param user  
-	 * @Description:  
+
+	/**
+	 * @param user
+	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/updateUserPwd", method = RequestMethod.PUT)
-	public ResponseObject updateUserPwd(@RequestBody TUser user){
-		ResponseObject res=new ResponseObject();
+	public ResponseObject updateUserPwd(@RequestBody TUser user) {
+		ResponseObject res = new ResponseObject();
 		try {
-			if(user==null||user.getId()==null||StringUtils.isEmpty(user.getPassword())){
+			if (user == null || user.getId() == null || StringUtils.isEmpty(user.getPassword())) {
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
-			}else{
+			} else {
 				String base64Encrypt = Base64Util.base64Encrypt(user.getPassword().toString().getBytes());
-				user.setPassword(MD5.getMD5Str(base64Encrypt+user.getPassword()));
+				user.setPassword(MD5.getMD5Str(base64Encrypt + user.getPassword()));
 				userService.updateUser(user);
 			}
 		} catch (Exception e) {
-			logger.error("===error msg:"+e.getMessage());
+			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
-		return res;	
+		return res;
 	}
-	/**  
-	 * @param deviceSerialId  
-	 * @Description:  
+
+	/**
+	 * @param deviceSerialId
+	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/deleteUserAliDev/{deviceSerialId}", method = RequestMethod.DELETE)
-	public ResponseObject deleteUserAliDev(@PathVariable(required = true, value = "deviceSerialId")  String deviceSerialId){
-		ResponseObject res=new ResponseObject();
+	public ResponseObject deleteUserAliDev(
+			@PathVariable(required = true, value = "deviceSerialId") String deviceSerialId) {
+		ResponseObject res = new ResponseObject();
 		try {
 			userAliDevService.deleteUserAliDev(deviceSerialId);
 			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
 			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
 		} catch (Exception e) {
-			logger.error("===error msg:"+e.getMessage());
+			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
-		return res;	
+		return res;
 	}
-	/**  
-	 * @param tUserAliDev  
-	 * @Description:  
+
+	/**
+	 * @param tUserAliDev
+	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/addUserAliDev", method = RequestMethod.POST)
-	public ResponseObject addUserAliDev(@RequestBody TUserAliDevice tUserAliDev){
-		ResponseObject res=new ResponseObject();
+	public ResponseObject addUserAliDev(@RequestBody TUserAliDevice tUserAliDev) {
+		ResponseObject res = new ResponseObject();
 		try {
 			userAliDevService.addUserAliDev(tUserAliDev);
 			res.setStatus(ResponseEnum.AddSuccess.getStatus());
 			res.setMessage(ResponseEnum.AddSuccess.getMsg());
 		} catch (Exception e) {
-			logger.error("===error msg:"+e.getMessage());
+			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
-		return res;	
+		return res;
 	}
-	/**  
-	 * @param oboxSerialId  
-	 * @Description:  
+
+	/**
+	 * @param oboxSerialId
+	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/deleteUserDeviceByOboxSerialId/{oboxSerialId}", method = RequestMethod.DELETE)
-	public ResponseObject deleteUserDeviceByOboxSerialId(@PathVariable(required = true, value = "oboxSerialId")String oboxSerialId){
-		ResponseObject res=new ResponseObject();
+	public ResponseObject deleteUserDeviceByOboxSerialId(
+			@PathVariable(required = true, value = "oboxSerialId") String oboxSerialId) {
+		ResponseObject res = new ResponseObject();
 		try {
 			userDeviceService.deleteUserDeviceByOboxSerialId(oboxSerialId);
-			//userAliDevService.addUserAliDev(tUserAliDev);
+			// userAliDevService.addUserAliDev(tUserAliDev);
 			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
 			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
 		} catch (Exception e) {
-			logger.error("===error msg:"+e.getMessage());
+			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
-		return res;	
+		return res;
 	}
+
 	/**
 	 * @param deviceSerialId
 	 * @param oboxSerialId
@@ -832,19 +855,19 @@ public class UserController {
 	@RequestMapping(value = "/addUserDeviceBySerialIdAndOboxSerialId/{deviceSerialId}/{oboxSerialId}", method = RequestMethod.POST)
 	public ResponseObject addUserDeviceBySerialIdAndOboxSerialId(
 			@PathVariable(required = true, value = "deviceSerialId") String deviceSerialId,
-			@PathVariable(required = true, value = "oboxSerialId") String oboxSerialId){
-		ResponseObject res=new ResponseObject();
+			@PathVariable(required = true, value = "oboxSerialId") String oboxSerialId) {
+		ResponseObject res = new ResponseObject();
 		try {
-			asyncServiceImpl.addUserDeviceBySerialIdAndOboxSerialId(deviceSerialId,oboxSerialId);
-			//userDeviceService.deleteUserDeviceByOboxSerialId(oboxSerialId);
- 			res.setStatus(ResponseEnum.AddSuccess.getStatus());
+			asyncServiceImpl.addUserDeviceBySerialIdAndOboxSerialId(deviceSerialId, oboxSerialId);
+			// userDeviceService.deleteUserDeviceByOboxSerialId(oboxSerialId);
+			res.setStatus(ResponseEnum.AddSuccess.getStatus());
 			res.setMessage(ResponseEnum.AddSuccess.getMsg());
 		} catch (Exception e) {
-			logger.error("===error msg:"+e.getMessage());
+			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
-		return res;	
-	
+		return res;
+
 	}
 }

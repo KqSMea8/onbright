@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.hrstrix.HystrixFeignOboxFallback;
@@ -85,6 +86,8 @@ public interface FeignOboxClient {
 	 */
 	@RequestMapping(value = "/obox/getOboxByUserAndoboxSerialId/{userId}/{oboxSerialId}", method = RequestMethod.GET)
 	ResponseObject<TObox> getOboxByUserAndoboxSerialId(@PathVariable(value = "userId")  Integer userId,@PathVariable(value = "oboxSerialId")  String oboxSerialId);
+
+ 
 
 
 }

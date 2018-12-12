@@ -47,16 +47,16 @@ datasource:
     url: jdbc:mysql://rm-bp1phzwe9h981t77x6o.mysql.rds.aliyuncs.com:3306/onbright_ali_new?useUnicode=true&amp;characterEncoding=utf8
     driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
-com:
-  mqtt:
-    inbound:
-          url: tcp://localhost:1883
-          clientId: aliInbound
-          topics: topic1
-    outbound:
-          url: tcp://localhost:1883
-          clientId: aliOutbound
-          topics: topic1
+#com:
+#  mqtt:
+#    inbound:
+#          url: tcp://localhost:1883
+#          clientId: aliInbound
+#          topics: topic1
+#    outbound:
+#          url: tcp://localhost:1883
+#          clientId: aliOutbound
+#          topics: topic1
 IotDevConncetion:
   accessKeyId: LTAIBE0b86xFi9q5
   accessKeySecret: Ym9F1CNAgwhbxt5Sk1Qki1nr6w6e3v
