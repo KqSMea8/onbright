@@ -58,13 +58,13 @@ public class FtpServiceImpl implements FtpService {
 				}
 			}
 			String[] split2 = originFileName.split(".");
-			String savafile = split2.length == 2 ? makeFileName + "." + split2[1] : makeFileName ;
-			String zipfile = split2.length == 2 ? makeFileName + "." + split2[1] : makeFileName + "_thum";
+			String savafile = split2.length == 2 ? makeFileName + "." + split2[1] : makeFileName+".jpg" ;
+			String zipfile = split2.length == 2 ? makeFileName + "." + split2[1] : makeFileName + "_thum.jpg";
 			File file =new File(oldPath);
 			String picPath = uploadPic(ftp, makePath, savafile, file);
 			compressPic(ftp, zipfile, file, pathVo);
 			imagepaths[0] = picPath;
-			imagepaths[1] = picPath+ "_thum";
+			imagepaths[1] = picPath.split(".")[0]+ "_thum.jpg";
 			file.delete();
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());

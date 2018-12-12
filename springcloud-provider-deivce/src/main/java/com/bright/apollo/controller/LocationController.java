@@ -602,7 +602,7 @@ public class LocationController {
 	 * @return
 	 * @Description:
 	 */
-	@RequestMapping(value = "/location/queryLocationByUserAndLocation/{userId}/{location}", method = RequestMethod.GET)
+	@RequestMapping(value = "/queryLocationByUserAndLocation/{userId}/{location}", method = RequestMethod.GET)
 	ResponseObject<TLocation> queryLocationByUserAndLocation(@PathVariable(value = "userId") Integer userId,
 			@PathVariable(value = "location") Integer location) {
 

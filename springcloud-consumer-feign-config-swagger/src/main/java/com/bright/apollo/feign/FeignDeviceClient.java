@@ -694,7 +694,7 @@ public interface FeignDeviceClient {
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/remoteLed/setRemoteLedName/{serialId}", method = RequestMethod.POST)
 	ResponseObject setRemoteLedName(@PathVariable(value = "serialId", required = true) String serialId,
-			@RequestParam(value = "name", required = true) String names);
+			@RequestParam(value = "names", required = true) String names);
 
 	/**  
 	 * @param serialId

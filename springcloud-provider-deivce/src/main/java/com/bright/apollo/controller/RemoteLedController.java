@@ -46,7 +46,7 @@ public class RemoteLedController {
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/setRemoteLedName/{serialId}", method = RequestMethod.POST)
 	ResponseObject setRemoteLedName(@PathVariable(value = "serialId", required = true) String serialId,
-			@RequestParam(value = "name", required = true) String names) {
+			@RequestParam(value = "names", required = true) String names) {
 		ResponseObject res = new ResponseObject();
 		Map<String, Object> map = null;
 		try {

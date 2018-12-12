@@ -6734,7 +6734,7 @@ public class FacadeController extends BaseController {
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/setRemoteLedName/{serialId}", method = RequestMethod.POST)
 	public ResponseObject setRemoteLedName(@PathVariable(value = "serialId", required = true) String serialId,
-			@RequestParam(value = "name", required = true) String names) {
+			@RequestParam(value = "names", required = true) String names) {
 		ResponseObject res = new ResponseObject();
 		try {
 			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
