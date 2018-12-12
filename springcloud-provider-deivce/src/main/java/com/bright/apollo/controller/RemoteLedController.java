@@ -81,7 +81,7 @@ public class RemoteLedController {
 					}
 					List<TRemoteLed> addList = buildRemotes(list, map, false);
 					if(addList!=null&&addList.size()>0){
-						remoteLedService.batchRemoteLeds(list);
+						remoteLedService.batchRemoteLeds(addList);
 					}
 					res.setStatus(ResponseEnum.AddSuccess.getStatus());
 					res.setMessage(ResponseEnum.AddSuccess.getMsg());
@@ -141,12 +141,13 @@ public class RemoteLedController {
 					remoteLed.setName(map.get(remoteLed.getChannel()).toString());
 					remoteLeds.add(remoteLed);
 				}else{
-					map.remove(map.get(remoteLed.getChannel()));
+					//map.remove(key, value)
+					map.remove(remoteLed.getChannel());
 				}
 			}
 		}
 		if(!flag&&map.size()>0){
-			return buildRemoteLeds(remoteLeds.get(0).getSerialid(), map);
+			return buildRemoteLeds(list.get(0).getSerialid(), map);
 		}
 		return remoteLeds;
 	}
@@ -160,7 +161,7 @@ public class RemoteLedController {
 	private List<TRemoteLed> buildRemoteLeds(String serialId, Map<String, Object> map) {
 		List<TRemoteLed> list = new ArrayList<TRemoteLed>();
 		for (Map.Entry<String, Object> entry : map.entrySet()) {
-			TRemoteLed remoteLed = new TRemoteLed(entry.getKey(), serialId, entry.getValue().toString());
+			TRemoteLed remoteLed = new TRemoteLed(entry.getValue().toString(), serialId, entry.getKey());
 			list.add(remoteLed);
 		}
 		return list;
