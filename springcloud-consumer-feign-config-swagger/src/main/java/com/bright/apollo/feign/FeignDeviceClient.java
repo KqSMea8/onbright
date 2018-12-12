@@ -612,7 +612,7 @@ public interface FeignDeviceClient {
 	 * @return
 	 * @Description:
 	 */
-	@RequestMapping(value = "/location/queryLocation/{userId}/{locationId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/location/queryDeviceLocation/{userId}/{locationId}", method = RequestMethod.GET)
 	ResponseObject<Map<String, Object>> queryDeviceLocation(@PathVariable(value = "userId") Integer userId,
 			@PathVariable(value = "locationId") Integer locationId);
 
