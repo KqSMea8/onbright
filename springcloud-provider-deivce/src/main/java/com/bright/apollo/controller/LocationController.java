@@ -441,18 +441,19 @@ public class LocationController {
 					location2.setxAxis(xAxis);
 					location2.setyAxis(yAxis);
 					// DeviceBusiness.updateDeviceLocation(location2);
-					deviceLocationService.addDeviceLocation(location2);
-					// deviceLocationService.deleteDeviceLocation(location2.getId());
-					// DeviceBusiness.deleteDeviceLocation(location2.getId());
+					deviceLocationService.updateDeviceLocation(location2);
+					res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+					res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
 				} else {
 					TDeviceLocation tDeviceLocation = new TDeviceLocation();
 					tDeviceLocation.setLocation(tLocation.getId());
 					tDeviceLocation.setxAxis(xAxis);
 					tDeviceLocation.setyAxis(yAxis);
 					tDeviceLocation.setSerialId(serialId);
-					tDeviceLocation.setDeviceType(tObox != null ? "0a" : tOboxDeviceConfig.getDeviceType());
-					deviceLocationService.addDeviceLocation(location2);
-					// DeviceBusiness.addDeviceLocation(tDeviceLocation);
+					tDeviceLocation.setDeviceType(deviceType);
+					deviceLocationService.addDeviceLocation(tDeviceLocation);
+					res.setStatus(ResponseEnum.AddSuccess.getStatus());
+					res.setMessage(ResponseEnum.AddSuccess.getMsg());
 				}
 			} /*
 				 * else if(tOboxDeviceConfig!=null){ TDeviceLocation location2 =
@@ -481,8 +482,7 @@ public class LocationController {
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
 				return res;
 			}
-			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
-			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
+			
 		} catch (Exception e) {
 			logger.error("===addDeviceLocation error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
@@ -822,8 +822,8 @@ public class LocationController {
 			}
 			map.put("scenes", tDtos);
 			res.setData(map);
-			res.setStatus(ResponseEnum.Error.getStatus());
-			res.setMessage(ResponseEnum.Error.getMsg());
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 			// JsonObject respJsonObject = respRight();
 
 			// respJsonObject.add(RespFiledEnum.scenes.name(), new

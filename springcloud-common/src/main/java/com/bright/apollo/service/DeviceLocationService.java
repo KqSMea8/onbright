@@ -41,4 +41,10 @@ public interface DeviceLocationService {
 	 */
 	TDeviceLocation queryDevicesByLocationAndSerialIdAndType(Integer location, String serialId, String type);
 
+	/**  
+	 * @param location2  
+	 * @Description:  
+	 */
+	void updateDeviceLocation(TDeviceLocation location2);
+
 }

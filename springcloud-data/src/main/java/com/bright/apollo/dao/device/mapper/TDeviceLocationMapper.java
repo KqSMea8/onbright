@@ -3,6 +3,7 @@ package com.bright.apollo.dao.device.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
@@ -11,6 +12,7 @@ import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
+import org.apache.ibatis.annotations.UpdateProvider;
 import org.springframework.stereotype.Component;
 
 import com.bright.apollo.common.entity.TDeviceLocation;
@@ -32,9 +34,15 @@ public interface TDeviceLocationMapper {
 	 * @return
 	 * @Description:
 	 */
-	@SelectKey(statement = "select LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = int.class)
-	@InsertProvider(type = DeviceLocationProvider.class, method = "addDeviceLocation")
-	@Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
+	//@SelectKey(statement = "select LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = int.class)
+	//@InsertProvider(type = DeviceLocationProvider.class, method = "addDeviceLocation")
+	//@Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
+	@Insert("insert into t_device_location(location,\n" +
+            "x_axis,\n" +
+            "y_axis,\n" +
+            "serialId,\n" +
+            "device_type) values(#{location},#{xAxis},#{yAxis},#{serialId},#{deviceType})")
+    @Options(useGeneratedKeys=true, keyProperty="id", keyColumn="id")
 	int addDeviceLocation(TDeviceLocation tDeviceLocation);
 
 	/**
@@ -72,5 +80,12 @@ public interface TDeviceLocationMapper {
 			@Result(property = "lastOpTime", column = "last_op_time") })
 	TDeviceLocation queryDevicesByLocationAndSerialIdAndType(@Param("location") Integer location,
 			@Param("serialId") String serialId, @Param("type") String type);
+
+	/**  
+	 * @param location2  
+	 * @Description:  
+	 */
+	@UpdateProvider(type = DeviceLocationProvider.class, method = "updateDeviceLocation")
+	void updateDeviceLocation(TDeviceLocation tDeviceLocation);
 
 }

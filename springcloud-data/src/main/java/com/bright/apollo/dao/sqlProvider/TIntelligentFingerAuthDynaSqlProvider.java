@@ -18,10 +18,10 @@ public class TIntelligentFingerAuthDynaSqlProvider {
 			{
 				UPDATE("t_intelligent_finger_auth");
 				if (!StringUtils.isEmpty(fingerAuth.getSerialid())) {
-					SET("serialId", "#{serialid}");
+					SET("serialId=#{serialid}");
 				}
 				if (!StringUtils.isEmpty(fingerAuth.getPwd())) {
-					SET("pwd", "#{pwd}");
+					SET("pwd=#{pwd}");
 				}
 				WHERE("id=#{id}");
 			}
