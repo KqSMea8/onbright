@@ -108,6 +108,7 @@ public class RemoteLedController {
 	ResponseObject<Map<String, Object>> queryRemoteLedName(@PathVariable(value = "serialId", required = true) String serialId){
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> data = new HashMap<String, Object>();
 		try {
 			logger.info("===serialId:"+serialId);
 			List<TRemoteLed> list = remoteLedService.getListBySerialId(serialId);
@@ -118,7 +119,8 @@ public class RemoteLedController {
 					map.put(remoteLed.getChannel(), remoteLed.getName());
 				}
 			}
-			res.setData(map);
+			data.put("names", map);
+			res.setData(data);
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
