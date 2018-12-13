@@ -20,6 +20,7 @@ import com.bright.apollo.common.entity.TSceneCondition;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.response.SceneInfo;
+import com.bright.apollo.service.SceneConditionService;
 import com.bright.apollo.service.SceneService;
 
 /**
@@ -377,6 +378,8 @@ public class SceneController {
 	public ResponseObject deleteSceneByOboxSerialId(@PathVariable(value = "oboxSerialId") String oboxSerialId) {
 		ResponseObject res = new ResponseObject();
 		try {
+			sceneService.deleteSceneActionByOboxSerialId(oboxSerialId);
+			sceneService.deleteSceneConfitionByOboxSerialId(oboxSerialId);
 			sceneService.deleteSceneByOboxSerialId(oboxSerialId);
 			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
 			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());

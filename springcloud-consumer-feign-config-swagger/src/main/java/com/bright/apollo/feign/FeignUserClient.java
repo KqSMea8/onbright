@@ -368,4 +368,14 @@ public interface FeignUserClient {
 	public ResponseObject addUserDeviceBySerialIdAndOboxSerialId(
 			@PathVariable(required = true, value = "deviceSerialId") String deviceSerialId,
 			@PathVariable(required = true, value = "oboxSerialId") String oboxSerialId);
+
+	/**  
+	 * @param userId
+	 * @param oboxSerialId  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/user/deleteUserSceneByOboxSerialId/{oboxSerialId}", method = RequestMethod.DELETE)
+	@SuppressWarnings("rawtypes")
+	public ResponseObject deleteUserSceneByOboxSerialId( 
+			@PathVariable(required = true, value = "oboxSerialId")String oboxSerialId);
 }

@@ -870,4 +870,27 @@ public class UserController {
 		return res;
 
 	}
+	/**  
+	 * @param userId
+	 * @param oboxSerialId  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/deleteUserSceneByOboxSerialId/{oboxSerialId}", method = RequestMethod.DELETE)
+	@SuppressWarnings("rawtypes")
+	public ResponseObject deleteUserSceneByOboxSerialId( 
+			@PathVariable(required = true, value = "oboxSerialId")String oboxSerialId){
+		ResponseObject res = new ResponseObject();
+		try {
+			userSceneService.deleteUserSceneByOboxSerialId(oboxSerialId);
+			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+
+	
+	}
 }

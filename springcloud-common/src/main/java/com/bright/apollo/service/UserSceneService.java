@@ -10,4 +10,10 @@ public interface UserSceneService {
 
     List<TUserScene> getUserSceneBySceneNum(int sceneNumber);
 
+	/**  
+	 * @param oboxSerialId  
+	 * @Description:  
+	 */
+	void deleteUserSceneByOboxSerialId(String oboxSerialId);
+
 }

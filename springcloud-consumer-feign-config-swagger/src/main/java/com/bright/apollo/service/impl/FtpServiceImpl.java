@@ -52,19 +52,20 @@ public class FtpServiceImpl implements FtpService {
 			logger.info("===makeFileName:" + makeFileName + "===makePath:" + makePath);
 			String[] split = makePath.split("/");
 			for (int i = 0; i < split.length; i++) {
-				if(!StringUtils.isEmpty(split[i])){
+			//	if(!StringUtils.isEmpty(split[i])){
 					ftp.makeDirectory(split[i]);
 					ftp.changeWorkingDirectory(split[i]);
-				}
+			//	}
 			}
 			String[] split2 = originFileName.split(".");
 			String savafile = split2.length == 2 ? makeFileName + "." + split2[1] : makeFileName+".jpg" ;
 			String zipfile = split2.length == 2 ? makeFileName + "." + split2[1] : makeFileName + "_thum.jpg";
 			File file =new File(oldPath);
-			String picPath = uploadPic(ftp, makePath, savafile, file);
-			compressPic(ftp, zipfile, file, pathVo);
+			String picPath = uploadPic(ftp, makePath+"/", savafile, file);
+			String compressPic = compressPic(ftp, makePath+"/",zipfile, file, pathVo);
+			logger.info("===picPath:"+picPath+"===compressPic:"+compressPic);
 			imagepaths[0] = picPath;
-			imagepaths[1] = picPath.split(".")[0]+ "_thum.jpg";
+			imagepaths[1] = compressPic;
 			file.delete();
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
@@ -99,14 +100,14 @@ public class FtpServiceImpl implements FtpService {
 		return null;
 	}
 
- 	private String compressPic(FTPClient ftp, String makeFileName,File file, PicPathVo pathVo) {
+ 	private String compressPic(FTPClient ftp, String remoteFile,String makeFileName,File file, PicPathVo pathVo) {
 		File file2 = null;
  		try {
 			Thumbnails.of(file).scale(1f).outputQuality(0.5f).toFile(pathVo.getTempPath() + makeFileName);
 			// ftp upload
 			file2 = new File(pathVo.getTempPath() + makeFileName);
  			
-			return uploadPic(ftp, pathVo.getRealPath(), makeFileName, file2);
+			return uploadPic(ftp, remoteFile, makeFileName, file2);
 		} catch (IOException e) {
 			logger.error("===error msg:" + e.getMessage());
 		} catch (Exception e) {
@@ -166,7 +167,7 @@ public class FtpServiceImpl implements FtpService {
 		int dir1 = hashcode & 0xf; // 0--15
 		int dir2 = (hashcode & 0xf0) >> 4; // 0-15
 		// 构造新的保存目录 在windows中使用\\ mac中用/
-		String dir = dir1 + "/" + dir2+ "/"; // upload\2\3
+		String dir = dir1 + "/" + dir2; // upload\2\3
 										// upload\3\5
 		logger.info("===save pic url===");
 		return dir;
@@ -180,11 +181,14 @@ public class FtpServiceImpl implements FtpService {
 								 * 0; i < split.length; i++) {
 								 * System.out.println(split[i]); }
 								 */
-		Thumbnails
+		/*Thumbnails
 				.of("C:" + File.separator + "Users" + File.separator + "lenovo" + File.separator + "Desktop"
 						+ File.separator + "1fcc5f2ddd3953681ed0e0b8731ec6fc.jpg")
 				.scale(1f).outputQuality(0.5f).toFile("C:" + File.separator + "Users" + File.separator + "lenovo"
-						+ File.separator + "Desktop" + File.separator + "111.jpg");
+						+ File.separator + "Desktop" + File.separator + "111.jpg");*/
+		String str="images/8/9/4351737899239829279_1f913a739c8a5747b5ec58a2ca873264.jpg";
+		System.out.println(str.split(".").length);
+		//System.out.println( (str.split("."))[0]+ "_thum.jpg");
 	}
 
 	/* (non-Javadoc)  

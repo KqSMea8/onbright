@@ -22,4 +22,13 @@ public class UserSceneServiceImpl  implements UserSceneService {
     public List<TUserScene> getUserSceneBySceneNum(int sceneNumber) {
         return userSceneMapper.getUserSceneBySceneNum(sceneNumber);
     }
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.UserSceneService#deleteUserSceneByOboxSerialId(java.lang.String)  
+	 */
+	@Override
+	public void deleteUserSceneByOboxSerialId(String oboxSerialId) {
+		userSceneMapper.deleteUserSceneByOboxSerialId(oboxSerialId);
+		
+	}
 }

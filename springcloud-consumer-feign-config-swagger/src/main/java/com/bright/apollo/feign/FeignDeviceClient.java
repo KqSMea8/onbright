@@ -577,7 +577,7 @@ public interface FeignDeviceClient {
 	ResponseObject<Map<String, Object>> addDeviceLocation(@PathVariable(value = "userId") Integer userId,
 			@PathVariable(value = "serialId") String serialId, @PathVariable(value = "location") Integer location,
 			@PathVariable(value = "xAxis") Integer xAxis, @PathVariable(value = "yAxis") Integer yAxis,
-			@PathVariable(value = "yAxis") String deviceType);
+			@PathVariable(value = "deviceType") String deviceType);
 
 	@RequestMapping(value = "/location/updateLocation/{location}/{userId}", method = RequestMethod.PUT)
 	ResponseObject<Map<String, Object>> updateLocation(@PathVariable(value = "location") Integer location,
