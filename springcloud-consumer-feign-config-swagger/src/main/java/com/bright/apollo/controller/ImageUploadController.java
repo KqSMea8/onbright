@@ -90,7 +90,7 @@ public class ImageUploadController {
 				tLocation.setDownloadUrl(uploadFile[0]);
 				tLocation.setThumUrl(uploadFile[1]);
 				map.put("thum_url", tLocation.getThumUrl());
-				map.put("url", tLocation.getDownloadUrl());
+				map.put("download_url", tLocation.getDownloadUrl());
 			}
 			ResponseObject<TLocation> locationRes = feignDeviceClient.addLocation(tLocation);
 			if (locationRes == null || locationRes.getData() == null) {
@@ -171,7 +171,7 @@ public class ImageUploadController {
 			map.put("room", tLocation.getRoom());
 			map.put("building", tLocation.getBuilding());
 			if (!StringUtils.isEmpty(tLocation.getDownloadUrl())) {
-				map.put("url", tLocation.getDownloadUrl());
+				map.put("download_url", tLocation.getDownloadUrl());
 			}
 			if (!StringUtils.isEmpty(tLocation.getThumUrl())) {
 				map.put("thum_url", tLocation.getThumUrl());
