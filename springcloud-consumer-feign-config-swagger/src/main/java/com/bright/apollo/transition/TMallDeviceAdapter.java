@@ -914,9 +914,9 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
     private String changeMutipleOutLet(String deviceState ,String value,String deviceId,String partition){
         String[] deviceIdArr = deviceId.split("_");
         String middle = "";
-        String id = deviceIdArr[0];
         String child = "";
         String val = null;
+
         if(deviceIdArr.length>1){
             child = deviceIdArr[1];
         }else{
@@ -926,6 +926,7 @@ public class TMallDeviceAdapter implements ThirdPartyTransition{
         String beginStr = null;
         String endStr = null;
         if(partition.equals("24")){
+
             middle = deviceState.substring(2,4);
             beginStr = deviceState.substring(0,2);
             endStr = deviceState.substring(4,deviceState.length());

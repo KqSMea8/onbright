@@ -42,10 +42,10 @@ public class LocationProvider {
 				{
 					UPDATE("t_location");
 					if (!StringUtils.isEmpty(tLocation.getBuilding())) {
-						SET("building", "#{building}");
+						SET("building=#{building}");
 					}
 					if (!StringUtils.isEmpty(tLocation.getRoom())) {
-						SET("room", "#{room}");
+						SET("room=#{room}");
 					}
 					WHERE("id=#{id}");
 				}

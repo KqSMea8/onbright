@@ -554,8 +554,7 @@ public interface FeignDeviceClient {
 	@RequestMapping(value = "/location/createLocation/{userId}/{building}/{room}", method = RequestMethod.POST)
 	ResponseObject<Map<String, Object>> createLocation(@PathVariable(value = "userId") Integer userId,
 			@PathVariable(value = "building") String building, @PathVariable(value = "room") String room,
-			@RequestParam(required=false,name="mList")List<String> mList
-			);
+			@RequestParam(required = false, name = "mList") List<String> mList);
 
 	/**
 	 * @param location
@@ -575,9 +574,10 @@ public interface FeignDeviceClient {
 	 * @Description:
 	 */
 	@RequestMapping(value = "/location/addDeviceLocation/{userId}/{serialId}/{location}/{xAxis}/{yAxis}/{deviceType}", method = RequestMethod.POST)
-	ResponseObject<Map<String, Object>> addDeviceLocation(@PathVariable(value = "userId") Integer userId,@PathVariable(value = "serialId") String serialId,
-			@PathVariable(value = "location") Integer location, @PathVariable(value = "xAxis") Integer xAxis,
-			@PathVariable(value = "yAxis") Integer yAxis, @PathVariable(value = "yAxis") String deviceType);
+	ResponseObject<Map<String, Object>> addDeviceLocation(@PathVariable(value = "userId") Integer userId,
+			@PathVariable(value = "serialId") String serialId, @PathVariable(value = "location") Integer location,
+			@PathVariable(value = "xAxis") Integer xAxis, @PathVariable(value = "yAxis") Integer yAxis,
+			@PathVariable(value = "yAxis") String deviceType);
 
 	@RequestMapping(value = "/location/updateLocation/{location}/{userId}", method = RequestMethod.PUT)
 	ResponseObject<Map<String, Object>> updateLocation(@PathVariable(value = "location") Integer location,
@@ -612,7 +612,7 @@ public interface FeignDeviceClient {
 	 * @return
 	 * @Description:
 	 */
-	@RequestMapping(value = "/location/queryLocation/{userId}/{locationId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/location/queryDeviceLocation/{userId}/{locationId}", method = RequestMethod.GET)
 	ResponseObject<Map<String, Object>> queryDeviceLocation(@PathVariable(value = "userId") Integer userId,
 			@PathVariable(value = "locationId") Integer locationId);
 
@@ -652,48 +652,73 @@ public interface FeignDeviceClient {
 			@PathVariable(value = "location") Integer location,
 			@PathVariable(value = "sceneNumber") Integer sceneNumber);
 
-	/**  
-	 * @param tLocation  
-	 * @Description:  
+	/**
+	 * @param tLocation
+	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/location/updateLocationByObj", method = RequestMethod.PUT)
 	ResponseObject updateLocationByObj(@RequestBody TLocation tLocation);
 
-	/**  
-	 * @param tLocation  
-	 * @Description:  
+	/**
+	 * @param tLocation
+	 * @Description:
 	 */
 	@RequestMapping(value = "/location/addLocation", method = RequestMethod.POST)
 	ResponseObject<TLocation> addLocation(@RequestBody TLocation tLocation);
 
-	/**  
-	 * @param tUserLocation  
-	 * @Description:  
+	/**
+	 * @param tUserLocation
+	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/location/addUserLocation", method = RequestMethod.POST)
 	ResponseObject addUserLocation(@RequestBody TUserLocation tUserLocation);
 
-	/**  
+	/**
 	 * @param userId
 	 * @param location
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/location/queryLocationByUserAndLocation/{userId}/{location}", method = RequestMethod.GET)
+	ResponseObject<TLocation> queryLocationByUserAndLocation(@PathVariable(value = "userId") Integer userId,
+			@PathVariable(value = "location") Integer location);
+
+	/**
+	 * @param serialId
+	 * @param names
+	 * @return
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/remoteLed/setRemoteLedName/{serialId}", method = RequestMethod.POST)
+	ResponseObject setRemoteLedName(@PathVariable(value = "serialId", required = true) String serialId,
+			@RequestParam(value = "names", required = true) String names);
+
+	/**  
+	 * @param serialId
 	 * @return  
 	 * @Description:  
 	 */
-	@RequestMapping(value = "/location/queryLocationByUserAndLocation/{userId}/{location}", method = RequestMethod.GET)
-	ResponseObject<TLocation> queryLocationByUserAndLocation(@PathVariable(value = "userId")Integer userId, @PathVariable(value = "location")Integer location);
+	@RequestMapping(value = "/remoteLed/queryRemoteLedName/{serialId}", method = RequestMethod.POST)
+	ResponseObject<Map<String, Object>> queryRemoteLedName(@PathVariable(value = "serialId", required = true) String serialId);
 
-/*	*//**  
-	 * @param id
-	 * @param building
-	 * @param room
-	 * @return  
-	 * @Description:  
-	 *//*
-	@RequestMapping(value = "/location/createLocationWithOutDevice/{userId}/{building}/{room}", method = RequestMethod.POST)
-	ResponseObject<Map<String, Object>> createLocationWithOutDevice(@PathVariable(value = "userId") Integer userId,
-			@PathVariable(value = "building") String building, @PathVariable(value = "room") String room);
-
- */
+	/*	*//**
+			 * @param id
+			 * @param building
+			 * @param room
+			 * @return
+			 * @Description:
+			 *//*
+			 * @RequestMapping(value =
+			 * "/location/createLocationWithOutDevice/{userId}/{building}/{room}",
+			 * method = RequestMethod.POST) ResponseObject<Map<String, Object>>
+			 * createLocationWithOutDevice(@PathVariable(value = "userId")
+			 * Integer userId,
+			 * 
+			 * @PathVariable(value = "building") String
+			 * building, @PathVariable(value = "room") String room);
+			 * 
+			 */
 }

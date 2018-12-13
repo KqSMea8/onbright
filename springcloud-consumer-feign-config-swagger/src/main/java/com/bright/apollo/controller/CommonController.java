@@ -178,6 +178,7 @@ public class CommonController {
 			return searchNewDevice;
 		} else if (CMDEnum.setting_sc_info.toString().equals(cmdEnum.toString())) {
 			String sceneString = requestParam.getValue("scene");
+			String appId = requestParam.getValue("appId");
 			SceneDTO sceneDTO = (SceneDTO) ObjectUtils.fromJsonToObject(sceneString, SceneDTO.class);
 			if (sceneDTO == null) {
 				res = new ResponseObject();
@@ -189,17 +190,17 @@ public class CommonController {
 					&& (StringUtils.isEmpty(sceneDTO.getSceneType())
 							|| sceneDTO.getSceneType().equals(SceneTypeEnum.server.getValue()))) {
 				sceneDTO.setSceneType(SceneTypeEnum.server.getValue());
-				return facadeController.addServerScene(sceneDTO);
+				return facadeController.addServerScene(sceneDTO,appId);
 			} else if ((sceneDTO.getSceneNumber() == null || sceneDTO.getSceneNumber().intValue() == 0)
 					&& (sceneDTO.getSceneType().equals(SceneTypeEnum.local.getValue()))) {
-				return facadeController.addLocalScene(sceneDTO);
+				return facadeController.addLocalScene(sceneDTO,appId);
 			} else if (sceneDTO.getSceneNumber() != null && sceneDTO.getSceneNumber().intValue() != 0) {
 				ResponseObject<TScene> sceneRes = sceneController.getSceneBySceneNumber(sceneDTO.getSceneNumber());
 				if (sceneRes != null && sceneRes.getData() != null) {
 					if (sceneRes.getData().getSceneType().equals(SceneTypeEnum.server.getValue())) {
-						return facadeController.modifyServerScene(sceneDTO);
+						return facadeController.modifyServerScene(sceneDTO,appId);
 					} else {
-						return facadeController.modifyLocalScene(sceneDTO);
+						return facadeController.modifyLocalScene(sceneDTO,appId);
 					}
 				}
 			}
@@ -263,8 +264,9 @@ public class CommonController {
 			String serialId = requestParam.getValue("serialId");
 			String pin = requestParam.getValue("pin");
 			String mobile = requestParam.getValue("mobile");
+			String appId = requestParam.getValue("appId");
 			if (!StringUtils.isEmpty(serialId) && !StringUtils.isEmpty(pin)) {
-				return facadeController.sendIntelligentValidateCode(serialId, pin, mobile);
+				return facadeController.sendIntelligentValidateCode(serialId, pin, mobile,appId);
 			}
 		} else if (CMDEnum.add_intelligent_authPwd.toString().equals(cmdEnum.toString())) {
 			String serialId = requestParam.getValue("serialId");
@@ -352,10 +354,11 @@ public class CommonController {
 			String pin = requestParam.getValue("pin");
 			String authToken = requestParam.getValue("authToken");
 			String mobile = requestParam.getValue("mobile");
+			String appId = requestParam.getValue("appId");
 			if (StringUtils.isEmpty(serialId) || StringUtils.isEmpty(authToken) || StringUtils.isEmpty(mobile)
 					|| !MobileUtil.checkMobile(mobile) || StringUtils.isEmpty(pin)) {
 			} else {
-				return facadeController.sendRemotePwd(serialId, pin, authToken, mobile);
+				return facadeController.sendRemotePwd(serialId, pin, authToken, mobile,appId);
 			}
 		} else if (CMDEnum.reset_intelligent_pwd_by_code.toString().equals(cmdEnum.toString())) {
 			String serialId = requestParam.getValue("serialId");
@@ -711,6 +714,17 @@ public class CommonController {
 			if (!StringUtils.isEmpty(location) && NumberHelper.isNumeric(location)&&
 					!StringUtils.isEmpty(sceneNumber) && NumberHelper.isNumeric(sceneNumber))
 				return facadeController.deleteSceneLocation(Integer.parseInt(location),Integer.parseInt(sceneNumber));
+		}else if (CMDEnum.query_remote_led_name.toString().equals(cmdEnum.toString())) {
+			String serialId = requestParam.getValue("serialId");
+			if(!StringUtils.isEmpty(serialId)){
+				return facadeController.queryRemoteLedName(serialId);
+			}
+		}else if (CMDEnum.setting_remote_led_name.toString().equals(cmdEnum.toString())) {
+			String serialId = requestParam.getValue("serialId");
+			String names = requestParam.getValue("names");
+			if(!StringUtils.isEmpty(serialId)&&!StringUtils.isEmpty(names)){
+				return facadeController.setRemoteLedName(serialId,names);
+			}
 		}else if (CMDEnum.test.toString().equals(cmdEnum.toString())) {
 			String serialId = requestParam.getValue("serialId");
 			if (!StringUtils.isEmpty(serialId)) {

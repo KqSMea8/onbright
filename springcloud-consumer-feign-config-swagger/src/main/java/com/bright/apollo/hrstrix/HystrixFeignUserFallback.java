@@ -30,16 +30,7 @@ import com.bright.apollo.response.ResponseObject;
 public class HystrixFeignUserFallback extends BasicHystrixFeignFallback implements FeignUserClient  {
 	private static final Logger logger = LoggerFactory.getLogger(HystrixFeignUserFallback.class);
 
-	/* (non-Javadoc)  
-	 * @see com.bright.apollo.feign.FeignUserClient#forget(java.lang.String)  
-	 */
-	@SuppressWarnings("rawtypes")
-	@Override
-	public ResponseObject forget(String mobile) {
-		logger.warn("===user server is break===");
-		ResponseObject res = serverError();
-		return res;
-	}
+ 
 
 	/* (non-Javadoc)  
 	 * @see com.bright.apollo.feign.FeignUserClient#deleteUserOboxByOboxSerialId(java.lang.String)  
@@ -252,7 +243,7 @@ public class HystrixFeignUserFallback extends BasicHystrixFeignFallback implemen
 	 */
 	@SuppressWarnings("rawtypes")
 	@Override
-	public ResponseObject sendCodeToMobile(String mobile) {
+	public ResponseObject sendCodeToMobile(String mobile,String appId) {
 		logger.warn("===user server is break===");
 		ResponseObject res = serverError();
 		return res;
@@ -411,6 +402,17 @@ public class HystrixFeignUserFallback extends BasicHystrixFeignFallback implemen
 	@SuppressWarnings("rawtypes")
 	@Override
 	public ResponseObject addUserDeviceBySerialIdAndOboxSerialId(String deviceSerialId, String oboxSerialId) {
+		logger.warn("===user server is break===");
+		ResponseObject res = serverError();
+		return res;
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignUserClient#forget(java.lang.String, java.lang.String)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject forget(String mobile, String appId) {
 		logger.warn("===user server is break===");
 		ResponseObject res = serverError();
 		return res;

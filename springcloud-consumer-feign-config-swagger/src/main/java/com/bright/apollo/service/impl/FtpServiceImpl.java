@@ -52,17 +52,19 @@ public class FtpServiceImpl implements FtpService {
 			logger.info("===makeFileName:" + makeFileName + "===makePath:" + makePath);
 			String[] split = makePath.split("/");
 			for (int i = 0; i < split.length; i++) {
-				ftp.makeDirectory(split[i]);
-				ftp.changeWorkingDirectory(split[i]);
+				if(!StringUtils.isEmpty(split[i])){
+					ftp.makeDirectory(split[i]);
+					ftp.changeWorkingDirectory(split[i]);
+				}
 			}
 			String[] split2 = originFileName.split(".");
-			String savafile = split2.length == 2 ? makeFileName + "." + split2[1] : makeFileName + ".jpg";
-			String zipfile = split2.length == 2 ? makeFileName + "_thum." + split2[1] : makeFileName + "_thum.jpg";
+			String savafile = split2.length == 2 ? makeFileName + "." + split2[1] : makeFileName+".jpg" ;
+			String zipfile = split2.length == 2 ? makeFileName + "." + split2[1] : makeFileName + "_thum.jpg";
 			File file =new File(oldPath);
 			String picPath = uploadPic(ftp, makePath, savafile, file);
-			String zipPath = compressPic(ftp, zipfile, file, pathVo);
+			compressPic(ftp, zipfile, file, pathVo);
 			imagepaths[0] = picPath;
-			imagepaths[1] = zipPath;
+			imagepaths[1] = picPath.split(".")[0]+ "_thum.jpg";
 			file.delete();
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
@@ -164,7 +166,7 @@ public class FtpServiceImpl implements FtpService {
 		int dir1 = hashcode & 0xf; // 0--15
 		int dir2 = (hashcode & 0xf0) >> 4; // 0-15
 		// 构造新的保存目录 在windows中使用\\ mac中用/
-		String dir = dir1 + "/" + dir2; // upload\2\3
+		String dir = dir1 + "/" + dir2+ "/"; // upload\2\3
 										// upload\3\5
 		logger.info("===save pic url===");
 		return dir;

@@ -28,31 +28,31 @@ public class MqttInBoundConfiguration {
         return new DirectChannel();
     }
 
-//    @Bean
-//    public MessageProducerSupport inbound(){
-//        String[] topics = mqttProperties.getInbound().getTopics().split(",");
-//        MqttPahoMessageDrivenChannelAdapter adapter
-//                = new MqttPahoMessageDrivenChannelAdapter(mqttProperties.getInbound().getUrl(),mqttProperties.getInbound().getClientId(),topics);
-//        adapter.setCompletionTimeout(5000);
-//        adapter.setConverter(new DefaultPahoMessageConverter());
-//        adapter.setQos(1);
-//        adapter.setOutputChannel(mqttInputChannel());
-//        return adapter;
-//    }
+    @Bean
+    public MessageProducerSupport inbound(){
+        String[] topics = mqttProperties.getInbound().getTopics().split(",");
+        MqttPahoMessageDrivenChannelAdapter adapter
+                = new MqttPahoMessageDrivenChannelAdapter(mqttProperties.getInbound().getUrl(),mqttProperties.getInbound().getClientId(),topics);
+        adapter.setCompletionTimeout(5000);
+        adapter.setConverter(new DefaultPahoMessageConverter());
+        adapter.setQos(1);
+        adapter.setOutputChannel(mqttInputChannel());
+        return adapter;
+    }
 
 
 
-//    @Bean
-//    @ServiceActivator(inputChannel = "mqttInputChannel")
-//    public MessageHandler handler() {
-//        return new MessageHandler() {
-//
-//            @Override
-//            public void handleMessage(Message<?> message) throws MessagingException {
-//                System.out.println("receive ------ "+message.getPayload());
-//            }
-//
-//        };
-//    };
+    @Bean
+    @ServiceActivator(inputChannel = "mqttInputChannel")
+    public MessageHandler handler() {
+        return new MessageHandler() {
+
+            @Override
+            public void handleMessage(Message<?> message) throws MessagingException {
+                System.out.println("receive ------ "+message.getPayload());
+            }
+
+        };
+    };
 
 }

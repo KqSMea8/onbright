@@ -113,12 +113,12 @@ public class TmallController {
 			headerMap.put("messageId",(String)requestHeaderMap.get("messageId"));
 			headerMap.put("payLoadVersion","1");
 			map.put("header",headerMap);
-//			User user = (User) defaultOAuth2AccessToken.getPrincipal();
-//			ResponseObject<TUser> userResponseObject = feignUserClient.getUser(user.getUsername());//user.getUsername()
-//			TUser tUser = userResponseObject.getData();
-//			logger.info(" ====== userId ====== "+tUser.getId());
-			ResponseObject<List<TOboxDeviceConfig>> responseObject = feignDeviceClient.getOboxDeviceConfigByUserId(559);//559 tUser.getId()
-			ResponseObject<List<Map<String, Object>>> responseIR = feignAliClient.getUserIRDevice(559);
+			User user = (User) defaultOAuth2AccessToken.getPrincipal();
+			ResponseObject<TUser> userResponseObject = feignUserClient.getUser(user.getUsername());//user.getUsername()
+			TUser tUser = userResponseObject.getData();
+			logger.info(" ====== userId ====== "+tUser.getId());
+			ResponseObject<List<TOboxDeviceConfig>> responseObject = feignDeviceClient.getOboxDeviceConfigByUserId(tUser.getId());//559 tUser.getId()
+			ResponseObject<List<Map<String, Object>>> responseIR = feignAliClient.getUserIRDevice(tUser.getId());
 			List<Map<String, Object>> irList = responseIR.getData();
 			List<TOboxDeviceConfig> oboxDeviceConfigList = responseObject.getData();
 			for(Map<String,Object> irMap : irList){
@@ -190,7 +190,6 @@ public class TmallController {
             Map<String,Object> header = (Map<String, Object>) requestMap.get("header");
 			String name = (String)requestHeaderMap.get("name");
 			String deviceId = (String)playLoadMap.get("deviceId");
-//			String originalId = deviceId;
 			String[] deviceIdArr = deviceId.split("_");
 			deviceId = deviceIdArr[0];
 
@@ -245,6 +244,8 @@ public class TmallController {
 						adapter = new TMallDeviceAdapter(playLoadMap,tMallTemplate,oboxDeviceConfig,header);
 						adapter.setRedisBussines(redisBussines);
 						paramMap = adapter.TMall2Obright();
+						logger.info("paramMap ====== "+paramMap);
+
 						String status = (String)paramMap.get("deviceState");
 						if(status!=null){
 							facadeController.controlDevice(deviceId,status);

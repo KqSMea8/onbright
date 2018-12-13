@@ -12,6 +12,7 @@ import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
+import com.bright.apollo.enums.SignatureEnum;
 import com.bright.apollo.service.SmsService;
 
 /**
@@ -37,7 +38,7 @@ public class SmsServiceImpl implements SmsService {
 	 * 
 	 * @see com.bright.apollo.service.SmsService#sendScene(java.lang.String)
 	 */
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	@Override
 	public SendSmsResponse sendScene(String sceneName, String phone) {
 		SendSmsRequest request = null;
@@ -56,7 +57,7 @@ public class SmsServiceImpl implements SmsService {
 			logger.error("===error msg:" + e.getErrMsg() + "====error code:" + e.getErrCode());
 		}
 		return null;
-	}
+	}*/
 
 	private SendSmsRequest buildSmsRequest(String phone, String tempCode) throws ClientException {
 
@@ -76,7 +77,7 @@ public class SmsServiceImpl implements SmsService {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public SendSmsResponse sendCode(String mobile, String validateCode) {
+	public SendSmsResponse sendCode(String mobile, String validateCode,String sign) {
 		SendSmsRequest request = null;
 		try {
 			request = buildSmsRequest(mobile, identitySend);
@@ -86,7 +87,7 @@ public class SmsServiceImpl implements SmsService {
 			// request.setSmsUpExtendCode("90997");
 			// 可选:outId为提供给业务方扩展字段,最终在短信回执消息中将此值带回给调用者
 			request.setOutId("yourOutId");
-
+			request.setSignName(sign);
 			// hint 此处可能会抛出异常，注意catch
 			return acsClient.getAcsResponse(request);
 		} catch (ClientException e) {
@@ -100,7 +101,7 @@ public class SmsServiceImpl implements SmsService {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public SendSmsResponse sendNotice(String mobile, String pwd) {
+	public SendSmsResponse sendNotice(String mobile, String pwd,String sign) {
 		SendSmsRequest request = null;
 		try {
 			request = buildSmsRequest(mobile, remoteCodeSend);
@@ -110,7 +111,7 @@ public class SmsServiceImpl implements SmsService {
 			// request.setSmsUpExtendCode("90997");
 			// 可选:outId为提供给业务方扩展字段,最终在短信回执消息中将此值带回给调用者
 			request.setOutId("yourOutId");
-
+			request.setSignName(sign);
 			// hint 此处可能会抛出异常，注意catch
 			return acsClient.getAcsResponse(request);
 		} catch (ClientException e) {
@@ -124,7 +125,7 @@ public class SmsServiceImpl implements SmsService {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public SendSmsResponse sendAuthCode(int code, String mobile) {
+	public SendSmsResponse sendAuthCode(int code, String mobile,String sign) {
 		SendSmsRequest request = null;
 		try {
 			request = buildSmsRequest(mobile, authSend);
@@ -134,7 +135,7 @@ public class SmsServiceImpl implements SmsService {
 			// request.setSmsUpExtendCode("90997");
 			// 可选:outId为提供给业务方扩展字段,最终在短信回执消息中将此值带回给调用者
 			request.setOutId("yourOutId");
-
+			request.setSignName(sign);
 			// hint 此处可能会抛出异常，注意catch
 			return acsClient.getAcsResponse(request);
 		} catch (ClientException e) {
@@ -142,4 +143,42 @@ public class SmsServiceImpl implements SmsService {
 		}
 		return null;
 	}
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.SmsService#sendScene(java.lang.String, java.lang.String, byte)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public SendSmsResponse sendScene(String sceneName, String phone, byte sign) {
+		SendSmsRequest request = null;
+		try {
+			request = buildSmsRequest(phone, sceneSend);
+			// 可选:模板中的变量替换JSON串,如模板内容为"亲爱的${name},您的验证码为${code}"时,此处的值为
+			request.setTemplateParam("{\"sceneName\":\""+sceneName+"\"}");
+			// 选填-上行短信扩展码(无特殊需求用户请忽略此字段)
+			// request.setSmsUpExtendCode("90997");
+			// 可选:outId为提供给业务方扩展字段,最终在短信回执消息中将此值带回给调用者
+			request.setOutId("yourOutId");
+			request.setSignName(sign==SignatureEnum.MIL.getValue()?SignatureEnum.OB.getSign():SignatureEnum.MIL.getSign());
+			// hint 此处可能会抛出异常，注意catch
+			return acsClient.getAcsResponse(request);
+		} catch (ClientException e) {
+			logger.error("===error msg:" + e.getErrMsg() + "====error code:" + e.getErrCode());
+		}
+		return null;
+	}
+	public static void main(String[] args) {
+		SmsServiceImpl serviceImpl;
+		try {
+			serviceImpl = new SmsServiceImpl();
+			//serviceImpl.sendAuthCode(123456, "15879618946");
+		} catch (ClientException e) {
+			// TODO Auto-generated catch block  
+			e.printStackTrace();
+		}
+		
+	}
+
+	 
+
+	
 }

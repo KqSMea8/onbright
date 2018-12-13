@@ -29,6 +29,7 @@ import com.bright.apollo.enums.AliRegionEnum;
 import com.bright.apollo.enums.CMDEnum;
 import com.bright.apollo.enums.DeviceTypeEnum;
 import com.bright.apollo.enums.NodeTypeEnum;
+import com.bright.apollo.enums.SignatureEnum;
 import com.bright.apollo.enums.SystemEnum;
 import com.bright.apollo.service.AliDeviceConfigService;
 import com.bright.apollo.service.AliDeviceService;
@@ -326,10 +327,10 @@ public class SceneActionThreadPool {
 								if (tScene.getMsgAlter() == 2 || tScene.getMsgAlter() == 3) {
 									if (MobileUtil.checkMobile(user.getUserName())) {
 										log.info("===tUserPhones:" + user.getUserName());
-										smsService.sendScene(tScene.getSceneName(), user.getUserName());
+										smsService.sendScene(tScene.getSceneName(), user.getUserName(),tScene.getSignature());
 										PushSystemMsg systemMsg = new PushSystemMsg(SystemEnum.system.getValue(),
 												SystemEnum.scene.getValue(), sceneNumber, null,
-												tScene.getSceneName() + ",请注意！【昂宝电子】");
+												tScene.getSceneName() + ",请注意！【"+(tScene.getSignature()==SignatureEnum.MIL.getValue()?SignatureEnum.OB.getSign():SignatureEnum.MIL.getSign())+"】");
 										log.info("====before push====");
 										pushObserverManager.sendMessage(null, systemMsg);
 										log.info("====after push====");

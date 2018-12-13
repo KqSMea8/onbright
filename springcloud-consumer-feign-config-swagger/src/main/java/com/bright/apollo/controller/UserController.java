@@ -41,6 +41,7 @@ public class UserController {
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	@Autowired
 	private FeignUserClient feignUserClient;
+
 	@Deprecated
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@ApiOperation(value = "wx login", httpMethod = "POST", produces = "application/json")
@@ -50,94 +51,95 @@ public class UserController {
 		ResponseObject<Map<String, Object>> res = null;
 		try {
 			res = feignUserClient.wxLogin(code);
-			
+
 		} catch (Exception e) {
-			logger.error("===error msg:"+e.getMessage());
+			logger.error("===error msg:" + e.getMessage());
 			res = new ResponseObject();
 			res.setStatus(ResponseEnum.RequestTimeout.getStatus());
 			res.setMessage(ResponseEnum.RequestTimeout.getMsg());
 		}
 		return res;
 	}
+
 	@Deprecated
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@ApiOperation(value = "sms login", httpMethod = "POST", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/smsCodeLogin/{shareSdkAppkey}/{zone}/{mobile}/{code}", method = RequestMethod.POST)
-	public ResponseObject<Map<String, Object>> smsCodeLogin(@PathVariable(name="shareSdkAppkey") String shareSdkAppkey,@PathVariable(name="zone") String zone,
-			@RequestParam(name="mobile") String mobile,@RequestParam(name="code") String code
-			) {
-		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String,Object>>();
+	public ResponseObject<Map<String, Object>> smsCodeLogin(
+			@PathVariable(name = "shareSdkAppkey") String shareSdkAppkey, @PathVariable(name = "zone") String zone,
+			@RequestParam(name = "mobile") String mobile, @RequestParam(name = "code") String code) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		try {
 			ResponseObject<TUser> userRes = feignUserClient.getUser(mobile);
-			if(userRes==null||userRes.getStatus()!=ResponseEnum.SelectSuccess.getStatus()||
-					userRes.getData()==null
-					){
+			if (userRes == null || userRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| userRes.getData() == null) {
 				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
 				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
 				return res;
 			}
 			MobClient mobClient = new MobClient();
-			mobClient.addParam("appkey", shareSdkAppkey).addParam("phone", mobile)
-			.addParam("zone", zone).addParam("code", code);
+			mobClient.addParam("appkey", shareSdkAppkey).addParam("phone", mobile).addParam("zone", zone)
+					.addParam("code", code);
 			mobClient.addRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
 			mobClient.addRequestProperty("Accept", "application/json");
 			String result = mobClient.post();
 			JSONObject object = new JSONObject(result);
-			logger.info("====result:"+result);
-			if (object.getInt("status")==200) {
+			logger.info("====result:" + result);
+			if (object.getInt("status") == 200) {
 				TUser user = userRes.getData();
 				ResponseObject<List<OauthClientDetails>> clientsRes = feignUserClient.getClients("password");
-				if(clientsRes==null||clientsRes.getData()==null||
-						clientsRes.getStatus()!=ResponseEnum.SelectSuccess.getStatus()){
+				if (clientsRes == null || clientsRes.getData() == null
+						|| clientsRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
 					res.setStatus(ResponseEnum.RequestParamError.getStatus());
 					res.setMessage(ResponseEnum.RequestParamError.getMsg());
 					return res;
 				}
 				List<OauthClientDetails> clients = clientsRes.getData();
-				Map<String, Object> map=new HashMap<String, Object>();
+				Map<String, Object> map = new HashMap<String, Object>();
 				map.put("grant_type", "password");
 				map.put("username", user.getUserName());
-				//may should decode
+				// may should decode
 				map.put("password", user.getPassword());
 				Map<String, Object> hashmap = HttpWithBasicAuth.https(map, clients.get(0));
-				if(hashmap!=null&&!hashmap.isEmpty()){
+				if (hashmap != null && !hashmap.isEmpty()) {
 					res.setStatus(ResponseEnum.SelectSuccess.getStatus());
-					res.setMessage(ResponseEnum.SelectSuccess.getMsg());					  
+					res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 					res.setData(hashmap);
-					return res; 
+					return res;
 				}
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
-			}else{
+			} else {
 				res.setStatus(ResponseEnum.NoExistCode.getStatus());
 				res.setMessage(ResponseEnum.NoExistCode.getMsg());
 				return res;
 			}
 		} catch (Exception e) {
-			logger.error("===error msg:"+e.getMessage());
+			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.RequestTimeout.getStatus());
 			res.setMessage(ResponseEnum.RequestTimeout.getMsg());
 		}
 		return res;
 	}
+
 	@SuppressWarnings("rawtypes")
 	@ApiOperation(value = "register user", httpMethod = "POST", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public ResponseObject register(@RequestParam(name="appkey") String appkey,@RequestParam(name="mobile") String mobile,
-			@RequestParam(name="code") String code,@RequestParam(name="pwd") String pwd
-			) {
+	public ResponseObject register(@RequestParam(name = "appkey") String appkey,
+			@RequestParam(name = "mobile") String mobile, @RequestParam(name = "code") String code,
+			@RequestParam(name = "pwd") String pwd) {
 		ResponseObject res = new ResponseObject();
 		try {
-			/*if(!map.containsKey("code")||!map.containsKey("mobile")||!map.containsKey("pwd")
-					||!map.containsKey("appkey")
-					){
-				res.setStatus(ResponseEnum.RequestParamError.getStatus());
-				res.setMessage(ResponseEnum.RequestParamError.getMsg());
-			}else{*/
-				res = feignUserClient.register(mobile, code, pwd,appkey);
-			//}
+			/*
+			 * if(!map.containsKey("code")||!map.containsKey("mobile")||!map.
+			 * containsKey("pwd") ||!map.containsKey("appkey") ){
+			 * res.setStatus(ResponseEnum.RequestParamError.getStatus());
+			 * res.setMessage(ResponseEnum.RequestParamError.getMsg()); }else{
+			 */
+			res = feignUserClient.register(mobile, code, pwd, appkey);
+			// }
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			res.setStatus(ResponseEnum.RequestTimeout.getStatus());
@@ -145,15 +147,17 @@ public class UserController {
 		}
 		return res;
 	}
+
 	@Deprecated
 	@SuppressWarnings("rawtypes")
 	@ApiOperation(value = "send", httpMethod = "GET", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@GetMapping("/sendCodeToMobile/{mobile}")
-	public ResponseObject register(@PathVariable String mobile) {
+	public ResponseObject register(@PathVariable String mobile,
+			@RequestParam(required = false, value = "appId") String appId) {
 		ResponseObject res = null;
 		try {
-			res = feignUserClient.sendCodeToMobile(mobile);
+			res = feignUserClient.sendCodeToMobile(mobile, appId);
 			return res;
 		} catch (Exception e) {
 			logger.error(e.getMessage());
@@ -163,6 +167,7 @@ public class UserController {
 			return res;
 		}
 	}
+
 	@SuppressWarnings("rawtypes")
 	@ApiOperation(value = "send", httpMethod = "GET", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
@@ -180,15 +185,17 @@ public class UserController {
 			return res;
 		}
 	}
+
 	@Deprecated
 	@SuppressWarnings("rawtypes")
 	@ApiOperation(value = "forget password", httpMethod = "GET", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@GetMapping("/forget/{mobile}")
-	public ResponseObject forget(@PathVariable String mobile) {
+	public ResponseObject forget(@PathVariable String mobile,
+			@RequestParam(required = false, value = "appId") String appId) {
 		ResponseObject res = null;
 		try {
-			res = feignUserClient.forget(mobile);
+			res = feignUserClient.forget(mobile, appId);
 			return res;
 		} catch (Exception e) {
 			logger.error(e.getMessage());
@@ -198,5 +205,5 @@ public class UserController {
 			return res;
 		}
 	}
-	 
+
 }
