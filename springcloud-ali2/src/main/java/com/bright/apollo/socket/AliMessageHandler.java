@@ -1,9 +1,6 @@
 package com.bright.apollo.socket;
 
-import java.util.Calendar;
-import java.util.List;
-import java.util.Set;
-import java.util.TimeZone;
+import java.util.*;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 import org.apache.commons.codec.binary.Base64;
@@ -97,10 +94,17 @@ public class AliMessageHandler {
 				String topic = (String) map.get("topic");
 				String[] topicArray = topic.split("/");
 				logger.info("topic:" + topic + " PopMessage Body: " + aString); // 获取原始消息
+
+				JSONObject json = new JSONObject(aString);
+				Iterator iterator = json.keys();
+				while (iterator.hasNext()){
+					logger.info("ir key ====== "+iterator.next());
+				}
 				logger.info("topic:" + topic + " PopMessage Body length : " + aString.length()); // 获取原始消息长度
 				if(!StringUtils.isEmpty(topicArray[1])&&(iotOboxConncetion.getOboxSouthChinaName().equals(topicArray[1])||
 						iotOboxConncetion.getOboxAmericaName().equals(topicArray[1])
 						)){
+
 					 cmdHandlerManager.processTopic(topicArray[1],topicArray[2],aString);
 				} else {
 					commandHandler.process(topicArray[1], topicArray[2], aString);

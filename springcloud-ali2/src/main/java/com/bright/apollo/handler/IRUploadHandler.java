@@ -113,9 +113,9 @@ public class IRUploadHandler extends AliBaseHandler {
         com.alibaba.fastjson.JSONObject resMap = new com.alibaba.fastjson.JSONObject();
         TYaokonyunDevice yaokonyunDevice = getYaoKongDevice();
         List<String> strings = new ArrayList<String>();
-        strings.add("bid=104");
+        strings.add("bid="+brandId);
         strings.add("t=7");
-        strings.add("r=1,38000,341,169,24,64,23,22,23,22,23,64,24,21,24,21,24,63,24,21,24,21,24,63,24,21,24,63,24,21,24,21,24,21,24,21,24,21,24,21,24,21,25,21,24,21,24,21,24,21,24,21,24,21,24,21,24,21,24,21,24,63,24,21,24,64,24,21,23,22,23,64,24,21,24");
+        strings.add("r="+src);
         strings.add("zip=1");
         String result = yaoKongYunSend
                 .postMethod(strings,yaokonyunDevice,yaoKongYunConfig.getUrlPrefix()+"?c=m");
