@@ -36,6 +36,7 @@ public class TRemoteLed implements Serializable{
      *
      * @mbg.generated Tue Dec 11 17:44:44 CST 2018
      */
+    @Deprecated
     private String name;
 
     /**
@@ -47,8 +48,12 @@ public class TRemoteLed implements Serializable{
      */
     private String serialid;
     
-    
+    @Deprecated
     private String channel;
+    
+    
+    
+    private String value;
 
     /**
      *
@@ -163,6 +168,14 @@ public class TRemoteLed implements Serializable{
 		this.channel = channel;
 	}
 
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
+
 	/**  
 	 *   
 	 */
@@ -180,6 +193,16 @@ public class TRemoteLed implements Serializable{
 		this.name = name;
 		this.serialid = serialid;
 		this.channel = channel;
+	}
+
+	/**  
+	 * @param serialid
+	 * @param value  
+	 */
+	public TRemoteLed(String serialid, String value) {
+		super();
+		this.serialid = serialid;
+		this.value = value;
 	}
 
 }

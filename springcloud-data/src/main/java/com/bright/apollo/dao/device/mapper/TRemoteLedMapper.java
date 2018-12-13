@@ -61,4 +61,11 @@ public interface TRemoteLedMapper {
 	@UpdateProvider(type = TRemoteLedSqlProvider.class, method = "updateRemote")
 	void updateRemote(TRemoteLed remoteLed);
 
+	/**  
+	 * @param remoteLed  
+	 * @Description:  
+	 */
+	@InsertProvider(type = TRemoteLedSqlProvider.class, method = "addRemoteLed")
+	void addRemoteLed(TRemoteLed remoteLed);
+
 }

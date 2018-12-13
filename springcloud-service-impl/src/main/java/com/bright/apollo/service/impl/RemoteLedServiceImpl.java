@@ -57,4 +57,13 @@ public class RemoteLedServiceImpl implements RemoteLedService{
 		mapper.updateRemote(remoteLed);
 		
 	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.RemoteLedService#addRemoteLed(com.bright.apollo.common.entity.TRemoteLed)  
+	 */
+	@Override
+	public void addRemoteLed(TRemoteLed remoteLed) {
+		mapper.addRemoteLed(remoteLed);
+		
+	}
 }

@@ -39,4 +39,10 @@ public interface RemoteLedService {
 	 */
 	void updateRemote(TRemoteLed remoteLed);
 
+	/**  
+	 * @param remoteLed  
+	 * @Description:  
+	 */
+	void addRemoteLed(TRemoteLed remoteLed);
+
 }

@@ -50,13 +50,53 @@ public class TRemoteLedSqlProvider {
 				if (!StringUtils.isEmpty(remoteLed.getSerialid())) {
 					SET("serialId=#{serialid}");
 				}
-				 	
+				if (remoteLed.getValue()!=null) {
+					SET("value=#{value}");
+				}
 				WHERE("id=#{id}");
 			}
 		}.toString();
 	}
 
+	public String addRemoteLed(final TRemoteLed remoteLed) {
+		return new SQL() {
+			{
+				INSERT_INTO("t_remote_led");
+				if (!StringUtils.isEmpty(remoteLed.getSerialid())) {
+					VALUES("serialId", "#{serialid}");
+				}
 
+				if (!StringUtils.isEmpty(remoteLed.getValue())) {
+					VALUES("value", "#{value}");
+				}
+			/*	if (!StringUtils.isEmpty(tLocation.getDownloadUrl())) {
+					VALUES("download_url", "#{downloadUrl}");
+				}
+				if (!StringUtils.isEmpty(tLocation.getLicense())) {
+					VALUES("license", "#{license}");
+				}
+				if (!StringUtils.isEmpty(tLocation.getThumUrl())) {
+					VALUES("thum_url", "#{thumUrl}");
+				}*/
+			}
+		}.toString();
+		/*return new SQL() {
+			{
+				INSERT_INTO("t_remote_led");
+				if (!StringUtils.isEmpty(remoteLed.getName())) {
+					SET("name=#{name}");
+				}
+				if (!StringUtils.isEmpty(remoteLed.getChannel())) {
+					SET("channel=#{channel}");
+				}
+				if (!StringUtils.isEmpty(remoteLed.getSerialid())) {
+					SET("serialId=#{serialid}");
+				}
+				 	
+				WHERE("id=#{id}");
+			}
+		}.toString();*/
+	}
 	public static void main(String[] args) {
 		List<TRemoteLed> list=new ArrayList<TRemoteLed>();
 		for (int i = 0; i <2; i++) {
