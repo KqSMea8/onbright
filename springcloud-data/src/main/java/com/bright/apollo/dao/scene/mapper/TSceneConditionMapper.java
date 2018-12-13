@@ -88,6 +88,14 @@ public interface TSceneConditionMapper{
 	@Delete("delete from t_scene_condition where serialId = #{serialId}")
 	int deleteSceneConditionBySerialId(@Param("serialId")String serialId);
 
+	/**  
+	 * @param oboxSerialId  
+	 * @Description:  
+	 */
+	@Delete("delete from t_scene_condition where scene_number in("
+			+ "select scene_number from t_scene where obox_serial_id=#{oboxSerialId})")
+	void deleteSceneConfitionByOboxSerialId(@Param("oboxSerialId")String oboxSerialId);
+
  
 
 }

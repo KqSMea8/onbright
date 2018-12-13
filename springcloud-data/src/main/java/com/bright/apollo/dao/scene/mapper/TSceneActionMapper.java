@@ -73,4 +73,12 @@ public interface TSceneActionMapper  {
 	@Delete("delete t_scene_action where actionID=#{serialId} and node_type = #{nodeType}")
 	int deleteSceneActionByActionId(@Param("serialId")String serialId, @Param("nodeType")String nodeType);
 
+	/**  
+	 * @param oboxSerialId  
+	 * @Description:  
+	 */
+	@Delete("delete t_scene_action where scene_number in("
+			+ "select scene_number where t_scene where obox_serial_id=#{oboxSerialId})")
+	void deleteSceneActionByOboxSerialId(@Param("oboxSerialId")String oboxSerialId);
+
 }

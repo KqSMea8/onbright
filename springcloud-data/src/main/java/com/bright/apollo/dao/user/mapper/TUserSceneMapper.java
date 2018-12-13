@@ -44,4 +44,12 @@ public interface TUserSceneMapper {
 	 */
     @Select("select * from t_user_scene where scene_number = #{sceneNumber} and user_id=#{userId}")
     TUserScene getUserSceneByUserIdAndSceneNumber(@Param("userId") Integer userId,@Param("sceneNumber") Integer sceneNumber);
+
+	/**  
+	 * @param oboxSerialId  
+	 * @Description:  
+	 */
+    @Delete("delete from t_user_scene where scene_number in"
+    		+ "(select scene_number from t_scene where obox_serial_id=#{oboxSerialId})")
+	void deleteUserSceneByOboxSerialId(@Param("oboxSerialId")String oboxSerialId);
 }
