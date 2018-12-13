@@ -94,12 +94,6 @@ public class AliMessageHandler {
 				String topic = (String) map.get("topic");
 				String[] topicArray = topic.split("/");
 				logger.info("topic:" + topic + " PopMessage Body: " + aString); // 获取原始消息
-
-				JSONObject json = new JSONObject(aString);
-				Iterator iterator = json.keys();
-				while (iterator.hasNext()){
-					logger.info("ir key ====== "+iterator.next());
-				}
 				logger.info("topic:" + topic + " PopMessage Body length : " + aString.length()); // 获取原始消息长度
 				if(!StringUtils.isEmpty(topicArray[1])&&(iotOboxConncetion.getOboxSouthChinaName().equals(topicArray[1])||
 						iotOboxConncetion.getOboxAmericaName().equals(topicArray[1])

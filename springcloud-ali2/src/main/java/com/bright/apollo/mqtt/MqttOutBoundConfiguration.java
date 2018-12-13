@@ -27,7 +27,7 @@ public class MqttOutBoundConfiguration {
     public MqttPahoClientFactory mqttClientFactory(){
         String[] url = mqttProperties.getOutbound().getUrl().split(",");
         DefaultMqttPahoClientFactory defaultMqttPahoClientFactory = new DefaultMqttPahoClientFactory();
-        defaultMqttPahoClientFactory.setServerURIs("tcp://47.99.107.215:1883");
+        defaultMqttPahoClientFactory.setServerURIs("tcp://localhost:1883");
         defaultMqttPahoClientFactory.setCleanSession(false);
         defaultMqttPahoClientFactory.setUserName("admin");
         defaultMqttPahoClientFactory.setPassword("admin");
