@@ -762,7 +762,12 @@ public class CommonController {
 
 	@SuppressWarnings("unchecked")
 	public static void main(String[] args) {
-		List<String> mList = ((List<String>) ObjectUtils.fromJsonToObject(null, List.class));
-		System.out.println(mList);
+		//List<String> mList = ((List<String>) ObjectUtils.fromJsonToObject(null, List.class));
+		//System.out.println(mList);
+		List<String> mList=new ArrayList<String>();
+		for (int i = 0; i < 2; i++) {
+			mList.add("111111"+i);
+		}
+		System.out.println(mList.toString());
 	}
 }
