@@ -347,7 +347,7 @@ public class AliDeviceController {
 		Map<String,Object> resMap = new HashMap<String,Object>();
 		try {
 			res.setData(getRemoteControlList(brandId,deviceType));
-//			getRemoteControlList2("104","7","");
+//			getRemoteControlList2("1359","7","");
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {
@@ -358,46 +358,46 @@ public class AliDeviceController {
 		return res;
 	}
 
-	private com.alibaba.fastjson.JSONObject getRemoteControlList2(String brandId,String deviceType,String src) throws Exception {
-		com.alibaba.fastjson.JSONObject resMap = new com.alibaba.fastjson.JSONObject();
-		TYaokonyunDevice yaokonyunDevice = getYaoKongDevice();
-		List<String> strings = new ArrayList<String>();
-		strings.add("bid="+brandId);
-		strings.add("t=7");
-		strings.add("r=1,38000,341,169,24,64,23,22,23,22,23,64,24,21,24,21,24,63,24,21,24,21,24,63,24,21,24,63,24,21,24,21,24,21,24,21,24,21,24,21,24,21,25,21,24,21,24,21,24,21,24,21,24,21,24,21,24,21,24,21,24,63,24,21,24,64,24,21,23,22,23,64,24,21,24");
-		strings.add("zip=1");
-		String result = yaoKongYunSend
-				.postMethod(strings,yaokonyunDevice,yaoKongYunConfig.getUrlPrefix()+"?c=m");
-		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-		MatchRemoteControlResult remoteControlResult = gson.fromJson(result,MatchRemoteControlResult.class);
-
-		if(remoteControlResult==null||remoteControlResult.getSm()==0){
-//            resMap.put("sm",0);
-			resMap.put("rs",new ArrayList());
-		}else{
-			List<MatchRemoteControl>  list = remoteControlResult.getRs();
-			List<TYaokonyunRemoteControl> remoteControlList = new ArrayList<TYaokonyunRemoteControl>();
-			List<QueryRemoteBySrcDTO> dtoList = new ArrayList<QueryRemoteBySrcDTO>();
-			List<QueryRemoteBySrcDTO2> dtoSrcList = new ArrayList<QueryRemoteBySrcDTO2>();
-			for(MatchRemoteControl matchRemoteControl :list){
-				TYaokonyunRemoteControl tYaokonyunRemoteControl = new TYaokonyunRemoteControl(matchRemoteControl);
-				remoteControlList.add(tYaokonyunRemoteControl);
-				QueryRemoteBySrcDTO dto = new QueryRemoteBySrcDTO(matchRemoteControl);
-				QueryRemoteBySrcDTO2 srcDto = new QueryRemoteBySrcDTO2(matchRemoteControl);
-				Integer idx = IndexUtils.getIdx();
-				dto.setIndex(idx);
-				dto.setBrandType(Integer.valueOf(brandId==null?"0":brandId));
-				srcDto.setIndex(idx);
-				srcDto.setBrandType(Integer.valueOf(brandId==null?"0":brandId));
-				dtoList.add(dto);
-				dtoSrcList.add(srcDto);
-			}
-			cmdCache.setIRDeviceInfoList(brandId+"_"+deviceType+"_"+"_remoteControlList",dtoList);
-			cmdCache.setIRDeviceInfoList(brandId+"_"+deviceType+"_"+"_remoteControlListSrc",dtoSrcList);
-			resMap.put("rs",dtoList);
-		}
-		return resMap;
-	}
+//	private com.alibaba.fastjson.JSONObject getRemoteControlList2(String brandId,String deviceType,String src) throws Exception {
+//		com.alibaba.fastjson.JSONObject resMap = new com.alibaba.fastjson.JSONObject();
+//		TYaokonyunDevice yaokonyunDevice = getYaoKongDevice();
+//		List<String> strings = new ArrayList<String>();
+//		strings.add("bid="+brandId);
+//		strings.add("t=7");
+//		strings.add("r=1,38000,220,287,15,135,15,134,14,135,14,135,14,135,15,134,15,61,14,137,14,61,14,61,14,61,14,61,14,61,14,61,14,135,14,62,14,61,14,134,15,135,14,61,14,61,14,61,14,61,15,136,14,135,14,61,14,61,14,135,14,136,14,135,14,135,14,62,14,135,14,60,15,135,14,61,14,135,14,61,14,61,15,61,14,61,14,135,14,61,14,134,15,61,14,136,14,135,14,137,16,298,16");
+//		strings.add("zip=1");
+//		String result = yaoKongYunSend
+//				.postMethod(strings,yaokonyunDevice,yaoKongYunConfig.getUrlPrefix()+"?c=m");
+//		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+//		MatchRemoteControlResult remoteControlResult = gson.fromJson(result,MatchRemoteControlResult.class);
+//
+//		if(remoteControlResult==null||remoteControlResult.getSm()==0){
+////            resMap.put("sm",0);
+//			resMap.put("rs",new ArrayList());
+//		}else{
+//			List<MatchRemoteControl>  list = remoteControlResult.getRs();
+//			List<TYaokonyunRemoteControl> remoteControlList = new ArrayList<TYaokonyunRemoteControl>();
+//			List<QueryRemoteBySrcDTO> dtoList = new ArrayList<QueryRemoteBySrcDTO>();
+//			List<QueryRemoteBySrcDTO2> dtoSrcList = new ArrayList<QueryRemoteBySrcDTO2>();
+//			for(MatchRemoteControl matchRemoteControl :list){
+//				TYaokonyunRemoteControl tYaokonyunRemoteControl = new TYaokonyunRemoteControl(matchRemoteControl);
+//				remoteControlList.add(tYaokonyunRemoteControl);
+//				QueryRemoteBySrcDTO dto = new QueryRemoteBySrcDTO(matchRemoteControl);
+//				QueryRemoteBySrcDTO2 srcDto = new QueryRemoteBySrcDTO2(matchRemoteControl);
+//				Integer idx = IndexUtils.getIdx();
+//				dto.setIndex(idx);
+//				dto.setBrandType(Integer.valueOf(brandId==null?"0":brandId));
+//				srcDto.setIndex(idx);
+//				srcDto.setBrandType(Integer.valueOf(brandId==null?"0":brandId));
+//				dtoList.add(dto);
+//				dtoSrcList.add(srcDto);
+//			}
+//			cmdCache.setIRDeviceInfoList(brandId+"_"+deviceType+"_"+"_remoteControlList",dtoList);
+//			cmdCache.setIRDeviceInfoList(brandId+"_"+deviceType+"_"+"_remoteControlListSrc",dtoSrcList);
+//			resMap.put("rs",dtoList);
+//		}
+//		return resMap;
+//	}
 
 	// 一键匹配遥控方案——进入空调对码模式
 	@RequestMapping(value = "/pairIrRemotecode", method = RequestMethod.POST)
