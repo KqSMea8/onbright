@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
+import javafx.beans.binding.ObjectBinding;
 import net.sf.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -314,10 +315,33 @@ public class AliDeviceController {
 		Map<String, Object> requestMap = new HashMap<String, Object>();
 		try {
 			TYaokonyunKeyCode yaokonyunKeyCode = yaoKongYunService.getYaoKongKeyCodeByKeyAndSerialIdAndIndex(index,serialId,key);
+			String brandId = cmdCache.getIrTestCodeAppKeyBrandIdDeviceType("brandId_"+serialId);
+			List<QueryRemoteBySrcDTO2> dtoSrcList = cmdCache.getIRDeviceInfoList(brandId+"_7_"+"_remoteControlListSrc");
+			for(QueryRemoteBySrcDTO2 dto :dtoSrcList){
+				Integer dotIdx = dto.getIndex();
+				if(dotIdx.equals(index)){
+					com.alibaba.fastjson.JSONArray jsonArray = dto.getKeys();
+					for(int i=0;i<jsonArray.size();i++){
+						com.alibaba.fastjson.JSONObject jsonObject = jsonArray.getJSONObject(i);
+						Map map = (Map) jsonObject.get("keyCodeMap");
+						Iterator keyMapItor = map.keySet().iterator();
+						while (keyMapItor.hasNext()){
+							if(keyMapItor.next().equals(key)){
+								KeyCode keyCode = (KeyCode)map.get(key);
+								if(yaokonyunKeyCode==null){
+									yaokonyunKeyCode = new TYaokonyunKeyCode();
+									yaokonyunKeyCode.setSrc(keyCode.getSrcCode());
+								}
+							}
+						}
+					}
+				}
+			}
 			if(yaokonyunKeyCode==null){
 				res.setStatus(ResponseEnum.NoIRKey.getStatus());
 				res.setMessage(ResponseEnum.NoIRKey.getMsg());
 			}else{
+				logger.info(" src ========= "+yaokonyunKeyCode.getSrc());
 				requestMap.put("command","set");
 				com.alibaba.fastjson.JSONArray jsonArray = new com.alibaba.fastjson.JSONArray();
 				com.alibaba.fastjson.JSONObject json = new com.alibaba.fastjson.JSONObject();
@@ -432,7 +456,7 @@ public class AliDeviceController {
 		List<String> strings = new ArrayList<String>();
 		strings.add("bid="+brandId);
 		strings.add("t="+deviceType);
-		strings.add("v=4");
+		strings.add("v=3");
 		strings.add("zip=1");
 		String result = yaoKongYunSend
 				.postMethod(strings,yaokonyunDevice,yaoKongYunConfig.getUrlPrefix()+"?c=l");
@@ -449,9 +473,11 @@ public class AliDeviceController {
 			List<TYaokonyunRemoteControl> remoteControlList = new ArrayList<TYaokonyunRemoteControl>();
 			List<QueryRemoteBySrcDTO> dtoList = new ArrayList<QueryRemoteBySrcDTO>();
 			List<QueryRemoteBySrcDTO2> dtoSrcList = new ArrayList<QueryRemoteBySrcDTO2>();
+			int index = 1;
 			for(MatchRemoteControl matchRemoteControl :list){
+				logger.info("====== index ====== "+index++);
 				TYaokonyunRemoteControl tYaokonyunRemoteControl = new TYaokonyunRemoteControl(matchRemoteControl);
-				remoteControlList.add(tYaokonyunRemoteControl);
+//				remoteControlList.add(tYaokonyunRemoteControl);
 				QueryRemoteBySrcDTO dto = new QueryRemoteBySrcDTO(matchRemoteControl);
 				QueryRemoteBySrcDTO2 srcDto = new QueryRemoteBySrcDTO2(matchRemoteControl);
 				Integer idx = IndexUtils.getIdx();
