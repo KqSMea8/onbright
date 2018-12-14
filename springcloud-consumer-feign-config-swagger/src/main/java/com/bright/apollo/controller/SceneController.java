@@ -3,7 +3,11 @@ package com.bright.apollo.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,8 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.common.entity.TScene;
+import com.bright.apollo.common.entity.TUser;
 import com.bright.apollo.feign.FeignOboxClient;
 import com.bright.apollo.feign.FeignSceneClient;
+import com.bright.apollo.feign.FeignUserClient;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.response.SceneInfo;
@@ -35,12 +41,14 @@ import io.swagger.annotations.ApiResponse;
 @RequestMapping("scene")
 @RestController
 public class SceneController {
+	private static final Logger logger = LoggerFactory.getLogger(SceneController.class);
 	@Autowired
 	private FeignSceneClient feignSceneClient;
 	@Autowired
 	private FeignOboxClient feignOboxClient;
-
- 
+	@Autowired
+	private FeignUserClient feignUserClient;
+	@Deprecated
 	@RequestMapping(value = "/{sceneNumber}", method = RequestMethod.GET)
 	@ApiOperation(value = "get Scene by sceneNumber", httpMethod = "GET", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
@@ -56,6 +64,7 @@ public class SceneController {
 		}
 		return res;
 	}
+	@Deprecated
 	@RequestMapping(value = "/{sceneNumber}", method = RequestMethod.PUT)
 	@ApiOperation(value = "update Scene", httpMethod = "PUT", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
@@ -73,7 +82,7 @@ public class SceneController {
 		}
 		return res;
 	}
-
+	@Deprecated
 	@SuppressWarnings("rawtypes")
 	@ApiOperation(value = "del Scene by sceneNumber", httpMethod = "DELETE", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
@@ -90,7 +99,7 @@ public class SceneController {
 		}
 		return res;
 	}
-
+	@Deprecated
 	@SuppressWarnings("rawtypes")
 	@ApiOperation(value = "del SceneCondition by sceneNumber,if condtionId not null delete by conditionId.else delete condition by sceneNumber", httpMethod = "DELETE", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
@@ -107,7 +116,7 @@ public class SceneController {
 		}
 		return res;
 	}
-
+	@Deprecated
 	@SuppressWarnings("rawtypes")
 	@ApiOperation(value = "del SceneAction by sceneNumber,if actionId not null delete by actionId.else delete action by sceneNumber", httpMethod = "DELETE", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
@@ -124,7 +133,7 @@ public class SceneController {
 		}
 		return res;
 	}
-
+	@Deprecated
 	@ApiOperation(value = "add servr scene ", httpMethod = "POST", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/addScene", method = RequestMethod.POST)
@@ -146,6 +155,7 @@ public class SceneController {
 	 * @return  
 	 * @Description:  
 	 */
+	@Deprecated
 	@ApiOperation(value = "add servr scene ", httpMethod = "PUT", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/updateSceneSendSetting/{sceneNumber}/{sceneStatus}", method = RequestMethod.PUT)
@@ -185,6 +195,43 @@ public class SceneController {
 		}
 		return res;
 	}
-
+	@ApiOperation(value = "querySceneByOboxSerialId", httpMethod = "GET", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/querySceneByOboxSerialId/{oboxSerialId}", method = RequestMethod.GET)
+	public ResponseObject<Map<String, Object>> querySceneByOboxSerialId(
+			@PathVariable(value="oboxSerialId") String oboxSerialId) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String,Object>>();
+		try {
+			logger.info("===querySceneByObxSerialId agrs:"+oboxSerialId);
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				logger.warn("===this user can't find===");
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+			logger.info("==userId:"+resUser.getData().getId()+"===userName:"+resUser.getData().getUserName());
+			ResponseObject<TObox> oboxRes = feignOboxClient.getOboxByUserAndoboxSerialId(resUser.getData().getId(), oboxSerialId);
+			if(oboxRes==null||oboxRes.getData()==null){
+				logger.warn("===this obox can't find===");
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			return feignSceneClient.querySceneByOboxSerialId( oboxSerialId);
+		} catch (Exception e) {
+			logger.error("===error msg:"+e.getMessage());
+ 			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
 	
 }

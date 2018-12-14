@@ -471,6 +471,7 @@ public class GroupController {
 				GroupDTO groupDTO10 = new GroupDTO(tServerGroup);
 				groupDTO10.setGroupMember(replyList);
 				map.put("groups", groupDTO10);
+				res.setData(map);
 				res.setStatus(ResponseEnum.AddSuccess.getStatus());
 				res.setMessage(ResponseEnum.AddSuccess.getMsg());
 			}
