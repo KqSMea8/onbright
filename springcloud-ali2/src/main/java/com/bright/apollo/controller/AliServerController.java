@@ -1,5 +1,7 @@
 package com.bright.apollo.controller;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Future;
@@ -1197,6 +1199,8 @@ public class AliServerController {
 			@RequestParam(value = "cmd") CMDEnum cmd, @RequestParam(value = "setBytes") byte[] setBytes){
 		ResponseObject<OboxResp> res = new ResponseObject<OboxResp>();
 		try {
+			logger.info("===sendCmd:"+setBytes);
+			logger.info("===obox:"+obox.toString());
 			topicServer.request(cmd, setBytes, obox.getOboxSerialId());
 			res.setStatus(ResponseEnum.AddSuccess.getStatus());
 			res.setMessage(ResponseEnum.AddSuccess.getMsg());
