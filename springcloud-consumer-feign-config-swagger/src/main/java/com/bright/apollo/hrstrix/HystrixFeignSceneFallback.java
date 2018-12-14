@@ -1,6 +1,7 @@
 package com.bright.apollo.hrstrix;
 
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -269,6 +270,7 @@ public class HystrixFeignSceneFallback extends BasicHystrixFeignFallback impleme
 	/* (non-Javadoc)  
 	 * @see com.bright.apollo.feign.FeignSceneClient#deleteSceneActionByActionId(java.lang.String, java.lang.String)  
 	 */
+	@SuppressWarnings("rawtypes")
 	@Override
 	public ResponseObject deleteSceneActionByActionId(String serialId, String nodeType) {
 		logger.warn("===scene server is break===");
@@ -280,6 +282,16 @@ public class HystrixFeignSceneFallback extends BasicHystrixFeignFallback impleme
 	 */
 	@Override
 	public ResponseObject deleteSceneConditionBySerialId(String serialId) {
+		logger.warn("===scene server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignSceneClient#querySceneByOboxSerialId(java.lang.Integer, java.lang.String)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<Map<String, Object>> querySceneByOboxSerialId(String oboxSerialId) {
 		logger.warn("===scene server is break===");
 		return serverError();
 	}

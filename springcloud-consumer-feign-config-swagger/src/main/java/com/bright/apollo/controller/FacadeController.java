@@ -1822,6 +1822,7 @@ public class FacadeController extends BaseController {
 						if (!sceneDTO.getSceneType().equals(SceneTypeEnum.local.getValue())) {
 							continue;
 						}
+						tScene.setSceneGroup(StringUtils.isEmpty(sceneDTO.getSceneGroup())?"00":sceneDTO.getSceneGroup());
 						tScene.setSceneType(sceneDTO.getSceneType());
 						tScene.setSceneStatus(sceneDTO.getSceneStatus());
 						tScene.setOboxSceneNumber(sceneDTO.getOboxSceneNumber());

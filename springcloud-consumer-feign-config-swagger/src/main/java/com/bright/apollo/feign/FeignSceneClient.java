@@ -257,6 +257,16 @@ public interface FeignSceneClient {
 	@RequestMapping(value = "/scene/deleteSceneConditionBySerialId/{serialId}", method = RequestMethod.DELETE)
 	ResponseObject deleteSceneConditionBySerialId(@PathVariable(value = "serialId")String serialId);
 
+	/**  
+	 * @param userId
+	 * @param oboxSerialId
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/scene/querySceneByOboxSerialId/{oboxSerialId}", method = RequestMethod.GET)
+	ResponseObject<Map<String, Object>> querySceneByOboxSerialId( 
+			@PathVariable(value = "oboxSerialId")String oboxSerialId);
+
  
 
 }
