@@ -251,6 +251,7 @@ public class GroupController {
 						GroupDTO groupDTO4 = new GroupDTO(serverGroup);
 						groupDTO4.setGroupMember(replyList);
 						map.put("groups", groupDTO4);
+						res.setData(map);
 						res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
 						res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
 					} else {
@@ -270,6 +271,7 @@ public class GroupController {
 					GroupDTO groupDTO6 = new GroupDTO(serverGroup);
 					groupDTO6.setGroupMember(replyList);
 					map.put("groups", groupDTO6);
+					res.setData(map);
 					res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
 					res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
 					// rightReply.add("groups", g2.toJsonTree(groupDTO6));
@@ -506,6 +508,7 @@ public class GroupController {
 				GroupDTO groupDTO11 = new GroupDTO(tServerGroup);
 				groupDTO11.setGroupMember(replyList);
 				map.put("groups", groupDTO11);
+				res.setData(map);
 				res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
 				res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
 			}

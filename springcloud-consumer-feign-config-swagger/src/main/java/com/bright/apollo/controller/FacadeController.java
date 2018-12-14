@@ -6228,7 +6228,7 @@ public class FacadeController extends BaseController {
 				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
 				return res;
 			}
-			res = feignDeviceClient.removeChildGroup(groupId, resUser.getData().getId(), mList);
+			return feignDeviceClient.removeChildGroup(groupId, resUser.getData().getId(), mList);
 			// res=feignDeviceClient.addServerGroup(groupName,resUser.getData().getId(),mList);
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
