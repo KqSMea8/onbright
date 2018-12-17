@@ -350,7 +350,7 @@ public class AliDeviceController {
 				com.alibaba.fastjson.JSONObject json = new com.alibaba.fastjson.JSONObject();
 				json.put("functionId",1);
 				jsonArray.add(json);
-				json.put("data",ByteHelper.bytesToHexString(yaokonyunKeyCode.getSrc().getBytes()));
+				json.put("data",yaokonyunKeyCode.getSrc());
 				requestMap.put("value",jsonArray);
 				topServer.pubIrRPC(requestMap,serialId);
 				res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
