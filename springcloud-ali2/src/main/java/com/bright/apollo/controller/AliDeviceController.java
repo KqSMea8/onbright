@@ -762,11 +762,11 @@ public class AliDeviceController {
 			Integer idx = 0;
 			Integer version = 0;
 			String rmodel = "";
-			TYaokonyunRemoteControl yaokonyunRemoteControl = yaoKongYunService.getYaokonyunRemoteControlByRemoteId(remoteId);
+//			TYaokonyunRemoteControl yaokonyunRemoteControl = yaoKongYunService.getYaokonyunRemoteControlByRemoteId(remoteId);
 			String remoteControlSrc = null;
-			if(yaokonyunRemoteControl!=null){
-				remoteControlSrc = yaokonyunRemoteControl.getSrc();
-			}
+//			if(yaokonyunRemoteControl!=null){
+//				remoteControlSrc = yaokonyunRemoteControl.getSrc();
+//			}
 			List<QueryRemoteBySrcDTO2> list = cmdCache.getIRDeviceInfoList(brandId+"_"+deviceType+"_"+"_remoteControlListSrc");
 
 			for(QueryRemoteBySrcDTO2 dto : list){
@@ -788,7 +788,7 @@ public class AliDeviceController {
 
 			}
 
-			String keyNameType = cmdCache.getIrTestCodeAppKeyBrandIdDeviceType("keyNameType_"+idx.toString());
+//			String keyNameType = cmdCache.getIrTestCodeAppKeyBrandIdDeviceType("keyNameType_"+idx.toString());
 //			keyName = cmdCache.getIrTestCodeAppKeyBrandIdDeviceType("keyName_"+idx.toString());
 
 			List<TYaokonyunKeyCode> yaokonyunKeyCodeList = yaoKongYunService.getYaoKongKeyCodeByRemoteId(idx);
