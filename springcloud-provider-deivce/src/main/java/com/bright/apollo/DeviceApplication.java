@@ -1,5 +1,6 @@
 package com.bright.apollo;
 
+
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableAsync
 @MapperScan("com.bright.apollo.dao")
 public class DeviceApplication {
+	//private static final Log logger =LogFactory.getLog(DeviceApplication.class);
 	private static final Logger logger = LoggerFactory.getLogger(DeviceApplication.class);
 	public static void main(String[] args) {
 		logger.info("=====device start====");

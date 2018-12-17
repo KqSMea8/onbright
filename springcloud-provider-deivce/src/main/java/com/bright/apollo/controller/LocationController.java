@@ -1,6 +1,5 @@
 package com.bright.apollo.controller;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,7 +8,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,7 +45,6 @@ import com.bright.apollo.service.SceneService;
 import com.bright.apollo.service.ServerGroupService;
 import com.bright.apollo.service.UserLocationService;
 import com.bright.apollo.tool.NumberHelper;
-import com.zz.common.util.StringUtils;
 
 /**
  * @Title:
