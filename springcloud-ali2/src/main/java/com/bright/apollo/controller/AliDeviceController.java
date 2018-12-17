@@ -317,7 +317,7 @@ public class AliDeviceController {
 			TYaokonyunKeyCode yaokonyunKeyCode = yaoKongYunService.getYaoKongKeyCodeByKeyAndSerialIdAndIndex(index,serialId,key);
 			String brandId = cmdCache.getIrTestCodeAppKeyBrandIdDeviceType("brandId_"+index);
 			String deviceType = cmdCache.getIrTestCodeAppKeyBrandIdDeviceType("deviceType_"+index);
-			if(brandId !=null && brandId.equals("")&&yaokonyunKeyCode==null){
+			if(brandId !=null &&!brandId.equals("")&&yaokonyunKeyCode==null){
 				List<QueryRemoteBySrcDTO2> dtoSrcList = cmdCache.getIRDeviceInfoList(brandId+"_"+deviceType+"_"+"_remoteControlListSrc");
 				for(QueryRemoteBySrcDTO2 dto :dtoSrcList){
 					Integer dotIdx = dto.getIndex();
