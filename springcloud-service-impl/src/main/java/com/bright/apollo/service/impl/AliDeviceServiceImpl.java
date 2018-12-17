@@ -80,7 +80,7 @@ public class AliDeviceServiceImpl implements AliDeviceService {
 		}
 		tAliDevice.setProductKey(tAliDevice.getProductKey()==null?"":tAliDevice.getProductKey());
 		tAliDevice.setDeviceName(tAliDevice.getDeviceName()==null?"":tAliDevice.getDeviceName());
-		tAliDevice.setOboxSerialId(tAliDevice.getOboxSerialId()==null?"":tAliDevice.getOboxSerialId());
+		tAliDevice.setOboxSerialId(tAliDevice.getOboxSerialId()==null?"available":tAliDevice.getOboxSerialId());
 		tAliDevice.setOffline(tAliDevice.getOffline()==null?0:tAliDevice.getOffline());
 		return mapper.addAliDev(tAliDevice);
 	}

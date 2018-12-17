@@ -55,7 +55,6 @@ import com.zz.common.util.StringUtils;
  * @Since:2018年11月23日
  * @Version:1.1.0
  */
-@Controller
 @RequestMapping("location")
 @RestController
 public class LocationController {
