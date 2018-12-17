@@ -28,17 +28,17 @@ public class AliDeviceDTO extends TAliDeviceConfig implements Serializable {
     }
 
     @Expose
-    @SerializedName("action")
+//    @SerializedName("action")
     @JsonProperty(value="action")
     private JSONArray deviceAction;//
 
     @Expose
-    @SerializedName("state")
+//    @SerializedName("state")
     @JsonProperty(value="state")
     private JSONArray deviceState;//
 
     @Expose
-    @SerializedName("online")
+//    @SerializedName("online")
     @JsonProperty(value="online")
     private boolean online;
 
