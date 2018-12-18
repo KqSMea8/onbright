@@ -2,9 +2,12 @@ package com.bright.apollo.pool;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import org.apache.log4j.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import com.bright.apollo.common.entity.TGroupDevice;
 import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
@@ -28,7 +31,7 @@ import com.bright.apollo.tool.ByteHelper;
  */
 @Component
 public class GroupActionPool {
-	private final Logger log = Logger.getLogger(GroupActionPool.class);
+	private final Logger log = LoggerFactory.getLogger(GroupActionPool.class);
 	@Autowired
 	private ServerGroupService serverGroupService;
 	@Autowired

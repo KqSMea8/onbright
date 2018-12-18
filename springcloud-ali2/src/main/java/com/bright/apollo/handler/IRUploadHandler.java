@@ -136,6 +136,8 @@ public class IRUploadHandler extends AliBaseHandler {
                 QueryRemoteBySrcDTO dto = new QueryRemoteBySrcDTO(matchRemoteControl);
                 QueryRemoteBySrcDTO2 srcDto = new QueryRemoteBySrcDTO2(matchRemoteControl);
                 Integer idx = IndexUtils.getIdx();
+                cmdCache.addIrBrandId(idx.toString(),brandId);
+                cmdCache.addIrDeviceType(idx.toString(),deviceType);
                 dto.setIndex(idx);
                 dto.setBrandType(Integer.valueOf(brandId==null?"0":brandId));
                 srcDto.setIndex(idx);

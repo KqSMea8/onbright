@@ -1,7 +1,9 @@
 package com.bright.apollo.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,14 +16,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.common.entity.TScene;
 import com.bright.apollo.common.entity.TSceneAction;
 import com.bright.apollo.common.entity.TSceneCondition;
+import com.bright.apollo.enums.ConditionTypeEnum;
+import com.bright.apollo.enums.DeviceTypeEnum;
+import com.bright.apollo.enums.NodeTypeEnum;
+import com.bright.apollo.request.SceneActionDTO;
+import com.bright.apollo.request.SceneConditionDTO;
+import com.bright.apollo.request.SceneDTO;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.response.SceneInfo;
+import com.bright.apollo.service.OboxDeviceConfigService;
 import com.bright.apollo.service.SceneConditionService;
 import com.bright.apollo.service.SceneService;
+import com.bright.apollo.tool.NumberHelper;
 
 /**
  * @Title:
@@ -38,6 +49,8 @@ public class SceneController {
 
 	@Autowired
 	private SceneService sceneService;
+	@Autowired
+	private OboxDeviceConfigService oboxDeviceConfigService;
 
 	@RequestMapping(value = "/{sceneNumber}", method = RequestMethod.GET)
 	public ResponseObject<SceneInfo> getScene(@PathVariable Integer sceneNumber) {
@@ -584,19 +597,20 @@ public class SceneController {
 		}
 		return res;
 	}
-	/**  
+
+	/**
 	 * @param userId
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
 	@RequestMapping(value = "/getSceneByUserId/{userId}", method = RequestMethod.GET)
-	ResponseObject<List<TScene>> getSceneByUserId(@PathVariable(value = "userId")Integer userId){
+	ResponseObject<List<TScene>> getSceneByUserId(@PathVariable(value = "userId") Integer userId) {
 		ResponseObject<List<TScene>> res = new ResponseObject<List<TScene>>();
 		try {
 			res.setData(sceneService.getSceneByUserId(userId));
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
- 		} catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("===getSceneConditionsBySceneNumberAndConditionGroup error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
@@ -604,23 +618,23 @@ public class SceneController {
 		}
 		return res;
 	}
-	/**  
+
+	/**
 	 * @param userId
 	 * @param start
 	 * @param count
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
 	@RequestMapping(value = "/getSceneByUserIdAndPage/{userId}/{start}/{count}", method = RequestMethod.GET)
-	ResponseObject<List<TScene>> getSceneByUserIdAndPage(@PathVariable(value = "userId")Integer userId,
-			@PathVariable(value = "start")int start, 
-			@PathVariable(value = "count")int count){
+	ResponseObject<List<TScene>> getSceneByUserIdAndPage(@PathVariable(value = "userId") Integer userId,
+			@PathVariable(value = "start") int start, @PathVariable(value = "count") int count) {
 		ResponseObject<List<TScene>> res = new ResponseObject<List<TScene>>();
 		try {
-			res.setData(sceneService.getSceneByUserIdAndPage(userId,start,count));
+			res.setData(sceneService.getSceneByUserIdAndPage(userId, start, count));
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
- 		} catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("===getSceneConditionsBySceneNumberAndConditionGroup error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
@@ -628,6 +642,7 @@ public class SceneController {
 		}
 		return res;
 	}
+
 	/**
 	 * @param serialId
 	 * @param node
@@ -636,13 +651,13 @@ public class SceneController {
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/deleteSceneActionByActionId/{serialId}/{nodeType}", method = RequestMethod.DELETE)
 	ResponseObject deleteSceneActionByActionId(@PathVariable(value = "serialId") String serialId,
-			@PathVariable(value = "nodeType") String nodeType){
+			@PathVariable(value = "nodeType") String nodeType) {
 		ResponseObject res = new ResponseObject();
 		try {
-			sceneService.deleteSceneActionByActionId(serialId,nodeType);
+			sceneService.deleteSceneActionByActionId(serialId, nodeType);
 			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
 			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
- 		} catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("===deleteSceneActionByActionId error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
@@ -651,25 +666,144 @@ public class SceneController {
 		return res;
 	}
 
-	/**  
-	 * @param deviceSerialId  
-	 * @Description:  
+	/**
+	 * @param deviceSerialId
+	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/deleteSceneConditionBySerialId/{serialId}", method = RequestMethod.DELETE)
-	ResponseObject deleteSceneConditionBySerialId(@PathVariable(value = "serialId")String serialId){
+	ResponseObject deleteSceneConditionBySerialId(@PathVariable(value = "serialId") String serialId) {
 		ResponseObject res = new ResponseObject();
 		try {
 			sceneService.deleteSceneConditionBySerialId(serialId);
 			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
 			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
- 		} catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("===deleteSceneActionByActionId error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
-	
+	}
+
+	/**
+	 * @param userId
+	 * @param oboxSerialId
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/querySceneByOboxSerialId/{oboxSerialId}", method = RequestMethod.GET)
+	ResponseObject<Map<String, Object>> querySceneByOboxSerialId(
+			@PathVariable(value = "oboxSerialId") String oboxSerialId) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		Map<String, Object> map = null;
+		List<SceneDTO> dtos = null;
+		try {
+			List<TScene> scenes = sceneService.getSceneByOboxSerialId(oboxSerialId);
+			if (scenes != null && scenes.size() > 0) {
+				dtos = new ArrayList<SceneDTO>();
+				for (TScene scene : scenes) {
+					SceneDTO dto = new SceneDTO(scene);
+					List<TSceneCondition> sceneConditions = sceneService
+							.getConditionsBySceneNumber(scene.getSceneNumber());
+					List<List<SceneConditionDTO>> conditions = new ArrayList<List<SceneConditionDTO>>();
+					if (sceneConditions != null && sceneConditions.size() > 0) {
+						for (int i = 0; i < 3; i++) {
+							List<SceneConditionDTO> tConditionDTOs = new ArrayList<SceneConditionDTO>();
+							for (TSceneCondition tSceneCondition : sceneConditions) {
+								if (tSceneCondition.getConditionGroup() == i) {
+									SceneConditionDTO sceneConditionDTO = new SceneConditionDTO();
+									sceneConditionDTO.setCondition(tSceneCondition.getCond());
+									sceneConditionDTO.setConditionType(ConditionTypeEnum.time.getValue());
+									if (tSceneCondition.getSerialid() != null) {
+										TOboxDeviceConfig tOboxDeviceConfig = oboxDeviceConfigService
+												.getTOboxDeviceConfigByDeviceSerialId(tSceneCondition.getSerialid());
+
+										if (tOboxDeviceConfig != null) {
+											sceneConditionDTO.setConditionID(tOboxDeviceConfig.getDeviceId());
+											sceneConditionDTO.setDeviceRfAddr(tOboxDeviceConfig.getDeviceRfAddr());
+											sceneConditionDTO.setDeviceSerialId(tOboxDeviceConfig.getDeviceSerialId());
+											sceneConditionDTO.setOboxSerialId(tOboxDeviceConfig.getOboxSerialId());
+											sceneConditionDTO
+													.setDeviceChildType(tOboxDeviceConfig.getDeviceChildType());
+											sceneConditionDTO.setDeviceType(tOboxDeviceConfig.getDeviceType());
+											if (tOboxDeviceConfig.getDeviceType()
+													.equals(DeviceTypeEnum.doorlock.getValue()))
+												sceneConditionDTO
+														.setConditionType(ConditionTypeEnum.fingerprint.getValue());
+											else
+												sceneConditionDTO.setConditionType(ConditionTypeEnum.device.getValue());
+										} else {
+										}
+									} else {
+										// time condition
+									}
+									tConditionDTOs.add(sceneConditionDTO);
+								}
+							}
+							conditions.add(tConditionDTOs);
+						}
+					}
+					dto.setConditions(conditions);
+					List<TSceneAction> tSceneActions = sceneService.getSceneActionsBySceneNumber(scene.getSceneNumber());
+					List<SceneActionDTO> tActionDTOs =null;
+					if(tSceneActions!=null&&tSceneActions.size()>0){
+						tActionDTOs = new ArrayList<SceneActionDTO>();
+						//List<TSceneAction> tSceneActions = null;
+						for (TSceneAction tSceneAction : tSceneActions) {
+							if (tSceneAction.getNodeType().equals(NodeTypeEnum.single.getValue())) {
+								TOboxDeviceConfig tOboxDeviceConfig =oboxDeviceConfigService.getTOboxDeviceConfigByDeviceSerialId(tSceneAction.getActionid());
+								 
+								if (tOboxDeviceConfig != null) {
+									SceneActionDTO sceneActionDTO = new SceneActionDTO();
+									sceneActionDTO.setAction(tSceneAction.getAction());
+									sceneActionDTO.setActionName(tOboxDeviceConfig.getDeviceId());
+									sceneActionDTO.setDeviceRfAddr(tOboxDeviceConfig.getDeviceRfAddr());
+									sceneActionDTO.setDeviceSerialId(tOboxDeviceConfig.getDeviceSerialId());
+									sceneActionDTO.setOboxSerialId(tOboxDeviceConfig.getOboxSerialId());
+									sceneActionDTO.setDeviceChildType(tOboxDeviceConfig.getDeviceChildType());
+									sceneActionDTO.setDeviceType(tOboxDeviceConfig.getDeviceType());
+									sceneActionDTO.setNodeType(NodeTypeEnum.single.getValue());
+									tActionDTOs.add(sceneActionDTO);
+								}
+							} else if (tSceneAction.getNodeType().equals(NodeTypeEnum.group.getValue())) {
+								
+							} else if (tSceneAction.getNodeType().equals(NodeTypeEnum.camera.getValue())) {
+								
+							} else if (tSceneAction.getNodeType().equals(NodeTypeEnum.status.getValue())) {
+								TScene tScene=sceneService.getSceneBySceneNumber(NumberHelper.isNumeric(tSceneAction.getActionid())
+												? Integer.parseInt(tSceneAction.getActionid()) : 0);
+								if (tScene != null) {
+									SceneActionDTO sceneActionDTO = new SceneActionDTO();
+									sceneActionDTO.setAction(tSceneAction.getAction());
+									sceneActionDTO.setSceneNumber(Integer.parseInt(tSceneAction.getActionid()));
+									sceneActionDTO.setActionName(scene.getSceneName());
+									sceneActionDTO.setNodeType(NodeTypeEnum.status.getValue());
+									tActionDTOs.add(sceneActionDTO);
+								}
+							}
+						}
+					
+					}
+					dto.setActions(tActionDTOs);
+					dtos.add(dto);
+				}
+				if (!dtos.isEmpty()) {
+					map = new HashMap<String, Object>();
+					map.put("scenes", dtos);
+					res.setData(map);
+				}
+			}
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			// e.printStackTrace();
+			logger.error("===querySceneByOboxSerialId error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+
 	}
 }

@@ -47,6 +47,12 @@ public class LocationProvider {
 					if (!StringUtils.isEmpty(tLocation.getRoom())) {
 						SET("room=#{room}");
 					}
+					if (!StringUtils.isEmpty(tLocation.getThumUrl())) {
+						SET("thum_url=#{thumUrl}");
+					}
+					if (!StringUtils.isEmpty(tLocation.getDownloadUrl())) {
+						SET("download_url=#{downloadUrl}");
+					}
 					WHERE("id=#{id}");
 				}
 			}.toString();
