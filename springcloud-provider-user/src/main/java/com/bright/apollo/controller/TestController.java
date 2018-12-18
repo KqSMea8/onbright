@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bright.apollo.cache.UserCacheService;
+import com.bright.apollo.common.entity.TUserScene;
 import com.bright.apollo.service.SmsService;
+import com.bright.apollo.service.UserService;
 import com.bright.apollo.service.impl.AsyncServiceImpl;
  
 
@@ -28,9 +30,10 @@ public class TestController {
 	private SmsService smsService;
 	@Autowired
 	private AsyncServiceImpl asyncServiceImpl;
-	
 	@Autowired
 	private UserCacheService userCacheService;
+	@Autowired
+	private UserService userService;
 	@GetMapping("/register/{mobile}")
 	public String register(@PathVariable String mobile) {
 		userCacheService.saveBindCode(mobile, 123456);
@@ -70,6 +73,16 @@ public class TestController {
 	@ResponseBody
 	public String  testsms111() {
 		asyncServiceImpl.testaddUserDeviceBySerialIdAndOboxSerialId();
+		 return "uostop";
+	}
+	@SuppressWarnings({ "rawtypes" })
+ 	@RequestMapping(value = "/testUserScene", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String  testsms111222() {
+		 TUserScene tUserScene=new TUserScene();
+		 tUserScene.setSceneNumber(11111);
+		 tUserScene.setUserId(11111);
+		 userService.addUserScene(tUserScene);
 		 return "uostop";
 	}
 }
