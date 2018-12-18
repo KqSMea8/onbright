@@ -28,9 +28,10 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @MapperScan("com.bright.apollo.dao")
 public class DeviceApplication {
 	//private static final Log logger =LogFactory.getLog(DeviceApplication.class);
-	private static final Logger logger = LoggerFactory.getLogger(DeviceApplication.class);
+//	private static final Logger logger = LoggerFactory.getLogger(DeviceApplication.class);
 	public static void main(String[] args) {
-		logger.info("=====device start====");
+//		logger.info("=====device start====");
+		//System.setProperty("org.apache.commons.logging.LogFactory","org.apache.commons.logging.impl.SLF4JLogFactory");
 		SpringApplication.run(DeviceApplication.class, args);
 	}
 }
