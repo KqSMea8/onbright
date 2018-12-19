@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import com.bright.apollo.common.entity.TScene;
 import com.bright.apollo.common.entity.TSceneAction;
 import com.bright.apollo.common.entity.TSceneCondition;
+import com.bright.apollo.common.entity.TUserSceneTemplate;
 import com.bright.apollo.feign.FeignSceneClient;
 import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.response.SceneInfo;
@@ -234,6 +235,7 @@ public class HystrixFeignSceneFallback extends BasicHystrixFeignFallback impleme
 	/* (non-Javadoc)  
 	 * @see com.bright.apollo.feign.FeignSceneClient#updateSceneAction(com.bright.apollo.common.entity.TSceneAction)  
 	 */
+	@SuppressWarnings("rawtypes")
 	@Override
 	public ResponseObject updateSceneAction(TSceneAction tSceneAction) {
 		logger.warn("===scene server is break===");
@@ -243,6 +245,7 @@ public class HystrixFeignSceneFallback extends BasicHystrixFeignFallback impleme
 	/* (non-Javadoc)  
 	 * @see com.bright.apollo.feign.FeignSceneClient#deleteSceneActionBySceneNumberAndActionId(java.lang.Integer, java.lang.String)  
 	 */
+	@SuppressWarnings("rawtypes")
 	@Override
 	public ResponseObject deleteSceneActionBySceneNumberAndActionId(Integer sceneNumber, String actionId) {
 		logger.warn("===scene server is break===");
@@ -252,6 +255,7 @@ public class HystrixFeignSceneFallback extends BasicHystrixFeignFallback impleme
 	/* (non-Javadoc)  
 	 * @see com.bright.apollo.feign.FeignSceneClient#getSceneByUserId(java.lang.Integer)  
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public ResponseObject<List<TScene>> getSceneByUserId(Integer userId) {
 		logger.warn("===scene server is break===");
@@ -261,6 +265,7 @@ public class HystrixFeignSceneFallback extends BasicHystrixFeignFallback impleme
 	/* (non-Javadoc)  
 	 * @see com.bright.apollo.feign.FeignSceneClient#getSceneByUserIdAndPage(java.lang.Integer, int, int)  
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public ResponseObject<List<TScene>> getSceneByUserIdAndPage(Integer userId, int start, int count) {
 		logger.warn("===scene server is break===");
@@ -280,6 +285,7 @@ public class HystrixFeignSceneFallback extends BasicHystrixFeignFallback impleme
 	/* (non-Javadoc)  
 	 * @see com.bright.apollo.feign.FeignSceneClient#deleteSceneConditionBySerialId(java.lang.String)  
 	 */
+	@SuppressWarnings("rawtypes")
 	@Override
 	public ResponseObject deleteSceneConditionBySerialId(String serialId) {
 		logger.warn("===scene server is break===");
@@ -292,6 +298,57 @@ public class HystrixFeignSceneFallback extends BasicHystrixFeignFallback impleme
 	@SuppressWarnings("unchecked")
 	@Override
 	public ResponseObject<Map<String, Object>> querySceneByOboxSerialId(String oboxSerialId) {
+		logger.warn("===scene server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignSceneClient#addTemplate(java.lang.String, java.util.Map)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject addTemplate(Integer userId,String modelName, Map<String, Object> map) {
+		logger.warn("===scene server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignSceneClient#queryUserSceneTemplateByUserIdAndModelName(java.lang.Integer, java.lang.String)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<List<TUserSceneTemplate>> queryUserSceneTemplateByUserIdAndModelName(Integer userId,
+			String modelName) {
+		logger.warn("===scene server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignSceneClient#updateTemplate(java.lang.Integer, java.lang.String, java.util.Map)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject updateTemplate(Integer userId, String modelName, Map<String, Object> map) {
+		logger.warn("===scene server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignSceneClient#deleteTemplate(java.lang.Integer, java.lang.String)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject deleteTemplate(Integer userId, String modelName) {
+		logger.warn("===scene server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignSceneClient#queryTemplateByUserId(java.lang.Integer)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<Map<String, Object>> queryTemplateByUserId(Integer userId) {
 		logger.warn("===scene server is break===");
 		return serverError();
 	}

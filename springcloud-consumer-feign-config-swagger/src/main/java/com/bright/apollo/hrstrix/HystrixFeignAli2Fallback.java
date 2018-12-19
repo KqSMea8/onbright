@@ -508,6 +508,18 @@ public class HystrixFeignAli2Fallback extends BasicHystrixFeignFallback implemen
 		return serverError();
 	}
 
+	@Override
+	public ResponseObject localIrDeviceDownload(Integer index, Integer timeout, String serialId) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
+	@Override
+	public ResponseObject localIrDeviceDelete(Integer index, String serialId) {
+		logger.warn("===ali server is break===");
+		return serverError();
+	}
+
 	/* (non-Javadoc)  
 	 * @see com.bright.apollo.feign.FeignAliClient#scanByUnStop(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.Integer, java.lang.String, java.lang.String)  
 	 */
