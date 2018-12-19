@@ -144,4 +144,9 @@ public class YaoKongYunServiceImpl implements YaoKongYunService {
     public TYaokonyunKeyCode getIRDeviceByIndexAndKey(Integer index, String key) {
         return yaoKongYunMapper.getIRDeviceByIndexAndKey(index,key);
     }
+
+    @Override
+    public List<TYaokonyunKeyCode> getYaoKongKeyCodeBySerialIdAndIndex(String serialId, Integer index) {
+        return yaoKongYunMapper.getYaoKongKeyCodeBySerialIdAndIndex(index,serialId);
+    }
 }

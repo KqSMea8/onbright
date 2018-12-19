@@ -267,6 +267,6 @@ public interface FeignSceneClient {
 	ResponseObject<Map<String, Object>> querySceneByOboxSerialId( 
 			@PathVariable(value = "oboxSerialId")String oboxSerialId);
 
- 
+
 
 }

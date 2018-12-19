@@ -547,4 +547,21 @@ public interface FeignAliClient {
 	@RequestMapping(value = "/aliDevice/getIRDeviceByIndexAndKey", method = RequestMethod.POST)
 	ResponseObject<TYaokonyunKeyCode> getIRDeviceByIndexAndKey(@RequestParam(required = true, value = "index") Integer index, @RequestParam(required = true, value = "key") String key);
 
+	/**
+	 * @Description:本地遥控方案——下载方案
+	 */
+	@RequestMapping(value = "/aliDevice/localIrDeviceDownload", method = RequestMethod.POST)
+	ResponseObject localIrDeviceDownload(
+			@RequestParam(required = true, value = "index") Integer index,
+			@RequestParam(required = true, value = "timeout") Integer timeout,
+			@RequestParam(required = true, value = "serialId") String serialId);
+
+	/**
+	 * @Description:本地遥控方案——删除方案
+	 */
+	@RequestMapping(value = "/aliDevice/localIrDeviceDelete", method = RequestMethod.POST)
+	ResponseObject localIrDeviceDelete(
+			@RequestParam(required = true, value = "index") Integer index,
+			@RequestParam(required = true, value = "serialId") String serialId);
+
 }
