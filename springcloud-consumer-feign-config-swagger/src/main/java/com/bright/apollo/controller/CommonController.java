@@ -555,7 +555,16 @@ public class CommonController {
 			String serialId = requestParam.getValue("serialId");
 			String index = requestParam.getValue("index");
 			return facadeController.learnIrDeviceKey(serialId, index, keyType, key, timeout);
-		}else if (CMDEnum.query_msg.toString().equals(cmdEnum.toString())) {
+		} else if(CMDEnum.local_ir_device_download.toString().equals(cmdEnum.toString())){//本地遥控方案——下载方案
+			String serialId = requestParam.getValue("serialId");
+			String index = requestParam.getValue("index");
+			String timeout = requestParam.getValue("timeout");
+			return facadeController.localIrDeviceDownload(Integer.valueOf(index),Integer.valueOf(timeout),serialId);
+		} else if(CMDEnum.local_ir_device_delete.toString().equals(cmdEnum.toString())){//本地遥控方案——删除方案
+			String serialId = requestParam.getValue("serialId");
+			String index = requestParam.getValue("index");
+			return facadeController.localIrDeviceDelete(Integer.valueOf(index),serialId);
+		} else if (CMDEnum.query_msg.toString().equals(cmdEnum.toString())) {
 			String count = requestParam.getValue("count");
 			String type = requestParam.getValue("type");
 			String start = requestParam.getValue("start");

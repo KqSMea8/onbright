@@ -75,7 +75,7 @@ public class SearchResultHandler extends BasicHandler {
 //                            DeviceBusiness.deleteOBOXGroupByAddr(deviceConfig.getOboxSerialId(), deviceConfig.getGroupAddr());
 //                        }
                     	logger.info("===delete device serialId:"+deviceConfig.getDeviceSerialId());
-                        userDeviceService.deleteUserDevice(deviceConfig.getOboxSerialId());
+                        userDeviceService.deleteUserDevice(deviceConfig.getDeviceSerialId());
 //                        DeviceBusiness.deleteUserDeviceByDeviceId(deviceConfig.getOboxId());
                         deviceChannelService.deleteDeviceChannel(deviceConfig.getId());
 //                        DeviceBusiness.delDeviceChannel(deviceConfig.getOboxId());
@@ -100,9 +100,9 @@ public class SearchResultHandler extends BasicHandler {
 //                            DeviceBusiness.deleteOBOXGroupByAddr(deviceConfig.getOboxSerialId(), deviceConfig.getGroupAddr());
 //                        }
                     	logger.info("===delete device serialId:"+deviceConfig.getDeviceSerialId());
-                        userDeviceService.deleteUserDevice(deviceConfig.getOboxSerialId());
+                        userDeviceService.deleteUserDevice(deviceConfig.getDeviceSerialId());
 //                        DeviceBusiness.deleteUserDeviceByDeviceId(deviceConfig.getOboxId());
-                        deviceChannelService.deleteDeviceChannel(deviceConfig.getOboxId());
+                        deviceChannelService.deleteDeviceChannel(deviceConfig.getId());
 //                        DeviceBusiness.delDeviceChannel(deviceConfig.getOboxId());
 //                        oboxDeviceConfigService.deleteTOboxDeviceConfig(deviceConfig.getOboxId());
                         oboxDeviceConfigService.deleteTOboxDeviceConfigById(deviceConfig.getId());
@@ -113,11 +113,11 @@ public class SearchResultHandler extends BasicHandler {
 //                        DeviceBusiness.deleteOBOXGroupByAddr(dbConfig.getOboxSerialId(), dbConfig.getGroupAddr());
 //                    }
                 	logger.info("===delete device serialId:"+dbConfig.getDeviceSerialId());
-                    userDeviceService.deleteUserDevice(dbConfig.getOboxSerialId());
+                    userDeviceService.deleteUserDevice(dbConfig.getDeviceSerialId());
 //                        DeviceBusiness.deleteUserDeviceByDeviceId(deviceConfig.getOboxId());
-                    deviceChannelService.deleteDeviceChannel(dbConfig.getOboxId());
+                    deviceChannelService.deleteDeviceChannel(dbConfig.getId());
 //                        DeviceBusiness.delDeviceChannel(deviceConfig.getOboxId());
-                    oboxDeviceConfigService.deleteTOboxDeviceConfig(dbConfig.getOboxId());
+                    oboxDeviceConfigService.deleteTOboxDeviceConfigById(dbConfig.getId());
 //                        DeviceBusiness.deleteDeviceById(deviceConfig.getOboxId());
                 }
 

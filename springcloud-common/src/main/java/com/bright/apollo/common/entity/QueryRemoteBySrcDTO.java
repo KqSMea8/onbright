@@ -31,18 +31,18 @@ public class QueryRemoteBySrcDTO implements Serializable {
     @JsonProperty(value="keys")
     private JSONArray keys;
 
+    public Integer getBrandId() {
+        return brandId;
+    }
+
+    public void setBrandId(Integer brandId) {
+        this.brandId = brandId;
+    }
+
     @Expose
     @SerializedName("brandId")
     @JsonProperty(value="brandId")
-    private Integer brandType;//遥控器品牌Id
-
-    public Integer getBrandType() {
-        return brandType;
-    }
-
-    public void setBrandType(Integer brandType) {
-        this.brandType = brandType;
-    }
+    private Integer brandId;//遥控器品牌Id
 
     public JSONArray getExtendsKeys() {
         return extendsKeys;
@@ -68,7 +68,7 @@ public class QueryRemoteBySrcDTO implements Serializable {
     @Expose
     @SerializedName("deviceType")
     @JsonProperty(value="deviceType")
-    private Integer type;//类型
+    private Integer deviceType;//类型
     @Expose
     @SerializedName("version")
     @JsonProperty(value="version")
@@ -98,7 +98,7 @@ public class QueryRemoteBySrcDTO implements Serializable {
         super();
         this.rid=matchRemoteControl.getRid();
         this.name=matchRemoteControl.getName();
-        this.type=matchRemoteControl.gettId();
+        this.deviceType=matchRemoteControl.gettId();
         this.version=matchRemoteControl.getVersion().toString();
         this.rmodel=matchRemoteControl.getRmodel();
         Map<String, KeyCode> keyCodeMap =matchRemoteControl.getRcCommand();
@@ -138,8 +138,8 @@ public class QueryRemoteBySrcDTO implements Serializable {
         this.keys = (JSONArray) map.get("keys");
         this.extendsKeys = (JSONArray) map.get("extendsKeys");
         this.index = (Integer) map.get("index");
-        this.type = (Integer) map.get("type");
-        this.brandType = (Integer) map.get("brandType");
+        this.deviceType = (Integer) map.get("type");
+        this.brandId = (Integer) map.get("brandType");
     }
 
 
@@ -172,12 +172,12 @@ public class QueryRemoteBySrcDTO implements Serializable {
         this.name = name;
     }
 
-    public Integer getType() {
-        return type;
+    public Integer getDeviceType() {
+        return deviceType;
     }
 
-    public void setType(Integer type) {
-        this.type = type;
+    public void setDeviceType(Integer deviceType) {
+        this.deviceType = deviceType;
     }
 
     public String getVersion() {

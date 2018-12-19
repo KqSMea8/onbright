@@ -304,6 +304,10 @@ public enum CMDEnum {
 
 	control_device,//控制(红外)
 
+	local_ir_device_download,//本地遥控方案——下载方案
+
+	local_ir_device_delete,//本地遥控方案——删除方案
+
 	setting_security_scene,  
 	
 	query_groupid_by_addr, 

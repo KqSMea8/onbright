@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.bright.apollo.common.entity.TScene;
 import com.bright.apollo.common.entity.TSceneAction;
 import com.bright.apollo.common.entity.TSceneCondition;
+import com.bright.apollo.common.entity.TUserSceneTemplate;
 import com.bright.apollo.hrstrix.HystrixFeignSceneFallback;
 import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.response.SceneInfo;
@@ -249,24 +250,76 @@ public interface FeignSceneClient {
 	ResponseObject deleteSceneActionByActionId(@PathVariable(value = "serialId") String serialId,
 			@PathVariable(value = "nodeType") String nodeType);
 
-	/**  
-	 * @param deviceSerialId  
-	 * @Description:  
+	/**
+	 * @param deviceSerialId
+	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/scene/deleteSceneConditionBySerialId/{serialId}", method = RequestMethod.DELETE)
-	ResponseObject deleteSceneConditionBySerialId(@PathVariable(value = "serialId")String serialId);
+	ResponseObject deleteSceneConditionBySerialId(@PathVariable(value = "serialId") String serialId);
 
-	/**  
+	/**
 	 * @param userId
 	 * @param oboxSerialId
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/scene/querySceneByOboxSerialId/{oboxSerialId}", method = RequestMethod.GET)
+	ResponseObject<Map<String, Object>> querySceneByOboxSerialId(
+			@PathVariable(value = "oboxSerialId") String oboxSerialId);
+
+	/**
+	 * @param modelName
+	 * @param sceneModel
+	 * @param deviceModel
+	 * @return
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/template/addTemplate/{userId}/{modelName}", method = RequestMethod.POST)
+	ResponseObject addTemplate(@PathVariable(value = "userId") Integer userId,
+			@PathVariable(value = "modelName") String modelName, @RequestBody Map<String, Object> map);
+
+	/**
+	 * @param id
+	 * @param modelName
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/template/queryUserSceneTemplateByUserIdAndModelName/{userId}/{modelName}", method = RequestMethod.GET)
+	ResponseObject<List<TUserSceneTemplate>> queryUserSceneTemplateByUserIdAndModelName(
+			@PathVariable(value = "userId") Integer userId, @PathVariable(value = "modelName") String modelName);
+
+	/**  
+	 * @param id
+	 * @param modelName
+	 * @param map
 	 * @return  
 	 * @Description:  
 	 */
-	@RequestMapping(value = "/scene/querySceneByOboxSerialId/{oboxSerialId}", method = RequestMethod.GET)
-	ResponseObject<Map<String, Object>> querySceneByOboxSerialId( 
-			@PathVariable(value = "oboxSerialId")String oboxSerialId);
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/template/updateTemplate/{userId}/{modelName}", method = RequestMethod.PUT)
+	ResponseObject updateTemplate(@PathVariable(value = "userId") Integer userId,
+			@PathVariable(value = "modelName") String modelName, @RequestBody Map<String, Object> map);
 
- 
+
+	/**  
+	 * @param id
+	 * @param modelName
+	 * @return  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/template/deleteTemplate/{userId}/{modelName}", method = RequestMethod.DELETE)
+	ResponseObject deleteTemplate(@PathVariable(value = "userId") Integer userId,
+			@PathVariable(value = "modelName") String modelName);
+
+	/**  
+	 * @param id
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/template/queryTemplateByUserId/{userId}", method = RequestMethod.GET)
+	ResponseObject<Map<String, Object>> queryTemplateByUserId(@PathVariable(value = "userId") Integer userId);
 
 }
