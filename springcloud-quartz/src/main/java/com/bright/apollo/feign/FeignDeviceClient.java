@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.bright.apollo.common.entity.TIntelligentFingerAbandonRemoteUser;
 import com.bright.apollo.common.entity.TIntelligentFingerRemoteUser;
+import com.bright.apollo.common.entity.TLocation;
 import com.bright.apollo.common.entity.TNvr;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.common.entity.TYSCamera;
@@ -178,4 +179,20 @@ public interface FeignDeviceClient {
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/intelligentFinger/addIntelligentFingerAbandonRemoteUser", method = RequestMethod.POST)
 	ResponseObject addIntelligentFingerAbandonRemoteUser(@RequestBody TIntelligentFingerAbandonRemoteUser abandonRemoteUser);
+
+	/**  
+	 * @param location
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/location/queryLocationByLocationId/{location}", method = RequestMethod.GET)
+	ResponseObject<TLocation> queryLocationByLocationId(@PathVariable(value = "location") Integer location);
+
+	/**
+	 * @param tLocation
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/location/updateLocationByObj", method = RequestMethod.PUT)
+	ResponseObject updateLocationByObj(@RequestBody TLocation tLocation);
 }

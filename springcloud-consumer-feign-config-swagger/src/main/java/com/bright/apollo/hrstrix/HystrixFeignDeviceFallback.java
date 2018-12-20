@@ -641,7 +641,7 @@ public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implem
 	 */
 	@SuppressWarnings("rawtypes")
 	@Override
-	public ResponseObject deleteDeviceLocation(Integer userId, String serialId, Integer location) {
+	public ResponseObject deleteDeviceLocation(Integer userId, String serialId, Integer location,String deviceType) {
 		logger.warn("===device server is break===");
 		return serverError();
 	}

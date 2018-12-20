@@ -37,7 +37,8 @@ public enum ResponseEnum {
 	REQUESTFAILNOTONLINE(425,"request fail not online"),
 	AddObjError(426,"add obj error"),
 	MultipleObjExist(427,"multiple  obj exist"),
- 
+	//hotel
+	LocationNoExist(428,"the location not exist"),
 	
 	Error(511,"system error"),
  	ServerError(512,"server is error"),

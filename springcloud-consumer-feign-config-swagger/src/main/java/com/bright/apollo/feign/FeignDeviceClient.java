@@ -594,9 +594,10 @@ public interface FeignDeviceClient {
 	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
-	@RequestMapping(value = "/location/deleteDeviceLocation/{userId}/{serialId}/{location}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/location/deleteDeviceLocation/{userId}/{serialId}/{location}/{deviceType}", method = RequestMethod.DELETE)
 	ResponseObject deleteDeviceLocation(@PathVariable(value = "userId") Integer userId,
-			@PathVariable(value = "serialId") String serialId, @PathVariable(value = "location") Integer location);
+			@PathVariable(value = "serialId") String serialId, @PathVariable(value = "location") Integer location,
+			@PathVariable(value = "deviceType") String deviceType);
 
 	/**
 	 * @param userId

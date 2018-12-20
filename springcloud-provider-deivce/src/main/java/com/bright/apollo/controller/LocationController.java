@@ -497,9 +497,11 @@ public class LocationController {
 	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
-	@RequestMapping(value = "/deleteDeviceLocation/{userId}/{serialId}/{location}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/deleteDeviceLocation/{userId}/{serialId}/{location}/{deviceType}", method = RequestMethod.DELETE)
 	ResponseObject deleteDeviceLocation(@PathVariable(value = "userId") Integer userId,
-			@PathVariable(value = "serialId") String serialId, @PathVariable(value = "location") Integer location) {
+			@PathVariable(value = "serialId") String serialId, @PathVariable(value = "location") Integer location,
+			@PathVariable(value = "deviceType") String deviceType
+			) {
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		// String location = null;
 		try {
@@ -514,13 +516,8 @@ public class LocationController {
 			// if (tObox == null && tOboxDeviceConfig == null) {}
 			if (tObox != null || tOboxDeviceConfig != null) {
 				TDeviceLocation location2 = deviceLocationService.queryDevicesByLocationAndSerialIdAndType(location,
-						serialId, "0a");
-				if (location2 == null)
-					location2 = deviceLocationService.queryDevicesByLocationAndSerialIdAndType(location, serialId,
-							"00");
-				// TDeviceLocation location2 =
-				// DeviceBusiness.queryDeviceLocation(tLocation.getId(),
-				// tObox.getOboxId(), "0a");
+						serialId,deviceType);
+				 
 				if (location2 != null) {
 					deviceLocationService.deleteDeviceLocation(location2.getId());
 					// DeviceBusiness.deleteDeviceLocation(location2.getId());
@@ -529,19 +526,7 @@ public class LocationController {
 					res.setMessage(ResponseEnum.RequestParamError.getMsg());
 					return res;
 				}
-			} /*
-				 * else if(tOboxDeviceConfig!=null){ TDeviceLocation location2 =
-				 * deviceLocationService.
-				 * queryDevicesByLocationAndSerialIdAndType(location, serialId,
-				 * "00"); //TDeviceLocation location2 =
-				 * DeviceBusiness.queryDeviceLocation(tLocation.getId(),
-				 * tOboxDeviceConfig.getId(), "00"); if (location2 != null) {
-				 * deviceLocationService.deleteDeviceLocation(location2.getId())
-				 * ; }else {
-				 * res.setStatus(ResponseEnum.RequestParamError.getStatus());
-				 * res.setMessage(ResponseEnum.RequestParamError.getMsg());
-				 * return res; } }
-				 */else {
+			} else {
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
 				return res;
@@ -931,11 +916,8 @@ public class LocationController {
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/updateLocationByObj", method = RequestMethod.PUT)
 	ResponseObject updateLocationByObj(@RequestBody TLocation tLocation) {
-
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		try {
-			// TLocation tLocation = queryLocationByWeight(user,
-			// Integer.parseInt(location));
 			if (tLocation == null) {
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
@@ -1001,6 +983,25 @@ public class LocationController {
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
-
+	}
+	/**  
+	 * @param location
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/queryLocationByLocationId/{location}", method = RequestMethod.GET)
+	ResponseObject<TLocation> queryLocationByLocationId(@PathVariable(value = "location") Integer location){
+		ResponseObject<TLocation> res = new ResponseObject<TLocation>();
+		try {
+			res.setData(locationService.queryLocationById(location));
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===updateLocationByObj error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	
 	}
 }

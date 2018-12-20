@@ -406,7 +406,7 @@ public enum CMDEnum {
 	
 	query_remote_led_name, 
 	
-	setting_remote_led_name;
+	setting_remote_led_name, delete_device_location;
 		
 	
 	private String sendCMD;

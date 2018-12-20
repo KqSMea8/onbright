@@ -890,7 +890,32 @@ public class UserController {
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
+	}
 
+	/**  
+	 * @param mobile  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/addUser/{mobile}", method = RequestMethod.POST)
+	public ResponseObject addUser(@PathVariable(required = true, value = "mobile")String mobile){
+
+		ResponseObject res = new ResponseObject();
+		try { 
+			String pwd = mobile.substring(mobile.length() - 8);
+			userService.addUser(mobile, encrypt(encrypt(pwd)));
+			res.setStatus(ResponseEnum.AddSuccess.getStatus());
+			res.setMessage(ResponseEnum.AddSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
 	
+	}
+	private static String encrypt(String rawPassword) throws Exception {
+		String base64Encrypt = Base64Util.base64Encrypt(rawPassword.toString().getBytes());
+		return MD5.getMD5Str(base64Encrypt + rawPassword);
 	}
 }
