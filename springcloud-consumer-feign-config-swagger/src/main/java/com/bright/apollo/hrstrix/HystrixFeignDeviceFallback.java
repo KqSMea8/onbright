@@ -768,6 +768,36 @@ public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implem
 		logger.warn("===device server is break===");
 		return serverError();
 	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#addRemoteLed(java.lang.String)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject addRemoteLed(String oboxSerialId) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#delRemoteLed(java.lang.String)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject delRemoteLed(String oboxSerialId) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#controlRemoteLed(java.lang.String, java.lang.String)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject controlRemoteLed(String oboxSerialId, String status) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
  
  
 }
