@@ -23,6 +23,7 @@ import com.bright.apollo.common.entity.TYSCamera;
 import com.bright.apollo.feign.FeignDeviceClient;
 import com.bright.apollo.request.IntelligentFingerWarnDTO;
 import com.bright.apollo.request.IntelligentOpenRecordDTO;
+import com.bright.apollo.response.DeviceDTO;
 import com.bright.apollo.response.ResponseObject;
 
 /**
@@ -795,6 +796,55 @@ public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implem
 	@SuppressWarnings("rawtypes")
 	@Override
 	public ResponseObject controlRemoteLed(String oboxSerialId, String status) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#checkOut(java.lang.Integer, java.lang.Integer)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject checkOut(Integer userId, Integer location) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#checkIn(java.lang.Integer, java.lang.Integer, java.lang.String)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject checkIn(Integer userId, Integer location, String mobile) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#continueLocation(java.lang.Integer, java.lang.Integer)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<TLocation> continueLocation(Integer userId, Integer location) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#queryDeviceByadmin(java.lang.Integer)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<List<DeviceDTO>> queryDeviceByadmin(Integer userId) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#queryDeviceByGust(java.lang.String)  
+	 */
+	@Override
+	public ResponseObject<List<DeviceDTO>> queryDeviceByGust(String userName) {
 		logger.warn("===device server is break===");
 		return serverError();
 	}

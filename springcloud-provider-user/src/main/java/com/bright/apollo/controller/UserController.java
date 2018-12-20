@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.aspectj.weaver.tools.Trace;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,6 +48,7 @@ import com.bright.apollo.tool.Base64Util;
 import com.bright.apollo.tool.HttpUtil;
 import com.bright.apollo.tool.MD5;
 import com.bright.apollo.tool.NumberHelper;
+import com.bright.apollo.tool.PwdEncrypt;
 import com.bright.apollo.tool.RandomUtil;
 import com.bright.apollo.tool.Verify;
 
@@ -896,6 +896,7 @@ public class UserController {
 	 * @param mobile  
 	 * @Description:  
 	 */
+	@Deprecated
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/addUser/{mobile}", method = RequestMethod.POST)
 	public ResponseObject addUser(@PathVariable(required = true, value = "mobile")String mobile){
@@ -903,7 +904,7 @@ public class UserController {
 		ResponseObject res = new ResponseObject();
 		try { 
 			String pwd = mobile.substring(mobile.length() - 8);
-			userService.addUser(mobile, encrypt(encrypt(pwd)));
+			userService.addUser(mobile, PwdEncrypt.encrypt(PwdEncrypt.encrypt(pwd)));
 			res.setStatus(ResponseEnum.AddSuccess.getStatus());
 			res.setMessage(ResponseEnum.AddSuccess.getMsg());
 		} catch (Exception e) {
@@ -914,8 +915,5 @@ public class UserController {
 		return res;
 	
 	}
-	private static String encrypt(String rawPassword) throws Exception {
-		String base64Encrypt = Base64Util.base64Encrypt(rawPassword.toString().getBytes());
-		return MD5.getMD5Str(base64Encrypt + rawPassword);
-	}
+	 
 }

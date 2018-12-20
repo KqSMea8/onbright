@@ -47,4 +47,18 @@ public interface DeviceLocationService {
 	 */
 	void updateDeviceLocation(TDeviceLocation location2);
 
+	/**  
+	 * @param userId
+	 * @return  
+	 * @Description:  
+	 */
+	List<TDeviceLocation> queryDevicesByUserId(Integer userId);
+
+	/**  
+	 * @param userName
+	 * @return  
+	 * @Description:  
+	 */
+	List<TDeviceLocation> queryDevicesByUserName(String userName);
+
 }

@@ -33,6 +33,12 @@ public class LocationProvider {
 				if (!StringUtils.isEmpty(tLocation.getThumUrl())) {
 					VALUES("thum_url", "#{thumUrl}");
 				}
+				if (!StringUtils.isEmpty(tLocation.getStatus())) {
+					VALUES("status", "#{status}");
+				}
+				if (tLocation.getUserName()!=null) {
+					VALUES("user_name", "#{userName}");
+				}
 			}
 		}.toString();
 	}

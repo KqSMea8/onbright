@@ -64,4 +64,21 @@ public class DeviceLocationServiceImpl implements DeviceLocationService{
 		mapper.updateDeviceLocation(location2);
 		
 	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.DeviceLocationService#queryDevicesByUserId(java.lang.Integer)  
+	 */
+	@Override
+	public List<TDeviceLocation> queryDevicesByUserId(Integer userId) {
+		 
+		return mapper.queryDevicesByUserId(userId);
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.DeviceLocationService#queryDevicesByUserName(java.lang.String)  
+	 */
+	@Override
+	public List<TDeviceLocation> queryDevicesByUserName(String userName) {
+ 		return mapper.queryDevicesByUserName(userName);
+	}
 }

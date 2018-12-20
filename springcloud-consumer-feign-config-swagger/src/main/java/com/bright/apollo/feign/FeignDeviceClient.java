@@ -26,6 +26,7 @@ import com.bright.apollo.common.entity.TYSCamera;
 import com.bright.apollo.hrstrix.HystrixFeignDeviceFallback;
 import com.bright.apollo.request.IntelligentFingerWarnDTO;
 import com.bright.apollo.request.IntelligentOpenRecordDTO;
+import com.bright.apollo.response.DeviceDTO;
 import com.bright.apollo.response.ResponseObject;
 
 /**
@@ -730,6 +731,60 @@ public interface FeignDeviceClient {
 	@RequestMapping(value = "/remoteLed/controlRemoteLed/{oboxSerialId}/{status}", method = RequestMethod.PUT)
 	ResponseObject controlRemoteLed(@PathVariable(value = "oboxSerialId", required = true)String oboxSerialId, 
 			@PathVariable(value = "status", required = true)String status);
+
+	/**  
+	 * @param id
+	 * @param locationId
+	 * @return  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/location/checkOut/{userId}/{location}", method = RequestMethod.PUT)
+	ResponseObject checkOut(
+			@PathVariable(value = "userId", required = true)Integer userId, 
+			@PathVariable(value = "location", required = true)Integer location);
+
+	/**  
+	 * @param id
+	 * @param locationId
+	 * @param mobile
+	 * @return  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/location/checkIn/{userId}/{location}/{mobile}", method = RequestMethod.PUT)
+	ResponseObject checkIn(
+			@PathVariable(value = "userId", required = true)Integer userId, 
+			@PathVariable(value = "location", required = true)Integer location, 
+			@PathVariable(value = "mobile", required = true)String mobile);
+
+	/**  
+	 * @param id
+	 * @param locationId
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/location/continueLocation/{userId}/{location}", method = RequestMethod.GET)
+	ResponseObject<TLocation> continueLocation(@PathVariable(value = "userId", required = true)Integer userId, 
+			@PathVariable(value = "location", required = true)Integer location);
+
+	/**  
+	 * @param id
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/location/queryDeviceByadmin/{userId}", method = RequestMethod.GET)
+	ResponseObject<List<DeviceDTO>> queryDeviceByadmin(@PathVariable(value = "userId", required = true)Integer userId);
+
+	/**  
+	 * @param id
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/location/queryDeviceByGust/{userName}", method = RequestMethod.GET)
+	ResponseObject<List<DeviceDTO>> queryDeviceByGust(@PathVariable(value = "userName", required = true)String userName);
+
+	 
 
  
 }
