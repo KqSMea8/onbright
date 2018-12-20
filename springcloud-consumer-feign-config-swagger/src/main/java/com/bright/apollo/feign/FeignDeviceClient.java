@@ -704,21 +704,31 @@ public interface FeignDeviceClient {
 	@RequestMapping(value = "/remoteLed/queryRemoteLedName/{serialId}", method = RequestMethod.POST)
 	ResponseObject<Map<String, Object>> queryRemoteLedName(@PathVariable(value = "serialId", required = true) String serialId);
 
-	/*	*//**
-			 * @param id
-			 * @param building
-			 * @param room
-			 * @return
-			 * @Description:
-			 *//*
-			 * @RequestMapping(value =
-			 * "/location/createLocationWithOutDevice/{userId}/{building}/{room}",
-			 * method = RequestMethod.POST) ResponseObject<Map<String, Object>>
-			 * createLocationWithOutDevice(@PathVariable(value = "userId")
-			 * Integer userId,
-			 * 
-			 * @PathVariable(value = "building") String
-			 * building, @PathVariable(value = "room") String room);
-			 * 
-			 */
+	/**  
+	 * @param oboxSerialId  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/remoteLed/addRemoteLed/{oboxSerialId}", method = RequestMethod.POST)
+	ResponseObject addRemoteLed(@PathVariable(value = "oboxSerialId", required = true)String oboxSerialId);
+
+	/**  
+	 * @param oboxSerialId  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/remoteLed/delRemoteLed/{oboxSerialId}", method = RequestMethod.DELETE)
+	ResponseObject delRemoteLed(@PathVariable(value = "oboxSerialId", required = true)String oboxSerialId);
+
+	/**  
+	 * @param oboxSerialId
+	 * @param status  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/remoteLed/controlRemoteLed/{oboxSerialId}/{status}", method = RequestMethod.PUT)
+	ResponseObject controlRemoteLed(@PathVariable(value = "oboxSerialId", required = true)String oboxSerialId, 
+			@PathVariable(value = "status", required = true)String status);
+
+ 
 }

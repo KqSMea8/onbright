@@ -4910,6 +4910,7 @@ public class FacadeController extends BaseController {
 				return res;
 			}
 			feignAliClient.addRemoteLed(serialId);
+			feignDeviceClient.addRemoteLed(serialId);
 			res.setStatus(ResponseEnum.AddSuccess.getStatus());
 			res.setMessage(ResponseEnum.AddSuccess.getMsg());
 		} catch (Exception e) {
@@ -4962,6 +4963,7 @@ public class FacadeController extends BaseController {
 				return res;
 			}
 			feignAliClient.delRemoteLed(oboxSerialId);
+			feignDeviceClient.delRemoteLed(oboxSerialId);
 			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
 			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
 		} catch (Exception e) {
@@ -5018,6 +5020,7 @@ public class FacadeController extends BaseController {
 				return res;
 			}
 			feignAliClient.controlRemoteLed(oboxSerialId, status);
+			feignDeviceClient.controlRemoteLed(oboxSerialId, status);
 			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
 			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
 		} catch (Exception e) {
