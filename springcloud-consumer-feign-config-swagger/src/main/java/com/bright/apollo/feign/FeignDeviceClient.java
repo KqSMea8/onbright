@@ -774,7 +774,7 @@ public interface FeignDeviceClient {
 	 * @Description:
 	 */
 	@RequestMapping(value = "/location/queryDeviceByadmin/{userId}", method = RequestMethod.GET)
-	ResponseObject<List<DeviceDTO>> queryDeviceByadmin(@PathVariable(value = "userId", required = true) Integer userId);
+	ResponseObject<Map<String, Object>> queryDeviceByadmin(@PathVariable(value = "userId", required = true) Integer userId);
 
 	/**
 	 * @param id
@@ -782,7 +782,7 @@ public interface FeignDeviceClient {
 	 * @Description:
 	 */
 	@RequestMapping(value = "/location/queryDeviceByGust/{userName}", method = RequestMethod.GET)
-	ResponseObject<List<DeviceDTO>> queryDeviceByGust(
+	ResponseObject<Map<String, Object>> queryDeviceByGust(
 			@PathVariable(value = "userName", required = true) String userName);
 
 	/**

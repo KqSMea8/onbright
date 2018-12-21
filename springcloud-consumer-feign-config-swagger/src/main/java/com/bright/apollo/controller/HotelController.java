@@ -2,6 +2,7 @@ package com.bright.apollo.controller;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -108,7 +109,7 @@ public class HotelController {
 	@ApiOperation(value = "checkOut", httpMethod = "PUT", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/checkOut/{locationId}", method = RequestMethod.PUT)
-	public ResponseObject checkOut(@PathVariable(required = true, value = "mobile") Integer locationId) {
+	public ResponseObject checkOut(@PathVariable(required = true, value = "locationId") Integer locationId) {
 		ResponseObject res = new ResponseObject();
 		try {
 			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -181,8 +182,8 @@ public class HotelController {
 	@ApiOperation(value = "queryDeviceByadmin", httpMethod = "GET", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/queryDeviceByadmin", method = RequestMethod.GET)
-	public ResponseObject<List<DeviceDTO>> queryDeviceByadmin() {
-		ResponseObject<List<DeviceDTO>> res = new ResponseObject<List<DeviceDTO>>();
+	public ResponseObject<Map<String, Object>> queryDeviceByadmin() {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		try {
 			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			if (StringUtils.isEmpty(principal.getUsername())) {
@@ -210,8 +211,8 @@ public class HotelController {
 	@ApiOperation(value = "queryDeviceByGust", httpMethod = "GET", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/queryDeviceByGust", method = RequestMethod.GET)
-	public ResponseObject<List<DeviceDTO>> queryDeviceByGust() {
-		ResponseObject<List<DeviceDTO>> res = new ResponseObject<List<DeviceDTO>>();
+	public ResponseObject<Map<String, Object>> queryDeviceByGust() {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		try {
 			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			if (StringUtils.isEmpty(principal.getUsername())) {
@@ -226,7 +227,7 @@ public class HotelController {
 				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
 				return res;
 			}
-			return feignDeviceClient.queryDeviceByGust(resUser.getData().getUserName());
+			return feignDeviceClient.queryDeviceByGust(principal.getUsername());
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			res.setStatus(ResponseEnum.RequestTimeout.getStatus());
@@ -258,7 +259,7 @@ public class HotelController {
 				return res;
 			}
 			// 判断 serialId是否合法
-			ResponseObject<TOboxDeviceConfig> deviceRes = feignDeviceClient.queryLocationDeviceBySerialIdAndUserName(serialId, resUser.getData().getUserName());
+			ResponseObject<TOboxDeviceConfig> deviceRes = feignDeviceClient.queryLocationDeviceBySerialIdAndUserName(serialId, principal.getUsername());
 			if(deviceRes==null||deviceRes.getData()==null){
 				return deviceRes;
 			}
@@ -296,7 +297,7 @@ public class HotelController {
 				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
 				return res;
 			}
-			ResponseObject<TScene> sceneRes= feignDeviceClient.queryLocationSceneBySceneNumberAndUserName(sceneNumber,resUser.getData().getUserName());
+			ResponseObject<TScene> sceneRes= feignDeviceClient.queryLocationSceneBySceneNumberAndUserName(sceneNumber,principal.getUsername());
 			if(sceneRes==null||sceneRes.getData()==null){
 				res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
 				res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());

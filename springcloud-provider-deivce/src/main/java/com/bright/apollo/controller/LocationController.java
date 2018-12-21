@@ -1101,14 +1101,17 @@ public class LocationController {
 	 * @Description:
 	 */
 	@RequestMapping(value = "/queryDeviceByadmin/{userId}", method = RequestMethod.GET)
-	ResponseObject<List<DeviceDTO>> queryDeviceByadmin(
+	ResponseObject<Map<String, Object>> queryDeviceByadmin(
 			@PathVariable(value = "userId", required = true) Integer userId) {
-		ResponseObject<List<DeviceDTO>> res = new ResponseObject<List<DeviceDTO>>();
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		Map<String, Object>map=new HashMap<String, Object>();
 		try {
 			List<DeviceDTO> ouDeviceDTOs = new ArrayList<DeviceDTO>();
 			List<TDeviceLocation> tDeviceLocations = deviceLocationService.queryDevicesByUserId(userId);
 			getLocationDevice(ouDeviceDTOs, tDeviceLocations);
-			res.setData(ouDeviceDTOs);
+			map.put("devices", ouDeviceDTOs);
+			res.setData(map);
+			//res.setData(ouDeviceDTOs);
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {
@@ -1124,14 +1127,17 @@ public class LocationController {
 	 * @return
 	 * @Description:
 	 */
-	@RequestMapping(value = "/queryDeviceByGust/{userId}", method = RequestMethod.GET)
-	ResponseObject<List<DeviceDTO>> queryDeviceByGust(@PathVariable(value = "userName", required = true) String userName) {
-		ResponseObject<List<DeviceDTO>> res = new ResponseObject<List<DeviceDTO>>();
+	@RequestMapping(value = "/queryDeviceByGust/{userName}", method = RequestMethod.GET)
+	ResponseObject<Map<String, Object>> queryDeviceByGust(@PathVariable(value = "userName", required = true) String userName) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		Map<String, Object>map=new HashMap<String, Object>();
 		try {
  			List<DeviceDTO> ouDeviceDTOs = new ArrayList<DeviceDTO>();
 			List<TDeviceLocation> tDeviceLocations = deviceLocationService.queryDevicesByUserName(userName);
 			getLocationDevice(ouDeviceDTOs, tDeviceLocations);
-			res.setData(ouDeviceDTOs);
+			//res.setData(ouDeviceDTOs);
+			map.put("devices", ouDeviceDTOs);
+			res.setData(map);
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {

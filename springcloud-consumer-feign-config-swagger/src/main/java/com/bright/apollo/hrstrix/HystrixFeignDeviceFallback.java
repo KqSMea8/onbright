@@ -836,7 +836,7 @@ public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implem
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public ResponseObject<List<DeviceDTO>> queryDeviceByadmin(Integer userId) {
+	public ResponseObject<Map<String, Object>> queryDeviceByadmin(Integer userId) {
 		logger.warn("===device server is break===");
 		return serverError();
 	}
@@ -846,7 +846,7 @@ public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implem
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public ResponseObject<List<DeviceDTO>> queryDeviceByGust(String userName) {
+	public ResponseObject<Map<String, Object>> queryDeviceByGust(String userName) {
 		logger.warn("===device server is break===");
 		return serverError();
 	}
