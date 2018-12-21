@@ -110,9 +110,9 @@ public interface YaoKongYunMapper {
     TYaokonyunRemoteControl getYaokonyunRemoteControlByBrandId(@Param("remoteId")String remoteId);
 
 
-    @Insert(" insert into t_yaokonyun_key_code(src,`index`,analysisSrc,`key`,serialId,key_name,custom_name,remote_id, " +
-            " last_op_time,t_id,name,brandId,rmodel,version) " +
-            " values(#{src},#{index},#{analysisSrc},#{key},#{serialId},#{keyName},#{customName},#{remoteId},#{lastOpTime},#{tId},#{name},#{brandId},#{rmodel},#{version})")
+    @Insert(" insert into t_yaokonyun_key_code(src,`index`,analysisSrc,`key`,serialId,remote_id, " +
+            " last_op_time,t_id,name,brandId,rmodel,version,keyType) " +
+            " values(#{src},#{index},#{analysisSrc},#{key},#{serialId},#{remoteId},#{lastOpTime},#{tId},#{name},#{brandId},#{rmodel},#{version}.#{keyType})")
     void addTYaokonyunKeyCode(TYaokonyunKeyCode yaokonyunKeyCode);
 
 

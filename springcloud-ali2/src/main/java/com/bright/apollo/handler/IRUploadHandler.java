@@ -72,12 +72,14 @@ public class IRUploadHandler extends AliBaseHandler {
                 cmdCache.getIrTestCodeAppKeyBrandIdDeviceType("deviceType_"+index);
         String key = cmdCache.getIrTestCodeAppKeyBrandIdDeviceType("keyName_"+index);
         String irName = cmdCache.getIrTestCodeAppKeyBrandIdDeviceType("irRemote_"+deviceSerialId);
+        String keyType = cmdCache.getIrTestCodeAppKeyBrandIdDeviceType("keyType_"+index);
         logger.info("serialId ====== "+deviceSerialId);
         logger.info("index ====== "+index);
         logger.info("brandId ====== "+brandId);
         logger.info("deviceType ====== "+deviceType);
         logger.info("key ====== "+key);
         logger.info("irName ====== "+irName);
+        logger.info("keyType ====== "+keyType);
         com.alibaba.fastjson.JSONObject resMap = new com.alibaba.fastjson.JSONObject();
         TUserAliDevice userAliDevice = userAliDevService.queryAliDeviceBySerialiId(deviceSerialId);
         if(functionId==2){//学习红外上传
@@ -100,8 +102,9 @@ public class IRUploadHandler extends AliBaseHandler {
             TYaokonyunKeyCode yaokonyunKeyCode = yaoKongYunService.getIRDeviceByIndexAndKey(idx,key);
             if(yaokonyunKeyCode==null){
 			yaokonyunKeyCode = new TYaokonyunKeyCode();
-			yaokonyunKeyCode.setKeyName("");
-			yaokonyunKeyCode.setCustomName("");
+//			yaokonyunKeyCode.setKeyName("");
+//			yaokonyunKeyCode.setCustomName("");
+            yaokonyunKeyCode.setKeyType(Integer.valueOf(keyType));
 			yaokonyunKeyCode.setIndex(idx);
 			yaokonyunKeyCode.setLastOpTime(new Date());
 			yaokonyunKeyCode.setBrandId(Integer.valueOf(brandId));

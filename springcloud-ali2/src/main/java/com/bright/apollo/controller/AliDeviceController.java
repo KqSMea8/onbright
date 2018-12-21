@@ -680,6 +680,7 @@ public class AliDeviceController {
 				map = new HashMap<String, Object>();
 				keyArray = new com.alibaba.fastjson.JSONArray();
             	com.alibaba.fastjson.JSONObject jsonObject = new com.alibaba.fastjson.JSONObject();
+				com.alibaba.fastjson.JSONArray nonArr = new com.alibaba.fastjson.JSONArray();
 				String key = keyCode.getKey();
 				jsonObject.put("key",key);
 				keyArray.add(jsonObject);
@@ -690,8 +691,13 @@ public class AliDeviceController {
 				map.put("index",index);
 				map.put("type",keyCode.gettId());
 				map.put("brandType",keyCode.getBrandId());
-				map.put("keys",keyArray);
-				map.put("extendsKeys",new com.alibaba.fastjson.JSONArray());
+				if(keyCode.getKeyType()==0){
+					map.put("keys",keyArray);
+					map.put("extendsKeys",nonArr);
+				}else{
+					map.put("keys",nonArr);
+					map.put("extendsKeys",keyArray);
+				}
 				mapList.add(map);
             }
 			String idxs = "";

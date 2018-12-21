@@ -70,7 +70,7 @@ public class CmdCache {
 	}
 
 	public void addIrTestCodeKeyNameType(String index, String  keyNameType) {
-		redisBussines.setValueWithExpire("keyNameType_"+index, keyNameType, medium_time);
+		redisBussines.setValueWithExpire("keyType_"+index, keyNameType, medium_time);
 	}
 
 	public void addIrTestCodeKeyName(String index, String  keyName) {

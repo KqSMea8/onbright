@@ -38,6 +38,16 @@ public class TYaokonyunKeyCode {
 
     private Integer version;
 
+    private Integer keyType;
+
+    public Integer getKeyType() {
+        return keyType;
+    }
+
+    public void setKeyType(Integer keyType) {
+        this.keyType = keyType;
+    }
+
     public Integer getBrandId() {
         return brandId;
     }
