@@ -344,7 +344,8 @@ public class AliDeviceController {
 				res.setStatus(ResponseEnum.NoIRKey.getStatus());
 				res.setMessage(ResponseEnum.NoIRKey.getMsg());
 			}else{
-				logger.info(" src ========= "+yaokonyunKeyCode.getSrc());
+				String srcCode = yaokonyunKeyCode.getSrc();
+				logger.info(" src ========= "+srcCode);
 				requestMap.put("command","set");
 				com.alibaba.fastjson.JSONArray jsonArray = new com.alibaba.fastjson.JSONArray();
 				com.alibaba.fastjson.JSONObject json = new com.alibaba.fastjson.JSONObject();
@@ -609,7 +610,6 @@ public class AliDeviceController {
             cmdCache.addIrIndexBySerialId(serialId,index);
 			cmdCache.addIrTestCodeKeyName(index,key);
 			cmdCache.addIrTestCodeKeyNameType(index,keyType);
-			cmdCache.addIrIndex(index);
 			resMap.put("command","set");
 			com.alibaba.fastjson.JSONArray jsonArray = new com.alibaba.fastjson.JSONArray();
 			com.alibaba.fastjson.JSONObject json = new com.alibaba.fastjson.JSONObject();
@@ -766,11 +766,13 @@ public class AliDeviceController {
         try {
             cmdCache.addIrBrandIdBySerialId(serialId,brandId);
             cmdCache.addIrDeviceTypeBySerialId(serialId,deviceType);
+            cmdCache.addIrDeviceTypeByIRName(serialId,name);
 			Integer idx = IndexUtils.getIdx();
 			TYaokonyunKeyCode yaokonyunKeyCode = new TYaokonyunKeyCode();
 			yaokonyunKeyCode.setKeyName("");
 			yaokonyunKeyCode.setCustomName("");
 			yaokonyunKeyCode.setIndex(idx);
+			cmdCache.addIrIndexBySerialId(serialId,idx.toString());
 			yaokonyunKeyCode.setLastOpTime(new Date());
 			yaokonyunKeyCode.setBrandId(Integer.valueOf(brandId));
 			yaokonyunKeyCode.setRmodel("");
