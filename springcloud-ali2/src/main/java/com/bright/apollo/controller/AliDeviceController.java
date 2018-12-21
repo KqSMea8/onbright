@@ -610,7 +610,6 @@ public class AliDeviceController {
             cmdCache.addIrIndexBySerialId(serialId,index);
 			cmdCache.addIrTestCodeKeyName(index,key);
 			cmdCache.addIrTestCodeKeyNameType(index,keyType);
-			cmdCache.addIrIndex(index);
 			resMap.put("command","set");
 			com.alibaba.fastjson.JSONArray jsonArray = new com.alibaba.fastjson.JSONArray();
 			com.alibaba.fastjson.JSONObject json = new com.alibaba.fastjson.JSONObject();
@@ -767,6 +766,7 @@ public class AliDeviceController {
         try {
             cmdCache.addIrBrandIdBySerialId(serialId,brandId);
             cmdCache.addIrDeviceTypeBySerialId(serialId,deviceType);
+            cmdCache.addIrDeviceTypeByIRName(serialId,name);
 			Integer idx = IndexUtils.getIdx();
 			TYaokonyunKeyCode yaokonyunKeyCode = new TYaokonyunKeyCode();
 			yaokonyunKeyCode.setKeyName("");
