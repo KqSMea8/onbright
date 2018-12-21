@@ -610,6 +610,12 @@ public class AliDeviceController {
             cmdCache.addIrIndexBySerialId(serialId,index);
 			cmdCache.addIrTestCodeKeyName(index,key);
 			cmdCache.addIrTestCodeKeyNameType(index,keyType);
+			List<TYaokonyunKeyCode> list = yaoKongYunService.getYaoKongKeyCodeBySerialIdAndIndex(serialId,Integer.valueOf(index));
+			if(list.size()>0){
+				TYaokonyunKeyCode keyCode = list.get(0);
+				logger.info("======= "+keyCode.getName());
+				cmdCache.addIrTestCodeKeyName(index,keyCode.getName());
+			}
 			resMap.put("command","set");
 			com.alibaba.fastjson.JSONArray jsonArray = new com.alibaba.fastjson.JSONArray();
 			com.alibaba.fastjson.JSONObject json = new com.alibaba.fastjson.JSONObject();
