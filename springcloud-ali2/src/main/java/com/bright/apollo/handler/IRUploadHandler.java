@@ -71,20 +71,25 @@ public class IRUploadHandler extends AliBaseHandler {
         String deviceType = cmdCache.getIrTestCodeAppKeyBrandIdDeviceType("deviceType_"+index)==null?cmdCache.getIrTestCodeAppKeyBrandIdDeviceType("deviceType_"+deviceSerialId):
                 cmdCache.getIrTestCodeAppKeyBrandIdDeviceType("deviceType_"+index);
         String key = cmdCache.getIrTestCodeAppKeyBrandIdDeviceType("keyName_"+index);
+        String irName = cmdCache.getIrTestCodeAppKeyBrandIdDeviceType("irRemote_"+deviceSerialId);
         logger.info("serialId ====== "+deviceSerialId);
         logger.info("index ====== "+index);
         logger.info("brandId ====== "+brandId);
         logger.info("deviceType ====== "+deviceType);
         logger.info("key ====== "+key);
+        logger.info("irName ====== "+irName);
         com.alibaba.fastjson.JSONObject resMap = new com.alibaba.fastjson.JSONObject();
         TUserAliDevice userAliDevice = userAliDevService.queryAliDeviceBySerialiId(deviceSerialId);
         if(functionId==2){//学习红外上传
             com.alibaba.fastjson.JSONObject mqttJson = new com.alibaba.fastjson.JSONObject();
+            com.alibaba.fastjson.JSONObject keyJson = new com.alibaba.fastjson.JSONObject();
             JSONArray jsonArray = new JSONArray();
+            keyJson.put("key",key);
+            jsonArray.add(keyJson);
             mqttJson.put("keys",jsonArray);
             mqttJson.put("extendsKeys",new JSONArray());
             mqttJson.put("index",Integer.valueOf(index==null?"0":index));
-            mqttJson.put("name","");
+            mqttJson.put("name",irName);
             mqttJson.put("deviceType",Integer.valueOf(deviceType==null?"0":deviceType));
             mqttJson.put("brandId",Integer.valueOf(brandId==null?"0":brandId));
             resMap.put("type",20);

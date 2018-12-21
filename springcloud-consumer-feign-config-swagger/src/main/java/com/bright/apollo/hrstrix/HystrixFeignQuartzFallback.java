@@ -86,8 +86,29 @@ public class HystrixFeignQuartzFallback extends BasicHystrixFeignFallback implem
 		return serverError();
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public ResponseObject startTimerSchedule(Integer timerId, String cronString) {
+		logger.warn("===quartz server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignQuartzClient#checkIn(java.lang.Integer, java.lang.String, java.lang.Long)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject checkIn(Integer locationId, String mobile, Long endTime) {
+		logger.warn("===quartz server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignQuartzClient#continueLocation(java.lang.Integer, java.lang.String, java.lang.Long)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject continueLocation(Integer locationId, String mobile, Long endTime) {
 		logger.warn("===quartz server is break===");
 		return serverError();
 	}

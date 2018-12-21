@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.bright.apollo.common.entity.TIntelligentFingerAbandonRemoteUser;
 import com.bright.apollo.common.entity.TIntelligentFingerRemoteUser;
+import com.bright.apollo.common.entity.TLocation;
 import com.bright.apollo.common.entity.TNvr;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.common.entity.TYSCamera;
@@ -208,6 +209,26 @@ public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implem
 	 */
 	@Override
 	public ResponseObject addIntelligentFingerAbandonRemoteUser(TIntelligentFingerAbandonRemoteUser abandonRemoteUser) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#queryLocationByLocationId(java.lang.Integer)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<TLocation> queryLocationByLocationId(Integer location) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#updateLocationByObj(com.bright.apollo.common.entity.TLocation)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject updateLocationByObj(TLocation tLocation) {
 		logger.warn("===device server is break===");
 		return serverError();
 	}

@@ -699,7 +699,14 @@ public class CommonController {
 					return facadeController.addDeviceLocation(serialId, Integer.parseInt(location),
 							Integer.parseInt(x_axis), Integer.parseInt(y_axis),deviceType);
 			}
-		} else if (CMDEnum.query_location.toString().equals(cmdEnum.toString())) {
+		}  else if (CMDEnum.delete_device_location.toString().equals(cmdEnum.toString())) {
+				String serialId = requestParam.getValue("serialId");
+				String location = requestParam.getValue("location");
+				String deviceType = requestParam.getValue("device_type");
+				if (!StringUtils.isEmpty(serialId) && !StringUtils.isEmpty(location)
+						&& !StringUtils.isEmpty(deviceType)) 
+					return facadeController.deleteDeviceLocation(serialId, Integer.parseInt(location),deviceType);
+		}else if (CMDEnum.query_location.toString().equals(cmdEnum.toString())) {
 			//String location = requestParam.getValue("location");
 			//if (!StringUtils.isEmpty(location) && NumberHelper.isNumeric(location))
 				return facadeController.queryLocation();
