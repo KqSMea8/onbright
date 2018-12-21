@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.mqtt.inbound.MqttPahoMessageDrivenChannelAdapter;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.util.StringUtils;
@@ -79,7 +80,7 @@ public class WebLogAspect {
         logger.info("请求结束，controller的返回值是 " + gson.toJson(result));
         return result;
 	}
-
+	@Async
     public void mqttFilter(HttpServletRequest request) {
         String appKey = request.getParameter("appkey");
         String accessToken = request.getParameter("access_token");

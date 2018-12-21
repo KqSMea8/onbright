@@ -108,6 +108,8 @@ public interface TLocationMapper {
 	@Results(value = { @Result(property = "id", column = "id"), @Result(property = "building", column = "building"),
 			@Result(property = "lastOpTime", column = "last_op_time"), @Result(property = "room", column = "room"),
 			@Result(property = "downloadUrl", column = "download_url"),
+			@Result(property = "userName", column = "user_name"),
+			@Result(property = "status", column = "status"),
 			@Result(property = "license", column = "license"), @Result(property = "thumUrl", column = "thum_url") })
 	List<TLocation> queryLocationByUser(@Param("userId") Integer userId);
 
