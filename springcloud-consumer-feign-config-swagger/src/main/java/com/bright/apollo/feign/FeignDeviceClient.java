@@ -20,6 +20,7 @@ import com.bright.apollo.common.entity.TIntelligentFingerUser;
 import com.bright.apollo.common.entity.TLocation;
 import com.bright.apollo.common.entity.TNvr;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
+import com.bright.apollo.common.entity.TScene;
 import com.bright.apollo.common.entity.TServerGroup;
 import com.bright.apollo.common.entity.TUserLocation;
 import com.bright.apollo.common.entity.TYSCamera;
@@ -698,93 +699,112 @@ public interface FeignDeviceClient {
 	ResponseObject setRemoteLedName(@PathVariable(value = "serialId", required = true) String serialId,
 			@RequestParam(value = "names", required = true) String names);
 
-	/**  
+	/**
 	 * @param serialId
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
 	@RequestMapping(value = "/remoteLed/queryRemoteLedName/{serialId}", method = RequestMethod.POST)
-	ResponseObject<Map<String, Object>> queryRemoteLedName(@PathVariable(value = "serialId", required = true) String serialId);
+	ResponseObject<Map<String, Object>> queryRemoteLedName(
+			@PathVariable(value = "serialId", required = true) String serialId);
 
-	/**  
-	 * @param oboxSerialId  
-	 * @Description:  
+	/**
+	 * @param oboxSerialId
+	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/remoteLed/addRemoteLed/{oboxSerialId}", method = RequestMethod.POST)
-	ResponseObject addRemoteLed(@PathVariable(value = "oboxSerialId", required = true)String oboxSerialId);
+	ResponseObject addRemoteLed(@PathVariable(value = "oboxSerialId", required = true) String oboxSerialId);
 
-	/**  
-	 * @param oboxSerialId  
-	 * @Description:  
+	/**
+	 * @param oboxSerialId
+	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/remoteLed/delRemoteLed/{oboxSerialId}", method = RequestMethod.DELETE)
-	ResponseObject delRemoteLed(@PathVariable(value = "oboxSerialId", required = true)String oboxSerialId);
+	ResponseObject delRemoteLed(@PathVariable(value = "oboxSerialId", required = true) String oboxSerialId);
 
-	/**  
+	/**
 	 * @param oboxSerialId
-	 * @param status  
-	 * @Description:  
+	 * @param status
+	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/remoteLed/controlRemoteLed/{oboxSerialId}/{status}", method = RequestMethod.PUT)
-	ResponseObject controlRemoteLed(@PathVariable(value = "oboxSerialId", required = true)String oboxSerialId, 
-			@PathVariable(value = "status", required = true)String status);
+	ResponseObject controlRemoteLed(@PathVariable(value = "oboxSerialId", required = true) String oboxSerialId,
+			@PathVariable(value = "status", required = true) String status);
 
-	/**  
+	/**
 	 * @param id
 	 * @param locationId
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/location/checkOut/{userId}/{location}", method = RequestMethod.PUT)
-	ResponseObject checkOut(
-			@PathVariable(value = "userId", required = true)Integer userId, 
-			@PathVariable(value = "location", required = true)Integer location);
+	ResponseObject checkOut(@PathVariable(value = "userId", required = true) Integer userId,
+			@PathVariable(value = "location", required = true) Integer location);
 
-	/**  
+	/**
 	 * @param id
 	 * @param locationId
 	 * @param mobile
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/location/checkIn/{userId}/{location}/{mobile}", method = RequestMethod.PUT)
-	ResponseObject checkIn(
-			@PathVariable(value = "userId", required = true)Integer userId, 
-			@PathVariable(value = "location", required = true)Integer location, 
-			@PathVariable(value = "mobile", required = true)String mobile);
+	ResponseObject checkIn(@PathVariable(value = "userId", required = true) Integer userId,
+			@PathVariable(value = "location", required = true) Integer location,
+			@PathVariable(value = "mobile", required = true) String mobile);
 
-	/**  
+	/**
 	 * @param id
 	 * @param locationId
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
 	@RequestMapping(value = "/location/continueLocation/{userId}/{location}", method = RequestMethod.GET)
-	ResponseObject<TLocation> continueLocation(@PathVariable(value = "userId", required = true)Integer userId, 
-			@PathVariable(value = "location", required = true)Integer location);
+	ResponseObject<TLocation> continueLocation(@PathVariable(value = "userId", required = true) Integer userId,
+			@PathVariable(value = "location", required = true) Integer location);
 
-	/**  
+	/**
 	 * @param id
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
 	@RequestMapping(value = "/location/queryDeviceByadmin/{userId}", method = RequestMethod.GET)
-	ResponseObject<List<DeviceDTO>> queryDeviceByadmin(@PathVariable(value = "userId", required = true)Integer userId);
+	ResponseObject<List<DeviceDTO>> queryDeviceByadmin(@PathVariable(value = "userId", required = true) Integer userId);
 
-	/**  
+	/**
 	 * @param id
-	 * @return  
-	 * @Description:  
+	 * @return
+	 * @Description:
 	 */
 	@RequestMapping(value = "/location/queryDeviceByGust/{userName}", method = RequestMethod.GET)
-	ResponseObject<List<DeviceDTO>> queryDeviceByGust(@PathVariable(value = "userName", required = true)String userName);
+	ResponseObject<List<DeviceDTO>> queryDeviceByGust(
+			@PathVariable(value = "userName", required = true) String userName);
 
-	 
+	/**
+	 * @param serialId
+	 * @param userName
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/location/queryLocationDeviceBySerialIdAndUserName/{serialId}/{userName}", method = RequestMethod.GET)
+	ResponseObject<TOboxDeviceConfig> queryLocationDeviceBySerialIdAndUserName(
+			@PathVariable(value = "serialId", required = true) String serialId,
+			@PathVariable(value = "userName", required = true) String userName);
 
- 
+	/**
+	 * @param sceneNumber
+	 * @param userName
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/location/queryLocationSceneBySceneNumberAndUserName/{sceneNumber}/{userName}", method = RequestMethod.GET)
+	ResponseObject<TScene> queryLocationSceneBySceneNumberAndUserName(
+			@PathVariable(value = "sceneNumber", required = true) Integer sceneNumber,
+			@PathVariable(value = "userName", required = true) String userName);
+
 }

@@ -1124,7 +1124,7 @@ public class LocationController {
 	 * @return
 	 * @Description:
 	 */
-	@RequestMapping(value = "/location/queryDeviceByGust/{userId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/queryDeviceByGust/{userId}", method = RequestMethod.GET)
 	ResponseObject<List<DeviceDTO>> queryDeviceByGust(@PathVariable(value = "userName", required = true) String userName) {
 		ResponseObject<List<DeviceDTO>> res = new ResponseObject<List<DeviceDTO>>();
 		try {
@@ -1142,6 +1142,66 @@ public class LocationController {
 		return res;
 	}
 
+	
+	/**  
+	 * @param serialId
+	 * @param userName
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/queryLocationDeviceBySerialIdAndUserName/{serialId}/{userName}", method = RequestMethod.GET)
+	ResponseObject<TOboxDeviceConfig> queryLocationDeviceBySerialIdAndUserName(@PathVariable(value = "serialId", required = true)String serialId, 
+			@PathVariable(value = "userName", required = true)String userName){
+		ResponseObject<TOboxDeviceConfig> res = new ResponseObject<TOboxDeviceConfig>();
+		try {
+ 			TDeviceLocation tDeviceLocation = deviceLocationService.queryLocationDeviceBySerialIdAndUserName(serialId,userName);
+ 			TOboxDeviceConfig device = oboxDeviceConfigService.queryDeviceConfigBySerialID(serialId);
+ 			if(tDeviceLocation==null||device==null){
+ 				res.setStatus(ResponseEnum.SearchIsEmpty.getStatus());
+ 				res.setMessage(ResponseEnum.SearchIsEmpty.getMsg());
+ 				return res;
+ 			}
+ 			res.setData(device);
+ 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===queryDeviceByadmin error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	
+	/**
+	 * @param sceneNumber
+	 * @param userName
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/queryLocationSceneBySceneNumberAndUserName/{sceneNumber}/{userName}", method = RequestMethod.GET)
+	ResponseObject<TScene> queryLocationSceneBySceneNumberAndUserName(
+			@PathVariable(value = "sceneNumber", required = true) Integer sceneNumber,
+			@PathVariable(value = "userName", required = true) String userName){
+		ResponseObject<TScene> res = new ResponseObject<TScene>();
+		try {
+ 			TLocationScene tDeviceLocation=locationSceneService.queryLocationSceneByUserNameAndSceneName(userName,sceneNumber);
+ 			TScene tscene = sceneService.getSceneBySceneNumber(sceneNumber);
+ 			if(tDeviceLocation==null||tscene==null){
+ 				res.setStatus(ResponseEnum.SearchIsEmpty.getStatus());
+ 				res.setMessage(ResponseEnum.SearchIsEmpty.getMsg());
+ 				return res;
+ 			}
+ 			res.setData(tscene);
+ 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===queryDeviceByadmin error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	
+	}
 	/**  
 	 * @param ouDeviceDTOs
 	 * @param tDeviceLocations

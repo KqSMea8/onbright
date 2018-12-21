@@ -61,4 +61,12 @@ public interface DeviceLocationService {
 	 */
 	List<TDeviceLocation> queryDevicesByUserName(String userName);
 
+	/**  
+	 * @param serialId
+	 * @param userName
+	 * @return  
+	 * @Description:  
+	 */
+	TDeviceLocation queryLocationDeviceBySerialIdAndUserName(String serialId, String userName);
+
 }

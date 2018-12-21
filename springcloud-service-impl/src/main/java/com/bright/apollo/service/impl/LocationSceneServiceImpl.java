@@ -36,4 +36,13 @@ public class LocationSceneServiceImpl implements LocationSceneService{
 		mapper.deleteSceneLocation(sceneNumber,location);
 		
 	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.LocationSceneService#queryLocationSceneByUserNameAndSceneName()  
+	 */
+	@Override
+	public TLocationScene queryLocationSceneByUserNameAndSceneName(String userName, Integer sceneNumber) {
+		 
+		return mapper.queryLocationSceneByUserNameAndSceneName(userName,sceneNumber);
+	}
 }

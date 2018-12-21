@@ -2,7 +2,6 @@ package com.bright.apollo.controller;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,15 +16,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bright.apollo.common.entity.TLocation;
+import com.bright.apollo.common.entity.TObox;
+import com.bright.apollo.common.entity.TOboxDeviceConfig;
+import com.bright.apollo.common.entity.TScene;
 import com.bright.apollo.common.entity.TUser;
-import com.bright.apollo.enums.LocationStatusEnum;
+import com.bright.apollo.feign.FeignAliClient;
 import com.bright.apollo.feign.FeignDeviceClient;
+import com.bright.apollo.feign.FeignOboxClient;
 import com.bright.apollo.feign.FeignQuartzClient;
+import com.bright.apollo.feign.FeignSceneClient;
 import com.bright.apollo.feign.FeignUserClient;
 import com.bright.apollo.response.DeviceDTO;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
-import com.bright.apollo.tool.MobileUtil;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -50,7 +53,12 @@ public class HotelController {
 	private FeignDeviceClient feignDeviceClient;
 	@Autowired
 	private FeignQuartzClient feignQuartzClient;
-
+	@Autowired
+	private FeignAliClient feignAliClient;
+	@Autowired
+	private FeignSceneClient feignSceneClient;
+	@Autowired
+	private FeignOboxClient feignOboxClient;
 	// check in
 	@SuppressWarnings({ "rawtypes" })
 	@ApiOperation(value = "checkIn", httpMethod = "POST", produces = "application/json")
@@ -236,7 +244,29 @@ public class HotelController {
 			@PathVariable(required = true, value = "status") String status) {
 		ResponseObject res = new ResponseObject();
 		try {
-
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+			// 判断 serialId是否合法
+			ResponseObject<TOboxDeviceConfig> deviceRes = feignDeviceClient.queryLocationDeviceBySerialIdAndUserName(serialId, resUser.getData().getUserName());
+			if(deviceRes==null||deviceRes.getData()==null){
+				return deviceRes;
+			}
+			TOboxDeviceConfig tOboxDeviceConfig = deviceRes.getData();
+			feignAliClient.setDeviceStatus(tOboxDeviceConfig.getOboxSerialId(),
+					status, tOboxDeviceConfig.getDeviceRfAddr());
+			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			res.setStatus(ResponseEnum.RequestTimeout.getStatus());
@@ -253,7 +283,45 @@ public class HotelController {
 	public ResponseObject controlScene(@PathVariable(required = true, value = "sceneNumber") Integer sceneNumber) {
 		ResponseObject res = new ResponseObject();
 		try {
-
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+			ResponseObject<TScene> sceneRes= feignDeviceClient.queryLocationSceneBySceneNumberAndUserName(sceneNumber,resUser.getData().getUserName());
+			if(sceneRes==null||sceneRes.getData()==null){
+				res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
+				res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
+				return res;
+			}
+			TScene scene = sceneRes.getData();
+			if (scene.getSceneRun() == 0) {
+				scene.setSceneRun((byte) 1);
+				scene.setAlterNeed((byte) 1);
+				feignSceneClient.updateScene(scene);
+				feignAliClient.addSceneAction(sceneNumber);
+			}else{
+				ResponseObject<TObox> oboxRes = feignOboxClient.getObox(scene.getOboxSerialId());
+				if (oboxRes != null && oboxRes.getData() != null
+						&& oboxRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()) {
+					feignAliClient.excuteLocalScene(scene.getOboxSceneNumber(), scene.getSceneName(),
+							oboxRes.getData().getOboxSerialId());
+				}else{
+					res.setStatus(ResponseEnum.SendOboxFail.getStatus());
+					res.setMessage(ResponseEnum.SendOboxFail.getMsg());
+					return res;
+				}
+			}
+			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			res.setStatus(ResponseEnum.RequestTimeout.getStatus());

@@ -17,6 +17,7 @@ import com.bright.apollo.common.entity.TIntelligentFingerUser;
 import com.bright.apollo.common.entity.TLocation;
 import com.bright.apollo.common.entity.TNvr;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
+import com.bright.apollo.common.entity.TScene;
 import com.bright.apollo.common.entity.TServerGroup;
 import com.bright.apollo.common.entity.TUserLocation;
 import com.bright.apollo.common.entity.TYSCamera;
@@ -843,8 +844,30 @@ public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implem
 	/* (non-Javadoc)  
 	 * @see com.bright.apollo.feign.FeignDeviceClient#queryDeviceByGust(java.lang.String)  
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public ResponseObject<List<DeviceDTO>> queryDeviceByGust(String userName) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#queryLocationDeviceBySerialIdAndUserName(java.lang.String, java.lang.String)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<TOboxDeviceConfig> queryLocationDeviceBySerialIdAndUserName(String serialId,
+			String userName) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#queryLocationSceneBySceneNumberAndUserName(java.lang.Integer, java.lang.String)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<TScene> queryLocationSceneBySceneNumberAndUserName(Integer sceneNumber, String userName) {
 		logger.warn("===device server is break===");
 		return serverError();
 	}
