@@ -88,7 +88,8 @@ public class IRUploadHandler extends AliBaseHandler {
             jsonArray.add(keyJson);
             mqttJson.put("keys",jsonArray);
             mqttJson.put("extendsKeys",new JSONArray());
-            mqttJson.put("index",Integer.valueOf(index==null?"0":index));
+            Integer idx = Integer.valueOf(index==null?"0":index);
+            mqttJson.put("index",idx);
             mqttJson.put("name",irName);
             mqttJson.put("deviceType",Integer.valueOf(deviceType==null?"0":deviceType));
             mqttJson.put("brandId",Integer.valueOf(brandId==null?"0":brandId));
@@ -96,7 +97,25 @@ public class IRUploadHandler extends AliBaseHandler {
             resMap.put("success",true);
             resMap.put("serialId",deviceSerialId);
             resMap.put("remote",mqttJson);
-            yaoKongYunService.updateYaoKongKeyCodeNameBySerialIdAndIndexAndKey(deviceSerialId,index,key,data);//保存src
+            TYaokonyunKeyCode yaokonyunKeyCode = yaoKongYunService.getIRDeviceByIndexAndKey(idx,key);
+            if(yaokonyunKeyCode==null){
+			yaokonyunKeyCode = new TYaokonyunKeyCode();
+			yaokonyunKeyCode.setKeyName("");
+			yaokonyunKeyCode.setCustomName("");
+			yaokonyunKeyCode.setIndex(idx);
+			yaokonyunKeyCode.setLastOpTime(new Date());
+			yaokonyunKeyCode.setBrandId(Integer.valueOf(brandId));
+			yaokonyunKeyCode.setRmodel("");
+			yaokonyunKeyCode.settId(Integer.valueOf(deviceType));
+			yaokonyunKeyCode.setName(irName);
+			yaokonyunKeyCode.setVersion(0);
+			yaokonyunKeyCode.setSrc(data);
+			yaokonyunKeyCode.setSerialId(deviceSerialId);
+			yaokonyunKeyCode.setKey(key);
+			yaoKongYunService.addTYaokonyunKeyCode(yaokonyunKeyCode);
+            }else{
+                yaoKongYunService.updateYaoKongKeyCodeNameBySerialIdAndIndexAndKey(deviceSerialId,index,key,data);//保存src
+            }
             pushservice.pairIrRemotecode(resMap,userAliDevice.getUserId());
         }else if(functionId==3){//一键匹配红外上传
             resMap = getRemoteControlList(brandId,"7",data);
