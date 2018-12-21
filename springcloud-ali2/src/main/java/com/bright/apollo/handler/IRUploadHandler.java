@@ -88,8 +88,14 @@ public class IRUploadHandler extends AliBaseHandler {
             JSONArray jsonArray = new JSONArray();
             keyJson.put("key",key);
             jsonArray.add(keyJson);
-            mqttJson.put("keys",jsonArray);
-            mqttJson.put("extendsKeys",new JSONArray());
+            Integer kt = Integer.valueOf(keyType);
+            if(kt==0){
+                mqttJson.put("keys",jsonArray);
+                mqttJson.put("extendsKeys",new JSONArray());
+            }else{
+                mqttJson.put("keys",new JSONArray());
+                mqttJson.put("extendsKeys",jsonArray);
+            }
             Integer idx = Integer.valueOf(index==null?"0":index);
             mqttJson.put("index",idx);
             mqttJson.put("name",irName);
@@ -115,6 +121,7 @@ public class IRUploadHandler extends AliBaseHandler {
 			yaokonyunKeyCode.setSrc(data);
 			yaokonyunKeyCode.setSerialId(deviceSerialId);
 			yaokonyunKeyCode.setKey(key);
+			yaokonyunKeyCode.setKeyType(kt);
 			yaoKongYunService.addTYaokonyunKeyCode(yaokonyunKeyCode);
             }else{
                 yaoKongYunService.updateYaoKongKeyCodeNameBySerialIdAndIndexAndKey(deviceSerialId,index,key,data);//保存src
