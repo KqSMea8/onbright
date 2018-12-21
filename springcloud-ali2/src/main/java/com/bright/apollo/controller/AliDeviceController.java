@@ -772,6 +772,7 @@ public class AliDeviceController {
 			yaokonyunKeyCode.setKeyName("");
 			yaokonyunKeyCode.setCustomName("");
 			yaokonyunKeyCode.setIndex(idx);
+			cmdCache.addIrIndexBySerialId(serialId,idx.toString());
 			yaokonyunKeyCode.setLastOpTime(new Date());
 			yaokonyunKeyCode.setBrandId(Integer.valueOf(brandId));
 			yaokonyunKeyCode.setRmodel("");
