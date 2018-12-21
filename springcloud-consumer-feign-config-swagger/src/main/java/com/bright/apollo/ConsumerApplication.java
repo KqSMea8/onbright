@@ -13,6 +13,7 @@ import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.cloud.netflix.hystrix.EnableHystrix;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 
 import com.bright.apollo.vo.PicPathVo;
@@ -25,6 +26,7 @@ import com.bright.apollo.vo.PicPathVo;
 @EnableCircuitBreaker
 @EnableHystrix
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableAsync
 @PropertySource("classpath:properties/custom.properties")
 public class ConsumerApplication {
 	@Autowired
