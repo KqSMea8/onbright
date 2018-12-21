@@ -181,4 +181,52 @@ public class QuartzController {
 		}
 		return res;
 	}
+	/**  
+	 * @param locationId
+	 * @param mobile
+	 * @param endTime  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/checkIn/{locationId}/{mobile}/{endTime}", method = RequestMethod.POST, produces = "application/json")
+	public ResponseObject checkIn(@PathVariable(value="locationId",required=true) Integer locationId, 
+			@PathVariable(value="mobile",required=true)String mobile,
+			@PathVariable(value="endTime",required=true)Long endTime){
+		ResponseObject res=new ResponseObject();
+		try {
+			quartzService.checkIn(locationId,mobile,endTime);
+			res.setStatus(ResponseEnum.AddSuccess.getStatus());
+			res.setMessage(ResponseEnum.AddSuccess.getMsg());
+		} catch (Exception e) {
+			log.error("===error msg:"+e.getMessage());
+			res.setStatus(ResponseEnum.RequestTimeout.getStatus());
+			res.setMessage(ResponseEnum.RequestTimeout.getMsg());
+		}
+		return res;
+	}
+	/**  
+	 * @param locationId
+	 * @param userName
+	 * @param endTime  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/continueLocation/{locationId}/{mobile}/{endTime}", method = RequestMethod.PUT, produces = "application/json")
+	public ResponseObject continueLocation(@PathVariable(value="locationId",required=true) Integer locationId, 
+			@PathVariable(value="mobile",required=true)String mobile,
+			@PathVariable(value="endTime",required=true)Long endTime){
+		ResponseObject res=new ResponseObject();
+		try {
+			quartzService.deleteHotelJob(locationId,mobile);
+			quartzService.checkIn(locationId,mobile,endTime);
+			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+		} catch (Exception e) {
+			log.error("===error msg:"+e.getMessage());
+			res.setStatus(ResponseEnum.RequestTimeout.getStatus());
+			res.setMessage(ResponseEnum.RequestTimeout.getMsg());
+		}
+		return res;
+	
+	}
 }

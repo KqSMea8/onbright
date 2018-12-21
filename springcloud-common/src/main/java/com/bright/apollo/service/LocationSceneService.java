@@ -24,4 +24,12 @@ public interface LocationSceneService {
 	 */
 	void deleteSceneLocation(Integer sceneNumber, Integer location);
 
+	/**  
+	 * @param sceneNumber 
+	 * @param userName 
+	 * @return  
+	 * @Description:  
+	 */
+	TLocationScene queryLocationSceneByUserNameAndSceneName(String userName, Integer sceneNumber);
+
 }

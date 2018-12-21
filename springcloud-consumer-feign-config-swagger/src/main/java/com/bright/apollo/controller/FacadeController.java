@@ -4910,6 +4910,7 @@ public class FacadeController extends BaseController {
 				return res;
 			}
 			feignAliClient.addRemoteLed(serialId);
+			feignDeviceClient.addRemoteLed(serialId);
 			res.setStatus(ResponseEnum.AddSuccess.getStatus());
 			res.setMessage(ResponseEnum.AddSuccess.getMsg());
 		} catch (Exception e) {
@@ -4962,6 +4963,7 @@ public class FacadeController extends BaseController {
 				return res;
 			}
 			feignAliClient.delRemoteLed(oboxSerialId);
+			feignDeviceClient.delRemoteLed(oboxSerialId);
 			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
 			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
 		} catch (Exception e) {
@@ -5018,6 +5020,7 @@ public class FacadeController extends BaseController {
 				return res;
 			}
 			feignAliClient.controlRemoteLed(oboxSerialId, status);
+			feignDeviceClient.controlRemoteLed(oboxSerialId, status);
 			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
 			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
 		} catch (Exception e) {
@@ -6540,9 +6543,10 @@ public class FacadeController extends BaseController {
 	@SuppressWarnings("rawtypes")
 	@ApiOperation(value = "deleteDeviceLocation", httpMethod = "DELETE", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
-	@RequestMapping(value = "/deleteDeviceLocation/{serialId}/{location}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/deleteDeviceLocation/{serialId}/{location}/{deviceType}", method = RequestMethod.DELETE)
 	public ResponseObject deleteDeviceLocation(@PathVariable(value = "serialId") String serialId,
-			@PathVariable(value = "location") Integer location) {
+			@PathVariable(value = "location") Integer location,
+			@PathVariable(value = "deviceType") String deviceType) {
 		ResponseObject res = new ResponseObject();
 		try {
 			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -6558,7 +6562,7 @@ public class FacadeController extends BaseController {
 				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
 				return res;
 			}
-			return feignDeviceClient.deleteDeviceLocation(resUser.getData().getId(), serialId, location);
+			return feignDeviceClient.deleteDeviceLocation(resUser.getData().getId(), serialId, location,deviceType);
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());

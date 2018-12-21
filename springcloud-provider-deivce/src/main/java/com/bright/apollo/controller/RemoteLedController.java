@@ -15,10 +15,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bright.apollo.common.entity.TObox;
+import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.common.entity.TRemoteLed;
+import com.bright.apollo.common.entity.TUserDevice;
+import com.bright.apollo.common.entity.TUserObox;
+import com.bright.apollo.enums.DeviceTypeEnum;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
+import com.bright.apollo.service.OboxDeviceConfigService;
+import com.bright.apollo.service.OboxService;
 import com.bright.apollo.service.RemoteLedService;
+import com.bright.apollo.service.UserDeviceService;
+import com.bright.apollo.service.UserOboxService;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
@@ -36,7 +45,14 @@ public class RemoteLedController {
 	private static final Logger logger = LoggerFactory.getLogger(RemoteLedController.class);
 	@Autowired
 	private RemoteLedService remoteLedService;
-
+	@Autowired
+	protected OboxService oboxService;
+	@Autowired
+	protected OboxDeviceConfigService oboxDeviceConfigService;
+	@Autowired
+	protected UserOboxService userOboxService;
+	@Autowired
+	protected UserDeviceService userDeviceService;
 	/**
 	 * @param serialId
 	 * @param names
@@ -144,9 +160,116 @@ public class RemoteLedController {
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
-
 	}
+	/**  
+	 * @param oboxSerialId  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/addRemoteLed/{oboxSerialId}", method = RequestMethod.POST)
+	ResponseObject addRemoteLed(@PathVariable(value = "oboxSerialId", required = true)String oboxSerialId){
+		ResponseObject  res = new ResponseObject();
+		//Map<String, Object> data = new HashMap<String, Object>();
+		try {
+			logger.info("===oboxSerialId:" + oboxSerialId);
+			TObox obox = oboxService.queryOboxsByOboxSerialId(oboxSerialId);
+			if(obox==null){
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			TOboxDeviceConfig device = oboxDeviceConfigService.getTOboxDeviceConfigByDeviceSerialId(oboxSerialId);
+			List<TUserObox> tUserOboxs = userOboxService.getUserOboxBySerialId(oboxSerialId);
+			if(device==null){
+				device=new TOboxDeviceConfig();
+				device.setDeviceId("RemoteLed");
+				device.setOboxSerialId(oboxSerialId);
+				device.setDeviceSerialId(oboxSerialId);
+				device.setDeviceRfAddr("fe");
+				device.setOboxId(obox.getId());
+				device.setDeviceType(DeviceTypeEnum.remote_led.getValue());
+				device.setDeviceChildType(DeviceTypeEnum.remote_child_led.getValue());
+				device.setDeviceState("00000000000000");
+				device.setDeviceVersion("0000000000000000");
+				oboxDeviceConfigService.addTOboxDeviceConfig(device);
+				if(tUserOboxs!=null&&tUserOboxs.size()>0){
+					for(TUserObox tUserObox: tUserOboxs){
+						TUserDevice tUserDevice=new TUserDevice();
+						tUserDevice.setDeviceSerialId(oboxSerialId);
+						tUserDevice.setUserId(tUserObox.getUserId());
+						userDeviceService.addUserDevice(tUserDevice);
+					}
+				}
+			}
+			res.setStatus(ResponseEnum.AddSuccess.getStatus());
+			res.setMessage(ResponseEnum.AddSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	/**  
+	 * @param oboxSerialId  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/delRemoteLed/{oboxSerialId}", method = RequestMethod.DELETE)
+	ResponseObject delRemoteLed(@PathVariable(value = "oboxSerialId", required = true)String oboxSerialId){
+		ResponseObject  res = new ResponseObject();
+		try {
+			logger.info("===oboxSerialId:" + oboxSerialId);
+			TObox obox = oboxService.queryOboxsByOboxSerialId(oboxSerialId);
+			TOboxDeviceConfig device = oboxDeviceConfigService.getTOboxDeviceConfigByDeviceSerialId(oboxSerialId);
+			if(obox==null||device==null){
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;			
+			}
+			oboxDeviceConfigService.deleteTOboxDeviceConfigById(device.getId());
+			userDeviceService.deleteUserDeviceBySerialId(oboxSerialId);
+			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
+			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	/**  
+	 * @param oboxSerialId
+	 * @param status  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/controlRemoteLed/{oboxSerialId}/{status}", method = RequestMethod.PUT)
+	ResponseObject controlRemoteLed(@PathVariable(value = "oboxSerialId", required = true)String oboxSerialId, 
+			@PathVariable(value = "status", required = true)String status){
 
+		ResponseObject  res = new ResponseObject();
+		try {
+			logger.info("===oboxSerialId:" + oboxSerialId);
+			TObox obox = oboxService.queryOboxsByOboxSerialId(oboxSerialId);
+			TOboxDeviceConfig device = oboxDeviceConfigService.getTOboxDeviceConfigByDeviceSerialId(oboxSerialId);
+			if(obox==null||device==null){
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;			
+			}
+			device.setDeviceState(status);
+			oboxDeviceConfigService.updateTOboxDeviceConfig(device);
+			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	
+	}
 	/**
 	 * @param list
 	 * @param map

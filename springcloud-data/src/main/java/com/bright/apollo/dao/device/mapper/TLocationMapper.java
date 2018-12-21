@@ -64,6 +64,8 @@ public interface TLocationMapper {
 			+ "EXISTS (select 1 from t_user_location where a.id=location_id and user_id=#{userId} and location_id= #{location})")
 	@Results(value = { @Result(property = "id", column = "id"), @Result(property = "building", column = "building"),
 			@Result(property = "lastOpTime", column = "last_op_time"), @Result(property = "room", column = "room"),
+			@Result(property = "status", column = "status"),
+			@Result(property = "userName", column = "user_name"),
 			@Result(property = "downloadUrl", column = "download_url"),
 			@Result(property = "license", column = "license"), @Result(property = "thumUrl", column = "thum_url") })
 	TLocation queryLocationByUserIdAndId(@Param("userId") Integer userId, @Param("location") Integer location);
@@ -91,6 +93,8 @@ public interface TLocationMapper {
 	@Results(value = { @Result(property = "id", column = "id"), @Result(property = "building", column = "building"),
 			@Result(property = "lastOpTime", column = "last_op_time"), @Result(property = "room", column = "room"),
 			@Result(property = "downloadUrl", column = "download_url"),
+			@Result(property = "status", column = "status"),
+			@Result(property = "userName", column = "user_name"),
 			@Result(property = "license", column = "license"), @Result(property = "thumUrl", column = "thum_url") })
 	TLocation queryLocationById(@Param("locationId") Integer locationId);
 

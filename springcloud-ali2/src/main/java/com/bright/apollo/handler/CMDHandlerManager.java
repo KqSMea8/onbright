@@ -246,9 +246,10 @@ public class CMDHandlerManager {
 		if (cmdHandlers.get(Command.GROUPCHANGE.getValue()) == null) {
 			cmdHandlers.put(Command.GROUPCHANGE.getValue(), groupCMDHandler);
 		}
-		if (cmdHandlers.get(Command.SETTINGREMOTELED.getValue()) == null) {
-			cmdHandlers.put(Command.SETTINGREMOTELED.getValue(), remoteLedHandler);
-		}
+		//光头强
+		//if (cmdHandlers.get(Command.SETTINGREMOTELED.getValue()) == null) {
+		//	cmdHandlers.put(Command.SETTINGREMOTELED.getValue(), remoteLedHandler);
+		//}
 		if (cmdHandlers.get(Command.VERSION.getValue()) == null) {
 			cmdHandlers.put(Command.VERSION.getValue(), versionCMDHandler);
 		}
