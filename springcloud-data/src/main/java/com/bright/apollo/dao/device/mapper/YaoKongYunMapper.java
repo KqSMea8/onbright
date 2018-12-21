@@ -143,7 +143,8 @@ public interface YaoKongYunMapper {
             @Result(property = "name",column = "name"),
             @Result(property = "tId",column = "t_id"),
             @Result(property = "keyName",column = "key_name"),
-            @Result(property = "customName",column = "custom_name")
+            @Result(property = "customName",column = "custom_name"),
+            @Result(property = "keyType",column = "keyType")
     })
     List<TYaokonyunKeyCode> getYaoKongKeyCodeBySerialId(@Param("serialId")String serialId);
 
