@@ -344,7 +344,8 @@ public class AliDeviceController {
 				res.setStatus(ResponseEnum.NoIRKey.getStatus());
 				res.setMessage(ResponseEnum.NoIRKey.getMsg());
 			}else{
-				logger.info(" src ========= "+yaokonyunKeyCode.getSrc());
+				String srcCode = yaokonyunKeyCode.getSrc();
+				logger.info(" src ========= "+srcCode);
 				requestMap.put("command","set");
 				com.alibaba.fastjson.JSONArray jsonArray = new com.alibaba.fastjson.JSONArray();
 				com.alibaba.fastjson.JSONObject json = new com.alibaba.fastjson.JSONObject();

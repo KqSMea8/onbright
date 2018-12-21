@@ -57,7 +57,6 @@ import java.util.concurrent.locks.ReentrantLock;
  *@Since:2018年3月16日
  *@Version:1.1.0
  */
-//@Api("device Controller")
 @RequestMapping("tmall2")
 @RestController
 public class TmallController2 {
@@ -81,8 +80,6 @@ public class TmallController2 {
 	private ReentrantLock lock = new ReentrantLock();
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-//	@ApiOperation(value = "get deivcie by device serialId", httpMethod = "GET", produces = "application/json")
-//	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/tmallCmd2", method = RequestMethod.POST,produces = "application/json ;charset=UTF-8")
 	@ResponseBody
 	public Object tmallCmd(@RequestBody Object object) throws Exception {
@@ -107,54 +104,8 @@ public class TmallController2 {
 			headerMap.put("messageId",(String)requestHeaderMap.get("messageId"));
 			headerMap.put("payLoadVersion","1");
 			map.put("header",headerMap);
-//			User user = (User) defaultOAuth2AccessToken.getPrincipal();
-//			ResponseObject<TUser> userResponseObject = feignUserClient.getUser(user.getUsername());//user.getUsername()
-//			TUser tUser = userResponseObject.getData();
-//
-////			logger.info(" ====== username ====== "+user.getUsername());
-//
-//			logger.info(" ====== userId ====== "+tUser.getId());
-//			ResponseObject<List<TOboxDeviceConfig>> responseObject = feignDeviceClient.getOboxDeviceConfigByUserId(tUser.getId());//559
-//			List<TOboxDeviceConfig> oboxDeviceConfigList = responseObject.getData();
-//			JSONArray jsonArray = new JSONArray();
-//
-//			logger.info(" ======= oboxDeviceConfigList ======= "+oboxDeviceConfigList);
-//			List<JSONObject> list = new ArrayList<JSONObject>();
-//			for(TOboxDeviceConfig oboxDeviceConfig :oboxDeviceConfigList){
-//				adapter = new TMallDeviceAdapter(oboxDeviceConfig,tMallTemplate);
-//				adapter = adapter.onbright2TMall();
-//				logger.info("====== adapter ====== "+adapter);
-//				JSONObject devices = new JSONObject();
-//				if(adapter !=null&&!adapter.equals("")){
-//					setDeviceJson(devices,adapter);
-////					list.add(devices);
-//					jsonArray.put(devices);
-//				}
-//			}
-//			for(int i=0;i<list.size();i++){
-//				JSONObject jsonObject = list.get(i);
-//				String deviceType = (String)jsonObject.get("deviceType");
-//				String model = (String)jsonObject.get("model");
-//				if(deviceType.equals("switch")&&model.equals("三键开关")){
-//					for(int j=1;j<=3;j++){
-//						JSONObject devices = new JSONObject();
-//						putChildrenDeviceValue(devices,jsonObject,j);
-////						list.add(devices);
-//						jsonArray.put(devices);
-//					}
-//				}
-//				if(deviceType.equals("switch")&&model.equals("两键键开关")){
-//					for(int j=1;j<=2;j++){
-//						JSONObject devices = new JSONObject();
-//						putChildrenDeviceValue(devices,jsonObject,j);
-////						list.add(devices);
-//						jsonArray.put(devices);
-//					}
-//				}
-//			}
 			JSONArray jsonArray = new JSONArray();
 			templateScan(jsonArray);//展示使用(日后可删除)
-//			jsonArray.put(list);
 			playloadMap.put("devices",jsonArray);
 			map.put("payload",playloadMap);
 			headerMap.put("namespace","AliGenie.Iot.Device.Discovery");
@@ -197,73 +148,6 @@ public class TmallController2 {
 			//====== 生成httpsClient end ======
 
 			templateControl(name,deviceId,nvps,httpPost,httpClient);//展示台模板(仅供展厅展示使用，日后可删除)
-
-
-//			try {
-//				try {
-//					lock.lock();
-//					String redisId = redisBussines.get("tmall_accept_id_"+deviceId);
-//					if(StringUtils.isEmpty(redisId)){
-//						redisBussines.setValueWithExpire("tmall_accept_id_"+deviceId,originalId,3);
-//					}else{
-//						redisBussines.setValueWithExpire("tmall_accept_id_"+deviceId,redisId+","+originalId,3);
-//					}
-//
-//				}catch (Exception e){
-//					logger.info(" ====== lock ===== setredis exception ====== "+e.getMessage());
-//				}finally {
-//					lock.unlock();
-//				}
-//
-//				ResponseObject<TOboxDeviceConfig> responseObject = feignDeviceClient.getDevice(deviceId);
-//				TOboxDeviceConfig oboxDeviceConfig = responseObject.getData();
-//				if(oboxDeviceConfig !=null &&!oboxDeviceConfig.equals("")){
-//					String deviceType = oboxDeviceConfig.getDeviceType();
-//					String childType = oboxDeviceConfig.getDeviceChildType();
-//					Map<String,Object> paramMap = null;
-//					String acceptIds = "";
-//					Thread.sleep(500);
-//					acceptIds =redisBussines.get("tmall_accept_id_"+deviceId);
-//					String[] idArr = acceptIds.split(",");
-//					if(deviceType.equals("04")&&
-//							(childType.equals("2b")||childType.equals("53")||
-//							childType.equals("2a")||childType.equals("17") ||
-//							childType.equals("16"))&&idArr.length>1){
-//							if(name.equals("TurnOn")){
-//								logger.info("=========== controll ======= on ======= "+originalId);
-//								if(childType.equals("2a") ){
-//									facadeController.controlDevice(deviceId,"03000000000000");
-//								}else if(childType.equals("16")){
-//									facadeController.controlDevice(deviceId,"00030000000000");
-//								}else{
-//									facadeController.controlDevice(deviceId,"00070000000000");
-//								}
-//
-//							}else if(name.equals("TurnOff")){
-//								logger.info("=========== controll ======= off ====== "+originalId);
-//								facadeController.controlDevice(deviceId,"00000000000000");
-//							}
-//
-//					}else{
-//						adapter = new TMallDeviceAdapter(playLoadMap,tMallTemplate,oboxDeviceConfig,header);
-//						adapter.setRedisBussines(redisBussines);
-//						paramMap = adapter.TMall2Obright();
-//						logger.info("paramMap ====== "+paramMap);
-//						facadeController.controlDevice(deviceId,(String)paramMap.get("deviceState"));
-//					}
-//				}
-//			}catch (Exception e){
-//				logger.info("exception ====== "+e);
-//			}finally {
-//				headerMap.put("namespace","AliGenie.Iot.Device.Control");
-//				headerMap.put("name",name+"Response");
-//				headerMap.put("messageId",(String)requestHeaderMap.get("messageId"));
-//				headerMap.put("payLoadVersion","1");
-//				map.put("header",headerMap);
-//				playloadMap.put("deviceId",deviceId);
-//				map.put("payload",playloadMap);
-//				redisBussines.delete("tmall_accept_id_"+deviceId);
-//			}
 			headerMap.put("namespace","AliGenie.Iot.Device.Control");
 			headerMap.put("name",name+"Response");
 			headerMap.put("messageId",(String)requestHeaderMap.get("messageId"));
@@ -272,75 +156,9 @@ public class TmallController2 {
 			playloadMap.put("deviceId",deviceId);
 			map.put("payload",playloadMap);
 		}
-//		else if(requestHeaderMap.get("namespace").equals("AliGenie.Iot.Device.Query")){
-//			Map<String,Object> playLoadMap = (Map<String, Object>) requestMap.get("payload");
-//            Map<String,Object> header = (Map<String, Object>) requestMap.get("header");
-//			String name = (String)requestHeaderMap.get("name");
-//			String deviceId = (String)playLoadMap.get("deviceId");
-//			String[] deviceIdArr = deviceId.split("_");
-//			deviceId = deviceIdArr[0];
-//			try{
-//				ResponseObject<TOboxDeviceConfig> responseObject = feignDeviceClient.getDevice(deviceId);
-//				TOboxDeviceConfig oboxDeviceConfig = responseObject.getData();
-//				adapter = new TMallDeviceAdapter(playLoadMap,tMallTemplate,oboxDeviceConfig,header);
-//                adapter.setQueryName(name);
-//				adapter = adapter.queryDevice();
-//				logger.info("map ====== "+adapter);
-//			}catch (Exception e){
-//				logger.info("exception ====== "+e);
-//			}finally {
-//				headerMap.put("namespace","AliGenie.Iot.Device.Query");
-//				headerMap.put("name",name+"Response");
-//				headerMap.put("messageId",(String)requestHeaderMap.get("messageId"));
-//				headerMap.put("payLoadVersion","1");
-//				map.put("header",headerMap);
-//				playloadMap.put("deviceId",deviceId);
-//				map.put("payload",playloadMap);
-//				map.put("properties",adapter.getProperties());
-//			}
-//
-//		}
 		logger.info("map ====== "+StringEscapeUtils.unescapeJavaScript(map.toString()));
 		return StringEscapeUtils.unescapeJavaScript(map.toString());
 	}
-
-//	private void putDeviceValue(JSONObject devices,TMallDeviceAdapter adapter) throws JSONException{
-//		devices.put("deviceId",adapter.getDeviceId());
-//		devices.put("deviceName",adapter.getDeviceName());
-//		devices.put("deviceType",adapter.getDeviceType());
-//		devices.put("zone",adapter.getZone());
-//		devices.put("brand",adapter.getBrand());
-//		devices.put("model",adapter.getModel());
-//		devices.put("icon",adapter.getIcon());
-//		devices.put("properties",adapter.getProperties());
-////		devices.put("actions",adapter.getAction());
-//	}
-//
-//	private void putChildrenDeviceValue(JSONObject devices,JSONObject outlet,Integer i ) throws JSONException{
-//		String deivceId = (String)outlet.get("deviceId");
-//		JSONObject extensionsMap = new JSONObject();
-//		extensionsMap.put("extension1","");
-//		extensionsMap.put("extension2","");
-//		extensionsMap.put("parentId",deivceId);
-//		devices.put("deviceId",deivceId+"_"+i);
-//		devices.put("deviceName","开关");//开关
-//		devices.put("deviceType",outlet.get("deviceType"));//outlet.getString("deviceType")
-//		devices.put("zone","");
-//		devices.put("brand","on-bright");
-//		devices.put("model","");
-//		devices.put("icon",TMallDeviceAdapter.mutipleOutleticon);
-//		devices.put("properties",outlet.get("properties"));
-////		devices.put("actions",outlet.get("actions"));
-//		devices.put("extensions",extensionsMap);
-//	}
-//
-//	private void setDeviceJson(JSONObject devices,TMallDeviceAdapter adapter) throws JSONException{
-//		JSONObject extensionsMap = new JSONObject();
-//		extensionsMap.put("extension1","");
-//		extensionsMap.put("extension2","");
-//		putDeviceValue(devices,adapter);
-//		devices.put("extensions",extensionsMap);
-//	}
 
 	private void templateScan(JSONArray list ) throws JSONException {
 		JSONArray jsonArray = new JSONArray();
@@ -365,7 +183,6 @@ public class TmallController2 {
 		String[] actions = new String[2];
 		actions[0] = "TurnOn";
 		actions[1] = "TurnOff";
-//		devices.put("actions",actions);
 		devices.put("extensions",extensionsMap);
 
 		JSONObject devices2 = new JSONObject();
@@ -381,7 +198,6 @@ public class TmallController2 {
 		String[] actions2 = new String[2];
 		actions2[0] = "TurnOn";
 		actions2[1] = "TurnOff";
-//		devices2.put("actions",actions2);
 		devices2.put("extensions",extensionsMap);
 
 		JSONObject devices3 = new JSONObject();
@@ -397,15 +213,10 @@ public class TmallController2 {
 		String[] actions3 = new String[2];
 		actions3[0] = "TurnOn";
 		actions3[1] = "TurnOff";
-//		devices3.put("actions",actions3);
 		devices3.put("extensions",extensionsMap);
 		list.put(devices);
 		list.put(devices2);
 		list.put(devices3);
-	}
-
-	private void postControl(List<NameValuePair> nvps,HttpPost httpPost,CloseableHttpClient httpClient){
-
 	}
 
 	private void templateControl(String name,String deviceId,List<NameValuePair> nvps,HttpPost httpPost,CloseableHttpClient httpClient) throws IOException {
