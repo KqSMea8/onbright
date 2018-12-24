@@ -127,8 +127,8 @@ public interface YaoKongYunMapper {
     @Delete(" delete from t_yaokonyun_key_code where serialId = #{serialId} and `index` = #{index} ")
     void deleteTYaokonyunKeyCode(@Param("serialId")String serialId,@Param("index")Integer index);
 
-    @Delete(" delete from t_yaokonyun_key_code where serialId = #{serialId} and `index` = #{index} and `key` = #{key} ")
-    void deleteTYaokonyunKeyCodeByKeyName(@Param("serialId")String serialId,@Param("index")Integer index,@Param("key")String keyName);
+    @Delete(" delete from t_yaokonyun_key_code where serialId = #{serialId} and `index` = #{index} and `key` = #{key} and keyType = #{keyType} ")
+    void deleteTYaokonyunKeyCodeByKeyName(@Param("serialId")String serialId,@Param("index")Integer index,@Param("key")String keyName,@Param("keyType")Integer keyType);
 
     @Delete(" delete from t_yaokonyun_key_code where serialId = #{serialId} and `index` = #{index} and `key` = #{key}")
     void deleteTYaokonyunKeyCodeByCustomName(@Param("serialId")String serialId,@Param("index")Integer index,@Param("key")String customName);

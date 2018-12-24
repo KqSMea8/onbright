@@ -98,11 +98,7 @@ public class YaoKongYunServiceImpl implements YaoKongYunService {
 
     @Override
     public void deleteTYaokonyunKeyCodeByKeyName(String serialId, String index, String keyName,String keyType) {
-        if(keyType.equals("0")){
-            yaoKongYunMapper.deleteTYaokonyunKeyCodeByKeyName(serialId,Integer.valueOf(index),keyName);
-        }else if(keyType.equals("1")){
-            yaoKongYunMapper.deleteTYaokonyunKeyCodeByCustomName(serialId,Integer.valueOf(index),keyName);
-        }
+        yaoKongYunMapper.deleteTYaokonyunKeyCodeByKeyName(serialId,Integer.valueOf(index),keyName,Integer.valueOf(keyType));
     }
 
     @Override
