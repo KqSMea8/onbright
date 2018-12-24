@@ -84,23 +84,23 @@ public class IRUploadHandler extends AliBaseHandler {
         TUserAliDevice userAliDevice = userAliDevService.queryAliDeviceBySerialiId(deviceSerialId);
         if(functionId==2){//学习红外上传
             com.alibaba.fastjson.JSONObject mqttJson = new com.alibaba.fastjson.JSONObject();
-            com.alibaba.fastjson.JSONObject keyJson = new com.alibaba.fastjson.JSONObject();
-            JSONArray jsonArray = new JSONArray();
-            keyJson.put("key",key);
-            jsonArray.add(keyJson);
+//            com.alibaba.fastjson.JSONObject keyJson = new com.alibaba.fastjson.JSONObject();
+//            JSONArray jsonArray = new JSONArray();
+//            keyJson.put("key",key);
+//            jsonArray.add(keyJson);
             Integer kt = Integer.valueOf(keyType);
-            if(kt==0){
-                mqttJson.put("keys",jsonArray);
-                mqttJson.put("extendsKeys",new JSONArray());
-            }else{
-                mqttJson.put("keys",new JSONArray());
-                mqttJson.put("extendsKeys",jsonArray);
-            }
+//            if(kt==0){
+//                mqttJson.put("keys",jsonArray);
+//                mqttJson.put("extendsKeys",new JSONArray());
+//            }else{
+//                mqttJson.put("keys",new JSONArray());
+//                mqttJson.put("extendsKeys",jsonArray);
+//            }
             Integer idx = Integer.valueOf(index==null?"0":index);
-            mqttJson.put("index",idx);
-            mqttJson.put("name",irName);
-            mqttJson.put("deviceType",Integer.valueOf(deviceType==null?"0":deviceType));
-            mqttJson.put("brandId",Integer.valueOf(brandId==null?"0":brandId));
+//            mqttJson.put("index",idx);
+//            mqttJson.put("name",irName);
+//            mqttJson.put("deviceType",Integer.valueOf(deviceType==null?"0":deviceType));
+//            mqttJson.put("brandId",Integer.valueOf(brandId==null?"0":brandId));
             resMap.put("type",20);
             resMap.put("success",true);
             resMap.put("serialId",deviceSerialId);
@@ -194,7 +194,7 @@ public class IRUploadHandler extends AliBaseHandler {
                     dtoList.add(new QueryRemoteBySrcDTO(dtomap));
                 }
             }
-            resMap.put("remote",dtoList);
+            resMap.put("remote",dtoList.get(0));
             pushservice.pairIrRemotecode(resMap,userAliDevice.getUserId());
         }else if(functionId==3){//一键匹配红外上传
             resMap = getRemoteControlList(brandId,"7",data);
