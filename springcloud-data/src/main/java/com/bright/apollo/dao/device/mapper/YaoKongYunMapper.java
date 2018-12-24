@@ -112,7 +112,7 @@ public interface YaoKongYunMapper {
 
     @Insert(" insert into t_yaokonyun_key_code(src,`index`,analysisSrc,`key`,serialId,remote_id, " +
             " last_op_time,t_id,name,brandId,rmodel,version,keyType) " +
-            " values(#{src},#{index},#{analysisSrc},#{key},#{serialId},#{remoteId},#{lastOpTime},#{tId},#{name},#{brandId},#{rmodel},#{version}.#{keyType})")
+            " values(#{src},#{index},#{analysisSrc},#{key},#{serialId},#{remoteId},#{lastOpTime},#{tId},#{name},#{brandId},#{rmodel},#{version},#{keyType})")
     void addTYaokonyunKeyCode(TYaokonyunKeyCode yaokonyunKeyCode);
 
 
