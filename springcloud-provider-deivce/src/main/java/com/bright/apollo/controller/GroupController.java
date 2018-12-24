@@ -723,9 +723,18 @@ public class GroupController {
 						}
 						byte[] groupBytes = ByteHelper.hexStringToBytes(tServerGroup.getGroupAddr());
 						System.arraycopy(groupBytes, 0, setBytes, 13, groupBytes.length);
-						TObox bestOBOXChannel = null;
 						boolean isFound = false;
-						List<TDeviceChannel> tDeviceChannels = deviceChannelService
+						TObox bestOBOXChannel = oboxService.queryOboxsByOboxSerialId(tOboxDeviceConfig.getOboxSerialId());
+						if(bestOBOXChannel.getOboxStatus()==(byte)1){
+							cmdCache.saveGroup(
+									bestOBOXChannel.getOboxId().intValue() + ":" + tOboxDeviceConfig.getDeviceSerialId(),
+									tServerGroup.getId().intValue() + "");
+							feignAliClient.sendCmd(bestOBOXChannel, CMDEnum.set_group, setBytes);
+							tOboxDeviceConfig.setIsSend(1);
+							isFound = true;
+							break;
+						}
+						/*List<TDeviceChannel> tDeviceChannels = deviceChannelService
 								.getDeivceChannelById(tOboxDeviceConfig.getId());
 						for (TDeviceChannel tDeviceChannel : tDeviceChannels) {
 							TObox obox = oboxService.queryOboxById(tDeviceChannel.getOboxId());
@@ -740,7 +749,7 @@ public class GroupController {
 								isFound = true;
 								break;
 							}
-						}
+						}*/
 						if (!isFound) {
 							if (bestOBOXChannel == null) {
 								tOboxDeviceConfig.setIsSend(1);
@@ -773,5 +782,12 @@ public class GroupController {
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 		}
+	}
+	public static void main(String[] args) {
+		List<String> mList=new ArrayList<String>();
+		for (int i = 0; i < 2; i++) {
+			mList.add(i+"1");
+		}
+		System.out.println(mList);
 	}
 }

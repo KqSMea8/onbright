@@ -102,13 +102,13 @@ public class WebLogAspect {
             if(StringUtils.isEmpty(tokenUserId)||!accessToken.equals(tokenUserId)){
                 redisBussines.setValueWithExpire("token_userId_"+userId,accessToken,60 * 60 * 24 * 7);
             }
-            logger.info(" ====== accessToken ======= "+accessToken);
-            logger.info(" ====== token_userId ======= "+redisBussines.getObject("token_userId_"+userId));
+           // logger.info(" ====== accessToken ======= "+accessToken);
+           // logger.info(" ====== token_userId ======= "+redisBussines.getObject("token_userId_"+userId));
             String[] topics = adapter.getTopic();
             topicName = "ob-smart."+tokenUserId;
             for(int i=0;i<topics.length;i++){
                 if(!topicName.equals(topics[i])){
-                    logger.info("====== create topic ====== "+topicName);
+                  //  logger.info("====== create topic ====== "+topicName);
                     adapter.addTopic(topicName,1);
                 }
             }
