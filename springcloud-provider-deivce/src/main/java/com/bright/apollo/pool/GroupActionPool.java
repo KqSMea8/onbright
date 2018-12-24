@@ -1,5 +1,7 @@
 package com.bright.apollo.pool;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -16,6 +18,7 @@ import com.bright.apollo.common.entity.TUserOperation;
 import com.bright.apollo.enums.CMDEnum;
 import com.bright.apollo.enums.DeviceTypeEnum;
 import com.bright.apollo.feign.FeignAliClient;
+import com.bright.apollo.request.CmdInfo;
 import com.bright.apollo.service.GroupDeviceService;
 import com.bright.apollo.service.OboxDeviceConfigService;
 import com.bright.apollo.service.OboxService;
@@ -100,7 +103,12 @@ public class GroupActionPool {
 									addrBytes.length);
 							System.arraycopy(stateBytes, 0, bodyBytes, 7,
 									stateBytes.length);
-							feignAliClient.sendCmd(tObox, CMDEnum.setting_node_status, bodyBytes);
+							Map<String, Object>map=new HashMap<String, Object>();
+							//CmdInfo cmdInfo=new CmdInfo(tObox, CMDEnum.set_group, bodyBytes);
+							map.put("serialId", tObox.getOboxSerialId());
+							map.put("cmd", CMDEnum.setting_node_status);
+							map.put("bytes", ByteHelper.bytesToHexString(bodyBytes));
+							feignAliClient.sendCmd(map);
 							//CMDMessageService.send(tObox,
 							//		CMDEnum.setting_node_status, bodyBytes, 0,
 							//		0);
