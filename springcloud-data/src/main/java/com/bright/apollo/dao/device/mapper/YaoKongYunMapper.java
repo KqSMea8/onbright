@@ -174,10 +174,14 @@ public interface YaoKongYunMapper {
 
     List<Map<String, Object>> getUserIRDevice(@Param("userId")Integer userId);
 
-    @Select("select `src`,`key`,t_id,keyType from t_yaokonyun_key_code where `index` = #{index} ")
+    @Select("select * from t_yaokonyun_key_code where `index` = #{index} ")
     @Results(value = {
-            @Result(property = "src",column = "src"),
             @Result(property = "key",column = "key"),
+            @Result(property = "index",column = "index"),
+            @Result(property = "name",column = "name"),
+            @Result(property = "tId",column = "t_id"),
+            @Result(property = "keyName",column = "key_name"),
+            @Result(property = "customName",column = "custom_name"),
             @Result(property = "keyType",column = "keyType")
     })
     List<TYaokonyunKeyCode> getIRDeviceByIndex(@Param("index")Integer index);
