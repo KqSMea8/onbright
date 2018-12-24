@@ -113,9 +113,9 @@ public class IRUploadHandler extends AliBaseHandler {
             yaokonyunKeyCode.setKeyType(Integer.valueOf(keyType));
 			yaokonyunKeyCode.setIndex(idx);
 			yaokonyunKeyCode.setLastOpTime(new Date());
-			yaokonyunKeyCode.setBrandId(Integer.valueOf(brandId));
+			yaokonyunKeyCode.setBrandId(Integer.valueOf(brandId==null?"0":brandId));
 			yaokonyunKeyCode.setRmodel("");
-			yaokonyunKeyCode.settId(Integer.valueOf(deviceType));
+			yaokonyunKeyCode.settId(Integer.valueOf(deviceType==null?"0":deviceType));
 			yaokonyunKeyCode.setName(irName);
 			yaokonyunKeyCode.setVersion(0);
 			yaokonyunKeyCode.setSrc(data);

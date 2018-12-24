@@ -614,7 +614,7 @@ public class AliDeviceController {
 			if(list.size()>0){
 				TYaokonyunKeyCode keyCode = list.get(0);
 				logger.info("======= "+keyCode.getName());
-				cmdCache.addIrTestCodeKeyName(index,keyCode.getName());
+				cmdCache.addIrDeviceTypeByIRName(index,keyCode.getName());
 			}
 			resMap.put("command","set");
 			com.alibaba.fastjson.JSONArray jsonArray = new com.alibaba.fastjson.JSONArray();
@@ -781,20 +781,6 @@ public class AliDeviceController {
             cmdCache.addIrDeviceTypeByIRName(serialId,name);
 			Integer idx = IndexUtils.getIdx();
 			cmdCache.addIrIndexBySerialId(serialId,idx.toString());
-//			TYaokonyunKeyCode yaokonyunKeyCode = new TYaokonyunKeyCode();
-//			yaokonyunKeyCode.setKeyName("");
-//			yaokonyunKeyCode.setCustomName("");
-//			yaokonyunKeyCode.setIndex(idx);
-//			yaokonyunKeyCode.setLastOpTime(new Date());
-//			yaokonyunKeyCode.setBrandId(Integer.valueOf(brandId));
-//			yaokonyunKeyCode.setRmodel("");
-//			yaokonyunKeyCode.settId(Integer.valueOf(deviceType));
-//			yaokonyunKeyCode.setName(name);
-//			yaokonyunKeyCode.setVersion(0);
-//			yaokonyunKeyCode.setSrc("");
-//			yaokonyunKeyCode.setSerialId(serialId);
-//			yaokonyunKeyCode.setKey("");
-//			yaoKongYunService.addTYaokonyunKeyCode(yaokonyunKeyCode);
             QueryRemoteBySrcDTO dto = new QueryRemoteBySrcDTO();
             dto.setName(name);
             dto.setKeys(new com.alibaba.fastjson.JSONArray());
@@ -1030,6 +1016,7 @@ public class AliDeviceController {
 				yaokonyunKeyCode.setSrc(src);
 				yaokonyunKeyCode.setSerialId(serialId);
 				yaokonyunKeyCode.setKey(key);
+				yaokonyunKeyCode.setKeyType(0);
 				yaoKongYunService.addTYaokonyunKeyCode(yaokonyunKeyCode);
 			}
 		}
