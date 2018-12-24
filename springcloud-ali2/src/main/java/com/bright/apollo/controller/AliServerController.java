@@ -1197,6 +1197,7 @@ public class AliServerController {
 			@RequestParam(value = "cmd") CMDEnum cmd, @RequestParam(value = "setBytes") byte[] setBytes){
 		ResponseObject<OboxResp> res = new ResponseObject<OboxResp>();
 		try {
+			logger.info("===cmd:"+cmd);
 			logger.info("===sendCmd:"+setBytes);
 			logger.info("===obox:"+obox.toString());
 			topicServer.request(cmd, setBytes, obox.getOboxSerialId());

@@ -705,8 +705,8 @@ public class GroupController {
 	private void addMember(List<TOboxDeviceConfig> addList, List<TOboxDeviceConfig> successList,
 			TServerGroup tServerGroup) {
 		try {
-			boolean isDone = false;
-			while (!isDone) {
+		//	boolean isDone = false;
+			//while (!isDone) {
 				for (int i = 0; i < addList.size(); i++) {
 					TOboxDeviceConfig tOboxDeviceConfig = addList.get(i);
 					if (tOboxDeviceConfig.getIsSend() == 0) {
@@ -723,9 +723,18 @@ public class GroupController {
 						}
 						byte[] groupBytes = ByteHelper.hexStringToBytes(tServerGroup.getGroupAddr());
 						System.arraycopy(groupBytes, 0, setBytes, 13, groupBytes.length);
-						TObox bestOBOXChannel = null;
-						boolean isFound = false;
-						List<TDeviceChannel> tDeviceChannels = deviceChannelService
+						//boolean isFound = false;
+						TObox bestOBOXChannel = oboxService.queryOboxsByOboxSerialId(tOboxDeviceConfig.getOboxSerialId());
+						if(bestOBOXChannel.getOboxStatus()==(byte)1){
+							cmdCache.saveGroup(
+									bestOBOXChannel.getOboxId().intValue() + ":" + tOboxDeviceConfig.getDeviceSerialId(),
+									tServerGroup.getId().intValue() + "");
+							//feignAliClient.sendCmd(bestOBOXChannel, CMDEnum.set_group, setBytes);
+							tOboxDeviceConfig.setIsSend(1);
+							//isFound = true;
+							//break;
+						}
+						/*List<TDeviceChannel> tDeviceChannels = deviceChannelService
 								.getDeivceChannelById(tOboxDeviceConfig.getId());
 						for (TDeviceChannel tDeviceChannel : tDeviceChannels) {
 							TObox obox = oboxService.queryOboxById(tDeviceChannel.getOboxId());
@@ -740,14 +749,14 @@ public class GroupController {
 								isFound = true;
 								break;
 							}
-						}
-						if (!isFound) {
+						}*/
+						/*if (!isFound) {
 							if (bestOBOXChannel == null) {
 								tOboxDeviceConfig.setIsSend(1);
 							}
-						}
+						}*/
 					}
-					if (i + 1 == addList.size()) {
+				/*	if (i + 1 == addList.size()) {
 						isDone = true;
 						for (TOboxDeviceConfig deviceConfig : addList) {
 							if (deviceConfig.getIsSend() == 0) {
@@ -758,9 +767,9 @@ public class GroupController {
 						if (isDone) {
 							break;
 						}
-					}
+					}*/
 				}
-			}
+			//}
 			Thread.sleep(350);
 			for (TOboxDeviceConfig deviceConfig : addList) {
 				TGroupDevice tGroupDevice = groupDeviceService.queryDeviceGroup(tServerGroup.getId(),
@@ -773,5 +782,12 @@ public class GroupController {
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 		}
+	}
+	public static void main(String[] args) {
+		List<String> mList=new ArrayList<String>();
+		for (int i = 0; i < 2; i++) {
+			mList.add(i+"1");
+		}
+		System.out.println(mList);
 	}
 }
