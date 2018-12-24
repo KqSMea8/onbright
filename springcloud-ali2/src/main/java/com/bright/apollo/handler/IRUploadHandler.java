@@ -104,7 +104,7 @@ public class IRUploadHandler extends AliBaseHandler {
             resMap.put("type",20);
             resMap.put("success",true);
             resMap.put("serialId",deviceSerialId);
-            resMap.put("remote",mqttJson);
+//            resMap.put("remote",mqttJson);
             TYaokonyunKeyCode yaokonyunKeyCode = yaoKongYunService.getIRDeviceByIndexAndKey(idx,key);
             if(yaokonyunKeyCode==null){
 			yaokonyunKeyCode = new TYaokonyunKeyCode();
@@ -126,6 +126,75 @@ public class IRUploadHandler extends AliBaseHandler {
             }else{
                 yaoKongYunService.updateYaoKongKeyCodeNameBySerialIdAndIndexAndKey(deviceSerialId,index,key,data);//保存src
             }
+            List<TYaokonyunKeyCode> yaokonyunKeyCodeList = yaoKongYunService.getIRDeviceByIndex(idx);
+            List<QueryRemoteBySrcDTO> dtoList = new ArrayList<QueryRemoteBySrcDTO>();
+            List<Map<String,Object>> mapList = new ArrayList<Map<String,Object>>();
+            List<Map<String,Object>> filterList = new ArrayList<Map<String,Object>>();
+            com.alibaba.fastjson.JSONArray keyArray = null;
+            Map<String,Object> map = null;
+            for(TYaokonyunKeyCode keyCode:yaokonyunKeyCodeList){
+                map = new HashMap<String, Object>();
+                keyArray = new com.alibaba.fastjson.JSONArray();
+                com.alibaba.fastjson.JSONObject jsonObject = new com.alibaba.fastjson.JSONObject();
+                com.alibaba.fastjson.JSONArray nonArr = new com.alibaba.fastjson.JSONArray();
+                String selkey = keyCode.getKey();
+                jsonObject.put("key",selkey);
+                keyArray.add(jsonObject);
+                map.put("version",keyCode.getVersion());
+                map.put("rmodel",keyCode.getRmodel());
+                map.put("name",keyCode.getName());
+                Integer selindex = keyCode.getIndex();
+                map.put("index",selindex);
+                map.put("type",keyCode.gettId());
+                map.put("brandType",keyCode.getBrandId());
+                if(keyCode.getKeyType()==0){
+                    map.put("keys",keyArray);
+                    map.put("extendsKeys",nonArr);
+                }else{
+                    map.put("keys",nonArr);
+                    map.put("extendsKeys",keyArray);
+                }
+                mapList.add(map);
+            }
+            String idxs = "";
+            if(mapList.size()>0){
+                for(Map<String,Object> dtomap :mapList){
+                    com.alibaba.fastjson.JSONArray dtoArray = (com.alibaba.fastjson.JSONArray)dtomap.get("keys");
+                    com.alibaba.fastjson.JSONArray dtoArray2 = (com.alibaba.fastjson.JSONArray)dtomap.get("extendsKeys");
+                    Integer dtoIdx = (Integer)dtomap.get("index");
+                    if(filterList.size()==0){
+                        filterList.add(dtomap);
+                        idxs += dtoIdx+",";
+                    }else{
+                        for(int i=0;i<filterList.size();i++){
+                            Map<String,Object> filterMap = filterList.get(i);
+                            com.alibaba.fastjson.JSONArray filterArray = (com.alibaba.fastjson.JSONArray)filterMap.get("keys");
+                            Integer filterIdx = (Integer) filterMap.get("index");
+                            if(filterIdx.equals(dtoIdx)&&dtoArray.size()>0
+                                    &&!filterArray.equals(dtoArray)){
+                                com.alibaba.fastjson.JSONObject dtoJson = dtoArray.getJSONObject(0);
+                                filterArray.add(dtoJson);
+                            }else if(idxs.indexOf(dtoIdx.toString())<0){
+                                filterList.add(dtomap);
+                                idxs += dtoIdx+",";
+                            }
+                            com.alibaba.fastjson.JSONArray filterArray2 = (com.alibaba.fastjson.JSONArray)filterMap.get("extendsKeys");
+                            if(filterIdx.equals(dtoIdx)&&dtoArray2.size()>0
+                                    &&!filterArray2.equals(dtoArray2)){
+                                com.alibaba.fastjson.JSONObject dtoJson = dtoArray2.getJSONObject(0);
+                                filterArray2.add(dtoJson);
+                            }else if(idxs.indexOf(dtoIdx.toString())<0){
+                                filterList.add(dtomap);
+                                idxs += dtoIdx+",";
+                            }
+                        }
+                    }
+                }
+                for(Map<String,Object> dtomap :filterList){
+                    dtoList.add(new QueryRemoteBySrcDTO(dtomap));
+                }
+            }
+            resMap.put("remote",dtoList);
             pushservice.pairIrRemotecode(resMap,userAliDevice.getUserId());
         }else if(functionId==3){//一键匹配红外上传
             resMap = getRemoteControlList(brandId,"7",data);

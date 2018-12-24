@@ -712,10 +712,6 @@ public class AliDeviceController {
 					com.alibaba.fastjson.JSONArray dtoArray = (com.alibaba.fastjson.JSONArray)dtomap.get("keys");
 					com.alibaba.fastjson.JSONArray dtoArray2 = (com.alibaba.fastjson.JSONArray)dtomap.get("extendsKeys");
 					Integer dtoIdx = (Integer)dtomap.get("index");
-					if(dtoIdx==104333126){
-						logger.info(" dtoArray ====== "+dtoArray);
-						logger.info(" dtoArray2 ====== "+dtoArray2);
-					}
 					if(filterList.size()==0){
 						filterList.add(dtomap);
 						idxs += dtoIdx+",";
