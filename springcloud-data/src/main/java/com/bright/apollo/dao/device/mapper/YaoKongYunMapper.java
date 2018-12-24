@@ -191,10 +191,11 @@ public interface YaoKongYunMapper {
     })
     TYaokonyunKeyCode getIRDeviceByIndexAndKey(@Param("index")Integer index,@Param("key")String key);
 
-    @Select("select `src`,`key`,t_id from t_yaokonyun_key_code where `index` = #{index} ")
+    @Select("select `src`,`key`,t_id,name from t_yaokonyun_key_code where `index` = #{index} ")
     @Results(value = {
             @Result(property = "src",column = "src"),
-            @Result(property = "key",column = "key")
+            @Result(property = "key",column = "key"),
+            @Result(property = "name",column = "name")
     })
     List<TYaokonyunKeyCode> getYaoKongKeyCodeBySerialIdAndIndex(@Param("index")Integer index,@Param("serialId")String serialId);
 
