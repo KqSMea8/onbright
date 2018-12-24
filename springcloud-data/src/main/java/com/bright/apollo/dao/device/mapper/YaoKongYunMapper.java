@@ -161,10 +161,8 @@ public interface YaoKongYunMapper {
     TYaokonyunKeyCode getYaoKongKeyCodeByKeyAndSerialIdAndIndex(@Param("index")Integer index,@Param("serialId")String serialId,@Param("key")String key);
 
 
-    @Update(" update t_yaokonyun_key_code set src = #{codeSrc},`key` = #{key} where serialId = #{serialId} and `index` = #{index} ")
-    void updateYaoKongKeyCodeNameBySerialIdAndIndexAndKey(@Param("serialId")String serialId,@Param("index")Integer index,@Param("key")String key,@Param("codeSrc")String codeSrc);
-
-
+    @Update(" update t_yaokonyun_key_code set src = #{codeSrc},`key` = #{key} where serialId = #{serialId} and `index` = #{index} and `key` = #{key} and keyType = #{keyType}")
+    void updateYaoKongKeyCodeNameBySerialIdAndIndexAndKey(@Param("serialId")String serialId,@Param("index")Integer index,@Param("key")String key,@Param("codeSrc")String codeSrc,@Param("keyType")Integer keyType);
 
     @Select(" SELECT t_id,tyb.name,tykc.`index` FROM onbright_ali_new.t_user_ali_device tuad " +
             " inner join t_yaokonyun_key_code tykc on tuad.device_serial_id=tykc.serialId " +

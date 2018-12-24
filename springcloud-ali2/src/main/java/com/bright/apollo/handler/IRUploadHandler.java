@@ -124,7 +124,7 @@ public class IRUploadHandler extends AliBaseHandler {
 			yaokonyunKeyCode.setKeyType(kt);
 			yaoKongYunService.addTYaokonyunKeyCode(yaokonyunKeyCode);
             }else{
-                yaoKongYunService.updateYaoKongKeyCodeNameBySerialIdAndIndexAndKey(deviceSerialId,index,key,data);//保存src
+                yaoKongYunService.updateYaoKongKeyCodeNameBySerialIdAndIndexAndKey(deviceSerialId,index,key,data,kt);//保存src
             }
             List<TYaokonyunKeyCode> yaokonyunKeyCodeList = yaoKongYunService.getIRDeviceByIndex(idx);
             List<QueryRemoteBySrcDTO> dtoList = new ArrayList<QueryRemoteBySrcDTO>();

@@ -50,7 +50,7 @@ public interface YaoKongYunService {
 
     TYaokonyunKeyCode getYaoKongKeyCodeByKeyAndSerialIdAndIndex(Integer index,String serialId,String key);
 
-    void updateYaoKongKeyCodeNameBySerialIdAndIndexAndKey(String serialId,String index,String key,String codeSrc);
+    void updateYaoKongKeyCodeNameBySerialIdAndIndexAndKey(String serialId,String index,String key,String codeSrc,Integer keyType);
 
     List<Map<String,Object>> getUserIRDevice(Integer userId);
 

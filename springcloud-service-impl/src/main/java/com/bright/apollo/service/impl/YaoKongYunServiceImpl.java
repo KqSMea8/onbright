@@ -122,8 +122,8 @@ public class YaoKongYunServiceImpl implements YaoKongYunService {
     }
 
     @Override
-    public void updateYaoKongKeyCodeNameBySerialIdAndIndexAndKey(String serialId, String index, String key, String codeSrc) {
-        yaoKongYunMapper.updateYaoKongKeyCodeNameBySerialIdAndIndexAndKey(serialId,Integer.valueOf(index),key,codeSrc);
+    public void updateYaoKongKeyCodeNameBySerialIdAndIndexAndKey(String serialId, String index, String key, String codeSrc,Integer keyType) {
+        yaoKongYunMapper.updateYaoKongKeyCodeNameBySerialIdAndIndexAndKey(serialId,Integer.valueOf(index),key,codeSrc,keyType);
     }
 
     @Override
