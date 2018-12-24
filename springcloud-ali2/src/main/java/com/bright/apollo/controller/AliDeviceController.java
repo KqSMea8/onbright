@@ -712,6 +712,10 @@ public class AliDeviceController {
 					com.alibaba.fastjson.JSONArray dtoArray = (com.alibaba.fastjson.JSONArray)dtomap.get("keys");
 					com.alibaba.fastjson.JSONArray dtoArray2 = (com.alibaba.fastjson.JSONArray)dtomap.get("extendsKeys");
 					Integer dtoIdx = (Integer)dtomap.get("index");
+					if(dtoIdx==104333126){
+						logger.info(" dtoArray ====== "+dtoArray);
+						logger.info(" dtoArray2 ====== "+dtoArray2);
+					}
 					if(filterList.size()==0){
 						filterList.add(dtomap);
 						idxs += dtoIdx+",";
@@ -720,7 +724,7 @@ public class AliDeviceController {
 							Map<String,Object> filterMap = filterList.get(i);
 							com.alibaba.fastjson.JSONArray filterArray = (com.alibaba.fastjson.JSONArray)filterMap.get("keys");
 							Integer filterIdx = (Integer) filterMap.get("index");
-							if(filterIdx.equals(dtoIdx)
+							if(filterIdx.equals(dtoIdx)&&dtoArray.size()>0
 									&&!filterArray.equals(dtoArray)){
 								com.alibaba.fastjson.JSONObject dtoJson = dtoArray.getJSONObject(0);
 								filterArray.add(dtoJson);
@@ -729,7 +733,7 @@ public class AliDeviceController {
 								idxs += dtoIdx+",";
 							}
 							com.alibaba.fastjson.JSONArray filterArray2 = (com.alibaba.fastjson.JSONArray)filterMap.get("extendsKeys");
-							if(filterIdx.equals(dtoIdx)
+							if(filterIdx.equals(dtoIdx)&&dtoArray2.size()>0
 									&&!filterArray2.equals(dtoArray2)){
 								com.alibaba.fastjson.JSONObject dtoJson = dtoArray2.getJSONObject(0);
 								filterArray2.add(dtoJson);
