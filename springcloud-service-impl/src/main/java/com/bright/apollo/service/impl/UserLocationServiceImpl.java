@@ -42,5 +42,13 @@ public class UserLocationServiceImpl implements UserLocationService{
 	public List<TUserLocation> queryUserLocationByUser(Integer userId) {  
 		return mapper.queryUserLocationByUser(userId);
 	}
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.UserLocationService#queryUserLocationByUserIdAndLocation(java.lang.Integer, java.lang.Integer)  
+	 */
+	@Override
+	public TUserLocation queryUserLocationByUserIdAndLocation(Integer userId, Integer location) {
+		 
+		return mapper.queryUserLocationByUserIdAndLocation(userId,location);
+	}
 
 }

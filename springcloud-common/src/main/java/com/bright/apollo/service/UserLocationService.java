@@ -32,4 +32,12 @@ public interface UserLocationService {
 	 */
 	List<TUserLocation> queryUserLocationByUser(Integer userId);
 
+	/**  
+	 * @param userId
+	 * @param location
+	 * @return  
+	 * @Description:  
+	 */
+	TUserLocation queryUserLocationByUserIdAndLocation(Integer userId, Integer location);
+
 }

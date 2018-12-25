@@ -1,8 +1,6 @@
 package com.bright.apollo.controller;
 
-
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -13,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,7 +27,6 @@ import com.bright.apollo.feign.FeignOboxClient;
 import com.bright.apollo.feign.FeignQuartzClient;
 import com.bright.apollo.feign.FeignSceneClient;
 import com.bright.apollo.feign.FeignUserClient;
-import com.bright.apollo.response.DeviceDTO;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
 
@@ -61,6 +59,7 @@ public class HotelController {
 	private FeignSceneClient feignSceneClient;
 	@Autowired
 	private FeignOboxClient feignOboxClient;
+
 	// check in
 	@SuppressWarnings({ "rawtypes" })
 	@ApiOperation(value = "checkIn", httpMethod = "POST", produces = "application/json")
@@ -260,13 +259,14 @@ public class HotelController {
 				return res;
 			}
 			// 判断 serialId是否合法
-			ResponseObject<TOboxDeviceConfig> deviceRes = feignDeviceClient.queryLocationDeviceBySerialIdAndUserName(serialId, principal.getUsername());
-			if(deviceRes==null||deviceRes.getData()==null){
+			ResponseObject<TOboxDeviceConfig> deviceRes = feignDeviceClient
+					.queryLocationDeviceBySerialIdAndUserName(serialId, principal.getUsername());
+			if (deviceRes == null || deviceRes.getData() == null) {
 				return deviceRes;
 			}
 			TOboxDeviceConfig tOboxDeviceConfig = deviceRes.getData();
-			feignAliClient.setDeviceStatus(tOboxDeviceConfig.getOboxSerialId(),
-					status, tOboxDeviceConfig.getDeviceRfAddr());
+			feignAliClient.setDeviceStatus(tOboxDeviceConfig.getOboxSerialId(), status,
+					tOboxDeviceConfig.getDeviceRfAddr());
 			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
 			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
 		} catch (Exception e) {
@@ -298,8 +298,9 @@ public class HotelController {
 				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
 				return res;
 			}
-			ResponseObject<TScene> sceneRes= feignDeviceClient.queryLocationSceneBySceneNumberAndUserName(sceneNumber,principal.getUsername());
-			if(sceneRes==null||sceneRes.getData()==null){
+			ResponseObject<TScene> sceneRes = feignDeviceClient.queryLocationSceneBySceneNumberAndUserName(sceneNumber,
+					principal.getUsername());
+			if (sceneRes == null || sceneRes.getData() == null) {
 				res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
 				res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
 				return res;
@@ -310,13 +311,13 @@ public class HotelController {
 				scene.setAlterNeed((byte) 1);
 				feignSceneClient.updateScene(scene);
 				feignAliClient.addSceneAction(sceneNumber);
-			}else{
+			} else {
 				ResponseObject<TObox> oboxRes = feignOboxClient.getObox(scene.getOboxSerialId());
 				if (oboxRes != null && oboxRes.getData() != null
 						&& oboxRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()) {
 					feignAliClient.excuteLocalScene(scene.getOboxSceneNumber(), scene.getSceneName(),
 							oboxRes.getData().getOboxSerialId());
-				}else{
+				} else {
 					res.setStatus(ResponseEnum.SendOboxFail.getStatus());
 					res.setMessage(ResponseEnum.SendOboxFail.getMsg());
 					return res;
@@ -324,6 +325,78 @@ public class HotelController {
 			}
 			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
 			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setStatus(ResponseEnum.RequestTimeout.getStatus());
+			res.setMessage(ResponseEnum.RequestTimeout.getMsg());
+		}
+		return res;
+	}
+
+	@ApiOperation(value = "createLocation,map key is building,room,layer,type."
+			+ "Except room is required.the respone map key is location,type,room,building,layer.", httpMethod = "POST", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/createHotelLocation", method = RequestMethod.POST)
+	public ResponseObject<Map<String, Object>> createHotelLocation(
+			@RequestBody(required = true) Map<String, String> map) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+			String room = map.get("room");
+			if (StringUtils.isEmpty(room)) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			return feignDeviceClient.createHotelLocation(resUser.getData().getId(), map);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res.setStatus(ResponseEnum.RequestTimeout.getStatus());
+			res.setMessage(ResponseEnum.RequestTimeout.getMsg());
+		}
+		return res;
+	}
+	@SuppressWarnings("rawtypes")
+	@ApiOperation(value = "createLocation,map key is building,room,layer,type."
+			+ "Except room is required.", httpMethod = "PUT", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/updateHotelLocation/{location}", method = RequestMethod.PUT)
+	public ResponseObject updateHotelLocation(@PathVariable(value = "location", required = true) Integer location,
+			@RequestBody(required = true) Map<String, String> map) {
+		ResponseObject res = new ResponseObject();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+			String room = map.get("room");
+			if (StringUtils.isEmpty(room)) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			return feignDeviceClient.updateHotelLocation(resUser.getData().getId(),location, map);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			res.setStatus(ResponseEnum.RequestTimeout.getStatus());

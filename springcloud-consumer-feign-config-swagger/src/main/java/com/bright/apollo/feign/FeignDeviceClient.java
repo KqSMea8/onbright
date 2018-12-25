@@ -27,7 +27,6 @@ import com.bright.apollo.common.entity.TYSCamera;
 import com.bright.apollo.hrstrix.HystrixFeignDeviceFallback;
 import com.bright.apollo.request.IntelligentFingerWarnDTO;
 import com.bright.apollo.request.IntelligentOpenRecordDTO;
-import com.bright.apollo.response.DeviceDTO;
 import com.bright.apollo.response.ResponseObject;
 
 /**
@@ -774,7 +773,8 @@ public interface FeignDeviceClient {
 	 * @Description:
 	 */
 	@RequestMapping(value = "/location/queryDeviceByadmin/{userId}", method = RequestMethod.GET)
-	ResponseObject<Map<String, Object>> queryDeviceByadmin(@PathVariable(value = "userId", required = true) Integer userId);
+	ResponseObject<Map<String, Object>> queryDeviceByadmin(
+			@PathVariable(value = "userId", required = true) Integer userId);
 
 	/**
 	 * @param id
@@ -806,5 +806,27 @@ public interface FeignDeviceClient {
 	ResponseObject<TScene> queryLocationSceneBySceneNumberAndUserName(
 			@PathVariable(value = "sceneNumber", required = true) Integer sceneNumber,
 			@PathVariable(value = "userName", required = true) String userName);
+
+	/**
+	 * @param userId
+	 * @param map
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/location/createHotelLocation/{userId}", method = RequestMethod.POST)
+	ResponseObject<Map<String, Object>> createHotelLocation(@PathVariable(value = "userId", required = true) Integer userId,
+			@RequestBody(required = true) Map<String, String> map);
+
+	/**  
+	 * @param userId
+	 * @param map
+	 * @return  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/location/updateHotelLocation/{userId}/{location}", method = RequestMethod.PUT)
+	ResponseObject updateHotelLocation(@PathVariable(value = "userId", required = true) Integer userId,
+			@PathVariable(value = "location", required = true) Integer location,
+			@RequestBody(required = true) Map<String, String> map);
 
 }

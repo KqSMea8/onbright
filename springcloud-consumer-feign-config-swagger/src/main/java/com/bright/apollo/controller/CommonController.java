@@ -583,16 +583,6 @@ public class CommonController {
 			if (!StringUtils.isEmpty(operateType)) {
 				OperateTypeEnum operation = OperateTypeEnum.getEnum(operateType);
 				if (!operation.equals(OperateTypeEnum.set)) {
-					/*
-					 * if (StringUtils.isEmpty(groupId)) { if
-					 * (StringUtils.isEmpty(oboxSerialId)||
-					 * StringUtils.isEmpty(groupAddr)) { res = new
-					 * ResponseObject();
-					 * res.setStatus(ResponseEnum.RequestParamError.getStatus())
-					 * ;
-					 * res.setMessage(ResponseEnum.RequestParamError.getMsg());
-					 * return res; } }
-					 */
 					if (operateType.equals(OperateTypeEnum.delete.getValue())) {
 						if (!StringUtils.isEmpty(groupId) && NumberHelper.isNumeric(groupId)) {
 							return facadeController.deleteServerGroup(Integer.parseInt(groupId));

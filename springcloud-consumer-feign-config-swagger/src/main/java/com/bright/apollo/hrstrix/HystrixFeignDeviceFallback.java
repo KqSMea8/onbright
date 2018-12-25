@@ -24,7 +24,6 @@ import com.bright.apollo.common.entity.TYSCamera;
 import com.bright.apollo.feign.FeignDeviceClient;
 import com.bright.apollo.request.IntelligentFingerWarnDTO;
 import com.bright.apollo.request.IntelligentOpenRecordDTO;
-import com.bright.apollo.response.DeviceDTO;
 import com.bright.apollo.response.ResponseObject;
 
 /**
@@ -868,6 +867,25 @@ public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implem
 	@SuppressWarnings("unchecked")
 	@Override
 	public ResponseObject<TScene> queryLocationSceneBySceneNumberAndUserName(Integer sceneNumber, String userName) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#createHotelLocation(java.lang.Integer, java.util.Map)  
+	 */
+	@Override
+	public ResponseObject<Map<String, Object>> createHotelLocation(Integer userId, Map<String, String> map) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#updateHotelLocation(java.lang.Integer, java.util.Map)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject updateHotelLocation(Integer userId,Integer location, Map<String, String> map) {
 		logger.warn("===device server is break===");
 		return serverError();
 	}
