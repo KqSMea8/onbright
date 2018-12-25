@@ -206,10 +206,12 @@ public class IRUploadHandler extends AliBaseHandler {
             resMap.put("success",true);
             resMap.put("serialId",deviceSerialId);
             pushservice.pairIrRemotecode(resMap,userSet);
-        }else if(functionId==6){//本地遥控方案——下载方案
+        }else if(functionId==6){//新增、删除本地码库
             Integer downloadIndex = (Integer) resJson.get("index");
-            if(!data.equals("0")){
+            if(data.equals("1")){//新增后返回1，进入下载码库
+                logger.info(" ====== 创建本地码库后，进入下载码库 ====== ");
                 List<TYaokonyunKeyCode> yaokonyunKeyCodeList = cmdCache.getIRDeviceInfoList("ir_keCodeList_"+downloadIndex);
+                cmdCache.addIrDownloadCount(downloadIndex,yaokonyunKeyCodeList.size());
                 for(int i=0;i<yaokonyunKeyCodeList.size();i++){
                     TYaokonyunKeyCode yaokonyunKeyCode = yaokonyunKeyCodeList.get(i);
                     Map<String, Object> requestMap = new HashMap<String, Object>();
@@ -248,15 +250,26 @@ public class IRUploadHandler extends AliBaseHandler {
                     requestMap.put("value",jsonArray);
                     topicServer.pubIrRPC(requestMap,deviceSerialId);
                 }
+            }else {
+
             }
         }else if(functionId==7){
-            Integer localaddr = (Integer) resJson.get("localaddr");//转发器内方案存储索引
-            resMap.put("type",22);
-            resMap.put("success",true);
-            resMap.put("serialId",deviceSerialId);
-            resMap.put("index",Integer.valueOf(index));
-            resMap.put("localaddr",localaddr);
-            pushservice.pairIrRemotecode(resMap,userSet);
+            Integer downIdx = Integer.valueOf(index);
+            logger.info("====== 红外转发器下载码库返回 ====== ");
+            String total = cmdCache.getIrTestCodeAppKeyBrandIdDeviceType("irCountTotal_"+downIdx);
+            logger.info("====== 码库总数 ====== "+total);
+            Integer count = Integer.valueOf(total)-1;
+            cmdCache.addIrDownloadCount(downIdx,count);
+            if(count==0){
+                Integer localaddr = (Integer) resJson.get("localaddr");//转发器内方案存储索引
+                resMap.put("type",22);
+                resMap.put("success",true);
+                resMap.put("serialId",deviceSerialId);
+                resMap.put("index",downIdx);
+                resMap.put("localaddr",localaddr);
+                pushservice.pairIrRemotecode(resMap,userSet);
+            }
+
         }
     }
 

@@ -101,6 +101,10 @@ public class CmdCache {
 		redisBussines.setValueWithExpire("irRemote_"+serialId, name, medium_time);
 	}
 
+	public void addIrDownloadCount(Integer index,Integer total) {
+		redisBussines.setValueWithExpire("irCountTotal_"+index, total, medium_time);
+	}
+
 	/**
 	 * @param key
 	 * @return  
