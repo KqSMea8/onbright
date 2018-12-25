@@ -81,7 +81,11 @@ public class IRUploadHandler extends AliBaseHandler {
         logger.info("irName ====== "+irName);
         logger.info("keyType ====== "+keyType);
         com.alibaba.fastjson.JSONObject resMap = new com.alibaba.fastjson.JSONObject();
-        TUserAliDevice userAliDevice = userAliDevService.queryAliDeviceBySerialiId(deviceSerialId);
+        List<TUserAliDevice> userAliDevice = userAliDevService.queryAliUserId(deviceSerialId);
+        Set<TUserAliDevice> userSet = new HashSet<TUserAliDevice>();
+        for(TUserAliDevice user : userAliDevice){
+            userSet.add(user);
+        }
         if(functionId==2){//学习红外上传
             com.alibaba.fastjson.JSONObject mqttJson = new com.alibaba.fastjson.JSONObject();
 //            com.alibaba.fastjson.JSONObject keyJson = new com.alibaba.fastjson.JSONObject();
@@ -195,13 +199,13 @@ public class IRUploadHandler extends AliBaseHandler {
                 }
             }
             resMap.put("remote",dtoList.get(0));
-            pushservice.pairIrRemotecode(resMap,userAliDevice.getUserId());
+            pushservice.pairIrRemotecode(resMap,userSet);
         }else if(functionId==3){//一键匹配红外上传
             resMap = getRemoteControlList(brandId,"7",data);
             resMap.put("type",21);
             resMap.put("success",true);
             resMap.put("serialId",deviceSerialId);
-            pushservice.pairIrRemotecode(resMap,userAliDevice.getUserId());
+            pushservice.pairIrRemotecode(resMap,userSet);
         }else if(functionId==6){//本地遥控方案——下载方案
             Integer downloadIndex = (Integer) resJson.get("index");
             if(!data.equals("0")){
@@ -252,7 +256,7 @@ public class IRUploadHandler extends AliBaseHandler {
             resMap.put("serialId",deviceSerialId);
             resMap.put("index",Integer.valueOf(index));
             resMap.put("localaddr",localaddr);
-            pushservice.pairIrRemotecode(resMap,userAliDevice.getUserId());
+            pushservice.pairIrRemotecode(resMap,userSet);
         }
     }
 
