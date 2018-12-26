@@ -34,7 +34,7 @@ public class GroupCMDHandler extends BasicHandler {
 	@Override
 	public Message<String> process(ClientSession clientSession, Message<String> msg) throws Exception {
 		// 014794000000000800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-		logger.info("=======GroupCMDHandler=======msg:" + msg.toString());
+		//logger.info("=======GroupCMDHandler=======msg:" + msg.toString());
 		String data = msg.getData();
 		String isSuccess = data.substring(0, 2);
 		if ("01".equals(isSuccess)) {
