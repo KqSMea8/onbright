@@ -378,4 +378,12 @@ public interface FeignUserClient {
 	@SuppressWarnings("rawtypes")
 	public ResponseObject deleteUserSceneByOboxSerialId( 
 			@PathVariable(required = true, value = "oboxSerialId")String oboxSerialId);
+
+	/**  
+	 * @param mobile  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/user/addUser/{mobile}", method = RequestMethod.POST)
+	public ResponseObject addUser(@PathVariable(required = true, value = "mobile")String mobile);
 }

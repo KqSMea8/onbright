@@ -20,6 +20,7 @@ import com.bright.apollo.common.entity.TIntelligentFingerUser;
 import com.bright.apollo.common.entity.TLocation;
 import com.bright.apollo.common.entity.TNvr;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
+import com.bright.apollo.common.entity.TScene;
 import com.bright.apollo.common.entity.TServerGroup;
 import com.bright.apollo.common.entity.TUserLocation;
 import com.bright.apollo.common.entity.TYSCamera;
@@ -594,9 +595,10 @@ public interface FeignDeviceClient {
 	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
-	@RequestMapping(value = "/location/deleteDeviceLocation/{userId}/{serialId}/{location}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/location/deleteDeviceLocation/{userId}/{serialId}/{location}/{deviceType}", method = RequestMethod.DELETE)
 	ResponseObject deleteDeviceLocation(@PathVariable(value = "userId") Integer userId,
-			@PathVariable(value = "serialId") String serialId, @PathVariable(value = "location") Integer location);
+			@PathVariable(value = "serialId") String serialId, @PathVariable(value = "location") Integer location,
+			@PathVariable(value = "deviceType") String deviceType);
 
 	/**
 	 * @param userId
@@ -696,29 +698,135 @@ public interface FeignDeviceClient {
 	ResponseObject setRemoteLedName(@PathVariable(value = "serialId", required = true) String serialId,
 			@RequestParam(value = "names", required = true) String names);
 
-	/**  
+	/**
 	 * @param serialId
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/remoteLed/queryRemoteLedName/{serialId}", method = RequestMethod.POST)
+	ResponseObject<Map<String, Object>> queryRemoteLedName(
+			@PathVariable(value = "serialId", required = true) String serialId);
+
+	/**
+	 * @param oboxSerialId
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/remoteLed/addRemoteLed/{oboxSerialId}", method = RequestMethod.POST)
+	ResponseObject addRemoteLed(@PathVariable(value = "oboxSerialId", required = true) String oboxSerialId);
+
+	/**
+	 * @param oboxSerialId
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/remoteLed/delRemoteLed/{oboxSerialId}", method = RequestMethod.DELETE)
+	ResponseObject delRemoteLed(@PathVariable(value = "oboxSerialId", required = true) String oboxSerialId);
+
+	/**
+	 * @param oboxSerialId
+	 * @param status
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/remoteLed/controlRemoteLed/{oboxSerialId}/{status}", method = RequestMethod.PUT)
+	ResponseObject controlRemoteLed(@PathVariable(value = "oboxSerialId", required = true) String oboxSerialId,
+			@PathVariable(value = "status", required = true) String status);
+
+	/**
+	 * @param id
+	 * @param locationId
+	 * @return
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/location/checkOut/{userId}/{location}", method = RequestMethod.PUT)
+	ResponseObject checkOut(@PathVariable(value = "userId", required = true) Integer userId,
+			@PathVariable(value = "location", required = true) Integer location);
+
+	/**
+	 * @param id
+	 * @param locationId
+	 * @param mobile
+	 * @return
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/location/checkIn/{userId}/{location}/{mobile}", method = RequestMethod.PUT)
+	ResponseObject checkIn(@PathVariable(value = "userId", required = true) Integer userId,
+			@PathVariable(value = "location", required = true) Integer location,
+			@PathVariable(value = "mobile", required = true) String mobile);
+
+	/**
+	 * @param id
+	 * @param locationId
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/location/continueLocation/{userId}/{location}", method = RequestMethod.GET)
+	ResponseObject<TLocation> continueLocation(@PathVariable(value = "userId", required = true) Integer userId,
+			@PathVariable(value = "location", required = true) Integer location);
+
+	/**
+	 * @param id
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/location/queryDeviceByadmin/{userId}", method = RequestMethod.GET)
+	ResponseObject<Map<String, Object>> queryDeviceByadmin(
+			@PathVariable(value = "userId", required = true) Integer userId);
+
+	/**
+	 * @param id
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/location/queryDeviceByGust/{userName}", method = RequestMethod.GET)
+	ResponseObject<Map<String, Object>> queryDeviceByGust(
+			@PathVariable(value = "userName", required = true) String userName);
+
+	/**
+	 * @param serialId
+	 * @param userName
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/location/queryLocationDeviceBySerialIdAndUserName/{serialId}/{userName}", method = RequestMethod.GET)
+	ResponseObject<TOboxDeviceConfig> queryLocationDeviceBySerialIdAndUserName(
+			@PathVariable(value = "serialId", required = true) String serialId,
+			@PathVariable(value = "userName", required = true) String userName);
+
+	/**
+	 * @param sceneNumber
+	 * @param userName
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/location/queryLocationSceneBySceneNumberAndUserName/{sceneNumber}/{userName}", method = RequestMethod.GET)
+	ResponseObject<TScene> queryLocationSceneBySceneNumberAndUserName(
+			@PathVariable(value = "sceneNumber", required = true) Integer sceneNumber,
+			@PathVariable(value = "userName", required = true) String userName);
+
+	/**
+	 * @param userId
+	 * @param map
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/location/createHotelLocation/{userId}", method = RequestMethod.POST)
+	ResponseObject<Map<String, Object>> createHotelLocation(@PathVariable(value = "userId", required = true) Integer userId,
+			@RequestBody(required = true) Map<String, String> map);
+
+	/**  
+	 * @param userId
+	 * @param map
 	 * @return  
 	 * @Description:  
 	 */
-	@RequestMapping(value = "/remoteLed/queryRemoteLedName/{serialId}", method = RequestMethod.POST)
-	ResponseObject<Map<String, Object>> queryRemoteLedName(@PathVariable(value = "serialId", required = true) String serialId);
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/location/updateHotelLocation/{userId}/{location}", method = RequestMethod.PUT)
+	ResponseObject updateHotelLocation(@PathVariable(value = "userId", required = true) Integer userId,
+			@PathVariable(value = "location", required = true) Integer location,
+			@RequestBody(required = true) Map<String, String> map);
 
-	/*	*//**
-			 * @param id
-			 * @param building
-			 * @param room
-			 * @return
-			 * @Description:
-			 *//*
-			 * @RequestMapping(value =
-			 * "/location/createLocationWithOutDevice/{userId}/{building}/{room}",
-			 * method = RequestMethod.POST) ResponseObject<Map<String, Object>>
-			 * createLocationWithOutDevice(@PathVariable(value = "userId")
-			 * Integer userId,
-			 * 
-			 * @PathVariable(value = "building") String
-			 * building, @PathVariable(value = "room") String room);
-			 * 
-			 */
 }

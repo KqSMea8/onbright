@@ -33,6 +33,18 @@ public class LocationProvider {
 				if (!StringUtils.isEmpty(tLocation.getThumUrl())) {
 					VALUES("thum_url", "#{thumUrl}");
 				}
+				if (!StringUtils.isEmpty(tLocation.getStatus())) {
+					VALUES("status", "#{status}");
+				}
+				if (tLocation.getUserName()!=null) {
+					VALUES("user_name", "#{userName}");
+				}
+				if (tLocation.getType()!=null) {
+					VALUES("type", "#{type}");
+				}
+				if (tLocation.getLayer()!=null) {
+					VALUES("layer", "#{layer}");
+				}
 			}
 		}.toString();
 	}
@@ -46,6 +58,24 @@ public class LocationProvider {
 					}
 					if (!StringUtils.isEmpty(tLocation.getRoom())) {
 						SET("room=#{room}");
+					}
+					if (!StringUtils.isEmpty(tLocation.getThumUrl())) {
+						SET("thum_url=#{thumUrl}");
+					}
+					if (!StringUtils.isEmpty(tLocation.getDownloadUrl())) {
+						SET("download_url=#{downloadUrl}");
+					}
+					if (!StringUtils.isEmpty(tLocation.getStatus())) {
+						SET("status=#{status}");
+					}
+					if (tLocation.getUserName()!=null) {
+						SET("user_name=#{userName}");
+					}
+					if (tLocation.getLayer()!=null) {
+						SET("layer=#{layer}");
+					}
+					if (tLocation.getType()!=null) {
+						SET("type=#{type}");
 					}
 					WHERE("id=#{id}");
 				}

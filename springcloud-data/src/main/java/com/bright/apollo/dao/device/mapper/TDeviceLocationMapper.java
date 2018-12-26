@@ -88,4 +88,51 @@ public interface TDeviceLocationMapper {
 	@UpdateProvider(type = DeviceLocationProvider.class, method = "updateDeviceLocation")
 	void updateDeviceLocation(TDeviceLocation tDeviceLocation);
 
+	/**  
+	 * @param userId
+	 * @return  
+	 * @Description:  
+	 */
+	@Select("SELECT * from t_device_location a where exists"
+			+ "(select location_id as location from t_user_location b "
+			+ "where b.user_id=#{userId} and a.location=b.location_id )")
+	@Results(value = { @Result(property = "id", column = "id"), @Result(property = "location", column = "location"),
+			@Result(property = "xAxis", column = "x_axis"), @Result(property = "yAxis", column = "y_axis"),
+			@Result(property = "serialId", column = "serialId"),
+			@Result(property = "deviceType", column = "device_type"),
+			@Result(property = "lastOpTime", column = "last_op_time") })
+	List<TDeviceLocation> queryDevicesByUserId(@Param("userId")Integer userId);
+
+	/**  
+	 * @param userName
+	 * @return  
+	 * @Description:  
+	 */
+	@Select("SELECT * from t_device_location a where exists"
+			+ "(select id as location from t_location b "
+			+ "where b.user_name=#{userName} and a.location=b.id )")
+	@Results(value = { @Result(property = "id", column = "id"), @Result(property = "location", column = "location"),
+			@Result(property = "xAxis", column = "x_axis"), @Result(property = "yAxis", column = "y_axis"),
+			@Result(property = "serialId", column = "serialId"),
+			@Result(property = "deviceType", column = "device_type"),
+			@Result(property = "lastOpTime", column = "last_op_time") })
+	List<TDeviceLocation> queryDevicesByUserName(@Param("userName")String userName);
+
+	/**  
+	 * @param serialId
+	 * @param userName
+	 * @return  
+	 * @Description:  
+	 */
+	@Select("SELECT * from t_device_location a where exists"
+			+ "(select id as location from t_location b "
+			+ "where b.user_name=#{userName} and a.location=b.id ) and "
+			+ "a.serialId=#{serialId}")
+	@Results(value = { @Result(property = "id", column = "id"), @Result(property = "location", column = "location"),
+			@Result(property = "xAxis", column = "x_axis"), @Result(property = "yAxis", column = "y_axis"),
+			@Result(property = "serialId", column = "serialId"),
+			@Result(property = "deviceType", column = "device_type"),
+			@Result(property = "lastOpTime", column = "last_op_time") })
+	TDeviceLocation queryLocationDeviceBySerialIdAndUserName(@Param("serialId")String serialId, @Param("userName")String userName);
+
 }

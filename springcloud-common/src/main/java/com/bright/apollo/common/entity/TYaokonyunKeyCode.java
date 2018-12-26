@@ -1,8 +1,9 @@
 package com.bright.apollo.common.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class TYaokonyunKeyCode {
+public class TYaokonyunKeyCode implements Serializable {
 
     private Integer id;//remark:obox name;length:128; not null,default:null
 
@@ -37,6 +38,16 @@ public class TYaokonyunKeyCode {
     private String rmodel;
 
     private Integer version;
+
+    private Integer keyType;
+
+    public Integer getKeyType() {
+        return keyType;
+    }
+
+    public void setKeyType(Integer keyType) {
+        this.keyType = keyType;
+    }
 
     public Integer getBrandId() {
         return brandId;

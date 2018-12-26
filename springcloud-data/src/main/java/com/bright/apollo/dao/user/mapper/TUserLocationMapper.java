@@ -57,4 +57,18 @@ public interface TUserLocationMapper {
     })
 	List<TUserLocation> queryUserLocationByUser(@Param("userId")Integer userId);
 
+	/**  
+	 * @param userId
+	 * @param location
+	 * @return  
+	 * @Description:  
+	 */
+	@Select("select * from t_user_location where user_id=#{userId} and location_id=#{location}")
+	@Results(value = {
+            @Result(property = "userId",column = "user_id"),
+            @Result(property = "locationId",column = "location_id"),
+            @Result(property = "lastOpTime",column = "last_op_time")
+    })
+	TUserLocation queryUserLocationByUserIdAndLocation(@Param("userId")Integer userId, @Param("location")Integer location);
+
 }

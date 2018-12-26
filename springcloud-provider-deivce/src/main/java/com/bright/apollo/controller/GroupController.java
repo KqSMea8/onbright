@@ -26,6 +26,7 @@ import com.bright.apollo.enums.CMDEnum;
 import com.bright.apollo.enums.DeviceTypeEnum;
 import com.bright.apollo.feign.FeignAliClient;
 import com.bright.apollo.pool.GroupActionPool;
+import com.bright.apollo.request.CmdInfo;
 import com.bright.apollo.request.GroupDTO;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
@@ -251,6 +252,7 @@ public class GroupController {
 						GroupDTO groupDTO4 = new GroupDTO(serverGroup);
 						groupDTO4.setGroupMember(replyList);
 						map.put("groups", groupDTO4);
+						res.setData(map);
 						res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
 						res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
 					} else {
@@ -270,6 +272,7 @@ public class GroupController {
 					GroupDTO groupDTO6 = new GroupDTO(serverGroup);
 					groupDTO6.setGroupMember(replyList);
 					map.put("groups", groupDTO6);
+					res.setData(map);
 					res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
 					res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
 					// rightReply.add("groups", g2.toJsonTree(groupDTO6));
@@ -471,6 +474,7 @@ public class GroupController {
 				GroupDTO groupDTO10 = new GroupDTO(tServerGroup);
 				groupDTO10.setGroupMember(replyList);
 				map.put("groups", groupDTO10);
+				res.setData(map);
 				res.setStatus(ResponseEnum.AddSuccess.getStatus());
 				res.setMessage(ResponseEnum.AddSuccess.getMsg());
 			}
@@ -505,6 +509,7 @@ public class GroupController {
 				GroupDTO groupDTO11 = new GroupDTO(tServerGroup);
 				groupDTO11.setGroupMember(replyList);
 				map.put("groups", groupDTO11);
+				res.setData(map);
 				res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
 				res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
 			}
@@ -613,8 +618,8 @@ public class GroupController {
 	private void deleteMember(List<TOboxDeviceConfig> deleteList, List<TOboxDeviceConfig> successList,
 			TServerGroup tServerGroup) {
 		try {
-			boolean isDone = false;
-			while (!isDone) {
+			//boolean isDone = false;
+			//while (!isDone) {
 				for (int i = 0; i < deleteList.size(); i++) {
 					TOboxDeviceConfig tOboxDeviceConfig = deleteList.get(i);
 					if (tOboxDeviceConfig.getIsSend() == 0) {
@@ -630,41 +635,36 @@ public class GroupController {
 
 						byte[] groupBytes = ByteHelper.hexStringToBytes(tServerGroup.getGroupAddr());
 						System.arraycopy(groupBytes, 0, setBytes, 13, groupBytes.length);
-						TObox bestOBOXChannel = null;
-						boolean isFound = false;
-						List<TDeviceChannel> tDeviceChannels = deviceChannelService
-								.getDeivceChannelById(tOboxDeviceConfig.getId());
-						for (TDeviceChannel tDeviceChannel : tDeviceChannels) {
-							TObox obox = oboxService.queryOboxById(tDeviceChannel.getOboxId());
+						//TObox bestOBOXChannel = null;
+						//boolean isFound = false;
+					//	List<TDeviceChannel> tDeviceChannels = deviceChannelService
+						//		.getDeivceChannelById(tOboxDeviceConfig.getId());
+					//	for (TDeviceChannel tDeviceChannel : tDeviceChannels) {
+						TObox obox = oboxService.queryOboxsByOboxSerialId(tOboxDeviceConfig.getOboxSerialId());
+						//TObox obox = oboxService.queryOboxById(tDeviceChannel.getOboxId());
 							if (obox != null && obox.getOboxStatus() == 1) {
-								// ClientSession clientSession = sessionManager
-								// .getClientSession(obox
-								// .getOboxSerialId());
-								// if (clientSession != null) {
-								bestOBOXChannel = obox;
-								// if (clientSession.getAvaibleByte() == 0) {
-								// clientSession.setAvaibleByte(~0);
-								feignAliClient.sendCmd(bestOBOXChannel, CMDEnum.set_group, setBytes);
-								// CMDMessageService.send(obox,
-								// CMDEnum.set_group, setBytes, 0,
-								// 0);
-								tOboxDeviceConfig.setIsSend(1);
+								Map<String, Object>map=new HashMap<String, Object>();
+								//CmdInfo cmdInfo=new CmdInfo(obox, CMDEnum.set_group, setBytes);
+								//map.put("cmdinfo", cmdInfo);
+								map.put("serialId", obox.getOboxSerialId());
+								map.put("cmd", CMDEnum.set_group);
+								map.put("bytes", ByteHelper.bytesToHexString(setBytes));
+								feignAliClient.sendCmd(map);
+ 								tOboxDeviceConfig.setIsSend(1);
 								tOboxDeviceConfig.setSendTime(tOboxDeviceConfig.getSendTime() + 1);
-								isFound = true;
-								break;
-								// }
-								// }
+								//isFound = true;
+								//break;
 							}
-						}
+						//}
 
-						if (!isFound) {
+						/*if (!isFound) {
 							if (bestOBOXChannel == null) {
 								tOboxDeviceConfig.setIsSend(1);
 								tOboxDeviceConfig.setSendTime(tOboxDeviceConfig.getSendTime() + 1);
 							}
-						}
+						}*/
 					}
-					if (i + 1 == deleteList.size()) {
+					/*if (i + 1 == deleteList.size()) {
 						isDone = true;
 						for (TOboxDeviceConfig deviceConfig : deleteList) {
 							if (deviceConfig.getIsSend() == 0) {
@@ -675,9 +675,9 @@ public class GroupController {
 						if (isDone) {
 							break;
 						}
-					}
+					}*/
 				}
-			}
+			//}
 			Thread.sleep(350);
 			for (TOboxDeviceConfig deviceConfig : deleteList) {
 				TGroupDevice tGroupDevice = groupDeviceService.queryDeviceGroup(tServerGroup.getId(),
@@ -701,8 +701,8 @@ public class GroupController {
 	private void addMember(List<TOboxDeviceConfig> addList, List<TOboxDeviceConfig> successList,
 			TServerGroup tServerGroup) {
 		try {
-			boolean isDone = false;
-			while (!isDone) {
+		//	boolean isDone = false;
+			//while (!isDone) {
 				for (int i = 0; i < addList.size(); i++) {
 					TOboxDeviceConfig tOboxDeviceConfig = addList.get(i);
 					if (tOboxDeviceConfig.getIsSend() == 0) {
@@ -719,9 +719,27 @@ public class GroupController {
 						}
 						byte[] groupBytes = ByteHelper.hexStringToBytes(tServerGroup.getGroupAddr());
 						System.arraycopy(groupBytes, 0, setBytes, 13, groupBytes.length);
-						TObox bestOBOXChannel = null;
-						boolean isFound = false;
-						List<TDeviceChannel> tDeviceChannels = deviceChannelService
+						//boolean isFound = false;
+						TObox bestOBOXChannel = oboxService.queryOboxsByOboxSerialId(tOboxDeviceConfig.getOboxSerialId());
+						if(bestOBOXChannel.getOboxStatus()==(byte)1){
+							cmdCache.saveGroup(
+									bestOBOXChannel.getOboxId().intValue() + ":" + tOboxDeviceConfig.getDeviceSerialId(),
+									tServerGroup.getId().intValue() + "");
+							//Map<String, CmdInfo>map=new HashMap<String, CmdInfo>();
+							//CmdInfo cmdInfo=new CmdInfo(bestOBOXChannel, CMDEnum.set_group, setBytes);
+							//map.put("cmdinfo", cmdInfo);
+							Map<String, Object>map=new HashMap<String, Object>();
+							//CmdInfo cmdInfo=new CmdInfo(obox, CMDEnum.set_group, setBytes);
+							//map.put("cmdinfo", cmdInfo);
+							map.put("serialId", bestOBOXChannel.getOboxSerialId());
+							map.put("cmd", CMDEnum.set_group);
+							map.put("bytes", ByteHelper.bytesToHexString(setBytes));
+							feignAliClient.sendCmd(map);
+							tOboxDeviceConfig.setIsSend(1);
+							//isFound = true;
+							//break;
+						}
+						/*List<TDeviceChannel> tDeviceChannels = deviceChannelService
 								.getDeivceChannelById(tOboxDeviceConfig.getId());
 						for (TDeviceChannel tDeviceChannel : tDeviceChannels) {
 							TObox obox = oboxService.queryOboxById(tDeviceChannel.getOboxId());
@@ -736,14 +754,14 @@ public class GroupController {
 								isFound = true;
 								break;
 							}
-						}
-						if (!isFound) {
+						}*/
+						/*if (!isFound) {
 							if (bestOBOXChannel == null) {
 								tOboxDeviceConfig.setIsSend(1);
 							}
-						}
+						}*/
 					}
-					if (i + 1 == addList.size()) {
+				/*	if (i + 1 == addList.size()) {
 						isDone = true;
 						for (TOboxDeviceConfig deviceConfig : addList) {
 							if (deviceConfig.getIsSend() == 0) {
@@ -754,9 +772,9 @@ public class GroupController {
 						if (isDone) {
 							break;
 						}
-					}
+					}*/
 				}
-			}
+			//}
 			Thread.sleep(350);
 			for (TOboxDeviceConfig deviceConfig : addList) {
 				TGroupDevice tGroupDevice = groupDeviceService.queryDeviceGroup(tServerGroup.getId(),
@@ -769,5 +787,12 @@ public class GroupController {
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 		}
+	}
+	public static void main(String[] args) {
+		List<String> mList=new ArrayList<String>();
+		for (int i = 0; i < 2; i++) {
+			mList.add(i+"1");
+		}
+		System.out.println(mList);
 	}
 }

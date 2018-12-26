@@ -94,6 +94,6 @@ public class DateHelper {
 		return dateFormater.format(new Date(time));
 	}
 	public static void main(String[] args) {
-		System.out.println((new Date().getTime()-getTomorrow())/(60*60*1000));
+		System.out.println(getTomorrow()+24*60*60*1000);
 	}
 }

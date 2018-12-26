@@ -2,6 +2,7 @@ package com.bright.apollo.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
@@ -33,6 +34,7 @@ import com.bright.apollo.enums.AliRegionEnum;
 import com.bright.apollo.enums.CMDEnum;
 import com.bright.apollo.enums.NodeTypeEnum;
 import com.bright.apollo.request.AliDeviceDTO;
+import com.bright.apollo.request.CmdInfo;
 import com.bright.apollo.request.SceneActionDTO;
 import com.bright.apollo.request.SceneConditionDTO;
 import com.bright.apollo.response.ResponseEnum;
@@ -59,7 +61,7 @@ public class AliServerController {
 	private FingerUtil fingerUtil;
 	// for search new device
 	private static String timeout = "30";
-	
+
 	private static String shortTimeout = "5";
 
 	@Autowired
@@ -67,7 +69,7 @@ public class AliServerController {
 
 	@Autowired
 	private AliDeviceService aliDeviceService;
-	
+
 	@Autowired
 	private ServerGroupService serverGroupService;
 
@@ -80,8 +82,8 @@ public class AliServerController {
 	@Autowired
 	private YaoKongYunService yaoKongYunService;
 
-//	@Autowired
-//	private QuartzService quartzService;
+	// @Autowired
+	// private QuartzService quartzService;
 
 	@RequestMapping(value = "/toAli", method = RequestMethod.POST)
 	@ResponseBody
@@ -203,12 +205,12 @@ public class AliServerController {
 			sendbodyBytes[1] = (byte) (countOfDevice.intValue() & 0x0000ff);
 			sendbodyBytes[2] = (byte) ((countOfDevice.intValue() >> 8) & 0x0000ff);
 			sendbodyBytes[3] = (byte) ((countOfDevice.intValue() >> 16) & 0x0000ff);
-			if(!StringUtils.isEmpty(address)){
+			if (!StringUtils.isEmpty(address)) {
 				sendbodyBytes[5] = (byte) Integer.parseInt("0f", 16);
 				sendbodyBytes[11] = (byte) Integer.parseInt(address, 16);
-				sendbodyBytes[4] = (byte) Integer.parseInt(StringUtils.isEmpty(timeOut)?shortTimeout:timeOut, 16);
-			}else{
-				sendbodyBytes[4] = (byte) Integer.parseInt(StringUtils.isEmpty(timeOut)?timeout:timeOut, 16);
+				sendbodyBytes[4] = (byte) Integer.parseInt(StringUtils.isEmpty(timeOut) ? shortTimeout : timeOut, 16);
+			} else {
+				sendbodyBytes[4] = (byte) Integer.parseInt(StringUtils.isEmpty(timeOut) ? timeout : timeOut, 16);
 			}
 			if (!StringUtils.isEmpty(deviceType)) {
 				sendbodyBytes[13] = (byte) Integer.parseInt(deviceType, 16);
@@ -584,12 +586,13 @@ public class AliServerController {
 		return res;
 
 	}
-	/**  
-	 * @param serialId  
-	 * @Description:  
+
+	/**
+	 * @param serialId
+	 * @Description:
 	 */
 	@RequestMapping(value = "/addRemoteLed/{serialId}", method = RequestMethod.POST)
-	ResponseObject<OboxResp> addRemoteLed(@PathVariable(value = "serialId")String serialId){
+	ResponseObject<OboxResp> addRemoteLed(@PathVariable(value = "serialId") String serialId) {
 		ResponseObject<OboxResp> res = new ResponseObject<OboxResp>();
 		try {
 			byte[] bodyBytes = new byte[12];
@@ -599,7 +602,7 @@ public class AliServerController {
 			bodyBytes[6] = (byte) 0xfe;
 			bodyBytes[7] = (byte) 0x01;
 			bodyBytes[8] = (byte) 0x01;
- 			topicServer.request(CMDEnum.setting_remote_led, bodyBytes, serialId);
+			topicServer.request(CMDEnum.setting_remote_led, bodyBytes, serialId);
 			res.setStatus(ResponseEnum.AddSuccess.getStatus());
 			res.setMessage(ResponseEnum.AddSuccess.getMsg());
 		} catch (Exception e) {
@@ -607,14 +610,15 @@ public class AliServerController {
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
-		return res;	
+		return res;
 	}
-	/**  
-	 * @param oboxSerialId  
-	 * @Description:  
+
+	/**
+	 * @param oboxSerialId
+	 * @Description:
 	 */
 	@RequestMapping(value = "/delRemoteLed/{serialId}", method = RequestMethod.DELETE)
-	ResponseObject<OboxResp> delRemoteLed(@PathVariable(value = "serialId")String serialId){
+	ResponseObject<OboxResp> delRemoteLed(@PathVariable(value = "serialId") String serialId) {
 		ResponseObject<OboxResp> res = new ResponseObject<OboxResp>();
 		try {
 			byte[] bodyBytes = new byte[12];
@@ -624,7 +628,7 @@ public class AliServerController {
 			bodyBytes[6] = (byte) 0xfe;
 			bodyBytes[7] = (byte) 0x01;
 			bodyBytes[8] = (byte) 0x02;
- 			topicServer.request(CMDEnum.setting_remote_led, bodyBytes, serialId);
+			topicServer.request(CMDEnum.setting_remote_led, bodyBytes, serialId);
 			res.setStatus(ResponseEnum.DeleteSuccess.getStatus());
 			res.setMessage(ResponseEnum.DeleteSuccess.getMsg());
 		} catch (Exception e) {
@@ -632,16 +636,17 @@ public class AliServerController {
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
-		return res;	
+		return res;
 	}
-	/**  
+
+	/**
 	 * @param oboxSerialId
-	 * @param status  
-	 * @Description:  
+	 * @param status
+	 * @Description:
 	 */
 	@RequestMapping(value = "/controlRemoteLed/{serialId}/{status}", method = RequestMethod.PUT)
-	ResponseObject<OboxResp> controlRemoteLed(@PathVariable(value = "serialId")String serialId, 
-			@PathVariable(value = "status")String status){
+	ResponseObject<OboxResp> controlRemoteLed(@PathVariable(value = "serialId") String serialId,
+			@PathVariable(value = "status") String status) {
 		ResponseObject<OboxResp> res = new ResponseObject<OboxResp>();
 		try {
 			byte[] stateBytes = ByteHelper.hexStringToBytes(status);
@@ -649,10 +654,10 @@ public class AliServerController {
 			byte[] oboxSerialIdBytes = ByteHelper.hexStringToBytes(serialId);
 			System.arraycopy(oboxSerialIdBytes, 0, bodyBytes, 0, oboxSerialIdBytes.length);
 			bodyBytes[5] = 0x00;
-			bodyBytes[6] = (byte)0xfe;
+			bodyBytes[6] = (byte) 0xfe;
 			System.arraycopy(stateBytes, 0, bodyBytes, 7, stateBytes.length);
 			topicServer.pubTopic(CMDEnum.setting_remote_led, bodyBytes, serialId);
-  			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
 			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
@@ -661,6 +666,7 @@ public class AliServerController {
 		}
 		return res;
 	}
+
 	class sceneAction implements Runnable {
 
 		private List<SceneActionDTO> lists;
@@ -669,20 +675,23 @@ public class AliServerController {
 
 		private String oboxSerialId;
 
-		/*private TopicServer topicServer;
-
-		private OboxDeviceConfigService oboxDeviceConfigService;
-
-		private CmdCache cmdCache;*/
+		/*
+		 * private TopicServer topicServer;
+		 * 
+		 * private OboxDeviceConfigService oboxDeviceConfigService;
+		 * 
+		 * private CmdCache cmdCache;
+		 */
 
 		public sceneAction(List<SceneActionDTO> lists, int sceneNumber, String oboxSerialId) {
 			// TODO Auto-generated constructor stub
 			this.lists = lists;
 			this.sceneNumber = sceneNumber;
 			this.oboxSerialId = oboxSerialId;
-			/*this.oboxDeviceConfigService = oboxDeviceConfigService;
-			this.topicServer = topicServer;
-			this.cmdCache = cmdCache;*/
+			/*
+			 * this.oboxDeviceConfigService = oboxDeviceConfigService;
+			 * this.topicServer = topicServer; this.cmdCache = cmdCache;
+			 */
 		}
 
 		@Override
@@ -716,11 +725,11 @@ public class AliServerController {
 							comBytes[1] |= 0x03;
 						}
 					} else if (sceneActionDTO.getNodeType().equals(NodeTypeEnum.group.getValue())) {
-						TServerGroup tServerGroup = serverGroupService.querySererGroupById(Integer
-										.parseInt(sceneActionDTO.getGroupId()));
+						TServerGroup tServerGroup = serverGroupService
+								.querySererGroupById(Integer.parseInt(sceneActionDTO.getGroupId()));
 						if (tServerGroup != null) {
 							if (tServerGroup.getGroupStyle().equals("00")) {
-								
+
 							}
 						} else {
 							comBytes[1] |= 0x03;
@@ -750,11 +759,11 @@ public class AliServerController {
 								comBytes[1] |= 0x0c;
 							}
 						} else if (sceneActionDTO1.getNodeType().equals(NodeTypeEnum.group.getValue())) {
-							TServerGroup tServerGroup = serverGroupService.querySererGroupById(Integer
-									.parseInt(sceneActionDTO.getGroupId()));
+							TServerGroup tServerGroup = serverGroupService
+									.querySererGroupById(Integer.parseInt(sceneActionDTO.getGroupId()));
 							if (tServerGroup != null) {
 								if (tServerGroup.getGroupStyle().equals("00")) {
-									
+
 								}
 							} else {
 								comBytes[1] |= 0x0c;
@@ -785,17 +794,16 @@ public class AliServerController {
 									comBytes[1] |= 0x30;
 								}
 							} else if (sceneActionDTO2.getNodeType().equals(NodeTypeEnum.group.getValue())) {
-								TServerGroup tServerGroup = serverGroupService.querySererGroupById(Integer
-										.parseInt(sceneActionDTO.getGroupId()));
+								TServerGroup tServerGroup = serverGroupService
+										.querySererGroupById(Integer.parseInt(sceneActionDTO.getGroupId()));
 								if (tServerGroup != null) {
-									if (tServerGroup.getGroupStyle().equals(
-											"00")) {
-										
+									if (tServerGroup.getGroupStyle().equals("00")) {
+
 									}
 								} else {
 									comBytes[1] |= 0x30;
 								}
-							
+
 							}
 
 						}
@@ -825,10 +833,10 @@ public class AliServerController {
 			// from old code
 			List<AliDeviceDTO> sendlist = new ArrayList<AliDeviceDTO>();
 			List<TAliDeviceConfig> aliDeviceConfigs = aliDeviceConfigService.getAliDeviceConfigByUserId(userId);
-			for(TAliDeviceConfig aliDeviceConfig : aliDeviceConfigs){
+			for (TAliDeviceConfig aliDeviceConfig : aliDeviceConfigs) {
 				AliDeviceDTO deviceDTO = new AliDeviceDTO(aliDeviceConfig);
 				TAliDevice aliDevice = aliDeviceService.getAliDeviceBySerializeId(aliDeviceConfig.getDeviceSerialId());
-				if(aliDevice!=null){
+				if (aliDevice != null) {
 					deviceDTO.setOnline(aliDevice.getOffline());
 					sendlist.add(deviceDTO);
 				}
@@ -846,35 +854,36 @@ public class AliServerController {
 
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/setAliDevice", method = RequestMethod.POST)
-	public ResponseObject setAliDevice(@RequestParam(required = true, value = "value") Object value,@RequestParam(required = true, value = "deviceId") String deviceId) {
+	public ResponseObject setAliDevice(@RequestParam(required = true, value = "value") Object value,
+			@RequestParam(required = true, value = "deviceId") String deviceId) {
 		ResponseObject res = new ResponseObject();
 		try {
-			String val = (String)value;
+			String val = (String) value;
 			JSONArray array = JSONArray.parseArray(val);
 			for (int i = 0; i < array.size(); i++) {
 				com.alibaba.fastjson.JSONObject jsonObject = array.getJSONObject(i);
 				if (jsonObject.getBoolean("data")) {
 					jsonObject.put("data", true);
-				}else {
+				} else {
 					jsonObject.put("data", false);
 				}
 			}
 			net.sf.json.JSONObject object = new net.sf.json.JSONObject();
 			object.put("command", "set");
-			object.element("value",array);
-//			object.put("value", value);
-			JSONObject resJson = topicServer.requestDev(object,deviceId,array.toJSONString());
-			if(resJson==null){
+			object.element("value", array);
+			// object.put("value", value);
+			JSONObject resJson = topicServer.requestDev(object, deviceId, array.toJSONString());
+			if (resJson == null) {
 				res.setStatus(ResponseEnum.RequestTimeout.getStatus());
 				res.setMessage(ResponseEnum.RequestTimeout.getMsg());
 				return res;
 			}
 			TAliDeviceConfig aliDeviceConfig = aliDeviceConfigService.getAliDeviceConfigBySerializeId(deviceId);
-			if(aliDeviceConfig !=null){
+			if (aliDeviceConfig != null) {
 				aliDeviceConfig.setState(array.toJSONString());
 				aliDeviceConfigService.update(aliDeviceConfig);
 			}
-			logger.info("array ====== "+array.toJSONString());
+			logger.info("array ====== " + array.toJSONString());
 			res.setData(array.toJSONString());
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
@@ -888,23 +897,23 @@ public class AliServerController {
 
 	@RequestMapping(value = "/readAliDevice", method = RequestMethod.POST)
 	public ResponseObject readAliDevice(@RequestParam(required = true, value = "functionId") String functionId,
-										@RequestParam(required = true, value = "deviceId") String deviceId) {
+			@RequestParam(required = true, value = "deviceId") String deviceId) {
 		ResponseObject res = new ResponseObject();
 		try {
 			JSONArray array = JSONArray.parseArray(functionId);
-			logger.info("array ====== "+array);
+			logger.info("array ====== " + array);
 			net.sf.json.JSONObject object = new net.sf.json.JSONObject();
 			object.put("command", "read");
-			object.element("functionId",array);
-			logger.info("object ====== "+object);
+			object.element("functionId", array);
+			logger.info("object ====== " + object);
 
-			JSONObject resJson =topicServer.requestDev(object,deviceId,array.toJSONString());
+			JSONObject resJson = topicServer.requestDev(object, deviceId, array.toJSONString());
 			TAliDeviceConfig aliDeviceConfig = aliDeviceConfigService.getAliDeviceConfigBySerializeId(deviceId);
 			String val = null;
-			if(aliDeviceConfig !=null){
-				val =resJson.getString("value");
+			if (aliDeviceConfig != null) {
+				val = resJson.getString("value");
 				JSONArray resArry = JSONArray.parseArray(val);
-				if(!resArry.isEmpty()){
+				if (!resArry.isEmpty()) {
 					aliDeviceConfig.setState(val);
 					aliDeviceConfigService.update(aliDeviceConfig);
 				}
@@ -927,7 +936,7 @@ public class AliServerController {
 		try {
 			List<net.sf.json.JSONObject> count = new ArrayList<net.sf.json.JSONObject>();
 			List<TAliDevTimer> aliDevTimers = aliDeviceService.getAliDevTimerByDeviceSerialId(deviceId);
-			for(TAliDevTimer aliDevTimer : aliDevTimers ){
+			for (TAliDevTimer aliDevTimer : aliDevTimers) {
 				net.sf.json.JSONObject object = new net.sf.json.JSONObject();
 				object.element("timerId", aliDevTimer.getId());
 				object.element("state", aliDevTimer.getState());
@@ -951,7 +960,7 @@ public class AliServerController {
 		ResponseObject res = new ResponseObject();
 		try {
 			TAliDevice aliDevice = aliDeviceService.getAliDeviceBySerializeId(deviceId);
-			if(aliDevice == null){
+			if (aliDevice == null) {
 				res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
 				res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
 				return res;
@@ -967,13 +976,12 @@ public class AliServerController {
 		return res;
 	}
 
-
 	@RequestMapping(value = "/setAliTimer", method = RequestMethod.POST)
 	public ResponseObject setAliTimer(@RequestParam(value = "deviceId") String deviceId) {
 		ResponseObject res = new ResponseObject();
 		try {
 			TAliDevice aliDevice = aliDeviceService.getAliDeviceBySerializeId(deviceId);
-			if(aliDevice == null){
+			if (aliDevice == null) {
 				res.setStatus(ResponseEnum.RequestObjectNotExist.getStatus());
 				res.setMessage(ResponseEnum.RequestObjectNotExist.getMsg());
 				return res;
@@ -990,15 +998,17 @@ public class AliServerController {
 	}
 
 	@RequestMapping(value = "/uploadAliDevice", method = RequestMethod.POST)
-	public ResponseObject uploadAliDevice(@RequestParam(required = true,value = "deviceName") String deviceName,
-										  @RequestParam(required = true,value = "productKey") String productKey,
-										  @RequestParam(required = true,value = "config") Object config,@RequestParam(required = true,value = "userId") Integer userId) {
+	public ResponseObject uploadAliDevice(@RequestParam(required = true, value = "deviceName") String deviceName,
+			@RequestParam(required = true, value = "productKey") String productKey,
+			@RequestParam(required = true, value = "config") Object config,
+			@RequestParam(required = true, value = "userId") Integer userId) {
 		ResponseObject res = new ResponseObject();
 		try {
 
-			JSONObject object = new JSONObject((String)config);
-			TAliDeviceConfig aliDeviceConfig = aliDeviceConfigService.getAliDeviceConfigBySerializeId(object.getString("deviceId"));
-			if(aliDeviceConfig == null){
+			JSONObject object = new JSONObject((String) config);
+			TAliDeviceConfig aliDeviceConfig = aliDeviceConfigService
+					.getAliDeviceConfigBySerializeId(object.getString("deviceId"));
+			if (aliDeviceConfig == null) {
 				aliDeviceConfig = new TAliDeviceConfig();
 				aliDeviceConfig.setAction(object.getString("action"));
 				aliDeviceConfig.setDeviceSerialId(object.getString("deviceId"));
@@ -1006,7 +1016,7 @@ public class AliServerController {
 				aliDeviceConfig.setState(object.getString("state"));
 				aliDeviceConfig.setType(object.getString("type"));
 				aliDeviceConfigService.addAliDevice(aliDeviceConfig);
-			}else{
+			} else {
 				aliDeviceConfig.setAction(object.getString("action"));
 				aliDeviceConfig.setDeviceSerialId(object.getString("deviceId"));
 				aliDeviceConfig.setName(object.getString("name"));
@@ -1017,20 +1027,21 @@ public class AliServerController {
 			aliDeviceService.deleteAliDeviceUser(aliDeviceConfig.getDeviceSerialId());
 			TAliDevice aliDevice = aliDeviceService.getAliDeviceBySerializeId(aliDeviceConfig.getDeviceSerialId());
 
-			if(aliDevice!=null){//&&!aliDevice.getDeviceName().equals(deviceName)&&!aliDevice.getProductKey().equals(productKey)
+			if (aliDevice != null) {// &&!aliDevice.getDeviceName().equals(deviceName)&&!aliDevice.getProductKey().equals(productKey)
 				logger.info("========= upload available ====== ");
 				aliDevice.setOboxSerialId("available");
 				aliDeviceService.updateAliDevice(aliDevice);
 				aliDevCache.DelDevInfo(aliDeviceConfig.getDeviceSerialId());
 			}
-			TAliDevice taliDevice = aliDeviceService.getAliDeviceByProductKeyAndDeviceName(productKey,deviceName);
-			if(taliDevice != null){
+			TAliDevice taliDevice = aliDeviceService.getAliDeviceByProductKeyAndDeviceName(productKey, deviceName);
+			if (taliDevice != null) {
 				logger.info("========= upload deviceId ====== ");
 				taliDevice.setOboxSerialId(object.getString("deviceId"));
 				aliDeviceService.updateAliDevice(taliDevice);
-				aliDevCache.saveDevInfo(productKey,object.getString("deviceId"),deviceName,AliRegionEnum.SOURTHCHINA);
+				aliDevCache.saveDevInfo(productKey, object.getString("deviceId"), deviceName,
+						AliRegionEnum.SOURTHCHINA);
 			}
-			aliDevCache.delAliDevWait(productKey,deviceName);
+			aliDevCache.delAliDevWait(productKey, deviceName);
 			TUserAliDev userAliDev = new TUserAliDev();
 			userAliDev.setDeviceSerialId(object.getString("deviceId"));
 			userAliDev.setUserId(userId);
@@ -1046,12 +1057,13 @@ public class AliServerController {
 	}
 
 	@RequestMapping(value = "/getAliDevTimerByDeviceSerialIdAndCountDown/{deviceId}", method = RequestMethod.GET)
-	public ResponseObject getAliDevTimerByDeviceSerialIdAndCountDown(@PathVariable(value = "deviceId") String deviceId) {
+	public ResponseObject getAliDevTimerByDeviceSerialIdAndCountDown(
+			@PathVariable(value = "deviceId") String deviceId) {
 		ResponseObject res = new ResponseObject();
 		try {
-//			net.sf.json.JSONObject jsonObject = new net.sf.json.JSONObject();
+			// net.sf.json.JSONObject jsonObject = new net.sf.json.JSONObject();
 			TAliDevTimer aliDevTimer = aliDeviceService.getAliDevTimerByDeviceSerialIdAndCountDown(deviceId);
-//			jsonObject.element("aliDevTimer",aliDevTimer);
+			// jsonObject.element("aliDevTimer",aliDevTimer);
 			res.setData(aliDevTimer);
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
@@ -1064,12 +1076,13 @@ public class AliServerController {
 	}
 
 	@RequestMapping(value = "/getAliDevTimerByIdAndDeviceId/{deviceId}/{timerId}", method = RequestMethod.GET)
-	public ResponseObject getAliDevTimerByIdAndDeviceId(@PathVariable(value = "deviceId") String deviceId,@PathVariable(value = "timerId") Integer timerId) {
+	public ResponseObject getAliDevTimerByIdAndDeviceId(@PathVariable(value = "deviceId") String deviceId,
+			@PathVariable(value = "timerId") Integer timerId) {
 		ResponseObject res = new ResponseObject();
 		try {
-//			net.sf.json.JSONObject jsonObject = new net.sf.json.JSONObject();
-			TAliDevTimer aliDevTimer = aliDeviceService.getAliDevTimerByIdAndDeviceId(deviceId,timerId);
-//			jsonObject.element("aliDevTimer",aliDevTimer);
+			// net.sf.json.JSONObject jsonObject = new net.sf.json.JSONObject();
+			TAliDevTimer aliDevTimer = aliDeviceService.getAliDevTimerByIdAndDeviceId(deviceId, timerId);
+			// jsonObject.element("aliDevTimer",aliDevTimer);
 			res.setData(aliDevTimer);
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
@@ -1134,7 +1147,7 @@ public class AliServerController {
 
 			aliDeviceService.deleteAliDeviceUser(deviceId);
 			aliDeviceConfigService.deleteAliDeviceConfig(deviceId);
-			yaoKongYunService.deleteTYaokonyunKeyCodeBySerialId(deviceId);//红外转发器码库删除
+			yaoKongYunService.deleteTYaokonyunKeyCodeBySerialId(deviceId);// 红外转发器码库删除
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {
@@ -1152,13 +1165,13 @@ public class AliServerController {
 
 			net.sf.json.JSONObject json = new net.sf.json.JSONObject();
 			TAliDevTimer aliDevTimer = aliDeviceService.getAliDevTimerByDeviceSerialIdAndCountDown(deviceId);
-			if(aliDevTimer !=null){
-				json.element("timer",aliDevTimer.getTimer());
-				json.element("value",JSONArray.parseArray(aliDevTimer.getTimerValue()));
-			}else{
+			if (aliDevTimer != null) {
+				json.element("timer", aliDevTimer.getTimer());
+				json.element("value", JSONArray.parseArray(aliDevTimer.getTimerValue()));
+			} else {
 				List<String> aList = new ArrayList<String>();
-				json.element("timer","");
-				json.element("value",aList);
+				json.element("timer", "");
+				json.element("value", aList);
 			}
 			res.setData(json);
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
@@ -1186,6 +1199,7 @@ public class AliServerController {
 		}
 		return res;
 	}
+
 	/**
 	 * @param obox
 	 * @param setGroup
@@ -1193,11 +1207,15 @@ public class AliServerController {
 	 * @Description:
 	 */
 	@RequestMapping(value = "/sendCmd", method = RequestMethod.POST)
-	ResponseObject<OboxResp> sendCmd(@RequestParam(value = "obox") TObox obox,
-			@RequestParam(value = "cmd") CMDEnum cmd, @RequestParam(value = "setBytes") byte[] setBytes){
+	ResponseObject<OboxResp> sendCmd(@RequestBody(required = true) Map<String, Object> map) {
 		ResponseObject<OboxResp> res = new ResponseObject<OboxResp>();
-		try {
-			topicServer.request(cmd, setBytes, obox.getOboxSerialId());
+		try { 
+			String serialId =(String) map.get("serialId");
+			String cmd =(String) map.get("cmd");
+			String bytes =(String) map.get("bytes");
+			logger.info("===obox:" + serialId);
+			logger.info("===cmd:" + cmd);
+ 			topicServer.request(CMDEnum.getCMDEnum(cmd), ByteHelper.hexStringToBytes(bytes), serialId);
 			res.setStatus(ResponseEnum.AddSuccess.getStatus());
 			res.setMessage(ResponseEnum.AddSuccess.getMsg());
 		} catch (Exception e) {
@@ -1207,31 +1225,30 @@ public class AliServerController {
 		}
 		return res;
 	}
-	
-	
+
 	public static void main(String[] args) {
-		
-		Integer countOfDevice=11;
-		String address="1";
-		String serialId="af5a010000";
+
+		Integer countOfDevice = 11;
+		String address = "1";
+		String serialId = "af5a010000";
 		byte[] sendbodyBytes = new byte[15];
 		sendbodyBytes[0] = (byte) Integer.parseInt("02", 16);
 		sendbodyBytes[1] = (byte) (countOfDevice.intValue() & 0x0000ff);
 		sendbodyBytes[2] = (byte) ((countOfDevice.intValue() >> 8) & 0x0000ff);
 		sendbodyBytes[3] = (byte) ((countOfDevice.intValue() >> 16) & 0x0000ff);
-		if(!StringUtils.isEmpty(address)){
+		if (!StringUtils.isEmpty(address)) {
 			sendbodyBytes[5] = (byte) Integer.parseInt("0e", 16);
 			sendbodyBytes[11] = (byte) Integer.parseInt(address, 16);
 			sendbodyBytes[4] = (byte) Integer.parseInt(shortTimeout, 16);
-		}else{
+		} else {
 			sendbodyBytes[4] = (byte) Integer.parseInt(timeout, 16);
 		}
-	 
+
 		if (!StringUtils.isEmpty(serialId)) {
 			byte[] oboxSerialIdBytes = ByteHelper.hexStringToBytes(serialId);
 			System.arraycopy(oboxSerialIdBytes, 0, sendbodyBytes, 6, oboxSerialIdBytes.length);
 		}
 		System.out.println(sendbodyBytes);
 	}
-	
+
 }

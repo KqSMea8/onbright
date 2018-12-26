@@ -1,6 +1,8 @@
 package com.bright.apollo.service;
 
 import com.bright.apollo.job.TimerJob;
+import com.bright.apollo.response.ResponseObject;
+
 import org.quartz.CronScheduleBuilder;
 import org.quartz.CronTrigger;
 import org.quartz.JobBuilder;
@@ -14,10 +16,15 @@ import org.quartz.TriggerKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.bright.apollo.job.CreateTableJob;
+import com.bright.apollo.job.HotelJob;
 import com.bright.apollo.job.RemoteUserOpenJob;
 import com.bright.apollo.job.TimeJob;
 import com.bright.apollo.tool.ByteHelper;
@@ -37,6 +44,7 @@ public class QuartzService {
 	private static String SERVER_JOB_GROUP_NAME = "OBJobGroup";
 	private static String SERVER_TRIGGER_GROUP_NAME = "OBTriggerGroup";
 	private static String SERVER_REMOTE_OPEN_TASK = "RemoteOpen";
+	private static String CHECK_IN = "CheckIn";
 	private static String SERVER_TIMER_JOB_NAME = "OBTimerJob";
 	private static String SERVER_TRIGGER_TIMER_JOB_NAME = "OBTimerJobTrigger";
 	@Autowired
@@ -281,4 +289,53 @@ public class QuartzService {
 		return sb.toString();
 	}
 
+	/**  
+	 * @param locationId
+	 * @param mobile
+	 * @param endTime  
+	 * @Description:  
+	 */
+	@Async
+	public void checkIn(Integer locationId, String mobile, Long endTime) {
+		try {
+			Scheduler scheduler = schedulerFactory.getScheduler();
+			JobDetail jobDetail = JobBuilder.newJob(HotelJob.class)
+					.withIdentity(MD5.getMD5Str(locationId + mobile), CHECK_IN).build();
+			JobDataMap jobDataMap = jobDetail.getJobDataMap();
+			jobDataMap.put("location", String.format("%d", locationId));
+			jobDataMap.put("mobile", String.format("%s", mobile));
+			String rightConString = Date2Cron(endTime.toString());
+			CronTrigger cronTrigger = TriggerBuilder.newTrigger()
+					.withIdentity(MD5.getMD5Str(locationId + mobile), CHECK_IN)
+					.withSchedule(CronScheduleBuilder.cronSchedule(rightConString)).build();
+			scheduler.scheduleJob(jobDetail, cronTrigger);
+			scheduler.start();
+		} catch (Exception e) {
+			log.info("===the quartz job exist===");
+			log.error("message:" + e.getMessage());
+		}
+		
+	}
+	
+	public static void main(String[] args) {
+		Long l=111l;
+		System.out.println(l.toString());
+	}
+
+	/**  
+	 * @param locationId
+	 * @param mobile  
+	 * @Description:  
+	 */
+	public void deleteHotelJob(Integer locationId, String mobile) {
+		try {
+			Scheduler scheduler = schedulerFactory.getScheduler();
+			scheduler.pauseTrigger(new TriggerKey(MD5.getMD5Str(locationId + mobile), CHECK_IN));
+			scheduler.unscheduleJob(new TriggerKey(MD5.getMD5Str(locationId + mobile), CHECK_IN));
+			scheduler.deleteJob(new JobKey(MD5.getMD5Str(locationId + mobile), CHECK_IN));
+		} catch (Exception e) {
+			log.error("===error msg:" + e.getMessage());
+			throw new RuntimeException(e);
+		}
+	}
 }

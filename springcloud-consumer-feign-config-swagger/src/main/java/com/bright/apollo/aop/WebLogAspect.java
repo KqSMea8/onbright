@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.mqtt.inbound.MqttPahoMessageDrivenChannelAdapter;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.util.StringUtils;
@@ -79,7 +80,7 @@ public class WebLogAspect {
         logger.info("请求结束，controller的返回值是 " + gson.toJson(result));
         return result;
 	}
-
+	@Async
     public void mqttFilter(HttpServletRequest request) {
         String appKey = request.getParameter("appkey");
         String accessToken = request.getParameter("access_token");
@@ -101,13 +102,13 @@ public class WebLogAspect {
             if(StringUtils.isEmpty(tokenUserId)||!accessToken.equals(tokenUserId)){
                 redisBussines.setValueWithExpire("token_userId_"+userId,accessToken,60 * 60 * 24 * 7);
             }
-            logger.info(" ====== accessToken ======= "+accessToken);
-            logger.info(" ====== token_userId ======= "+redisBussines.getObject("token_userId_"+userId));
+           // logger.info(" ====== accessToken ======= "+accessToken);
+           // logger.info(" ====== token_userId ======= "+redisBussines.getObject("token_userId_"+userId));
             String[] topics = adapter.getTopic();
             topicName = "ob-smart."+tokenUserId;
             for(int i=0;i<topics.length;i++){
                 if(!topicName.equals(topics[i])){
-                    logger.info("====== create topic ====== "+topicName);
+                  //  logger.info("====== create topic ====== "+topicName);
                     adapter.addTopic(topicName,1);
                 }
             }

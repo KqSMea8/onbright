@@ -305,8 +305,12 @@ public enum CMDEnum {
 	control_device,//控制(红外)
 
 	setting_security_scene,
-	
-	query_groupid_by_addr, 
+
+	local_ir_device_download,//本地遥控方案——下载方案
+
+	local_ir_device_delete,//本地遥控方案——删除方案
+
+	query_groupid_by_addr,
 	
 	query_scenenumber_by_addr, 
 	
@@ -402,7 +406,7 @@ public enum CMDEnum {
 	
 	query_remote_led_name, 
 	
-	setting_remote_led_name;
+	setting_remote_led_name, delete_device_location;
 		
 	
 	private String sendCMD;

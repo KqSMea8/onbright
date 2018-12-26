@@ -1,9 +1,5 @@
 package com.bright.apollo.job;
 
-import com.bright.apollo.common.entity.TAliDevTimer;
-import com.bright.apollo.feign.FeignAliClient;
-import com.bright.apollo.response.ResponseObject;
-import com.bright.apollo.service.AliDeviceService;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
@@ -13,12 +9,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
+import com.bright.apollo.feign.FeignAliClient;
+import com.bright.apollo.response.ResponseObject;
+
 public class TimerJob implements Job {
     private static final Logger log = LoggerFactory.getLogger(TimerJob.class);
 
     @Autowired
     private FeignAliClient feignAliClient;
-    @Override
+    @SuppressWarnings("rawtypes")
+	@Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         log.info("=============TimerJob execute================");
         JobDataMap dataMap = jobExecutionContext.getJobDetail().getJobDataMap();

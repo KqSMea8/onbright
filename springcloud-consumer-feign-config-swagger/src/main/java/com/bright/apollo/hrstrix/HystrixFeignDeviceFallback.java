@@ -17,6 +17,7 @@ import com.bright.apollo.common.entity.TIntelligentFingerUser;
 import com.bright.apollo.common.entity.TLocation;
 import com.bright.apollo.common.entity.TNvr;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
+import com.bright.apollo.common.entity.TScene;
 import com.bright.apollo.common.entity.TServerGroup;
 import com.bright.apollo.common.entity.TUserLocation;
 import com.bright.apollo.common.entity.TYSCamera;
@@ -641,7 +642,7 @@ public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implem
 	 */
 	@SuppressWarnings("rawtypes")
 	@Override
-	public ResponseObject deleteDeviceLocation(Integer userId, String serialId, Integer location) {
+	public ResponseObject deleteDeviceLocation(Integer userId, String serialId, Integer location,String deviceType) {
 		logger.warn("===device server is break===");
 		return serverError();
 	}
@@ -765,6 +766,126 @@ public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implem
 	@SuppressWarnings("unchecked")
 	@Override
 	public ResponseObject<Map<String, Object>> queryRemoteLedName(String serialId) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#addRemoteLed(java.lang.String)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject addRemoteLed(String oboxSerialId) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#delRemoteLed(java.lang.String)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject delRemoteLed(String oboxSerialId) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#controlRemoteLed(java.lang.String, java.lang.String)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject controlRemoteLed(String oboxSerialId, String status) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#checkOut(java.lang.Integer, java.lang.Integer)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject checkOut(Integer userId, Integer location) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#checkIn(java.lang.Integer, java.lang.Integer, java.lang.String)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject checkIn(Integer userId, Integer location, String mobile) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#continueLocation(java.lang.Integer, java.lang.Integer)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<TLocation> continueLocation(Integer userId, Integer location) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#queryDeviceByadmin(java.lang.Integer)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<Map<String, Object>> queryDeviceByadmin(Integer userId) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#queryDeviceByGust(java.lang.String)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<Map<String, Object>> queryDeviceByGust(String userName) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#queryLocationDeviceBySerialIdAndUserName(java.lang.String, java.lang.String)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<TOboxDeviceConfig> queryLocationDeviceBySerialIdAndUserName(String serialId,
+			String userName) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#queryLocationSceneBySceneNumberAndUserName(java.lang.Integer, java.lang.String)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<TScene> queryLocationSceneBySceneNumberAndUserName(Integer sceneNumber, String userName) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#createHotelLocation(java.lang.Integer, java.util.Map)  
+	 */
+	@Override
+	public ResponseObject<Map<String, Object>> createHotelLocation(Integer userId, Map<String, String> map) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#updateHotelLocation(java.lang.Integer, java.util.Map)  
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseObject updateHotelLocation(Integer userId,Integer location, Map<String, String> map) {
 		logger.warn("===device server is break===");
 		return serverError();
 	}

@@ -20,29 +20,31 @@ import io.netty.util.CharsetUtil;
 public class ClientSession implements Session {
 
 	private static final Logger logger = LoggerFactory.getLogger(ClientSession.class);
-
+	@Deprecated
     private Channel channel;
 
     private String uid;
-
+    @Deprecated
     private String random = "000102030405060708090a0b0c0d0e0f";
-
+    @Deprecated
     private String appKey;
-
+    @Deprecated
     private volatile int AES = 1;
-
+    @Deprecated
     private volatile boolean closed = false;
-
+    @Deprecated
     private volatile int avaibleByte = 0x00;
-
+    @Deprecated
     protected int status = Session.STATUS_CONNECTED;
-
+    @Deprecated
     private SessionCloseListener closeListener;
-
+    @Deprecated
     private CloseEnum closeEnum;
-
+    @Deprecated
     private Set<String> userIdSet=new ConcurrentSkipListSet<String>();
-
+    
+    private String productKey;
+    private String DeviceName;
     public ClientSession(Channel channel) {
         this.channel = channel;
     }
@@ -51,7 +53,23 @@ public class ClientSession implements Session {
 
     }
 
-    public Set<String> getUserIdSet() {
+    public String getProductKey() {
+		return productKey;
+	}
+
+	public void setProductKey(String productKey) {
+		this.productKey = productKey;
+	}
+
+	public String getDeviceName() {
+		return DeviceName;
+	}
+
+	public void setDeviceName(String deviceName) {
+		DeviceName = deviceName;
+	}
+
+	public Set<String> getUserIdSet() {
         return userIdSet;
     }
 
@@ -226,5 +244,7 @@ public class ClientSession implements Session {
             closeListener.onSessionClose(this);
         }
     }
+    
+    
 
 }

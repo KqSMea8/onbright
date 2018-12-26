@@ -1,9 +1,14 @@
 package com.bright.apollo.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,12 +18,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.common.entity.TScene;
+import com.bright.apollo.common.entity.TUser;
+import com.bright.apollo.common.entity.TUserSceneTemplate;
 import com.bright.apollo.feign.FeignOboxClient;
 import com.bright.apollo.feign.FeignSceneClient;
+import com.bright.apollo.feign.FeignUserClient;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
 import com.bright.apollo.response.SceneInfo;
-import com.google.gson.JsonObject;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -35,12 +42,14 @@ import io.swagger.annotations.ApiResponse;
 @RequestMapping("scene")
 @RestController
 public class SceneController {
+	private static final Logger logger = LoggerFactory.getLogger(SceneController.class);
 	@Autowired
 	private FeignSceneClient feignSceneClient;
 	@Autowired
 	private FeignOboxClient feignOboxClient;
-
- 
+	@Autowired
+	private FeignUserClient feignUserClient;
+	@Deprecated
 	@RequestMapping(value = "/{sceneNumber}", method = RequestMethod.GET)
 	@ApiOperation(value = "get Scene by sceneNumber", httpMethod = "GET", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
@@ -56,6 +65,7 @@ public class SceneController {
 		}
 		return res;
 	}
+	@Deprecated
 	@RequestMapping(value = "/{sceneNumber}", method = RequestMethod.PUT)
 	@ApiOperation(value = "update Scene", httpMethod = "PUT", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
@@ -73,7 +83,7 @@ public class SceneController {
 		}
 		return res;
 	}
-
+	@Deprecated
 	@SuppressWarnings("rawtypes")
 	@ApiOperation(value = "del Scene by sceneNumber", httpMethod = "DELETE", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
@@ -90,7 +100,7 @@ public class SceneController {
 		}
 		return res;
 	}
-
+	@Deprecated
 	@SuppressWarnings("rawtypes")
 	@ApiOperation(value = "del SceneCondition by sceneNumber,if condtionId not null delete by conditionId.else delete condition by sceneNumber", httpMethod = "DELETE", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
@@ -107,7 +117,7 @@ public class SceneController {
 		}
 		return res;
 	}
-
+	@Deprecated
 	@SuppressWarnings("rawtypes")
 	@ApiOperation(value = "del SceneAction by sceneNumber,if actionId not null delete by actionId.else delete action by sceneNumber", httpMethod = "DELETE", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
@@ -124,7 +134,7 @@ public class SceneController {
 		}
 		return res;
 	}
-
+	@Deprecated
 	@ApiOperation(value = "add servr scene ", httpMethod = "POST", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/addScene", method = RequestMethod.POST)
@@ -146,6 +156,7 @@ public class SceneController {
 	 * @return  
 	 * @Description:  
 	 */
+	@Deprecated
 	@ApiOperation(value = "add servr scene ", httpMethod = "PUT", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@RequestMapping(value = "/updateSceneSendSetting/{sceneNumber}/{sceneStatus}", method = RequestMethod.PUT)
@@ -185,6 +196,189 @@ public class SceneController {
 		}
 		return res;
 	}
-
-	
+	@ApiOperation(value = "querySceneByOboxSerialId", httpMethod = "GET", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/querySceneByOboxSerialId/{oboxSerialId}", method = RequestMethod.GET)
+	public ResponseObject<Map<String, Object>> querySceneByOboxSerialId(
+			@PathVariable(value="oboxSerialId") String oboxSerialId) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String,Object>>();
+		try {
+			logger.info("===querySceneByObxSerialId agrs:"+oboxSerialId);
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				logger.warn("===this user can't find===");
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+			logger.info("==userId:"+resUser.getData().getId()+"===userName:"+resUser.getData().getUserName());
+			ResponseObject<TObox> oboxRes = feignOboxClient.getOboxByUserAndoboxSerialId(resUser.getData().getId(), oboxSerialId);
+			if(oboxRes==null||oboxRes.getData()==null){
+				logger.warn("===this obox can't find===");
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			return feignSceneClient.querySceneByOboxSerialId( oboxSerialId);
+		} catch (Exception e) {
+			logger.error("===error msg:"+e.getMessage());
+ 			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	@SuppressWarnings("rawtypes")
+	@ApiOperation(value = "addTemplate,the map's key is the sceneModel and deviceModel(required),the respone is add success", httpMethod = "POST", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/addTemplate/{modelName}", method = RequestMethod.POST)
+	public ResponseObject addTemplate(
+			@PathVariable(value="modelName") String modelName,
+			@RequestBody(required=true) Map<String, Object> map) {
+		ResponseObject res = new ResponseObject();
+		try {
+			logger.info("===addTemplate args:"+modelName+"===map:"+map);
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+			if(map!=null&&map.get("sceneModel")!=null&&map.get("deviceModel")!=null){
+				return feignSceneClient.addTemplate(resUser.getData().getId(),modelName,map);
+			}else{
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+			}
+		} catch (Exception e) {
+			logger.error("===error msg:"+e.getMessage());
+ 			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	@SuppressWarnings("rawtypes")
+	@ApiOperation(value = "updateTemplate,the map's key is the sceneModel and deviceModel(required),the respone is update success", httpMethod = "PUT", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/updateTemplate/{modelName}", method = RequestMethod.PUT)
+	public ResponseObject updateTemplate(
+			@PathVariable(value="modelName") String modelName,
+			@RequestBody(required=true) Map<String, Object> map) {
+		ResponseObject res = new ResponseObject();
+		try {
+			logger.info("===updateTemplate args:"+modelName+"===map:"+map);
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+			if(map==null||map.get("sceneModel")==null||map.get("deviceModel")==null){
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<List<TUserSceneTemplate>>templatesRes= feignSceneClient.queryUserSceneTemplateByUserIdAndModelName(resUser.getData().getId(),modelName);
+			if(templatesRes==null||templatesRes.getStatus()!=ResponseEnum.SelectSuccess.getStatus()||
+					templatesRes==null
+					){
+				logger.warn("===the template is null or select error===");
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			List<TUserSceneTemplate> list = templatesRes.getData();
+			if(list.size()<=0){
+				res.setStatus(ResponseEnum.SearchIsEmpty.getStatus());
+				res.setMessage(ResponseEnum.SearchIsEmpty.getMsg());
+				return res;
+			}else if(list.size()>1){
+				res.setStatus(ResponseEnum.MultipleObjExist.getStatus());
+				res.setMessage(ResponseEnum.MultipleObjExist.getMsg());
+				return res;
+			}
+			return feignSceneClient.updateTemplate(resUser.getData().getId(),modelName,map);
+		} catch (Exception e) {
+			logger.error("===error msg:"+e.getMessage());
+ 			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	@SuppressWarnings("rawtypes")
+	@ApiOperation(value = "deleteTemplate,the respone is delete success", httpMethod = "DELETE", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/deleteTemplate/{modelName}", method = RequestMethod.DELETE)
+	public ResponseObject  deleteTemplate(@PathVariable(value="modelName") String modelName) {
+		ResponseObject  res = new ResponseObject ();
+		try {
+			logger.info("===deleteTemplate args:"+modelName );
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+			return feignSceneClient.deleteTemplate(resUser.getData().getId(),modelName);
+		} catch (Exception e) {
+			logger.error("===error msg:"+e.getMessage());
+ 			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	@ApiOperation(value = "queryTemplate,the respone is a map ,the map's key is sceneModels(list) and deviceModels(list),", httpMethod = "GET", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@RequestMapping(value = "/queryTemplate", method = RequestMethod.GET)
+	public ResponseObject<Map<String, Object>> queryTemplate() {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String,Object>>();
+		try {
+			UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (StringUtils.isEmpty(principal.getUsername())) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			ResponseObject<TUser> resUser = feignUserClient.getUser(principal.getUsername());
+			if (resUser == null || resUser.getStatus() != ResponseEnum.SelectSuccess.getStatus()
+					|| resUser.getData() == null) {
+				res.setStatus(ResponseEnum.UnKonwUser.getStatus());
+				res.setMessage(ResponseEnum.UnKonwUser.getMsg());
+				return res;
+			}
+			return feignSceneClient.queryTemplateByUserId(resUser.getData().getId());
+		} catch (Exception e) {
+			logger.error("===error msg:"+e.getMessage());
+ 			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
 }

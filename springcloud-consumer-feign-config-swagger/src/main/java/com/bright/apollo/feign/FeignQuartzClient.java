@@ -94,4 +94,28 @@ public interface FeignQuartzClient {
 			@PathVariable(value="timerId",required=true) Integer timerId,
 			@PathVariable(value="cronString",required=true) String cronString);
 
+	/**  
+	 * @param locationId
+	 * @param mobile
+	 * @param endTime  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/quartz/checkIn/{locationId}/{mobile}/{endTime}", method = RequestMethod.POST, produces = "application/json")
+	public ResponseObject checkIn(@PathVariable(value="locationId",required=true) Integer locationId, 
+			@PathVariable(value="mobile",required=true)String mobile,
+			@PathVariable(value="endTime",required=true)Long endTime);
+
+	/**  
+	 * @param locationId
+	 * @param userName
+	 * @param endTime  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/quartz/continueLocation/{locationId}/{mobile}/{endTime}", method = RequestMethod.PUT, produces = "application/json")
+	public ResponseObject continueLocation(@PathVariable(value="locationId",required=true) Integer locationId, 
+			@PathVariable(value="mobile",required=true)String mobile,
+			@PathVariable(value="endTime",required=true)Long endTime);
+
 }

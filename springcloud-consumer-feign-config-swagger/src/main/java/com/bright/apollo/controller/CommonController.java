@@ -555,7 +555,16 @@ public class CommonController {
 			String serialId = requestParam.getValue("serialId");
 			String index = requestParam.getValue("index");
 			return facadeController.learnIrDeviceKey(serialId, index, keyType, key, timeout);
-		}else if (CMDEnum.query_msg.toString().equals(cmdEnum.toString())) {
+		} else if(CMDEnum.local_ir_device_download.toString().equals(cmdEnum.toString())){//本地遥控方案——下载方案
+			String serialId = requestParam.getValue("serialId");
+			String index = requestParam.getValue("index");
+			String timeout = requestParam.getValue("timeout");
+			return facadeController.localIrDeviceDownload(Integer.valueOf(index),Integer.valueOf(timeout),serialId);
+		} else if(CMDEnum.local_ir_device_delete.toString().equals(cmdEnum.toString())){//本地遥控方案——删除方案
+			String serialId = requestParam.getValue("serialId");
+			String index = requestParam.getValue("index");
+			return facadeController.localIrDeviceDelete(Integer.valueOf(index),serialId);
+		} else if (CMDEnum.query_msg.toString().equals(cmdEnum.toString())) {
 			String count = requestParam.getValue("count");
 			String type = requestParam.getValue("type");
 			String start = requestParam.getValue("start");
@@ -574,16 +583,6 @@ public class CommonController {
 			if (!StringUtils.isEmpty(operateType)) {
 				OperateTypeEnum operation = OperateTypeEnum.getEnum(operateType);
 				if (!operation.equals(OperateTypeEnum.set)) {
-					/*
-					 * if (StringUtils.isEmpty(groupId)) { if
-					 * (StringUtils.isEmpty(oboxSerialId)||
-					 * StringUtils.isEmpty(groupAddr)) { res = new
-					 * ResponseObject();
-					 * res.setStatus(ResponseEnum.RequestParamError.getStatus())
-					 * ;
-					 * res.setMessage(ResponseEnum.RequestParamError.getMsg());
-					 * return res; } }
-					 */
 					if (operateType.equals(OperateTypeEnum.delete.getValue())) {
 						if (!StringUtils.isEmpty(groupId) && NumberHelper.isNumeric(groupId)) {
 							return facadeController.deleteServerGroup(Integer.parseInt(groupId));
@@ -690,7 +689,14 @@ public class CommonController {
 					return facadeController.addDeviceLocation(serialId, Integer.parseInt(location),
 							Integer.parseInt(x_axis), Integer.parseInt(y_axis),deviceType);
 			}
-		} else if (CMDEnum.query_location.toString().equals(cmdEnum.toString())) {
+		}  else if (CMDEnum.delete_device_location.toString().equals(cmdEnum.toString())) {
+				String serialId = requestParam.getValue("serialId");
+				String location = requestParam.getValue("location");
+				String deviceType = requestParam.getValue("device_type");
+				if (!StringUtils.isEmpty(serialId) && !StringUtils.isEmpty(location)
+						&& !StringUtils.isEmpty(deviceType)) 
+					return facadeController.deleteDeviceLocation(serialId, Integer.parseInt(location),deviceType);
+		}else if (CMDEnum.query_location.toString().equals(cmdEnum.toString())) {
 			//String location = requestParam.getValue("location");
 			//if (!StringUtils.isEmpty(location) && NumberHelper.isNumeric(location))
 				return facadeController.queryLocation();
@@ -762,7 +768,12 @@ public class CommonController {
 
 	@SuppressWarnings("unchecked")
 	public static void main(String[] args) {
-		List<String> mList = ((List<String>) ObjectUtils.fromJsonToObject(null, List.class));
-		System.out.println(mList);
+		//List<String> mList = ((List<String>) ObjectUtils.fromJsonToObject(null, List.class));
+		//System.out.println(mList);
+		List<String> mList=new ArrayList<String>();
+		for (int i = 0; i < 2; i++) {
+			mList.add("111111"+i);
+		}
+		System.out.println(mList.toString());
 	}
 }

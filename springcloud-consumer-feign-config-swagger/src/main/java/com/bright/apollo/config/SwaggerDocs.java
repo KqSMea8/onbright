@@ -30,9 +30,9 @@ public class SwaggerDocs {
     private ApiInfo apiInfo(){
         return new ApiInfoBuilder()
             .title("API 使用手册")
-            .contact(new Contact("jger","http://sanqi.iask.in","595743439@qq.com"))
+            //.contact(new Contact("jger","http://sanqi.iask.in","595743439@qq.com"))
             .description("controller api")
-            .termsOfServiceUrl("http://sanqi.iask.in")
+          //  .termsOfServiceUrl("http://sanqi.iask.in")
             .version("1.0")
             .build();
     }

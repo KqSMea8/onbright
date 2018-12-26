@@ -1,6 +1,5 @@
 package com.bright.apollo.controller;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,7 +8,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,8 +25,10 @@ import com.bright.apollo.common.entity.TScene;
 import com.bright.apollo.common.entity.TSceneAction;
 import com.bright.apollo.common.entity.TSceneCondition;
 import com.bright.apollo.common.entity.TServerGroup;
+import com.bright.apollo.common.entity.TUser;
 import com.bright.apollo.common.entity.TUserLocation;
 import com.bright.apollo.enums.ConditionTypeEnum;
+import com.bright.apollo.enums.LocationStatusEnum;
 import com.bright.apollo.enums.NodeTypeEnum;
 import com.bright.apollo.request.SceneActionDTO;
 import com.bright.apollo.request.SceneConditionDTO;
@@ -45,8 +46,10 @@ import com.bright.apollo.service.SceneConditionService;
 import com.bright.apollo.service.SceneService;
 import com.bright.apollo.service.ServerGroupService;
 import com.bright.apollo.service.UserLocationService;
+import com.bright.apollo.service.UserService;
+import com.bright.apollo.tool.MobileUtil;
 import com.bright.apollo.tool.NumberHelper;
-import com.zz.common.util.StringUtils;
+import com.bright.apollo.tool.PwdEncrypt;
 
 /**
  * @Title:
@@ -55,7 +58,6 @@ import com.zz.common.util.StringUtils;
  * @Since:2018年11月23日
  * @Version:1.1.0
  */
-@Controller
 @RequestMapping("location")
 @RestController
 public class LocationController {
@@ -80,6 +82,8 @@ public class LocationController {
 	private ServerGroupService serverGroupService;
 	@Autowired
 	private LocationSceneService locationSceneService;
+	@Autowired
+	private UserService userService;
 
 	/**
 	 * @param userId
@@ -92,8 +96,8 @@ public class LocationController {
 	@RequestMapping(value = "/createLocation/{userId}/{building}/{room}", method = RequestMethod.POST)
 	ResponseObject<Map<String, Object>> createLocation(@PathVariable(value = "userId") Integer userId,
 			@PathVariable(value = "building") String building, @PathVariable(value = "room") String room,
-			//@RequestBody(required = false) List<String> mList
-			@RequestParam(required=false,name="mList")List<String> mList) {
+			// @RequestBody(required = false) List<String> mList
+			@RequestParam(required = false, name = "mList") List<String> mList) {
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		Map<String, Object> map = new HashMap<String, Object>();
 		String location = null;
@@ -482,7 +486,7 @@ public class LocationController {
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
 				return res;
 			}
-			
+
 		} catch (Exception e) {
 			logger.error("===addDeviceLocation error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
@@ -500,9 +504,10 @@ public class LocationController {
 	 * @Description:
 	 */
 	@SuppressWarnings("rawtypes")
-	@RequestMapping(value = "/deleteDeviceLocation/{userId}/{serialId}/{location}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/deleteDeviceLocation/{userId}/{serialId}/{location}/{deviceType}", method = RequestMethod.DELETE)
 	ResponseObject deleteDeviceLocation(@PathVariable(value = "userId") Integer userId,
-			@PathVariable(value = "serialId") String serialId, @PathVariable(value = "location") Integer location) {
+			@PathVariable(value = "serialId") String serialId, @PathVariable(value = "location") Integer location,
+			@PathVariable(value = "deviceType") String deviceType) {
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		// String location = null;
 		try {
@@ -517,13 +522,8 @@ public class LocationController {
 			// if (tObox == null && tOboxDeviceConfig == null) {}
 			if (tObox != null || tOboxDeviceConfig != null) {
 				TDeviceLocation location2 = deviceLocationService.queryDevicesByLocationAndSerialIdAndType(location,
-						serialId, "0a");
-				if (location2 == null)
-					location2 = deviceLocationService.queryDevicesByLocationAndSerialIdAndType(location, serialId,
-							"00");
-				// TDeviceLocation location2 =
-				// DeviceBusiness.queryDeviceLocation(tLocation.getId(),
-				// tObox.getOboxId(), "0a");
+						serialId, deviceType);
+
 				if (location2 != null) {
 					deviceLocationService.deleteDeviceLocation(location2.getId());
 					// DeviceBusiness.deleteDeviceLocation(location2.getId());
@@ -532,19 +532,7 @@ public class LocationController {
 					res.setMessage(ResponseEnum.RequestParamError.getMsg());
 					return res;
 				}
-			} /*
-				 * else if(tOboxDeviceConfig!=null){ TDeviceLocation location2 =
-				 * deviceLocationService.
-				 * queryDevicesByLocationAndSerialIdAndType(location, serialId,
-				 * "00"); //TDeviceLocation location2 =
-				 * DeviceBusiness.queryDeviceLocation(tLocation.getId(),
-				 * tOboxDeviceConfig.getId(), "00"); if (location2 != null) {
-				 * deviceLocationService.deleteDeviceLocation(location2.getId())
-				 * ; }else {
-				 * res.setStatus(ResponseEnum.RequestParamError.getStatus());
-				 * res.setMessage(ResponseEnum.RequestParamError.getMsg());
-				 * return res; } }
-				 */else {
+			} else {
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
 				return res;
@@ -648,34 +636,7 @@ public class LocationController {
 		try {
 			List<DeviceDTO> ouDeviceDTOs = new ArrayList<DeviceDTO>();
 			List<TDeviceLocation> tDeviceLocations = deviceLocationService.queryDevicesByLocation(locationId);
-			// List<TDeviceLocation> tDeviceLocations =
-			// DeviceBusiness.queryDevicesByLocation(Integer.parseInt(location));
-			for (TDeviceLocation tDeviceLocation : tDeviceLocations) {
-				if (!tDeviceLocation.getDeviceType().equals("0a")) {
-					TOboxDeviceConfig tOboxDeviceConfig = oboxDeviceConfigService
-							.queryDeviceConfigBySerialID(tDeviceLocation.getSerialId());
-					// TOboxDeviceConfig tOboxDeviceConfig =
-					// DeviceBusiness.queryDeviceConfigByID(tDeviceLocation.getDeviceId());
-					if (tOboxDeviceConfig != null) {
-						DeviceDTO dto = new DeviceDTO(tOboxDeviceConfig);
-						dto.setxAxis(tDeviceLocation.getxAxis());
-						dto.setyAxis(tDeviceLocation.getyAxis());
-						ouDeviceDTOs.add(dto);
-					}
-				} else {
-					TObox tObox = oboxService.queryOboxsByOboxSerialId(tDeviceLocation.getSerialId());
-					// TObox tObox =
-					// OboxBusiness.queryOboxById(tDeviceLocation.getDeviceId());
-					if (tObox != null) {
-						DeviceDTO dto = new DeviceDTO();
-						dto.setDeviceSerialId(tObox.getOboxSerialId());
-						dto.setDeviceType("0a");
-						dto.setxAxis(tDeviceLocation.getxAxis());
-						dto.setyAxis(tDeviceLocation.getyAxis());
-						ouDeviceDTOs.add(dto);
-					}
-				}
-			}
+			getLocationDevice(ouDeviceDTOs, tDeviceLocations);
 			// Gson g2 = new
 			// GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 			// JsonObject jsonObject = respRight();
@@ -934,11 +895,8 @@ public class LocationController {
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/updateLocationByObj", method = RequestMethod.PUT)
 	ResponseObject updateLocationByObj(@RequestBody TLocation tLocation) {
-
 		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
 		try {
-			// TLocation tLocation = queryLocationByWeight(user,
-			// Integer.parseInt(location));
 			if (tLocation == null) {
 				res.setStatus(ResponseEnum.RequestParamError.getStatus());
 				res.setMessage(ResponseEnum.RequestParamError.getMsg());
@@ -1004,6 +962,376 @@ public class LocationController {
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
+	}
 
+	/**
+	 * @param location
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/queryLocationByLocationId/{location}", method = RequestMethod.GET)
+	ResponseObject<TLocation> queryLocationByLocationId(@PathVariable(value = "location") Integer location) {
+		ResponseObject<TLocation> res = new ResponseObject<TLocation>();
+		try {
+			res.setData(locationService.queryLocationById(location));
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===updateLocationByObj error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	// =========================hotel====================================================
+	/**
+	 * @param id
+	 * @param locationId
+	 * @return
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/checkOut/{userId}/{location}", method = RequestMethod.PUT)
+	ResponseObject checkOut(@PathVariable(value = "userId", required = true) Integer userId,
+			@PathVariable(value = "location", required = true) Integer location) {
+		ResponseObject res = new ResponseObject();
+		try {
+			TLocation tLocation = locationService.queryLocationByUserIdAndId(userId, location);
+			if (tLocation == null || tLocation.getStatus() != LocationStatusEnum.CHECK.getStatus()) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			tLocation.setStatus(LocationStatusEnum.TREE.getStatus());
+			tLocation.setUserName("");
+			locationService.updateLocation(tLocation);
+			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===checkOut error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	/**
+	 * @param id
+	 * @param locationId
+	 * @param mobile
+	 * @return
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/checkIn/{userId}/{location}/{mobile}", method = RequestMethod.PUT)
+	ResponseObject checkIn(@PathVariable(value = "userId", required = true) Integer userId,
+			@PathVariable(value = "location", required = true) Integer location,
+			@PathVariable(value = "mobile", required = true) String mobile) {
+		ResponseObject res = new ResponseObject();
+		try {
+			TLocation tLocation = locationService.queryLocationByUserIdAndId(userId, location);
+			if (tLocation == null || tLocation.getStatus() != LocationStatusEnum.TREE.getStatus()) {
+				res.setStatus(ResponseEnum.LocationNoExist.getStatus());
+				res.setMessage(ResponseEnum.LocationNoExist.getMsg());
+				return res;
+			}
+			if (!StringUtils.isEmpty(tLocation.getUserName())
+					|| tLocation.getStatus() != LocationStatusEnum.TREE.getStatus()) {
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			if (!MobileUtil.checkMobile(mobile)) {
+				res.setStatus(ResponseEnum.ErrorMobile.getStatus());
+				res.setMessage(ResponseEnum.ErrorMobile.getMsg());
+				return res;
+			}
+			TUser tUser = userService.queryUserByName(mobile);
+			if (tUser == null) {
+				String pwd = mobile.substring(mobile.length() - 8);
+				userService.addUser(mobile, PwdEncrypt.encrypt(PwdEncrypt.encrypt(pwd)));
+			}
+			tLocation.setStatus(LocationStatusEnum.CHECK.getStatus());
+			tLocation.setUserName(mobile);
+			locationService.updateLocation(tLocation);
+			res.setStatus(ResponseEnum.AddSuccess.getStatus());
+			res.setMessage(ResponseEnum.AddSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===checkIn error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	/**
+	 * @param id
+	 * @param locationId
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/continueLocation/{userId}/{location}", method = RequestMethod.GET)
+	ResponseObject<TLocation> continueLocation(@PathVariable(value = "userId", required = true) Integer userId,
+			@PathVariable(value = "location", required = true) Integer location) {
+		ResponseObject<TLocation> res = new ResponseObject<TLocation>();
+		try {
+			TLocation tLocation = locationService.queryLocationByUserIdAndId(userId, location);
+			if (tLocation == null || StringUtils.isEmpty(tLocation.getUserName())) {
+				res.setStatus(ResponseEnum.LocationNoExist.getStatus());
+				res.setMessage(ResponseEnum.LocationNoExist.getMsg());
+				return res;
+			}
+			tLocation.setStatus(LocationStatusEnum.CHECK.getStatus());
+			locationService.updateLocation(tLocation);
+			res.setData(tLocation);
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===continueLocation error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	/**
+	 * @param id
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/queryDeviceByadmin/{userId}", method = RequestMethod.GET)
+	ResponseObject<Map<String, Object>> queryDeviceByadmin(
+			@PathVariable(value = "userId", required = true) Integer userId) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		Map<String, Object>map=new HashMap<String, Object>();
+		try {
+			List<DeviceDTO> ouDeviceDTOs = new ArrayList<DeviceDTO>();
+			List<TDeviceLocation> tDeviceLocations = deviceLocationService.queryDevicesByUserId(userId);
+			getLocationDevice(ouDeviceDTOs, tDeviceLocations);
+			map.put("devices", ouDeviceDTOs);
+			res.setData(map);
+			//res.setData(ouDeviceDTOs);
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===queryDeviceByadmin error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	/**
+	 * @param id
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/queryDeviceByGust/{userName}", method = RequestMethod.GET)
+	ResponseObject<Map<String, Object>> queryDeviceByGust(@PathVariable(value = "userName", required = true) String userName) {
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		Map<String, Object>map=new HashMap<String, Object>();
+		try {
+ 			List<DeviceDTO> ouDeviceDTOs = new ArrayList<DeviceDTO>();
+			List<TDeviceLocation> tDeviceLocations = deviceLocationService.queryDevicesByUserName(userName);
+			getLocationDevice(ouDeviceDTOs, tDeviceLocations);
+			//res.setData(ouDeviceDTOs);
+			map.put("devices", ouDeviceDTOs);
+			res.setData(map);
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===queryDeviceByadmin error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+
+	
+	/**  
+	 * @param serialId
+	 * @param userName
+	 * @return  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/queryLocationDeviceBySerialIdAndUserName/{serialId}/{userName}", method = RequestMethod.GET)
+	ResponseObject<TOboxDeviceConfig> queryLocationDeviceBySerialIdAndUserName(@PathVariable(value = "serialId", required = true)String serialId, 
+			@PathVariable(value = "userName", required = true)String userName){
+		ResponseObject<TOboxDeviceConfig> res = new ResponseObject<TOboxDeviceConfig>();
+		try {
+ 			TDeviceLocation tDeviceLocation = deviceLocationService.queryLocationDeviceBySerialIdAndUserName(serialId,userName);
+ 			TOboxDeviceConfig device = oboxDeviceConfigService.queryDeviceConfigBySerialID(serialId);
+ 			if(tDeviceLocation==null||device==null){
+ 				res.setStatus(ResponseEnum.SearchIsEmpty.getStatus());
+ 				res.setMessage(ResponseEnum.SearchIsEmpty.getMsg());
+ 				return res;
+ 			}
+ 			res.setData(device);
+ 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===queryDeviceByadmin error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	
+	/**
+	 * @param sceneNumber
+	 * @param userName
+	 * @return
+	 * @Description:
+	 */
+	@RequestMapping(value = "/queryLocationSceneBySceneNumberAndUserName/{sceneNumber}/{userName}", method = RequestMethod.GET)
+	ResponseObject<TScene> queryLocationSceneBySceneNumberAndUserName(
+			@PathVariable(value = "sceneNumber", required = true) Integer sceneNumber,
+			@PathVariable(value = "userName", required = true) String userName){
+		ResponseObject<TScene> res = new ResponseObject<TScene>();
+		try {
+ 			TLocationScene tDeviceLocation=locationSceneService.queryLocationSceneByUserNameAndSceneName(userName,sceneNumber);
+ 			TScene tscene = sceneService.getSceneBySceneNumber(sceneNumber);
+ 			if(tDeviceLocation==null||tscene==null){
+ 				res.setStatus(ResponseEnum.SearchIsEmpty.getStatus());
+ 				res.setMessage(ResponseEnum.SearchIsEmpty.getMsg());
+ 				return res;
+ 			}
+ 			res.setData(tscene);
+ 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===queryDeviceByadmin error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	/**
+	 * @param userId
+	 * @param map
+	 * @return
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/createHotelLocation/{userId}", method = RequestMethod.POST)
+	ResponseObject<Map<String, Object>> createHotelLocation(@PathVariable(value = "userId", required = true) Integer userId,
+			@RequestBody(required = true) Map<String, String> map){
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		Map<String, Object> resMap=new HashMap<String, Object>();
+		try {
+			String room = map.get("room");
+			if(StringUtils.isEmpty(room)){
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			String building = map.get("building");
+			String layer = map.get("layer");
+			String type = map.get("type");
+			TLocation tLocation=new TLocation(building, room, type, layer);
+			int tLocationId = locationService.addLocation(tLocation);
+			tLocationId = tLocation.getId() != null ? tLocation.getId().intValue() : tLocationId;
+			TUserLocation tUserLocation = new TUserLocation();
+			tUserLocation.setLocationId(tLocationId);
+			tUserLocation.setUserId(userId);
+			userLocationService.addUserLocation(tUserLocation);
+			resMap.put("location", tLocationId);
+			resMap.put("room", room);
+			resMap.put("building", StringUtils.isEmpty(building)?"":building);
+			resMap.put("layer", StringUtils.isEmpty(layer)?"":layer);
+			resMap.put("type", StringUtils.isEmpty(type)?"":type);
+			res.setData(resMap);
+			res.setStatus(ResponseEnum.AddSuccess.getStatus());
+			res.setMessage(ResponseEnum.AddSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===createHotelLocation error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	/**  
+	 * @param userId
+	 * @param map
+	 * @return  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/updateHotelLocation/{userId}/{location}", method = RequestMethod.PUT)
+	ResponseObject updateHotelLocation(@PathVariable(value = "userId", required = true) Integer userId,
+			@PathVariable(value = "location", required = true) Integer location,
+			@RequestBody(required = true) Map<String, String> map){
+		ResponseObject res = new ResponseObject();
+		try {
+			String room = map.get("room");
+			if(StringUtils.isEmpty(room)){
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			TLocation tLocation = locationService.queryLocationById(location);
+			if(tLocation==null){
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			TUserLocation tUserLocation=userLocationService.queryUserLocationByUserIdAndLocation(userId,location);
+			if(tUserLocation==null){
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			String building = map.get("building");
+			String layer = map.get("layer");
+			String type = map.get("type");
+			tLocation.setBuilding(building);
+			if(!StringUtils.isEmpty(layer))
+				tLocation.setLayer(layer);
+			if(!StringUtils.isEmpty(type))
+				tLocation.setType(type);
+			if(!StringUtils.isEmpty(room))
+				tLocation.setRoom(room);
+ 			locationService.updateLocation(tLocation);
+			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===createHotelLocation error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	
+	}
+	/**  
+	 * @param ouDeviceDTOs
+	 * @param tDeviceLocations
+	 * @throws Exception  
+	 * @Description:  
+	 */
+	private void getLocationDevice(List<DeviceDTO> ouDeviceDTOs, List<TDeviceLocation> tDeviceLocations)
+			throws Exception {
+		for (TDeviceLocation tDeviceLocation : tDeviceLocations) {
+			if (!tDeviceLocation.getDeviceType().equals("0a")) {
+				TOboxDeviceConfig tOboxDeviceConfig = oboxDeviceConfigService
+						.queryDeviceConfigBySerialID(tDeviceLocation.getSerialId());
+				if (tOboxDeviceConfig != null) {
+					DeviceDTO dto = new DeviceDTO(tOboxDeviceConfig);
+					dto.setxAxis(tDeviceLocation.getxAxis());
+					dto.setyAxis(tDeviceLocation.getyAxis());
+					ouDeviceDTOs.add(dto);
+				}
+			} else {
+				TObox tObox = oboxService.queryOboxsByOboxSerialId(tDeviceLocation.getSerialId());
+				if (tObox != null) {
+					DeviceDTO dto = new DeviceDTO();
+					dto.setDeviceSerialId(tObox.getOboxSerialId());
+					dto.setDeviceType("0a");
+					dto.setxAxis(tDeviceLocation.getxAxis());
+					dto.setyAxis(tDeviceLocation.getyAxis());
+					ouDeviceDTOs.add(dto);
+				}
+			}
+		}
 	}
 }

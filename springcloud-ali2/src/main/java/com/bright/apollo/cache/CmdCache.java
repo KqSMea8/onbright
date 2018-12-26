@@ -70,7 +70,7 @@ public class CmdCache {
 	}
 
 	public void addIrTestCodeKeyNameType(String index, String  keyNameType) {
-		redisBussines.setValueWithExpire("keyNameType_"+index, keyNameType, medium_time);
+		redisBussines.setValueWithExpire("keyType_"+index, keyNameType, medium_time);
 	}
 
 	public void addIrTestCodeKeyName(String index, String  keyName) {
@@ -97,10 +97,19 @@ public class CmdCache {
 		redisBussines.setValueWithExpire("deviceType_"+serialId, deviceType, medium_time);
 	}
 
-	public void addIrName(String index,String name) {
-		redisBussines.setValueWithExpire("remoteName_"+index, name, medium_time);
+	public void addIrDeviceTypeByIRName(String serialId,String name) {
+		redisBussines.setValueWithExpire("irRemote_"+serialId, name, medium_time);
 	}
-	/**  
+
+	public void addIrDownloadCount(Integer index,Integer total) {
+		redisBussines.setValueWithExpire("irCountTotal_"+index, total, medium_time);
+	}
+
+	public void restranTimes(String key,Integer total) {
+		redisBussines.setValueWithExpire("ir_retrans_key_"+key, total, medium_time);
+	}
+
+	/**
 	 * @param key
 	 * @return  
 	 * @Description:  
