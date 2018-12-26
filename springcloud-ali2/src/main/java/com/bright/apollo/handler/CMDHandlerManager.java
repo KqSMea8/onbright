@@ -22,7 +22,6 @@ import com.bright.apollo.common.entity.TAliDeviceUS;
 import com.bright.apollo.common.entity.TObox;
 import com.bright.apollo.common.entity.TUserObox;
 import com.bright.apollo.enums.AliRegionEnum;
-import com.bright.apollo.enums.CMDEnum;
 import com.bright.apollo.enums.Command;
 import com.bright.apollo.enums.PushMessageType;
 import com.bright.apollo.service.AliDeviceService;
@@ -46,7 +45,6 @@ import com.bright.apollo.session.ClientSession;
 import com.bright.apollo.session.PushThreadPool;
 import com.bright.apollo.session.SceneActionThreadPool;
 import com.bright.apollo.session.SessionManager;
-import com.bright.apollo.tool.ByteHelper;
 import com.bright.apollo.tool.EncDecHelper;
 import com.bright.apollo.util.FingerUtil;
 import com.zz.common.util.StringUtils;
@@ -225,6 +223,8 @@ public class CMDHandlerManager {
 	
 	@Autowired
 	private GroupCMDHandler groupCMDHandler;
+	@Autowired
+	private HeartBeatHandler heartBeatHandler;
 	public CMDHandlerManager() {
 		cmdHandlers = new HashMap<String, BasicHandler>();
 	}
@@ -243,6 +243,9 @@ public class CMDHandlerManager {
 		// RemoterChannelHandler());
 		// cmdHandlers.put(Command.REMOTERBUTTON.getValue(), new
 		// RemoterButtonHandler());
+		if (cmdHandlers.get(Command.HEARTBEAT.getValue()) == null) {
+			cmdHandlers.put(Command.HEARTBEAT.getValue(), heartBeatHandler);
+		}
 		if (cmdHandlers.get(Command.GROUPCHANGE.getValue()) == null) {
 			cmdHandlers.put(Command.GROUPCHANGE.getValue(), groupCMDHandler);
 		}
@@ -335,6 +338,8 @@ public class CMDHandlerManager {
 			}
 
 			ClientSession client = new ClientSession();
+			client.setProductKey(ProductKey);
+			client.setDeviceName(DeviceName);
 			// client.setUid(DeviceName);
 			// String obox_serial_id = aliDevCache.getOboxSerialId(ProductKey,
 			// DeviceName);
@@ -377,8 +382,8 @@ public class CMDHandlerManager {
 			msg.setData(msg.getDecodeData().substring(14, 14 + 54 * 2));
 
 			String cmd = msg.getCmd();
-			logger.info("===cmd:"+cmd);
-			logger.info("===msg data:" + msg.getData());
+			//logger.info("===cmd:"+cmd);
+			//logger.info("===msg data:" + msg.getData());
 			if ("a1".equals(cmd) || "b1".equals(cmd) || "b4".equals(cmd)) {
 				// if (clientSession.getStatus() ==
 				// Session.STATUS_AUTHENTICATED) {
@@ -396,7 +401,7 @@ public class CMDHandlerManager {
 				// }
 			} else {
 
-				if (Command.HEARTBEAT.getValue().equals(cmd)) {
+				if (Command.HEARTBEAT.getValue().equals(cmd)) {/*
 					logger.info("===" + Command.HEARTBEAT.getValue() + "===");
 					if (msg.getData().substring(0, 2).equals("01")) {
 						String random_number = msg.getData().substring(2, 34);
@@ -495,7 +500,7 @@ public class CMDHandlerManager {
 						topServer.pubTopic(CMDEnum.time, body, ProductKey, DeviceName, enum1);
 						pushMessage( dbObox);
 					}
-				}
+				*/}
 
 				BasicHandler handler = cmdHandlers.get(cmd);
 				if (handler == null) {
@@ -557,7 +562,7 @@ public class CMDHandlerManager {
 		}
 	}
 
-	private void pushMessage( TObox dbObox) {
+	/*private void pushMessage( TObox dbObox) {
 		if(org.springframework.util.StringUtils.isEmpty(dbObox))
 			return;
 		logger.info("===pushMessage===:" + dbObox.toString());
@@ -572,5 +577,5 @@ public class CMDHandlerManager {
   		  setuser.add(userobox.getUserId());
   	  }
   	  pushservice.pushToApp(pushMessage, setuser);
-	}
+	}*/
 }
