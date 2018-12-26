@@ -145,4 +145,9 @@ public class YaoKongYunServiceImpl implements YaoKongYunService {
     public List<TYaokonyunKeyCode> getYaoKongKeyCodeBySerialIdAndIndex(String serialId, Integer index) {
         return yaoKongYunMapper.getYaoKongKeyCodeBySerialIdAndIndex(index,serialId);
     }
+
+    @Override
+    public void updateYaoKongUserTimes() {
+
+    }
 }

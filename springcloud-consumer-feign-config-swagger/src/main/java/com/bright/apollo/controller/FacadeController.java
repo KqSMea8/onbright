@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import com.bright.apollo.common.entity.*;
+import com.bright.apollo.enums.*;
 import org.aspectj.weaver.tools.Trace;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,40 +35,7 @@ import com.bright.apollo.cache.AliDevCache;
 import com.bright.apollo.cache.CmdCache;
 import com.bright.apollo.common.dto.OboxResp;
 import com.bright.apollo.common.dto.OboxResp.Type;
-import com.bright.apollo.common.entity.OauthClientDetails;
-import com.bright.apollo.common.entity.TAliDevTimer;
-import com.bright.apollo.common.entity.TAliDeviceConfig;
-import com.bright.apollo.common.entity.TCreateTableLog;
-import com.bright.apollo.common.entity.TDeviceStatus;
-import com.bright.apollo.common.entity.TIntelligentFingerAbandonRemoteUser;
-import com.bright.apollo.common.entity.TIntelligentFingerAuth;
-import com.bright.apollo.common.entity.TIntelligentFingerPush;
-import com.bright.apollo.common.entity.TIntelligentFingerRemoteUser;
-import com.bright.apollo.common.entity.TIntelligentFingerUser;
-import com.bright.apollo.common.entity.TLocation;
-import com.bright.apollo.common.entity.TNvr;
-import com.bright.apollo.common.entity.TObox;
-import com.bright.apollo.common.entity.TOboxDeviceConfig;
-import com.bright.apollo.common.entity.TScene;
-import com.bright.apollo.common.entity.TSceneAction;
-import com.bright.apollo.common.entity.TSceneCondition;
-import com.bright.apollo.common.entity.TServerGroup;
-import com.bright.apollo.common.entity.TUser;
-import com.bright.apollo.common.entity.TUserDevice;
-import com.bright.apollo.common.entity.TUserObox;
-import com.bright.apollo.common.entity.TUserOperation;
-import com.bright.apollo.common.entity.TUserScene;
-import com.bright.apollo.common.entity.TYSCamera;
 import com.bright.apollo.constant.SubTableConstant;
-import com.bright.apollo.enums.ConditionTypeEnum;
-import com.bright.apollo.enums.DeviceTypeEnum;
-import com.bright.apollo.enums.IntelligentMaxEnum;
-import com.bright.apollo.enums.MsgStateEnum;
-import com.bright.apollo.enums.NodeTypeEnum;
-import com.bright.apollo.enums.RemoteUserEnum;
-import com.bright.apollo.enums.SceneTypeEnum;
-import com.bright.apollo.enums.SignatureEnum;
-import com.bright.apollo.enums.TimerSetTypeEnum;
 import com.bright.apollo.feign.FeignAliClient;
 import com.bright.apollo.feign.FeignDeviceClient;
 import com.bright.apollo.feign.FeignOboxClient;
@@ -5996,12 +5965,64 @@ public class FacadeController extends BaseController {
 				return res;
 			}
 			res = feignAliClient.localIrDeviceDownload(index, timeout, serialId);
+			Map resMap = res.getData();
+			Integer respCode = (Integer)resMap.get("respCode");
+			Integer data = (Integer)resMap.get("data");
+			Integer irIdx = (Integer)resMap.get("index");
+			if(respCode==200&&data==1){
+				DownLoadIrThread downLoadIrThread = new DownLoadIrThread();
+				downLoadIrThread.setIndex(index);
+				downLoadIrThread.setIrIdx(irIdx);
+				downLoadIrThread.setSerialId(serialId);
+				Thread thread = new Thread(downLoadIrThread);
+				thread.start();
+//				feignAliClient.irDownLoad(irIdx,serialId,index);
+			}else{
+				res.setStatus(ResponseEnum.Error.getStatus());
+				res.setMessage(ResponseEnum.Error.getMsg());
+			}
 		} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
+	}
+
+	class DownLoadIrThread implements Runnable{
+
+		private Integer irIdx;
+		private String serialId;
+		private Integer index;
+
+		public Integer getIrIdx() {
+			return irIdx;
+		}
+
+		public void setIrIdx(Integer irIdx) {
+			this.irIdx = irIdx;
+		}
+
+		public String getSerialId() {
+			return serialId;
+		}
+
+		public void setSerialId(String serialId) {
+			this.serialId = serialId;
+		}
+
+		public Integer getIndex() {
+			return index;
+		}
+
+		public void setIndex(Integer index) {
+			this.index = index;
+		}
+
+		@Override
+		public void run() {
+			feignAliClient.irDownLoad(irIdx,serialId,index);
+		}
 	}
 
 	// 本地遥控方案——删除方案

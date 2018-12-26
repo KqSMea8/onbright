@@ -548,7 +548,7 @@ public interface FeignAliClient {
 	ResponseObject<TYaokonyunKeyCode> getIRDeviceByIndexAndKey(@RequestParam(required = true, value = "index") Integer index, @RequestParam(required = true, value = "key") String key);
 
 	/**
-	 * @Description:本地遥控方案——下载方案
+	 * @Description:本地遥控方案——新增方案
 	 */
 	@RequestMapping(value = "/aliDevice/localIrDeviceDownload", method = RequestMethod.POST)
 	ResponseObject localIrDeviceDownload(
@@ -564,4 +564,12 @@ public interface FeignAliClient {
 			@RequestParam(required = true, value = "index") Integer index,
 			@RequestParam(required = true, value = "serialId") String serialId);
 
+	/**
+	 * @Description:本地遥控方案——下载方案
+	 */
+	@RequestMapping(value = "/aliDevice/irDownLoad", method = RequestMethod.POST)
+	ResponseObject irDownLoad(
+			@RequestParam(required = true, value = "index") Integer index,
+			@RequestParam(required = true, value = "serialId") String serialId,
+			@RequestParam(required = true, value = "codeIndex") Integer codeIndex);
 }

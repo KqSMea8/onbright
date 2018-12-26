@@ -247,6 +247,8 @@ public class TopicServer {
 			}
 		}else{
             logger.info(" ====== requestDev end response error ====== ");
+			logger.info(" ====== requestDev end response error getErrorMessage ====== "+rrpcResponse.getErrorMessage());
+			logger.info(" ====== requestDev end response error  getRrpcCode ====== "+rrpcResponse.getRrpcCode());
             Exception exception = new Exception();
 		    throw exception;
         }

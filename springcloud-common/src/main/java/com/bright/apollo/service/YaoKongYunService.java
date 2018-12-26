@@ -59,4 +59,6 @@ public interface YaoKongYunService {
     TYaokonyunKeyCode getIRDeviceByIndexAndKey(Integer index,String key);
 
     List<TYaokonyunKeyCode> getYaoKongKeyCodeBySerialIdAndIndex(String serialId,Integer index);
+
+    void updateYaoKongUserTimes();
 }

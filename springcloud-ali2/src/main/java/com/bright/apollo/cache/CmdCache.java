@@ -105,6 +105,10 @@ public class CmdCache {
 		redisBussines.setValueWithExpire("irCountTotal_"+index, total, medium_time);
 	}
 
+	public void restranTimes(String key,Integer total) {
+		redisBussines.setValueWithExpire("ir_retrans_key_"+key, total, medium_time);
+	}
+
 	/**
 	 * @param key
 	 * @return  

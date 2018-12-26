@@ -56,7 +56,7 @@ public enum IREnum {
 	
 	public static IREnum getRegion(String name) {
 		for (IREnum typeEnum : IREnum.values()) {
-			if (typeEnum.name().equals(name)) {
+			if (typeEnum.name.equals(name)) {
 				return typeEnum;
 			}
 		}
