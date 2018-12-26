@@ -110,9 +110,9 @@ public interface YaoKongYunMapper {
     TYaokonyunRemoteControl getYaokonyunRemoteControlByBrandId(@Param("remoteId")String remoteId);
 
 
-    @Insert(" insert into t_yaokonyun_key_code(src,`index`,analysisSrc,`key`,serialId,key_name,custom_name,remote_id, " +
-            " last_op_time,t_id,name,brandId,rmodel,version) " +
-            " values(#{src},#{index},#{analysisSrc},#{key},#{serialId},#{keyName},#{customName},#{remoteId},#{lastOpTime},#{tId},#{name},#{brandId},#{rmodel},#{version})")
+    @Insert(" insert into t_yaokonyun_key_code(src,`index`,analysisSrc,`key`,serialId,remote_id, " +
+            " last_op_time,t_id,name,brandId,rmodel,version,keyType) " +
+            " values(#{src},#{index},#{analysisSrc},#{key},#{serialId},#{remoteId},#{lastOpTime},#{tId},#{name},#{brandId},#{rmodel},#{version},#{keyType})")
     void addTYaokonyunKeyCode(TYaokonyunKeyCode yaokonyunKeyCode);
 
 
@@ -127,8 +127,8 @@ public interface YaoKongYunMapper {
     @Delete(" delete from t_yaokonyun_key_code where serialId = #{serialId} and `index` = #{index} ")
     void deleteTYaokonyunKeyCode(@Param("serialId")String serialId,@Param("index")Integer index);
 
-    @Delete(" delete from t_yaokonyun_key_code where serialId = #{serialId} and `index` = #{index} and `key` = #{key} ")
-    void deleteTYaokonyunKeyCodeByKeyName(@Param("serialId")String serialId,@Param("index")Integer index,@Param("key")String keyName);
+    @Delete(" delete from t_yaokonyun_key_code where serialId = #{serialId} and `index` = #{index} and `key` = #{key} and keyType = #{keyType} ")
+    void deleteTYaokonyunKeyCodeByKeyName(@Param("serialId")String serialId,@Param("index")Integer index,@Param("key")String keyName,@Param("keyType")Integer keyType);
 
     @Delete(" delete from t_yaokonyun_key_code where serialId = #{serialId} and `index` = #{index} and `key` = #{key}")
     void deleteTYaokonyunKeyCodeByCustomName(@Param("serialId")String serialId,@Param("index")Integer index,@Param("key")String customName);
@@ -143,7 +143,8 @@ public interface YaoKongYunMapper {
             @Result(property = "name",column = "name"),
             @Result(property = "tId",column = "t_id"),
             @Result(property = "keyName",column = "key_name"),
-            @Result(property = "customName",column = "custom_name")
+            @Result(property = "customName",column = "custom_name"),
+            @Result(property = "keyType",column = "keyType")
     })
     List<TYaokonyunKeyCode> getYaoKongKeyCodeBySerialId(@Param("serialId")String serialId);
 
@@ -160,10 +161,8 @@ public interface YaoKongYunMapper {
     TYaokonyunKeyCode getYaoKongKeyCodeByKeyAndSerialIdAndIndex(@Param("index")Integer index,@Param("serialId")String serialId,@Param("key")String key);
 
 
-    @Update(" update t_yaokonyun_key_code set src = #{codeSrc},`key` = #{key} where serialId = #{serialId} and `index` = #{index} ")
-    void updateYaoKongKeyCodeNameBySerialIdAndIndexAndKey(@Param("serialId")String serialId,@Param("index")Integer index,@Param("key")String key,@Param("codeSrc")String codeSrc);
-
-
+    @Update(" update t_yaokonyun_key_code set src = #{codeSrc},`key` = #{key} where serialId = #{serialId} and `index` = #{index} and `key` = #{key} and keyType = #{keyType}")
+    void updateYaoKongKeyCodeNameBySerialIdAndIndexAndKey(@Param("serialId")String serialId,@Param("index")Integer index,@Param("key")String key,@Param("codeSrc")String codeSrc,@Param("keyType")Integer keyType);
 
     @Select(" SELECT t_id,tyb.name,tykc.`index` FROM onbright_ali_new.t_user_ali_device tuad " +
             " inner join t_yaokonyun_key_code tykc on tuad.device_serial_id=tykc.serialId " +
@@ -173,10 +172,15 @@ public interface YaoKongYunMapper {
 
     List<Map<String, Object>> getUserIRDevice(@Param("userId")Integer userId);
 
-    @Select("select `src`,`key`,t_id from t_yaokonyun_key_code where `index` = #{index} ")
+    @Select("select * from t_yaokonyun_key_code where `index` = #{index} ")
     @Results(value = {
-            @Result(property = "src",column = "src"),
-            @Result(property = "key",column = "key")
+            @Result(property = "key",column = "key"),
+            @Result(property = "index",column = "index"),
+            @Result(property = "name",column = "name"),
+            @Result(property = "tId",column = "t_id"),
+            @Result(property = "keyName",column = "key_name"),
+            @Result(property = "customName",column = "custom_name"),
+            @Result(property = "keyType",column = "keyType")
     })
     List<TYaokonyunKeyCode> getIRDeviceByIndex(@Param("index")Integer index);
 
@@ -190,10 +194,12 @@ public interface YaoKongYunMapper {
     })
     TYaokonyunKeyCode getIRDeviceByIndexAndKey(@Param("index")Integer index,@Param("key")String key);
 
-    @Select("select `src`,`key`,t_id from t_yaokonyun_key_code where `index` = #{index} ")
+    @Select("select `src`,`key`,t_id,name,version from t_yaokonyun_key_code where `index` = #{index} ")
     @Results(value = {
             @Result(property = "src",column = "src"),
-            @Result(property = "key",column = "key")
+            @Result(property = "key",column = "key"),
+            @Result(property = "name",column = "name"),
+            @Result(property = "version",column = "version")
     })
     List<TYaokonyunKeyCode> getYaoKongKeyCodeBySerialIdAndIndex(@Param("index")Integer index,@Param("serialId")String serialId);
 

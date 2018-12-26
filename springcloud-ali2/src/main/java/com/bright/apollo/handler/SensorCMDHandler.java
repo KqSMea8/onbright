@@ -57,7 +57,7 @@ public class SensorCMDHandler extends BasicHandler {
 		String uploadTag = data.substring(14, 16);
 		String state = data.substring(16, 32);
 		int isEnvironment = 0;// 0 not Environment，1state is 0，2state
-		log.info("==============msg================:" + msg.toString());
+		//log.info("==============msg================:" + msg.toString());
 		TObox tObox = oboxService.queryOboxsByOboxSerialId(oboxSerialId);
 		// TObox tObox = OboxBusiness.queryOboxsByOboxSerialId(oboxSerialId);
 

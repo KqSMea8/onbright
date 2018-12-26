@@ -98,11 +98,7 @@ public class YaoKongYunServiceImpl implements YaoKongYunService {
 
     @Override
     public void deleteTYaokonyunKeyCodeByKeyName(String serialId, String index, String keyName,String keyType) {
-        if(keyType.equals("0")){
-            yaoKongYunMapper.deleteTYaokonyunKeyCodeByKeyName(serialId,Integer.valueOf(index),keyName);
-        }else if(keyType.equals("1")){
-            yaoKongYunMapper.deleteTYaokonyunKeyCodeByCustomName(serialId,Integer.valueOf(index),keyName);
-        }
+        yaoKongYunMapper.deleteTYaokonyunKeyCodeByKeyName(serialId,Integer.valueOf(index),keyName,Integer.valueOf(keyType));
     }
 
     @Override
@@ -126,8 +122,8 @@ public class YaoKongYunServiceImpl implements YaoKongYunService {
     }
 
     @Override
-    public void updateYaoKongKeyCodeNameBySerialIdAndIndexAndKey(String serialId, String index, String key, String codeSrc) {
-        yaoKongYunMapper.updateYaoKongKeyCodeNameBySerialIdAndIndexAndKey(serialId,Integer.valueOf(index),key,codeSrc);
+    public void updateYaoKongKeyCodeNameBySerialIdAndIndexAndKey(String serialId, String index, String key, String codeSrc,Integer keyType) {
+        yaoKongYunMapper.updateYaoKongKeyCodeNameBySerialIdAndIndexAndKey(serialId,Integer.valueOf(index),key,codeSrc,keyType);
     }
 
     @Override
@@ -148,5 +144,10 @@ public class YaoKongYunServiceImpl implements YaoKongYunService {
     @Override
     public List<TYaokonyunKeyCode> getYaoKongKeyCodeBySerialIdAndIndex(String serialId, Integer index) {
         return yaoKongYunMapper.getYaoKongKeyCodeBySerialIdAndIndex(index,serialId);
+    }
+
+    @Override
+    public void updateYaoKongUserTimes() {
+
     }
 }

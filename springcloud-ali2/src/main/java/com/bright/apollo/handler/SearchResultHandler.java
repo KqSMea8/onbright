@@ -31,7 +31,7 @@ public class SearchResultHandler extends BasicHandler {
             return null;
         }
 
-        logger.info("SearchResultHandler.process():"+msg.getData());
+      //  logger.info("SearchResultHandler.process():"+msg.getData());
         byte [] idBytes = new byte [16];
         System.arraycopy(bodyBytes, 3, idBytes, 0, idBytes.length);
         String ID = ByteHelper.bytesToHexString(idBytes);

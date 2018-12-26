@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import com.bright.apollo.bean.Message;
+import com.bright.apollo.cache.AliDevCache;
 import com.bright.apollo.cache.CmdCache;
 import com.bright.apollo.common.entity.TIntelligentFingerPush;
 import com.bright.apollo.common.entity.TObox;
@@ -82,7 +83,11 @@ public abstract class BasicHandler {
 
 	@Autowired
 	protected AliDeviceService aliDeviceService;
-
+	@Autowired
+	protected AliDevCache aliDevCache;
+	@Autowired
+	@Lazy
+	protected TopicServer topServer;
 	public abstract Message<String> process(ClientSession clientSession, Message<String> msg) throws Exception;
 
 	protected void deleteSceneNumber(List<TScene> scenes, TObox tObox) {

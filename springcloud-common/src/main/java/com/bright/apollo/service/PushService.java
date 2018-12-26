@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.bright.apollo.common.entity.PushMessage;
+import com.bright.apollo.common.entity.TUserAliDevice;
 import com.bright.apollo.response.ResponseObject;
 
 /**  
@@ -15,5 +16,5 @@ import com.bright.apollo.response.ResponseObject;
  */
 public interface PushService {
 	void pushToApp(PushMessage message,Set<Integer> users );
-	void pairIrRemotecode(Map<String,Object> map, Integer userId);
+	void pairIrRemotecode(Map<String,Object> map, Set<TUserAliDevice> users);
 }

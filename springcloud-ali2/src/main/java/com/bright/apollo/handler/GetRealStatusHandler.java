@@ -20,7 +20,7 @@ public class GetRealStatusHandler extends BasicHandler {
     @Override
     public Message<String> process(ClientSession clientSession, Message<String> msg) throws Exception {
         logger.info("=======GetRealStatusHandler start=========");
-        logger.info("========msg=======:"+msg.toString());
+       // logger.info("========msg=======:"+msg.toString());
         String data = msg.getData();
         String oboxSerialId = data.substring(0, 10);
         String state = data.substring(14,28);

@@ -1206,6 +1206,101 @@ public class LocationController {
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
 		return res;
+	}
+	/**
+	 * @param userId
+	 * @param map
+	 * @return
+	 * @Description:
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/createHotelLocation/{userId}", method = RequestMethod.POST)
+	ResponseObject<Map<String, Object>> createHotelLocation(@PathVariable(value = "userId", required = true) Integer userId,
+			@RequestBody(required = true) Map<String, String> map){
+		ResponseObject<Map<String, Object>> res = new ResponseObject<Map<String, Object>>();
+		Map<String, Object> resMap=new HashMap<String, Object>();
+		try {
+			String room = map.get("room");
+			if(StringUtils.isEmpty(room)){
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			String building = map.get("building");
+			String layer = map.get("layer");
+			String type = map.get("type");
+			TLocation tLocation=new TLocation(building, room, type, layer);
+			int tLocationId = locationService.addLocation(tLocation);
+			tLocationId = tLocation.getId() != null ? tLocation.getId().intValue() : tLocationId;
+			TUserLocation tUserLocation = new TUserLocation();
+			tUserLocation.setLocationId(tLocationId);
+			tUserLocation.setUserId(userId);
+			userLocationService.addUserLocation(tUserLocation);
+			resMap.put("location", tLocationId);
+			resMap.put("room", room);
+			resMap.put("building", StringUtils.isEmpty(building)?"":building);
+			resMap.put("layer", StringUtils.isEmpty(layer)?"":layer);
+			resMap.put("type", StringUtils.isEmpty(type)?"":type);
+			res.setData(resMap);
+			res.setStatus(ResponseEnum.AddSuccess.getStatus());
+			res.setMessage(ResponseEnum.AddSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===createHotelLocation error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	}
+	/**  
+	 * @param userId
+	 * @param map
+	 * @return  
+	 * @Description:  
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/updateHotelLocation/{userId}/{location}", method = RequestMethod.PUT)
+	ResponseObject updateHotelLocation(@PathVariable(value = "userId", required = true) Integer userId,
+			@PathVariable(value = "location", required = true) Integer location,
+			@RequestBody(required = true) Map<String, String> map){
+		ResponseObject res = new ResponseObject();
+		try {
+			String room = map.get("room");
+			if(StringUtils.isEmpty(room)){
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			TLocation tLocation = locationService.queryLocationById(location);
+			if(tLocation==null){
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			TUserLocation tUserLocation=userLocationService.queryUserLocationByUserIdAndLocation(userId,location);
+			if(tUserLocation==null){
+				res.setStatus(ResponseEnum.RequestParamError.getStatus());
+				res.setMessage(ResponseEnum.RequestParamError.getMsg());
+				return res;
+			}
+			String building = map.get("building");
+			String layer = map.get("layer");
+			String type = map.get("type");
+			tLocation.setBuilding(building);
+			if(!StringUtils.isEmpty(layer))
+				tLocation.setLayer(layer);
+			if(!StringUtils.isEmpty(type))
+				tLocation.setType(type);
+			if(!StringUtils.isEmpty(room))
+				tLocation.setRoom(room);
+ 			locationService.updateLocation(tLocation);
+			res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+			res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+		} catch (Exception e) {
+			logger.error("===createHotelLocation error msg:" + e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
 	
 	}
 	/**  

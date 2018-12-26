@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import com.bright.apollo.common.entity.TUserAliDevice;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,17 +52,22 @@ public class PushServiceImpl implements PushService {
     }
 
     @Override
-    public void pairIrRemotecode(Map<String,Object> map, Integer userId) {
-        String accessToken = (String)redisBussines.getObject("token_userId_"+userId);
-        StringBuilder sendStr = new StringBuilder();
-        if(map!=null){
-            sendStr.append("STR"+map.toString()+"END");
+    public void pairIrRemotecode(Map<String,Object> map, Set<TUserAliDevice> users) {
+        Iterator<TUserAliDevice> iterators = users.iterator();
+        while(iterators.hasNext()){
+            TUserAliDevice userAliDevice = iterators.next();
+            String accessToken = (String)redisBussines.getObject("token_userId_"+userAliDevice.getUserId());
+            StringBuilder sendStr = new StringBuilder();
+            if(map!=null){
+                sendStr.append("STR"+map.toString()+"END");
+            }
+            logger.info("pairIrRemotecode ====== Str ======= "+sendStr);
+            logger.info("====== accessToken ====== "+accessToken +" ====== userId ====== "+userAliDevice.getUserId());
+            if(!StringUtils.isEmpty(accessToken)){
+                logger.info(" ====== send mqtt message ====== ");
+                mqttGateWay.sendToMqtt("ob-smart."+accessToken,sendStr.toString());
+            }
         }
-        logger.info("pairIrRemotecode ====== Str ======= "+sendStr);
-        logger.info("====== accessToken ====== "+accessToken +" ====== userId ====== "+userId);
-        if(!StringUtils.isEmpty(accessToken)){
-            logger.info(" ====== send mqtt message ====== ");
-            mqttGateWay.sendToMqtt("ob-smart."+accessToken,sendStr.toString());
-        }
+
     }
 }
