@@ -304,7 +304,7 @@ public enum CMDEnum {
 
 	control_device,//控制(红外)
 
-	setting_security_scene,  
+	setting_security_scene,
 	
 	query_groupid_by_addr, 
 	

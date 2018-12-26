@@ -105,6 +105,8 @@ public class IRUploadHandler extends AliBaseHandler {
 //            yaoKongYunService.updateYaoKongKeyCodeNameBySerialIdAndIndexAndKey(deviceSerialId,index,key,data);//保存src
             pushservice.pairIrRemotecode(resMap,userAliDevice.getUserId());
 
+        }else if(functionId==6){//设置本地码库增删
+
         }
 //        return null;
     }
