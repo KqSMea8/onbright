@@ -3,6 +3,7 @@ package com.bright.apollo.filter;
 import java.io.IOException;
 
 import javax.servlet.FilterChain;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -62,7 +63,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 	private CacheHelper cacheHelper;
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		logger.info("===validateCodeFilter before===");
+		logger.info("===remoteAddress:"+request.getRemoteAddr()+"===validateCodeFilter before===");
 		String url = smsLoginVo.getUrl();
 		if (pathMatcher.match(url, request.getRequestURI())) {
 			// mobile login
@@ -84,6 +85,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 				mobClient.addRequestProperty("Accept", "application/json");
 				String result = mobClient.post();
 				logger.info("===result:" + result);
+				//request.remo
 				JSONObject object = new JSONObject(result);
 				if (object.getInt("status") == 200) {
 					if (userService.queryUserByName(mobile) == null) {
@@ -104,7 +106,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 			} catch (Exception e) {
 				logger.error("====error msg:" + e.getMessage());
 				throw new InternalAuthenticationServiceException(e.getMessage());
-			}
+			} 
 
 		} else if (pathMatcher.match(wxLoginVo.getUrl(), request.getRequestURI())) {
 			// wx login  for phone use wx login
