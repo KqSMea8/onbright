@@ -504,8 +504,8 @@ public class AliDeviceController {
 				if(version.equals("")){
 					version = "0"+codeVersion.toString();
 				}
-				logger.info("version ====== "+version);
-				logger.info("====== sendkey ====== "+sendkey);
+//				logger.info("version ====== "+version);
+//				logger.info("====== sendkey ====== "+sendkey);
 				String[] arr = sendkey.split("_");
 				if(yaokonyunKeyCode.getVersion()==1){//版本v1截取方式不同
 					arr = sendkey.split("");
@@ -514,10 +514,10 @@ public class AliDeviceController {
 					version = "02";
 					continue;
 				}
-				logger.info(" after version ====== "+version);
-				if(sendkey.equals("off")){
-					logger.info(" ======== ");
-				}
+//				logger.info(" after version ====== "+version);
+//				if(sendkey.equals("off")){
+//					logger.info(" ======== ");
+//				}
 				StringBuffer sb = new StringBuffer();
 				for(int j=0;j<arr.length;j++){
 					String detail = arr[j];

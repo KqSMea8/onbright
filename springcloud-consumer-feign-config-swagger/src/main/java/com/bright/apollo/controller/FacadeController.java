@@ -5976,7 +5976,6 @@ public class FacadeController extends BaseController {
 				downLoadIrThread.setSerialId(serialId);
 				Thread thread = new Thread(downLoadIrThread);
 				thread.start();
-//				feignAliClient.irDownLoad(irIdx,serialId,index);
 			}else{
 				res.setStatus(ResponseEnum.Error.getStatus());
 				res.setMessage(ResponseEnum.Error.getMsg());
@@ -5986,6 +5985,7 @@ public class FacadeController extends BaseController {
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
 		}
+		res.setData(null);
 		return res;
 	}
 
