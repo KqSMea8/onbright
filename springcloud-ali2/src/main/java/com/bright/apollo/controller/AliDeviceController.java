@@ -479,6 +479,14 @@ public class AliDeviceController {
 
 			JSONObject jsonObject = null;
 			Integer respCode = new Integer(0);
+			Integer hexIdx = Integer.parseInt(index.toString(),16);
+			String idx = "";
+			if(hexIdx<10){
+				idx = "0"+hexIdx;
+			}else{
+				idx = hexIdx.toString();
+			}
+			String version = "";
 			for(int i=0;i<yaokonyunKeyCodeList.size();i++){
 				TYaokonyunKeyCode yaokonyunKeyCode = yaokonyunKeyCodeList.get(i);
 				requestMap.put("command","set");
@@ -491,12 +499,24 @@ public class AliDeviceController {
 				json.put("index",index);
 				json.put("count",i+1);
 				String sendkey = yaokonyunKeyCode.getKey();
+				Integer codeVersion = yaokonyunKeyCode.getVersion();
+				codeVersion = Integer.parseInt(codeVersion.toString(),16);
+				if(version.equals("")){
+					version = "0"+codeVersion.toString();
+				}
+				logger.info("version ====== "+version);
+				logger.info("====== sendkey ====== "+sendkey);
 				String[] arr = sendkey.split("_");
 				if(yaokonyunKeyCode.getVersion()==1){//版本v1截取方式不同
 					arr = sendkey.split("");
 				}
 				if(sendkey.indexOf("*")>=0){
+					version = "02";
 					continue;
+				}
+				logger.info(" after version ====== "+version);
+				if(sendkey.equals("off")){
+					logger.info(" ======== ");
 				}
 				StringBuffer sb = new StringBuffer();
 				for(int j=0;j<arr.length;j++){
@@ -515,6 +535,11 @@ public class AliDeviceController {
 						sb.append(enums.getValue());
 					}
 				}
+				while (sb.length()<10){
+					sb.append("ff");
+				}
+				logger.info(" ======== "+sb);
+				sb.append(idx).append(version);
 				String keyStr = sb.toString();
 				keyStr +=crcSum(keyStr);
 				json.put("key",keyStr);
