@@ -203,4 +203,14 @@ public interface YaoKongYunMapper {
     })
     List<TYaokonyunKeyCode> getYaoKongKeyCodeBySerialIdAndIndex(@Param("index")Integer index,@Param("serialId")String serialId);
 
+
+    @Select("select id,use_time from t_yaokonyun_device where use_time<50 ")
+    @Results(value = {
+            @Result(property = "useTime",column = "use_time"),
+            @Result(property = "id",column = "id")
+    })
+    TYaokonyunDevice yaoKongYunDeviceTimes();
+
+    @Update(" update t_yaokonyun_device set use_time = #{times} where id = #{id} ")
+    void updateYaoKongYunDeviceTimes(@Param("id")Integer id,@Param("times")Integer times);
 }

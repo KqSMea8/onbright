@@ -1,15 +1,11 @@
 package com.bright.apollo.handler;
 
-import com.alibaba.fastjson.JSONArray;
 import com.bright.apollo.bean.MatchRemoteControlResult;
 import com.bright.apollo.cache.CmdCache;
 import com.bright.apollo.common.entity.*;
-import com.bright.apollo.enums.IREnum;
 import com.bright.apollo.service.PushService;
-import com.bright.apollo.service.TopicServer;
 import com.bright.apollo.service.UserAliDevService;
 import com.bright.apollo.service.YaoKongYunSend;
-import com.bright.apollo.tool.ByteHelper;
 import com.bright.apollo.tool.MD5;
 import com.bright.apollo.util.IndexUtils;
 import com.google.gson.Gson;
@@ -19,11 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.NumberUtils;
-import org.springframework.util.StringUtils;
-
 import java.util.*;
-import java.util.concurrent.ConcurrentSkipListSet;
 
 @Component
 public class IRUploadHandler extends AliBaseHandler {
@@ -201,9 +193,8 @@ public class IRUploadHandler extends AliBaseHandler {
                 .postMethod(strings,yaokonyunDevice,yaoKongYunConfig.getUrlPrefix()+"?c=m");
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         MatchRemoteControlResult remoteControlResult = gson.fromJson(result,MatchRemoteControlResult.class);
-
+        yaoKongYunService.updateYaoKongUserTimes();
         if(remoteControlResult==null||remoteControlResult.getSm()==0){
-//            resMap.put("sm",0);
             resMap.put("rs",new ArrayList());
         }else{
             List<MatchRemoteControl>  list = remoteControlResult.getRs();

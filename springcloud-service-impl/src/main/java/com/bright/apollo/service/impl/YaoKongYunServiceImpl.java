@@ -148,6 +148,7 @@ public class YaoKongYunServiceImpl implements YaoKongYunService {
 
     @Override
     public void updateYaoKongUserTimes() {
-
+        TYaokonyunDevice yaokonyunDevice = yaoKongYunMapper.yaoKongYunDeviceTimes();
+        yaoKongYunMapper.updateYaoKongYunDeviceTimes(yaokonyunDevice.getId(),yaokonyunDevice.getUseTime()+1);
     }
 }

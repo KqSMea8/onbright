@@ -663,7 +663,7 @@ public class AliDeviceController {
 				.postMethod(strings,yaokonyunDevice,yaoKongYunConfig.getUrlPrefix()+"?c=l");
 		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 		MatchRemoteControlResult remoteControlResult = gson.fromJson(result,MatchRemoteControlResult.class);
-
+		yaoKongYunService.updateYaoKongUserTimes();
 		if(remoteControlResult==null||remoteControlResult.getSm()==0){
 			resMap.put("rs",new ArrayList());
 		}else{
@@ -745,6 +745,7 @@ public class AliDeviceController {
 						.postMethod(strings,yaokonyunDevice,yaoKongYunConfig.getUrlPrefix()+"?c=f");
 				Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 				BrandResult brandResult = gson.fromJson(result,BrandResult.class);
+				yaoKongYunService.updateYaoKongUserTimes();
 				List<Brand> brandList = brandResult.getRs();
 				for(Brand brand : brandList){
 					TYaoKongYunBrand yaoKongYunBrand = new TYaoKongYunBrand();
@@ -820,6 +821,7 @@ public class AliDeviceController {
 				String result = yaoKongYunSend.postMethod(null,yaokonyunDevice,yaoKongYunConfig.getUrlPrefix()+"?c=t&appid="+yaokonyunDevice.getAppId()+"f="+yaokonyunDevice.getDeviceId());
 				Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 				DeviceTypeResult deviceTypeResult = gson.fromJson(result,DeviceTypeResult.class);
+				yaoKongYunService.updateYaoKongUserTimes();
 				List<DeviceType> deviceTypeList = deviceTypeResult.getRs();
 				for (DeviceType deviceType:deviceTypeList) {
 					TYaokonyunDeviceType yaokonyunDeviceType = new TYaokonyunDeviceType();
@@ -1035,6 +1037,7 @@ public class AliDeviceController {
 				Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 				Type type = new TypeToken<List<RemoteControl>>() {
 				}.getType();
+				yaoKongYunService.updateYaoKongUserTimes();
 				List<RemoteControl> remoteControlList = gson.fromJson(result,type);
 				RemoteControl remoteControl = remoteControlList.get(0);
 				List<Map<String, LinkedTreeMap>> mapList = gson.fromJson("["+remoteControl.getRcCommand()+"]",List.class);
