@@ -109,6 +109,9 @@ public class CmdCache {
 		redisBussines.setValueWithExpire("ir_retrans_key_"+key, total, medium_time);
 	}
 
+	public void downloadStatus(Integer index,Boolean status) {
+		redisBussines.setValueWithExpire("ir_download_status_"+index, status, medium_time);
+	}
 	/**
 	 * @param key
 	 * @return  

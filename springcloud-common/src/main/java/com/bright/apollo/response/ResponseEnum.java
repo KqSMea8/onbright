@@ -19,6 +19,7 @@ public enum ResponseEnum {
 	NoIRKey(404,"have not key"),
 	LearnKeyFailed(405,"to learn failed"),
 	PairCodeFailed(406,"pair code failed"),
+	IrDownLoading(407,"ir downloading"),
 	ErrorMobile(410,"error moble"),
 	ExistMobile(411,"the mobile is exist"),
 	NoExistMobile(412,"the mobile is not exist"),

@@ -460,6 +460,7 @@ public class AliDeviceController {
 	ResponseObject irDownLoad(@RequestParam(required = true, value = "index") Integer index,
 							  @RequestParam(required = true, value = "serialId") String serialId,
 							  @RequestParam(required = true, value = "codeIndex") Integer codeIndex) {
+		cmdCache.downloadStatus(codeIndex,true);
 		ResponseObject res = new ResponseObject();
 		Map<String, Object> requestMap = new HashMap<String, Object>();
 		com.alibaba.fastjson.JSONObject resMap = new com.alibaba.fastjson.JSONObject();
@@ -504,8 +505,6 @@ public class AliDeviceController {
 				if(version.equals("")){
 					version = "0"+codeVersion.toString();
 				}
-//				logger.info("version ====== "+version);
-//				logger.info("====== sendkey ====== "+sendkey);
 				String[] arr = sendkey.split("_");
 				if(yaokonyunKeyCode.getVersion()==1){//版本v1截取方式不同
 					arr = sendkey.split("");
@@ -514,10 +513,6 @@ public class AliDeviceController {
 					version = "02";
 					continue;
 				}
-//				logger.info(" after version ====== "+version);
-//				if(sendkey.equals("off")){
-//					logger.info(" ======== ");
-//				}
 				StringBuffer sb = new StringBuffer();
 				for(int j=0;j<arr.length;j++){
 					String detail = arr[j];
@@ -562,6 +557,9 @@ public class AliDeviceController {
 			pushService.pairIrRemotecode(resMap,userSet);
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
+		}finally {
+			logger.info("======downloadStatus====== false ");
+			cmdCache.downloadStatus(codeIndex,false);
 		}
 		return res;
 	}
@@ -598,25 +596,26 @@ public class AliDeviceController {
 		ResponseObject res = new ResponseObject();
 		Map<String, Object> requestMap = new HashMap<String, Object>();
 		try {
-			List<TYaokonyunKeyCode> yaokonyunKeyCodeList = yaoKongYunService.getYaoKongKeyCodeBySerialIdAndIndex(serialId,index);
-			if(yaokonyunKeyCodeList.size()==0){
-				res.setStatus(ResponseEnum.NoIRKey.getStatus());
-				res.setMessage(ResponseEnum.NoIRKey.getMsg());
-			}else{
-				TYaokonyunKeyCode yaokonyunKeyCode = yaokonyunKeyCodeList.get(0);
 				requestMap.put("command","set");
 				com.alibaba.fastjson.JSONArray jsonArray = new com.alibaba.fastjson.JSONArray();
 				com.alibaba.fastjson.JSONObject json = new com.alibaba.fastjson.JSONObject();
 				json.put("functionId",6);
 				json.put("data",2);
-				json.put("index",yaokonyunKeyCode.getIndex());
+				json.put("index",index);
 				jsonArray.add(json);
 				requestMap.put("value",jsonArray);
-				topServer.pubIrRPC(requestMap,serialId);
-				res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
-				res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
-			}
-
+				JSONObject resjsonObject = topServer.pubIrRPC(requestMap,serialId);
+				Integer respCode = (Integer)resjsonObject.get("respCode");
+				org.json.JSONArray resJsonArr = (org.json.JSONArray) resjsonObject.get("value");
+				JSONObject arrObj = resJsonArr.getJSONObject(0);
+				Integer data = (Integer) arrObj.get("data");
+				if(respCode==200&&data==2){
+					res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+					res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+				}else{
+					res.setStatus(ResponseEnum.Error.getStatus());
+					res.setMessage(ResponseEnum.Error.getMsg());
+				}
 		} catch (Exception e) {
 			e.printStackTrace();
 			res.setStatus(ResponseEnum.Error.getStatus());

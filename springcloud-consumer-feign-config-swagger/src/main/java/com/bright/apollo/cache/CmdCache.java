@@ -111,5 +111,8 @@ public class CmdCache {
 	public void addIrTestCodeAppKeyBrandIdDeviceType(String appKey, String brandId, String deviceType, Integer index) {
 		redisBussines.setValueWithExpire(appKey+"_"+brandId+"_"+deviceType, index, medium_time);
 	}
-	
+
+	public String getIrTestCodeAppKeyBrandIdDeviceType(String key) {
+		return redisBussines.get(key);
+	}
 }

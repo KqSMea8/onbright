@@ -5970,12 +5970,20 @@ public class FacadeController extends BaseController {
 			Integer data = (Integer)resMap.get("data");
 			Integer irIdx = (Integer)resMap.get("index");
 			if(respCode==200&&data==1){
-				DownLoadIrThread downLoadIrThread = new DownLoadIrThread();
-				downLoadIrThread.setIndex(index);
-				downLoadIrThread.setIrIdx(irIdx);
-				downLoadIrThread.setSerialId(serialId);
-				Thread thread = new Thread(downLoadIrThread);
-				thread.start();
+				String irdownloadStatus = cmdCache.getIrTestCodeAppKeyBrandIdDeviceType("ir_download_status_"+index);
+				Boolean status = Boolean.parseBoolean(irdownloadStatus);
+				logger.info("irdownloadStatus ========== "+status);
+				if(status==false){
+					DownLoadIrThread downLoadIrThread = new DownLoadIrThread();
+					downLoadIrThread.setIndex(index);
+					downLoadIrThread.setIrIdx(irIdx);
+					downLoadIrThread.setSerialId(serialId);
+					Thread thread = new Thread(downLoadIrThread);
+					thread.start();
+				}else{
+					res.setStatus(ResponseEnum.IrDownLoading.getStatus());
+					res.setMessage(ResponseEnum.IrDownLoading.getMsg());
+				}
 			}else{
 				res.setStatus(ResponseEnum.Error.getStatus());
 				res.setMessage(ResponseEnum.Error.getMsg());
