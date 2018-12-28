@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
+import org.springframework.util.PathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.bright.apollo.cache.CacheHelper;
@@ -61,117 +62,125 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 	private WxService wxService;
 	@Autowired
 	private CacheHelper cacheHelper;
+
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		logger.info("===remoteAddress:"+request.getRemoteAddr()+"===validateCodeFilter before===");
+		logger.info("===remoteAddress:" + request.getRemoteAddr() + "===validateCodeFilter before===");
 		String url = smsLoginVo.getUrl();
-		if (pathMatcher.match(url, request.getRequestURI())) {
-			// mobile login
-			try {
-				String shareSdkAppkey = request.getParameter(smsLoginParamVo.getAppkey());
-				String zone = request.getParameter(smsLoginParamVo.getZone());
-				String mobile = request.getParameter(smsLoginParamVo.getMobile());
-				String code = request.getParameter(smsLoginParamVo.getCode());
-				logger.info("===shareSdkAppkey:" + smsLoginParamVo.getAppkey() + "===zone:" + smsLoginParamVo.getZone()
-						+ "===code:" + smsLoginParamVo.getCode() + "===mobile:" + smsLoginParamVo.getMobile());
-				if (StringUtils.isEmpty(shareSdkAppkey) || StringUtils.isEmpty(zone) || StringUtils.isEmpty(mobile)
-						|| StringUtils.isEmpty(code)) {
-					throw new InternalAuthenticationServiceException("request param error");
-				}
-				MobClient mobClient = new MobClient();
-				mobClient.addParam("appkey", shareSdkAppkey).addParam("phone", mobile).addParam("zone", zone)
-						.addParam("code", code);
-				mobClient.addRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
-				mobClient.addRequestProperty("Accept", "application/json");
-				String result = mobClient.post();
-				logger.info("===result:" + result);
-				//request.remo
-				JSONObject object = new JSONObject(result);
-				if (object.getInt("status") == 200) {
-					if (userService.queryUserByName(mobile) == null) {
-						String pwd = mobile.substring(mobile.length() - 8);
-						try {
-							userService.addUser(mobile, encrypt(encrypt(pwd)));
-						} catch (Exception e) {
-							logger.error("===error msg:" + e.getMessage());
+		if (pathMatcher.match(wxLoginVo.getAntUrl(), request.getRequestURI())) {
+			if (pathMatcher.match(url, request.getRequestURI())) {
+				// mobile login
+				try {
+					String shareSdkAppkey = request.getParameter(smsLoginParamVo.getAppkey());
+					String zone = request.getParameter(smsLoginParamVo.getZone());
+					String mobile = request.getParameter(smsLoginParamVo.getMobile());
+					String code = request.getParameter(smsLoginParamVo.getCode());
+					logger.info("===shareSdkAppkey:" + smsLoginParamVo.getAppkey() + "===zone:"
+							+ smsLoginParamVo.getZone() + "===code:" + smsLoginParamVo.getCode() + "===mobile:"
+							+ smsLoginParamVo.getMobile());
+					if (StringUtils.isEmpty(shareSdkAppkey) || StringUtils.isEmpty(zone) || StringUtils.isEmpty(mobile)
+							|| StringUtils.isEmpty(code)) {
+						throw new InternalAuthenticationServiceException("request param error");
+					}
+					MobClient mobClient = new MobClient();
+					mobClient.addParam("appkey", shareSdkAppkey).addParam("phone", mobile).addParam("zone", zone)
+							.addParam("code", code);
+					mobClient.addRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+					mobClient.addRequestProperty("Accept", "application/json");
+					String result = mobClient.post();
+					logger.info("===result:" + result);
+					// request.remo
+					JSONObject object = new JSONObject(result);
+					if (object.getInt("status") == 200) {
+						if (userService.queryUserByName(mobile) == null) {
+							String pwd = mobile.substring(mobile.length() - 8);
+							try {
+								userService.addUser(mobile, encrypt(encrypt(pwd)));
+							} catch (Exception e) {
+								logger.error("===error msg:" + e.getMessage());
+							}
 						}
+						filterChain.doFilter(request, response);
+					} else {
+						throw new InternalAuthenticationServiceException("Validation code is incorrect");
 					}
-					filterChain.doFilter(request, response);
-				} else {
-					throw new InternalAuthenticationServiceException("Validation code is incorrect");
+					// filterChain.doFilter(request, response);
+					logger.info("====result:" + result);
+				} catch (Exception e) {
+					logger.error("====error msg:" + e.getMessage());
+					throw new InternalAuthenticationServiceException(e.getMessage());
 				}
-
-				// filterChain.doFilter(request, response);
-				logger.info("====result:" + result);
-			} catch (Exception e) {
-				logger.error("====error msg:" + e.getMessage());
-				throw new InternalAuthenticationServiceException(e.getMessage());
-			} 
-
-		} else if (pathMatcher.match(wxLoginVo.getUrl(), request.getRequestURI())) {
-			// wx login  for phone use wx login
-			try {
-				String wxToken = request.getParameter(wxLoginParamVo.getWxToken());
-				String openId = request.getParameter(wxLoginParamVo.getOpenId());
-				logger.info("===wxToken:" + wxToken + "===openId:" + openId);
-				if (StringUtils.isEmpty(wxToken) || StringUtils.isEmpty(openId)) {
-					throw new InternalAuthenticationServiceException("request param error");
-				}
-				JSONObject wxUserInfo = wxService.getWxUserInfo(wxLoginParamVo.getWxUrl(),wxToken, openId);
-				if (wxUserInfo == null || !wxUserInfo.has("headimgurl") || !wxUserInfo.has("nickname")
-						|| !wxUserInfo.has("sex")) {
-					throw new InternalAuthenticationServiceException("request param error");
-				} else {
-					TUser tuser = userService.queryUserByOpenId(openId);
-					if (tuser == null) {
-						logger.info("===headimgurl:" + wxUserInfo.getString("headimgurl") + "===nickname:"
-								+ wxUserInfo.getString("nickname"));
-						userService.saveUserByWeiXinInfo(openId, wxUserInfo.getString("headimgurl"),
-								wxUserInfo.getString("nickname"));
+			} else if (pathMatcher.match(wxLoginVo.getUrl(), request.getRequestURI())) {
+				// wx login for phone use wx login
+				try {
+					String wxToken = request.getParameter(wxLoginParamVo.getWxToken());
+					String openId = request.getParameter(wxLoginParamVo.getOpenId());
+					logger.info("===wxToken:" + wxToken + "===openId:" + openId);
+					if (StringUtils.isEmpty(wxToken) || StringUtils.isEmpty(openId)) {
+						throw new InternalAuthenticationServiceException("request param error");
 					}
-					filterChain.doFilter(request, response);
+					JSONObject wxUserInfo = wxService.getWxUserInfo(wxLoginParamVo.getWxUrl(), wxToken, openId);
+					if (wxUserInfo == null || !wxUserInfo.has("headimgurl") || !wxUserInfo.has("nickname")
+							|| !wxUserInfo.has("sex")) {
+						throw new InternalAuthenticationServiceException("request param error");
+					} else {
+						TUser tuser = userService.queryUserByOpenId(openId);
+						if (tuser == null) {
+							logger.info("===headimgurl:" + wxUserInfo.getString("headimgurl") + "===nickname:"
+									+ wxUserInfo.getString("nickname"));
+							userService.saveUserByWeiXinInfo(openId, wxUserInfo.getString("headimgurl"),
+									wxUserInfo.getString("nickname"));
+						}
+						filterChain.doFilter(request, response);
+					}
+				} catch (Exception e) {
+					logger.error("====error msg:" + e.getMessage());
+					throw new InternalAuthenticationServiceException(e.getMessage());
 				}
-			} catch (Exception e) {
-				logger.error("====error msg:" + e.getMessage());
-				throw new InternalAuthenticationServiceException(e.getMessage());
+			} else if (pathMatcher.match(wxLoginVo.getCodeUrl(), request.getRequestURI())) {
+				// login/wx/code for wx mini program
+				try {
+					String code = request.getParameter(wxLoginParamVo.getCode());
+					logger.info("===code:" + code);
+					if (StringUtils.isEmpty(code)) {
+						throw new InternalAuthenticationServiceException("code is null");
+					}
+					JSONObject wxToken = wxService.getWxToken(code, wxLoginParamVo.getAppId(),
+							wxLoginParamVo.getSecret(), wxLoginParamVo.getGrantType(), wxLoginParamVo.getWxLoginUrl());
+					logger.info("===wxToken:" + wxToken);
+					if (wxToken == null || !wxToken.has("session_key") || !wxToken.has("openid")) {
+						throw new InternalAuthenticationServiceException("wx code verify request error ");
+					} else {
+						String openId = wxToken.getString("openid");
+						TUser tuser = userService.queryUserByOpenId(openId);
+						if (tuser == null) {
+							userService.saveUserByWeiXinInfo(openId);
+						}
+						cacheHelper.addOpenId(code, openId);
+						filterChain.doFilter(request, response);
+					}
+					// cacheHelper.addOpenId(code,
+					filterChain.doFilter(request, response);
+				} catch (Exception e) {
+					logger.error("====error msg:" + e.getMessage());
+					throw new InternalAuthenticationServiceException(e.getMessage());
+				}
 			}
-		} else if (pathMatcher.match(wxLoginVo.getCodeUrl(), request.getRequestURI())) {
-			// login/wx/code   for wx mini program
-			try {
-				String code = request.getParameter(wxLoginParamVo.getCode());
-				logger.info("===code:" + code);
-				if (StringUtils.isEmpty(code)) {
-					throw new InternalAuthenticationServiceException("code is null");
-				}
-				JSONObject wxToken = wxService.getWxToken(code, wxLoginParamVo.getAppId(), wxLoginParamVo.getSecret(),
-						wxLoginParamVo.getGrantType(), wxLoginParamVo.getWxLoginUrl());
-				logger.info("===wxToken:"+wxToken);
-				if (wxToken == null || !wxToken.has("session_key") || !wxToken.has("openid")) {
-					throw new InternalAuthenticationServiceException("wx code verify request error ");
-				} else {
- 					String openId = wxToken.getString("openid");
-					TUser tuser = userService.queryUserByOpenId(openId);
-					if(tuser==null){
-						userService.saveUserByWeiXinInfo(openId);
-					}
-					cacheHelper.addOpenId(code, openId);
-					filterChain.doFilter(request, response);
-				}
-			//	cacheHelper.addOpenId(code, "o40G45XVBWdf8HKQCkN-9W74vNBk");
-				filterChain.doFilter(request, response);
-			} catch (Exception e) {
-				logger.error("====error msg:" + e.getMessage());
-				throw new InternalAuthenticationServiceException(e.getMessage());
-			}
-
 		} else {
 			// let it go
 			filterChain.doFilter(request, response);
 		}
 	}
-
 	private static String encrypt(String rawPassword) throws Exception {
 		String base64Encrypt = Base64Util.base64Encrypt(rawPassword.toString().getBytes());
 		return MD5.getMD5Str(base64Encrypt + rawPassword);
+	}
+
+	public static void main(String[] args) {
+		PathMatcher matcher = new AntPathMatcher();
+		String patternPath = "/login/**";// 请求路径
+		String requestPath = "/login/wx/code";// 路径匹配模式
+		boolean result = matcher.match(patternPath, requestPath);
+		System.out.println(result);
 	}
 }

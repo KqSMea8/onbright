@@ -829,4 +829,13 @@ public interface FeignDeviceClient {
 			@PathVariable(value = "location", required = true) Integer location,
 			@RequestBody(required = true) Map<String, String> map);
 
+	/**  
+	 * @param userId
+	 * @param serialId  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/device/queryWifyDeviceByUserIdAndSerialId/{userId}/{serialId}", method = RequestMethod.GET)
+	ResponseObject<TAliDeviceConfig> queryWifyDeviceByUserIdAndSerialId(@PathVariable(value = "userId", required = true) Integer userId,
+			@PathVariable(value = "serialId", required = true) String serialId);
+
 }

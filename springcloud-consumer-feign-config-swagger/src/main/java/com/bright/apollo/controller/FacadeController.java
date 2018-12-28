@@ -993,9 +993,29 @@ public class FacadeController extends BaseController {
 						}
 					} else if (sceneActionDTO.getNodeType().equals(NodeTypeEnum.security.getValue())) {
 
+					}else if (sceneActionDTO.getNodeType().equals(NodeTypeEnum.wifi.getValue())) {
+						 ResponseObject<TAliDeviceConfig> wifiRes = feignDeviceClient.queryWifyDeviceByUserIdAndSerialId(resUser.getData().getId(),sceneActionDTO.getDeviceSerialId());
+						 if (wifiRes != null && wifiRes.getData() != null
+									&& wifiRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()&&
+											wifiRes.getData().getType().equals(DeviceTypeEnum.wifi.getValue())	
+								 ) {
+								tSceneAction.setActionid(sceneActionDTO.getDeviceSerialId());
+								tSceneAction.setNodeType(NodeTypeEnum.wifi.getValue());
+								feignSceneClient.addSceneAction(tSceneAction);
+							}
+					}else if (sceneActionDTO.getNodeType().equals(NodeTypeEnum.wifi_ir.getValue())) {
+						ResponseObject<TAliDeviceConfig> wifiRes = feignDeviceClient.queryWifyDeviceByUserIdAndSerialId(resUser.getData().getId(),sceneActionDTO.getDeviceSerialId());
+						 if (wifiRes != null && wifiRes.getData() != null
+									&& wifiRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()&&
+									wifiRes.getData().getType().equals(DeviceTypeEnum.wifi_ir.getValue())
+								 ) {
+								tSceneAction.setActionid(sceneActionDTO.getDeviceSerialId());
+								tSceneAction.setNodeType(NodeTypeEnum.wifi_ir.getValue());
+								feignSceneClient.addSceneAction(tSceneAction);
+							}
 					}
 					// add wifi device
-					else if (sceneActionDTO.getNodeType().equals(NodeTypeEnum.wifi.getValue())) {
+					/*else if (sceneActionDTO.getNodeType().equals(NodeTypeEnum.wifi.getValue())) {
 						ResponseObject<TAliDeviceConfig> aliDeviceRes = feignDeviceClient
 								.queryAliDevConfigBySerial(sceneActionDTO.getDeviceSerialId());
 						if (aliDeviceRes != null && aliDeviceRes.getData() != null
@@ -1004,7 +1024,7 @@ public class FacadeController extends BaseController {
 							tSceneAction.setNodeType(NodeTypeEnum.wifi.getValue());
 							feignSceneClient.addSceneAction(tSceneAction);
 						}
-					}
+					}*/
 				}
 			}
 			List<List<SceneConditionDTO>> sceneConditionDTOs = sceneDTO.getConditions();
@@ -1236,7 +1256,39 @@ public class FacadeController extends BaseController {
 							feignSceneClient.addSceneAction(tSceneAction);
 						}
 
+					}else if (sceneActionDTO.getNodeType().equals(NodeTypeEnum.wifi.getValue())) {
+						 ResponseObject<TAliDeviceConfig> wifiRes = feignDeviceClient.queryWifyDeviceByUserIdAndSerialId(resUser.getData().getId(),sceneActionDTO.getDeviceSerialId());
+						 if (wifiRes != null && wifiRes.getData() != null
+									&& wifiRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()&&
+											wifiRes.getData().getType().equals(DeviceTypeEnum.wifi.getValue())	
+								 ) {
+								tSceneAction.setActionid(sceneActionDTO.getDeviceSerialId());
+								tSceneAction.setNodeType(NodeTypeEnum.wifi.getValue());
+								feignSceneClient.addSceneAction(tSceneAction);
+							}
+					}else if (sceneActionDTO.getNodeType().equals(NodeTypeEnum.wifi_ir.getValue())) {
+						ResponseObject<TAliDeviceConfig> wifiRes = feignDeviceClient.queryWifyDeviceByUserIdAndSerialId(resUser.getData().getId(),sceneActionDTO.getDeviceSerialId());
+						 if (wifiRes != null && wifiRes.getData() != null
+									&& wifiRes.getStatus() == ResponseEnum.SelectSuccess.getStatus()&&
+									wifiRes.getData().getType().equals(DeviceTypeEnum.wifi_ir.getValue())
+								 ) {
+								tSceneAction.setActionid(sceneActionDTO.getDeviceSerialId());
+								tSceneAction.setNodeType(NodeTypeEnum.wifi_ir.getValue());
+								feignSceneClient.addSceneAction(tSceneAction);
+							}
 					}
+					/*else if (sceneActionDTO.getNodeType().equals(NodeTypeEnum.wifi.getValue())) {
+						ssss
+						ResponseObject<TAliDeviceConfig> aliDeviceRes = feignDeviceClient
+								.queryAliDevConfigBySerial(sceneActionDTO.getDeviceSerialId());
+						if (aliDeviceRes != null && aliDeviceRes.getData() != null
+								&& aliDeviceRes.getStatus() != ResponseEnum.SelectSuccess.getStatus()) {
+							tSceneAction.setActionid(aliDeviceRes.getData().getDeviceSerialId());
+							tSceneAction.setNodeType(NodeTypeEnum.wifi.getValue());
+							feignSceneClient.addSceneAction(tSceneAction);
+						}
+
+					}*/
 				}
 			}
 

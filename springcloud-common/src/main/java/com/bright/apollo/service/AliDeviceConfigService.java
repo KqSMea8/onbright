@@ -23,5 +23,13 @@ public interface AliDeviceConfigService {
 	void addAliDevice(TAliDeviceConfig aliDeviceConfig);
 
 	void deleteAliDeviceConfig(String oboxSerialId);
+
+	/**  
+	 * @param userId
+	 * @param serialId
+	 * @return  
+	 * @Description:  
+	 */
+	TAliDeviceConfig queryWifyDeviceByUserIdAndSerialId(Integer userId, String serialId);
  
 }

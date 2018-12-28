@@ -889,6 +889,16 @@ public class HystrixFeignDeviceFallback extends BasicHystrixFeignFallback implem
 		logger.warn("===device server is break===");
 		return serverError();
 	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.feign.FeignDeviceClient#queryWifyDeviceByUserIdAndSerialId(java.lang.Integer, java.lang.String)  
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public ResponseObject<TAliDeviceConfig> queryWifyDeviceByUserIdAndSerialId(Integer userId, String serialId) {
+		logger.warn("===device server is break===");
+		return serverError();
+	}
  
  
 }

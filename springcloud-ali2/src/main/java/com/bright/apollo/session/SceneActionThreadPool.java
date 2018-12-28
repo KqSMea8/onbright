@@ -33,6 +33,7 @@ import com.bright.apollo.enums.SignatureEnum;
 import com.bright.apollo.enums.SystemEnum;
 import com.bright.apollo.service.AliDeviceConfigService;
 import com.bright.apollo.service.AliDeviceService;
+import com.bright.apollo.service.WifiServiceImpl;
 import com.bright.apollo.service.OboxDeviceConfigService;
 import com.bright.apollo.service.OboxService;
 import com.bright.apollo.service.SceneActionService;
@@ -52,6 +53,8 @@ public class SceneActionThreadPool {
 	@Autowired
 	private AliDeviceService aliDeviceService;
 
+	@Autowired
+	private WifiServiceImpl wifiServiceImpl;
 	@Autowired
 	private AliDevCache aliDevCache;
 
@@ -217,11 +220,31 @@ public class SceneActionThreadPool {
 								// TimeUnit.MILLISECONDS.sleep(250);
 							}
 						}
-					} // add wifi
+					} 
+					//add wifi_ir
+					else if (tSceneAction.getNodeType().equals(NodeTypeEnum.wifi_ir.getValue())) {
+						TAliDeviceConfig aliDeviceConfig = aliDeviceConfigService
+								.getAliDeviceConfigBySerializeId(tSceneAction.getActionid());
+						if (aliDeviceConfig != null) {
+							com.alibaba.fastjson.JSONObject json = com.alibaba.fastjson.JSON.parseObject(tSceneAction.getAction());
+							if(!StringUtils.isEmpty(json.getString("key"))&&
+									json.getInteger("index")!=null&&json.getInteger("index")!=0
+									){
+								String key = json.getString("key");
+								int index = json.getInteger("index");
+								wifiServiceImpl.controlIr(tSceneAction.getActionid(), index, key);
+							}
+						}
+					} 
+					// add wifi
 					else if (tSceneAction.getNodeType().equals(NodeTypeEnum.wifi.getValue())) {
 						TAliDeviceConfig aliDeviceConfig = aliDeviceConfigService
 								.getAliDeviceConfigBySerializeId(tSceneAction.getActionid());
 						if (aliDeviceConfig != null) {
+								wifiServiceImpl.setAliDevice(tSceneAction.getActionid(),"["+tSceneAction.getAction()+"]" );
+							}
+							/*
+							com.alibaba.fastjson.JSONObject json = com.alibaba.fastjson.JSON.parseObject(tSceneAction.getAction());
 							JSONArray array = JSONArray.parseArray(tSceneAction.getAction());
 							for (int i = 0; i < array.size(); i++) {
 								com.alibaba.fastjson.JSONObject jsonObject = array.getJSONObject(i);
@@ -239,7 +262,7 @@ public class SceneActionThreadPool {
 							aliDeviceConfig.setState(array.toJSONString());
 							aliDeviceConfigService.update(aliDeviceConfig);
 							log.info("array ====== " + array.toJSONString());
-						}
+						}*/
 					} else if (tSceneAction.getNodeType().equals(NodeTypeEnum.group.getValue())) {
 						TServerGroup tServerGroup = serverGroupService
 								.querySererGroupById(Integer.parseInt(tSceneAction.getActionid()));

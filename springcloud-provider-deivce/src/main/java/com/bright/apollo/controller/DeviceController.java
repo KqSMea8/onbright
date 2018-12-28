@@ -11,12 +11,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bright.apollo.common.entity.TAliDeviceConfig;
 import com.bright.apollo.common.entity.TDeviceStatus;
 import com.bright.apollo.common.entity.TNvr;
 import com.bright.apollo.common.entity.TOboxDeviceConfig;
 import com.bright.apollo.common.entity.TYSCamera;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
+import com.bright.apollo.service.AliDeviceConfigService;
 import com.bright.apollo.service.CameraService;
 import com.bright.apollo.service.DeviceService;
 import com.bright.apollo.service.DeviceStatusService;
@@ -50,6 +52,8 @@ public class DeviceController {
 
 	@Autowired
 	private DeviceStatusService deviceStatusService;
+	@Autowired
+	private AliDeviceConfigService aliDeviceConfigService;
 	// find deivce by serial_id
 	@RequestMapping(value = "/{serialId}", method = RequestMethod.GET)
 	public ResponseObject<TOboxDeviceConfig> getDevice(
@@ -400,6 +404,29 @@ public class DeviceController {
 		}
 		return res;
 	}
+	//==============wifi ====================
+	/**  
+	 * @param userId
+	 * @param serialId  
+	 * @Description:  
+	 */
+	@RequestMapping(value = "/queryWifyDeviceByUserIdAndSerialId/{userId}/{serialId}", method = RequestMethod.GET)
+	ResponseObject<TAliDeviceConfig> queryWifyDeviceByUserIdAndSerialId(@PathVariable(value = "userId", required = true) Integer userId,
+			@PathVariable(value = "serialId", required = true) String serialId){
+		ResponseObject<TAliDeviceConfig> res = new ResponseObject<TAliDeviceConfig>();
+		try { 
+			res.setData(aliDeviceConfigService.queryWifyDeviceByUserIdAndSerialId(userId,serialId));
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
+ 		} catch (Exception e) {
+			logger.error("===error msg:"+e.getMessage());
+			res.setStatus(ResponseEnum.Error.getStatus());
+			res.setMessage(ResponseEnum.Error.getMsg());
+		}
+		return res;
+	
+	}
+
 	/**
 	 * @param serialId
 	 * @param from
@@ -422,4 +449,5 @@ public class DeviceController {
 		}
 		return res;
 	}
+	
 }
