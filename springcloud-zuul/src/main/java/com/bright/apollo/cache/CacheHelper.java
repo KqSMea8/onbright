@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.bright.apollo.redis.RedisBussines;
-import com.zz.common.util.RandomUtils;
 
 /**  
  *@Title:  

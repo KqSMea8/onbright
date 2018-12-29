@@ -94,6 +94,6 @@ public class DateHelper {
 		return dateFormater.format(new Date(time));
 	}
 	public static void main(String[] args) {
-		System.out.println(formatDate(1545877546000l, DateHelper.FORMATALL));
+		System.out.println(formatDate(1546069552695l, DateHelper.FORMATALL));
 	}
 }
