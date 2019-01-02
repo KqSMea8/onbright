@@ -394,6 +394,15 @@ public class AliDeviceController {
 				res.setStatus(ResponseEnum.NoIRKey.getStatus());
 				res.setMessage(ResponseEnum.NoIRKey.getMsg());
 			}else{
+				int total = 0;
+				for(int i=0;i<yaokonyunKeyCodeList.size();i++){
+					TYaokonyunKeyCode yaokonyunKeyCode = yaokonyunKeyCodeList.get(i);
+					String key = yaokonyunKeyCode.getKey();
+					if(key.indexOf("*")>=0){
+						continue;
+					}
+					total++;
+				}
 				cmdCache.setIRDeviceInfoList("ir_keCodeList_"+index,yaokonyunKeyCodeList);
 				cmdCache.addIrIndexBySerialId(serialId,index.toString());
 				requestMap.put("command","set");
@@ -402,7 +411,7 @@ public class AliDeviceController {
 				json.put("functionId",6);
 				jsonArray.add(json);
 				json.put("data",1);
-				json.put("count",yaokonyunKeyCodeList.size());
+				json.put("count",total);
 				requestMap.put("value",jsonArray);
 				JSONObject jsonObject = topServer.pubIrRPC(requestMap,serialId);
 				Integer respCode = (Integer)jsonObject.get("respCode");
@@ -434,19 +443,17 @@ public class AliDeviceController {
 		Integer subtractVal = new Integer(0);
 		if(code.length()>=4){
 			Integer total = new Integer(0);
-			int j=0;
-			int len = j+4;
-			for(j=0;len<=code.length();j=j+4) {
-				String subCode = code.substring(0, 4);
-				String begin =subCode.substring(0,2);
-				String end =subCode.substring(2,4);
+			for(int i=0;i+2<=code.length();i=i+2) {
+				String begin = code.substring(i, i+2);
+				System.out.println("begin ====== "+begin+" ====== "+i);
 				Integer beginInt = Integer.parseInt(begin, 16);
-				Integer endInt = Integer.parseInt(end,16);
-				total += beginInt+endInt;
-				code = code.substring(len,code.length());
+				total += beginInt;
+				System.out.println("total ====== "+total);
 			}
 			String lowInt = Integer.toHexString(total);
-			lowInt = lowInt.substring(lowInt.length()-2, lowInt.length());
+			if(lowInt.length()>2){
+				lowInt = lowInt.substring(lowInt.length()-2, lowInt.length());
+			}
 			subtractVal = 255-Integer.parseInt(lowInt,16);
 		}else{
 			subtractVal = 255-Integer.parseInt(code,16);
@@ -488,6 +495,7 @@ public class AliDeviceController {
 				idx = hexIdx.toString();
 			}
 			String version = "";
+			int count = 1;
 			for(int i=0;i<yaokonyunKeyCodeList.size();i++){
 				TYaokonyunKeyCode yaokonyunKeyCode = yaokonyunKeyCodeList.get(i);
 				requestMap.put("command","set");
@@ -498,8 +506,11 @@ public class AliDeviceController {
 				json.put("functionId",7);
 				json.put("data",code);
 				json.put("index",index);
-				json.put("count",i+1);
+
 				String sendkey = yaokonyunKeyCode.getKey();
+				if(sendkey.equals("off")){
+					logger.info(" =========== off ================ ");
+				}
 				Integer codeVersion = yaokonyunKeyCode.getVersion();
 				codeVersion = Integer.parseInt(codeVersion.toString(),16);
 				if(version.equals("")){
@@ -538,6 +549,7 @@ public class AliDeviceController {
 				String keyStr = sb.toString();
 				keyStr +=crcSum(keyStr);
 				json.put("key",keyStr);
+				json.put("count",count++);
 				jsonArray.add(json);
 				requestMap.put("value",jsonArray);
 				jsonObject = topServer.pubIrRPC(requestMap,serialId);

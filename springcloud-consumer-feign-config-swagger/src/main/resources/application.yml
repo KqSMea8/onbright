@@ -5,10 +5,18 @@ spring:
   profiles:
     active: dev
   thymeleaf:
-    content-type: text/html 
-    cache: false 
+    content-type: text/html
+    cache: false
     mode: LEGACYHTML5
     prefix: classpath:/html/
+  freemarker:
+        template-loader-path: classpath:/templates/
+        content-type: text/html
+        suffix: .ftl
+        charset: utf-8
+        request-context-attribute: request
+        cache: false
+        enabled: true
 #自定义
 SmsLogin:
   url: /login/mobile
