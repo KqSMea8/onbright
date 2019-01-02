@@ -18,6 +18,8 @@ public class WxLoginVo {
 	
 	private String codeUrl;
 	
+	private String smsUrl;
+	
 	private String httpMethod;
 	
 	private String antUrl;
@@ -51,6 +53,14 @@ public class WxLoginVo {
 
 	public void setAntUrl(String antUrl) {
 		this.antUrl = antUrl;
+	}
+
+	public String getSmsUrl() {
+		return smsUrl;
+	}
+
+	public void setSmsUrl(String smsUrl) {
+		this.smsUrl = smsUrl;
 	}
 	
 }

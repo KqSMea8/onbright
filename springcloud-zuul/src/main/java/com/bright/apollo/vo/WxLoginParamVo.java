@@ -28,6 +28,8 @@ public class WxLoginParamVo {
 	private String wxLoginUrl;
 	
 	private String grantType;
+	
+	private String mobile;
 	public String getWxToken() {
 		return wxToken;
 	}
@@ -90,6 +92,14 @@ public class WxLoginParamVo {
 
 	public void setGrantType(String grantType) {
 		this.grantType = grantType;
+	}
+
+	public String getMobile() {
+		return mobile;
+	}
+
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
 	}
 
 }

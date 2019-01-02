@@ -29,6 +29,7 @@ import com.bright.apollo.service.WxService;
 import com.bright.apollo.tool.Base64Util;
 import com.bright.apollo.tool.HttpUtil;
 import com.bright.apollo.tool.MD5;
+import com.bright.apollo.tool.MobileUtil;
 import com.bright.apollo.vo.SmsLoginParamVo;
 import com.bright.apollo.vo.SmsLoginVo;
 import com.bright.apollo.vo.WxLoginParamVo;
@@ -166,6 +167,36 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 			//	HttpUtil.request(uri);
 //				cacheHelper.addOpenId(code, "o40G45XVBWdf8HKQCkN-9W74vNBk");
 				//filterChain.doFilter(request, response);
+			} catch (Exception e) {
+				logger.error("====error msg:" + e.getMessage());
+				throw new InternalAuthenticationServiceException(e.getMessage());
+			}
+
+		} else if (pathMatcher.match(wxLoginVo.getCodeUrl(), request.getRequestURI())) {
+			// login/wx/sms   for wx mini program
+			try {
+				String code = request.getParameter(wxLoginParamVo.getCode());
+				String mobile = request.getParameter(wxLoginParamVo.getMobile());
+				logger.info("===code:" + code+"====mobile:"+mobile);
+				if (StringUtils.isEmpty(code)||StringUtils.isEmpty(mobile)||
+						!MobileUtil.checkMobile(mobile)
+						) {
+					throw new InternalAuthenticationServiceException("code is null or mobile is error");
+				}
+				String cacheCode = cacheHelper.getCode(mobile);
+				if(!cacheCode.trim().equals(code.trim())){
+					throw new InternalAuthenticationServiceException("code is error");
+				}else{
+					if (userService.queryUserByName(mobile) == null) {
+						String pwd = mobile.substring(mobile.length() - 8);
+						try {
+							userService.addUser(mobile, encrypt(encrypt(pwd)));
+						} catch (Exception e) {
+							logger.error("===error msg:" + e.getMessage());
+						}
+					}
+					filterChain.doFilter(request, response);
+				}
 			} catch (Exception e) {
 				logger.error("====error msg:" + e.getMessage());
 				throw new InternalAuthenticationServiceException(e.getMessage());

@@ -200,36 +200,18 @@ public class TopicServer {
 	public JSONObject pubIrRPC(Map<String, Object> map,String deviceSerial) throws Exception {
 		logger.info(" ====== pubIRTopic start ====== ");
 		String mString = null;
-//		if(data != null){
-//			mString = com.bright.apollo.util.StringUtils.bytes2String(cmd, data, packageLength, head);
-//		}
+
 		RRpcRequest rrpcRequest = new RRpcRequest();
-//		PubRequest request = new PubRequest();
 		String productKey = AliDevCache.getProductKey(deviceSerial);
 		String deviceName = AliDevCache.getDeviceName(deviceSerial);
-//		String productKey = "a1IKqm2m8sW";
-//		String deviceName = "nh4TFEzNGQ3t9vyNPFE8"; //ZVm5WfsCtbaAUBtOLvB4
-//		String region = AliDevCache.getProductRegion(deviceSerial);
 		String region = AliRegionEnum.SOURTHCHINA.getValue();
-//		if (StringUtils.isEmpty(productKey)) {
-//			TAliDevice device = aliDeviceService.getAliDeviceBySerializeId(deviceSerial);
-//			region = setCache(device, deviceSerial);
-//		}
+
 		rrpcRequest.setProductKey(productKey);
 		rrpcRequest.setDeviceName(deviceName);
 		String jsonObject = new Gson().toJson(map);
 		logger.info(" TopicService.pubIrRPC() productkey: " + productKey + " devicename:" + deviceName + " object: "
 				+ jsonObject.toString());
-
-//		if(mString !=null){
-//			rrpcRequest.setMessageContent(Base64.encodeBase64String(mString.getBytes()));
-//		}else{
-			rrpcRequest.setRequestBase64Byte(Base64.encodeBase64String(jsonObject.toString().getBytes()));
-//		}
-
-//		rrpcRequest.setTopicFullName("/" + productKey + "/" + deviceName + "/get");
-//		rrpcRequest.setQos(0); // QoS0 设备在线时发送 ，QoS1 设备不在线时，能在IOT HUB 上保存7天，上线后发送
-//		PubResponse response = null;
+		rrpcRequest.setRequestBase64Byte(Base64.encodeBase64String(jsonObject.toString().getBytes()));
 		RRpcResponse rrpcResponse = null;
 		rrpcRequest.setTimeout(3500);
 		rrpcResponse = sendRPCRequest(rrpcRequest, region, rrpcResponse);
@@ -256,6 +238,24 @@ public class TopicServer {
 		return new JSONObject();
 	}
 
+//	public void pubIRTopic(Map<String, Object> map,String deviceSerial)
+//			throws Exception {
+//		logger.info(" ====== pubIRTopic start ====== ");
+//		String productKey = AliDevCache.getProductKey(deviceSerial);
+//		String deviceName = AliDevCache.getDeviceName(deviceSerial);
+//		String region = AliRegionEnum.SOURTHCHINA.getValue();
+//		String jsonObject = new Gson().toJson(map);
+//		logger.info(" TopicService.pubIrRPC() productkey: " + productKey + " devicename:" + deviceName + " object: "
+//				+ jsonObject.toString());
+//		PubRequest request = new PubRequest();
+//		request.setProductKey(productKey);
+//		request.setMessageContent(Base64.encodeBase64String(jsonObject.toString().getBytes()));
+//		request.setTopicFullName("/" + productKey + "/" + deviceName + "/get");
+//		request.setQos(0); // QoS0 设备在线时发送 ，QoS1 设备不在线时，能在IOT HUB 上保存7天，上线后发送
+//		PubResponse response = null;
+//		sendRequest(request, region, response);
+//	}
+
 	public JSONObject requestDev(net.sf.json.JSONObject object, String deviceSerial,String value) throws Exception {
 		logger.info(" ====== requestDev start ====== ");
 		RRpcRequest rrpcRequest = new RRpcRequest();
@@ -274,7 +274,7 @@ public class TopicServer {
 		rrpcRequest.setProductKey(productKey);
 		rrpcRequest.setDeviceName(deviceName); // 设备名称
 		rrpcRequest.setRequestBase64Byte(Base64.encodeBase64String(object.toString().getBytes())); // 发给设备的数据，要求二进制数据做一次Base64编码
-		rrpcRequest.setTimeout(3500); // 超时时间，单位毫秒，如果超过这个时间设备没反应则返回"TIMEOUT"
+		rrpcRequest.setTimeout(10000); // 超时时间，单位毫秒，如果超过这个时间设备没反应则返回"TIMEOUT"
 		RRpcResponse rrpcResponse = null;
 		rrpcResponse = sendRPCRequest(rrpcRequest, eAliRegionEnum, rrpcResponse);
 		/*

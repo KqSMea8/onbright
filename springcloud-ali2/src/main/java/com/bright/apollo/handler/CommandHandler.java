@@ -163,7 +163,7 @@ public class CommandHandler {
 				// AliDevBusiness.queryAliDevByName(object.getString("productKey"),
 				// object.getString("deviceName"));
 				if (tAliDevice != null) {
-					tAliDevice.setOffline(0);
+					tAliDevice.setOffline(1);
 					aliDeviceService.updateAliDevice(tAliDevice);
 					// AliDevBusiness.updateAliDev(tAliDevice);
 					TObox dbObox = oboxService.queryOboxsByOboxSerialId(tAliDevice.getOboxSerialId());
@@ -185,7 +185,7 @@ public class CommandHandler {
 					// AliDevBusiness.queryAliDevUSByName(object.getString("productKey"),
 					// object.getString("deviceName"));
 					if (tAliDeviceUS != null) {
-						tAliDeviceUS.setOffline(0);
+						tAliDeviceUS.setOffline(1);
 						aliDeviceService.updateAliUSDevice(tAliDeviceUS);
 						// AliDevBusiness.updateAliDevUS(tAliDeviceUS);
 						TObox dbObox = oboxService.queryOboxsByOboxSerialId(tAliDeviceUS.getDeviceSerialId());
@@ -222,8 +222,9 @@ public class CommandHandler {
 						aliDeviceService.updateAliDevice(tAliDevice);
 					}
 				}
-				pushMsg(object.getString("productKey"), object.getString("deviceName"), isObox,false);
+
 			}
+			pushMsg(object.getString("productKey"), object.getString("deviceName"), isObox,false);
 		} else if (object.getString("status").equals("online")) {
 			TimeZone tz = TimeZone.getTimeZone("GMT+8:00");
 			Calendar date = Calendar.getInstance(tz);

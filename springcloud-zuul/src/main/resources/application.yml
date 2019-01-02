@@ -13,6 +13,7 @@ SmsLoginParam:
 WxLogin:
   url: /login/wx
   codeUrl: /login/wx/code
+  smsUrl: /login/wx/sms
   antUrl: /login/**
   httpMethod: POST
 WxLoginParam:
@@ -24,3 +25,4 @@ WxLoginParam:
   code: code
   wxLoginUrl: https://api.weixin.qq.com/sns/jscode2session
   grantType: authorization_code
+  mobile: mobile

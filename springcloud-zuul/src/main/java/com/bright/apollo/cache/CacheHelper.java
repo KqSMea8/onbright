@@ -37,4 +37,13 @@ public class CacheHelper {
  		redisBussines.delete(code);
  		return value;
 	}
+	/**  
+	 * @param mobile  
+	 * @Description:  
+	 */
+	public String getCode(String mobile) {
+		String reply = (String) redisBussines.get("Code__"+mobile);
+		return reply;
+		
+	}
 }
