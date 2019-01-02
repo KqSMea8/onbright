@@ -81,7 +81,8 @@ public class AliServerController {
 
 	@Autowired
 	private YaoKongYunService yaoKongYunService;
-
+	@Autowired
+	private WifiServiceImpl wifiServiceImpl;
 	// @Autowired
 	// private QuartzService quartzService;
 
@@ -858,6 +859,8 @@ public class AliServerController {
 			@RequestParam(required = true, value = "deviceId") String deviceId) {
 		ResponseObject res = new ResponseObject();
 		try {
+			return wifiServiceImpl.setAliDevice(deviceId, value);
+			/*
 			String val = (String) value;
 			JSONArray array = JSONArray.parseArray(val);
 			for (int i = 0; i < array.size(); i++) {
@@ -887,7 +890,7 @@ public class AliServerController {
 			res.setData(array.toJSONString());
 			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
 			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
-		} catch (Exception e) {
+		*/} catch (Exception e) {
 			logger.error("===error msg:" + e.getMessage());
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());

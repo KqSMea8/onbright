@@ -1,8 +1,11 @@
 package com.bright.apollo.filter;
 
 import java.io.IOException;
+import java.net.URI;
+import java.util.Date;
 
 import javax.servlet.FilterChain;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +27,7 @@ import com.bright.apollo.http.MobClient;
 import com.bright.apollo.service.UserService;
 import com.bright.apollo.service.WxService;
 import com.bright.apollo.tool.Base64Util;
+import com.bright.apollo.tool.HttpUtil;
 import com.bright.apollo.tool.MD5;
 import com.bright.apollo.vo.SmsLoginParamVo;
 import com.bright.apollo.vo.SmsLoginVo;
@@ -62,9 +66,9 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 	private CacheHelper cacheHelper;
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		logger.info("===validateCodeFilter before===");
-		String url = smsLoginVo.getUrl();
-		if (pathMatcher.match(url, request.getRequestURI())) {
+		logger.info("===remoteAddress:"+request.getRemoteAddr()+"===validateCodeFilter before===");
+		//String url = smsLoginVo.getUrl();
+		if (pathMatcher.match(smsLoginVo.getUrl(), request.getRequestURI())) {
 			// mobile login
 			try {
 				String shareSdkAppkey = request.getParameter(smsLoginParamVo.getAppkey());
@@ -84,6 +88,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 				mobClient.addRequestProperty("Accept", "application/json");
 				String result = mobClient.post();
 				logger.info("===result:" + result);
+				//request.remo
 				JSONObject object = new JSONObject(result);
 				if (object.getInt("status") == 200) {
 					if (userService.queryUserByName(mobile) == null) {
@@ -104,7 +109,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 			} catch (Exception e) {
 				logger.error("====error msg:" + e.getMessage());
 				throw new InternalAuthenticationServiceException(e.getMessage());
-			}
+			} 
 
 		} else if (pathMatcher.match(wxLoginVo.getUrl(), request.getRequestURI())) {
 			// wx login  for phone use wx login
@@ -141,9 +146,11 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 				if (StringUtils.isEmpty(code)) {
 					throw new InternalAuthenticationServiceException("code is null");
 				}
+				long startTime = new Date().getTime();
 				JSONObject wxToken = wxService.getWxToken(code, wxLoginParamVo.getAppId(), wxLoginParamVo.getSecret(),
 						wxLoginParamVo.getGrantType(), wxLoginParamVo.getWxLoginUrl());
-				logger.info("===wxToken:"+wxToken);
+				long endTime = new Date().getTime();
+				logger.info("===time"+(endTime-startTime)+"===wxToken:"+wxToken);
 				if (wxToken == null || !wxToken.has("session_key") || !wxToken.has("openid")) {
 					throw new InternalAuthenticationServiceException("wx code verify request error ");
 				} else {
@@ -155,8 +162,10 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 					cacheHelper.addOpenId(code, openId);
 					filterChain.doFilter(request, response);
 				}
-			//	cacheHelper.addOpenId(code, "o40G45XVBWdf8HKQCkN-9W74vNBk");
-				filterChain.doFilter(request, response);
+		//		URI uri = URI.create("www.baidu.com");
+			//	HttpUtil.request(uri);
+//				cacheHelper.addOpenId(code, "o40G45XVBWdf8HKQCkN-9W74vNBk");
+				//filterChain.doFilter(request, response);
 			} catch (Exception e) {
 				logger.error("====error msg:" + e.getMessage());
 				throw new InternalAuthenticationServiceException(e.getMessage());

@@ -33,4 +33,5 @@ public interface WxService {
 	 * @Description:
 	 */
 	public JSONObject getWxToken(String code, String appId, String secret, String grantType, String wxLoginUrl);
+	
 }

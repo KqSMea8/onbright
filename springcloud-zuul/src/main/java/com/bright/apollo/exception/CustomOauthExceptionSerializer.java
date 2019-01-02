@@ -21,9 +21,7 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
  *@Version:1.1.0  
  */
 public class CustomOauthExceptionSerializer extends StdSerializer<CustomOauthException> {
-    /**  
-	 *   
-	 */
+   
 	private static final long serialVersionUID = -1135555131160889648L;
 
 	public CustomOauthExceptionSerializer() {

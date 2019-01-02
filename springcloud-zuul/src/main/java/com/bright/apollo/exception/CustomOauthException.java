@@ -13,9 +13,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
  */
 @JsonSerialize(using = CustomOauthExceptionSerializer.class)
 public class CustomOauthException extends OAuth2Exception {
-    /**  
-	 *   
-	 */
+    
 	private static final long serialVersionUID = -3935906205559100070L;
 
 	public CustomOauthException(String msg) {

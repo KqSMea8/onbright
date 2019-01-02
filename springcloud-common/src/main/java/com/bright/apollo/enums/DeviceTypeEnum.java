@@ -81,7 +81,7 @@ public enum DeviceTypeEnum {
     //光头强
     remote_led("16"),
     
-    remote_child_led("01")
+    remote_child_led("01"), wifi_ir("51"), wifi("50")
     ;
 
     private String value;

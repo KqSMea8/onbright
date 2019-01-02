@@ -48,4 +48,13 @@ public class AliDeviceConfigServiceImpl implements AliDeviceConfigService {
 		mapper.addAliDeviceConfig(tAliDeviceConfig);
 		
 	}
+
+	/* (non-Javadoc)  
+	 * @see com.bright.apollo.service.AliDeviceConfigService#queryWifyDeviceByUserIdAndSerialId(java.lang.Integer, java.lang.String)  
+	 */
+	@Override
+	public TAliDeviceConfig queryWifyDeviceByUserIdAndSerialId(Integer userId, String serialId) {
+		 
+		return mapper.queryWifyDeviceByUserIdAndSerialId(userId,serialId);
+	}
 }

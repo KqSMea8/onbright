@@ -77,7 +77,9 @@ public class AliDeviceController {
 
 	@Autowired
 	private UserAliDevService userAliDevService;
-
+	
+	@Autowired
+	private WifiServiceImpl irServiceImpl;
 
 	private static final Logger logger = LoggerFactory.getLogger(AliDeviceController.class);
 
@@ -311,8 +313,16 @@ public class AliDeviceController {
 														   @RequestParam(required = true, value = "index") Integer index,
 														   @RequestParam(required = true, value = "key") String key) {
 		ResponseObject res = new ResponseObject();
-		Map<String, Object> requestMap = new HashMap<String, Object>();
+		//Map<String, Object> requestMap = new HashMap<String, Object>();
 		try {
+			if(irServiceImpl.controlIr(serialId, index, key)){
+				res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
+				res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
+			}else{
+				res.setStatus(ResponseEnum.NoIRKey.getStatus());
+				res.setMessage(ResponseEnum.NoIRKey.getMsg());
+			}
+			/*
 			TYaokonyunKeyCode yaokonyunKeyCode = yaoKongYunService.getYaoKongKeyCodeByKeyAndSerialIdAndIndex(index,serialId,key);
 			String brandId = cmdCache.getIrTestCodeAppKeyBrandIdDeviceType("brandId_"+index);
 			String deviceType = cmdCache.getIrTestCodeAppKeyBrandIdDeviceType("deviceType_"+index);
@@ -356,7 +366,7 @@ public class AliDeviceController {
 				res.setStatus(ResponseEnum.UpdateSuccess.getStatus());
 				res.setMessage(ResponseEnum.UpdateSuccess.getMsg());
 			}
-		} catch (Exception e) {
+		*/} catch (Exception e) {
 			e.printStackTrace();
 			res.setStatus(ResponseEnum.Error.getStatus());
 			res.setMessage(ResponseEnum.Error.getMsg());
@@ -1257,5 +1267,8 @@ public class AliDeviceController {
 		yaoKongYunService.addYaoKongDevice(device);
 		return yaoKongYunService.getYaoKongYunDevice();
 	}
-
+	public static void main(String[] args) {
+		com.alibaba.fastjson.JSON json = com.alibaba.fastjson.JSON.parseObject("{\n\n}");
+		System.out.println(json.toJSONString());
+	}
 }

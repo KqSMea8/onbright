@@ -74,4 +74,25 @@ public interface AliDeviceConfigMapper {
 
 	@Delete("delete from t_ali_device_config where device_serial_id = #{deviceSerialId} ")
 	void deleteAliDeviceConfig(@Param("deviceSerialId") String deviceSerialId);
+
+	/**  
+	 * @param userId
+	 * @param serialId
+	 * @return  
+	 * @Description:  
+	 */
+	 @Select(" select tadc.* from t_user_ali_device tuad " +
+	            " inner join t_ali_device_config tadc on tuad.device_serial_id=tadc.device_serial_id where tuad.user_id = #{userId} "
+	            + "and tuad.device_serial_id =#{serialId}")
+	    @Results(value = {
+	            @Result(property = "Id",column = "id"),
+	            @Result(property = "deviceSerialId",column = "device_serial_id"),
+	            @Result(property = "name",column = "name"),
+	            @Result(property = "type",column = "type"),
+	            @Result(property = "action",column = "action"),
+	            @Result(property = "state",column = "state"),
+	            @Result(property = "lastOpTime",column = "last_op_time")
+
+	    })
+	TAliDeviceConfig queryWifyDeviceByUserIdAndSerialId(@Param("userId")Integer userId, @Param("serialId")String serialId);
 }

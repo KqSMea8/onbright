@@ -1,6 +1,5 @@
 package com.bright.apollo.config;
 
-import javax.annotation.Resource;
 import javax.sql.DataSource;
 
 import org.slf4j.Logger;
