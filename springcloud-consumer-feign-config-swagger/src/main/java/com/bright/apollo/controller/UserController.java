@@ -8,6 +8,8 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +24,10 @@ import com.bright.apollo.http.HttpWithBasicAuth;
 import com.bright.apollo.http.MobClient;
 import com.bright.apollo.response.ResponseEnum;
 import com.bright.apollo.response.ResponseObject;
+import com.bright.apollo.service.WxService;
+import com.bright.apollo.tool.AESUtil;
+import com.bright.apollo.tool.MobileUtil;
+import com.bright.apollo.vo.WxLoginParamVo;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -41,7 +47,10 @@ public class UserController {
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	@Autowired
 	private FeignUserClient feignUserClient;
-
+	@Autowired
+	private WxService wxService;
+	@Autowired
+	private WxLoginParamVo wxLoginParamVo;
 	@Deprecated
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@ApiOperation(value = "wx login", httpMethod = "POST", produces = "application/json")
@@ -167,7 +176,47 @@ public class UserController {
 			return res;
 		}
 	}
-
+	 
+	@SuppressWarnings("rawtypes")
+	@ApiOperation(value = "send", httpMethod = "GET", produces = "application/json")
+	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
+	@GetMapping("/wxSendCodeToMobile")
+	public ResponseObject wxSendCodeToMobile( 
+			@RequestParam(required = true, value = "iv") String iv,
+			@RequestParam(required = true, value = "code") String code,
+			@RequestParam(required = true, value = "encrypted") String encrypted
+			,@RequestParam(required = false, value = "appId") String appId) {
+		ResponseObject res = null;
+		try {
+			JSONObject wxToken = wxService.getWxToken(code, wxLoginParamVo.getAppId(), wxLoginParamVo.getSecret(),
+					wxLoginParamVo.getGrantType(), wxLoginParamVo.getWxLoginUrl());
+			if (wxToken == null || !wxToken.has("session_key") || !wxToken.has("openid")) {
+				res = new ResponseObject();
+				res.setStatus(ResponseEnum.WxLoginError.getStatus());
+				res.setMessage(ResponseEnum.WxLoginError.getMsg());
+				return res;
+			} 
+			String sessionKey = wxToken.getString("session_key");
+			String date = AESUtil.wxDecrypt(encrypted, sessionKey, iv);
+			JSONObject object = new JSONObject(date.trim());
+			if(!object.has("purePhoneNumber")||StringUtils.isEmpty(object.getString("purePhoneNumber"))||
+					!MobileUtil.checkMobile(object.getString("purePhoneNumber"))
+					){
+				res = new ResponseObject();
+				res.setStatus(ResponseEnum.ObjExist.getStatus());
+				res.setMessage(ResponseEnum.ObjExist.getMsg());
+				return res;
+			}
+			//String mobile = object.getString("purePhoneNumber");
+			res = feignUserClient.sendCodeToMobile(object.getString("purePhoneNumber"), appId);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			res = new ResponseObject();
+			res.setStatus(ResponseEnum.RequestTimeout.getStatus());
+			res.setMessage(ResponseEnum.RequestTimeout.getMsg());
+		}
+		return res;
+	}
 	@SuppressWarnings("rawtypes")
 	@ApiOperation(value = "send", httpMethod = "GET", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)

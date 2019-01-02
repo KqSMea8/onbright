@@ -40,6 +40,7 @@ public enum ResponseEnum {
 	MultipleObjExist(427,"multiple  obj exist"),
 	//hotel
 	LocationNoExist(428,"the location not exist"),
+ 
 	
 	
 	Error(511,"system error"),

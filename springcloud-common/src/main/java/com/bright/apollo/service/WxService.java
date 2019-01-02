@@ -1,5 +1,7 @@
 package com.bright.apollo.service;
 
+import java.io.UnsupportedEncodingException;
+
 import org.json.JSONObject;
 
 import com.bright.apollo.constant.Constant;
@@ -30,8 +32,9 @@ public interface WxService {
 	 * @param grantType
 	 * @param wxLoginUrl
 	 * @return
+	 * @throws UnsupportedEncodingException 
 	 * @Description:
 	 */
-	public JSONObject getWxToken(String code, String appId, String secret, String grantType, String wxLoginUrl);
+	public JSONObject getWxToken(String code, String appId, String secret, String grantType, String wxLoginUrl) throws UnsupportedEncodingException;
 	
 }

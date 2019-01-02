@@ -29,7 +29,7 @@ public class CustomerAuthorizeConfigProvider implements AuthorizeConfigProvider 
 	public boolean config(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry config) {
 		// permit through url
 		System.out.println(" ===config=== ");
-		config.antMatchers("/swagger-ui.html", "/swagger-resources/**",
+		config.antMatchers("/user/wxSendCodeToMobile","/swagger-ui.html", "/swagger-resources/**",
 		"/webjars/springfox-swagger-ui/**","/v2/api-docs", "/user/**","/rokid/**","/oauthclient/**","/test/**","/refreshconfig/**","/tmall2/**","/tmall/**","/view/**","/PrivacyPolicyCN.html","PrivacyPolicyEN.html","/html/**","/hotelweb/**","/static/**","/fonts/**").permitAll();
 		return false;
 	}

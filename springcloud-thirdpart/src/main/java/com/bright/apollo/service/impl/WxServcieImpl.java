@@ -1,6 +1,8 @@
 package com.bright.apollo.service.impl;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URLEncoder;
 
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -67,7 +69,7 @@ public class WxServcieImpl implements WxService {
 	 * java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
-	public JSONObject getWxToken(String code, String appId, String secret, String grantType, String wxLoginUrl) {
+	public JSONObject getWxToken(String code, String appId, String secret, String grantType, String wxLoginUrl) throws UnsupportedEncodingException {
 		if (StringUtils.isEmpty(code))
 			return null;
 		StringBuffer sb = new StringBuffer(wxLoginUrl);
@@ -77,7 +79,11 @@ public class WxServcieImpl implements WxService {
 		.append("&grant_type=").append(grantType)
 		.append("&js_code=").append(code);
 		logger.info("===url:"+sb.toString());
-		URI uri = URI.create(sb.toString());
+		String url = sb.toString();
+	//	URLEncoder.encode(url, "UTF-8");
+		//String url = sb.toString().replaceAll("&", "%26");
+		//url = url.replaceAll(" ", "%20");
+		URI uri = URI.create(url.trim());
 		return HttpUtil.request(uri);
 	}
 
