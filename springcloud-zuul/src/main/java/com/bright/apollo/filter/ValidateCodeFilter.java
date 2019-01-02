@@ -172,7 +172,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 				throw new InternalAuthenticationServiceException(e.getMessage());
 			}
 
-		} else if (pathMatcher.match(wxLoginVo.getCodeUrl(), request.getRequestURI())) {
+		} else if (pathMatcher.match(wxLoginVo.getSmsUrl(), request.getRequestURI())) {
 			// login/wx/sms   for wx mini program
 			try {
 				String code = request.getParameter(wxLoginParamVo.getCode());

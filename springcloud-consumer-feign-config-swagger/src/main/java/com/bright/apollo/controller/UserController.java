@@ -181,12 +181,12 @@ public class UserController {
 	@ApiOperation(value = "send", httpMethod = "GET", produces = "application/json")
 	@ApiResponse(code = 200, message = "success", response = ResponseObject.class)
 	@GetMapping("/wxSendCodeToMobile")
-	public ResponseObject wxSendCodeToMobile( 
+	public ResponseObject<Map<String, Object>> wxSendCodeToMobile( 
 			@RequestParam(required = true, value = "iv") String iv,
 			@RequestParam(required = true, value = "code") String code,
 			@RequestParam(required = true, value = "encrypted") String encrypted
 			,@RequestParam(required = false, value = "appId") String appId) {
-		ResponseObject res = null;
+		ResponseObject<Map<String, Object>> res = null;
 		try {
 			JSONObject wxToken = wxService.getWxToken(code, wxLoginParamVo.getAppId(), wxLoginParamVo.getSecret(),
 					wxLoginParamVo.getGrantType(), wxLoginParamVo.getWxLoginUrl());
@@ -208,7 +208,16 @@ public class UserController {
 				return res;
 			}
 			//String mobile = object.getString("purePhoneNumber");
-			res = feignUserClient.sendCodeToMobile(object.getString("purePhoneNumber"), appId);
+			ResponseObject sendCodeRes = feignUserClient.sendCodeToMobile(object.getString("purePhoneNumber"), appId);
+			if(sendCodeRes==null||sendCodeRes.getStatus()!=ResponseEnum.SelectSuccess.getStatus()){
+				return sendCodeRes;
+			}
+			Map<String, Object> map=new HashMap<String, Object>();
+			map.put("mobile", object.getString("purePhoneNumber"));
+			res=new ResponseObject<Map<String,Object>>();
+			res.setData(map);
+			res.setStatus(ResponseEnum.SelectSuccess.getStatus());
+			res.setMessage(ResponseEnum.SelectSuccess.getMsg());
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			res = new ResponseObject();
