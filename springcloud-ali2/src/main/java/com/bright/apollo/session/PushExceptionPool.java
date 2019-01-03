@@ -266,7 +266,7 @@ public class PushExceptionPool {
                         sendTime,url);
                 tMsgService.addMsg(tMsg);
                 //MsgBussiness.addMsg(tMsg);
-                JPushService.sendAlter(systemMsg.getContent(), tUser.getUserName(), null);
+                JPushService.sendAlter(systemMsg.getContent(), StringUtils.isEmpty(tUser.getUserName())?tUser.getOpenId():tUser.getUserName(), null);
             }
         }
         // 发送消息
@@ -296,7 +296,7 @@ public class PushExceptionPool {
                         sendTime,url);
                 tMsgService.addMsg(tMsg);
                // MsgBussiness.addMsg(tMsg);
-                JPushService.sendAlter(content, tUser.getUserName(), url);
+                JPushService.sendAlter(content, StringUtils.isEmpty(tUser.getUserName())?tUser.getOpenId():tUser.getUserName(), url);
             }
         }
 

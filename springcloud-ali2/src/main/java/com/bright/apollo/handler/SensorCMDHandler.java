@@ -2427,13 +2427,13 @@ public class SensorCMDHandler extends BasicHandler {
 							if (tScene.getMsgAlter() == 3) {
 								// app alter
 								log.info("====before push====");
-								JPushService.sendAlter(tScene.getSceneName(), user.getUserName().toLowerCase(), null);
+								JPushService.sendAlter(tScene.getSceneName(), StringUtils.isEmpty(user.getUserName())?user.getOpenId():user.getUserName(), null);
 							}
 
 						} else if (tScene.getMsgAlter() == 1) {
 							// app alter
 							log.info("====before push====");
-							JPushService.sendAlter(tScene.getSceneName(), user.getUserName().toLowerCase(), null);
+							JPushService.sendAlter(tScene.getSceneName(),  StringUtils.isEmpty(user.getUserName())?user.getOpenId():user.getUserName(), null);
 						}
 
 					}
