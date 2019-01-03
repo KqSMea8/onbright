@@ -209,22 +209,23 @@ public class TmallController {
 			try {
 				ResponseObject<TOboxDeviceConfig> responseObject = feignDeviceClient.getDevice(deviceId);
 				TOboxDeviceConfig oboxDeviceConfig = responseObject.getData();
-                ResponseObject<List<TYaokonyunKeyCode>> irResponse =
-                        feignAliClient.getIRDeviceByIndex(Integer.valueOf(deviceId));
-                List<TYaokonyunKeyCode> yaokonyunKeyCodeList = irResponse.getData();
+//                ResponseObject<List<TYaokonyunKeyCode>> irResponse =
+//                        feignAliClient.getIRDeviceByIndex(Integer.valueOf(deviceId));
+//                List<TYaokonyunKeyCode> yaokonyunKeyCodeList = irResponse.getData();
 				Map<String,Object> paramMap = null;
-                if(yaokonyunKeyCodeList.size()>0){
-                	String redisKey = redisBussines.get("tmallIR_key_"+deviceId);
-					playLoadMap.put("redisKey",redisKey);
-					adapter = new TMallDeviceAdapter(playLoadMap,tMallTemplate,yaokonyunKeyCodeList,header);
-					paramMap = adapter.TMall2IR();
-					String keyValue = (String)paramMap.get("keyValue");
-					redisBussines.set("tmallIR_key_"+deviceId,keyValue);
-					ResponseObject<TYaokonyunKeyCode> yaokonyunKeyCodeResponseObject =
-							feignAliClient.getIRDeviceByIndexAndKey(Integer.valueOf(deviceId),keyValue);
-					TYaokonyunKeyCode keyCode = yaokonyunKeyCodeResponseObject.getData();
-					facadeController.controllIR(keyCode.getSerialId(),keyCode.getIndex(),keyCode.getKey());
-				}else if((oboxDeviceConfig !=null&&!oboxDeviceConfig.equals(""))){
+//                if(yaokonyunKeyCodeList.size()>0){
+//                	String redisKey = redisBussines.get("tmallIR_key_"+deviceId);
+//					playLoadMap.put("redisKey",redisKey);
+//					adapter = new TMallDeviceAdapter(playLoadMap,tMallTemplate,yaokonyunKeyCodeList,header);
+//					paramMap = adapter.TMall2IR();
+//					String keyValue = (String)paramMap.get("keyValue");
+//					redisBussines.set("tmallIR_key_"+deviceId,keyValue);
+//					ResponseObject<TYaokonyunKeyCode> yaokonyunKeyCodeResponseObject =
+//							feignAliClient.getIRDeviceByIndexAndKey(Integer.valueOf(deviceId),keyValue);
+//					TYaokonyunKeyCode keyCode = yaokonyunKeyCodeResponseObject.getData();
+//					facadeController.controllIR(keyCode.getSerialId(),keyCode.getIndex(),keyCode.getKey());
+//				}else
+					if((oboxDeviceConfig !=null&&!oboxDeviceConfig.equals(""))){
 					String deviceType = oboxDeviceConfig.getDeviceType();
 					if(deviceType.equals("16")){
 						adapter = new TMallDeviceAdapter(playLoadMap,tMallTemplate,oboxDeviceConfig,header);
