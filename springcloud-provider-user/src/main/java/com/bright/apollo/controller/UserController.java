@@ -101,12 +101,12 @@ public class UserController {
 				res.setMessage(ResponseEnum.ErrorMobile.getMsg());
 				return res;
 			}
-			TUser tUser = userService.queryUserByName(mobile);
-			if (tUser != null) {
-				res.setStatus(ResponseEnum.ExistMobile.getStatus());
-				res.setMessage(ResponseEnum.ExistMobile.getMsg());
-				return res;
-			}
+			//TUser tUser = userService.queryUserByName(mobile);
+			//if (tUser != null) {
+			//	res.setStatus(ResponseEnum.ExistMobile.getStatus());
+			//	res.setMessage(ResponseEnum.ExistMobile.getMsg());
+			//	return res;
+			//}
 			int code = RandomUtil.makeCode();
 			 
 			smsService.sendAuthCode(code, mobile,StringUtils.isEmpty(appId) || !appId.contains(SignatureEnum.MIL.getAppId())
